@@ -53,6 +53,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
     private String getHouseChatId; //去除 targetId  的最后一位 ,产品定义
     @Extra
     String targetId;//融云的id
+    private ChatHouseBean mData;
 
     @AfterViews
     void init() {
@@ -107,6 +108,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
     @SuppressLint("SetTextI18n")
     @Override
     public void houseSuccess(ChatHouseBean data) {
+        mData = data;
         if (data == null) {
             return;
         }
@@ -206,6 +208,10 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
     @Click(R.id.rl_viewing_date)
     void viewingDateClick() {
         if (isFastClick(1500)) {
+            return;
+        }
+        if (mData == null) {
+            shortTip("暂无楼盘信息无法预约");
             return;
         }
         ConversationViewingDateActivity_.intent(this).targetId(targetId).start();
