@@ -53,6 +53,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
     private String getHouseChatId; //去除 targetId  的最后一位 ,产品定义
     @Extra
     String targetId;//融云的id
+    private ChatHouseBean mData;
 
     @AfterViews
     void init() {
@@ -75,7 +76,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             targetTitle = Objects.requireNonNull(getIntent().getData().getQueryParameter("title")); //对方 昵称
         }
         getHouseChatId = targetId.substring(0, targetId.length() - 1);
-        LogCat.e("TAG", "11111 owner targetId: " + targetId + "getHouseChatId: "+ getHouseChatId + "  title: " + targetTitle);
+        LogCat.e("TAG", "11111 owner targetId: " + targetId + "getHouseChatId: " + getHouseChatId + "  title: " + targetTitle);
         FragmentManager fragmentManage = getSupportFragmentManager();
         ConversationFragment fragement = (ConversationFragment) fragmentManage.findFragmentById(R.id.conversation);
         Uri uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon()
@@ -106,6 +107,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
     @SuppressLint("SetTextI18n")
     @Override
     public void houseSuccess(ChatHouseBean data) {
+        mData = data;
         if (data == null) {
             return;
         }
@@ -205,6 +207,10 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
     @Click(resName = "rl_viewing_date")
     void viewingDateClick() {
         if (isFastClick(1500)) {
+            return;
+        }
+        if (mData == null) {
+            shortTip("暂无楼盘信息无法预约");
             return;
         }
         ConversationViewingDateActivity_.intent(this).targetId(targetId).start();
