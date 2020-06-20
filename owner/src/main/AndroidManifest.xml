@@ -1,0 +1,81 @@
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    package="com.owner">
+
+    <!--定位权限-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!--网络权限-->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.MODIFY_AUDIO_SETTINGS" />
+    <!-- 拨号权限-->
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+
+    <application>
+        <activity
+            android:name=".fragment.HomeFragment_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".fragment.ScheduleFragment_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".message.MessageFragment_"
+            android:screenOrientation="portrait" >
+        </activity>
+        <activity
+            android:name=".mine.MineFragment_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainOwnerActivity_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".h5.WebViewActivity_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".h5.WebViewNoImgActivity_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:launchMode="singleTask"
+            android:name=".mine.MineMessageActivity_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:launchMode="singleTask"
+            android:name=".mine.MineSettingActivity_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:launchMode="singleTask"
+            android:name=".mine.ModifyWechatActivity_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:launchMode="singleTask"
+            android:name=".mine.ModifyMobileActivity_"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".message.ConversationViewingDateActivity_"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <!--会话界面-->
+        <activity
+            android:name=".message.ConversationActivity_"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan">
+            <!-- android:windowSoftInputMode="stateHidden|adjustResize">-->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <!-- android:host="com.owner" 必须当前包名-->
+                <data
+                    android:host="com.owner"
+                    android:pathPrefix="/conversation/"
+                    android:scheme="rong" />
+            </intent-filter>
+        </activity>
+    </application>
+
+</manifest>

@@ -1,0 +1,71 @@
+<resources>
+    <string name="app_name">伙办连</string>
+    <string name="str_tab_home">首页</string>
+    <string name="str_tab_message">消息</string>
+    <string name="str_tab_collect">收藏</string>
+    <string name="str_tab_mine">我的</string>
+    <string name="str_login">登录</string>
+    <string name="str_platform_skip">跳过</string>
+    <string name="str_button_check">验证</string>
+    <string name="str_get_sms_code">获取验证码</string>
+    <string name="str_please_input_sms_code">请输入验证码</string>
+    <string name="str_sms_code">验证码</string>
+    <string name="str_please_input_mobile">请输入手机号码</string>
+    <string name="str_mobile">手机号</string>
+    <string name="str_check_mobile">验证手机号</string>
+    <string name="str_please_input_platform_mobile">请输入您在%s的手机号</string>
+    <string name="str_platform_sms_code_error">验证码错误，请重新输入</string>
+    <string name="str_count_down_second">s</string>
+    <string name="str_resend">重新发送</string>
+    <string name="str_get_code">获取短信验证码</string>
+    <string name="toast_press_again_quit">再按一次退出</string>
+    <string name="str_house_all">全部</string>
+    <string name="str_house_office">写字楼</string>
+    <string name="str_house_tenant">联合办公</string>
+    <string name="str_order_def">默认排序</string>
+    <string name="str_order_price_up_down">价格从高到低</string>
+    <string name="str_order_price_down_up">价格从低到高</string>
+    <string name="str_order_area_up_down">面积从大到小</string>
+    <string name="str_order_area_down_up">面积从小到大</string>
+    <string name="str_clear">清除</string>
+    <string name="str_independent_office">独立办公室</string>
+    <string name="str_open_work">开放工位</string>
+    <string name="str_llook_more">查看更多</string>
+    <string name="str_title_characteristic_service">特色服务</string>
+    <string name="str_title_create_service">创业服务</string>
+    <string name="str_title_base_sservice">基础服务</string>
+    <string name="str_open_office">开放工位</string>
+    <string name="str_collect">收藏</string>
+    <string name="str_collected">已收藏</string>
+    <string name="str_find_house_owner">找业主</string>
+    <string name="str_goto_top">回顶</string>
+    <string name="str_office_building">写字楼/网点</string>
+    <string name="str_work_office">办公室</string>
+    <string name="str_history">历史</string>
+    <string name="str_find">发现</string>
+    <string name="str_recommend">推荐</string>
+    <string name="str_viewing_date">看房行程</string>
+    <string name="str_help">帮助与反馈</string>
+    <string name="str_customer_service">客服</string>
+    <string name="str_protocol">注册协议与隐私条款</string>
+    <string name="str_privacy">隐私条款</string>
+    <string name="str_about_us">关于我们</string>
+    <!--微信-->
+    <string name="errcode_success">分享成功</string>
+    <string name="errcode_cancel">分享取消</string>
+    <string name="errcode_deny">发送被拒绝</string>
+    <string name="errcode_unsupported">不支持错误</string>
+    <string name="errcode_unknown">发送返回</string>
+    <string name="wx_not_install">您还未安装微信客户端</string>
+    <string name="wx_str_no_support_pay">当前微信版本不支持支付，请升级到新版本</string>
+    <string name="wx_version_no_support_timeline">当前微信版本不支持分享到朋友圈，请升级到新版本</string>
+    <string name="str_need_install_wx">请安装微信app</string>
+    <!--    sd -->
+    <string name="str_take_photo">拍照</string>
+    <string name="str_choose_from_album">从相册选择</string>
+    <string name="str_no_sd">设备没有SD卡！</string>
+    <string name="str_please_open_sd">请允许打操作SDCard！！</string>
+    <string name="str_please_open_camera">请允许打开相机！！</string>
+
+
+</resources>

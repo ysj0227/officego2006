@@ -1,0 +1,268 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white">
+
+    <com.officego.commonlib.view.TitleBarView
+        android:id="@+id/title_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/c_white"
+        app:dividerShow="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:leftDefaultClickEnable="true"
+        app:leftIcon="@drawable/ic_back_dark"
+        app:rightTextColor="@color/c_white"
+        app:titleText="基本信息"
+        app:titleTextColor="@color/text_main" />
+
+    <RelativeLayout
+        android:id="@+id/rl_head_img"
+        style="@style/marginLeftRight18"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_78"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_bar">
+
+        <TextView
+            android:id="@+id/tv_head"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_17"
+            android:text="头像"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_15" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_head"
+            android:layout_marginTop="@dimen/dp_5"
+            android:text="上传真实头像有助于增加信任感"
+            android:textColor="@color/text_66"
+            android:textSize="@dimen/sp_12" />
+
+        <com.officego.commonlib.view.CircleImage
+            android:id="@+id/civ_avatar"
+            android:layout_width="@dimen/dp_42"
+            android:layout_height="@dimen/dp_42"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:src="@mipmap/default_avatar"
+            app:radius="@dimen/dp_40" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_name"
+        style="@style/marginLeftRight18"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_56"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rl_head_img">
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="称呼"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_15" />
+
+        <ImageView
+            android:id="@+id/iv_mark_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/tv_name"
+            android:src="@mipmap/ic_mark"
+            tools:ignore="ContentDescription" />
+
+
+        <com.officego.commonlib.view.ClearableEditText
+            android:id="@+id/et_name_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_toEndOf="@id/iv_mark_name"
+            android:background="@null"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:hint="输入称呼"
+            android:maxLines="1"
+            android:textColor="@color/text_33"
+            android:textColorHint="@color/text_99"
+            android:textSize="@dimen/sp_15" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"
+            android:layout_alignParentBottom="true"
+            android:background="@color/common_divider" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_sex"
+        style="@style/marginLeftRight18"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_56"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rl_name">
+
+        <TextView
+            android:id="@+id/tv_sex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="性别"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_15" />
+
+        <ImageView
+            android:id="@+id/iv_sex"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/tv_sex"
+            android:src="@mipmap/ic_mark"
+            tools:ignore="ContentDescription" />
+
+
+        <TextView
+            android:id="@+id/et_sex_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_toEndOf="@id/iv_sex"
+            android:background="@null"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:hint="选择性别"
+            android:maxLines="1"
+            android:textColor="@color/text_33"
+            android:textColorHint="@color/text_99"
+            android:textSize="@dimen/sp_15" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"
+            android:layout_alignParentBottom="true"
+            android:background="@color/common_divider" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_mobile"
+        style="@style/marginLeftRight18"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_56"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rl_sex">
+
+        <TextView
+            android:id="@+id/tv_mobile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="公司名称"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_15" />
+
+        <ImageView
+            android:id="@+id/iv_mobile_mark"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/tv_mobile"
+            android:src="@mipmap/ic_mark"
+            android:visibility="gone"
+            tools:ignore="ContentDescription" />
+
+
+        <com.officego.commonlib.view.ClearableEditText
+            android:id="@+id/et_company_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_toEndOf="@id/iv_mobile_mark"
+            android:background="@null"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:hint="输入公司名称"
+            android:maxLines="1"
+            android:textColor="@color/text_33"
+            android:textColorHint="@color/text_99"
+            android:textSize="@dimen/sp_15" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"
+            android:layout_alignParentBottom="true"
+            android:background="@color/common_divider" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_job"
+        style="@style/marginLeftRight18"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_56"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rl_mobile">
+
+        <TextView
+            android:id="@+id/tv_job"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="职位"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_15" />
+
+        <com.officego.commonlib.view.ClearableEditText
+            android:id="@+id/et_job_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_toEndOf="@id/tv_job"
+            android:background="@null"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:hint="输入职位"
+            android:maxLines="1"
+            android:textColor="@color/text_33"
+            android:textColorHint="@color/text_99"
+            android:textSize="@dimen/sp_15" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"
+            android:layout_alignParentBottom="true"
+            android:background="@color/common_divider" />
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_save"
+        style="@style/BtnBigOrange"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_40"
+        android:layout_marginBottom="@dimen/dp_20"
+        android:text="@string/str_save"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ctl_open_work"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_house_open_office"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_18"
+        android:background="@drawable/text_label_deep_blue"
+        android:padding="@dimen/dp_3"
+        android:text="@string/str_open_work"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_12"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <!--            独立办公室-->
+
+    <RelativeLayout
+        android:id="@+id/rl_open_office_num"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_8"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/rl_open_office_price"
+        app:layout_constraintTop_toBottomOf="@id/tv_house_open_office">
+
+        <TextView
+            android:id="@+id/tv_open_office_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_15" />
+
+        <TextView
+            android:id="@+id/tv_open_office_num_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_open_office_num"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dp_6"
+            android:text="工位数"
+            android:textColor="@color/text_66"
+            android:textSize="@dimen/sp_11" />
+
+        <View
+            android:id="@+id/v_line_open1"
+            android:layout_width="@dimen/dp_1"
+            android:layout_height="@dimen/dp_40"
+            android:layout_alignParentEnd="true"
+            android:background="@color/common_divider" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_open_office_price"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_8"
+        app:layout_constraintHorizontal_weight="1.1"
+        app:layout_constraintLeft_toRightOf="@id/rl_open_office_num"
+        app:layout_constraintRight_toLeftOf="@id/rl_open_office_area"
+        app:layout_constraintTop_toBottomOf="@id/tv_house_open_office">
+
+        <TextView
+            android:id="@+id/tv_open_office_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_15" />
+
+        <TextView
+            android:id="@+id/tv_open_office_price_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_open_office_price"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dp_6"
+            android:text="均价"
+            android:textColor="@color/text_66"
+            android:textSize="@dimen/sp_11" />
+
+        <View
+            android:id="@+id/v_line_open2"
+            android:layout_width="@dimen/dp_1"
+            android:layout_height="@dimen/dp_40"
+            android:layout_alignParentEnd="true"
+            android:background="@color/common_divider" />
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/rl_open_office_area"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintLeft_toRightOf="@id/rl_open_office_price"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_house_open_office">
+
+    </TextView>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

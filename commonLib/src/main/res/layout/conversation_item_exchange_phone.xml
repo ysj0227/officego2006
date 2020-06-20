@@ -1,0 +1,81 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_layout"
+    android:layout_width="@dimen/dp_230"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_solid_white_corner12"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_content"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_12">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:text="电话已交换！"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_12" />
+
+        <TextView
+            android:id="@+id/tv_content"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_title"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dp_4"
+            android:text="对方电话：1234567890"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_12" />
+    </RelativeLayout>
+
+    <View
+        android:id="@+id/v_line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_1"
+        android:layout_below="@id/rl_content"
+        android:layout_marginTop="@dimen/dp_10"
+        android:background="@color/divider_gray" />
+
+    <RelativeLayout
+        android:id="@+id/rl_btn"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_44"
+        android:layout_below="@+id/v_line"
+        android:visibility="visible">
+
+        <Button
+            android:id="@+id/btn_copy_contacts"
+            android:layout_width="@dimen/dp_115"
+            android:layout_height="wrap_content"
+            android:background="@null"
+            android:text="@string/str_copy_phone"
+            android:textColor="@color/text_66"
+            android:textSize="@dimen/sp_12"
+            android:visibility="visible" />
+
+        <View
+            android:id="@+id/v_vertical_line"
+            android:layout_width="1dp"
+            android:layout_height="match_parent"
+            android:layout_toEndOf="@id/btn_copy_contacts"
+            android:background="@color/divider_gray"
+            android:visibility="visible" />
+
+        <Button
+            android:id="@+id/btn_call"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_toEndOf="@id/v_vertical_line"
+            android:background="@null"
+            android:text="@string/str_call_phone"
+            android:textColor="@color/common_blue_main"
+            android:textSize="@dimen/sp_12" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

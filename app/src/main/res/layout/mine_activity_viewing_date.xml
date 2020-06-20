@@ -1,0 +1,212 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_root_view"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            style="@style/marginLeftRight18"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_55"
+            android:layout_alignParentBottom="true">
+
+            <LinearLayout
+                android:id="@+id/ll_back"
+                android:layout_width="@dimen/dp_30"
+                android:layout_height="match_parent"
+                android:gravity="center_vertical"
+                android:visibility="visible">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_24"
+                    android:layout_height="@dimen/dp_24"
+                    android:src="@mipmap/ic_back_dark_normal"
+                    tools:ignore="ContentDescription" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_centerVertical="true"
+                android:layout_marginLeft="@dimen/dp_5"
+                android:layout_marginRight="@dimen/dp_5"
+                android:gravity="center"
+                android:maxWidth="@dimen/dp_256"
+                android:singleLine="true"
+                android:text="@string/str_viewing_date"
+                android:textAllCaps="true"
+                android:textColor="@color/text_33"
+                android:textSize="@dimen/sp_16"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_appointment_record"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_centerVertical="true"
+                android:drawableEnd="@mipmap/ic_return_today"
+                android:drawablePadding="@dimen/dp_6"
+                android:text="@string/str_appointment_record"
+                android:textColor="@color/text_33"
+                android:textSize="@dimen/sp_12"
+                tools:ignore="RelativeOverlap" />
+        </RelativeLayout>
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"
+            android:layout_alignParentBottom="true"
+            android:background="@color/common_divider" />
+    </RelativeLayout>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_10">
+
+        <RelativeLayout
+            android:id="@+id/rl_last"
+            android:layout_width="@dimen/dp_48"
+            android:layout_height="@dimen/dp_28"
+            android:layout_marginTop="@dimen/dp_12"
+            android:gravity="center"
+            android:paddingStart="@dimen/dp_18"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="RtlSymmetry">
+
+            <ImageView
+                android:layout_width="@dimen/dp_7"
+                android:layout_height="@dimen/dp_11"
+                android:src="@mipmap/ic_left_arrow_gray"
+                tools:ignore="ContentDescription" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_current_date"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_28"
+            android:layout_marginTop="@dimen/dp_12"
+            android:gravity="center_vertical"
+            android:textColor="@color/text_75"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <RelativeLayout
+            android:id="@+id/rl_next"
+            android:layout_width="@dimen/dp_48"
+            android:layout_height="@dimen/dp_28"
+            android:layout_marginTop="@dimen/dp_12"
+            android:gravity="center"
+            android:paddingEnd="@dimen/dp_18"
+            app:layout_constraintBottom_toBottomOf="@id/tv_current_date"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            tools:ignore="RtlSymmetry">
+
+            <ImageView
+                android:layout_width="@dimen/dp_7"
+                android:layout_height="@dimen/dp_11"
+                android:src="@mipmap/ic_right_arrow_gray"
+                tools:ignore="ContentDescription" />
+        </RelativeLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="28dp"
+        android:background="#fff"
+        android:orientation="horizontal">
+
+        <TextView
+            style="@style/weekIndicatorStyle"
+            android:text="@string/str_monday" />
+
+        <TextView
+            style="@style/weekIndicatorStyle"
+            android:text="@string/str_tuesday" />
+
+        <TextView
+            style="@style/weekIndicatorStyle"
+            android:text="@string/str_wednesday" />
+
+        <TextView
+            style="@style/weekIndicatorStyle"
+            android:text="@string/str_thursday" />
+
+        <TextView
+            style="@style/weekIndicatorStyle"
+            android:text="@string/str_friday" />
+
+        <TextView
+            style="@style/weekIndicatorStyle"
+            android:text="@string/str_saturday" />
+
+        <TextView
+            style="@style/weekIndicatorStyle"
+            android:text="@string/str_sunday" />
+    </LinearLayout>
+
+    <androidx.coordinatorlayout.widget.CoordinatorLayout
+        android:id="@+id/content"
+        android:layout_width="match_parent"
+        android:layout_height="0dp"
+        android:layout_weight="1">
+
+        <com.ldf.calendar.view.MonthPager
+            android:id="@+id/calendar_view"
+            android:layout_width="match_parent"
+            android:layout_height="270dp"
+            android:background="#fff" />
+
+        <TextView
+            android:id="@+id/tv_no_data"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="@dimen/dp_90"
+            android:drawableTop="@mipmap/ic_empty"
+            android:drawablePadding="@dimen/dp_6"
+            android:gravity="center"
+            android:text="@string/tip_current_no_data"
+            android:textColor="@color/text_caption"
+            android:textSize="@dimen/sp_12"
+            android:visibility="visible" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_viewing_date"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_gravity="bottom"
+            android:layout_marginBottom="45dp"
+            android:background="@color/white"
+            android:clipChildren="false"
+            android:clipToPadding="false"
+            android:paddingLeft="@dimen/dp_18"
+            android:paddingTop="@dimen/dp_20"
+            android:paddingRight="@dimen/dp_18"
+            android:visibility="gone"
+            app:layout_behavior="com.ldf.calendar.behavior.RecyclerViewBehavior" />
+        <!-- paddingBottom或者magin距离必须是MonthPager高度的1/6-->
+        <!-- RecyclerView的高度必须是MatchParent-->
+        <!-- RecyclerView的background必须是非透明-->
+    </androidx.coordinatorlayout.widget.CoordinatorLayout>
+
+</LinearLayout>

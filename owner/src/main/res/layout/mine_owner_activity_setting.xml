@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/text_f2">
+
+    <com.officego.commonlib.view.TitleBarView
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/c_white"
+        app:dividerShow="true"
+        app:leftDefaultClickEnable="true"
+        app:leftIcon="@drawable/ic_back_dark"
+        app:titleText="@string/str_setting"
+        app:titleTextColor="@color/text_33" />
+
+    <RelativeLayout
+        android:id="@+id/rl_mobile"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_56"
+        android:layout_below="@id/title_bar"
+        android:background="@color/white"
+        android:paddingLeft="@dimen/dp_18"
+        android:paddingRight="@dimen/dp_18">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="修改手机号"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_15" />
+
+        <TextView
+            android:id="@+id/tv_mobile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dp_28"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_15" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/ic_right_arrow_small"
+            tools:ignore="ContentDescription" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"
+            android:layout_alignParentBottom="true"
+            android:background="@color/common_divider" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:visibility="gone"
+        android:id="@+id/rl_wx"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_56"
+        android:layout_below="@id/rl_mobile"
+        android:background="@color/white"
+        android:paddingLeft="@dimen/dp_18"
+        android:paddingRight="@dimen/dp_18">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="绑定微信"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_15" />
+
+        <TextView
+            android:id="@+id/tv_bind_wx"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dp_28"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_15" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/ic_right_arrow_small"
+            tools:ignore="ContentDescription" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"
+            android:layout_alignParentBottom="true"
+            android:background="@color/common_divider" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_version_update"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_56"
+        android:layout_below="@id/rl_wx"
+        android:background="@color/white"
+        android:paddingLeft="@dimen/dp_18"
+        android:paddingRight="@dimen/dp_18">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/str_version_update"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_15"
+            tools:ignore="RelativeOverlap" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/ic_right_arrow_small"
+            tools:ignore="ContentDescription" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"
+            android:layout_alignParentBottom="true"
+            android:background="@color/common_divider" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_switch_id"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_56"
+        android:layout_below="@id/rl_version_update"
+        android:background="@color/white"
+        android:paddingLeft="@dimen/dp_18"
+        android:paddingRight="@dimen/dp_18">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/str_switch_id"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_15" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/ic_right_arrow_small"
+            tools:ignore="ContentDescription" />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_logout"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_50"
+        android:layout_below="@id/rl_switch_id"
+        android:layout_marginStart="@dimen/dp_18"
+        android:layout_marginTop="@dimen/dp_45"
+        android:layout_marginEnd="@dimen/dp_18"
+        android:background="@drawable/button_corners5_solid_white"
+        android:text="@string/str_logout"
+        android:textColor="@color/text_66"
+        android:textSize="@dimen/sp_18" />
+
+</RelativeLayout>

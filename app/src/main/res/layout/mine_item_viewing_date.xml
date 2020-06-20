@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:id="@+id/rl_date"
+        android:layout_width="@dimen/dp_60"
+        android:layout_height="wrap_content"
+        android:paddingTop="@dimen/dp_4">
+
+        <TextView
+            android:id="@+id/tv_date"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/text_66"
+            android:textSize="@dimen/sp_12" />
+
+        <TextView
+            android:id="@+id/tv_time"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_date"
+            android:layout_marginTop="@dimen/dp_6"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_15"
+            android:textStyle="bold" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_details"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_96"
+        android:layout_marginStart="@dimen/dp_70"
+        android:layout_marginBottom="@dimen/dp_20"
+        android:background="@color/text_f7"
+        android:paddingStart="@dimen/dp_26">
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_14"
+            android:maxLength="8"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_14" />
+
+        <TextView
+            android:id="@+id/tv_position"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@id/tv_name"
+            android:layout_marginStart="3dp"
+            android:layout_toEndOf="@id/tv_name"
+            android:maxLength="6"
+            android:textColor="@color/text_66"
+            android:textSize="@dimen/sp_10" />
+
+        <TextView
+            android:id="@+id/tv_building_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_name"
+            android:layout_marginTop="@dimen/dp_7"
+            android:textColor="@color/text_66"
+            android:textSize="@dimen/sp_10" />
+
+        <TextView
+            android:maxLength="30"
+            android:id="@+id/tv_location"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_building_name"
+            android:layout_marginTop="@dimen/dp_7"
+            android:drawableStart="@mipmap/ic_small_location"
+            android:drawablePadding="@dimen/dp_5"
+            android:textColor="@color/text_66"
+            android:textSize="@dimen/sp_10" />
+
+        <TextView
+            android:id="@+id/tv_status"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_marginTop="@dimen/dp_14"
+            android:paddingEnd="@dimen/dp_12"
+            android:textColor="@color/common_blue_main"
+            android:textSize="@dimen/sp_12" />
+    </RelativeLayout>
+
+
+    <LinearLayout
+        android:layout_width="@dimen/dp_19"
+        android:layout_height="wrap_content"
+        android:layout_toRightOf="@id/rl_date"
+        android:orientation="vertical">
+
+        <View
+            android:id="@+id/v_line_top"
+            android:layout_width="@dimen/dp_1"
+            android:layout_height="@dimen/dp_28"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/common_blue_main" />
+
+        <ImageView
+            android:id="@+id/iv_date_flag"
+            android:layout_width="@dimen/dp_18"
+            android:layout_height="@dimen/dp_18"
+            android:background="@mipmap/ic_date_blue" />
+
+        <View
+            android:id="@+id/v_line_bottom"
+            android:layout_width="@dimen/dp_1"
+            android:layout_height="@dimen/dp_70"
+            android:layout_gravity="center_horizontal"
+            android:background="@color/common_blue_main" />
+    </LinearLayout>
+
+</RelativeLayout>

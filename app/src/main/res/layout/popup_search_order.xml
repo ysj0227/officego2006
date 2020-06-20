@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/pop_background">
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_250"
+        android:background="@color/white"
+        android:gravity="center_horizontal"
+        android:orientation="vertical">
+
+        <TextView
+            android:id="@+id/tv_pop_order_def"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_30"
+            android:layout_marginTop="@dimen/dp_30"
+            android:background="@drawable/text_bg_selector"
+            android:gravity="center"
+            android:text="@string/str_order_def"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_15" />
+
+        <TextView
+            android:id="@+id/tv_pop_price_up_down"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_30"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@drawable/text_bg_selector"
+            android:gravity="center"
+            android:text="@string/str_order_price_up_down"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_15" />
+
+        <TextView
+            android:id="@+id/tv_pop_price_down_up"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_30"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@drawable/text_bg_selector"
+            android:gravity="center"
+            android:text="@string/str_order_price_down_up"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_15" />
+
+        <TextView
+            android:id="@+id/tv_pop_area_up_down"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_30"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@drawable/text_bg_selector"
+            android:gravity="center"
+            android:text="@string/str_order_area_up_down"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_15" />
+
+        <TextView
+            android:id="@+id/tv_pop_area_down_up"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_30"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginBottom="@dimen/dp_10"
+            android:background="@drawable/text_bg_selector"
+            android:gravity="center"
+            android:text="@string/str_order_area_down_up"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_15" />
+
+    </LinearLayout>
+</RelativeLayout>

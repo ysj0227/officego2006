@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/ll_joint_work"
+    style="@style/marginLeftRight18"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:layout_marginTop="@dimen/dp_20"
+    android:orientation="vertical">
+
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="工位"
+        android:textColor="@color/text_main"
+        android:textSize="@dimen/sp_12" />
+
+    <com.officego.view.SeekBarPressure
+        android:id="@+id/sbp_joint_workstation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp" />
+    <TextView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="租金"
+        android:textColor="@color/text_main"
+        android:textSize="@dimen/sp_12" />
+
+    <com.officego.view.SeekBarPressure
+        android:id="@+id/sbp_joint_rent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp" />
+
+</LinearLayout>

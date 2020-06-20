@@ -1,0 +1,103 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_root_message"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/white"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/common_blue_main">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_60"
+            android:layout_alignParentBottom="true"
+            tools:ignore="UselessParent">
+
+            <TextView
+                android:id="@+id/tv_message_title"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/dp_18"
+                android:text="消息"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_17" />
+
+            <RelativeLayout
+                android:id="@+id/rl_input_text"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/dp_12"
+                android:layout_marginEnd="@dimen/dp_46"
+                android:layout_toEndOf="@id/tv_message_title"
+                android:background="@drawable/button_corners16_solid_white"
+                android:focusable="true"
+                android:focusableInTouchMode="true"
+                android:visibility="gone">
+
+                <ImageView
+                    android:id="@+id/iv_search"
+                    android:layout_width="@dimen/dp_14"
+                    android:layout_height="@dimen/dp_14"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/dp_12"
+                    android:background="@mipmap/ic_search_grey"
+                    tools:ignore="ContentDescription" />
+
+                <com.officego.commonlib.view.ClearableEditText
+                    android:id="@+id/et_search"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_30"
+                    android:layout_centerVertical="true"
+                    android:layout_toEndOf="@id/iv_search"
+                    android:background="@null"
+                    android:hint="@string/rc_search"
+                    android:imeOptions="actionSearch"
+                    android:lines="1"
+                    android:paddingStart="@dimen/dp_10"
+                    android:singleLine="true"
+                    android:textColor="@color/text_disable"
+                    android:textSize="@dimen/sp_14"
+                    tools:ignore="RtlSymmetry" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_ibtn_search"
+                android:layout_width="@dimen/dp_46"
+                android:layout_height="match_parent"
+                android:layout_alignParentEnd="true"
+                android:visibility="gone">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_14"
+                    android:layout_height="@dimen/dp_14"
+                    android:layout_centerHorizontal="true"
+                    android:layout_centerVertical="true"
+                    android:background="@mipmap/ic_search_white"
+                    tools:ignore="ContentDescription" />
+            </RelativeLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <fragment
+        android:id="@+id/conversationlist"
+        android:name="io.rong.imkit.fragment.ConversationListFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        tools:ignore="FragmentTagUsage" />
+
+    <include
+        layout="@layout/include_no_login"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/c_white"
+        android:visibility="gone" />
+
+</LinearLayout>

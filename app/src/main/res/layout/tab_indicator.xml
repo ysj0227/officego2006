@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_60"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
+
+<!--    <cn.bingoogolapple.badgeview.BGABadgeTextView-->
+<!--        android:layout_marginTop="@dimen/dp_10"-->
+<!--        android:id="@+id/tab_title"-->
+<!--        android:textSize="@dimen/sp_10"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="@dimen/dp_40"-->
+<!--        android:gravity="center"-->
+<!--        android:layout_centerVertical="true"-->
+<!--        android:textColor="@color/text_caption"-->
+<!--        android:layout_centerInParent="true" />-->
+
+    <cn.bingoogolapple.badgeview.BGABadgeTextView
+        android:id="@+id/tab_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:padding="@dimen/dp_12"
+        android:textColor="@color/text_caption"
+        android:textSize="@dimen/sp_10"
+        app:badge_draggable="true"
+        app:badge_gravity="rightTop"
+        android:drawablePadding="@dimen/dp_3" />
+
+</RelativeLayout>

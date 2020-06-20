@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/ctl_independent"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+
+    <TextView
+        android:id="@+id/tv_independent_office"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_18"
+        android:background="@drawable/text_label_deep_blue"
+        android:padding="@dimen/dp_3"
+        android:text="@string/str_independent_office"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_12"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+    <!--            独立办公室-->
+    <RelativeLayout
+        android:id="@+id/rl_independent_office_area"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_8"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/rl_independent_office_price"
+        app:layout_constraintTop_toBottomOf="@id/tv_independent_office">
+
+        <TextView
+            android:id="@+id/tv_independent_office_area"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_15" />
+
+        <TextView
+            android:id="@+id/tv_independent_office_area_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_independent_office_area"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dp_6"
+            android:textColor="@color/text_66"
+            android:textSize="@dimen/sp_11" />
+
+        <View
+            android:id="@+id/v_line1"
+            android:layout_width="@dimen/dp_1"
+            android:layout_height="@dimen/dp_40"
+            android:layout_alignParentEnd="true"
+            android:background="@color/common_divider" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_independent_office_price"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_8"
+        app:layout_constraintHorizontal_weight="1.1"
+        app:layout_constraintLeft_toRightOf="@id/rl_independent_office_area"
+        app:layout_constraintRight_toLeftOf="@id/rl_independent_office_num"
+        app:layout_constraintTop_toBottomOf="@id/tv_independent_office">
+
+        <TextView
+            android:id="@+id/tv_independent_office_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_15" />
+
+        <TextView
+            android:id="@+id/tv_independent_office_price_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_independent_office_price"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dp_6"
+            android:textColor="@color/text_66"
+            android:textSize="@dimen/sp_11" />
+
+        <View
+            android:id="@+id/v_line2"
+            android:layout_width="@dimen/dp_1"
+            android:layout_height="@dimen/dp_40"
+            android:layout_alignParentEnd="true"
+            android:background="@color/common_divider" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rl_independent_office_num"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_8"
+        app:layout_constraintHorizontal_weight="1"
+        app:layout_constraintLeft_toRightOf="@id/rl_independent_office_price"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_independent_office">
+
+        <TextView
+            android:id="@+id/tv_independent_office_other"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:layout_marginTop="@dimen/dp_15"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_15"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_independent_office_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_15"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tv_independent_office_num_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/tv_independent_office_num"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dp_6"
+            android:textColor="@color/text_66"
+            android:textSize="@dimen/sp_11"
+            android:visibility="visible" />
+
+    </RelativeLayout>
+
+
+</androidx.constraintlayout.widget.ConstraintLayout>

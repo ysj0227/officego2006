@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/text_f2">
+
+    <com.officego.commonlib.view.TitleBarView
+        android:id="@+id/title_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/c_white"
+        app:dividerShow="true"
+        app:leftDefaultClickEnable="true"
+        app:leftIcon="@drawable/ic_back_dark"
+        app:titleText="修改手机号"
+        app:titleTextColor="@color/text_33" />
+
+    <TextView
+        android:id="@+id/tv_mobile"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        android:layout_below="@id/title_bar"
+        android:background="@color/c_white"
+        android:gravity="center_vertical"
+        android:paddingLeft="@dimen/dp_18"
+        android:text="当前手机号："
+        android:textColor="@color/text_33"
+        android:textSize="@dimen/sp_15" />
+
+    <View
+        android:id="@+id/v_line"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_1"
+        android:layout_below="@id/tv_mobile"
+        android:background="@color/common_divider" />
+
+    <RelativeLayout
+        android:id="@+id/rl_new_mobile"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        android:layout_below="@id/v_line"
+        android:background="@color/c_white">
+
+        <TextView
+            android:id="@+id/tv_mobile_text"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_60"
+            android:gravity="center_vertical"
+            android:paddingLeft="@dimen/dp_18"
+            android:text="新手机号:"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_15" />
+
+        <com.officego.commonlib.view.ClearableEditText
+            android:id="@+id/et_mobile"
+            android:layout_width="@dimen/dp_150"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_toRightOf="@id/tv_mobile_text"
+            android:background="@null"
+            android:gravity="center_vertical"
+            android:hint="请输入新手机号"
+            android:inputType="phone"
+            android:paddingLeft="@dimen/dp_8"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_15" />
+
+        <View
+            android:layout_width="1.5dp"
+            android:layout_height="@dimen/dp_30"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp_110"
+            android:background="@color/edit_bottom_line" />
+
+        <TextView
+            android:id="@+id/tv_send_code"
+            android:layout_width="wrap_content"
+            android:layout_height="@dimen/dp_60"
+            android:layout_alignParentRight="true"
+            android:layout_marginRight="@dimen/dp_18"
+            android:gravity="center_vertical"
+            android:text="发送验证码"
+            android:textColor="@color/common_blue_main"
+            android:textSize="@dimen/sp_15" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"
+            android:layout_alignParentBottom="true"
+            android:background="@color/common_divider" />
+    </RelativeLayout>
+
+    <com.officego.commonlib.view.ClearableEditText
+        android:id="@+id/et_sms_code"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        android:layout_below="@id/rl_new_mobile"
+        android:background="@color/c_white"
+        android:gravity="center_vertical"
+        android:hint="请输入验证码"
+        android:paddingLeft="@dimen/dp_18"
+        android:paddingRight="@dimen/dp_18"
+        android:textColor="@color/text_33"
+        android:textSize="@dimen/sp_15" />
+
+    <Button
+        android:id="@+id/btn_modify"
+        style="?android:attr/borderlessButtonStyle"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_45"
+        android:layout_below="@id/et_sms_code"
+        android:layout_marginStart="@dimen/dp_40"
+        android:layout_marginTop="@dimen/dp_45"
+        android:layout_marginEnd="@dimen/dp_40"
+        android:background="@drawable/button_corners_solid_main"
+        android:text="确认修改"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_16" />
+
+    <TextView
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        android:layout_below="@id/btn_modify"
+        android:gravity="center"
+        android:text="修改成功需要重新登录"
+        android:textColor="@color/text_disable"
+        android:textSize="@dimen/sp_13" />
+
+</RelativeLayout>

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/ll_root"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/common_blue_main"
+    android:orientation="vertical">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60">
+
+        <RelativeLayout
+            android:id="@+id/rl_back"
+            android:layout_width="@dimen/dp_46"
+            android:layout_height="match_parent">
+
+            <ImageView
+                android:layout_width="@dimen/dp_11"
+                android:layout_height="@dimen/dp_18"
+                android:layout_centerInParent="true"
+                android:background="@mipmap/ic_back_white"
+                tools:ignore="ContentDescription" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:gravity="center">
+
+            <TextView
+                android:id="@+id/tv_title_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:ellipsize="end"
+                android:maxLength="16"
+                android:text="@string/str_text_unknown"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_15" />
+
+            <TextView
+                android:id="@+id/tv_job"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_title_name"
+                android:layout_centerHorizontal="true"
+                android:maxLength="20"
+                android:ellipsize="end"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_11" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <include
+        layout="@layout/conversation_include_viewing_date"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60" />
+
+    <fragment
+        android:id="@+id/conversation"
+        android:name="io.rong.imkit.fragment.ConversationFragment"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+</LinearLayout>

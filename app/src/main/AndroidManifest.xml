@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="utf-8"?>
+<manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    package="com.officego">
+
+    <!--定位权限-->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
+    <!--网络权限-->
+    <uses-permission android:name="android.permission.INTERNET" />
+    <!--检测网络状态-->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_NETWORK_STATE" />
+    <!--检测wifi状态-->
+    <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_STATE" />
+    <uses-permission android:name="android.permission.CHANGE_WIFI_MULTICAST_STATE" />
+    <uses-permission android:name="android.permission.CAMERA" />
+    <uses-permission android:name="android.permission.FLASHLIGHT" />
+    <!--为了获取用户手机的IMEI，用来唯一的标识用户。-->
+    <uses-permission android:name="android.permission.READ_PHONE_STATE" />
+    <uses-permission android:name="android.permission.READ_CONTACTS" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="com.android.browser.permission.READ_HISTORY_BOOKMARKS" />
+    <uses-permission android:name="android.permission.WRITE_CONTACTS" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />
+    <uses-permission android:name="android.permission.GET_ACCOUNTS" />
+    <uses-permission android:name="android.permission.READ_PROFILE" />
+    <uses-permission android:name="android.permission.READ_LOGS" />
+    <!-- 拨号权限-->
+    <uses-permission android:name="android.permission.CALL_PHONE" />
+    <uses-permission android:name="android.permission.WRITE_SETTINGS" />
+    <!--如果是安卓8.0，应用编译配置的targetSdkVersion>=26，请务必添加以下权限 -->
+    <uses-permission android:name="android.permission.REQUEST_INSTALL_PACKAGES" />
+    <uses-permission android:name="android.permission.RECORD_AUDIO" />
+    <uses-permission android:name="android.permission.REAL_GET_TASKS" />
+    <!-- 蓝牙权限-->
+    <uses-permission android:name="android.permission.BLUETOOTH" />
+    <uses-permission android:name="android.permission.BLUETOOTH_ADMIN" />
+    <!--在SDCard中创建与删除文件权限-->
+    <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
+    <!-- OPPPO 权限配置-->
+    <uses-permission android:name="com.coloros.mcs.permission.SEND_MCS_MESSAGE" />
+    <!-- OPPO 配置结束-->
+
+    <application
+        android:name=".application.MyApplication"
+        android:allowBackup="true"
+        android:icon="@mipmap/ic_logo"
+        android:label="${APP_NAME}"
+        android:networkSecurityConfig="@xml/network_security_config"
+        android:roundIcon="@mipmap/ic_logo"
+        android:supportsRtl="true"
+        android:theme="@style/AppTheme"
+        tools:ignore="GoogleAppIndexingWarning"
+        tools:replace="label">
+
+        <activity
+            android:name=".ui.IdSelectActivity_"
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".MainActivity_"
+            android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".ui.login.LoginActivity_"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.find.FindHouseActivity_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.home.HomeFragment_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.collect.CollectFragment_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.message.MessageFragment_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.mine.MineFragment_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.home.BuildingDetailsActivity_"
+            android:hardwareAccelerated="true"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.home.BuildingDetailsChildActivity_"
+            android:hardwareAccelerated="true"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.home.SearchRecommendActivity_"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.home.SearchHouseListActivity_"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.mine.MineMessageActivity_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.mine.ViewingDateActivity_"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.mine.MineSettingActivity_"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.mine.ViewingDateDetailActivity_"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.message.ConversationViewingDateActivity_"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+
+        <meta-data
+            android:name="ENV_DATA"
+            android:value="${ENV_VALUE}" />
+        <!--        <provider-->
+        <!--            android:name="androidx.core.content.FileProvider"-->
+        <!--            android:authorities="com.officego.FileProvider"-->
+        <!--            android:exported="false"-->
+        <!--            android:grantUriPermissions="true">-->
+        <!--            <meta-data-->
+        <!--                android:name="android.support.FILE_PROVIDER_PATHS"-->
+        <!--                android:resource="@xml/rc_file_path" />-->
+        <!--        </provider>-->
+
+        <!--        &lt;!&ndash;会话列表&ndash;&gt;-->
+        <!--        <activity-->
+        <!--            android:name=".ui.message.rongcloud.ConversationListActivity"-->
+        <!--            android:screenOrientation="portrait"-->
+        <!--            android:windowSoftInputMode="stateHidden|adjustResize">-->
+
+        <!--            <intent-filter>-->
+        <!--                <action android:name="android.intent.action.VIEW" />-->
+        <!--                <category android:name="android.intent.category.DEFAULT" />-->
+        <!--                <data-->
+        <!--                    android:host="com.officego"-->
+        <!--                    android:pathPrefix="/conversationlist"-->
+        <!--                    android:scheme="rong" />-->
+        <!--            </intent-filter>-->
+        <!--        </activity>-->
+
+        <!--会话界面-->
+        <activity
+            android:name=".ui.message.ConversationActivity_"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan">
+            <!--            android:windowSoftInputMode="stateHidden|adjustResize">-->
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data
+                    android:host="com.officego"
+                    android:pathPrefix="/conversation/"
+                    android:scheme="rong" />
+            </intent-filter>
+        </activity>
+        <activity
+            android:name=".h5.WebViewActivity_"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.home.BuildingDetailsJointWorkActivity_"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.home.BuildingDetailsJointWorkChildActivity_"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <!--微信分享-->
+        <activity
+            android:name=".wxapi.WXEntryActivity"
+            android:exported="true"
+            android:label="@string/app_name"
+            android:launchMode="singleTask"
+            android:theme="@android:style/Theme.Translucent">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="${WX_APP_ID}" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".h5.WebViewNoImgActivity_" />
+    </application>
+
+</manifest>

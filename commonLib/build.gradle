@@ -1,0 +1,106 @@
+apply plugin: 'com.android.library'
+
+android {
+    compileSdkVersion COMPILE_SDK_VERSION
+    buildToolsVersion BUILD_TOOLS_VERSION
+    useLibrary 'org.apache.http.legacy'
+
+    defaultConfig {
+        minSdkVersion MIN_SDK_VERSION
+        targetSdkVersion TARGET_SDK_VERSION
+        versionCode 1
+        versionName "1.0"
+
+        testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
+        consumerProguardFiles 'consumer-rules.pro'
+        javaCompileOptions {
+            annotationProcessorOptions {
+                includeCompileClasspath = true
+            }
+        }
+        multiDexEnabled true
+    }
+
+    sourceSets {
+        main {
+            jniLibs.srcDirs = ['libs']
+        }
+    }
+
+    buildTypes {
+        debug {
+            manifestPlaceholders = [
+                    GAO_MAP_KEY: "c80ca3ce3b15895e2f018f8f2cd99c84"]
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        release {
+            manifestPlaceholders = [
+                    GAO_MAP_KEY: "443a7ffc55db3d44dba621365618e3ee"]
+            minifyEnabled false
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+    }
+    compileOptions {
+        sourceCompatibility = 1.8
+        targetCompatibility = 1.8
+    }
+
+}
+
+dependencies {
+    api fileTree(dir: 'libs', include: ['*.jar'])
+    api fileTree(include: ['*.aar'], dir: 'libs')
+
+    api 'androidx.appcompat:appcompat:1.1.0'
+    testImplementation 'junit:junit:4.12'
+    androidTestImplementation 'androidx.test.ext:junit:1.1.1'
+    androidTestImplementation 'androidx.test.espresso:espresso-core:3.2.0'
+
+    //design
+    api 'com.google.android.material:material:1.1.0'
+    //recyclerView
+    api 'androidx.recyclerview:recyclerview:1.1.0'
+    //cardview
+    api 'androidx.cardview:cardview:1.0.0'
+
+    //注解
+    api "org.androidannotations:androidannotations-api:${AAVersion}"
+    annotationProcessor "org.androidannotations:androidannotations:${AAVersion}"
+    //根据window和mac选择版本
+    api 'androidx.multidex:multidex:2.0.0'
+    api 'com.googlecode.plist:dd-plist:1.20'
+    //glide
+    api 'com.github.bumptech.glide:glide:4.9.0'
+    annotationProcessor 'com.github.bumptech.glide:compiler:4.9.0'
+    //litePal数据库
+    api 'org.litepal.android:java:3.0.0'
+    //okHttp
+    api 'com.qianwen:update-app:3.5.2'
+    api 'com.qianwen:okhttp-utils:3.8.0'
+    //Gson
+    api 'com.google.code.gson:gson:2.8.5'
+    //圆形头像
+    api 'de.hdodenhof:circleimageview:2.1.0'
+    //下拉刷新
+    api 'cn.bingoogolapple:bga-refreshlayout:1.1.8@aar'
+    //Android 徽章控件
+    annotationProcessor "cn.bingoogolapple:bga-badgeview-compiler:1.1.8"
+    //retrofit
+    api 'com.squareup.okhttp3:okhttp:3.10.0'
+    api 'com.squareup.retrofit2:retrofit:2.4.0'
+    //美团多渠道打包
+    api 'com.meituan.android.walle:library:1.1.6'
+    //label
+    api "com.github.donkingliang:LabelsView:1.5.0"
+    //banner
+    api'com.youth.banner:banner:1.4.10'
+    // ijkPlayer
+    api 'tv.danmaku.ijk.media:ijkplayer-java:0.8.8'
+    // ExoPlayer as IMediaPlayer: optional, experimental
+    api 'tv.danmaku.ijk.media:ijkplayer-exo:0.8.8'
+    //rongcloud
+    api 'cn.rongcloud.sdk:im_lib:2.10.5'
+    api 'cn.rongcloud.sdk:im_kit:2.10.5'
+    //fastjson
+    api 'com.alibaba:fastjson:1.2.46'
+}

@@ -1,0 +1,93 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_root_house_title"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_86"
+    android:background="@color/transparent">
+
+    <LinearLayout
+        android:id="@+id/btn_back"
+        android:layout_width="@dimen/dp_80"
+        android:layout_height="match_parent"
+        android:gravity="center_vertical"
+        android:paddingStart="@dimen/dp_18"
+        tools:ignore="RtlSymmetry,UselessParent">
+
+        <ImageView
+            android:layout_width="@dimen/dp_18"
+            android:layout_height="@dimen/dp_24"
+            android:background="@mipmap/ic_back_white"
+            tools:ignore="ContentDescription" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/ll_title"
+        android:layout_width="wrap_content"
+        android:layout_height="match_parent"
+        android:layout_centerHorizontal="true"
+        android:gravity="center"
+        android:visibility="gone"
+        tools:ignore="RelativeOverlap">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_16" />
+    </LinearLayout>
+
+
+    <LinearLayout
+        android:id="@+id/btn_report"
+        android:layout_width="@dimen/dp_36"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/dp_88"
+        android:gravity="center"
+        android:visibility="gone"
+        tools:ignore="UselessParent">
+
+        <ImageView
+            android:layout_width="@dimen/dp_24"
+            android:layout_height="@dimen/dp_24"
+            android:background="@mipmap/ic_report_white"
+            tools:ignore="ContentDescription" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/btn_mes"
+        android:layout_width="@dimen/dp_32"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/dp_52"
+        android:gravity="center"
+        android:visibility="gone"
+        tools:ignore="UselessParent">
+
+        <ImageView
+            android:layout_width="@dimen/dp_24"
+            android:layout_height="@dimen/dp_24"
+            android:background="@mipmap/ic_mes_white"
+            tools:ignore="ContentDescription" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:id="@+id/btn_share"
+        android:layout_width="@dimen/dp_32"
+        android:layout_height="match_parent"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/dp_18"
+        android:gravity="center"
+        tools:ignore="UselessParent">
+
+        <ImageView
+            android:layout_width="@dimen/dp_24"
+            android:layout_height="@dimen/dp_24"
+            android:background="@mipmap/ic_share_white"
+            tools:ignore="ContentDescription" />
+    </LinearLayout>
+
+
+</RelativeLayout>

@@ -1,0 +1,97 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_open_work_model"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_open_work_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_20"
+        android:text="@string/str_open_office"
+        android:textColor="@color/text_33"
+        android:textSize="@dimen/sp_16" />
+
+    <com.officego.commonlib.view.RoundImageView
+        android:id="@+id/iv_open_work_img"
+        android:layout_width="@dimen/dp_86"
+        android:layout_height="@dimen/dp_66"
+        android:layout_below="@+id/tv_open_work_text"
+        android:layout_marginTop="@dimen/dp_12"
+        android:background="@color/transparent"
+        android:scaleType="fitXY"
+        tools:ignore="ContentDescription" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_66"
+        android:layout_below="@+id/tv_open_work_text"
+        android:layout_marginStart="@dimen/dp_14"
+        android:layout_marginTop="@dimen/dp_12"
+        android:layout_toEndOf="@id/iv_open_work_img">
+
+        <RelativeLayout
+            android:id="@+id/rl_open_work_model_num"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintRight_toLeftOf="@id/rl_open_work_model_price"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_open_work_model_num"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_33"
+                android:textSize="@dimen/sp_14" />
+
+            <TextView
+                android:id="@+id/tv_open_work_model_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_open_work_model_num"
+                android:layout_marginTop="@dimen/dp_10"
+                android:textColor="@color/text_99"
+                android:textSize="@dimen/sp_12" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_open_work_model_price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_open_work_model_price"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:textColor="@color/text_33"
+                android:textSize="@dimen/sp_14" />
+
+            <TextView
+                android:id="@+id/tv_min_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_open_work_model_price"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="@dimen/dp_10"
+                android:textColor="@color/text_99"
+                android:textSize="@dimen/sp_12" />
+        </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_1"
+        android:layout_below="@id/iv_open_work_img"
+        android:layout_marginTop="@dimen/dp_14"
+        android:background="@color/common_divider" />
+</RelativeLayout>

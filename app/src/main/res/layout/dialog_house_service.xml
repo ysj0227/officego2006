@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <TextView
+        android:id="@+id/tv_service_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dp_38"
+        android:text="基础服务"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_15" />
+
+    <View
+        android:id="@+id/v_line"
+        style="@style/marginLeftRight18"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_1"
+        android:layout_below="@id/tv_service_title"
+        android:layout_marginTop="@dimen/dp_15"
+        android:background="@color/common_divider" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        style="@style/marginLeftRight25"
+        android:id="@+id/rv_dialog_service"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_400"
+        android:layout_below="@id/v_line"
+        android:layout_marginTop="@dimen/dp_32" />
+
+    <ImageButton
+        android:id="@+id/ib_close"
+        android:layout_width="@dimen/dp_38"
+        android:layout_height="@dimen/dp_38"
+        android:background="@mipmap/ic_close"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dp_38"
+        android:layout_marginBottom="@dimen/dp_50"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_15" />
+
+</RelativeLayout>

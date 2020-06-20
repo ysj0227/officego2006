@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@mipmap/ic_app_bg">
+
+    <RelativeLayout
+        android:id="@+id/rl_back"
+        android:layout_width="@dimen/dp_56"
+        android:layout_height="@dimen/dp_28"
+        android:layout_marginTop="@dimen/dp_46"
+        android:paddingStart="@dimen/dp_18"
+        android:visibility="visible"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="@dimen/dp_24"
+            android:layout_height="@dimen/dp_24"
+            android:src="@mipmap/ic_back_dark_normal"
+            tools:ignore="ContentDescription" />
+    </RelativeLayout>
+
+    <ImageView
+        android:id="@+id/iv_logo"
+        android:layout_width="@dimen/dp_76"
+        android:layout_height="@dimen/dp_76"
+        android:layout_marginTop="@dimen/dp_110"
+        android:background="@mipmap/ic_app_logo"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RelativeLayout
+        android:id="@+id/rl_phone"
+        style="@style/marginLeftRight18"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_54"
+        android:layout_marginTop="@dimen/dp_46"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_logo">
+
+        <TextView
+            android:id="@+id/tv_region"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="+ 86"
+            android:textColor="@color/text_main"
+            android:textSize="@dimen/sp_16"
+            android:visibility="visible" />
+
+        <TextView
+            android:id="@+id/tv_line"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_toEndOf="@+id/tv_region"
+            android:text="|"
+            android:textColor="@color/text_main"
+            android:textSize="@dimen/sp_16"
+            android:visibility="visible" />
+
+        <com.officego.commonlib.view.ClearableEditText
+            android:id="@+id/et_mobile"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_54"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginRight="@dimen/dp_10"
+            android:layout_toEndOf="@+id/tv_line"
+            android:background="@color/transparent"
+            android:hint="请输入手机号码"
+            android:inputType="phone"
+            android:maxLength="11"
+            android:textColor="@color/text_main"
+            android:textColorHint="@color/text_hint"
+            android:textSize="@dimen/sp_16" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@color/edit_bottom_line" />
+    </RelativeLayout>
+
+
+    <RelativeLayout
+        android:id="@+id/rl_code"
+        style="@style/marginLeftRight18"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_54"
+        android:layout_marginTop="@dimen/dp_24"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rl_phone">
+
+        <com.officego.commonlib.view.ClearableEditText
+            android:id="@+id/et_code"
+            android:layout_width="@dimen/dp_200"
+            android:layout_height="@dimen/dp_54"
+            android:layout_marginLeft="@dimen/dp_10"
+            android:layout_marginRight="@dimen/dp_10"
+            android:background="@null"
+            android:hint="请输入手机验证码"
+            android:inputType="phone"
+            android:maxLength="6"
+            android:textColor="@color/text_main"
+            android:textColorHint="@color/text_hint"
+            android:textSize="@dimen/sp_16" />
+
+        <TextView
+            android:id="@+id/tv_get_code"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dp_20"
+            android:text="获取验证码"
+            android:textColor="@color/text_normal"
+            android:textSize="@dimen/sp_13" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"
+            android:layout_alignParentBottom="true"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@color/edit_bottom_line" />
+
+    </RelativeLayout>
+
+    <Button
+        android:id="@+id/btn_login"
+        style="@style/BtnBigOrange"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_50"
+        android:layout_marginTop="@dimen/dp_35"
+        android:text="@string/str_get_code"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rl_code" />
+
+    <Button
+        android:id="@+id/btn_login_no_password"
+        style="@style/BtnBigEdgeTransparent"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_50"
+        android:layout_marginTop="@dimen/dp_30"
+        android:text="@string/str_no_password_login"
+        android:textColor="@color/common_blue_main"
+        android:textSize="@dimen/sp_18"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_login" />
+
+    <TextView
+        android:id="@+id/tv_protocol"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_24"
+        android:textColor="@color/text_normal"
+        android:textSize="@dimen/sp_12"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/btn_login_no_password" />
+
+    <TextView
+        android:id="@+id/tv_wx_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_20"
+        android:drawableTop="@mipmap/ic_wx"
+        android:drawablePadding="@dimen/dp_12"
+        android:text="微信登录"
+        android:textColor="@color/common_grey_66"
+        android:textSize="@dimen/sp_13"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

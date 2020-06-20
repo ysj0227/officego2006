@@ -1,0 +1,2 @@
+include ':app', ':commonLib' , ':owner'
+rootProject.name='officego'

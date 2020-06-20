@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_independent_office_model"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_independent_office_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_20"
+        android:text="ss"
+        android:textColor="@color/text_33"
+        android:textSize="@dimen/sp_16" />
+
+    <RelativeLayout
+        android:id="@+id/rl_independent_office_set_area"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_44"
+        android:layout_below="@id/tv_independent_office_text"
+        android:layout_marginTop="@dimen/dp_12"
+        android:background="@drawable/button_corner5_edge_orange"
+        android:visibility="visible">
+
+        <RelativeLayout
+            android:layout_width="@dimen/dp_80"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true">
+
+            <TextView
+                android:id="@+id/tv_item_list_top"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="100-300㎡"
+                android:textColor="@color/common_blue_main"
+                android:textSize="@dimen/sp_13" />
+
+            <TextView
+                android:id="@+id/tv_item_list_bottom"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_item_list_top"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/dp_2"
+                android:text="300套"
+                android:textColor="@color/common_blue_main"
+                android:textSize="@dimen/sp_12" />
+        </RelativeLayout>
+
+        <ImageView
+            android:id="@+id/iv_clear_set_area"
+            android:layout_width="@dimen/dp_15"
+            android:layout_height="@dimen/dp_15"
+            android:layout_alignParentRight="true"
+            android:layout_centerVertical="true"
+            android:layout_marginRight="@dimen/dp_15"
+            android:background="@mipmap/ic_clear_small_blue" />
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_independent_office_all"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_independent_office_set_area"
+        android:layout_marginTop="@dimen/dp_12"
+        android:visibility="gone" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_independent_office_child"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rv_independent_office_all"
+        android:layout_marginTop="@dimen/dp_30" />
+
+    <Button
+        android:id="@+id/btn_query_more"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_38"
+        android:layout_below="@id/rv_independent_office_child"
+        android:layout_marginTop="@dimen/dp_25"
+        android:background="@drawable/button_corners_edge_white"
+        android:button="@null"
+        android:text="@string/str_llook_more"
+        android:textColor="@color/common_blue_main"
+        android:textSize="@dimen/sp_12" />
+</RelativeLayout>

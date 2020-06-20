@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.officego.commonlib.view.RoundImageView
+        android:id="@+id/iv_item_list_child"
+        android:layout_width="@dimen/dp_86"
+        android:layout_height="@dimen/dp_66"
+        android:layout_marginTop="@dimen/dp_13"
+        android:scaleType="centerCrop"
+        tools:ignore="ContentDescription" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ctl_item_child"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_66"
+        android:layout_marginStart="@dimen/dp_14"
+        android:layout_marginTop="@dimen/dp_13"
+        android:layout_toEndOf="@id/iv_item_list_child">
+
+        <RelativeLayout
+            android:id="@+id/rl_item_list_child_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintHorizontal_chainStyle="packed"
+            app:layout_constraintRight_toLeftOf="@id/rl_item_list_child_center"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_item_list_child_left_up"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:textColor="@color/text_33"
+                android:textSize="@dimen/sp_12" />
+
+            <TextView
+                android:id="@+id/tv_item_list_child_left_down"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_item_list_child_left_up"
+                android:layout_marginTop="@dimen/dp_10"
+                android:textColor="@color/text_99"
+                android:textSize="@dimen/sp_11" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_item_list_child_center"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/rl_item_list_child_left"
+            app:layout_constraintRight_toLeftOf="@id/rl_item_list_child_right"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:id="@+id/ll_item_list_child_center_up"
+                android:layout_width="@dimen/dp_80"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_item_list_child_center_up"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:textColor="@color/text_33"
+                    android:textSize="@dimen/sp_12" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_item_list_child_center_down"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ll_item_list_child_center_up"
+                android:layout_alignEnd="@id/ll_item_list_child_center_up"
+                android:layout_marginTop="@dimen/dp_10"
+                android:textColor="@color/text_99"
+                android:textSize="@dimen/sp_12" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_item_list_child_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <LinearLayout
+                android:id="@+id/ll_item_list_child_right_up"
+                android:layout_width="@dimen/dp_80"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/tv_item_list_child_right_up"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:gravity="right"
+                    android:textColor="@color/text_33"
+                    android:textSize="@dimen/sp_12" />
+            </LinearLayout>
+
+            <TextView
+                android:id="@+id/tv_item_list_child_right_down"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/ll_item_list_child_right_up"
+                android:layout_alignEnd="@id/ll_item_list_child_right_up"
+                android:layout_marginTop="@dimen/dp_10"
+                android:textColor="@color/text_99"
+                android:textSize="@dimen/sp_12" />
+        </RelativeLayout>
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_1"
+        android:layout_below="@id/iv_item_list_child"
+        android:layout_marginTop="@dimen/dp_14"
+        android:background="@color/common_divider" />
+</RelativeLayout>

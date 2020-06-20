@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="51.4dp"
+    android:layout_height="45dp"
+    android:orientation="vertical">
+
+    <View
+        android:id="@+id/today_background"
+        android:layout_width="33dp"
+        android:layout_height="33dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/oval_blue"
+        android:visibility="gone" />
+
+    <View
+        android:id="@+id/selected_background"
+        android:layout_width="33dp"
+        android:layout_height="33dp"
+        android:layout_centerInParent="true"
+        android:background="@drawable/oval_blue"
+        android:visibility="gone" />
+
+    <TextView
+        android:id="@+id/date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true" />
+
+    <ImageView
+        android:id="@+id/maker"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dp_6"
+        android:layout_marginBottom="@dimen/dp_6"
+        android:background="@drawable/view_syllabus_mark_background"
+        android:visibility="visible" />
+</RelativeLayout>
