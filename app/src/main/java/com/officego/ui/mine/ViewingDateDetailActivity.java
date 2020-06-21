@@ -59,6 +59,9 @@ public class ViewingDateDetailActivity extends BaseMvpActivity<ViewingDateDetail
         StatusBarUtils.setStatusBarFullTransparent(this);
         mPresenter = new ViewingDateDetailsPresenter();
         mPresenter.attachView(this);
+        if (getIntent().getExtras() != null) {//业主行程详情
+            scheduleId = getIntent().getExtras().getInt("scheduleId");
+        }
         mPresenter.getViewingDateDetails(scheduleId);
     }
 
@@ -107,7 +110,7 @@ public class ViewingDateDetailActivity extends BaseMvpActivity<ViewingDateDetail
         tvStatus.setText(strStatus);
         tvName.setText(data.getBuilding().getContact());
         tvPosition.setText(data.getBuilding().getCompany() + " · " + data.getBuilding().getJob());
-        tvTime.setText(DateTimeUtils.StampSecondToDate(String.valueOf(data.getBuilding().getTime()), "yyyy-MM-dd HH:mm"));
+        tvTime.setText(DateTimeUtils.StampToDate(String.valueOf(data.getBuilding().getTime()) + "000", "yyyy-MM-dd HH:mm"));
         tvAddress.setText(data.getBuilding().getAddress());
         Glide.with(context).load(data.getBuilding().getMainPic()).into(civAvatar);
         tvBuildingName.setText(String.format("约看：%s", data.getBuilding().getBuildingName()));

@@ -1009,7 +1009,7 @@ public class DateTimeUtils {
     }
 
     /**
-     * 秒转化日期
+     * 秒转化日期传入的毫秒
      *
      * @return
      */

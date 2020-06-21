@@ -103,4 +103,6 @@ dependencies {
     api 'cn.rongcloud.sdk:im_kit:2.10.5'
     //fastjson
     api 'com.alibaba:fastjson:1.2.46'
+//    日历周月切换
+    api 'com.github.MagicMashRoom:SuperCalendar:1.6'
 }

@@ -3,15 +3,17 @@ package com.owner.rpc;
 import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.VersionBean;
-import com.officego.commonlib.common.rpc.request.ScheduleInterface;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.owner.mine.model.AvatarBean;
 import com.owner.mine.model.UserOwnerBean;
 import com.owner.rpc.request.LoginInterface;
 import com.owner.rpc.request.MineMsgInterface;
+import com.owner.rpc.request.ScheduleInterface;
+import com.owner.schedule.model.ViewingDateBean;
 
 import java.io.File;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.MediaType;
@@ -145,21 +147,6 @@ public class OfficegoApi {
     }
 
     /**
-     * id 	是 	int 	行程id
-     * auditStatus 	是 	int 	审核状态0预约1预约成功(同意)2预约失败(拒绝)3已看房4未看房
-     */
-    public void updateAuditStatus(int id, int auditStatus,
-                                  RetrofitCallback<Object> callback) {
-        Map<String, RequestBody> map = new HashMap<>();
-        map.put("token", requestBody(SpUtils.getSignToken()));
-        map.put("id", requestBody(id + ""));
-        map.put("auditStatus", requestBody(auditStatus + ""));
-        OfficegoRetrofitClient.getInstance().create(ScheduleInterface.class)
-                .updateAuditStatus(map)
-                .enqueue(callback);
-    }
-
-    /**
      * 添加微信
      * wxId 	是 	String 	微信号
      * channel 	是 	int 	终端渠道,1:IOS,2:安卓,3:H5
@@ -174,6 +161,37 @@ public class OfficegoApi {
                 .bindWechat(map)
                 .enqueue(callback);
     }
+
+    /**
+     * 预约看房行程
+     * startTime 	是 	int 	开始时间
+     * endTime 	是 	int
+     */
+    public void getScheduleList(long startTime, long endTime, RetrofitCallback<List<ViewingDateBean.DataBean>> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("startTime", requestBody(startTime + ""));
+        map.put("endTime", requestBody(endTime + ""));
+        OfficegoRetrofitClient.getInstance().create(ScheduleInterface.class)
+                .getScheduleList(map)
+                .enqueue(callback);
+    }
+
+    /**
+     * 看房记录
+     * startTime 	是 	int 	开始时间
+     * endTime 	是 	int
+     */
+    public void getOldScheduleList(long startTime, long endTime, RetrofitCallback<List<ViewingDateBean.DataBean>> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("startTime", requestBody(startTime + ""));
+        map.put("endTime", requestBody(endTime + ""));
+        OfficegoRetrofitClient.getInstance().create(ScheduleInterface.class)
+                .getOldScheduleList(map)
+                .enqueue(callback);
+    }
+
 
     /**
      * 切换身份

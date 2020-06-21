@@ -34,12 +34,12 @@ public class OfficegoApi {
         return RequestBody.create(MediaType.parse("text/plain"), content);
     }
 
-//    /**
-//     * 版本更新
-//     *
-//     * @param versioncode
-//     * @param callback
-//     */
+    /**
+     * 版本更新
+     *
+     * @param versioncode
+     * @param callback
+     */
 //    public void updateVersion(String versioncode, RetrofitCallback<VersionBean> callback) {
 //        Map<String, RequestBody> map = new HashMap<>();
 //        map.put("token", requestBody(SpUtils.getSignToken()));
