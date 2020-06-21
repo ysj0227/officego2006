@@ -93,6 +93,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         if (getIntent().getExtras() != null) {
             isOwnerLogin = getIntent().getExtras().getBoolean("isOwnerLogin");
             isReOwnerLogin = getIntent().getExtras().getBoolean("isReOwnerLogin");
+            rlBack.setVisibility(isOwnerLogin ? View.GONE : View.VISIBLE);
         }
     }
 
@@ -266,7 +267,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
+//        super.onBackPressed();
         GotoActivityUtils.gotoHome(context);
     }
 }
