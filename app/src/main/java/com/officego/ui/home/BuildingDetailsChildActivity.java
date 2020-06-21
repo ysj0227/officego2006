@@ -185,13 +185,19 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
             tvIndependentOfficeNumText.setVisibility(View.GONE);
             //楼盘信息
             if (data.getHouse().getBasicInformation() != null) {
-                tvOfficePattern.setText(data.getHouse().getBasicInformation().getOfficePattern());
-                tvTotalFloor.setText(data.getHouse().getBasicInformation().getFloor() + "层");
-                tvEarliestDelivery.setText(data.getHouse().getBasicInformation().getEarliestDelivery());
-                tvRentFreePeriod.setText(data.getHouse().getBasicInformation().getRentFreePeriod());
-                tvMinimumLease.setText(data.getHouse().getBasicInformation().getMinimumLease() + "年起");
+                tvOfficePattern.setText(TextUtils.isEmpty(data.getHouse().getBasicInformation().getOfficePattern()) ?
+                        getResources().getString(R.string.str_text_line) : data.getHouse().getBasicInformation().getOfficePattern());
+                tvTotalFloor.setText(TextUtils.isEmpty(data.getHouse().getBasicInformation().getFloor()) ?
+                        getResources().getString(R.string.str_text_line) : data.getHouse().getBasicInformation().getFloor() + "层");
+                tvEarliestDelivery.setText(TextUtils.isEmpty(data.getHouse().getBasicInformation().getEarliestDelivery()) ?
+                        getResources().getString(R.string.str_text_line) : data.getHouse().getBasicInformation().getEarliestDelivery());
+                tvRentFreePeriod.setText(TextUtils.isEmpty(data.getHouse().getBasicInformation().getRentFreePeriod()) ?
+                        getResources().getString(R.string.str_text_line) : data.getHouse().getBasicInformation().getRentFreePeriod());
+                tvMinimumLease.setText(TextUtils.isEmpty(data.getHouse().getBasicInformation().getMinimumLease()) ?
+                        getResources().getString(R.string.str_text_line) : data.getHouse().getBasicInformation().getMinimumLease() + "年起");
                 Glide.with(context).load(data.getHouse().getBasicInformation().getUnitPatternImg()).into(ivPattern);
-                tvPatternDescription.setText(data.getHouse().getBasicInformation().getUnitPatternRemark());
+                tvPatternDescription.setText(TextUtils.isEmpty(data.getHouse().getBasicInformation().getUnitPatternRemark()) ?
+                        getResources().getString(R.string.str_text_line) : data.getHouse().getBasicInformation().getUnitPatternRemark());
             }
         }
         //交通

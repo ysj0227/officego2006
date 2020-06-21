@@ -826,17 +826,27 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         }
         //楼盘信息
         if (data.getIntroduction() != null) {
-            tvAirConditioning.setText("常规：" + data.getIntroduction().getAirConditioning());
-            tvCompletionTime.setText(data.getIntroduction().getCompletionTime() + "年");
-            tvTotalFloor.setText(data.getIntroduction().getTotalFloor() + "层");
-            tvStoreyHeight.setText(data.getIntroduction().getStoreyHeight() + "米");
+            tvAirConditioning.setText(TextUtils.isEmpty(data.getIntroduction().getAirConditioning()) ?
+                    getResources().getString(R.string.str_text_line) : "常规：" + data.getIntroduction().getAirConditioning());
+            tvCompletionTime.setText(TextUtils.isEmpty(data.getIntroduction().getCompletionTime()) ?
+                    getResources().getString(R.string.str_text_line) : data.getIntroduction().getCompletionTime() + "年");
+            tvTotalFloor.setText(TextUtils.isEmpty(data.getIntroduction().getTotalFloor()) ?
+                    getResources().getString(R.string.str_text_line) : data.getIntroduction().getTotalFloor() + "层");
+            tvStoreyHeight.setText(TextUtils.isEmpty(data.getIntroduction().getStoreyHeight()) ?
+                    getResources().getString(R.string.str_text_line) : data.getIntroduction().getStoreyHeight() + "米");
             tvLift.setText(data.getIntroduction().getPassengerLift() + "客梯" + data.getIntroduction().getCargoLift() + "货梯");
-            tvParkingSpace.setText(data.getIntroduction().getParkingSpace() + "个");
-            tvParkingSpaceRent.setText(data.getIntroduction().getParkingSpaceRent() + "元/月/位");
-            tvProperty.setText(data.getIntroduction().getProperty());
-            tvPropertyCosts.setText(data.getIntroduction().getPropertyCosts() + "元/㎡/月");
-            tvNet.setText(data.getIntroduction().getInternet());
-            tvPromoteSlogan.setText((String) data.getIntroduction().getPromoteSlogan());
+            tvParkingSpace.setText(TextUtils.isEmpty(data.getIntroduction().getParkingSpace()) ?
+                    getResources().getString(R.string.str_text_line) : data.getIntroduction().getParkingSpace() + "个");
+            tvParkingSpaceRent.setText(TextUtils.isEmpty(data.getIntroduction().getParkingSpaceRent()) ?
+                    getResources().getString(R.string.str_text_line) : data.getIntroduction().getParkingSpaceRent() + "元/月/位");
+            tvProperty.setText(TextUtils.isEmpty(data.getIntroduction().getProperty()) ?
+                    getResources().getString(R.string.str_text_line) : data.getIntroduction().getProperty());
+            tvPropertyCosts.setText(TextUtils.isEmpty(data.getIntroduction().getPropertyCosts()) ?
+                    getResources().getString(R.string.str_text_line) : data.getIntroduction().getPropertyCosts() + "元/㎡/月");
+            tvNet.setText(TextUtils.isEmpty(data.getIntroduction().getInternet()) ?
+                    getResources().getString(R.string.str_text_line) : data.getIntroduction().getInternet());
+            tvPromoteSlogan.setText(data.getIntroduction().getPromoteSlogan() == null ?
+                    getResources().getString(R.string.str_text_line) : (String) data.getIntroduction().getPromoteSlogan());
         }
         //特色
         if (data.getTags() != null && data.getTags().size() > 0) {
