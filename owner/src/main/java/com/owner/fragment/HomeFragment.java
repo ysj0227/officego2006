@@ -56,7 +56,6 @@ public class HomeFragment extends BaseFragment {
     void init() {
         StatusBarUtils.setStatusBarColor(mActivity);
         setWebChromeClient();
-       // titleBar.getAppTitle().setText(getString(R.string.str_title_help));
         loadWebView("https://www.baidu.com/");
     }
 

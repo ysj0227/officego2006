@@ -25,9 +25,10 @@
     <cn.bingoogolapple.refreshlayout.BGARefreshLayout
         android:id="@+id/bga_refresh"
         android:layout_width="0dp"
-        android:visibility="gone"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
         android:background="@color/c_white"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/ctl_search">

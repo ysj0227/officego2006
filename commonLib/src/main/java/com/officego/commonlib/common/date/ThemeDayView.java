@@ -1,4 +1,4 @@
-package com.officego.ui.date;
+package com.officego.commonlib.common.date;
 
 /**
  * Created by YangShiJie
@@ -14,7 +14,7 @@ import com.ldf.calendar.component.State;
 import com.ldf.calendar.interf.IDayRenderer;
 import com.ldf.calendar.model.CalendarDate;
 import com.ldf.calendar.view.DayView;
-import com.officego.R;
+import com.officego.commonlib.R;
 
 /**
  * Created by ldf on 17/6/27.

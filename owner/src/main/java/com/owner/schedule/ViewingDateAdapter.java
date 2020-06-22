@@ -1,4 +1,4 @@
-package com.officego.ui.adapter;
+package com.owner.schedule;
 
 import android.content.Context;
 import android.view.View;
@@ -8,12 +8,12 @@ import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
 
-import com.officego.R;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
 import com.officego.commonlib.utils.DateTimeUtils;
-import com.officego.ui.mine.ViewingDateDetailActivity_;
-import com.officego.ui.mine.model.ViewingDateBean;
+import com.owner.R;
+import com.owner.schedule.model.ViewingDateBean;
+import com.owner.utils.GotoActivityUtils;
 
 import java.util.List;
 
@@ -36,8 +36,8 @@ public class ViewingDateAdapter extends CommonListAdapter<ViewingDateBean.DataBe
     @Override
     public void convert(ViewHolder holder, final ViewingDateBean.DataBean.ScheduleListBean bean) {
 
-        holder.setText(R.id.tv_date, DateTimeUtils.StampToDate(String.valueOf(bean.getTime())+"000", "MM月dd日"));
-        holder.setText(R.id.tv_time, DateTimeUtils.StampToDate(String.valueOf(bean.getTime())+"000", "HH:mm"));
+        holder.setText(R.id.tv_date, DateTimeUtils.StampToDate(String.valueOf(bean.getTime()) + "000", "MM月dd日"));
+        holder.setText(R.id.tv_time, DateTimeUtils.StampToDate(String.valueOf(bean.getTime()) + "000", "HH:mm"));
         holder.setText(R.id.tv_name, bean.getContact());
         holder.setText(R.id.tv_position, bean.getJob());
         holder.setText(R.id.tv_building_name, "约看 「" + bean.getBuildingName() + "」");
@@ -68,8 +68,8 @@ public class ViewingDateAdapter extends CommonListAdapter<ViewingDateBean.DataBe
             strStatus = "未看房";
         }
         holder.setText(R.id.tv_status, strStatus);
-        holder.itemView.setOnClickListener(v -> ViewingDateDetailActivity_.intent(context).
-                scheduleId(bean.getScheduleId()).start());
+        holder.itemView.setOnClickListener(v ->
+                GotoActivityUtils.viewingDateDetailActivity(context, bean.getScheduleId()));
     }
 
     private void status(boolean isComplete, RelativeLayout rlDetails,

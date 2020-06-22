@@ -127,5 +127,5 @@ dependencies {
     annotationProcessor "org.androidannotations:androidannotations:${AAVersion}"
 
 //    日历周月切换
-    implementation 'com.github.MagicMashRoom:SuperCalendar:1.6'
+//    implementation 'com.github.MagicMashRoom:SuperCalendar:1.6'
 }
