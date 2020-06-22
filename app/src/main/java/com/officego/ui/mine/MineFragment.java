@@ -182,15 +182,17 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
     public void userInfoSuccess(UserBean data) {
         hasLoginView();
         //刷新融云头像用户信息
-        RongCloudSetUserInfoUtils.refreshUserInfoCache(SpUtils.getRongChatId(), data.getRealname(), data.getAvatar());
         mUserInfo = data;
-        SpUtils.saveWechat(mUserInfo.getWxId() == null || TextUtils.isEmpty((String) mUserInfo.getWxId()) ? "" : (String) mUserInfo.getWxId());
-        Glide.with(mActivity).load(data.getAvatar()).into(civAvatar);
-        tvName.setText(data.getRealname());
-        if (TextUtils.isEmpty((String) data.getCompany())) {
-            tvAccount.setText(TextUtils.isEmpty((String) data.getJob()) ? "" : (String) data.getJob());
-        } else {
-            tvAccount.setText(data.getCompany() + "·" + (TextUtils.isEmpty((String) data.getJob()) ? "" : (String) data.getJob()));
+        if (data != null) {
+            RongCloudSetUserInfoUtils.refreshUserInfoCache(RongCloudSetUserInfoUtils.getRongTenantId(data.getUserId()+""), data.getRealname(), data.getAvatar());
+            SpUtils.saveWechat(mUserInfo.getWxId() == null || TextUtils.isEmpty((String) mUserInfo.getWxId()) ? "" : (String) mUserInfo.getWxId());
+            Glide.with(mActivity).load(data.getAvatar()).into(civAvatar);
+            tvName.setText(data.getRealname());
+            if (TextUtils.isEmpty((String) data.getCompany())) {
+                tvAccount.setText(TextUtils.isEmpty((String) data.getJob()) ? "" : (String) data.getJob());
+            } else {
+                tvAccount.setText(data.getCompany() + "·" + (TextUtils.isEmpty((String) data.getJob()) ? "" : (String) data.getJob()));
+            }
         }
     }
 

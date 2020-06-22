@@ -29,6 +29,7 @@ import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.view.TitleBarView;
 import com.officego.commonlib.view.webview.SMWebChromeClient;
 import com.officego.commonlib.view.webview.SMWebViewClient;
 import com.owner.R;
@@ -48,6 +49,8 @@ import org.json.JSONObject;
 @SuppressLint("Registered")
 @EActivity(resName = "activity_owner_idify_webview")
 public class WebViewIdifyActivity extends BaseActivity {
+    @ViewById(resName = "title_bar")
+    TitleBarView titleBar;
     @ViewById(resName = "wv_view")
     WebView webView;
     @ViewById(resName = "rl_exception")
@@ -163,6 +166,7 @@ public class WebViewIdifyActivity extends BaseActivity {
      * @param view
      */
     private void receiverExceptionError(WebView view) {
+        titleBar.setVisibility(View.VISIBLE);
         webView.setVisibility(View.GONE);
         rlException.setVisibility(View.VISIBLE);
         btnAgain.setOnClickListener(v -> {
@@ -170,6 +174,7 @@ public class WebViewIdifyActivity extends BaseActivity {
                 shortTip(getString(R.string.str_check_net));
                 return;
             }
+            titleBar.setVisibility(View.GONE);
             webView.setVisibility(View.VISIBLE);
             rlException.setVisibility(View.GONE);
             view.clearCache(true);
@@ -237,6 +242,7 @@ public class WebViewIdifyActivity extends BaseActivity {
             receiverExceptionError(view);
         }
     }
+
     //js传递给Android
     private class JsInterface {
         private Context mContext;

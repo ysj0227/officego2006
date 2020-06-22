@@ -3,13 +3,13 @@ package com.officego.ui.login.presenter;
 import android.content.Context;
 
 import com.officego.commonlib.base.BasePresenter;
+import com.officego.commonlib.common.LoginBean;
+import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.rongcloud.ConnectRongCloudUtils;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.log.LogCat;
 import com.officego.rpc.OfficegoApi;
 import com.officego.ui.login.contract.LoginContract;
-import com.officego.commonlib.common.LoginBean;
-import com.officego.commonlib.common.SpUtils;
-import com.officego.commonlib.common.rongcloud.ConnectRongCloudUtils;
 
 /**
  * Created by YangShiJie
@@ -57,9 +57,9 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
             public void onSuccess(int code, String msg, LoginBean data) {
                 if (isViewAttached()) {
                     SpUtils.saveLoginInfo(data, mobile);
+                    new ConnectRongCloudUtils();
                     mView.hideLoadingDialog();
                     mView.loginSuccess();
-                    new ConnectRongCloudUtils();
                 }
             }
 
@@ -86,8 +86,8 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
                 LogCat.e(TAG, "loginOnlyPhone onSuccess =" + data);
                 if (isViewAttached()) {
                     SpUtils.saveLoginInfo(data, mobile);
-                    mView.loginSuccess();
                     new ConnectRongCloudUtils();
+                    mView.loginSuccess();
                 }
             }
 

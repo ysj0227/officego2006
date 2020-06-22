@@ -6,8 +6,7 @@ import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.officego.commonlib.constant.Constants;
-import com.officego.commonlib.utils.log.LogCat;
+import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.message.BuildingInfo;
 import com.officego.commonlib.common.message.BuildingProvider;
 import com.officego.commonlib.common.message.EcPhoneStatusInfo;
@@ -22,6 +21,8 @@ import com.officego.commonlib.common.message.ViewingDateStatusInfo;
 import com.officego.commonlib.common.message.ViewingDateStatusProvider;
 import com.officego.commonlib.common.message.WeChatInfo;
 import com.officego.commonlib.common.message.WeChatProvider;
+import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.utils.log.LogCat;
 
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
@@ -258,14 +259,14 @@ public class IMManager {
         RongIM.setConnectionStatusListener(new RongIMClient.ConnectionStatusListener() {
             @Override
             public void onChanged(ConnectionStatus connectionStatus) {
-                LogCat.e(TAG, "ConnectionStatus onChanged = " + connectionStatus.getMessage());
+                LogCat.e(TAG, "ConnectionStatus onChanged = " + connectionStatus.getMessage() + " rcToken=" + SpUtils.getRongToken());
                 if (connectionStatus.equals(ConnectionStatus.KICKED_OFFLINE_BY_OTHER_CLIENT)) {
                     //被其他提出时，需要返回登录界面 剔除其他登录
                     toast(context);
-                   // LoginActivity_.intent(context).start();
+                    // LoginActivity_.intent(context).start();
                 } else if (connectionStatus == ConnectionStatus.TOKEN_INCORRECT) {
                     //token 错误时，重新登录
-                    Toast.makeText(context, "token 错误", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "rong cloud token 错误", Toast.LENGTH_SHORT).show();
                     //LoginActivity_.intent(context).start();
                 }
             }

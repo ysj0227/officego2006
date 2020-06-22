@@ -180,7 +180,7 @@
         android:text="微信登录"
         android:textColor="@color/common_grey_66"
         android:textSize="@dimen/sp_13"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />

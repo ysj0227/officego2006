@@ -25,7 +25,6 @@ public class AppConfig extends BaseConfig {
         APP_URL = "http://admin.officego.com.cn/";
         H5_ABOUT_US = "http://test.officego.com.cn/lessee/aboutUs.html";
         H5_HELP_FEEDBACK = "http://test.officego.com.cn/lessee/opinion.html";
-//        H5_HELP_FEEDBACK = "http://test.officego.com.cn/owner/opinion.html";
         H5_PRIVACY = "http://test.officego.com.cn/lessee/privacy.html";
         H5_REGISTER = "http://test.officego.com.cn/lessee/registerProtocol.html";
         H5_QA = "http://test.officego.com.cn/lessee/issueList.html";

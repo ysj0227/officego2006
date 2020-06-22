@@ -147,6 +147,6 @@
     <string name="tip_no_more_data">没有更多数据了</string>
     <string name="str_query_more_data">查看更多</string>
     <string name="str_switch_tenant">切换为租户</string>
-    <string name="are_you_sure_switch_tenant">确定切换为租户吗?</string>
+    <string name="are_you_sure_switch_tenant">是否确认切换为租户?</string>
 
 </resources>
