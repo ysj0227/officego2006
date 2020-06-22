@@ -1,5 +1,6 @@
 package com.officego.ui.home;
 
+import android.annotation.SuppressLint;
 import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.util.SparseBooleanArray;
@@ -111,6 +112,9 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
             area = "", dayPrice = "", seats = "", decoration = "", houseTags = "", sort = "0";
     private int currentScrollPosition;
 
+    private float alphaPercent;//渐变色百分比
+
+    @SuppressLint("NewApi")
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarFullTransparent(mActivity);
@@ -119,6 +123,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rvHouse.setLayoutManager(layoutManager);
         appBarLayout.addOnOffsetChangedListener(appBarStateChangeListener);
+        alphaPercent = (float) 1 / CommonHelper.dp2px(mActivity, 300);
         initBarLayoutBg();
         initRefresh();
         if (!NetworkUtils.isNetworkAvailable(mActivity)) {
@@ -325,6 +330,12 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
                 vBackgroundBlue.setVisibility(View.GONE);
                 refreshLayout.setPullDownRefreshEnable(false);
             }
+        }
+
+        @Override
+        public void onStateAbs(int abs) {
+            LogCat.e("TAG", "1111 " + alphaPercent + " abs=" + abs);
+            banner.setAlpha(1 - abs * alphaPercent);
         }
     };
 
