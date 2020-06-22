@@ -13,13 +13,13 @@ import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.view.LabelsView;
+import com.officego.commonlib.view.RoundImageView;
 import com.officego.model.LabelBean;
 import com.officego.ui.home.BuildingDetailsActivity_;
 import com.officego.ui.home.BuildingDetailsJointWorkActivity_;
 import com.officego.ui.home.model.BuildingBean;
 import com.officego.ui.home.model.ConditionBean;
 import com.officego.ui.home.utils.BundleUtils;
-import com.officego.commonlib.view.RoundImageView;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -58,10 +58,10 @@ public class HouseAdapter extends CommonListAdapter<BuildingBean.ListBean> {
         TextView unit = holder.getView(R.id.tv_unit);
         //1:楼盘 写字楼,2:网点 联合办公
         if (bean.getBtype() == 1) {
-            price.setText("￥" + bean.getMinDayPrice());
+            price.setText("¥" + bean.getMinDayPrice());
             unit.setText("/m²/天起");
         } else if (bean.getBtype() == 2) {
-            price.setText("￥" + bean.getSeatMonthPrice());
+            price.setText("¥" + bean.getSeatMonthPrice());
             unit.setText("/位/月");
         }
         addLabel(holder, bean);

@@ -21,10 +21,10 @@ import androidx.annotation.NonNull;
 
 import com.officego.R;
 import com.officego.commonlib.base.BaseActivity;
+import com.officego.commonlib.constant.AppConfig;
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.constant.AppConfig;
-import com.officego.config.Constants;
 import com.officego.commonlib.view.TitleBarView;
 import com.officego.view.webview.SMWebChromeClient;
 import com.officego.view.webview.SMWebViewClient;
@@ -113,6 +113,7 @@ public class WebViewActivity extends BaseActivity {
         webSetting.setAllowFileAccess(true);// 设置允许访问文件数据
         webSetting.setLoadWithOverviewMode(true);
         webSetting.setBlockNetworkImage(false);//解决图片不显示
+        webSetting.setAllowFileAccessFromFileURLs(true);
 //        webView.addJavascriptInterface(new JsInterface(this), "android");
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
 //        webView.setWebChromeClient(new WebChromeClient());//
@@ -150,6 +151,7 @@ public class WebViewActivity extends BaseActivity {
             }
         });
     }
+
     //上传图片
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

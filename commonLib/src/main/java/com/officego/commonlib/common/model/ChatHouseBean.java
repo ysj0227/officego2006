@@ -37,8 +37,8 @@ public class ChatHouseBean {
     private String createUser;
     @SerializedName("user")
     private UserBean user;
-    @SerializedName("house")
-    private HouseBean house;
+    @SerializedName("building")
+    private BuildingBean building;
     @SerializedName("IsFavorite")
     private boolean IsFavorite;
 
@@ -98,12 +98,12 @@ public class ChatHouseBean {
         this.user = user;
     }
 
-    public HouseBean getHouse() {
-        return house;
+    public BuildingBean getBuilding() {
+        return building;
     }
 
-    public void setHouse(HouseBean house) {
-        this.house = house;
+    public void setBuilding(BuildingBean building) {
+        this.building = building;
     }
 
     public boolean isIsFavorite() {
@@ -126,8 +126,6 @@ public class ChatHouseBean {
          * job : 技术
          */
 
-        @SerializedName("accountStatus")
-        private boolean accountStatus;
         @SerializedName("targetId")
         private String targetId;
         @SerializedName("IsZD")
@@ -142,14 +140,6 @@ public class ChatHouseBean {
         private String avatar;
         @SerializedName("job")
         private String job;
-
-        public boolean isAccountStatus() {
-            return accountStatus;
-        }
-
-        public void setAccountStatus(boolean accountStatus) {
-            this.accountStatus = accountStatus;
-        }
 
         public String getTargetId() {
             return targetId;
@@ -258,7 +248,7 @@ public class ChatHouseBean {
         }
     }
 
-    public static class HouseBean {
+    public static class BuildingBean {
         /**
          * houseId : 224
          * address : 杨浦区上海浦东国际机场
@@ -279,21 +269,17 @@ public class ChatHouseBean {
          */
 
         @SerializedName("houseId")
-        private int houseId;
+        private Object houseId;
         @SerializedName("address")
         private String address;
         @SerializedName("btype")
         private int btype;
         @SerializedName("latitude")
         private String latitude;
-        @SerializedName("dictCname")
-        private String dictCname;
         @SerializedName("buildingId")
         private int buildingId;
         @SerializedName("buildingName")
         private String buildingName;
-        @SerializedName("houseName")
-        private String houseName;
         @SerializedName("mainPic")
         private String mainPic;
         @SerializedName("minSinglePrice")
@@ -302,12 +288,8 @@ public class ChatHouseBean {
         private Object maxArea;
         @SerializedName("district")
         private String district;
-        @SerializedName("officeType")
-        private int officeType;
         @SerializedName("longitude")
         private String longitude;
-        @SerializedName("distance")
-        private String distance;
         @SerializedName("stationNames")
         private List<String> stationNames;
         @SerializedName("stationline")
@@ -327,22 +309,14 @@ public class ChatHouseBean {
             this.tags = tags;
         }
 
-        public String getDistance() {
-            return distance;
-        }
-
-        public void setDistance(String distance) {
-            this.distance = distance;
-        }
-
-        public String getHouseName() {
-            return houseName;
-        }
-
-        public void setHouseName(String houseName) {
-            this.houseName = houseName;
-        }
-
+        //        public String getDistance() {
+//            return distance;
+//        }
+//
+//        public void setDistance(String distance) {
+//            this.distance = distance;
+//        }
+//
         public String getMainPic() {
             return mainPic;
         }
@@ -351,11 +325,11 @@ public class ChatHouseBean {
             this.mainPic = mainPic;
         }
 
-        public int getHouseId() {
+        public Object getHouseId() {
             return houseId;
         }
 
-        public void setHouseId(int houseId) {
+        public void setHouseId(Object houseId) {
             this.houseId = houseId;
         }
 
@@ -381,14 +355,6 @@ public class ChatHouseBean {
 
         public void setLatitude(String latitude) {
             this.latitude = latitude;
-        }
-
-        public String getDictCname() {
-            return dictCname;
-        }
-
-        public void setDictCname(String dictCname) {
-            this.dictCname = dictCname;
         }
 
         public int getBuildingId() {
@@ -429,14 +395,6 @@ public class ChatHouseBean {
 
         public void setDistrict(String district) {
             this.district = district;
-        }
-
-        public int getOfficeType() {
-            return officeType;
-        }
-
-        public void setOfficeType(int officeType) {
-            this.officeType = officeType;
         }
 
         public String getLongitude() {

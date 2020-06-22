@@ -4,6 +4,7 @@ import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.VersionBean;
 import com.officego.commonlib.retrofit.RetrofitCallback;
+import com.officego.commonlib.utils.log.LogCat;
 import com.owner.mine.model.AvatarBean;
 import com.owner.mine.model.UserOwnerBean;
 import com.owner.rpc.request.LoginInterface;
@@ -202,6 +203,7 @@ public class OfficegoApi {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("roleType", requestBody(roleType));
+        LogCat.e(TAG, "1111  chat/regTokenApp  token=" + SpUtils.getSignToken() + " roleType=" + roleType);
         OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
                 .switchId(map)
                 .enqueue(callback);

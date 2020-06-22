@@ -7,8 +7,6 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
-
 import com.bumptech.glide.Glide;
 import com.officego.commonlib.base.BaseMvpFragment;
 import com.officego.commonlib.common.SpUtils;
@@ -20,15 +18,16 @@ import com.officego.commonlib.view.CircleImage;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
 import com.owner.h5.WebViewActivity_;
+import com.owner.h5.WebViewIdifyActivity_;
 import com.owner.mine.contract.UserContract;
 import com.owner.mine.model.UserOwnerBean;
 import com.owner.mine.presenter.UserPresenter;
-import com.owner.utils.GotoActivityUtils;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.OnActivityResult;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import static android.app.Activity.RESULT_OK;
@@ -52,8 +51,8 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
     TextView tvAccount;
     @ViewById(resName = "tv_idify")
     TextView tvIdify;
-    @ViewById(resName = "btn_login")
-    Button btnLogin;
+    @ViewById(resName = "btn_identity")
+    Button btnIdentity;
 
     private UserOwnerBean mUserInfo;
 
@@ -63,13 +62,6 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         mPresenter = new UserPresenter();
         mPresenter.attachView(this);
         mPresenter.getUserInfo();
-        //当前未登录状态
-        if (TextUtils.isEmpty(SpUtils.getSignToken())) {
-            noLoginView();
-        } else {
-            hasLoginView();
-            mPresenter.getUserInfo();
-        }
     }
 
     @Click(resName = "iv_setting")
@@ -83,23 +75,16 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
     @OnActivityResult(REQUEST_CODE_LOGOUT)
     void onLogoutResult(int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-            noLoginView();
+            //noIdentityView();
         }
     }
 
-    @Click(resName = "btn_login")
+    @Click(resName = "btn_identity")
     void loginClick() {
         if (isFastClick(1500)) {
             return;
         }
-        GotoActivityUtils.loginActivity(mActivity, REQUEST_CODE_LOGIN);
-    }
-
-    @OnActivityResult(REQUEST_CODE_LOGIN)
-    void onLoginResult(int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            mPresenter.getUserInfo();
-        }
+        WebViewIdifyActivity_.intent(mActivity).start();
     }
 
     @Click(resName = "civ_avatar")
@@ -108,8 +93,8 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
             mPresenter.getUserInfo();
             return;
         }
-        if (mUserInfo.getAuditStatus() != 1) {
-            shortTip("信息未认证，请您先认证信息");
+        if (isIdentity()) {
+            unIdifyDialog(mUserInfo);
             return;
         }
         MineMessageActivity_.intent(mActivity).mUserInfo(mUserInfo).startForResult(REQUEST_CODE);
@@ -121,8 +106,8 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
             mPresenter.getUserInfo();
             return;
         }
-        if (mUserInfo.getAuditStatus() != 0 && mUserInfo.getAuditStatus() != 1) {
-            shortTip("信息未认证，请您先认证信息");
+        if (isIdentity()) {
+            unIdifyDialog(mUserInfo);
             return;
         }
         MineMessageActivity_.intent(mActivity).mUserInfo(mUserInfo).startForResult(REQUEST_CODE);
@@ -171,24 +156,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
     }
 
     @Override
-    public int[] getStickNotificationId() {
-        return new int[]{CommonNotifications.updateUserOwnerInfoSuccess};
-    }
-
-    @Override
-    public void didReceivedNotification(int id, Object... args) {
-        super.didReceivedNotification(id, args);
-        if (args == null) {
-            return;
-        }
-        if (id == CommonNotifications.updateUserOwnerInfoSuccess) {
-            mPresenter.getUserInfo();
-        }
-    }
-
-    @Override
     public void userInfoSuccess(UserOwnerBean data) {
-        hasLoginView();
         if (data != null) {
             //刷新融云头像用户信息
             RongCloudSetUserInfoUtils.refreshUserInfoCache(SpUtils.getRongChatId(), data.getRealname(), data.getAvatar());
@@ -201,19 +169,36 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
             } else {
                 tvAccount.setText(data.getProprietorCompany() + "·" + (TextUtils.isEmpty(data.getProprietorJob()) ? "" : data.getProprietorJob()));
             }
-            unIdifyDialog(data);
+            if (isIdentity()) {
+                noIdentityView();
+                unIdifyDialog(data);
+            } else {
+                hasIdentityView();
+            }
         }
+    }
+
+    // 0待审核1审核通过2审核未通过
+    private boolean isIdentity() {
+        if (mUserInfo != null) {
+            return mUserInfo.getAuditStatus() != 0 && mUserInfo.getAuditStatus() != 1;
+        }
+        return false;
     }
 
     private CommonDialog dialog;
 
+    // 0待审核1审核通过2审核未通过
     private void unIdifyDialog(UserOwnerBean data) {
-        // 0待审核1审核通过2审核未通过
-        if (dialog == null && data.getAuditStatus() != 0 && data.getAuditStatus() != 1) {
+        if (dialog != null && !dialog.isShowing()) {
+            dialog = null;
+        }
+        if (dialog == null) {
             dialog = new CommonDialog.Builder(mActivity)
                     .setTitle(idify(data) + "\n请您先认证信息")
                     .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
                         shortTip("跳转H5认证");
+                        WebViewIdifyActivity_.intent(mActivity).start();
                         dialog.dismiss();
                         dialog = null;
                     }).create();
@@ -247,16 +232,34 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
 
     }
 
-    private void noLoginView() {
-        tvName.setText("未登录");
-        tvAccount.setText("登录开启所有精彩");
-        btnLogin.setVisibility(View.VISIBLE);
-        Glide.with(mActivity).load("").error(ContextCompat.getDrawable(mActivity, R.mipmap.default_avatar)).into(civAvatar);
+    @UiThread
+    void noIdentityView() {
+        btnIdentity.setVisibility(View.VISIBLE);
     }
 
-    private void hasLoginView() {
-        tvName.setText("");
-        tvAccount.setText("");
-        btnLogin.setVisibility(View.GONE);
+    @UiThread
+    void hasIdentityView() {
+        btnIdentity.setVisibility(View.GONE);
     }
+
+    @Override
+    public int[] getStickNotificationId() {
+        return new int[]{CommonNotifications.updateUserOwnerInfoSuccess,
+                CommonNotifications.ownerIdentityComplete,};
+    }
+
+    @Override
+    public void didReceivedNotification(int id, Object... args) {
+        super.didReceivedNotification(id, args);
+        if (args == null) {
+            return;
+        }
+        if (id == CommonNotifications.updateUserOwnerInfoSuccess) {
+            mPresenter.getUserInfo();
+        } else if (id == CommonNotifications.ownerIdentityComplete) {
+            //认证完成 TODO
+            noIdentityView();
+        }
+    }
+
 }

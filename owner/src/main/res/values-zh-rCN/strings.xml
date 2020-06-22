@@ -37,7 +37,7 @@
     <string name="str_open_office">开放工位</string>
     <string name="str_collect">收藏</string>
     <string name="str_collected">已收藏</string>
-    <string name="str_find_house_owner">找业主</string>
+    <string name="str_find_house_owner">找业主聊</string>
     <string name="str_goto_top">回顶</string>
     <string name="str_office_building">写字楼/网点</string>
     <string name="str_work_office">办公室</string>
@@ -105,7 +105,6 @@
     <string name="str_title_about_us">关于我们</string>
     <string name="str_text_right_now_look">立即查看</string>
     <string name="str_skip">跳过</string>
-    <string name="str_click_login_agree_service"><![CDATA[点击登录代表您已阅读并同意<font color=\'#46C3C2\'>服务条款</font>]]></string>
     <string name="str_text_area"><![CDATA[面积<font color=\'#999999\'>&#160;㎡</font>]]></string>
     <string name="str_text_rent"><![CDATA[租金<font color=\'#999999\'>&#160;元/㎡/天</font>]]></string>
     <string name="str_text_workstation"><![CDATA[工位<font color=\'#999999\'>&#160;个</font>]]></string>
@@ -145,5 +144,7 @@
     <string name="tip_go_to_login">请先登录</string>
     <string name="tip_no_more_data">没有更多数据了</string>
     <string name="str_query_more_data">查看更多</string>
+    <string name="str_switch_tenant">切换为租户</string>
+    <string name="are_you_sure_switch_tenant">确定切换为租户吗?</string>
 
 </resources>

@@ -5,7 +5,6 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.WebChromeClient;
@@ -52,7 +51,7 @@ public class WebViewActivity extends BaseActivity {
     Button btnAgain;
     @Extra
     int flags;
-
+    private String webViewUrl;
     private SMWebChromeClient webChrome;
 
     @AfterViews
@@ -69,6 +68,10 @@ public class WebViewActivity extends BaseActivity {
             titleBar.getAppTitle().setText(getString(R.string.str_title_about_us));
             loadWebView(AppConfig.H5_ABOUT_US);
         }
+//        else if (flags == Constants.H5_OWNER_IDIFY) {
+//            loadWebView(AppConfig.H5_OWNER_idify);//认证
+//            titleBar.setVisibility(View.GONE);
+//        }
     }
 
     /**
@@ -129,17 +132,16 @@ public class WebViewActivity extends BaseActivity {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
+                webViewUrl = url;
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                Log.d(TAG, "webview onPageFinished url=" + url);
             }
 
             @Override
             protected void receiverError(WebView view, WebResourceRequest request, WebResourceError error) {
-                Log.d(TAG, "webview receiverError");
                 exceptionPageError(view, request);
             }
 
@@ -150,6 +152,7 @@ public class WebViewActivity extends BaseActivity {
             }
         });
     }
+
     //上传图片
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -185,20 +188,17 @@ public class WebViewActivity extends BaseActivity {
             rlException.setVisibility(View.GONE);
             view.clearCache(true);
             view.clearHistory();
-            if (flags == Constants.H5_HELP) {
-                webView.loadUrl(AppConfig.H5_HELP_FEEDBACK);
-            } else if (flags == Constants.H5_PROTOCOL) {
-                webView.loadUrl(AppConfig.H5_PRIVACY);
-            } else if (flags == Constants.H5_ABOUTS) {
-                webView.loadUrl(AppConfig.H5_ABOUT_US);
+            if (TextUtils.isEmpty(webViewUrl)) {
+                if (flags == Constants.H5_HELP) {
+                    webView.loadUrl(AppConfig.H5_HELP_FEEDBACK);
+                } else if (flags == Constants.H5_PROTOCOL) {
+                    webView.loadUrl(AppConfig.H5_PRIVACY);
+                } else if (flags == Constants.H5_ABOUTS) {
+                    webView.loadUrl(AppConfig.H5_ABOUT_US);
+                }
+            } else {
+                webView.loadUrl(webViewUrl);
             }
-//            webView.loadUrl(AppConfig.H5_MINE_CENTER_URL);
-//            if (TextUtils.isEmpty(webViewUrl)) {
-////                loadWebView(AppConfig.H5_MINE_CENTER_URL);
-//                webView.loadUrl(AppConfig.H5_MINE_CENTER_URL);
-//            } else {
-//                webView.loadUrl(webViewUrl);
-//            }
         });
     }
 

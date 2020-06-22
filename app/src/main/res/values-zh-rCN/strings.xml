@@ -37,7 +37,7 @@
     <string name="str_open_office">开放工位</string>
     <string name="str_collect">收藏</string>
     <string name="str_collected">已收藏</string>
-    <string name="str_find_house_owner">找业主</string>
+    <string name="str_find_house_owner">找业主聊</string>
     <string name="str_goto_top">回顶</string>
     <string name="str_office_building">写字楼/网点</string>
     <string name="str_work_office">办公室</string>
@@ -66,6 +66,8 @@
     <string name="str_no_sd">设备没有SD卡！</string>
     <string name="str_please_open_sd">请允许打操作SDCard！！</string>
     <string name="str_please_open_camera">请允许打开相机！！</string>
+    <string name="str_switch_owner">切换为业主</string>
+    <string name="are_you_sure_switch_owner">确定切换为业主吗?</string>
 
 
 </resources>

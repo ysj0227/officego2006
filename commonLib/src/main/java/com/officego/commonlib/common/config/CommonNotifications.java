@@ -20,7 +20,7 @@ public class CommonNotifications {
 
     //绑定微信
     public static final int conversationBindWeChat = totalEvents++;
-    //广播登录成功
-    public static final int broadcastLoginSuccess = totalEvents++;
+    //业主认证成功
+    public static final int ownerIdentityComplete = totalEvents++;
 
 }

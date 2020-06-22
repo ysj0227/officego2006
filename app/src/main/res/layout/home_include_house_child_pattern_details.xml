@@ -11,7 +11,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_14"
-        android:text="户型格局简介"
+        android:text="户型介绍"
         android:textColor="@color/text_33"
         android:textSize="@dimen/sp_16"
         app:layout_constraintStart_toStartOf="parent"

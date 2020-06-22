@@ -8,8 +8,8 @@ import android.content.pm.PackageManager;
 
 import com.officego.R;
 import com.officego.application.MyApplication;
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.ToastUtils;
-import com.officego.config.Constants;
 import com.officego.model.ShareBean;
 import com.officego.wxapi.WXEntryActivity;
 

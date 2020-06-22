@@ -1,12 +1,15 @@
 package com.owner.h5;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.webkit.CookieManager;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -16,53 +19,50 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
+import androidx.annotation.NonNull;
+
 import com.officego.commonlib.base.BaseActivity;
+import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.constant.AppConfig;
-import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.notification.BaseNotification;
+import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.view.TitleBarView;
+import com.officego.commonlib.view.webview.SMWebChromeClient;
 import com.officego.commonlib.view.webview.SMWebViewClient;
 import com.owner.R;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by YangShiJie
  * Data 2020/5/26.
  * Descriptions:WebView
+ * 业主身份认证
  **/
 @SuppressLint("Registered")
-@EActivity(resName = "activity_owner_webview")
-public class WebViewNoImgActivity extends BaseActivity {
+@EActivity(resName = "activity_owner_idify_webview")
+public class WebViewIdifyActivity extends BaseActivity {
     @ViewById(resName = "wv_view")
     WebView webView;
-    @ViewById(resName = "title_bar")
-    TitleBarView titleBar;
     @ViewById(resName = "rl_exception")
     RelativeLayout rlException;
     @ViewById(resName = "btn_again")
     Button btnAgain;
-    @Extra
-    int flags;
+    private String webViewUrl;
+    private SMWebChromeClient webChrome;
 
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarColor(this);
+        webView.setPadding(0, CommonHelper.statusHeight(this), 0, 0);
         setWebChromeClient();
-        if (flags == Constants.H5_HELP) {
-            titleBar.getAppTitle().setText(getString(R.string.str_title_help));
-            loadWebView(AppConfig.H5_HELP_FEEDBACK);
-        } else if (flags == Constants.H5_PROTOCOL) {
-            titleBar.getAppTitle().setText(getString(R.string.str_title_protocol));
-            loadWebView(AppConfig.H5_PRIVACY);
-        } else if (flags == Constants.H5_ABOUTS) {
-            titleBar.getAppTitle().setText(getString(R.string.str_title_about_us));
-            loadWebView(AppConfig.H5_ABOUT_US);
-        }
+        loadWebView(AppConfig.H5_OWNER_idify);//认证
     }
 
     /**
@@ -73,11 +73,6 @@ public class WebViewNoImgActivity extends BaseActivity {
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
-                if (TextUtils.isEmpty(title) || title.contains("http")) {
-                    titleBar.getAppTitle().setText(R.string.app_name);
-                } else {
-                    titleBar.getAppTitle().setText(title);
-                }
                 exceptionPageReceivedTitle(view, title);
             }
         });
@@ -107,9 +102,11 @@ public class WebViewNoImgActivity extends BaseActivity {
         webSetting.setAllowFileAccess(true);// 设置允许访问文件数据
         webSetting.setLoadWithOverviewMode(true);
         webSetting.setBlockNetworkImage(false);//解决图片不显示
-//        webView.addJavascriptInterface(new JsInterface(this), "android");
+        webView.addJavascriptInterface(new JsInterface(this), "android");
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
 //        webView.setWebChromeClient(new WebChromeClient());//
+        webChrome = new SMWebChromeClient(this);
+        webView.setWebChromeClient(webChrome);
         webView.loadUrl(url);
         webView.setWebViewClient(new SMWebViewClient(this) {
             @Override
@@ -121,17 +118,16 @@ public class WebViewNoImgActivity extends BaseActivity {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
+                webViewUrl = url;
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                Log.d(TAG, "webview onPageFinished url=" + url);
             }
 
             @Override
             protected void receiverError(WebView view, WebResourceRequest request, WebResourceError error) {
-                Log.d(TAG, "webview receiverError");
                 exceptionPageError(view, request);
             }
 
@@ -143,6 +139,23 @@ public class WebViewNoImgActivity extends BaseActivity {
         });
     }
 
+    //上传图片
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (webChrome != null) {
+            webChrome.uploadImage(requestCode, resultCode, data);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (webChrome != null) {
+            webChrome.onPermissionResult(requestCode, grantResults);
+        }
+    }
 
     /**
      * 网络异常
@@ -161,20 +174,12 @@ public class WebViewNoImgActivity extends BaseActivity {
             rlException.setVisibility(View.GONE);
             view.clearCache(true);
             view.clearHistory();
-            if (flags == Constants.H5_HELP) {
-                webView.loadUrl(AppConfig.H5_HELP_FEEDBACK);
-            } else if (flags == Constants.H5_PROTOCOL) {
-                webView.loadUrl(AppConfig.H5_PRIVACY);
-            } else if (flags == Constants.H5_ABOUTS) {
-                webView.loadUrl(AppConfig.H5_ABOUT_US);
+            webView.loadUrl(AppConfig.H5_OWNER_idify);
+            if (TextUtils.isEmpty(webViewUrl)) {
+                webView.loadUrl(AppConfig.H5_OWNER_idify);
+            } else {
+                webView.loadUrl(webViewUrl);
             }
-//            webView.loadUrl(AppConfig.H5_MINE_CENTER_URL);
-//            if (TextUtils.isEmpty(webViewUrl)) {
-////                loadWebView(AppConfig.H5_MINE_CENTER_URL);
-//                webView.loadUrl(AppConfig.H5_MINE_CENTER_URL);
-//            } else {
-//                webView.loadUrl(webViewUrl);
-//            }
         });
     }
 
@@ -232,4 +237,41 @@ public class WebViewNoImgActivity extends BaseActivity {
             receiverExceptionError(view);
         }
     }
+    //js传递给Android
+    private class JsInterface {
+        private Context mContext;
+
+        public JsInterface(Context context) {
+            this.mContext = context;
+        }
+
+        @JavascriptInterface
+        public String setUserInfo() {
+            JSONObject object = new JSONObject();
+            try {
+                object.put("rongyuntoken", SpUtils.getRongToken());
+                object.put("token", SpUtils.getSignToken());
+                Log.d("TAG", "js to android setUserInfo=" + object.toString());
+                return object.toString();
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
+            return "";
+        }
+
+        @JavascriptInterface
+        public void closeView() {
+            Log.d("TAG", "js to android closeView");
+            finish();
+        }
+
+        @JavascriptInterface
+        public void identifyComplete() {
+            Log.d("TAG", "js to android identifyComplete");
+            //认证完成
+            BaseNotification.newInstance().postNotificationName(CommonNotifications.ownerIdentityComplete, "ownerIdentityComplete");
+            finish();
+        }
+    }
+
 }

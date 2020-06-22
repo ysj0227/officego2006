@@ -12,11 +12,6 @@ import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
-import com.officego.commonlib.utils.CommonHelper;
-import com.officego.commonlib.utils.DateTimeUtils;
-import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.ToastUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.common.contract.ConversationContract;
 import com.officego.commonlib.common.dialog.ConfirmDialog;
 import com.officego.commonlib.common.dialog.InputContactsDialog;
@@ -24,6 +19,11 @@ import com.officego.commonlib.common.message.BuildingInfo;
 import com.officego.commonlib.common.model.ChatHouseBean;
 import com.officego.commonlib.common.presenter.ConversationPresenter;
 import com.officego.commonlib.common.rongcloud.SendMessageManager;
+import com.officego.commonlib.utils.CommonHelper;
+import com.officego.commonlib.utils.DateTimeUtils;
+import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.utils.ToastUtils;
+import com.officego.commonlib.utils.log.LogCat;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -34,7 +34,6 @@ import java.util.Objects;
 
 import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationFragment;
-import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.UserInfo;
 
@@ -79,13 +78,14 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         LogCat.e("TAG", "11111 targetId: " + targetId + "getHouseChatId: " + getHouseChatId + "  title: " + targetTitle);
 
         FragmentManager fragmentManage = getSupportFragmentManager();
-        ConversationFragment fragement = (ConversationFragment) fragmentManage.findFragmentById(R.id.conversation);
+        ConversationFragment fragment = (ConversationFragment) fragmentManage.findFragmentById(R.id.conversation);
         Uri uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon()
                 .appendPath("conversation")
                 .appendPath(Conversation.ConversationType.PRIVATE.getName().toLowerCase())
                 .appendQueryParameter("targetId", targetId).build();
-
-        fragement.setUri(uri);
+        if (fragment != null) {
+            fragment.setUri(uri);
+        }
     }
 
     /**
@@ -96,8 +96,10 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
      * @param imgUrl
      */
     private void refreshUserInfoCache(String id, String name, String imgUrl) {
-        UserInfo userInfo = new UserInfo(id, name, Uri.parse(imgUrl));
-        RongIM.getInstance().refreshUserInfoCache(userInfo);
+        if (!TextUtils.isEmpty(id)) {
+            UserInfo userInfo = new UserInfo(id, name, Uri.parse(imgUrl));
+            RongIM.getInstance().refreshUserInfoCache(userInfo);
+        }
     }
 
     /**
@@ -113,56 +115,52 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             return;
         }
         //刷新用户信息
-        if (data.getHouse() != null) {
+        if (data.getBuilding() != null) {
             refreshUserInfoCache(targetId, data.getChatted().getNickname(), data.getChatted().getAvatar());
             tvTitleName.setText(data.getChatted().getNickname());
             tvJob.setText(data.getChatted().getCompany() + "-" + data.getChatted().getJob());
         }
-        //是否插入消息
-        if (TextUtils.equals(SpUtils.getSignToken() + data.getHouse().getHouseId() + targetId, SpUtils.getChatBuildingInfo())) {
-            return;
-        }
-        if (data.getHouse() != null) {
-            BuildingInfo info = new BuildingInfo();
-            info.setbuildingName(data.getHouse().getHouseName());
-            info.setImgUrl(data.getHouse().getMainPic());
-            info.setCreateTime(DateTimeUtils.secondToDate(data.getCreateTime(), "yyyy-MM-dd HH:mm") +
-                    " 由" + data.getCreateUser() + "发起沟通");
-            if (TextUtils.isEmpty(data.getHouse().getDistance())) {
-                info.setDistrict(data.getHouse().getDistrict());
-            } else {
-                info.setDistrict(data.getHouse().getDistance() + "km | " + data.getHouse().getDistrict());
+
+        if (data.getBuilding() != null) {
+            //是否插入消息
+            if (TextUtils.equals(SpUtils.getSignToken() + data.getBuilding().getBuildingId() + targetId, SpUtils.getChatBuildingInfo())) {
+                return;
             }
-            if (data.getHouse() != null && data.getHouse().getStationline().size() > 0) {
-                String workTime = data.getHouse().getNearbySubwayTime().get(0);
-                String stationLine = data.getHouse().getStationline().get(0);
-                String stationName = data.getHouse().getStationNames().get(0);
+            BuildingInfo info = new BuildingInfo();
+            info.setbuildingName(data.getBuilding().getBuildingName());
+            info.setImgUrl(data.getBuilding().getMainPic());
+            info.setCreateTime(DateTimeUtils.secondToDate(data.getCreateTime(), "yyyy-MM-dd HH:mm") +
+                    " 由" + (TextUtils.isEmpty(data.getCreateUser()) ? "我" : data.getCreateUser()) + "发起沟通");
+            info.setDistrict(data.getBuilding().getAddress());
+            if (data.getBuilding().getStationline().size() > 0) {
+                String workTime = data.getBuilding().getNearbySubwayTime().get(0);
+                String stationLine = data.getBuilding().getStationline().get(0);
+                String stationName = data.getBuilding().getStationNames().get(0);
                 info.setRouteMap("步行" + workTime + "分钟到 | " + stationLine + "号线 ·" + stationName);
             }
-            assert data.getHouse() != null;
-            info.setMinSinglePrice("￥" + data.getHouse().getMinSinglePrice());
+            if (data.getBuilding().getMinSinglePrice() != null) {
+                info.setMinSinglePrice("¥" + data.getBuilding().getMinSinglePrice());
+            }
             info.setFavorite(data.isIsFavorite());
-            if (data.getHouse() != null && data.getHouse().getTags() != null && data.getHouse().getTags().size() > 0) {
+            if (data.getBuilding().getTags() != null && data.getBuilding().getTags().size() > 0) {
                 info.setTags(getTags(data));
             }
             SendMessageManager.getInstance().insertIncomingMessage(info, targetId, SpUtils.getRongChatId());
             //保存第一次插入状态
-            if (data.getHouse() != null) {
-                SpUtils.saveChatBuildingInfo(data.getHouse().getHouseId() + "" + targetId);
-            }
+            SpUtils.saveChatBuildingInfo(data.getBuilding().getBuildingId() + "" + targetId);
         }
     }
 
     private String getTags(ChatHouseBean data) {
         StringBuilder key = new StringBuilder();
-        for (int i = 0; i < data.getHouse().getTags().size(); i++) {
-            if (data.getHouse().getTags().size() == 1) {
-                key.append(data.getHouse().getTags().get(i).getDictCname());
+        for (int i = 0; i < data.getBuilding().getTags().size(); i++) {
+            if (data.getBuilding().getTags().size() == 1) {
+                key.append(data.getBuilding().getTags().get(i).getDictCname());
             } else {
-                key.append(data.getHouse().getTags().get(i).getDictCname()).append(",");
+                key.append(data.getBuilding().getTags().get(i).getDictCname()).append(",");
             }
         }
-        if (data.getHouse().getTags().size() > 1) {
+        if (data.getBuilding().getTags().size() > 1) {
             key = key.replace(key.length() - 1, key.length(), "");
         }
         return key.toString();

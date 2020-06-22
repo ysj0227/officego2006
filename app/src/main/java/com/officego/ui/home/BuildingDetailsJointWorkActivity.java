@@ -834,34 +834,37 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         tvBuildingName.setText(data.getBuilding().getName());
         //线路
         tvLocation.setText(data.getBuilding().getAddress());
-        List<String> stationLine = data.getBuilding().getStationline();
-        List<String> stationName = data.getBuilding().getStationNames();
-        List<String> workTime = data.getBuilding().getNearbySubwayTime();
-        StringBuffer linePlan = new StringBuffer();
-        for (int i = 0; i < stationLine.size(); i++) {
-            if (stationLine.size() == 1 || i == stationLine.size() - 1) {
-                linePlan.append("步行").append(workTime.get(i)).append("分钟到 | ").append(stationLine.get(i)).append("号线 ·").append(stationName.get(i));
-            } else {
-                linePlan.append("步行").append(workTime.get(i)).append("分钟到 | ").append(stationLine.get(i)).append("号线 ·").append(stationName.get(i)).append("\n");
+        if (data.getBuilding().getStationline() != null && data.getBuilding().getStationline().size() > 0) {
+            List<String> stationLine = data.getBuilding().getStationline();
+            List<String> stationName = data.getBuilding().getStationNames();
+            List<String> workTime = data.getBuilding().getNearbySubwayTime();
+            StringBuffer linePlan = new StringBuffer();
+            for (int i = 0; i < stationLine.size(); i++) {
+                if (stationLine.size() == 1 || i == stationLine.size() - 1) {
+                    linePlan.append("步行").append(workTime.get(i)).append("分钟到 | ").append(stationLine.get(i)).append("号线 ·").append(stationName.get(i));
+                } else {
+                    linePlan.append("步行").append(workTime.get(i)).append("分钟到 | ").append(stationLine.get(i)).append("号线 ·").append(stationName.get(i)).append("\n");
+                }
             }
+            tvBusLine.setText(linePlan);
         }
-        tvBusLine.setText(linePlan);
         //楼盘信息
         tvAirConditioning.setText("常规：" + data.getIntroduction().getAirConditioning());
-        if (!TextUtils.isEmpty((CharSequence) data.getIntroduction().getCompletionTime())) {
+        if (data.getIntroduction().getCompletionTime() != null) {
             tvCompletionTime.setText(data.getIntroduction().getCompletionTime() + "年");
         }
-        tvTotalFloor.setText(data.getIntroduction().getTotalFloor()==null ?
+        tvTotalFloor.setText(data.getIntroduction().getTotalFloor() == null ?
                 getResources().getString(R.string.str_text_line) : data.getIntroduction().getTotalFloor() + "层");
         tvStoreyHeight.setText(TextUtils.isEmpty(data.getIntroduction().getStoreyHeight()) ?
                 getResources().getString(R.string.str_text_line) : data.getIntroduction().getStoreyHeight() + "米");
-        tvLift.setText(data.getIntroduction().getPassengerLift() + "客梯" + data.getIntroduction().getCargoLift() + "货梯");
+        tvLift.setText(data.getIntroduction().getPassengerLift() == null ? getResources().getString(R.string.str_text_line) : data.getIntroduction().getPassengerLift() + "客梯" +
+                        (data.getIntroduction().getCargoLift() == null ? getResources().getString(R.string.str_text_line) : data.getIntroduction().getCargoLift() + "货梯"));
         tvParkingSpace.setText(TextUtils.isEmpty(data.getIntroduction().getParkingSpace()) ?
                 getResources().getString(R.string.str_text_line) : data.getIntroduction().getParkingSpace() + "个");
         tvParkingSpaceRent.setText(TextUtils.isEmpty(data.getIntroduction().getParkingSpaceRent()) ?
                 getResources().getString(R.string.str_text_line) : data.getIntroduction().getParkingSpaceRent() + "元/月/位");
-        tvProperty.setText(data.getIntroduction().getProperty()==null ?
-                getResources().getString(R.string.str_text_line) :(String) data.getIntroduction().getProperty());
+        tvProperty.setText(data.getIntroduction().getProperty() == null ?
+                getResources().getString(R.string.str_text_line) : (String) data.getIntroduction().getProperty());
         tvPropertyCosts.setText(TextUtils.isEmpty(data.getIntroduction().getPropertyCosts()) ?
                 getResources().getString(R.string.str_text_line) : data.getIntroduction().getPropertyCosts() + "元/㎡/月");
         tvNet.setText(TextUtils.isEmpty(data.getIntroduction().getInternet()) ?

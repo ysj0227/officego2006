@@ -2,9 +2,9 @@ package com.owner.utils;
 
 import com.owner.R;
 import com.owner.fragment.HomeFragment_;
-import com.owner.mine.MineFragment_;
-import com.owner.fragment.ScheduleFragment_;
 import com.owner.message.MessageFragment_;
+import com.owner.mine.MineFragment_;
+import com.owner.schedule.ScheduleFragment_;
 
 public enum MainTab {
     HOME(

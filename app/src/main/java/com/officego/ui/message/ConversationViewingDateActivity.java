@@ -9,19 +9,19 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
+import com.officego.commonlib.common.contract.ConversationContract;
+import com.officego.commonlib.common.dialog.ViewingDateDialog;
+import com.officego.commonlib.common.model.ChatHouseBean;
+import com.officego.commonlib.common.model.RenterBean;
+import com.officego.commonlib.common.presenter.ConversationPresenter;
+import com.officego.commonlib.common.rongcloud.SendMessageManager;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.CircleImage;
-import com.officego.rpc.OfficegoApi;
-import com.officego.commonlib.common.contract.ConversationContract;
-import com.officego.commonlib.common.dialog.ViewingDateDialog;
-import com.officego.commonlib.common.rongcloud.SendMessageManager;
-import com.officego.commonlib.common.model.ChatHouseBean;
-import com.officego.commonlib.common.model.RenterBean;
-import com.officego.commonlib.common.presenter.ConversationPresenter;
 import com.officego.commonlib.view.RoundImageView;
+import com.officego.rpc.OfficegoApi;
 
 import org.androidannotations.annotations.AfterExtras;
 import org.androidannotations.annotations.Click;
@@ -105,8 +105,7 @@ public class ConversationViewingDateActivity extends BaseMvpActivity<Conversatio
         }
         String time = tvSelectTime.getText().toString().trim();
         if (mData != null) {
-            addRenter(mData.getHouse().getBuildingId(), mData.getHouse().getHouseId(),
-                    DateTimeUtils.dateToSecondStamp(time), targetId);
+            addRenter(mData.getBuilding().getBuildingId(), DateTimeUtils.dateToSecondStamp(time), targetId);
         } else {
             shortTip("预约失败");
         }
@@ -126,37 +125,38 @@ public class ConversationViewingDateActivity extends BaseMvpActivity<Conversatio
     @SuppressLint("SetTextI18n")
     @Override
     public void houseSuccess(ChatHouseBean data) {
-        if (data == null || data.getHouse() == null) {
+        mData = data;
+        tvKm.setVisibility(View.GONE);
+        if (data == null || data.getBuilding() == null) {
             shortTip("暂无楼盘信息");
             return;
         }
-        mData = data;
-        Glide.with(context).load(data.getHouse().getMainPic()).into(ivHouseImg);
-        tvHouseName.setText(data.getHouse().getBuildingName());
-        tvLocation.setText(data.getHouse().getDistrict());
-        if (data.getHouse() != null && data.getHouse().getStationline().size() > 0) {
-            String workTime = data.getHouse().getNearbySubwayTime().get(0);
-            String stationLine = data.getHouse().getStationline().get(0);
-            String stationName = data.getHouse().getStationNames().get(0);
-            tvRouteMap.setText("步行" + workTime + "分钟到 | " + stationLine + "号线 ·" + stationName);
+        if (data.getBuilding() != null) {
+            Glide.with(context).load(data.getBuilding().getMainPic()).into(ivHouseImg);
+            tvHouseName.setText(data.getBuilding().getBuildingName());
+            tvLocation.setText(data.getBuilding().getDistrict());
+            if (data.getBuilding().getStationline().size() > 0) {
+                String workTime = data.getBuilding().getNearbySubwayTime().get(0);
+                String stationLine = data.getBuilding().getStationline().get(0);
+                String stationName = data.getBuilding().getStationNames().get(0);
+                tvRouteMap.setText("步行" + workTime + "分钟到 | " + stationLine + "号线 ·" + stationName);
+            }
+            if (data.getBuilding().getMinSinglePrice() != null) {
+                tvPrice.setText("¥" + data.getBuilding().getMinSinglePrice());
+            }
         }
-        if (data.getHouse() == null || TextUtils.isEmpty(data.getHouse().getDistance())) {
-            tvKm.setVisibility(View.GONE);
-        } else {
-            tvKm.setVisibility(View.VISIBLE);
-            tvKm.setText(data.getHouse().getDistance() + "Km");
-        }
-        tvPrice.setText("￥" + data.getHouse().getMinSinglePrice());
         tvName.setText("姓名  " + data.getCreateUser());
         tvMobile.setText("联系方式  " + data.getUser().getPhone());
-        Glide.with(context).load(data.getChatted().getAvatar()).into(civAvatar);
-        tvOwnerName.setText(data.getChatted().getNickname());
-        tvPosition.setText(data.getChatted().getJob());
+        if (data.getChatted() != null) {
+            Glide.with(context).load(data.getChatted().getAvatar()).into(civAvatar);
+            tvOwnerName.setText(data.getChatted().getNickname());
+            tvPosition.setText(data.getChatted().getJob());
+        }
     }
 
-    public void addRenter(int buildingId, int houseIds, String time, String targetId) {
+    public void addRenter(int buildingId, String time, String targetId) {
         showLoadingDialog();
-        OfficegoApi.getInstance().addRenter(buildingId, houseIds, time, targetId,
+        OfficegoApi.getInstance().addRenter(buildingId, time, targetId,
                 new RetrofitCallback<RenterBean>() {
                     @Override
                     public void onSuccess(int code, String msg, RenterBean data) {
@@ -165,8 +165,10 @@ public class ConversationViewingDateActivity extends BaseMvpActivity<Conversatio
                         //发起预约请求
                         SendMessageManager.getInstance().sendViewingDateMessage(
                                 targetId,//对方id
-                                houseIds,
+                                data.getId(),
                                 time,
+                                mData == null || mData.getBuilding() == null ? "" : mData.getBuilding().getBuildingName(),
+                                mData == null || mData.getBuilding() == null ? "" : mData.getBuilding().getAddress(),
                                 "",
                                 "");
                         finish();

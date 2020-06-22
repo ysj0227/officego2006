@@ -2,6 +2,11 @@ package com.officego.rpc;
 
 import android.content.Context;
 
+import com.officego.commonlib.common.LoginBean;
+import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.VersionBean;
+import com.officego.commonlib.common.model.ChatHouseBean;
+import com.officego.commonlib.common.model.RenterBean;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.log.LogCat;
@@ -30,15 +35,10 @@ import com.officego.ui.home.model.HouseOfficeDetailsJointWorkBean;
 import com.officego.ui.home.model.MeterBean;
 import com.officego.ui.home.model.QueryHistoryKeywordsBean;
 import com.officego.ui.home.model.SearchListBean;
-import com.officego.commonlib.common.LoginBean;
-import com.officego.commonlib.common.model.ChatHouseBean;
-import com.officego.commonlib.common.model.RenterBean;
 import com.officego.ui.mine.model.AvatarBean;
 import com.officego.ui.mine.model.UserBean;
-import com.officego.commonlib.common.VersionBean;
 import com.officego.ui.mine.model.ViewingDateBean;
 import com.officego.ui.mine.model.ViewingDateDetailsBean;
-import com.officego.commonlib.common.SpUtils;
 
 import java.io.File;
 import java.util.HashMap;
@@ -107,7 +107,7 @@ public class OfficegoApi {
      * @param callback
      */
     public void loginOnlyPhone(Context context, String mobile, RetrofitCallback<LoginBean> callback) {
-        LogCat.e(TAG,"111111111111 role="+SpUtils.getRole());
+        LogCat.e(TAG, "111111111111 role=" + SpUtils.getRole());
         Map<String, RequestBody> map = new HashMap<>();
         map.put("phone", requestBody(mobile));
         map.put("imei", requestBody(CommonHelper.getIMEI(context)));
@@ -701,12 +701,12 @@ public class OfficegoApi {
      * chatUserId 	否 	int 	聊天界面对方用户id
      * token 	是 	string 	登录凭证
      */
-    public void addRenter(int buildingId, int houseIds, String time, String targetId,
+    public void addRenter(int buildingId, String time, String targetId,
                           RetrofitCallback<RenterBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("buildingId", requestBody(buildingId + ""));
-        map.put("houseIds", requestBody(houseIds + ""));
+//        map.put("houseIds", requestBody(houseIds + ""));
         map.put("time", requestBody(time));
         map.put("chatUserId", requestBody(targetId));//聊天界面对方用户id
         OfficegoRetrofitClient.getInstance().create(ScheduleInterface.class)
@@ -738,6 +738,7 @@ public class OfficegoApi {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("roleType", requestBody(roleType));
+        LogCat.e(TAG, "1111  chat/regTokenApp  token=" + SpUtils.getSignToken() + " roleType=" + roleType);
         OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
                 .switchId(map)
                 .enqueue(callback);

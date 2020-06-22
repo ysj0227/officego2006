@@ -5,6 +5,7 @@
     android:id="@+id/ll_root_view"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:background="@color/c_white"
     android:orientation="vertical">
 
     <RelativeLayout
@@ -104,7 +105,7 @@
             android:layout_marginTop="@dimen/dp_12"
             android:gravity="center_vertical"
             android:textColor="@color/text_75"
-            android:textSize="@dimen/sp_14"
+            android:textSize="@dimen/sp_15"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />

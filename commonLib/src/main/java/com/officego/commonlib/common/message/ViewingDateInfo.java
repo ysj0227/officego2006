@@ -27,13 +27,19 @@ public class ViewingDateInfo extends MessageContent {
     private String content;
     private String extraMessage;
     private int fyId;//预约看房id
+    private String buildingName;//大楼名称
+    private String buildingAddress;//大楼地址
 
-    public static ViewingDateInfo setViewingDateData(String time, String content, String extraMessage, int id) {
+    public static ViewingDateInfo setViewingDateData(String time, String content,
+                                                     String extraMessage, int id,
+                                                     String buildingName, String buildingAddress) {
         ViewingDateInfo info = new ViewingDateInfo();
         info.time = time;
         info.content = content;
         info.extraMessage = extraMessage;
         info.fyId = id;
+        info.buildingName = buildingName;
+        info.buildingAddress = buildingAddress;
         return info;
     }
 
@@ -44,6 +50,8 @@ public class ViewingDateInfo extends MessageContent {
         object.put("content", content);
         object.put("extraMessage", extraMessage);
         object.put("fyId", fyId);
+        object.put("buildingName", buildingName);
+        object.put("buildingAddress", buildingAddress);
         return object.toString().getBytes(StandardCharsets.UTF_8);
     }
 
@@ -60,6 +68,8 @@ public class ViewingDateInfo extends MessageContent {
             setContent(object.getString("content"));
             setExtraMessage(object.getString("extraMessage"));
             setId(object.getInteger("fyId"));
+            setBuildingName(object.getString("buildingName"));
+            setBuildingAddress(object.getString("buildingAddress"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -71,6 +81,8 @@ public class ViewingDateInfo extends MessageContent {
         ParcelUtils.writeToParcel(dest, content);
         ParcelUtils.writeToParcel(dest, extraMessage);
         ParcelUtils.writeToParcel(dest, fyId);
+        ParcelUtils.writeToParcel(dest, buildingName);
+        ParcelUtils.writeToParcel(dest, buildingAddress);
     }
 
     public static final Creator<ViewingDateInfo> CREATOR = new Creator<ViewingDateInfo>() {
@@ -92,6 +104,8 @@ public class ViewingDateInfo extends MessageContent {
         content = ParcelUtils.readFromParcel(parcel);
         extraMessage = ParcelUtils.readFromParcel(parcel);
         fyId = ParcelUtils.readIntFromParcel(parcel);
+        buildingName = ParcelUtils.readFromParcel(parcel);
+        buildingAddress = ParcelUtils.readFromParcel(parcel);
     }
 
 
@@ -130,5 +144,21 @@ public class ViewingDateInfo extends MessageContent {
 
     public void setId(int id) {
         this.fyId = id;
+    }
+
+    public String getBuildingName() {
+        return buildingName;
+    }
+
+    public void setBuildingName(String buildingName) {
+        this.buildingName = buildingName;
+    }
+
+    public String getBuildingAddress() {
+        return buildingAddress;
+    }
+
+    public void setBuildingAddress(String buildingAddress) {
+        this.buildingAddress = buildingAddress;
     }
 }

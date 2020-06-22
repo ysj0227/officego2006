@@ -17,7 +17,6 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
-import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationListFragment;
 import io.rong.imlib.model.Conversation;
 
@@ -54,7 +53,7 @@ public class MessageFragment extends BaseFragment {
      * 初始化聊天列表
      */
     private void initIm() {
-        LogCat.e("TAG", "11111 owner MessageFragment packageName= "+mActivity.getApplicationInfo().packageName );
+        LogCat.e("TAG", "11111 owner MessageFragment packageName= " + mActivity.getApplicationInfo().packageName);
         conversationList.setVisibility(View.VISIBLE);
         ConversationListFragment fragment = new ConversationListFragment();
         Uri uri = Uri.parse("rong://" + mActivity.getApplicationInfo().packageName).buildUpon()

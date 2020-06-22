@@ -18,10 +18,10 @@ import android.widget.RelativeLayout;
 
 import com.officego.R;
 import com.officego.commonlib.base.BaseActivity;
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.constant.AppConfig;
-import com.officego.config.Constants;
 import com.officego.commonlib.view.TitleBarView;
 import com.officego.view.webview.SMWebViewClient;
 

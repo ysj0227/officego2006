@@ -6,7 +6,7 @@ import android.os.Bundle;
 
 import com.officego.MainActivity;
 import com.officego.commonlib.base.BaseApplication;
-import com.officego.config.Constants;
+import com.officego.commonlib.constant.Constants;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 

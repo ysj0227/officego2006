@@ -16,12 +16,12 @@ import androidx.annotation.NonNull;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.RegexUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.ClearableEditText;
-import com.officego.config.Constants;
 import com.officego.h5.WebViewActivity_;
 import com.officego.ui.login.contract.LoginContract;
 import com.officego.ui.login.presenter.LoginPresenter;
@@ -147,7 +147,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
 
     @Click(R.id.tv_wx_login)
     void testClick() {
-        //            mPresenter.login("15981968964", "123465");
+//        mPresenter.login("15981968964", "123465");
         mPresenter.login("18237774543", "123465");
     }
 
@@ -205,6 +205,8 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
                 //业主退出登录后的，重新登录
                 Intent intent = getIntent();
                 setResult(RESULT_OK, intent);
+            } else if (isOwnerLogin) {
+                MainOwnerActivity_.intent(context).start();
             } else {
                 //业主首次登录跳转首页
                 MainOwnerActivity_.intent(context).start();

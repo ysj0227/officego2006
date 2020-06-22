@@ -15,6 +15,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpFragment;
+import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
@@ -25,7 +26,6 @@ import com.officego.ui.collect.model.CollectBuildingBean;
 import com.officego.ui.collect.model.CollectHouseBean;
 import com.officego.ui.collect.presenter.CollectedPresenter;
 import com.officego.ui.login.LoginActivity_;
-import com.officego.commonlib.common.SpUtils;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;

@@ -1,9 +1,9 @@
 package com.officego.ui.collect.presenter;
 
 import com.officego.commonlib.base.BasePresenter;
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.log.LogCat;
-import com.officego.config.Constants;
 import com.officego.rpc.OfficegoApi;
 import com.officego.ui.collect.contract.CollectedContract;
 import com.officego.ui.collect.model.CollectBuildingBean;

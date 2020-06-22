@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
+import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
@@ -35,7 +36,6 @@ import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.IVideoPlayer;
 import com.officego.commonlib.view.LabelsView;
 import com.officego.commonlib.view.dialog.CommonDialog;
-import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.model.ShareBean;
 import com.officego.ui.adapter.HouseItemAllAdapter;
 import com.officego.ui.adapter.IndependentAllChildAdapter;
@@ -802,27 +802,33 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             tvIndependentOfficeAreaText.setText("面积");
             tvIndependentOfficePriceText.setText("租金");
             tvIndependentOfficeNumText.setText("在租房源");
-            if (TextUtils.equals(data.getBuilding().getMinArea().toString(), data.getBuilding().getMaxArea().toString())) {
-                tvIndependentOfficeArea.setText(Html.fromHtml("<font color='#46C3C2'>" + data.getBuilding().getMaxArea() + "</font>㎡"));
-            } else {
-                tvIndependentOfficeArea.setText(Html.fromHtml("<font color='#46C3C2'>" + data.getBuilding().getMinArea() + "~" + data.getBuilding().getMaxArea() + "</font>㎡"));
+            if (data.getBuilding().getMinArea() != null && data.getBuilding().getMaxArea() != null) {
+                if (TextUtils.equals(data.getBuilding().getMinArea().toString(), data.getBuilding().getMaxArea().toString())) {
+                    tvIndependentOfficeArea.setText(Html.fromHtml("<font color='#46C3C2'>" + data.getBuilding().getMaxArea() + "</font>㎡"));
+                } else {
+                    tvIndependentOfficeArea.setText(Html.fromHtml("<font color='#46C3C2'>" + data.getBuilding().getMinArea() + "~" + data.getBuilding().getMaxArea() + "</font>㎡"));
+                }
             }
-            tvIndependentOfficePrice.setText(Html.fromHtml("<font color='#46C3C2'>¥" + data.getBuilding().getMinDayPrice() + "</font>/㎡/天起"));
+            if (data.getBuilding().getMinDayPrice() != null) {
+                tvIndependentOfficePrice.setText(Html.fromHtml("<font color='#46C3C2'>¥" + data.getBuilding().getMinDayPrice() + "</font>/㎡/天起"));
+            }
             tvIndependentOfficeNum.setText(Html.fromHtml("<font color='#46C3C2'>" + data.getBuilding().getHouseCount() + "套" + "</font>"));
             //线路
             tvLocation.setText(data.getBuilding().getAddress());
-            List<String> stationLine = data.getBuilding().getStationline();
-            List<String> stationName = data.getBuilding().getStationNames();
-            List<String> workTime = data.getBuilding().getNearbySubwayTime();
-            StringBuffer linePlan = new StringBuffer();
-            for (int i = 0; i < stationLine.size(); i++) {
-                if (stationLine.size() == 1 || i == stationLine.size() - 1) {
-                    linePlan.append("步行").append(workTime.get(i)).append("分钟到 | ").append(stationLine.get(i)).append("号线 ·").append(stationName.get(i));
-                } else {
-                    linePlan.append("步行").append(workTime.get(i)).append("分钟到 | ").append(stationLine.get(i)).append("号线 ·").append(stationName.get(i)).append("\n");
+            if (data.getBuilding().getStationline() != null && data.getBuilding().getStationline().size() > 0) {
+                List<String> stationLine = data.getBuilding().getStationline();
+                List<String> stationName = data.getBuilding().getStationNames();
+                List<String> workTime = data.getBuilding().getNearbySubwayTime();
+                StringBuffer linePlan = new StringBuffer();
+                for (int i = 0; i < stationLine.size(); i++) {
+                    if (stationLine.size() == 1 || i == stationLine.size() - 1) {
+                        linePlan.append("步行").append(workTime.get(i)).append("分钟到 | ").append(stationLine.get(i)).append("号线 ·").append(stationName.get(i));
+                    } else {
+                        linePlan.append("步行").append(workTime.get(i)).append("分钟到 | ").append(stationLine.get(i)).append("号线 ·").append(stationName.get(i)).append("\n");
+                    }
                 }
+                tvBusLine.setText(linePlan);
             }
-            tvBusLine.setText(linePlan);
         }
         //楼盘信息
         if (data.getIntroduction() != null) {

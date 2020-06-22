@@ -35,7 +35,6 @@ import org.androidannotations.annotations.EActivity;
 @SuppressLint("Registered")
 @EActivity(R.layout.mine_activity_setting)
 public class MineSettingActivity extends BaseActivity {
-
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarColor(this, StatusBarUtils.TYPE_DARK);
@@ -48,7 +47,17 @@ public class MineSettingActivity extends BaseActivity {
 
     @Click(R.id.rl_switch_id)
     void switchIdClick() {
-        switchId(TextUtils.equals(Constants.TYPE_TENANT, SpUtils.getRole()) ? Constants.TYPE_OWNER : Constants.TYPE_TENANT);
+        switchDialog();
+    }
+
+    private void switchDialog() {
+        CommonDialog dialog = new CommonDialog.Builder(context)
+                .setTitle(R.string.are_you_sure_switch_owner)
+                .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
+                    switchId(TextUtils.equals(Constants.TYPE_TENANT, SpUtils.getRole()) ? Constants.TYPE_OWNER : Constants.TYPE_TENANT);
+                })
+                .setCancelButton(R.string.sm_cancel, (dialog1, which) -> dialog1.dismiss()).create();
+        dialog.showWithOutTouchable(false);
     }
 
     @Click(R.id.btn_logout)
@@ -114,7 +123,7 @@ public class MineSettingActivity extends BaseActivity {
                 if (code == Constants.DEFAULT_ERROR_CODE || code == Constants.ERROR_CODE_5009) {
                     shortTip(msg);
                     SpUtils.clearLoginInfo();
-                    GotoActivityUtils.selectedIdActivity(context);
+                    GotoActivityUtils.loginClearActivity(context, false);
                 } else {
                     shortTip("切换角色失败");
                 }

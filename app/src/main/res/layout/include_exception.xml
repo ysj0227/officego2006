@@ -28,12 +28,12 @@
 
     <Button
         android:id="@+id/btn_again"
-        style="@style/BtnBigOrange"
         android:layout_width="@dimen/dp_150"
-        android:layout_height="@dimen/dp_35"
+        android:layout_height="@dimen/dp_38"
         android:layout_below="@id/tv_net_tip"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/dp_30"
+        android:background="@drawable/button_corners25_pressed_main"
         android:text="@string/str_btn_try_again"
         android:textColor="@color/c_white"
         android:textSize="@dimen/sp_14" />

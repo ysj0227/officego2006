@@ -1,4 +1,4 @@
-package com.owner.fragment;
+package com.owner.schedule;
 
 import android.content.Context;
 import android.text.TextUtils;
@@ -22,9 +22,7 @@ import com.officego.commonlib.common.date.ThemeDayView;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.owner.R;
-import com.owner.schedule.ViewingDateAdapter;
 import com.owner.schedule.contract.ViewingDateContract;
 import com.owner.schedule.model.ViewingDateBean;
 import com.owner.schedule.presenter.ViewingDatePresenter;
@@ -233,7 +231,7 @@ public class ScheduleFragment extends BaseMvpFragment<ViewingDatePresenter>
 
     private void selectedDayDataList(String mCurrentDate) {
         if (viewingDateAllList == null) {
-            shortTip(R.string.tip_current_day_no_data);
+//            shortTip(R.string.tip_current_day_no_data);
             return;
         }
         viewingDateDayList.clear();
@@ -253,7 +251,7 @@ public class ScheduleFragment extends BaseMvpFragment<ViewingDatePresenter>
                 return;
             } else if (i == viewingDateAllList.size() - 1 && !isHasList) {
                 noData();
-                shortTip(R.string.tip_current_day_no_data);
+//                shortTip(R.string.tip_current_day_no_data);
             }
         }
     }
@@ -341,7 +339,7 @@ public class ScheduleFragment extends BaseMvpFragment<ViewingDatePresenter>
     @Override
     public void viewingDateSuccess(List<ViewingDateBean.DataBean> data) {
         if (data == null || data.size() == 0) {
-            shortTip(R.string.tip_current_day_no_data);
+//            shortTip(R.string.tip_current_day_no_data);
             noData();
             return;
         }

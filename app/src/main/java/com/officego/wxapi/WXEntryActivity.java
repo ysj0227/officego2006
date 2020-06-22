@@ -18,7 +18,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.officego.R;
 import com.officego.application.MyApplication;
-import com.officego.config.Constants;
+import com.officego.commonlib.constant.Constants;
 import com.officego.model.ShareBean;
 import com.officego.utils.Util;
 import com.tencent.mm.opensdk.modelbase.BaseReq;

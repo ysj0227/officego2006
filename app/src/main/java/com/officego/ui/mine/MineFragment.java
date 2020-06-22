@@ -16,9 +16,9 @@ import com.officego.commonlib.base.BaseMvpFragment;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.rongcloud.RongCloudSetUserInfoUtils;
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.CircleImage;
-import com.officego.config.Constants;
 import com.officego.h5.WebViewActivity_;
 import com.officego.ui.login.LoginActivity_;
 import com.officego.ui.mine.contract.UserContract;
@@ -69,6 +69,14 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         }
     }
 
+    private boolean isToLogin() {
+        if (TextUtils.isEmpty(SpUtils.getSignToken())) {
+            LoginActivity_.intent(mActivity).isGotoLogin(true).startForResult(REQUEST_CODE_LOGIN);
+            return true;
+        }
+        return false;
+    }
+
     @Click(R.id.btn_login)
     void loginClick() {
         if (isFastClick(1500)) {
@@ -86,10 +94,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
 
     @Click(R.id.iv_setting)
     void settingClick() {
-        if (TextUtils.isEmpty(SpUtils.getSignToken())) {
-            shortTip(R.string.tip_go_to_login);
-            return;
-        }
+        if (isToLogin()) return;
         MineSettingActivity_.intent(mActivity).startForResult(REQUEST_CODE_LOGOUT);
     }
 
@@ -102,10 +107,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
 
     @Click(R.id.civ_avatar)
     void editMessageClick() {
-        if (TextUtils.isEmpty(SpUtils.getSignToken())) {
-            shortTip(R.string.tip_go_to_login);
-            return;
-        }
+        if (isToLogin()) return;
         if (mUserInfo == null) {
             mPresenter.getUserInfo();
             return;
@@ -115,10 +117,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
 
     @Click(R.id.tv_name)
     void nameClick() {
-        if (TextUtils.isEmpty(SpUtils.getSignToken())) {
-            shortTip(R.string.tip_go_to_login);
-            return;
-        }
+        if (isToLogin()) return;
         if (mUserInfo == null) {
             mPresenter.getUserInfo();
             return;
@@ -138,44 +137,29 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
 
     @Click(R.id.rl_viewing_date)
     void viewDateClick() {
-        if (TextUtils.isEmpty(SpUtils.getSignToken())) {
-            shortTip(R.string.tip_go_to_login);
-            return;
-        }
+        if (isToLogin()) return;
         ViewingDateActivity_.intent(mActivity).start();
     }
 
     @Click(R.id.rl_help)
     void helpClick() {
-        if (TextUtils.isEmpty(SpUtils.getSignToken())) {
-            shortTip(R.string.tip_go_to_login);
-            return;
-        }
         WebViewActivity_.intent(mActivity).flags(Constants.H5_HELP).start();
     }
 
     @Click(R.id.rl_service)
     void serviceClick() {
-        if (TextUtils.isEmpty(SpUtils.getSignToken())) {
-            shortTip(R.string.tip_go_to_login);
-            return;
-        }
         callPhone("15981968964");
     }
 
     @Click(R.id.rl_protocol)
     void protocolClick() {
-        if (TextUtils.isEmpty(SpUtils.getSignToken())) {
-            shortTip(R.string.tip_go_to_login);
-            return;
-        }
         WebViewActivity_.intent(mActivity).flags(Constants.H5_PROTOCOL).start();
     }
 
     @Click(R.id.rl_about)
     void aboutClick() {
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
-            shortTip(R.string.tip_go_to_login);
+
             return;
         }
         WebViewActivity_.intent(mActivity).flags(Constants.H5_ABOUTS).start();

@@ -21,6 +21,7 @@ import androidx.annotation.NonNull;
 
 import com.officego.commonlib.base.BaseFragment;
 import com.officego.commonlib.constant.AppConfig;
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.TitleBarView;
@@ -50,13 +51,14 @@ public class HomeFragment extends BaseFragment {
     @ViewById(resName = "btn_again")
     Button btnAgain;
 
+    private String webViewUrl;
     private SMWebChromeClient webChrome;
 
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarColor(mActivity);
         setWebChromeClient();
-        loadWebView("https://www.baidu.com/");
+        loadWebView(AppConfig.H5_OWNER_BUILDINGlIST);
     }
 
     /**
@@ -118,6 +120,7 @@ public class HomeFragment extends BaseFragment {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
+                webViewUrl = url;
             }
 
             @Override
@@ -139,6 +142,7 @@ public class HomeFragment extends BaseFragment {
             }
         });
     }
+
     //上传图片
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -174,14 +178,11 @@ public class HomeFragment extends BaseFragment {
             rlException.setVisibility(View.GONE);
             view.clearCache(true);
             view.clearHistory();
-             //TODO
-//            webView.loadUrl(AppConfig.H5_MINE_CENTER_URL);
-//            if (TextUtils.isEmpty(webViewUrl)) {
-////                loadWebView(AppConfig.H5_MINE_CENTER_URL);
-//                webView.loadUrl(AppConfig.H5_MINE_CENTER_URL);
-//            } else {
-//                webView.loadUrl(webViewUrl);
-//            }
+            if (TextUtils.isEmpty(webViewUrl)) {
+                webView.loadUrl(AppConfig.H5_OWNER_BUILDINGlIST);
+            } else {
+                webView.loadUrl(webViewUrl);
+            }
         });
     }
 

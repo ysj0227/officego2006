@@ -96,10 +96,14 @@ public class SendMessageManager {
     /**
      * 发送自定义消息 预约看房
      */
-    public void sendViewingDateMessage(String targetId, int houseId, String time, String content, String extraMessage) {
+    public void sendViewingDateMessage(String targetId, int houseId, String time,
+                                       String buildingName, String buildingAddress,
+                                       String content, String extraMessage) {
         ViewingDateInfo info = new ViewingDateInfo();
         info.setId(houseId);
         info.setTime(time);
+        info.setBuildingName(buildingName);
+        info.setBuildingAddress(buildingAddress);
         info.setContent(content);
         info.setExtraMessage(extraMessage);
         //targetId是接收消息方的id   Conversation.ConversationType 是消息会话的类型在这里表示的是私聊

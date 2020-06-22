@@ -2,11 +2,11 @@ package com.officego.commonlib.common.rpc;
 
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.model.ChatHouseBean;
-import com.officego.commonlib.common.model.RenterBean;
 import com.officego.commonlib.common.rpc.request.ChatInterface;
 import com.officego.commonlib.common.rpc.request.MineMsgInterface;
 import com.officego.commonlib.common.rpc.request.ScheduleInterface;
 import com.officego.commonlib.retrofit.RetrofitCallback;
+import com.officego.commonlib.utils.log.LogCat;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -89,30 +89,10 @@ public class OfficegoApi {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("uid", requestBody(targetId));
+        LogCat.e(TAG, "1111  chat/firstChatApp  token=" + SpUtils.getSignToken() + " uid=" + targetId);
         OfficegoRetrofitClient.getInstance().create(ChatInterface.class)
                 .getChatHouseDetails(map)
                 .enqueue(callback);
     }
 
-    /**
-     * 添加预约看房
-     * buildingId 	是 	int 	楼盘id
-     * houseIds 	是 	String 	房源id （英文逗号分隔）
-     * time 	是 	string 	预约时间
-     * remark 	否 	string 	备注
-     * chatUserId 	否 	int 	聊天界面对方用户id
-     * token 	是 	string 	登录凭证
-     */
-    public void addRenter(int buildingId, int houseIds, String time, String targetId,
-                          RetrofitCallback<RenterBean> callback) {
-        Map<String, RequestBody> map = new HashMap<>();
-        map.put("token", requestBody(SpUtils.getSignToken()));
-        map.put("buildingId", requestBody(buildingId + ""));
-        map.put("houseIds", requestBody(houseIds + ""));
-        map.put("time", requestBody(time));
-        map.put("chatUserId", requestBody(targetId));//聊天界面对方用户id
-        OfficegoRetrofitClient.getInstance().create(ScheduleInterface.class)
-                .addRenter(map)
-                .enqueue(callback);
-    }
 }

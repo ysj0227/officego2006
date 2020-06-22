@@ -17,9 +17,9 @@ import androidx.core.content.FileProvider;
 
 import com.officego.R;
 import com.officego.commonlib.base.BaseActivity;
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.FileHelper;
 import com.officego.commonlib.utils.PermissionUtils;
-import com.officego.config.Constants;
 
 import java.io.File;
 

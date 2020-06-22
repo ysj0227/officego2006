@@ -54,7 +54,17 @@ public class MineSettingActivity extends BaseActivity {
     @Click(resName = "rl_switch_id")
     void switchIdClick() {
         //业主切换租户
-        switchId("0");
+        switchDialog();
+    }
+
+    private void switchDialog() {
+        CommonDialog dialog = new CommonDialog.Builder(context)
+                .setTitle(R.string.are_you_sure_switch_tenant)
+                .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
+                    switchId(Constants.TYPE_TENANT);
+                })
+                .setCancelButton(R.string.sm_cancel, (dialog1, which) -> dialog1.dismiss()).create();
+        dialog.showWithOutTouchable(false);
     }
 
     @Click(resName = "btn_logout")
@@ -64,10 +74,7 @@ public class MineSettingActivity extends BaseActivity {
                 .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
                     SpUtils.clearLoginInfo();
                     //跳转登录
-                    GotoActivityUtils.loginClearActivity(context);
-//                    Intent intent = getIntent();
-//                    setResult(RESULT_OK, intent);
-//                    finish();
+                    GotoActivityUtils.loginClearActivity(context, true);
                 })
                 .setCancelButton(R.string.sm_cancel, (dialog1, which) -> dialog1.dismiss()).create();
         dialog.showWithOutTouchable(false);
@@ -122,7 +129,7 @@ public class MineSettingActivity extends BaseActivity {
                 if (code == Constants.DEFAULT_ERROR_CODE || code == Constants.ERROR_CODE_5009) {
                     shortTip(msg);
                     SpUtils.clearLoginInfo();
-                    GotoActivityUtils.selectedIdActivity(context);
+                    GotoActivityUtils.loginClearActivity(context, true);
                 } else {
                     shortTip("切换角色失败");
                 }

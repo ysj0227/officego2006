@@ -67,6 +67,17 @@
             android:textColor="@color/text_33"
             android:textSize="@dimen/sp_15" />
 
+        <TextView
+            android:id="@+id/tv_text_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dp_30"
+            android:text="@string/str_switch_owner"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_14" />
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -18,6 +18,7 @@ import androidx.core.content.FileProvider;
 import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.utils.FileHelper;
 import com.officego.commonlib.utils.FileUtils;
@@ -28,7 +29,6 @@ import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.CircleImage;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.common.config.CommonNotifications;
-import com.officego.config.Constants;
 import com.officego.ui.mine.contract.UpdateUserContract;
 import com.officego.ui.mine.model.UserBean;
 import com.officego.ui.mine.presenter.UpdateUserPresenter;
@@ -192,6 +192,7 @@ public class MineMessageActivity extends BaseMvpActivity<UpdateUserPresenter>
                     Constants.FILE_PROVIDER_AUTHORITY, fileUri);
         }
         PhotoUtils.takePicture(this, localPhotoUri, REQUEST_CAMERA);
+        LogCat.d(TAG,"1111 file_provider_authority="+Constants.FILE_PROVIDER_AUTHORITY);
     }
 
     private void openGallery() {

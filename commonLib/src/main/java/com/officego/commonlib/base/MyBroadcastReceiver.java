@@ -14,7 +14,7 @@ import com.officego.commonlib.view.dialog.CommonDialog;
  * Data 2020/6/13.
  * Descriptions:
  **/
-class MyBroadcastReceiver extends BroadcastReceiver {
+public class MyBroadcastReceiver extends BroadcastReceiver {
     private Activity activity;
     private CommonDialog receiverDialog;
 
@@ -25,6 +25,10 @@ class MyBroadcastReceiver extends BroadcastReceiver {
     @Override
     public void onReceive(Context context, Intent intent) {
         LogCat.d("TAG", "1111100000 MyBroadcastReceiver");
+        if (receiverDialog != null && receiverDialog.isShowing()) {
+            receiverDialog.dismiss();
+            receiverDialog = null;
+        }
         if (receiverDialog == null) {
             receiverDialog = new CommonDialog.Builder(context)
                     .setTitle("当前暂未登录，请登录后使用相关功能")

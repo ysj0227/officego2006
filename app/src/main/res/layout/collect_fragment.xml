@@ -35,7 +35,7 @@
             android:layout_height="match_parent"
             android:layout_marginStart="@dimen/dp_18"
             android:gravity="center_vertical"
-            android:text="@string/str_office_building"
+            android:text="楼宇"
             android:textColor="@color/text_33"
             android:textSize="@dimen/sp_16"
             android:textStyle="bold" />
@@ -44,10 +44,10 @@
             android:id="@+id/tv_work_office"
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginStart="@dimen/dp_14"
+            android:layout_marginStart="@dimen/dp_18"
             android:layout_toEndOf="@id/tv_office_building"
             android:gravity="center_vertical"
-            android:text="@string/str_work_office"
+            android:text="房源"
             android:textColor="@color/black"
             android:textSize="@dimen/sp_12" />
 

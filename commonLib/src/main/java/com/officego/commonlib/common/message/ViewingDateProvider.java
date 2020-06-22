@@ -50,6 +50,8 @@ public class ViewingDateProvider extends IContainerItemProvider.MessageProvider<
         holder.rlBtn = view.findViewById(R.id.rl_btn);
         holder.ivIcon = view.findViewById(R.id.iv_icon);
         holder.tvContent = view.findViewById(R.id.tv_content);
+        holder.tvBuildingName = view.findViewById(R.id.tv_building_name);
+        holder.tvAddress = view.findViewById(R.id.tv_address);
         holder.vLine = view.findViewById(R.id.v_line);
         holder.btnAgree = view.findViewById(R.id.btn_agree);
         holder.btnReject = view.findViewById(R.id.btn_reject);
@@ -78,6 +80,8 @@ public class ViewingDateProvider extends IContainerItemProvider.MessageProvider<
             holder.ivIcon.setVisibility(View.GONE);
             holder.vLine.setVisibility(View.GONE);
         }
+        holder.tvBuildingName.setText("名称：" + info.getBuildingName());
+        holder.tvAddress.setText("地址：" + info.getBuildingAddress());
         holder.tvTime.setText("约看时间：" +
                 DateTimeUtils.StampToDate(info.getTime() + "000", "yyyy-MM-dd HH:mm"));
     }
@@ -97,6 +101,8 @@ public class ViewingDateProvider extends IContainerItemProvider.MessageProvider<
         RelativeLayout rlContent;
         ImageView ivIcon;
         TextView tvContent;
+        TextView tvBuildingName;
+        TextView tvAddress;
         TextView tvTime;
         View vLine;
         Button btnAgree;

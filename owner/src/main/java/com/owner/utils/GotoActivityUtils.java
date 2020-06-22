@@ -12,10 +12,10 @@ import android.content.Intent;
  **/
 public class GotoActivityUtils {
 
-    public static void loginClearActivity(Context context) {
+    public static void loginClearActivity(Context context,boolean isOwnerLogin) {
         ComponentName comp = new ComponentName(context, "com.officego.ui.login.LoginActivity_");
         Intent intent = new Intent();
-        intent.putExtra("isOwnerLogin", true);
+        intent.putExtra("isOwnerLogin", isOwnerLogin);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
