@@ -20,7 +20,7 @@ import com.officego.commonlib.common.message.ViewingDateStatusInfo;
 import com.officego.commonlib.common.message.ViewingDateStatusProvider;
 import com.officego.commonlib.common.message.WeChatInfo;
 import com.officego.commonlib.common.message.WeChatProvider;
-import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.constant.AppConfig;
 import com.officego.commonlib.utils.log.LogCat;
 
 import io.rong.imkit.RongIM;
@@ -90,7 +90,7 @@ public class IMManager {
 
     //融云初始化
     private void initRongIM(Context context) {
-        RongIM.init(context, Constants.RC_APPKEY, true);
+        RongIM.init(context, AppConfig.RC_APPKEY, true);
     }
 
     private void initMessageType() {

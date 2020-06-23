@@ -20,6 +20,9 @@ public class AppConfig extends BaseConfig {
     public static String H5_OWNER_BUILDINGlIST = "";//房源管理
     public static String H5_OWNER_idify = "";//认证
 
+    public static String RC_APPKEY = "";
+    public static String RC_APPSECRET = "";
+
     @Override
     protected void initTest(Context context, String env) {
         APP_URL = "http://admin.officego.com.cn/";
@@ -32,6 +35,10 @@ public class AppConfig extends BaseConfig {
 
         H5_OWNER_BUILDINGlIST = "http://test.officego.com.cn/owner/branchList.html";
         H5_OWNER_idify = "https://test.officego.com//owner/myHome.html";
+
+        //融云IM test
+        RC_APPKEY = "kj7swf8oknm02";
+        RC_APPSECRET = "OF78PpILjjRk4";
     }
 
     @Override
@@ -45,5 +52,9 @@ public class AppConfig extends BaseConfig {
 
         H5_OWNER_BUILDINGlIST = "http://m.officego.com.cn/owner/branchList.html";
         H5_OWNER_idify = "https://m.officego.com//owner/myHome.html";
+
+        //融云IM release
+        RC_APPKEY = "qf3d5gbjq94mh";
+        RC_APPSECRET = "xtDkNCjJse";
     }
 }

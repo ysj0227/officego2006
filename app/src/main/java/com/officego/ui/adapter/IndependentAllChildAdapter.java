@@ -58,7 +58,7 @@ public class IndependentAllChildAdapter extends CommonListAdapter<BuildingDetail
         tvItemListChildLeftUp.setText(bean.getArea() + "㎡");
         tvItemListChildLeftDown.setText("最多" + seats + "个工位");
         tvItemListChildCenterUp.setText(Html.fromHtml("<font color='#46C3C2'>¥" + bean.getDayPrice() + "</font>/㎡/天"));
-        tvItemListChildCenterDown.setText(bean.getMonthPrice() + "/月");
+        tvItemListChildCenterDown.setText("¥"+bean.getMonthPrice() + "/月");
         tvItemListChildRightUp.setText(bean.getDecoration());
         tvItemListChildRightUp.setTextColor(ContextCompat.getColor(context, R.color.common_blue_main));
         tvItemListChildRightDown.setText(bean.getFloor() + "楼");

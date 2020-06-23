@@ -23,7 +23,7 @@ import com.officego.commonlib.common.message.ViewingDateStatusInfo;
 import com.officego.commonlib.common.message.ViewingDateStatusProvider;
 import com.officego.commonlib.common.message.WeChatInfo;
 import com.officego.commonlib.common.message.WeChatProvider;
-import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.constant.AppConfig;
 import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.dialog.CommonDialog;
 
@@ -94,7 +94,7 @@ public class IMManager {
 
     //融云初始化
     private void initRongIM(Context context) {
-        RongIM.init(context, Constants.RC_APPKEY, true);
+        RongIM.init(context, AppConfig.RC_APPKEY, true);
     }
 
     private void initMessageType() {
@@ -281,6 +281,7 @@ public class IMManager {
         mainHandler.post(() -> Toast.makeText(context, "账号已在其他设备登录", Toast.LENGTH_LONG).show());
 
     }
+
     //踢出跳转登录
     private void kickDialog(Context context) {
         Handler mainHandler = new Handler(Looper.getMainLooper());

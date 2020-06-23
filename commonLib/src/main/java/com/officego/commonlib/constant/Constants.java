@@ -28,12 +28,6 @@ public class Constants {
     public static final String WX_DATA = "WX_DATA";
     //倒计时
     public final static int SMS_TIME = 6_1000;
-    //融云IM test
-    public final static String RC_APPKEY = "kj7swf8oknm02";
-    public final static String RC_APPSECRET = "OF78PpILjjRk4";
-    //融云IM release
-//    public final static String RC_APPKEY = "qf3d5gbjq94mh";
-//    public final static String RC_APPSECRET = "xtDkNCjJse";
 
     //租户
     public final static String TYPE_TENANT = "0";
