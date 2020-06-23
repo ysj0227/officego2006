@@ -148,7 +148,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
 
     @Click(R.id.rl_service)
     void serviceClick() {
-        callPhone("15981968964");
+        callPhone(Constants.SERVICE_HOT_MOBILE);
     }
 
     @Click(R.id.rl_protocol)

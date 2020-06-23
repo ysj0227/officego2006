@@ -14,7 +14,7 @@ import com.officego.commonlib.view.ClearableEditText;
 import com.owner.R;
 import com.owner.mine.contract.ModifyMobileContract;
 import com.owner.mine.presenter.ModifyMobilePresenter;
-import com.owner.utils.GotoActivityUtils;
+import com.officego.commonlib.common.GotoActivityUtils;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -54,7 +54,11 @@ public class ModifyMobileActivity extends BaseMvpActivity<ModifyMobilePresenter>
         StatusBarUtils.setStatusBarColor(this);
         mPresenter = new ModifyMobilePresenter();
         mPresenter.attachView(this);
-        tvMobile.setText("当前手机号：" + SpUtils.getPhoneNum());
+        String mobile = SpUtils.getPhoneNum();
+        if (!TextUtils.isEmpty(mobile) && mobile.length() == 11) {
+            String phoneNumber = mobile.substring(0, 3) + "****" + mobile.substring(7);
+            tvMobile.setText("当前手机号：" + phoneNumber);
+        }
     }
 
     @Click(resName = "tv_send_code")
@@ -104,7 +108,7 @@ public class ModifyMobileActivity extends BaseMvpActivity<ModifyMobilePresenter>
     @Override
     public void modifyMobileSuccess() {
         //重新登录
-        GotoActivityUtils.loginClearActivity(context,true);
+        GotoActivityUtils.loginClearActivity(context, true);
     }
 
     //倒计时函数

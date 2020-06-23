@@ -13,7 +13,7 @@ import com.officego.commonlib.ViewHolder;
 import com.officego.commonlib.utils.DateTimeUtils;
 import com.owner.R;
 import com.owner.schedule.model.ViewingDateBean;
-import com.owner.utils.GotoActivityUtils;
+import com.officego.commonlib.common.GotoActivityUtils;
 
 import java.util.List;
 

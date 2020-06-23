@@ -29,6 +29,7 @@ import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.TitleBarView;
 import com.officego.commonlib.view.webview.SMWebChromeClient;
 import com.officego.commonlib.view.webview.SMWebViewClient;
@@ -121,22 +122,28 @@ public class WebViewIdifyActivity extends BaseActivity {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
+                LogCat.e(TAG, "onPageStarted");
                 webViewUrl = url;
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
+                LogCat.e(TAG, "onPageFinished");
             }
 
             @Override
             protected void receiverError(WebView view, WebResourceRequest request, WebResourceError error) {
+                titleBar.setVisibility(View.VISIBLE);
                 exceptionPageError(view, request);
+                LogCat.e(TAG, "receiverError");
             }
 
             @Override
             public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+                titleBar.setVisibility(View.VISIBLE);
                 exceptionPageHttpError(view, errorResponse);
+                LogCat.e(TAG, "onReceivedHttpError");
                 super.onReceivedHttpError(view, request, errorResponse);
             }
         });
@@ -174,12 +181,10 @@ public class WebViewIdifyActivity extends BaseActivity {
                 shortTip(getString(R.string.str_check_net));
                 return;
             }
-            titleBar.setVisibility(View.GONE);
             webView.setVisibility(View.VISIBLE);
             rlException.setVisibility(View.GONE);
             view.clearCache(true);
             view.clearHistory();
-            webView.loadUrl(AppConfig.H5_OWNER_idify);
             if (TextUtils.isEmpty(webViewUrl)) {
                 webView.loadUrl(AppConfig.H5_OWNER_idify);
             } else {

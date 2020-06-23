@@ -11,16 +11,13 @@
     <RelativeLayout
         android:id="@+id/rl_title"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_60"
-        android:background="@color/white"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent">
+        android:layout_height="wrap_content"
+        android:background="@color/common_blue_main">
 
         <RelativeLayout
             style="@style/marginLeftRight18"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_55"
+            android:layout_height="@dimen/dp_60"
             android:layout_alignParentBottom="true">
 
             <LinearLayout
@@ -50,7 +47,7 @@
                 android:singleLine="true"
                 android:text="行程"
                 android:textAllCaps="true"
-                android:textColor="@color/text_33"
+                android:textColor="@color/white"
                 android:textSize="@dimen/sp_16"
                 android:textStyle="bold" />
 
@@ -63,7 +60,7 @@
                 android:drawableEnd="@mipmap/ic_return_today"
                 android:drawablePadding="@dimen/dp_6"
                 android:text="@string/str_appointment_record"
-                android:textColor="@color/text_33"
+                android:textColor="@color/white"
                 android:textSize="@dimen/sp_12"
                 tools:ignore="RelativeOverlap" />
         </RelativeLayout>
@@ -185,7 +182,7 @@
             android:layout_gravity="bottom"
             android:layout_marginBottom="@dimen/dp_90"
             android:drawableTop="@mipmap/ic_empty"
-            android:drawablePadding="@dimen/dp_6"
+            android:drawablePadding="@dimen/dp_2"
             android:gravity="center"
             android:text="@string/tip_current_no_data"
             android:textColor="@color/text_caption"

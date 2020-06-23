@@ -1,7 +1,11 @@
 package com.officego.ui;
 
 import android.annotation.SuppressLint;
+import android.os.Bundle;
+import android.text.TextUtils;
 import android.widget.RadioButton;
+
+import androidx.annotation.Nullable;
 
 import com.officego.MainActivity_;
 import com.officego.R;
@@ -9,7 +13,6 @@ import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.ui.login.LoginActivity_;
 
 import org.androidannotations.annotations.AfterViews;
@@ -30,6 +33,19 @@ public class IdSelectActivity extends BaseActivity {
     @ViewById(R.id.ib_house_owner)
     RadioButton ibOwner;
 
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        //when app kill, reboot open app
+        if (!TextUtils.isEmpty(SpUtils.getRole())) {
+            if (TextUtils.equals(Constants.TYPE_TENANT, SpUtils.getRole())) {
+                MainActivity_.intent(context).start();
+            } else {
+                LoginActivity_.intent(context).start();
+            }
+        }
+    }
+
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarColor(this);
@@ -43,6 +59,7 @@ public class IdSelectActivity extends BaseActivity {
         ibTenant.setBackgroundResource(R.mipmap.ic_tenant_check);
         ibOwner.setBackgroundResource(R.mipmap.ic_owner);
         SpUtils.saveRole(Constants.TYPE_TENANT);
+        //租户首次不登录进入首页
         MainActivity_.intent(context).start();
     }
 

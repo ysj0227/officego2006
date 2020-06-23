@@ -297,6 +297,7 @@
             android:textSize="@dimen/sp_12" />
 
         <TextView
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_15"
@@ -306,6 +307,7 @@
             android:textSize="@dimen/sp_12" />
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/tv_promote_slogan"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

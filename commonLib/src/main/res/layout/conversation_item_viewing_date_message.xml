@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rl_layout"
-    android:layout_width="@dimen/dp_230"
+    android:layout_width="@dimen/dp_250"
     android:layout_height="wrap_content"
     android:background="@drawable/bg_solid_white_corner12"
     android:orientation="vertical">
@@ -25,14 +25,14 @@
         <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_toEndOf="@id/iv_icon">
+            android:layout_toEndOf="@id/iv_icon"
+            android:paddingStart="@dimen/dp_20">
             <!--    自己显示的布局-->
             <TextView
                 android:id="@+id/tv_content"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_10"
-                android:paddingStart="@dimen/dp_20"
                 android:paddingEnd="@dimen/dp_10"
                 android:textColor="@color/text_33"
                 android:textSize="@dimen/sp_12" />
@@ -43,7 +43,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_content"
                 android:layout_marginTop="@dimen/dp_4"
-                android:paddingStart="@dimen/dp_20"
                 android:paddingEnd="@dimen/dp_10"
                 android:textColor="@color/text_33"
                 android:textSize="@dimen/sp_12" />
@@ -54,7 +53,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/tv_building_name"
                 android:layout_marginTop="@dimen/dp_8"
-                android:paddingStart="@dimen/dp_20"
                 android:paddingEnd="@dimen/dp_10"
                 android:textColor="@color/text_33"
                 android:textSize="@dimen/sp_12" />
@@ -66,7 +64,6 @@
                 android:layout_below="@id/tv_address"
                 android:layout_marginTop="@dimen/dp_8"
                 android:layout_marginBottom="@dimen/dp_10"
-                android:paddingStart="@dimen/dp_20"
                 android:paddingEnd="@dimen/dp_10"
                 android:textColor="@color/common_blue_main"
                 android:textSize="@dimen/sp_12" />

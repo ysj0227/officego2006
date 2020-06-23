@@ -6,6 +6,8 @@ import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
+import com.officego.commonlib.R;
+import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.message.BuildingInfo;
 import com.officego.commonlib.common.message.BuildingProvider;
@@ -23,6 +25,7 @@ import com.officego.commonlib.common.message.WeChatInfo;
 import com.officego.commonlib.common.message.WeChatProvider;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.log.LogCat;
+import com.officego.commonlib.view.dialog.CommonDialog;
 
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
@@ -262,11 +265,11 @@ public class IMManager {
                 LogCat.e(TAG, "ConnectionStatus onChanged = " + connectionStatus.getMessage() + " rcToken=" + SpUtils.getRongToken());
                 if (connectionStatus.equals(ConnectionStatus.KICKED_OFFLINE_BY_OTHER_CLIENT)) {
                     //被其他提出时，需要返回登录界面 剔除其他登录
-                    toast(context);
-                    // LoginActivity_.intent(context).start();
+                    //toast(context);
+                    kickDialog(context);
                 } else if (connectionStatus == ConnectionStatus.TOKEN_INCORRECT) {
                     //token 错误时，重新登录
-                    Toast.makeText(context, "rong cloud token 错误", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(context, "融云token错误", Toast.LENGTH_SHORT).show();
                     //LoginActivity_.intent(context).start();
                 }
             }
@@ -276,6 +279,22 @@ public class IMManager {
     private void toast(Context context) {
         Handler mainHandler = new Handler(Looper.getMainLooper());
         mainHandler.post(() -> Toast.makeText(context, "账号已在其他设备登录", Toast.LENGTH_LONG).show());
+
+    }
+    //踢出跳转登录
+    private void kickDialog(Context context) {
+        Handler mainHandler = new Handler(Looper.getMainLooper());
+        mainHandler.post(() -> {
+            CommonDialog dialog = new CommonDialog.Builder(context)
+                    .setTitle("账号已在其他设备登录\n请重新登录")
+                    .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
+                        SpUtils.clearLoginInfo();
+                        GotoActivityUtils.loginClearActivity(context);
+                        dialog12.dismiss();
+                    }).create();
+            dialog.showWithOutTouchable(false);
+            dialog.setCancelable(false);
+        });
     }
 
     private void initSendReceiveMessageListener() {

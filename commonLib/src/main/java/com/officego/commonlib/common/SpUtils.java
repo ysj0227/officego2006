@@ -34,7 +34,6 @@ public class SpUtils {
         SpUtils.saveRongToken(data.getRongyuntoken());
         SpUtils.saveHeaderImg(data.getAvatar());
         SpUtils.saveNickName(data.getNickName());
-//        SpUtils.saveRole(data.getRid() + "");
     }
 
     //clear用户登录信息
@@ -46,7 +45,6 @@ public class SpUtils {
         SharedManager.clearValue(BaseApplication.getContext(), HEADER_IMG);
         SharedManager.clearValue(BaseApplication.getContext(), NICK_NAME);
         SharedManager.clearValue(BaseApplication.getContext(), CHAT_INSERT_BUILDING_INFO);
-//        SharedManager.clearValue(BaseApplication.getContext(), LOGIN_ROLE);
     }
 
     //uid

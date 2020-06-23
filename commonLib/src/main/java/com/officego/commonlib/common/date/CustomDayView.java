@@ -79,7 +79,8 @@ public class CustomDayView extends DayView {
             dateTv.setTextColor(Color.WHITE);
         } else if (state == State.NEXT_MONTH || state == State.PAST_MONTH) {
             selectedBackground.setVisibility(GONE);
-            dateTv.setTextColor(Color.parseColor("#d5d5d5"));
+//            dateTv.setTextColor(Color.parseColor("#d5d5d5"));
+            dateTv.setTextColor(Color.parseColor("#979797"));
         } else {
             selectedBackground.setVisibility(GONE);
             if (TextUtils.equals("今", dateTv.getText().toString())) {

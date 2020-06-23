@@ -27,14 +27,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
+import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.IVideoPlayer;
 import com.officego.commonlib.view.LabelsView;
+import com.officego.commonlib.view.RoundImageView;
 import com.officego.commonlib.view.dialog.CommonDialog;
-import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.model.ShareBean;
 import com.officego.ui.adapter.HouseItemAllAdapter;
 import com.officego.ui.adapter.JointWorkAllChildAdapter;
@@ -51,7 +52,6 @@ import com.officego.ui.home.model.ConditionBean;
 import com.officego.ui.home.presenter.BuildingDetailsJointWorkPresenter;
 import com.officego.utils.ImageLoaderUtils;
 import com.officego.utils.WeChatUtils;
-import com.officego.commonlib.view.RoundImageView;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -428,7 +428,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
             return;
         }
         if (mData != null) {
-            String dec = "¥" + mData.getBuilding().getOpenStationMap().getDayPrice() + "/月起";
+            String dec = mData.getBuilding().getAddress();
             ShareBean bean = new ShareBean();
             bean.setbType(mBuildingBean.getBtype());
             bean.setId("buildingId=" + mData.getBuilding().getBuildingId());
@@ -457,7 +457,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
             return;
         }
         CommonDialog dialog = new CommonDialog.Builder(context)
-                .setTitle("请从房源列表找业主聊天")
+                .setTitle("请从房源列表详情找业主聊")
                 .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
                     dialog12.dismiss();
                     scrollViewY();
@@ -858,7 +858,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         tvStoreyHeight.setText(TextUtils.isEmpty(data.getIntroduction().getStoreyHeight()) ?
                 getResources().getString(R.string.str_text_line) : data.getIntroduction().getStoreyHeight() + "米");
         tvLift.setText(data.getIntroduction().getPassengerLift() == null ? getResources().getString(R.string.str_text_line) : data.getIntroduction().getPassengerLift() + "客梯" +
-                        (data.getIntroduction().getCargoLift() == null ? getResources().getString(R.string.str_text_line) : data.getIntroduction().getCargoLift() + "货梯"));
+                (data.getIntroduction().getCargoLift() == null ? getResources().getString(R.string.str_text_line) : data.getIntroduction().getCargoLift() + "货梯"));
         tvParkingSpace.setText(TextUtils.isEmpty(data.getIntroduction().getParkingSpace()) ?
                 getResources().getString(R.string.str_text_line) : data.getIntroduction().getParkingSpace() + "个");
         tvParkingSpaceRent.setText(TextUtils.isEmpty(data.getIntroduction().getParkingSpaceRent()) ?
@@ -945,6 +945,12 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         //video url
         if (data.getVideoUrl() != null && data.getVideoUrl().size() > 0) {
             videoUrl = data.getVideoUrl().get(0).getImgUrl();
+        } else {
+            //没有视频只显示轮播图
+            ctlVideoPlay.setVisibility(View.GONE);
+            bannerImage.setVisibility(View.VISIBLE);
+            centerPlayIsShow(false);
+            radioGroupIsShow(false);
         }
         //是否收藏
         isFavorite = data.isIsFavorite();

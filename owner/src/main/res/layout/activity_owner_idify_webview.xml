@@ -12,9 +12,9 @@
         android:background="@color/c_white"
         android:visibility="gone"
         app:dividerShow="true"
-        app:titleText="认证"
         app:leftDefaultClickEnable="true"
         app:leftIcon="@drawable/ic_back_dark"
+        app:titleText="认证"
         app:titleTextColor="@color/text_main" />
 
     <WebView
@@ -23,6 +23,10 @@
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/dp_40" />
 
-    <include layout="@layout/include_exception" />
+    <include
+        layout="@layout/include_exception"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title_bar" />
 
 </RelativeLayout>

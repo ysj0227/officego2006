@@ -2,6 +2,8 @@ package com.owner.mine;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.text.TextUtils;
+import android.widget.TextView;
 
 import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.LoginBean;
@@ -16,11 +18,12 @@ import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
 import com.owner.rpc.OfficegoApi;
 import com.owner.update.AppUpdate;
-import com.owner.utils.GotoActivityUtils;
+import com.officego.commonlib.common.GotoActivityUtils;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
 
 /**
  * Created by YangShiJie
@@ -30,10 +33,17 @@ import org.androidannotations.annotations.EActivity;
 @SuppressLint("Registered")
 @EActivity(resName = "mine_owner_activity_setting")
 public class MineSettingActivity extends BaseActivity {
+    @ViewById(resName = "tv_mobile")
+    TextView tvMobile;
 
     @AfterViews
     void init() {
-        StatusBarUtils.setStatusBarColor(this, StatusBarUtils.TYPE_DARK);
+        StatusBarUtils.setStatusBarColor(this);
+        String mobile = SpUtils.getPhoneNum();
+        if (!TextUtils.isEmpty(mobile) && mobile.length() == 11) {
+            String phoneNumber = mobile.substring(0, 3) + "****" + mobile.substring(7);
+            tvMobile.setText(phoneNumber);
+        }
     }
 
     @Click(resName = "rl_mobile")
@@ -124,7 +134,7 @@ public class MineSettingActivity extends BaseActivity {
 
             @Override
             public void onFail(int code, String msg, LoginBean data) {
-                LogCat.e(TAG, "switchId onFail code=" + code + "  msg=" + msg);
+                LogCat.e(TAG, "switchId owner onFail code=" + code + "  msg=" + msg);
                 hideLoadingDialog();
                 if (code == Constants.DEFAULT_ERROR_CODE || code == Constants.ERROR_CODE_5009) {
                     shortTip(msg);

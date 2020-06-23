@@ -1,5 +1,6 @@
 package com.owner.mine;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
@@ -130,7 +131,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
 
     @Click(resName = "rl_service")
     void serviceClick() {
-        callPhone("15981968964");
+        callPhone(Constants.SERVICE_HOT_MOBILE);
     }
 
     @Click(resName = "rl_protocol")
@@ -155,6 +156,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         startActivity(intent);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void userInfoSuccess(UserOwnerBean data) {
         if (data != null) {
@@ -197,7 +199,6 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
             dialog = new CommonDialog.Builder(mActivity)
                     .setTitle(idify(data) + "\n请您先认证信息")
                     .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
-                        shortTip("跳转H5认证");
                         WebViewIdifyActivity_.intent(mActivity).start();
                         dialog.dismiss();
                         dialog = null;
@@ -216,10 +217,14 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
             id = "个人";
         } else if (data.getIdentityType() == 1) {
             id = "企业";
+        } else if (data.getIdentityType() == 2) {
+            id = "联办";
         } else {
-            id = "联合办公";
+            id = "";
         }
-        if (data.getAuditStatus() == 1) {
+        if (data.getAuditStatus() == 0) {
+            status = "待认证";
+        } else if (data.getAuditStatus() == 1) {
             status = "已认证";
         } else {
             status = "未认证";

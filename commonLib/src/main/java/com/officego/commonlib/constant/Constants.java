@@ -21,13 +21,11 @@ public class Constants {
     public static final int ERROR_CODE_666 = 666;//需要统一抛出提示的状态码
 
     //微信
-//    public static final String APP_ID = "wx1c9f0ee3abf3b5e8";//本人
     public static final String APP_ID = "wx70ee9e90c1d62d83";//线上
-    public static final String APP_SECRET = "b6e61dec5b24b9d5b0defc7865430cc4";
+    public static final String APP_SECRET = "acfe3227435a5698455f81294a7b078e";
     //微信传值
     public static final String WX_TYPE = "WX_TYPE";
     public static final String WX_DATA = "WX_DATA";
-
     //倒计时
     public final static int SMS_TIME = 6_1000;
     //融云IM
@@ -47,4 +45,6 @@ public class Constants {
     public final static int H5_ABOUTS = 2;
     public final static int H5_SERVICE = 4;
     public final static int H5_OWNER_IDIFY = 5;
+
+    public static final String SERVICE_HOT_MOBILE = "15981968964";
 }

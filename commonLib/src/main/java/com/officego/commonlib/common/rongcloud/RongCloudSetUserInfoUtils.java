@@ -1,8 +1,7 @@
 package com.officego.commonlib.common.rongcloud;
 
 import android.net.Uri;
-
-import com.officego.commonlib.utils.log.LogCat;
+import android.text.TextUtils;
 
 import io.rong.imkit.RongIM;
 import io.rong.imlib.model.UserInfo;
@@ -22,7 +21,7 @@ public class RongCloudSetUserInfoUtils {
      * @param imgUrl 用户头像
      */
     public static void refreshUserInfoCache(String id, String name, String imgUrl) {
-        LogCat.e("TAG", "11111 id=" + id + " name=" + name + " url=" + imgUrl);
+        if (TextUtils.isEmpty(id)) return;
         UserInfo userInfo = new UserInfo(id, name, Uri.parse(imgUrl));
         RongIM.getInstance().refreshUserInfoCache(userInfo);
     }

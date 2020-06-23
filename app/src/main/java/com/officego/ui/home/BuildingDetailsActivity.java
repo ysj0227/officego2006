@@ -379,8 +379,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             return;
         }
         if (mData != null) {
-            String dec = mData.getBuilding().getMinArea() + "~" + mData.getBuilding().getMaxArea() + "㎡\n" +
-                    "¥" + mData.getBuilding().getMinDayPrice() + "/㎡/天起";
+            String dec = mData.getBuilding().getAddress();
             ShareBean bean = new ShareBean();
             bean.setbType(mBuildingBean.getBtype());
             bean.setId("buildingId=" + mData.getBuilding().getBuildingId());
@@ -409,7 +408,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             return;
         }
         CommonDialog dialog = new CommonDialog.Builder(context)
-                .setTitle("请从房源列表进入找业主聊天")
+                .setTitle("请从房源列表详情找业主聊")
                 .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
                     dialog12.dismiss();
                     scrollViewY();
@@ -790,6 +789,12 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         mData = data;
         if (data.getVideoUrl() != null && data.getVideoUrl().size() > 0) {
             videoUrl = data.getVideoUrl().get(0).getImgUrl();
+        } else {
+            //没有视频只显示轮播图
+            ctlVideoPlay.setVisibility(View.GONE);
+            bannerImage.setVisibility(View.VISIBLE);
+            centerPlayIsShow(false);
+            radioGroupIsShow(false);
         }
         //是否收藏
         isFavorite = data.isIsFavorite();

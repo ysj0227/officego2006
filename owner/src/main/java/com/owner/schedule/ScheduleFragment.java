@@ -1,11 +1,11 @@
 package com.owner.schedule;
 
-import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -43,24 +43,21 @@ import java.util.List;
 @EFragment(resName = "schedule_fragment")
 public class ScheduleFragment extends BaseMvpFragment<ViewingDatePresenter>
         implements ViewingDateContract.View {
-    CoordinatorLayout content;
-    View llRootView;
-    MonthPager monthPager;
-    RecyclerView rvToDoList;
-    TextView tvCurrentDate;
-    TextView tvAppointmentRecord;
-    TextView tvNoData;
-
+    private RelativeLayout rlTitle;
+    private MonthPager monthPager;
+    private RecyclerView rvToDoList;
+    private TextView tvCurrentDate;
+    private TextView tvAppointmentRecord;
+    private TextView tvNoData;
 
     private ArrayList<Calendar> currentCalendars = new ArrayList<>();
     private CalendarViewAdapter calendarAdapter;
     private OnSelectDateListener onSelectDateListener;
     private int mCurrentPage = MonthPager.CURRENT_DAY_INDEX;
-    private Context context;
     private CalendarDate currentDate;
     private boolean initiated = false;
     //adapter
-    ViewingDateAdapter viewingDateAdapter;
+    private ViewingDateAdapter viewingDateAdapter;
     //数据列表
     private List<ViewingDateBean.DataBean> viewingDateAllList = new ArrayList<>();
     //某天数据列表
@@ -74,19 +71,20 @@ public class ScheduleFragment extends BaseMvpFragment<ViewingDatePresenter>
 
     @AfterViews
     void init() {
-        StatusBarUtils.setStatusBarColor(mActivity);
+        StatusBarUtils.setStatusBarFullTransparent(mActivity);
         mPresenter = new ViewingDatePresenter();
         mPresenter.attachView(this);
-        context = mActivity;
+        rlTitle = mActivity.findViewById(R.id.rl_title);
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) rlTitle.getLayoutParams();
+        params.width = LinearLayout.LayoutParams.MATCH_PARENT;
+        params.height = CommonHelper.statusHeight(mActivity) + CommonHelper.dp2px(mActivity, 60);
+        rlTitle.setLayoutParams(params);
         tvCurrentDate = mActivity.findViewById(R.id.tv_current_date);
         tvNoData = mActivity.findViewById(R.id.tv_no_data);
-        llRootView = mActivity.findViewById(R.id.ll_root_view);
-        llRootView.setPadding(0, CommonHelper.statusHeight(mActivity), 0, 0);
         tvAppointmentRecord = mActivity.findViewById(R.id.tv_appointment_record);
-        content = mActivity.findViewById(R.id.content);
         monthPager = mActivity.findViewById(R.id.calendar_view);
         //此处强行setViewHeight，毕竟你知道你的日历牌的高度
-        monthPager.setViewHeight(Utils.dpi2px(context, 270));
+        monthPager.setViewHeight(Utils.dpi2px(mActivity, 270));
         rvToDoList = mActivity.findViewById(R.id.rv_viewing_date);
         rvToDoList.setHasFixedSize(true);
         rvToDoList.setLayoutManager(new LinearLayoutManager(mActivity));
@@ -179,9 +177,9 @@ public class ScheduleFragment extends BaseMvpFragment<ViewingDatePresenter>
      */
     private void initCalendarView() {
         initListener();
-        CustomDayView customDayView = new CustomDayView(context, R.layout.date_custom_day);
+        CustomDayView customDayView = new CustomDayView(mActivity, R.layout.date_custom_day);
         calendarAdapter = new CalendarViewAdapter(
-                context,
+                mActivity,
                 onSelectDateListener,
                 CalendarAttr.CalendarType.MONTH,
                 CalendarAttr.WeekArrayType.Monday,
@@ -308,7 +306,7 @@ public class ScheduleFragment extends BaseMvpFragment<ViewingDatePresenter>
     }
 
     private void refreshSelectBackground() {
-        ThemeDayView themeDayView = new ThemeDayView(context, R.layout.date_custom_day_focus);
+        ThemeDayView themeDayView = new ThemeDayView(mActivity, R.layout.date_custom_day_focus);
         calendarAdapter.setCustomDayRenderer(themeDayView);
         calendarAdapter.notifyDataSetChanged();
         calendarAdapter.notifyDataChanged(new CalendarDate());

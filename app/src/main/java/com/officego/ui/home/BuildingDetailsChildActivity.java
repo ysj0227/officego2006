@@ -279,9 +279,7 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
             return;
         }
         if (mData != null) {
-            String dec = mData.getHouse().getArea() + "㎡\n" +
-                    "¥" + mData.getHouse().getMonthPrice() + "/月\n" +
-                    mData.getHouse().getDecoration();
+            String dec = mData.getHouse().getDecoration() +  "\n" + mData.getHouse().getAddress();
             ShareBean bean = new ShareBean();
             bean.setbType(mData.getHouse().getBtype());
             bean.setId("buildingId=" + mData.getHouse().getBuildingId() + "&houseId=" + mData.getHouse().getId());

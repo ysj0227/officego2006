@@ -3,7 +3,6 @@ package com.officego.ui.mine;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
-import android.text.TextUtils;
 
 import com.officego.R;
 import com.officego.commonlib.base.BaseActivity;
@@ -19,7 +18,7 @@ import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.rpc.OfficegoApi;
 import com.officego.update.AppUpdate;
 import com.owner.MainOwnerActivity_;
-import com.owner.utils.GotoActivityUtils;
+import com.officego.commonlib.common.GotoActivityUtils;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -37,7 +36,7 @@ import org.androidannotations.annotations.EActivity;
 public class MineSettingActivity extends BaseActivity {
     @AfterViews
     void init() {
-        StatusBarUtils.setStatusBarColor(this, StatusBarUtils.TYPE_DARK);
+        StatusBarUtils.setStatusBarColor(this);
     }
 
     @Click(R.id.rl_version_update)
@@ -54,7 +53,7 @@ public class MineSettingActivity extends BaseActivity {
         CommonDialog dialog = new CommonDialog.Builder(context)
                 .setTitle(R.string.are_you_sure_switch_owner)
                 .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
-                    switchId(TextUtils.equals(Constants.TYPE_TENANT, SpUtils.getRole()) ? Constants.TYPE_OWNER : Constants.TYPE_TENANT);
+                    switchId(Constants.TYPE_OWNER);
                 })
                 .setCancelButton(R.string.sm_cancel, (dialog1, which) -> dialog1.dismiss()).create();
         dialog.showWithOutTouchable(false);
