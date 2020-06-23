@@ -93,6 +93,9 @@ public class WebViewIdifyActivity extends BaseActivity {
 
     @SuppressLint("SetJavaScriptEnabled")
     private void loadWebView(String url) {
+        String postData = String.format("rongyuntoken=%s&token=%s",SpUtils.getRongToken(),SpUtils.getSignToken());
+        webView.postUrl(url, postData.getBytes());
+
         WebSettings webSetting = webView.getSettings();
         webSetting.setJavaScriptEnabled(true);
         webSetting.setAllowUniversalAccessFromFileURLs(true);
@@ -111,7 +114,7 @@ public class WebViewIdifyActivity extends BaseActivity {
 //        webView.setWebChromeClient(new WebChromeClient());//
         webChrome = new SMWebChromeClient(this);
         webView.setWebChromeClient(webChrome);
-        webView.loadUrl(url);
+//        webView.loadUrl(url);
         webView.setWebViewClient(new SMWebViewClient(this) {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {

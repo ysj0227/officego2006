@@ -957,12 +957,12 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         isFavoriteView(data.isIsFavorite());
         //大楼信息
         if (data.getBuilding() != null) {
-            if (data.getBuilding().isOpenStationFlag()) {
+            if (data.getBuilding().isOpenStationFlag() && data.getBuilding().getOpenStationMap() != null) {
                 ctlOpenWork.setVisibility(View.VISIBLE);
                 rlOpenWorkModel.setVisibility(View.VISIBLE);
-                tvOpenWorkModelNum.setText(data.getBuilding().getOpenStationMap().getMinimumLease() + "位可租");
                 tvOpenWorkModelText.setText(R.string.str_work_num);
-                tvMinMonth.setText("6个月起租");
+                tvOpenWorkModelNum.setText(data.getBuilding().getOpenStationMap().getSeats() + "工位");
+                tvMinMonth.setText(data.getBuilding().getOpenStationMap().getMinimumLease() + "个月起租");
                 tvOpenWorkModelPrice.setText(Html.fromHtml("<font color='#46C3C2'>¥" + data.getBuilding().getOpenStationMap().getDayPrice() + "</font>/位/月"));
                 Glide.with(context).load(data.getBuilding().getOpenStationMap().getMainPic()).into(ivOpenWorkImg);
             } else {

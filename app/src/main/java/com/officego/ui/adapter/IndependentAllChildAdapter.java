@@ -61,7 +61,7 @@ public class IndependentAllChildAdapter extends CommonListAdapter<BuildingDetail
         tvItemListChildCenterDown.setText(bean.getMonthPrice() + "/月");
         tvItemListChildRightUp.setText(bean.getDecoration());
         tvItemListChildRightUp.setTextColor(ContextCompat.getColor(context, R.color.common_blue_main));
-        tvItemListChildRightDown.setText("共" + bean.getFloor() + "层");
+        tvItemListChildRightDown.setText(bean.getFloor() + "楼");
 
         holder.itemView.setOnClickListener(v -> {
             BuildingDetailsChildActivity_.intent(context)

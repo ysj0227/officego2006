@@ -27,7 +27,7 @@
                 android:id="@+id/banner"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_300"
-                android:background="@mipmap/ic_test1"
+                android:background="@mipmap/ic_def_banner"
                 app:image_scale_type="center_crop"
                 app:indicator_drawable_selected="@mipmap/ic_banner_point_selected"
                 app:indicator_drawable_unselected="@mipmap/ic_banner_point_unselected"

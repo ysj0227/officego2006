@@ -12,6 +12,7 @@ import com.officego.R;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
 import com.officego.commonlib.utils.CommonHelper;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.LabelsView;
 import com.officego.commonlib.view.RoundImageView;
 import com.officego.model.LabelBean;
@@ -58,10 +59,10 @@ public class HouseAdapter extends CommonListAdapter<BuildingBean.ListBean> {
         TextView unit = holder.getView(R.id.tv_unit);
         //1:楼盘 写字楼,2:网点 联合办公
         if (bean.getBtype() == 1) {
-            price.setText("¥" + (bean.getMinDayPrice() == null ? "0" : bean.getMinDayPrice()));
+            price.setText("¥" + (bean.getMinDayPrice() == null ? "0.0" : bean.getMinDayPrice()));
             unit.setText("/m²/天起");
         } else if (bean.getBtype() == 2) {
-            price.setText("¥" + (bean.getSeatMonthPrice() == null ? "0" : bean.getSeatMonthPrice()));
+            price.setText("¥" + (bean.getSeatMonthPrice() == null ? "0.0" : bean.getSeatMonthPrice()));
             unit.setText("/位/月起");
         }
         addLabel(holder, bean);
@@ -90,14 +91,19 @@ public class HouseAdapter extends CommonListAdapter<BuildingBean.ListBean> {
             labelsView.setLabelTextPadding(8, 5, 8, 5);
             labelsView.setLabelTextColor(ContextCompat.getColor(context, R.color.white));
             labelsView.setLabelBackgroundResource(R.drawable.text_label_deep_blue);
-
+            LogCat.e("TAG", "111111 bean.getOpenStation()=" + bean.getOpenStation());
             ArrayList<LabelBean> officeList = new ArrayList<>();
             if (bean.getOpenStation() == 0 && bean.getIndependenceOffice() == 0) {
                 labelsView.setVisibility(View.GONE);
-            } else if (bean.getIndependenceOffice() > 0) {
+            } else if (bean.getOpenStation() == 0 && bean.getIndependenceOffice() > 0) {
                 labelsView.setVisibility(View.VISIBLE);
                 officeList.add(new LabelBean("独立办公室" + bean.getIndependenceOffice() + "间", 1));
-            } else if (bean.getOpenStation() > 0) {
+            } else if (bean.getOpenStation() > 0 && bean.getIndependenceOffice() == 0) {
+                labelsView.setVisibility(View.VISIBLE);
+                officeList.add(new LabelBean("开放工位" + bean.getOpenStation() + "个", 2));
+            } else {
+                labelsView.setVisibility(View.VISIBLE);
+                officeList.add(new LabelBean("独立办公室" + bean.getIndependenceOffice() + "间", 1));
                 officeList.add(new LabelBean("开放工位" + bean.getOpenStation() + "个", 2));
             }
             labelsView.setLabels(officeList, (label, position, data) -> data.getName());

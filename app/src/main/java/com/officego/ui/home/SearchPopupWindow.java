@@ -303,7 +303,7 @@ public class SearchPopupWindow extends PopupWindow implements
         Button btnClear = viewLayout.findViewById(R.id.btn_clear);
         Button btnSure = viewLayout.findViewById(R.id.btn_sure);
         //获取地铁数据
-        getSearchSubwayList( tvMeterText,  tvBusinessCircleText,recyclerViewCenter,tvMeterNum,recyclerViewRight);
+        getSearchSubwayList(tvMeterText, tvBusinessCircleText, recyclerViewCenter, tvMeterNum, recyclerViewRight);
         //初始化显示商圈
         getSearchDistrictList(tvBusinessCircleText, tvMeterText, recyclerViewCenter, tvBusinessCircleNum, recyclerViewRight);
 
@@ -344,14 +344,10 @@ public class SearchPopupWindow extends PopupWindow implements
                         tvMeterText.setTextColor(ContextCompat.getColor(mContext, R.color.text_33));
                         recyclerViewCenter.setAdapter(new BusinessCircleAdapter(mContext, tvBusinessCircleNum, businessCircleList, recyclerViewRight));
                     }
+                    clearData();
                     break;
                 case R.id.btn_sure://确定
-                    dismiss();
-                    if (isLine) {
-                        onSureClickListener.onSurePopUpWindow(isLine, mHashSetLine, mCheckStatesLine, line, nearbySubway);
-                    } else {
-                        onSureClickListener.onSurePopUpWindow(isLine, mHashSetBusiness, mCheckStatesBusiness, district, business);
-                    }
+                    clearData();
                     break;
                 default:
             }
@@ -360,6 +356,15 @@ public class SearchPopupWindow extends PopupWindow implements
         tvMeterText.setOnClickListener(clickListener);
         btnClear.setOnClickListener(clickListener);
         btnSure.setOnClickListener(clickListener);
+    }
+
+    private void clearData() {
+        dismiss();
+        if (isLine) {
+            onSureClickListener.onSurePopUpWindow(isLine, mHashSetLine, mCheckStatesLine, line, nearbySubway);
+        } else {
+            onSureClickListener.onSurePopUpWindow(isLine, mHashSetBusiness, mCheckStatesBusiness, district, business);
+        }
     }
 
     //地铁
@@ -529,11 +534,11 @@ public class SearchPopupWindow extends PopupWindow implements
         } else if (btype == 1) {
             rgHouseGroup.setVisibility(View.GONE);
             showConditionOfficeLayout(true, rvDecorationType, tvDecorationType,
-                    tvArea, sbpArea, sbpRent, sbpSimple, sbpRent2, sbpSimple2);
+                    tvArea, sbpArea, sbpRent, tvWorkstation, sbpSimple, sbpRent2, sbpSimple2);
         } else if (btype == 2) {
             rgHouseGroup.setVisibility(View.GONE);
             showConditionOfficeLayout(false, rvDecorationType, tvDecorationType,
-                    tvArea, sbpArea, sbpRent, sbpSimple, sbpRent2, sbpSimple2);
+                    tvArea, sbpArea, sbpRent, tvWorkstation, sbpSimple, sbpRent2, sbpSimple2);
         }
         //请求list
         getDecorationTypeList(rvDecorationType);
@@ -561,11 +566,11 @@ public class SearchPopupWindow extends PopupWindow implements
         sbpSimple2.setOnSeekBarChangeListener(listener, 4);
         rbOffice.setOnClickListener(v -> {
             showConditionOfficeLayout(true, rvDecorationType, tvDecorationType,
-                    tvArea, sbpArea, sbpRent, sbpSimple, sbpRent2, sbpSimple2);
+                    tvArea, sbpArea, sbpRent, tvWorkstation, sbpSimple, sbpRent2, sbpSimple2);
         });
         rbJointWork.setOnClickListener(v -> {
             showConditionOfficeLayout(false, rvDecorationType, tvDecorationType,
-                    tvArea, sbpArea, sbpRent, sbpSimple, sbpRent2, sbpSimple2);
+                    tvArea, sbpArea, sbpRent, tvWorkstation, sbpSimple, sbpRent2, sbpSimple2);
         });
         //clear
         btnClear.setOnClickListener(v -> {
@@ -591,20 +596,29 @@ public class SearchPopupWindow extends PopupWindow implements
             sbpRent2.setProgressHigh(100000);
             sbpSimple2.setProgressLow(0);
             sbpSimple2.setProgressHigh(20);
+            //清理
+            clearCondition(rbOffice);
         });
         btnSure.setOnClickListener(v -> {
-            dismiss();
-            String mArea, mRentPrice, mSimple;
-            btype = rbOffice.isChecked() ? 1 : 2;
-            mRentPrice = rbOffice.isChecked() ? rentPrice : rentPrice2;
-            mSimple = rbOffice.isChecked() ? simple : simple2;
-            mArea = rbOffice.isChecked() ? constructionArea : "";
-            onSureClickListener.onConditionPopUpWindow(mSearchType, btype, mArea, mRentPrice, mSimple, decoration, houseTags);
+            //清理
+            clearCondition(rbOffice);
         });
     }
 
+    private void clearCondition(RadioButton rbOffice) {
+        dismiss();
+        String mArea, mRentPrice, mSimple;
+        btype = rbOffice.isChecked() ? 1 : 2;
+        mRentPrice = rbOffice.isChecked() ? rentPrice : rentPrice2;
+        mSimple = rbOffice.isChecked() ? simple : simple2;
+        mArea = rbOffice.isChecked() ? constructionArea : "";
+        onSureClickListener.onConditionPopUpWindow(mSearchType, btype, mArea, mRentPrice, mSimple, decoration, houseTags);
+
+    }
+
+
     private void showConditionOfficeLayout(boolean isOffice, RecyclerView rvDecorationType, TextView tvDecorationType,
-                                           TextView tvArea, SeekBarPressure sbpArea, SeekBarPressure sbpRent,
+                                           TextView tvArea, SeekBarPressure sbpArea, SeekBarPressure sbpRent, TextView tvWorkstation,
                                            SeekBarPressure sbpSimple, SeekBarPressure sbpRent2, SeekBarPressure sbpSimple2) {
         if (isOffice) {
             tvDecorationType.setVisibility(View.VISIBLE);
@@ -612,6 +626,7 @@ public class SearchPopupWindow extends PopupWindow implements
             tvArea.setVisibility(View.VISIBLE);
             sbpArea.setVisibility(View.VISIBLE);
             sbpRent.setVisibility(View.VISIBLE);
+            tvWorkstation.setVisibility(View.GONE);// 办公室没有工位
             sbpSimple.setVisibility(View.GONE);// 办公室没有工位
             sbpRent2.setVisibility(View.GONE);
             sbpSimple2.setVisibility(View.GONE);
@@ -622,6 +637,7 @@ public class SearchPopupWindow extends PopupWindow implements
             sbpArea.setVisibility(View.GONE);
             sbpRent.setVisibility(View.GONE);
             sbpSimple.setVisibility(View.GONE);
+            tvWorkstation.setVisibility(View.VISIBLE);
             sbpRent2.setVisibility(View.VISIBLE);
             sbpSimple2.setVisibility(View.VISIBLE);
         }

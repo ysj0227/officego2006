@@ -30,12 +30,18 @@ android {
     buildTypes {
         debug {
             manifestPlaceholders = [
-                    GAO_MAP_KEY: "c80ca3ce3b15895e2f018f8f2cd99c84"]
+                    GAO_MAP_KEY : "c80ca3ce3b15895e2f018f8f2cd99c84",
+                    RONGCLOUD_APPKEY   : "kj7swf8oknm02",
+                    RONGCLOUD_APPSECRET: "OF78PpILjjRk4"
+            ]
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
             manifestPlaceholders = [
-                    GAO_MAP_KEY: "443a7ffc55db3d44dba621365618e3ee"]
+                    GAO_MAP_KEY : "443a7ffc55db3d44dba621365618e3ee",
+                    RONGCLOUD_APPKEY   : "qf3d5gbjq94mh",
+                    RONGCLOUD_APPSECRET: "xtDkNCjJse"
+            ]
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
@@ -93,7 +99,7 @@ dependencies {
     //label
     api "com.github.donkingliang:LabelsView:1.5.0"
     //banner
-    api'com.youth.banner:banner:1.4.10'
+    api 'com.youth.banner:banner:1.4.10'
     // ijkPlayer
     api 'tv.danmaku.ijk.media:ijkplayer-java:0.8.8'
     // ExoPlayer as IMediaPlayer: optional, experimental

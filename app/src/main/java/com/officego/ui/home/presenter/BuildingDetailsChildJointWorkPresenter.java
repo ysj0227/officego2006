@@ -3,6 +3,7 @@ package com.officego.ui.home.presenter;
 import android.content.Context;
 
 import com.officego.commonlib.base.BasePresenter;
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.log.LogCat;
 import com.officego.rpc.OfficegoApi;
@@ -65,6 +66,9 @@ public class BuildingDetailsChildJointWorkPresenter extends BasePresenter<Buildi
             public void onFail(int code, String msg, Object data) {
                 if (isViewAttached()) {
                     mView.hideLoadingDialog();
+                    if (code == Constants.DEFAULT_ERROR_CODE) {
+                        mView.shortTip(msg);
+                    }
                 }
             }
         });

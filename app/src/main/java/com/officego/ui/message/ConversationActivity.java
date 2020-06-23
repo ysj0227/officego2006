@@ -118,7 +118,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         if (data.getBuilding() != null) {
             refreshUserInfoCache(targetId, data.getChatted().getNickname(), data.getChatted().getAvatar());
             tvTitleName.setText(data.getChatted().getNickname());
-            tvJob.setText(data.getChatted().getCompany() + "-" + data.getChatted().getJob());
+            tvJob.setText(data.getChatted().getCompany()  + data.getChatted().getJob());
         }
 
         if (data.getBuilding() != null) {

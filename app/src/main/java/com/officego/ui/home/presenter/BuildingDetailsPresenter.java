@@ -72,6 +72,8 @@ public class BuildingDetailsPresenter extends BasePresenter<BuildingDetailsContr
                     mView.hideLoadingDialog();
                     if (code == Constants.ERROR_CODE_5002) {
                         mView.favoriteFail();
+                    } else if (code == Constants.DEFAULT_ERROR_CODE) {
+                        mView.shortTip(msg);
                     }
                 }
             }

@@ -23,6 +23,7 @@ public class AppConfig extends BaseConfig {
     @Override
     protected void initTest(Context context, String env) {
         APP_URL = "http://admin.officego.com.cn/";
+//        APP_URL = "http://test.officego.com.cn/";
         H5_ABOUT_US = "http://test.officego.com.cn/lessee/aboutUs.html";
         H5_HELP_FEEDBACK = "http://test.officego.com.cn/lessee/opinion.html";
         H5_PRIVACY = "http://test.officego.com.cn/lessee/privacy.html";

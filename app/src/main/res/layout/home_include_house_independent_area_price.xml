@@ -104,16 +104,6 @@
         app:layout_constraintTop_toBottomOf="@id/tv_independent_office">
 
         <TextView
-            android:id="@+id/tv_independent_office_other"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerInParent="true"
-            android:layout_marginTop="@dimen/dp_15"
-            android:textColor="@color/text_33"
-            android:textSize="@dimen/sp_15"
-            android:visibility="gone" />
-
-        <TextView
             android:id="@+id/tv_independent_office_num"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

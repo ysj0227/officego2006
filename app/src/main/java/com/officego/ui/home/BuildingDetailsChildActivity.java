@@ -81,8 +81,6 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
     TextView tvIndependentOfficeNum;
     @ViewById(R.id.tv_independent_office_num_text)
     TextView tvIndependentOfficeNumText;
-    @ViewById(R.id.tv_independent_office_other)
-    TextView tvIndependentOfficeOther;
     //房源介绍
     @ViewById(R.id.tv_office_pattern)
     TextView tvOfficePattern;
@@ -171,18 +169,16 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
                 tvIndependentOfficePrice.setText(R.string.str_text_line);
             }
             if (data.getHouse().getMonthPrice() != null) {
-                tvIndependentOfficePriceText.setText(data.getHouse().getMonthPrice() + "/月");
+                tvIndependentOfficePriceText.setText("¥" + data.getHouse().getMonthPrice() + "/月");
             } else {
                 tvIndependentOfficePriceText.setText(R.string.str_text_line);
             }
             if (data.getHouse().getDecoration() != null) {
-                tvIndependentOfficeOther.setText(Html.fromHtml("<font color='#46C3C2'>" + data.getHouse().getDecoration() + "</font>"));
+                tvIndependentOfficeNum.setText(Html.fromHtml("<font color='#46C3C2'>" + data.getHouse().getDecoration() + "</font>"));
             } else {
-                tvIndependentOfficeOther.setText(R.string.str_text_line);
+                tvIndependentOfficeNum.setText(R.string.str_text_line);
             }
-            tvIndependentOfficeOther.setVisibility(View.VISIBLE);
-            tvIndependentOfficeNum.setVisibility(View.GONE);
-            tvIndependentOfficeNumText.setVisibility(View.GONE);
+            tvIndependentOfficeNumText.setText("装修风格");
             //楼盘信息
             if (data.getHouse().getBasicInformation() != null) {
                 tvOfficePattern.setText(TextUtils.isEmpty(data.getHouse().getBasicInformation().getOfficePattern()) ?
@@ -196,8 +192,12 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
                 tvMinimumLease.setText(TextUtils.isEmpty(data.getHouse().getBasicInformation().getMinimumLease()) ?
                         getResources().getString(R.string.str_text_line) : data.getHouse().getBasicInformation().getMinimumLease() + "年起");
                 Glide.with(context).load(data.getHouse().getBasicInformation().getUnitPatternImg()).into(ivPattern);
-                tvPatternDescription.setText(TextUtils.isEmpty(data.getHouse().getBasicInformation().getUnitPatternRemark()) ?
-                        getResources().getString(R.string.str_text_line) : data.getHouse().getBasicInformation().getUnitPatternRemark());
+                if (TextUtils.isEmpty(data.getHouse().getBasicInformation().getUnitPatternRemark())) {
+                    tvPatternDescription.setVisibility(View.GONE);
+                } else {
+                    tvPatternDescription.setVisibility(View.VISIBLE);
+                    tvPatternDescription.setText(data.getHouse().getBasicInformation().getUnitPatternRemark());
+                }
             }
         }
         //交通
@@ -279,7 +279,7 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
             return;
         }
         if (mData != null) {
-            String dec = mData.getHouse().getDecoration() +  "\n" + mData.getHouse().getAddress();
+            String dec = mData.getHouse().getDecoration() + "\n" + mData.getHouse().getAddress();
             ShareBean bean = new ShareBean();
             bean.setbType(mData.getHouse().getBtype());
             bean.setId("buildingId=" + mData.getHouse().getBuildingId() + "&houseId=" + mData.getHouse().getId());

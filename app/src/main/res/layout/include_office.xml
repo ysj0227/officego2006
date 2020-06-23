@@ -52,7 +52,8 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textColor="@color/text_33"
-        android:textSize="@dimen/sp_13" />
+        android:textSize="@dimen/sp_13"
+        android:visibility="gone" />
     <!--     办公室没有工位-->
     <com.officego.view.SeekBarPressure
         android:id="@+id/sbp_workstation"
