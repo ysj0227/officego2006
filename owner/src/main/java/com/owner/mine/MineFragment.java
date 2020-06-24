@@ -63,6 +63,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         mPresenter = new UserPresenter();
         mPresenter.attachView(this);
         mPresenter.getUserInfo();
+//        WebViewIdifyActivity_.intent(mActivity).start();
     }
 
     @Click(resName = "iv_setting")

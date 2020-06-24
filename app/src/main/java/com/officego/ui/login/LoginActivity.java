@@ -81,7 +81,6 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
      */
     final MyCountDownTimer mTimer = new MyCountDownTimer(Constants.SMS_TIME, 1000);
 
-
     @AfterViews
     void init() {
         PermissionUtils.checkPermissionActivity(this);
@@ -148,7 +147,8 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
 
     @Click(R.id.tv_wx_login)
     void testClick() {
-        mPresenter.login("15981968964", "123465");
+//        mPresenter.login("19322222222", "123465");
+//        mPresenter.login("15981968964", "123465");
 //        mPresenter.login("18237774543", "123465");
     }
 

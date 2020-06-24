@@ -44,17 +44,29 @@ public class AppConfig extends BaseConfig {
     @Override
     protected void initRelease(Context context, String env) {
         APP_URL = "http://admin.officego.com.cn/";
-        H5_ABOUT_US = "http://m.officego.com.cn/lessee/aboutUs.html";
-        H5_HELP_FEEDBACK = "http://m.officego.com.cn/lessee/opinion.html";
-        H5_PRIVACY = "http://m.officego.com.cn/lessee/privacy.html";
-        H5_REGISTER = "http://m.officego.com.cn/lessee/registerProtocol.html";
-        H5_QA = "http://m.officego.com.cn/lessee/issueList.html";
+//        H5_ABOUT_US = "http://m.officego.com.cn/lessee/aboutUs.html";
+//        H5_HELP_FEEDBACK = "http://m.officego.com.cn/lessee/opinion.html";
+//        H5_PRIVACY = "http://m.officego.com.cn/lessee/privacy.html";
+//        H5_REGISTER = "http://m.officego.com.cn/lessee/registerProtocol.html";
+//        H5_QA = "http://m.officego.com.cn/lessee/issueList.html";
+//
+//        H5_OWNER_BUILDINGlIST = "http://m.officego.com.cn/owner/branchList.html";
+//        H5_OWNER_idify = "https://m.officego.com//owner/myHome.html";
+//
+//        //融云IM release
+//        RC_APPKEY = "qf3d5gbjq94mh";
+//        RC_APPSECRET = "xtDkNCjJse";
+        H5_ABOUT_US = "http://test.officego.com.cn/lessee/aboutUs.html";
+        H5_HELP_FEEDBACK = "http://test.officego.com.cn/lessee/opinion.html";
+        H5_PRIVACY = "http://test.officego.com.cn/lessee/privacy.html";
+        H5_REGISTER = "http://test.officego.com.cn/lessee/registerProtocol.html";
+        H5_QA = "http://test.officego.com.cn/lessee/issueList.html";
 
-        H5_OWNER_BUILDINGlIST = "http://m.officego.com.cn/owner/branchList.html";
-        H5_OWNER_idify = "https://m.officego.com//owner/myHome.html";
+        H5_OWNER_BUILDINGlIST = "http://test.officego.com.cn/owner/branchList.html";
+        H5_OWNER_idify = "https://test.officego.com//owner/myHome.html";
 
-        //融云IM release
-        RC_APPKEY = "qf3d5gbjq94mh";
-        RC_APPSECRET = "xtDkNCjJse";
+        //融云IM test
+        RC_APPKEY = "kj7swf8oknm02";
+        RC_APPSECRET = "OF78PpILjjRk4";
     }
 }

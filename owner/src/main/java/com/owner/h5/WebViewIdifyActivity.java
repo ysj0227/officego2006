@@ -66,7 +66,8 @@ public class WebViewIdifyActivity extends BaseActivity {
         StatusBarUtils.setStatusBarColor(this);
         webView.setPadding(0, CommonHelper.statusHeight(this), 0, 0);
         setWebChromeClient();
-        loadWebView(AppConfig.H5_OWNER_idify);//认证
+//        loadWebView(AppConfig.H5_OWNER_idify);//认证
+        loadWebView("http://172.16.4.19:8080/owner/myHome.html?token=MzA4X3N1bndlbGxfMTU5Mjk3Mzk2Ml8x&channel=2&identity=1");//认证
     }
 
     /**
@@ -93,9 +94,8 @@ public class WebViewIdifyActivity extends BaseActivity {
 
     @SuppressLint("SetJavaScriptEnabled")
     private void loadWebView(String url) {
-        String postData = String.format("rongyuntoken=%s&token=%s",SpUtils.getRongToken(),SpUtils.getSignToken());
-        webView.postUrl(url, postData.getBytes());
-
+//        String postData = String.format("rongyuntoken=%s&token=%s",SpUtils.getRongToken(),SpUtils.getSignToken());
+//        webView.postUrl(url, postData.getBytes());
         WebSettings webSetting = webView.getSettings();
         webSetting.setJavaScriptEnabled(true);
         webSetting.setAllowUniversalAccessFromFileURLs(true);
@@ -114,7 +114,7 @@ public class WebViewIdifyActivity extends BaseActivity {
 //        webView.setWebChromeClient(new WebChromeClient());//
         webChrome = new SMWebChromeClient(this);
         webView.setWebChromeClient(webChrome);
-//        webView.loadUrl(url);
+        webView.loadUrl(url);
         webView.setWebViewClient(new SMWebViewClient(this) {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
@@ -145,7 +145,7 @@ public class WebViewIdifyActivity extends BaseActivity {
             @Override
             public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
                 titleBar.setVisibility(View.VISIBLE);
-                exceptionPageHttpError(view, errorResponse);
+//                exceptionPageHttpError(view, errorResponse);
                 LogCat.e(TAG, "onReceivedHttpError");
                 super.onReceivedHttpError(view, request, errorResponse);
             }

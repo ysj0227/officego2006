@@ -120,9 +120,10 @@ public class SpUtils {
         return SharedManager.getValue(BaseApplication.getContext(), WE_CHAT);
     }
 
-    //聊天插入楼盘消息 tooken+houseId+targetId
-    public static void saveChatBuildingInfo(String str) {
-        SharedManager.putValue(BaseApplication.getContext(), CHAT_INSERT_BUILDING_INFO, SpUtils.getSignToken() + str);
+    //聊天插入楼盘消息 tooken+融云token+buildingId+houseId+targetId
+    public static void saveChatBuildingInfo(String userToken, String buildingId, String houseId, String targetId) {
+        SharedManager.putValue(BaseApplication.getContext(), CHAT_INSERT_BUILDING_INFO,
+                userToken + buildingId + houseId + targetId);
     }
 
     //获取聊天插入楼盘消息 tooken+houseId+targetId

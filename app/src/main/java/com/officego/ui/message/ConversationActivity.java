@@ -118,12 +118,18 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         if (data.getBuilding() != null) {
             refreshUserInfoCache(targetId, data.getChatted().getNickname(), data.getChatted().getAvatar());
             tvTitleName.setText(data.getChatted().getNickname());
-            tvJob.setText(data.getChatted().getCompany()  + data.getChatted().getJob());
+            tvJob.setText(data.getChatted().getCompany() + data.getChatted().getJob());
         }
 
         if (data.getBuilding() != null) {
             //是否插入消息
-            if (TextUtils.equals(SpUtils.getSignToken() + data.getBuilding().getBuildingId() + targetId, SpUtils.getChatBuildingInfo())) {
+            if (TextUtils.equals(SpUtils.getSignToken() + data.getBuilding().getBuildingId() +
+                            (data.getBuilding().getHouseId() == null ? "" : data.getBuilding().getHouseId()) + targetId,
+                    SpUtils.getChatBuildingInfo())) {
+
+                LogCat.e("TAG", "11111 getChatBuildingInfo= " + SpUtils.getSignToken() + data.getBuilding().getBuildingId() +
+                        (data.getBuilding().getHouseId() == null ? "" : data.getBuilding().getHouseId()) + targetId);
+                LogCat.e("TAG", "11111 getChatBuildingInfo11= " + SpUtils.getChatBuildingInfo());
                 return;
             }
             BuildingInfo info = new BuildingInfo();
@@ -147,7 +153,8 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             }
             SendMessageManager.getInstance().insertIncomingMessage(info, targetId, SpUtils.getRongChatId());
             //保存第一次插入状态
-            SpUtils.saveChatBuildingInfo(data.getBuilding().getBuildingId() + "" + targetId);
+            SpUtils.saveChatBuildingInfo(SpUtils.getSignToken(), data.getBuilding().getBuildingId() + "",
+                    (data.getBuilding().getHouseId() == null ? "" : data.getBuilding().getHouseId() + ""), targetId);
         }
     }
 
