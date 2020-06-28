@@ -6,7 +6,6 @@
     android:layout_height="match_parent"
     android:background="@color/white">
 
-
     <androidx.coordinatorlayout.widget.CoordinatorLayout
         android:id="@+id/cdl_root"
         android:layout_width="match_parent"
@@ -29,7 +28,6 @@
                 app:layout_scrollFlags="scroll|exitUntilCollapsed"
                 app:statusBarScrim="@android:color/transparent">
 
-                <!--            android:background="@mipmap/ic_def_banner"-->
                 <com.youth.banner.Banner
                     android:id="@+id/banner"
                     android:layout_width="match_parent"
@@ -40,14 +38,6 @@
                     app:indicator_drawable_unselected="@mipmap/ic_banner_point_unselected"
                     app:indicator_width="@dimen/dp_8"
                     app:title_height="@dimen/dp_8" />
-
-                <!-- 配合滑动顶部状态栏颜色-->
-                <View
-                    android:id="@+id/v_background_blue"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_300"
-                    android:background="@color/common_blue_main"
-                    android:visibility="gone" />
 
                 <!-- inside search-->
                 <androidx.constraintlayout.widget.ConstraintLayout

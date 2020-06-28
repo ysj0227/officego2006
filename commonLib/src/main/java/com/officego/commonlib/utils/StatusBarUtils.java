@@ -62,6 +62,23 @@ public class StatusBarUtils {
         }
     }
 
+    /**
+     * 全透状态栏
+     */
+    public static void setStatusBarMainColor(Activity activity,int color) {
+        // 21->5.0  22->5.1  23->6.0  24->7.0
+
+        if (Build.VERSION.SDK_INT > 22) {//21表示5.0  Build.VERSION_CODES.LOLLIPOP
+            Window window = activity.getWindow();
+            window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+            window.getDecorView().setSystemUiVisibility(View.SYSTEM_UI_FLAG_LAYOUT_FULLSCREEN | View.SYSTEM_UI_FLAG_LAYOUT_STABLE);
+            window.addFlags(WindowManager.LayoutParams.FLAG_DRAWS_SYSTEM_BAR_BACKGROUNDS);
+            window.setStatusBarColor(color);
+        } else if (Build.VERSION.SDK_INT >= 19) {//19表示4.4
+            activity.getWindow().addFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
+        }
+    }
+
 
     /**
      * 状态栏亮色模式，设置状态栏黑色文字、图标， * 适配4.4以上版本MIUIV、Flyme和6.0以上版本其他Android * @param activity * @return 1:MIUUI 2:Flyme 3:android6.0

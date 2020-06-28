@@ -63,8 +63,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     RecyclerView rvHouse;
     @ViewById(R.id.banner)
     Banner banner;
-    @ViewById(R.id.v_background_blue)
-    View vBackgroundBlue;
     @ViewById(R.id.app_bar)
     AppBarLayout appBarLayout;
     @ViewById(R.id.ctl_inside_bar)
@@ -81,9 +79,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     RelativeLayout rlIbtnSearch;
     @ViewById(R.id.rl_home_title)
     RelativeLayout rlHomeTitle;
-//    @ViewById(R.id.rl_root_search)
-//    RelativeLayout rlRootSearch;
-
     //搜索-- 区域，写字楼，排序，筛选
     @ViewById(R.id.tv_search_area)
     TextView tvSearchArea;
@@ -116,7 +111,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     @SuppressLint("NewApi")
     @AfterViews
     void init() {
-//        StatusBarUtils.setStatusBarFullTransparent(mActivity);
+        StatusBarUtils.setStatusBarMainColor(mActivity, ContextCompat.getColor(mActivity, R.color.common_blue_main));
         mPresenter = new HomePresenter(mActivity);
         mPresenter.attachView(this);
         CommonHelper.setRelativeLayoutParams(mActivity, rlHomeTitle);
@@ -174,16 +169,10 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     private void initBarLayoutBg() {
         hasData();
         if (currentScrollPosition == 0) {
-            //结合状态栏布局滑动顶部背景变化
-            vBackgroundBlue.setVisibility(View.GONE);
             refreshLayout.setPullDownRefreshEnable(true);
         } else if (currentScrollPosition == 1) {
-            //结合状态栏布局滑动顶部背景变化
-            vBackgroundBlue.setVisibility(View.VISIBLE);
             refreshLayout.setPullDownRefreshEnable(false);
         } else {
-            //结合状态栏布局滑动顶部背景变化
-            vBackgroundBlue.setVisibility(View.GONE);
             refreshLayout.setPullDownRefreshEnable(false);
         }
     }
@@ -259,34 +248,21 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
             if (state == State.EXPANDED) {
                 //展开状态
                 currentScrollPosition = 0;
-//                StatusBarUtils.setStatusBarColor(mActivity);
-                appBarLayout.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.common_blue_main));
-                //结合状态栏布局滑动顶部背景变化
-                vBackgroundBlue.setVisibility(View.GONE);
                 refreshLayout.setPullDownRefreshEnable(true);
             } else if (state == State.COLLAPSED) {
                 //折叠状态
                 currentScrollPosition = 1;
-//                StatusBarUtils.setStatusBarFullTransparent(mActivity);
-                appBarLayout.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.white));
-                //结合状态栏布局滑动顶部背景变化
-                vBackgroundBlue.setVisibility(View.VISIBLE);
                 refreshLayout.setPullDownRefreshEnable(false);
             } else {
                 //中间状态
-//                StatusBarUtils.setStatusBarColor(mActivity);
                 currentScrollPosition = 2;
-                appBarLayout.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.common_blue_main));
-                //结合状态栏布局滑动顶部背景变化
-                vBackgroundBlue.setVisibility(View.GONE);
                 refreshLayout.setPullDownRefreshEnable(false);
             }
         }
 
         @Override
         public void onStateAbs(int abs) {
-            LogCat.e("TAG", "1111 " + alphaPercent + " abs=" + abs);
-//            banner.setAlpha(1 - abs * alphaPercent);
+            //LogCat.e("TAG", "1111 " + alphaPercent + " abs=" + abs);
             rlHomeTitle.setAlpha(abs * alphaPercent);
         }
     };
