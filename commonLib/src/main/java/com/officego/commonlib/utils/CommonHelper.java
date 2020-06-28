@@ -22,9 +22,12 @@ import android.text.Selection;
 import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Display;
+import android.view.View;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 
 import com.officego.commonlib.utils.log.LogCat;
 
@@ -435,5 +438,33 @@ public class CommonHelper {
             return mobile.replace("+86", "");
         }
         return tm.getLine1Number();
+    }
+
+    /**
+     * 拨打电话（跳转到拨号界面，用户手动点击拨打）
+     *
+     * @param phoneNum 电话号码
+     */
+    public static void callPhone(Context context,String phoneNum) {
+        Intent intent = new Intent(Intent.ACTION_DIAL);
+        Uri data = Uri.parse("tel:" + phoneNum);
+        intent.setData(data);
+        context.startActivity(intent);
+    }
+
+    //RelativeLayout 设置布局间距状态栏的距离
+    public static void setRelativeLayoutParams(Context context, View view) {
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) view.getLayoutParams();
+        params.topMargin = CommonHelper.statusHeight(context);
+        params.width = RelativeLayout.LayoutParams.MATCH_PARENT;
+        view.setLayoutParams(params);
+    }
+
+    //LinearLayout 设置布局间距状态栏的距离
+    public static void setLinearLayoutParams(Context context, View view) {
+        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) view.getLayoutParams();
+        params.topMargin = CommonHelper.statusHeight(context);
+        params.width = RelativeLayout.LayoutParams.MATCH_PARENT;
+        view.setLayoutParams(params);
     }
 }

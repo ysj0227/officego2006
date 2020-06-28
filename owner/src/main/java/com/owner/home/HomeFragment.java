@@ -1,4 +1,4 @@
-package com.owner.fragment;
+package com.owner.home;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -19,19 +19,22 @@ import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 
-import com.officego.commonlib.base.BaseFragment;
+import com.officego.commonlib.base.BaseMvpFragment;
+import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.constant.AppConfig;
-import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.view.TitleBarView;
 import com.officego.commonlib.view.webview.SMWebChromeClient;
 import com.officego.commonlib.view.webview.SMWebViewClient;
 import com.owner.R;
+import com.owner.home.contract.HomeContract;
+import com.owner.home.presenter.HomePresenter;
+import com.owner.mine.model.UserOwnerBean;
+import com.owner.utils.UnIdifyDialog;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 /**
@@ -40,12 +43,10 @@ import org.androidannotations.annotations.ViewById;
  * Descriptions:
  **/
 @EFragment(resName = "home_owner_fragment")
-public class HomeFragment extends BaseFragment {
+public class HomeFragment extends BaseMvpFragment<HomePresenter> implements HomeContract.View {
 
     @ViewById(resName = "wv_view")
     WebView webView;
-    @ViewById(resName = "title_bar")
-    TitleBarView titleBar;
     @ViewById(resName = "rl_exception")
     RelativeLayout rlException;
     @ViewById(resName = "btn_again")
@@ -56,9 +57,13 @@ public class HomeFragment extends BaseFragment {
 
     @AfterViews
     void init() {
+        mPresenter = new HomePresenter();
+        mPresenter.attachView(this);
         StatusBarUtils.setStatusBarColor(mActivity);
+        CommonHelper.setRelativeLayoutParams(mActivity, webView);
         setWebChromeClient();
-        loadWebView(AppConfig.H5_OWNER_BUILDINGlIST);
+        //根据用户信息显示楼盘或网点管理
+        mPresenter.getUserInfo();
     }
 
     /**
@@ -69,25 +74,10 @@ public class HomeFragment extends BaseFragment {
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
-                if (TextUtils.isEmpty(title) || title.contains("http")) {
-                    titleBar.getAppTitle().setText(R.string.app_name);
-                } else {
-                    titleBar.getAppTitle().setText(title);
-                }
                 exceptionPageReceivedTitle(view, title);
             }
         });
     }
-    //todo 返回操作
-//
-//    @Override
-//    public void onBackPressed() {
-//        if (webView.canGoBack()) {
-//            webView.goBack();
-//        } else {
-//            super.onBackPressed();
-//        }
-//    }
 
     @SuppressLint("SetJavaScriptEnabled")
     private void loadWebView(String url) {
@@ -240,5 +230,38 @@ public class HomeFragment extends BaseFragment {
             view.removeAllViews();
             receiverExceptionError(view);
         }
+    }
+
+    /**
+     * 身份类型 0个人1企业2联合
+     */
+    @Override
+    public void userInfoSuccess(UserOwnerBean data) {
+        if (isIdentity(data)) {
+            new UnIdifyDialog(mActivity, data);
+            return;
+        }
+        if (data.getIdentityType() == 2) {
+            loadWebView(AppConfig.H5_OWNER_HOUSElIST + identity());
+        } else {
+            loadWebView(AppConfig.H5_OWNER_BUILDINGlIST + identity());
+        }
+    }
+
+    @Override
+    public void userInfoFail(int code, String msg) {
+
+    }
+
+    // 0待审核1审核通过2审核未通过
+    private boolean isIdentity(UserOwnerBean mUserInfo) {
+        if (mUserInfo != null) {
+            return mUserInfo.getAuditStatus() != 0 && mUserInfo.getAuditStatus() != 1;
+        }
+        return false;
+    }
+
+    private String identity() {
+        return "?token=" + SpUtils.getSignToken() + "&channel=2&identity=1";
     }
 }

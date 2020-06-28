@@ -16,7 +16,6 @@ import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 
 import com.bumptech.glide.Glide;
-import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
@@ -89,7 +88,7 @@ public class MineMessageActivity extends BaseMvpActivity<UpdateUserPresenter>
         Glide.with(context).load(mUserInfo.getAvatar()).into(civAvatar);
         etNameContent.setText(mUserInfo.getRealname());
         etCompanyContent.setText(mUserInfo.getProprietorCompany());
-        if (mUserInfo.getSex() != null ){
+        if (mUserInfo.getSex() != null) {
             etSexContent.setText((Double) mUserInfo.getSex() == 1 ? "男" : "女");
         }
         etJobContent.setText(TextUtils.isEmpty(mUserInfo.getProprietorJob()) ? "" : mUserInfo.getProprietorJob());
@@ -265,7 +264,7 @@ public class MineMessageActivity extends BaseMvpActivity<UpdateUserPresenter>
 
     @Override
     public void UpdateUserFail(int code, String msg) {
-        LogCat.e(TAG,"1111 code="+code);
+        LogCat.e(TAG, "1111 code=" + code);
         shortTip(R.string.tip_save_fail);
     }
 }

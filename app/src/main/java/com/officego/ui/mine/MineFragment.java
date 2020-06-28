@@ -2,7 +2,6 @@ package com.officego.ui.mine;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -148,7 +147,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
 
     @Click(R.id.rl_service)
     void serviceClick() {
-        callPhone(Constants.SERVICE_HOT_MOBILE);
+        ServiceActivity_.intent(mActivity).start();
     }
 
     @Click(R.id.rl_protocol)
@@ -165,18 +164,6 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         WebViewActivity_.intent(mActivity).flags(Constants.H5_ABOUTS).start();
     }
 
-    /**
-     * 拨打电话（跳转到拨号界面，用户手动点击拨打）
-     *
-     * @param phoneNum 电话号码
-     */
-    public void callPhone(String phoneNum) {
-        Intent intent = new Intent(Intent.ACTION_DIAL);
-        Uri data = Uri.parse("tel:" + phoneNum);
-        intent.setData(data);
-        startActivity(intent);
-    }
-
     @SuppressLint("SetTextI18n")
     @Override
     public void userInfoSuccess(UserBean data) {
@@ -184,7 +171,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         //刷新融云头像用户信息
         mUserInfo = data;
         if (data != null) {
-            RongCloudSetUserInfoUtils.refreshUserInfoCache(RongCloudSetUserInfoUtils.getRongTenantId(data.getUserId()+""), data.getRealname(), data.getAvatar());
+            RongCloudSetUserInfoUtils.refreshUserInfoCache(RongCloudSetUserInfoUtils.getRongTenantId(data.getUserId() + ""), data.getRealname(), data.getAvatar());
             SpUtils.saveWechat(mUserInfo.getWxId() == null || TextUtils.isEmpty((String) mUserInfo.getWxId()) ? "" : (String) mUserInfo.getWxId());
             Glide.with(mActivity).load(data.getAvatar()).into(civAvatar);
             tvName.setText(data.getRealname());

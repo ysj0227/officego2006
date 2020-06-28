@@ -67,11 +67,10 @@ public class WebViewActivity extends BaseActivity {
         } else if (flags == Constants.H5_ABOUTS) {
             titleBar.getAppTitle().setText(getString(R.string.str_title_about_us));
             loadWebView(AppConfig.H5_ABOUT_US);
+        } else if (flags == Constants.H5_ROLE) {
+            titleBar.getAppTitle().setText(getString(R.string.str_title_role));
+            loadWebView(AppConfig.H5_ROLE);
         }
-//        else if (flags == Constants.H5_OWNER_IDIFY) {
-//            loadWebView(AppConfig.H5_OWNER_idify);//认证
-//            titleBar.setVisibility(View.GONE);
-//        }
     }
 
     /**

@@ -64,10 +64,13 @@ public class WebViewIdifyActivity extends BaseActivity {
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarColor(this);
-        webView.setPadding(0, CommonHelper.statusHeight(this), 0, 0);
+        CommonHelper.setRelativeLayoutParams(context, webView);
         setWebChromeClient();
-//        loadWebView(AppConfig.H5_OWNER_idify);//认证
-        loadWebView("http://172.16.4.19:8080/owner/myHome.html?token=MzA4X3N1bndlbGxfMTU5Mjk3Mzk2Ml8x&channel=2&identity=1");//认证
+        loadWebView(AppConfig.H5_OWNER_idify + identity());//认证
+    }
+
+    private String identity() {
+        return "?token=" + SpUtils.getSignToken() + "&channel=2&identity=1";
     }
 
     /**

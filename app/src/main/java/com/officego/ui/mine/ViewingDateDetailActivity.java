@@ -108,7 +108,9 @@ public class ViewingDateDetailActivity extends BaseMvpActivity<ViewingDateDetail
             strStatus = "未看房";
         }
         tvStatus.setText(strStatus);
-        tvName.setText(data.getBuilding().getContact());
+        if (!TextUtils.isEmpty(data.getBuilding().getContact())) {
+            tvName.setText(data.getBuilding().getContact());
+        }
         tvPosition.setText(data.getBuilding().getCompany() + " · " + data.getBuilding().getJob());
         tvTime.setText(DateTimeUtils.StampToDate(String.valueOf(data.getBuilding().getTime()) + "000", "yyyy-MM-dd HH:mm"));
         tvAddress.setText(data.getBuilding().getAddress());

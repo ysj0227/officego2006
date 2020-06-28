@@ -49,8 +49,8 @@
             android:layout_marginStart="@dimen/dp_12"
             android:layout_marginBottom="@dimen/dp_3"
             android:layout_toEndOf="@+id/tv_name"
-            android:maxLength="10"
             android:background="@drawable/button_corner5_edge_deep_blue"
+            android:maxLength="10"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_10" />
 
@@ -103,7 +103,7 @@
                 <ImageView
                     android:id="@+id/iv_help"
                     android:layout_width="@dimen/dp_16"
-                    android:layout_height="@dimen/dp_16"
+                    android:layout_height="@dimen/dp_18"
                     android:layout_centerVertical="true"
                     android:background="@mipmap/ic_help"
                     tools:ignore="ContentDescription" />
@@ -115,6 +115,43 @@
                     android:layout_marginStart="@dimen/dp_18"
                     android:layout_toEndOf="@id/iv_help"
                     android:text="@string/str_help"
+                    android:textColor="@color/text_33"
+                    android:textSize="@dimen/sp_15" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/ic_right_arrow_small" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_1"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/common_divider" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_role"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_56">
+
+                <ImageView
+                    android:id="@+id/iv_role"
+                    android:layout_width="@dimen/dp_16"
+                    android:layout_height="@dimen/dp_16"
+                    android:layout_centerVertical="true"
+                    android:background="@mipmap/ic_protocol"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/dp_18"
+                    android:layout_toEndOf="@id/iv_role"
+                    android:text="@string/str_title_role"
                     android:textColor="@color/text_33"
                     android:textSize="@dimen/sp_15" />
 

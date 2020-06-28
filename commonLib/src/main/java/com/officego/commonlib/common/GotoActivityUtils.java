@@ -65,4 +65,12 @@ public class GotoActivityUtils {
         intent.setAction("android.intent.action.VIEW");
         context.startActivity(intent);
     }
+
+    public static void serviceActivity(Activity context) {
+        ComponentName comp = new ComponentName(context, "com.officego.ui.mine.ServiceActivity_");
+        Intent intent = new Intent();
+        intent.setComponent(comp);
+        intent.setAction("android.intent.action.VIEW");
+        context.startActivity(intent);
+    }
 }

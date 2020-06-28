@@ -51,18 +51,21 @@
                 android:textSize="@dimen/sp_16"
                 android:textStyle="bold" />
 
-            <TextView
-                android:id="@+id/tv_appointment_record"
-                android:layout_width="wrap_content"
+            <LinearLayout
+                android:id="@+id/ll_appointment_record"
+                android:layout_width="@dimen/dp_30"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:drawableEnd="@mipmap/ic_return_today"
-                android:drawablePadding="@dimen/dp_6"
-                android:text="@string/str_appointment_record"
-                android:textColor="@color/white"
-                android:textSize="@dimen/sp_12"
-                tools:ignore="RelativeOverlap" />
+                android:layout_centerVertical="true">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_16"
+                    android:layout_height="@dimen/dp_16"
+                    android:layout_marginStart="@dimen/dp_8"
+                    android:background="@mipmap/ic_return_today_white"
+                    tools:ignore="ContentDescription,RelativeOverlap" />
+            </LinearLayout>
+
         </RelativeLayout>
 
         <View

@@ -18,7 +18,7 @@
 
     <application>
         <activity
-            android:name=".fragment.HomeFragment_"
+            android:name=".home.HomeFragment_"
             android:screenOrientation="portrait" />
         <activity
             android:name=".schedule.ScheduleFragment_"

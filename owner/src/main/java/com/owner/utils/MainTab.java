@@ -1,7 +1,7 @@
 package com.owner.utils;
 
 import com.owner.R;
-import com.owner.fragment.HomeFragment_;
+import com.owner.home.HomeFragment_;
 import com.owner.message.MessageFragment_;
 import com.owner.mine.MineFragment_;
 import com.owner.schedule.ScheduleFragment_;
@@ -22,7 +22,7 @@ public enum MainTab {
 
     COLLECT(
             R.string.str_tab_schedule,
-            R.drawable.ic_tab_collect,
+            R.drawable.ic_tab_schedule,
             ScheduleFragment_.class
     ),
 

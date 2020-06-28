@@ -10,19 +10,19 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.officego.commonlib.base.BaseMvpFragment;
+import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.rongcloud.RongCloudSetUserInfoUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.CircleImage;
-import com.officego.commonlib.view.dialog.CommonDialog;
-import com.owner.R;
 import com.owner.h5.WebViewActivity_;
 import com.owner.h5.WebViewIdifyActivity_;
 import com.owner.mine.contract.UserContract;
 import com.owner.mine.model.UserOwnerBean;
 import com.owner.mine.presenter.UserPresenter;
+import com.owner.utils.UnIdifyDialog;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -63,7 +63,6 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         mPresenter = new UserPresenter();
         mPresenter.attachView(this);
         mPresenter.getUserInfo();
-//        WebViewIdifyActivity_.intent(mActivity).start();
     }
 
     @Click(resName = "iv_setting")
@@ -96,7 +95,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
             return;
         }
         if (isIdentity()) {
-            unIdifyDialog(mUserInfo);
+            new UnIdifyDialog(mActivity, mUserInfo);
             return;
         }
         MineMessageActivity_.intent(mActivity).mUserInfo(mUserInfo).startForResult(REQUEST_CODE);
@@ -109,7 +108,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
             return;
         }
         if (isIdentity()) {
-            unIdifyDialog(mUserInfo);
+            new UnIdifyDialog(mActivity, mUserInfo);
             return;
         }
         MineMessageActivity_.intent(mActivity).mUserInfo(mUserInfo).startForResult(REQUEST_CODE);
@@ -125,6 +124,11 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         }
     }
 
+    @Click(resName = "rl_role")
+    void roleClick() {
+        WebViewActivity_.intent(mActivity).flags(Constants.H5_ROLE).start();
+    }
+
     @Click(resName = "rl_help")
     void helpClick() {
         WebViewActivity_.intent(mActivity).flags(Constants.H5_HELP).start();
@@ -132,7 +136,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
 
     @Click(resName = "rl_service")
     void serviceClick() {
-        callPhone(Constants.SERVICE_HOT_MOBILE);
+        GotoActivityUtils.serviceActivity(mActivity);
     }
 
     @Click(resName = "rl_protocol")
@@ -174,7 +178,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
             }
             if (isIdentity()) {
                 noIdentityView();
-                unIdifyDialog(data);
+                new UnIdifyDialog(mActivity, mUserInfo);
             } else {
                 hasIdentityView();
             }
@@ -187,25 +191,6 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
             return mUserInfo.getAuditStatus() != 0 && mUserInfo.getAuditStatus() != 1;
         }
         return false;
-    }
-
-    private CommonDialog dialog;
-
-    // 0待审核1审核通过2审核未通过
-    private void unIdifyDialog(UserOwnerBean data) {
-        if (dialog != null && !dialog.isShowing()) {
-            dialog = null;
-        }
-        if (dialog == null) {
-            dialog = new CommonDialog.Builder(mActivity)
-                    .setTitle(idify(data) + "\n请您先认证信息")
-                    .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
-                        WebViewIdifyActivity_.intent(mActivity).start();
-                        dialog.dismiss();
-                        dialog = null;
-                    }).create();
-            dialog.showWithOutTouchable(false);
-        }
     }
 
     /**
@@ -229,6 +214,9 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
             status = "已认证";
         } else {
             status = "未认证";
+        }
+        if (TextUtils.isEmpty(id)) {
+            return status;
         }
         return id + "-" + status;
     }

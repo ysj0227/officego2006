@@ -7,7 +7,6 @@ import android.content.Context;
 import android.content.Intent;
 
 import com.officego.commonlib.utils.log.LogCat;
-import com.officego.commonlib.view.dialog.CommonDialog;
 
 /**
  * Created by YangShiJie
@@ -16,7 +15,7 @@ import com.officego.commonlib.view.dialog.CommonDialog;
  **/
 public class MyBroadcastReceiver extends BroadcastReceiver {
     private Activity activity;
-    private CommonDialog receiverDialog;
+//    public static CommonDialog receiverDialog;
 
     public MyBroadcastReceiver(Activity context) {
         this.activity = context;
@@ -24,22 +23,21 @@ public class MyBroadcastReceiver extends BroadcastReceiver {
 
     @Override
     public void onReceive(Context context, Intent intent) {
-        LogCat.d("TAG", "1111100000 MyBroadcastReceiver");
-        if (receiverDialog != null && receiverDialog.isShowing()) {
-            receiverDialog.dismiss();
-            receiverDialog = null;
-        }
-        if (receiverDialog == null) {
-            receiverDialog = new CommonDialog.Builder(context)
-                    .setTitle("当前暂未登录，请登录后使用相关功能")
-                    .setConfirmButton("去登录", (dialog12, which) -> {
-                        gotoLoginActivity(context);
-                        receiverDialog.dismiss();
-                        receiverDialog = null;
-                    }).create();
-            receiverDialog.setCancelable(false);//禁用系统返回
-            receiverDialog.showWithOutTouchable(false);
-        }
+//        LogCat.d("TAG", "1111100000 MyBroadcastReceiver");
+//        if (receiverDialog != null && receiverDialog.isShowing()) {
+//            receiverDialog.dismiss();
+//            receiverDialog = null;
+//        }
+//        receiverDialog = new CommonDialog.Builder(context)
+//                .setTitle("当前暂未登录，请登录后使用相关功能")
+//                .setConfirmButton("去登录", (dialog12, which) -> {
+//                    gotoLoginActivity(context);
+//                    receiverDialog.dismiss();
+//                    receiverDialog = null;
+//                }).create();
+//        receiverDialog.setCancelable(true);//禁用系统返回
+//        receiverDialog.showWithOutTouchable(false);
+        gotoLoginActivity(context);
     }
 
     private void gotoLoginActivity(Context context) {

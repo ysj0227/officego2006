@@ -341,6 +341,7 @@ public abstract class BaseActivity extends FragmentActivity
         }
         IntentFilter intentFilter = new IntentFilter();
         intentFilter.addAction("com.officego");
+        intentFilter.addAction("android.intent.action.DOWNLOAD_COMPLETED");
         registerReceiver(mBroadcastReceiver, intentFilter);
     }
 

@@ -55,7 +55,6 @@ public class ViewingDateActivity extends BaseMvpActivity<ViewingDatePresenter>
     MonthPager monthPager;
     RecyclerView rvToDoList;
     TextView tvCurrentDate;
-    TextView tvAppointmentRecord;
     TextView tvNoData;
     private ArrayList<Calendar> currentCalendars = new ArrayList<>();
     private CalendarViewAdapter calendarAdapter;
@@ -74,8 +73,6 @@ public class ViewingDateActivity extends BaseMvpActivity<ViewingDatePresenter>
     private int mSelectedYear, mSelectedMonth;
     //今天日期
     private String mCurrentDayDate;
-    //初始化看房行程
-    private boolean isViewDate = true;
 
     @AfterViews
     void init() {
@@ -87,7 +84,6 @@ public class ViewingDateActivity extends BaseMvpActivity<ViewingDatePresenter>
         tvNoData = findViewById(R.id.tv_no_data);
         llRootView = findViewById(R.id.ll_root_view);
         llRootView.setPadding(0, CommonHelper.statusHeight(this), 0, 0);
-        tvAppointmentRecord = findViewById(R.id.tv_appointment_record);
         content = findViewById(R.id.content);
         monthPager = findViewById(R.id.calendar_view);
         //此处强行setViewHeight，毕竟你知道你的日历牌的高度
@@ -98,7 +94,7 @@ public class ViewingDateActivity extends BaseMvpActivity<ViewingDatePresenter>
         initCurrentDate();
         initCalendarView();
         //初始化
-        getViewingDateList(isViewDate);
+        getViewingDateList();
     }
 
     @Click(R.id.ll_back)
@@ -107,33 +103,19 @@ public class ViewingDateActivity extends BaseMvpActivity<ViewingDatePresenter>
     }
 
     //看房行程,记录
-    @Click(R.id.tv_appointment_record)
+    @Click(R.id.ll_today)
     void appointmentRecordClick() {
-        //初始化标注mark
-        calendarAdapter.setMarkData(new HashMap<>());
-        calendarAdapter.notifyDataChanged();
-        if (TextUtils.equals(getResources().getString(R.string.str_viewing_date),
-                tvAppointmentRecord.getText().toString())) {
-            isViewDate = true;
-            tvAppointmentRecord.setText(R.string.str_appointment_record);
-        } else {
-            isViewDate = false;
-            tvAppointmentRecord.setText(R.string.str_viewing_date);
-        }
-        getViewingDateList(isViewDate);
+        onSwitchBackToDay();
+        initCurrentDate();
+        getViewingDateList();
     }
 
     //是否看房行程|看房记录
-    private void getViewingDateList(boolean isViewDate) {
+    private void getViewingDateList() {
         viewingDateAllList.clear();
         viewingDateDayList.clear();
-        if (isViewDate) {
-            mPresenter.getViewingDate(DateTimeUtils.getFirstDayOfMonth(mSelectedYear, mSelectedMonth),
-                    DateTimeUtils.getLastDayOfMonth(mSelectedYear, mSelectedMonth));
-        } else {
-            mPresenter.getOldViewingDate(DateTimeUtils.getFirstDayOfMonth(mSelectedYear, mSelectedMonth),
-                    DateTimeUtils.getLastDayOfMonth(mSelectedYear, mSelectedMonth));
-        }
+        mPresenter.getViewingDate(DateTimeUtils.getFirstDayOfMonth(mSelectedYear, mSelectedMonth),
+                DateTimeUtils.getLastDayOfMonth(mSelectedYear, mSelectedMonth));
     }
 
     @Click(R.id.rl_last)
@@ -291,7 +273,7 @@ public class ViewingDateActivity extends BaseMvpActivity<ViewingDatePresenter>
                     if (currentDate.getYear() != mSelectedYear || currentDate.getMonth() != mSelectedMonth) {
                         mSelectedYear = currentDate.getYear();
                         mSelectedMonth = currentDate.getMonth();
-                        getViewingDateList(isViewDate);
+                        getViewingDateList();
                         return;
                     }
                     mSelectedYear = currentDate.getYear();
@@ -306,7 +288,7 @@ public class ViewingDateActivity extends BaseMvpActivity<ViewingDatePresenter>
     }
 
     //切回当天
-    public void onClickBackToDayBtn() {
+    public void onSwitchBackToDay() {
         refreshMonthPager();
     }
 

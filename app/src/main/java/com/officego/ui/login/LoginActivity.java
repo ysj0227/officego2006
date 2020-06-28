@@ -25,7 +25,6 @@ import com.officego.commonlib.view.ClearableEditText;
 import com.officego.h5.WebViewActivity_;
 import com.officego.ui.login.contract.LoginContract;
 import com.officego.ui.login.presenter.LoginPresenter;
-import com.officego.utils.GotoActivityUtils;
 import com.officego.utils.MonitorEditTextUtils;
 import com.owner.MainOwnerActivity_;
 
@@ -147,7 +146,8 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
 
     @Click(R.id.tv_wx_login)
     void testClick() {
-//        mPresenter.login("19322222222", "123465");
+//        mPresenter.login("19033333333", "123465");
+        mPresenter.login("19533333333", "123465");
 //        mPresenter.login("15981968964", "123465");
 //        mPresenter.login("18237774543", "123465");
     }
@@ -266,11 +266,5 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
     protected void onDestroy() {
         super.onDestroy();
         stopDownTimer();
-    }
-
-    @Override
-    public void onBackPressed() {
-//        super.onBackPressed();
-        GotoActivityUtils.gotoHome(context);
     }
 }

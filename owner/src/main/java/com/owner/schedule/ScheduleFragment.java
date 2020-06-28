@@ -22,6 +22,7 @@ import com.officego.commonlib.common.date.ThemeDayView;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.utils.log.LogCat;
 import com.owner.R;
 import com.owner.schedule.contract.ViewingDateContract;
 import com.owner.schedule.model.ViewingDateBean;
@@ -47,7 +48,6 @@ public class ScheduleFragment extends BaseMvpFragment<ViewingDatePresenter>
     private MonthPager monthPager;
     private RecyclerView rvToDoList;
     private TextView tvCurrentDate;
-    private TextView tvAppointmentRecord;
     private TextView tvNoData;
 
     private ArrayList<Calendar> currentCalendars = new ArrayList<>();
@@ -66,8 +66,6 @@ public class ScheduleFragment extends BaseMvpFragment<ViewingDatePresenter>
     private int mSelectedYear, mSelectedMonth;
     //今天日期
     private String mCurrentDayDate;
-    //初始化看房行程
-    private boolean isViewDate = true;
 
     @AfterViews
     void init() {
@@ -81,7 +79,6 @@ public class ScheduleFragment extends BaseMvpFragment<ViewingDatePresenter>
         rlTitle.setLayoutParams(params);
         tvCurrentDate = mActivity.findViewById(R.id.tv_current_date);
         tvNoData = mActivity.findViewById(R.id.tv_no_data);
-        tvAppointmentRecord = mActivity.findViewById(R.id.tv_appointment_record);
         monthPager = mActivity.findViewById(R.id.calendar_view);
         //此处强行setViewHeight，毕竟你知道你的日历牌的高度
         monthPager.setViewHeight(Utils.dpi2px(mActivity, 270));
@@ -92,37 +89,24 @@ public class ScheduleFragment extends BaseMvpFragment<ViewingDatePresenter>
         initCalendarView();
         //初始化
         viewingDateAdapter = null;
-        getViewingDateList(isViewDate);
+        getViewingDateList();
     }
 
-    //看房行程,记录
-    @Click(resName = "tv_appointment_record")
-    void appointmentRecordClick() {
-        //初始化标注mark
-        calendarAdapter.setMarkData(new HashMap<>());
-        calendarAdapter.notifyDataChanged();
-        if (TextUtils.equals(getResources().getString(R.string.str_viewing_date),
-                tvAppointmentRecord.getText().toString())) {
-            isViewDate = true;
-            tvAppointmentRecord.setText(R.string.str_appointment_record);
-        } else {
-            isViewDate = false;
-            tvAppointmentRecord.setText(R.string.str_viewing_date);
-        }
-        getViewingDateList(isViewDate);
+    //今天
+    @Click(resName = "ll_appointment_record")
+    void todayClick() {
+        onSwitchBackToDay();
+        initCurrentDate();
+        LogCat.e(TAG, "1111111 mSelectedMonth=" + mSelectedMonth);
+        getViewingDateList();
     }
 
     //是否看房行程|看房记录
-    private void getViewingDateList(boolean isViewDate) {
+    private void getViewingDateList() {
         viewingDateAllList.clear();
         viewingDateDayList.clear();
-        if (isViewDate) {
-            mPresenter.getViewingDate(DateTimeUtils.getFirstDayOfMonth(mSelectedYear, mSelectedMonth),
-                    DateTimeUtils.getLastDayOfMonth(mSelectedYear, mSelectedMonth));
-        } else {
-            mPresenter.getOldViewingDate(DateTimeUtils.getFirstDayOfMonth(mSelectedYear, mSelectedMonth),
-                    DateTimeUtils.getLastDayOfMonth(mSelectedYear, mSelectedMonth));
-        }
+        mPresenter.getViewingDate(DateTimeUtils.getFirstDayOfMonth(mSelectedYear, mSelectedMonth),
+                DateTimeUtils.getLastDayOfMonth(mSelectedYear, mSelectedMonth));
     }
 
     @Click(resName = "rl_last")
@@ -280,7 +264,7 @@ public class ScheduleFragment extends BaseMvpFragment<ViewingDatePresenter>
                     if (currentDate.getYear() != mSelectedYear || currentDate.getMonth() != mSelectedMonth) {
                         mSelectedYear = currentDate.getYear();
                         mSelectedMonth = currentDate.getMonth();
-                        getViewingDateList(isViewDate);
+                        getViewingDateList();
                         return;
                     }
                     mSelectedYear = currentDate.getYear();
@@ -295,7 +279,7 @@ public class ScheduleFragment extends BaseMvpFragment<ViewingDatePresenter>
     }
 
     //切回当天
-    public void onClickBackToDayBtn() {
+    public void onSwitchBackToDay() {
         refreshMonthPager();
     }
 

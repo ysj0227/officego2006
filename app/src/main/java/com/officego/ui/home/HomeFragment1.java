@@ -1,8 +1,10 @@
 package com.officego.ui.home;
 
 import android.annotation.SuppressLint;
+import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.util.SparseBooleanArray;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -50,8 +52,8 @@ import cn.bingoogolapple.refreshlayout.BGARefreshViewHolder;
  * Data 2020/5/11.
  * Descriptions:
  **/
-@EFragment(R.layout.home_fragment1)
-public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
+@EFragment(R.layout.home_fragment)
+public class HomeFragment1 extends BaseMvpFragment<HomePresenter> implements
         HomeContract.View, OnBannerListener,
         SearchPopupWindow.onSureClickListener,
         BGARefreshLayout.BGARefreshLayoutDelegate {
@@ -77,13 +79,12 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     //推荐,附近列表
     @ViewById(R.id.ctl_search)
     ConstraintLayout ctlSearch;
+    @ViewById(R.id.btn_recommend)
+    TextView btnRecommend;
+    @ViewById(R.id.btn_nearby)
+    TextView btnNearby;
     @ViewById(R.id.rl_ibtn_search)
     RelativeLayout rlIbtnSearch;
-    @ViewById(R.id.rl_home_title)
-    RelativeLayout rlHomeTitle;
-//    @ViewById(R.id.rl_root_search)
-//    RelativeLayout rlRootSearch;
-
     //搜索-- 区域，写字楼，排序，筛选
     @ViewById(R.id.tv_search_area)
     TextView tvSearchArea;
@@ -116,14 +117,13 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     @SuppressLint("NewApi")
     @AfterViews
     void init() {
-//        StatusBarUtils.setStatusBarFullTransparent(mActivity);
+        StatusBarUtils.setStatusBarFullTransparent(mActivity);
         mPresenter = new HomePresenter(mActivity);
         mPresenter.attachView(this);
-        CommonHelper.setRelativeLayoutParams(mActivity, rlHomeTitle);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rvHouse.setLayoutManager(layoutManager);
         appBarLayout.addOnOffsetChangedListener(appBarStateChangeListener);
-        alphaPercent = (float) 1 / CommonHelper.dp2px(mActivity, 180);
+        alphaPercent = (float) 1 / CommonHelper.dp2px(mActivity, 300);
         initBarLayoutBg();
         initRefresh();
         if (!NetworkUtils.isNetworkAvailable(mActivity)) {
@@ -174,14 +174,30 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     private void initBarLayoutBg() {
         hasData();
         if (currentScrollPosition == 0) {
+            appBarLayout.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.common_blue_main));
+            btnRecommend.setTextColor(ContextCompat.getColor(mActivity, R.color.text_main));
+            btnNearby.setTextColor(ContextCompat.getColor(mActivity, R.color.text_main));
+            ctlInsideBar.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.white));
+            rlIbtnSearch.setVisibility(View.GONE);
             //结合状态栏布局滑动顶部背景变化
             vBackgroundBlue.setVisibility(View.GONE);
             refreshLayout.setPullDownRefreshEnable(true);
         } else if (currentScrollPosition == 1) {
+            appBarLayout.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.white));
+            btnRecommend.setTextColor(ContextCompat.getColor(mActivity, R.color.white));
+            btnNearby.setTextColor(ContextCompat.getColor(mActivity, R.color.white));
+            ctlInsideBar.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.common_blue_main));
+            ctlSearch.setVisibility(View.VISIBLE);
+            rlIbtnSearch.setVisibility(View.VISIBLE);
             //结合状态栏布局滑动顶部背景变化
             vBackgroundBlue.setVisibility(View.VISIBLE);
             refreshLayout.setPullDownRefreshEnable(false);
         } else {
+            appBarLayout.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.common_blue_main));
+            btnRecommend.setTextColor(ContextCompat.getColor(mActivity, R.color.text_main));
+            btnNearby.setTextColor(ContextCompat.getColor(mActivity, R.color.text_main));
+            ctlInsideBar.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.white));
+            rlIbtnSearch.setVisibility(View.GONE);
             //结合状态栏布局滑动顶部背景变化
             vBackgroundBlue.setVisibility(View.GONE);
             refreshLayout.setPullDownRefreshEnable(false);
@@ -191,6 +207,24 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     @Override
     public void OnBannerClick(int position) {
 
+    }
+
+    //推荐房源
+    @Click(R.id.btn_recommend)
+    void recommendClick() {
+        btnRecommend.setTextSize(TypedValue.COMPLEX_UNIT_PX, CommonHelper.sp2px(mActivity, 16));
+        btnNearby.setTextSize(TypedValue.COMPLEX_UNIT_PX, CommonHelper.sp2px(mActivity, 12));
+        btnRecommend.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
+        btnNearby.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+    }
+
+    //附近房源
+    @Click(R.id.btn_nearby)
+    void nearbyClick() {
+        btnRecommend.setTextSize(TypedValue.COMPLEX_UNIT_PX, CommonHelper.sp2px(mActivity, 12));
+        btnNearby.setTextSize(TypedValue.COMPLEX_UNIT_PX, CommonHelper.sp2px(mActivity, 16));
+        btnRecommend.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
+        btnNearby.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
     }
 
     //搜索
@@ -261,14 +295,24 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
                 currentScrollPosition = 0;
 //                StatusBarUtils.setStatusBarColor(mActivity);
                 appBarLayout.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.common_blue_main));
+                btnRecommend.setTextColor(ContextCompat.getColor(mActivity, R.color.text_main));
+                btnNearby.setTextColor(ContextCompat.getColor(mActivity, R.color.text_main));
+                ctlInsideBar.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.white));
+                ctlSearch.setVisibility(appBarLayout.getTotalScrollRange() - offset < 150 ? View.VISIBLE : View.GONE);
+                rlIbtnSearch.setVisibility(View.GONE);
                 //结合状态栏布局滑动顶部背景变化
                 vBackgroundBlue.setVisibility(View.GONE);
                 refreshLayout.setPullDownRefreshEnable(true);
             } else if (state == State.COLLAPSED) {
                 //折叠状态
                 currentScrollPosition = 1;
-//                StatusBarUtils.setStatusBarFullTransparent(mActivity);
+                StatusBarUtils.setStatusBarFullTransparent(mActivity);
                 appBarLayout.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.white));
+                btnRecommend.setTextColor(ContextCompat.getColor(mActivity, R.color.white));
+                btnNearby.setTextColor(ContextCompat.getColor(mActivity, R.color.white));
+                ctlInsideBar.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.common_blue_main));
+                ctlSearch.setVisibility(View.VISIBLE);
+                rlIbtnSearch.setVisibility(View.VISIBLE);
                 //结合状态栏布局滑动顶部背景变化
                 vBackgroundBlue.setVisibility(View.VISIBLE);
                 refreshLayout.setPullDownRefreshEnable(false);
@@ -277,6 +321,11 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
 //                StatusBarUtils.setStatusBarColor(mActivity);
                 currentScrollPosition = 2;
                 appBarLayout.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.common_blue_main));
+                btnRecommend.setTextColor(ContextCompat.getColor(mActivity, R.color.text_main));
+                btnNearby.setTextColor(ContextCompat.getColor(mActivity, R.color.text_main));
+                ctlInsideBar.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.white));
+                ctlSearch.setVisibility(appBarLayout.getTotalScrollRange() - offset < 150 ? View.VISIBLE : View.GONE);
+                rlIbtnSearch.setVisibility(View.GONE);
                 //结合状态栏布局滑动顶部背景变化
                 vBackgroundBlue.setVisibility(View.GONE);
                 refreshLayout.setPullDownRefreshEnable(false);
@@ -286,8 +335,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         @Override
         public void onStateAbs(int abs) {
             LogCat.e("TAG", "1111 " + alphaPercent + " abs=" + abs);
-//            banner.setAlpha(1 - abs * alphaPercent);
-            rlHomeTitle.setAlpha(abs * alphaPercent);
+            banner.setAlpha(1 - abs * alphaPercent);
         }
     };
 
