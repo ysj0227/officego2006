@@ -166,6 +166,8 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     TextView tvBusLine;
     @ViewById(R.id.rl_characteristic)
     RelativeLayout rlCharacteristic;
+    @ViewById(R.id.ctl_bus_line)
+    ConstraintLayout ctlBusLine;
     //  开放工位 item
     @ViewById(R.id.rl_open_work_model)
     RelativeLayout rlOpenWorkModel;
@@ -846,7 +848,10 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
                     linePlan.append("步行").append(workTime.get(i)).append("分钟到 | ").append(stationLine.get(i)).append("号线 ·").append(stationName.get(i)).append("\n");
                 }
             }
+            ctlBusLine.setVisibility(View.VISIBLE);
             tvBusLine.setText(linePlan);
+        }else {
+            ctlBusLine.setVisibility(View.GONE);
         }
         //楼盘信息
         tvAirConditioning.setText("常规：" + data.getIntroduction().getAirConditioning());

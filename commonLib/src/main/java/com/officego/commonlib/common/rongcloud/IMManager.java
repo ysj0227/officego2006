@@ -265,12 +265,13 @@ public class IMManager {
                 LogCat.e(TAG, "ConnectionStatus onChanged = " + connectionStatus.getMessage() + " rcToken=" + SpUtils.getRongToken());
                 if (connectionStatus.equals(ConnectionStatus.KICKED_OFFLINE_BY_OTHER_CLIENT)) {
                     //被其他提出时，需要返回登录界面 剔除其他登录
-                    //toast(context);
+//                    toast(context);
                     kickDialog(context);
                 } else if (connectionStatus == ConnectionStatus.TOKEN_INCORRECT) {
                     //token 错误时，重新登录
                     Toast.makeText(context, "融云token错误", Toast.LENGTH_SHORT).show();
-                    //LoginActivity_.intent(context).start();
+                    SpUtils.clearLoginInfo();
+                    GotoActivityUtils.loginClearActivity(context);
                 }
             }
         });
