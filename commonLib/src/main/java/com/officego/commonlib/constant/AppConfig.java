@@ -28,10 +28,9 @@ public class AppConfig extends BaseConfig {
     @Override
     protected void initTest(Context context, String env) {
         APP_URL = "http://admin.officego.com.cn/";
-//        APP_URL = "http://test.officego.com.cn/";
         H5_ROLE = "http://test.officego.com.cn/lessee/aboutUs.html";
         H5_ABOUT_US = "http://test.officego.com.cn/lessee/aboutUs.html";
-        H5_HELP_FEEDBACK = "http://test.officego.com.cn/lessee/opinion.html";
+        H5_HELP_FEEDBACK = "http://test.officego.com.cn/owner/opinion.html";
         H5_PRIVACY = "http://test.officego.com.cn/lessee/privacy.html";
         H5_REGISTER = "http://test.officego.com.cn/lessee/registerProtocol.html";
         H5_QA = "http://test.officego.com.cn/lessee/issueList.html";
@@ -63,7 +62,7 @@ public class AppConfig extends BaseConfig {
 //        RC_APPSECRET = "xtDkNCjJse";
         H5_ROLE = "http://test.officego.com.cn/lessee/aboutUs.html";
         H5_ABOUT_US = "http://test.officego.com.cn/lessee/aboutUs.html";
-        H5_HELP_FEEDBACK = "http://test.officego.com.cn/lessee/opinion.html";
+        H5_HELP_FEEDBACK = "http://test.officego.com.cn/owner/opinion.html";
         H5_PRIVACY = "http://test.officego.com.cn/lessee/privacy.html";
         H5_REGISTER = "http://test.officego.com.cn/lessee/registerProtocol.html";
         H5_QA = "http://test.officego.com.cn/lessee/issueList.html";
@@ -74,6 +73,7 @@ public class AppConfig extends BaseConfig {
 
         //融云IM test
         RC_APPKEY = "kj7swf8oknm02";
+
         RC_APPSECRET = "OF78PpILjjRk4";
     }
 }

@@ -12,8 +12,9 @@ import android.widget.TextView;
 
 import com.officego.commonlib.R;
 import com.officego.commonlib.utils.DateTimeUtils;
-import com.officego.commonlib.view.loopview.LoopView;
 import com.officego.commonlib.utils.ListUtils;
+import com.officego.commonlib.utils.ToastUtils;
+import com.officego.commonlib.view.loopview.LoopView;
 
 import java.util.Calendar;
 import java.util.Date;
@@ -63,12 +64,12 @@ public class ViewingDateDialog {
         lp.width = width;
 //        lp.height = height;
         dialogWindow.setAttributes(lp);
-        wheelView(dialog, viewLayout);
+        wheelView(context, dialog, viewLayout);
         dialog.setCancelable(true);
         dialog.show();
     }
 
-    private void wheelView(Dialog dialog, View viewLayout) {
+    private void wheelView(Context context, Dialog dialog, View viewLayout) {
         Date mDate = Calendar.getInstance().getTime();
         LoopView lvWheelYear = viewLayout.findViewById(R.id.lv_wheel_year);
         LoopView lvWheelMonth = viewLayout.findViewById(R.id.lv_wheel_month);
@@ -126,9 +127,16 @@ public class ViewingDateDialog {
         //取消确认
         cancel.setOnClickListener(v -> dialog.dismiss());
         sure.setOnClickListener(v -> {
+            String strDate = new StringBuilder().append(year).append("-").append(month).append("-").append(days)
+                    .append(" ").append(hour).append(":").append(minutes).toString();
+            long currentStamp = DateTimeUtils.currentTimeSecond();
+            long selectStamp = DateTimeUtils.dateToSecondStampLong(strDate);
+            if (selectStamp <= currentStamp) {
+                ToastUtils.toastForShort(context, "预约时间不能小于当前时间");
+                return;
+            }
             dialog.dismiss();
-            this.sureListener.selectedDate(new StringBuilder().append(year).append("-").append(month).append("-").append(days)
-                    .append(" ").append(hour).append(":").append(minutes).toString());
+            this.sureListener.selectedDate(strDate);
         });
     }
 }

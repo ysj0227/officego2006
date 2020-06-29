@@ -6,6 +6,7 @@ import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -54,6 +55,8 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
     TextView tvIdify;
     @ViewById(resName = "btn_identity")
     Button btnIdentity;
+    @ViewById(resName = "rl_role")
+    RelativeLayout rlRole;
 
     private UserOwnerBean mUserInfo;
 
@@ -182,6 +185,8 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
             } else {
                 hasIdentityView();
             }
+            //管理员显示员工管理  权职0普通员工1管理员 -1无
+            rlRole.setVisibility(data.getAuthority() == 1 ? View.VISIBLE : View.GONE);
         }
     }
 

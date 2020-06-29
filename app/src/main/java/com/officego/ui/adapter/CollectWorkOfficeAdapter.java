@@ -5,7 +5,6 @@ import android.content.Context;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -14,12 +13,12 @@ import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
+import com.officego.commonlib.view.RoundImageView;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.ui.collect.model.CollectHouseBean;
 import com.officego.ui.home.BuildingDetailsChildActivity_;
 import com.officego.ui.home.BuildingDetailsJointWorkChildActivity_;
 import com.officego.ui.home.utils.BundleUtils;
-import com.officego.commonlib.view.RoundImageView;
 
 import java.util.List;
 
@@ -75,7 +74,7 @@ public class CollectWorkOfficeAdapter extends CommonListAdapter<CollectHouseBean
             tvItemListChildLeftUp.setText(bean.getArea() + "㎡");
             tvItemListChildLeftDown.setText("最多" + seats + "个工位");
             tvItemListChildCenterUp.setText(Html.fromHtml("<font color='#46C3C2'>¥" + bean.getDayPrice() + "</font>/㎡/天"));
-            tvItemListChildCenterDown.setText(bean.getMonthPrice() + "/月");
+            tvItemListChildCenterDown.setText("¥" + (bean.getMonthPrice() == null ? "0.0" : bean.getMonthPrice()) + "/月");
             tvItemListChildRightUp.setText(bean.getDecoration());
             tvItemListChildRightUp.setTextColor(ContextCompat.getColor(context, R.color.common_blue_main));
             tvItemListChildRightDown.setText(bean.getFloor() + "/共" + bean.getTotalFloor() + "层");

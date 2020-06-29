@@ -9,6 +9,7 @@ package com.officego.commonlib.common.message;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.Spannable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -80,10 +81,11 @@ public class ViewingDateProvider extends IContainerItemProvider.MessageProvider<
             holder.ivIcon.setVisibility(View.GONE);
             holder.vLine.setVisibility(View.GONE);
         }
-        holder.tvBuildingName.setText("名称：" + info.getBuildingName());
-        holder.tvAddress.setText("地址：" + info.getBuildingAddress());
-        holder.tvTime.setText("约看时间：" +
-                DateTimeUtils.StampToDate(info.getTime() + "000", "yyyy-MM-dd HH:mm"));
+        holder.tvBuildingName.setText("名称：" + (TextUtils.isEmpty(info.getBuildingName()) ? "" : info.getBuildingName()));
+        holder.tvAddress.setText("地址：" + (TextUtils.isEmpty(info.getBuildingAddress()) ? "" : info.getBuildingAddress()));
+        if (!TextUtils.isEmpty(info.getTime())) {
+            holder.tvTime.setText("约看时间：" + DateTimeUtils.StampToDate(info.getTime() + "000", "yyyy-MM-dd HH:mm"));
+        }
     }
 
     @Override //这里意思是你的这个自定义消息显示的内容

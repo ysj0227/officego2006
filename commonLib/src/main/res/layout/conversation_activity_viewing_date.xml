@@ -75,7 +75,8 @@
             android:layout_marginTop="@dimen/dp_20"
             android:text="姓名"
             android:textColor="@color/text_66"
-            android:textSize="@dimen/sp_14" />
+            android:textSize="@dimen/sp_14"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_mobile"
@@ -85,7 +86,8 @@
             android:layout_marginTop="@dimen/dp_20"
             android:text="联系方式"
             android:textColor="@color/text_66"
-            android:textSize="@dimen/sp_14" />
+            android:textSize="@dimen/sp_14"
+            android:visibility="gone" />
 
         <TextView
             android:id="@+id/tv_time"
@@ -129,7 +131,7 @@
         android:background="@color/white"
         android:paddingLeft="@dimen/dp_18"
         android:paddingRight="@dimen/dp_18"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/rl_date">

@@ -68,6 +68,7 @@
     <string name="str_please_open_camera">请允许打开相机！！</string>
     <string name="str_switch_owner">切换为业主</string>
     <string name="are_you_sure_switch_owner">是否确认切换为业主?</string>
+    <string name="str_cannot_get_mine_phone_use_sms">无法获取本机号码，请使用验证码登录</string>
 
 
 </resources>

@@ -146,6 +146,6 @@
     <string name="str_query_more_data">查看更多</string>
     <string name="str_switch_tenant">切换为租户</string>
     <string name="are_you_sure_switch_tenant">是否确认切换为租户?</string>
-    <string name="str_title_role">角色管理</string>
+    <string name="str_title_role">员工管理</string>
 
 </resources>

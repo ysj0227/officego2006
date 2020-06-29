@@ -1,12 +1,17 @@
 package com.officego.ui.login;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.CountDownTimer;
 import android.text.Html;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
+import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -66,6 +71,8 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
     RelativeLayout rlBack;
     @ViewById(R.id.btn_login_no_password)
     Button btnLoginNoPassword;
+    @ViewById(R.id.btn_test)
+    Button btnTest;
 
     private String mobile;
     //判断是否从收藏或者个人中心未登录的时候进入
@@ -140,16 +147,15 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         if (!TextUtils.isEmpty(CommonHelper.getPhoneNum(context))) {
             mPresenter.loginOnlyPhone(CommonHelper.getPhoneNum(context));
         } else {
-            shortTip(R.string.str_cannot_get_mine_phone);
+            shortTip(R.string.str_cannot_get_mine_phone_use_sms);
         }
     }
 
-    @Click(R.id.tv_wx_login)
+    @Click(R.id.btn_test)
     void testClick() {
-//        mPresenter.login("19033333333", "123465");
         mPresenter.login("19533333333", "123465");
-//        mPresenter.login("15981968964", "123465");
-//        mPresenter.login("18237774543", "123465");
+//        mPresenter.login("19033333333", "123465");
+//        testDialog(context);
     }
 
     @Click(R.id.tv_get_code)
@@ -267,4 +273,28 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         super.onDestroy();
         stopDownTimer();
     }
+
+    /**
+     * 测试登录
+     */
+    public void testDialog(Context context) {
+        Dialog dialog = new Dialog(context, R.style.BottomDialog);
+        View viewLayout = LayoutInflater.from(context).inflate(R.layout.dialog_test_login, null);
+        dialog.setContentView(viewLayout);
+        Window dialogWindow = dialog.getWindow();
+        if (dialogWindow != null) {
+            WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+            lp.width = 600;
+            dialogWindow.setAttributes(lp);
+            ClearableEditText cetTest = viewLayout.findViewById(R.id.cet_test);
+            Button btnGo = viewLayout.findViewById(R.id.btn_go);
+            btnGo.setOnClickListener(v -> {
+                mPresenter.login(cetTest.getText().toString().trim(), "123465");
+                dialog.dismiss();
+            });
+            dialog.setCancelable(true);
+            dialog.show();
+        }
+    }
+
 }

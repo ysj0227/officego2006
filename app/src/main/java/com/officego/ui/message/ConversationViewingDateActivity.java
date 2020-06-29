@@ -145,13 +145,13 @@ public class ConversationViewingDateActivity extends BaseMvpActivity<Conversatio
                 tvPrice.setText("¥" + data.getBuilding().getMinSinglePrice());
             }
         }
-        tvName.setText("姓名  " + data.getCreateUser());
-        tvMobile.setText("联系方式  " + data.getUser().getPhone());
-        if (data.getChatted() != null) {
-            Glide.with(context).load(data.getChatted().getAvatar()).into(civAvatar);
-            tvOwnerName.setText(data.getChatted().getNickname());
-            tvPosition.setText(data.getChatted().getJob());
-        }
+//        tvName.setText("姓名  " + data.getCreateUser());
+//        tvMobile.setText("联系方式  " + data.getUser().getPhone());
+//        if (data.getChatted() != null) {
+//            Glide.with(context).load(data.getChatted().getAvatar()).into(civAvatar);
+//            tvOwnerName.setText(data.getChatted().getNickname());
+//            tvPosition.setText(data.getChatted().getJob());
+//        }
     }
 
     public void addRenter(int buildingId, String time, String targetId) {

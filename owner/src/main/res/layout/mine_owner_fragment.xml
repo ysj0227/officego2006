@@ -96,6 +96,43 @@
             android:orientation="vertical">
 
             <RelativeLayout
+                android:id="@+id/rl_role"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_56">
+
+                <ImageView
+                    android:id="@+id/iv_role"
+                    android:layout_width="@dimen/dp_16"
+                    android:layout_height="@dimen/dp_16"
+                    android:layout_centerVertical="true"
+                    android:background="@mipmap/ic_person_manger"
+                    tools:ignore="ContentDescription" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/dp_18"
+                    android:layout_toEndOf="@id/iv_role"
+                    android:text="@string/str_title_role"
+                    android:textColor="@color/text_33"
+                    android:textSize="@dimen/sp_15" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="@drawable/ic_right_arrow_small" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_1"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/common_divider" />
+            </RelativeLayout>
+
+            <RelativeLayout
                 android:id="@+id/rl_help"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_56">
@@ -132,42 +169,6 @@
                     android:background="@color/common_divider" />
             </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/rl_role"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_56">
-
-                <ImageView
-                    android:id="@+id/iv_role"
-                    android:layout_width="@dimen/dp_16"
-                    android:layout_height="@dimen/dp_16"
-                    android:layout_centerVertical="true"
-                    android:background="@mipmap/ic_protocol"
-                    tools:ignore="ContentDescription" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/dp_18"
-                    android:layout_toEndOf="@id/iv_role"
-                    android:text="@string/str_title_role"
-                    android:textColor="@color/text_33"
-                    android:textSize="@dimen/sp_15" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/ic_right_arrow_small" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_1"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/common_divider" />
-            </RelativeLayout>
 
             <RelativeLayout
                 android:id="@+id/rl_service"
