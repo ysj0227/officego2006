@@ -117,6 +117,8 @@ public class SMWebChromeClient extends WebChromeClient {
             return;
         filePathCallback = uploadMsg;
         selectImage();
+
+
     }
 
     // 3.0 + 调用这个方法
@@ -230,7 +232,9 @@ public class SMWebChromeClient extends WebChromeClient {
             }
         }
         if (filePathCallbacks != null) {
-            if (results != null) {
+            if (result != null) {//单选相册
+                filePathCallbacks.onReceiveValue(new Uri[]{result});
+            } else if (results != null) {//多选相册
                 filePathCallbacks.onReceiveValue(results);
             } else {
                 filePathCallbacks.onReceiveValue(null);
