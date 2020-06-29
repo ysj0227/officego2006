@@ -10,6 +10,7 @@ import com.officego.commonlib.base.BaseConfig;
 public class AppConfig extends BaseConfig {
 
     public static String APP_URL = "";
+    public static String APP_SHARE_URL = "";
 
     public static String H5_ROLE = "";
     public static String H5_ABOUT_US = "";
@@ -28,6 +29,7 @@ public class AppConfig extends BaseConfig {
     @Override
     protected void initTest(Context context, String env) {
         APP_URL = "http://admin.officego.com.cn/";
+        APP_SHARE_URL = "http://test.officego.com.cn/";
         H5_ROLE = "http://test.officego.com.cn/lessee/aboutUs.html";
         H5_ABOUT_US = "http://test.officego.com.cn/lessee/aboutUs.html";
         H5_HELP_FEEDBACK = "http://test.officego.com.cn/owner/opinion.html";
@@ -47,6 +49,7 @@ public class AppConfig extends BaseConfig {
     @Override
     protected void initRelease(Context context, String env) {
         APP_URL = "http://admin.officego.com.cn/";
+        APP_SHARE_URL = "http://test.officego.com.cn/";
 //        H5_ROLE = "http://test.officego.com.cn/lessee/aboutUs.html";
 //        H5_ABOUT_US = "http://m.officego.com.cn/lessee/aboutUs.html";
 //        H5_HELP_FEEDBACK = "http://m.officego.com.cn/lessee/opinion.html";

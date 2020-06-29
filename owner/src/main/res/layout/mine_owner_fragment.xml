@@ -37,9 +37,10 @@
             android:layout_marginStart="@dimen/dp_12"
             android:layout_marginTop="@dimen/dp_97"
             android:layout_toEndOf="@+id/civ_avatar"
-            android:maxLength="10"
+            android:maxLength="8"
+            android:ellipsize="end"
             android:textColor="@color/white"
-            android:textSize="@dimen/sp_19" />
+            android:textSize="@dimen/sp_18" />
 
         <TextView
             android:id="@+id/tv_idify"
@@ -49,9 +50,9 @@
             android:layout_marginStart="@dimen/dp_12"
             android:layout_marginBottom="@dimen/dp_3"
             android:layout_toEndOf="@+id/tv_name"
-            android:background="@drawable/button_corner5_edge_deep_blue"
-            android:maxLength="10"
-            android:textColor="@color/white"
+            android:background="@drawable/button_corners5_solid_white"
+            android:padding="@dimen/dp_3"
+            android:textColor="@color/common_blue_main"
             android:textSize="@dimen/sp_10" />
 
         <TextView

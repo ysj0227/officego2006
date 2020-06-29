@@ -44,7 +44,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         implements UserContract.View {
     private static final int REQUEST_CODE = 1000;
     private static final int REQUEST_CODE_LOGOUT = 1009;
-    private static final int REQUEST_CODE_LOGIN = 1010;
+    private static final int REQUEST_CODE_IDENTITY = 1010;
     @ViewById(resName = "civ_avatar")
     CircleImage civAvatar;
     @ViewById(resName = "tv_name")
@@ -83,6 +83,9 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         }
     }
 
+    /**
+     * 去认证
+     */
     @Click(resName = "btn_identity")
     void loginClick() {
         if (isFastClick(1500)) {
@@ -90,6 +93,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         }
         WebViewIdifyActivity_.intent(mActivity).start();
     }
+
 
     @Click(resName = "civ_avatar")
     void editMessageClick() {
@@ -120,6 +124,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
     @OnActivityResult(REQUEST_CODE)
     void onAvatarResult(int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
+            mPresenter.getUserInfo();
             String avatarUrl = data.getStringExtra("avatarUrl");
             if (!TextUtils.isEmpty(avatarUrl)) {
                 Glide.with(mActivity).load(avatarUrl).into(civAvatar);
@@ -173,7 +178,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
             mUserInfo = data;
             tvIdify.setText(idify(data));
             Glide.with(mActivity).load(data.getAvatar()).into(civAvatar);
-            tvName.setText(data.getRealname());
+            tvName.setText(data.getProprietorRealname());
             if (TextUtils.isEmpty(data.getProprietorCompany())) {
                 tvAccount.setText(TextUtils.isEmpty(data.getProprietorJob()) ? "" : data.getProprietorJob());
             } else {
@@ -214,9 +219,11 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
             id = "";
         }
         if (data.getAuditStatus() == 0) {
-            status = "待认证";
+            status = "待审核";
         } else if (data.getAuditStatus() == 1) {
             status = "已认证";
+        } else if (data.getAuditStatus() == 2) {
+            status = "审核驳回";
         } else {
             status = "未认证";
         }
@@ -244,7 +251,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
     @Override
     public int[] getStickNotificationId() {
         return new int[]{CommonNotifications.updateUserOwnerInfoSuccess,
-                CommonNotifications.ownerIdentityComplete,};
+                CommonNotifications.ownerIdentityComplete};
     }
 
     @Override
@@ -256,9 +263,9 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         if (id == CommonNotifications.updateUserOwnerInfoSuccess) {
             mPresenter.getUserInfo();
         } else if (id == CommonNotifications.ownerIdentityComplete) {
-            //认证完成 TODO
-            noIdentityView();
+            //认证完成
+            hasIdentityView();
+            mPresenter.getUserInfo();
         }
     }
-
 }

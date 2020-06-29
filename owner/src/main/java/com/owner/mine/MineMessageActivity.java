@@ -86,13 +86,12 @@ public class MineMessageActivity extends BaseMvpActivity<UpdateUserPresenter>
         titleBar.getLeftImg().setOnClickListener(this);
         localAvatarPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "_avatar.jpg";
         Glide.with(context).load(mUserInfo.getAvatar()).into(civAvatar);
-        etNameContent.setText(mUserInfo.getRealname());
+        etNameContent.setText(mUserInfo.getProprietorRealname());
         etCompanyContent.setText(mUserInfo.getProprietorCompany());
         if (mUserInfo.getSex() != null) {
             etSexContent.setText((Double) mUserInfo.getSex() == 1 ? "男" : "女");
         }
         etJobContent.setText(TextUtils.isEmpty(mUserInfo.getProprietorJob()) ? "" : mUserInfo.getProprietorJob());
-
     }
 
     @Override
@@ -250,6 +249,7 @@ public class MineMessageActivity extends BaseMvpActivity<UpdateUserPresenter>
         //发送通知
         BaseNotification.newInstance().postNotificationName(CommonNotifications.updateUserOwnerInfoSuccess, "");
         shortTip(R.string.tip_save_success);
+        finish();
     }
 
     @Override

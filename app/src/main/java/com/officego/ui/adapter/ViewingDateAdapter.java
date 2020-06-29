@@ -1,6 +1,7 @@
 package com.officego.ui.adapter;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -40,7 +41,7 @@ public class ViewingDateAdapter extends CommonListAdapter<ViewingDateBean.DataBe
         holder.setText(R.id.tv_time, DateTimeUtils.StampToDate(String.valueOf(bean.getTime())+"000", "HH:mm"));
         holder.setText(R.id.tv_name, bean.getContact());
         holder.setText(R.id.tv_position, bean.getJob());
-        holder.setText(R.id.tv_building_name, "约看 「" + bean.getBuildingName() + "」");
+        holder.setText(com.owner.R.id.tv_building_name, "约看 「" + (TextUtils.isEmpty(bean.getBuildingName()) ? bean.getBranchesName() : bean.getBuildingName()) + "」");
         holder.setText(R.id.tv_location, bean.getBusinessDistrict());
         RelativeLayout rlDetails = holder.getView(R.id.rl_details);
         TextView tvName = holder.getView(R.id.tv_name);

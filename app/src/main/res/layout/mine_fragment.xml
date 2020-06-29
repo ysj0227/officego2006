@@ -37,10 +37,10 @@
             android:layout_marginStart="@dimen/dp_12"
             android:layout_marginTop="@dimen/dp_97"
             android:layout_toEndOf="@+id/civ_avatar"
-            android:maxLength="10"
-            android:text="--"
+            android:maxLength="8"
+            android:ellipsize="end"
             android:textColor="@color/white"
-            android:textSize="@dimen/sp_19" />
+            android:textSize="@dimen/sp_18" />
 
         <TextView
             android:id="@+id/tv_account"

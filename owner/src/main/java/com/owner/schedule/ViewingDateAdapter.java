@@ -1,6 +1,7 @@
 package com.owner.schedule;
 
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -10,10 +11,10 @@ import androidx.core.content.ContextCompat;
 
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
+import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.utils.DateTimeUtils;
 import com.owner.R;
 import com.owner.schedule.model.ViewingDateBean;
-import com.officego.commonlib.common.GotoActivityUtils;
 
 import java.util.List;
 
@@ -36,11 +37,11 @@ public class ViewingDateAdapter extends CommonListAdapter<ViewingDateBean.DataBe
     @Override
     public void convert(ViewHolder holder, final ViewingDateBean.DataBean.ScheduleListBean bean) {
 
-        holder.setText(R.id.tv_date, DateTimeUtils.StampToDate(String.valueOf(bean.getTime()) + "000", "MM月dd日"));
-        holder.setText(R.id.tv_time, DateTimeUtils.StampToDate(String.valueOf(bean.getTime()) + "000", "HH:mm"));
+        holder.setText(R.id.tv_date, DateTimeUtils.StampToDate(bean.getTime() + "000", "MM月dd日"));
+        holder.setText(R.id.tv_time, DateTimeUtils.StampToDate(bean.getTime() + "000", "HH:mm"));
         holder.setText(R.id.tv_name, bean.getContact());
         holder.setText(R.id.tv_position, bean.getJob());
-        holder.setText(R.id.tv_building_name, "约看 「" + bean.getBuildingName() + "」");
+        holder.setText(R.id.tv_building_name, "约看 「" + (TextUtils.isEmpty(bean.getBuildingName()) ? bean.getBranchesName() : bean.getBuildingName()) + "」");
         holder.setText(R.id.tv_location, bean.getBusinessDistrict());
         RelativeLayout rlDetails = holder.getView(R.id.rl_details);
         TextView tvName = holder.getView(R.id.tv_name);

@@ -5,6 +5,7 @@ import android.content.Context;
 import com.officego.commonlib.base.BasePresenter;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
+import com.officego.commonlib.retrofit.RpcErrorCode;
 import com.officego.commonlib.utils.log.LogCat;
 import com.officego.rpc.OfficegoApi;
 import com.officego.ui.home.contract.HomeContract;
@@ -38,7 +39,7 @@ public class HomePresenter extends BasePresenter<HomeContract.View> implements H
                 LogCat.e(TAG, "getBannerList onSuccess =" + data);
                 if (isViewAttached()) {
                     bannerList.clear();
-                    if (data!=null){
+                    if (data != null) {
                         for (int i = 0; i < data.size(); i++) {
                             bannerList.add(data.get(i).getImg());
                         }
@@ -80,7 +81,7 @@ public class HomePresenter extends BasePresenter<HomeContract.View> implements H
                         if (isViewAttached()) {
                             mView.hideLoadingDialog();
                             mView.endRefresh();
-                            if (code == Constants.ERROR_CODE_5002) {
+                            if (code == Constants.ERROR_CODE_5002 || code == RpcErrorCode.RPC_ERR_TIMEOUT) {
                                 mView.BuildingListFail(code, msg);
                             }
                         }

@@ -54,9 +54,11 @@ public class UnIdifyDialog {
             id = "";
         }
         if (data.getAuditStatus() == 0) {
-            status = "待认证";
+            status = "待审核";
         } else if (data.getAuditStatus() == 1) {
             status = "已认证";
+        } else if (data.getAuditStatus() == 2) {
+            status = "审核驳回";
         } else {
             status = "未认证";
         }

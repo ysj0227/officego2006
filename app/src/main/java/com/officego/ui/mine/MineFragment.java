@@ -127,6 +127,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
     @OnActivityResult(REQUEST_CODE)
     void onAvatarResult(int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
+            mPresenter.getUserInfo();
             String avatarUrl = data.getStringExtra("avatarUrl");
             if (!TextUtils.isEmpty(avatarUrl)) {
                 Glide.with(mActivity).load(avatarUrl).into(civAvatar);

@@ -21,6 +21,7 @@ import androidx.annotation.NonNull;
 
 import com.officego.commonlib.base.BaseMvpFragment;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.constant.AppConfig;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
@@ -62,7 +63,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements Home
         StatusBarUtils.setStatusBarColor(mActivity);
         CommonHelper.setRelativeLayoutParams(mActivity, webView);
         setWebChromeClient();
-        //根据用户信息显示楼盘或网点管理
         mPresenter.getUserInfo();
     }
 
@@ -110,23 +110,27 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements Home
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
+                showLoadingDialog();
                 webViewUrl = url;
             }
 
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
+                hideLoadingDialog();
                 Log.d(TAG, "webview onPageFinished url=" + url);
             }
 
             @Override
             protected void receiverError(WebView view, WebResourceRequest request, WebResourceError error) {
                 Log.d(TAG, "webview receiverError");
+                hideLoadingDialog();
                 exceptionPageError(view, request);
             }
 
             @Override
             public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+                hideLoadingDialog();
                 exceptionPageHttpError(view, errorResponse);
                 super.onReceivedHttpError(view, request, errorResponse);
             }
@@ -263,5 +267,22 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements Home
 
     private String identity() {
         return "?token=" + SpUtils.getSignToken() + "&channel=2&identity=1";
+    }
+
+    @Override
+    public int[] getStickNotificationId() {
+        return new int[]{
+                CommonNotifications.ownerIdentityComplete};
+    }
+
+    @Override
+    public void didReceivedNotification(int id, Object... args) {
+        super.didReceivedNotification(id, args);
+        if (args == null) {
+            return;
+        }
+        if (id == CommonNotifications.ownerIdentityComplete) {
+            mPresenter.getUserInfo();
+        }
     }
 }

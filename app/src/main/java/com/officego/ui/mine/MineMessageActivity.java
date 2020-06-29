@@ -253,6 +253,7 @@ public class MineMessageActivity extends BaseMvpActivity<UpdateUserPresenter>
         //发送通知
         BaseNotification.newInstance().postNotificationName(CommonNotifications.updateUserInfoSuccess, "");
         shortTip(R.string.tip_save_success);
+        finish();
     }
 
     @Override

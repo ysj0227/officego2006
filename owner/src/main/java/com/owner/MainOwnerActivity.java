@@ -16,10 +16,10 @@ import androidx.fragment.app.Fragment;
 
 import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.rongcloud.ConnectRongCloudUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.MyFragmentTabHost;
 import com.owner.message.MessageFragment_;
-import com.owner.message.rongcloud.ConnectRongCloudUtils;
 import com.owner.utils.MainTab;
 
 import org.androidannotations.annotations.AfterViews;
@@ -210,5 +210,4 @@ public class MainOwnerActivity extends BaseActivity implements TabHost.OnTabChan
         home.addCategory(Intent.CATEGORY_HOME);
         context.startActivity(home);
     }
-
 }

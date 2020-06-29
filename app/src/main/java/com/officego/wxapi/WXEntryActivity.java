@@ -18,6 +18,7 @@ import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.officego.R;
 import com.officego.application.MyApplication;
+import com.officego.commonlib.constant.AppConfig;
 import com.officego.commonlib.constant.Constants;
 import com.officego.model.ShareBean;
 import com.officego.utils.Util;
@@ -121,10 +122,10 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
             return;
         }
         String webpageUrl;
-        if (bean.isHouseChild()){
-            webpageUrl="http://test.officego.com.cn/lessee/detail.html?"+bean.getId();
-        }else {
-            webpageUrl="http://test.officego.com.cn/lessee/housesDetail.html?"+bean.getId();
+        if (bean.isHouseChild()) {
+            webpageUrl = AppConfig.APP_SHARE_URL + "lessee/detail.html?" + bean.getId();
+        } else {
+            webpageUrl = AppConfig.APP_SHARE_URL + "lessee/housesDetail.html?" + bean.getId();
         }
         int THUMB_SIZE = 150;
         WXWebpageObject webpage = new WXWebpageObject();

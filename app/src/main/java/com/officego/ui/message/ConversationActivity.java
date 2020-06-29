@@ -126,17 +126,19 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             if (TextUtils.equals(SpUtils.getSignToken() + data.getBuilding().getBuildingId() +
                             (data.getBuilding().getHouseId() == null ? "" : data.getBuilding().getHouseId()) + targetId,
                     SpUtils.getChatBuildingInfo())) {
-
-                LogCat.e("TAG", "11111 getChatBuildingInfo= " + SpUtils.getSignToken() + data.getBuilding().getBuildingId() +
-                        (data.getBuilding().getHouseId() == null ? "" : data.getBuilding().getHouseId()) + targetId);
-                LogCat.e("TAG", "11111 getChatBuildingInfo11= " + SpUtils.getChatBuildingInfo());
                 return;
             }
             BuildingInfo info = new BuildingInfo();
             info.setbuildingName(data.getBuilding().getBuildingName());
             info.setImgUrl(data.getBuilding().getMainPic());
-            info.setCreateTime(DateTimeUtils.secondToDate(data.getCreateTime(), "yyyy-MM-dd HH:mm") +
-                    " 由" + (TextUtils.isEmpty(data.getCreateUser()) ? "我" : data.getCreateUser()) + "发起沟通");
+            String showUser = TextUtils.equals(SpUtils.getUserId(), data.getCreateUser()) ? "你" : "对方";
+            String mDate;
+            if (data.getCreateTime() == 0) {
+                mDate = DateTimeUtils.getStringDateTimeByStringPattern(DateTimeUtils.DateTimePattern.LONG_DATETIME_2);
+            } else {
+                mDate = DateTimeUtils.secondToDate(data.getCreateTime(), "yyyy-MM-dd HH:mm");
+            }
+            info.setCreateTime(mDate + " 由" + showUser + "发起沟通");
             info.setDistrict(data.getBuilding().getAddress());
             if (data.getBuilding().getStationline().size() > 0) {
                 String workTime = data.getBuilding().getNearbySubwayTime().get(0);

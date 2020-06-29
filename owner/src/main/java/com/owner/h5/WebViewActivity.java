@@ -60,17 +60,21 @@ public class WebViewActivity extends BaseActivity {
         setWebChromeClient();
         if (flags == Constants.H5_HELP) {
             titleBar.getAppTitle().setText(getString(R.string.str_title_help));
-            loadWebView(AppConfig.H5_HELP_FEEDBACK);
+            loadWebView(AppConfig.H5_HELP_FEEDBACK + chanel());
         } else if (flags == Constants.H5_PROTOCOL) {
             titleBar.getAppTitle().setText(getString(R.string.str_title_protocol));
-            loadWebView(AppConfig.H5_PRIVACY);
+            loadWebView(AppConfig.H5_PRIVACY + chanel());
         } else if (flags == Constants.H5_ABOUTS) {
             titleBar.getAppTitle().setText(getString(R.string.str_title_about_us));
-            loadWebView(AppConfig.H5_ABOUT_US);
+            loadWebView(AppConfig.H5_ABOUT_US + chanel());
         } else if (flags == Constants.H5_ROLE) {
             titleBar.getAppTitle().setText(getString(R.string.str_title_role));
-            loadWebView(AppConfig.H5_ROLE);
+            loadWebView(AppConfig.H5_ROLE + chanel());
         }
+    }
+
+    private String chanel() {
+        return "?channel=2";
     }
 
     /**

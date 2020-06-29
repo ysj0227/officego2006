@@ -75,8 +75,6 @@ public class OfficegoApi {
      */
     public void updateUserData(String realName, String sex, String company, String job, RetrofitCallback<Object> callback) {
         Map<String, RequestBody> map = new HashMap<>();
-
-
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("realname", requestBody(realName));
         map.put("sex", requestBody(sex));

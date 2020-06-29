@@ -222,7 +222,7 @@ public class ViewingDateActivity extends BaseMvpActivity<ViewingDatePresenter>
 
     private void selectedDayDataList(String mCurrentDate) {
         if (viewingDateAllList == null) {
-            shortTip(R.string.tip_current_day_no_data);
+//            shortTip(R.string.tip_current_day_no_data);
             return;
         }
         viewingDateDayList.clear();
@@ -242,7 +242,7 @@ public class ViewingDateActivity extends BaseMvpActivity<ViewingDatePresenter>
                 return;
             } else if (i == viewingDateAllList.size() - 1 && !isHasList) {
                 noData();
-                shortTip(R.string.tip_current_day_no_data);
+//                shortTip(R.string.tip_current_day_no_data);
             }
         }
     }
@@ -330,7 +330,7 @@ public class ViewingDateActivity extends BaseMvpActivity<ViewingDatePresenter>
     @Override
     public void viewingDateSuccess(List<ViewingDateBean.DataBean> data) {
         if (data == null || data.size() == 0) {
-            shortTip(R.string.tip_current_day_no_data);
+//            shortTip(R.string.tip_current_day_no_data);
             noData();
             return;
         }

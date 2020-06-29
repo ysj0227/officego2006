@@ -45,8 +45,7 @@ android {
 //            applicationIdSuffix ".test"
             manifestPlaceholders = [ENV_VALUE : "ENV_TEST",
                                     APP_NAME  : "@string/app_name",
-                                    WX_APP_ID : "wx57ca52557f7efc4c",
-                                    RC_APP_KEY: "kj7swf8oknm02",]
+                                    WX_APP_ID : "wx70ee9e90c1d62d83"]
             zipAlignEnabled false
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -54,8 +53,7 @@ android {
         release {
             manifestPlaceholders = [ENV_VALUE : "ENV_RELEASE",
                                     APP_NAME  : "@string/app_name",
-                                    WX_APP_ID : "wx57ca52557f7efc4c",
-                                    RC_APP_KEY: "kj7swf8oknm02"]
+                                    WX_APP_ID : "wx70ee9e90c1d62d83"]
             minifyEnabled false
             zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'

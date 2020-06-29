@@ -3,6 +3,7 @@ package com.officego.ui.collect.presenter;
 import com.officego.commonlib.base.BasePresenter;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
+import com.officego.commonlib.retrofit.RpcErrorCode;
 import com.officego.commonlib.utils.log.LogCat;
 import com.officego.rpc.OfficegoApi;
 import com.officego.ui.collect.contract.CollectedContract;
@@ -38,7 +39,7 @@ public class CollectedPresenter extends BasePresenter<CollectedContract.View>
                         if (isViewAttached()) {
                             mView.hideLoadingDialog();
                             mView.endRefresh();
-                            if (code == Constants.ERROR_CODE_5002) {
+                            if (code == Constants.ERROR_CODE_5002 || code == RpcErrorCode.RPC_ERR_TIMEOUT) {
                                 mView.favoriteBuildingListFail(code, msg);
                             }
                         }
@@ -66,7 +67,7 @@ public class CollectedPresenter extends BasePresenter<CollectedContract.View>
                         if (isViewAttached()) {
                             mView.hideLoadingDialog();
                             mView.endRefresh();
-                            if (code == Constants.ERROR_CODE_5002) {
+                            if (code == Constants.ERROR_CODE_5002 || code == RpcErrorCode.RPC_ERR_TIMEOUT) {
                                 mView.favoriteHouseListFail(code, msg);
                             }
                         }

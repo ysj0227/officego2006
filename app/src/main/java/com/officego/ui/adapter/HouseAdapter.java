@@ -58,11 +58,12 @@ public class HouseAdapter extends CommonListAdapter<BuildingBean.ListBean> {
         TextView price = holder.getView(R.id.tv_price);
         TextView unit = holder.getView(R.id.tv_unit);
         //1:楼盘 写字楼,2:网点 联合办公
+        String mPrice = bean.getMinDayPrice() == null ? "0" : bean.getMinDayPrice().toString();
         if (bean.getBtype() == 1) {
-            price.setText("¥" + (bean.getMinDayPrice() == null ? "0.0" : bean.getMinDayPrice()));
+            price.setText("¥" + mPrice);
             unit.setText("/m²/天起");
         } else if (bean.getBtype() == 2) {
-            price.setText("¥" + (bean.getSeatMonthPrice() == null ? "0.0" : bean.getSeatMonthPrice()));
+            price.setText("¥" + mPrice);
             unit.setText("/位/月起");
         }
         addLabel(holder, bean);

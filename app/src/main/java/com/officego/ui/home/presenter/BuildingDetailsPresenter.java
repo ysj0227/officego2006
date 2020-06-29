@@ -5,6 +5,7 @@ import android.content.Context;
 import com.officego.commonlib.base.BasePresenter;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
+import com.officego.commonlib.retrofit.RpcErrorCode;
 import com.officego.commonlib.utils.log.LogCat;
 import com.officego.rpc.OfficegoApi;
 import com.officego.ui.home.contract.BuildingDetailsContract;
@@ -70,7 +71,7 @@ public class BuildingDetailsPresenter extends BasePresenter<BuildingDetailsContr
                 LogCat.e(TAG, "favorite onFail code=" + code + "  msg=" + msg);
                 if (isViewAttached()) {
                     mView.hideLoadingDialog();
-                    if (code == Constants.ERROR_CODE_5002) {
+                    if (code == Constants.ERROR_CODE_5002 || code == RpcErrorCode.RPC_ERR_TIMEOUT) {
                         mView.favoriteFail();
                     } else if (code == Constants.DEFAULT_ERROR_CODE) {
                         mView.shortTip(msg);

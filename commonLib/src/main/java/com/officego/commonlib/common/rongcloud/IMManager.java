@@ -288,10 +288,11 @@ public class IMManager {
         Handler mainHandler = new Handler(Looper.getMainLooper());
         mainHandler.post(() -> {
             CommonDialog dialog = new CommonDialog.Builder(context)
-                    .setTitle("账号已在其他设备登录\n请重新登录")
+                    .setTitle("账号已在其他设备登录\n是否重新连接")
+                    .setCancelButton(R.string.sm_cancel)
                     .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
-                        SpUtils.clearLoginInfo();
-                        GotoActivityUtils.loginClearActivity(context);
+                        //重连
+                        new ConnectRongCloudUtils();
                         dialog12.dismiss();
                     }).create();
             dialog.showWithOutTouchable(false);

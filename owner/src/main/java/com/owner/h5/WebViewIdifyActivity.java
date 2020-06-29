@@ -38,8 +38,6 @@ import com.owner.R;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  * Created by YangShiJie
@@ -260,20 +258,6 @@ public class WebViewIdifyActivity extends BaseActivity {
 
         public JsInterface(Context context) {
             this.mContext = context;
-        }
-
-        @JavascriptInterface
-        public String setUserInfo() {
-            JSONObject object = new JSONObject();
-            try {
-                object.put("rongyuntoken", SpUtils.getRongToken());
-                object.put("token", SpUtils.getSignToken());
-                Log.d("TAG", "js to android setUserInfo=" + object.toString());
-                return object.toString();
-            } catch (JSONException e) {
-                e.printStackTrace();
-            }
-            return "";
         }
 
         @JavascriptInterface
