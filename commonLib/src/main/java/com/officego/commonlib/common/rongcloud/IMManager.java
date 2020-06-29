@@ -289,7 +289,11 @@ public class IMManager {
         mainHandler.post(() -> {
             CommonDialog dialog = new CommonDialog.Builder(context)
                     .setTitle("账号已在其他设备登录\n是否重新连接")
-                    .setCancelButton(R.string.sm_cancel)
+                    .setCancelButton(R.string.sm_cancel, (dialog12, which) -> {
+                        SpUtils.clearLoginInfo();
+                        GotoActivityUtils.loginClearActivity(context);
+                        dialog12.dismiss();
+                    })
                     .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
                         //重连
                         new ConnectRongCloudUtils();

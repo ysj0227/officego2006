@@ -2,6 +2,7 @@ package com.officego.commonlib.view.webview;
 
 import android.app.Activity;
 import android.app.AlertDialog;
+import android.content.ClipData;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
@@ -130,29 +131,34 @@ public class SMWebChromeClient extends WebChromeClient {
         selectImage();
     }
 
+    //  5.0+ acceptType
     @Override
     public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback,
                                      FileChooserParams fileChooserParams) {
+//        String[] acceptTypes = fileChooserParams.getAcceptTypes();
         filePathCallbacks = filePathCallback;
         selectImage();
         return true;
     }
 
     private void selectImage() {
-
         final String[] items = {mActivity.getResources().getString(R.string.str_take_photo),
                 mActivity.getResources().getString(R.string.str_choose_from_album),
                 mActivity.getResources().getString(R.string.sm_cancel)};
-        new AlertDialog.Builder(mActivity)
-                .setItems(items, (dialogInterface, i) -> {
-                    if (i == 0) {
-                        takePhoto();
-                    } else if (i == 1) {
-                        openGallery();
-                    } else {
-                        cancelCallback();
-                    }
-                }).create().show();
+        AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
+        builder.setItems(items, (dialogInterface, i) -> {
+            if (i == 0) {
+                takePhoto();
+            } else if (i == 1) {
+                openGallery();
+            } else {
+                cancelCallback();
+            }
+        });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.setCanceledOnTouchOutside(false);
+        alertDialog.setCancelable(false);
+        alertDialog.show();
     }
 
     private void takePhoto() {
@@ -179,6 +185,7 @@ public class SMWebChromeClient extends WebChromeClient {
         }
         Intent photoPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
         photoPickerIntent.setType("image/*");
+        photoPickerIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);//多选
         photoPickerIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         mActivity.startActivityForResult(photoPickerIntent, REQUEST_GALLERY);
     }
@@ -188,13 +195,28 @@ public class SMWebChromeClient extends WebChromeClient {
      */
     public void uploadImage(int requestCode, int resultCode, Intent data) {
         Uri result = null;
+        Uri[] results = null;
         if (resultCode == Activity.RESULT_OK) {
             switch (requestCode) {
                 case REQUEST_CAMERA:
                     result = imgUri;
                     break;
                 case REQUEST_GALLERY:
-                    result = data == null ? null : data.getData();
+//                    result = data == null ? null : data.getData();
+                    if (data != null) {
+                        String dataString = data.getDataString();
+                        ClipData clipData = data.getClipData();
+                        if (clipData != null) {
+                            results = new Uri[clipData.getItemCount()];
+                            for (int i = 0; i < clipData.getItemCount(); i++) {
+                                ClipData.Item item = clipData.getItemAt(i);
+                                results[i] = item.getUri();
+                            }
+                        }
+                        if (dataString != null) {
+                            results = new Uri[]{Uri.parse(dataString)};
+                        }
+                    }
                     break;
                 default:
                     break;
@@ -208,8 +230,8 @@ public class SMWebChromeClient extends WebChromeClient {
             }
         }
         if (filePathCallbacks != null) {
-            if (result != null) {
-                filePathCallbacks.onReceiveValue(new Uri[]{result});
+            if (results != null) {
+                filePathCallbacks.onReceiveValue(results);
             } else {
                 filePathCallbacks.onReceiveValue(null);
             }
@@ -246,10 +268,12 @@ public class SMWebChromeClient extends WebChromeClient {
     public void cancelCallback() {
         if (filePathCallback != null) {
             filePathCallback.onReceiveValue(null);
+            filePathCallback = null;
         }
 
         if (filePathCallbacks != null) {
             filePathCallbacks.onReceiveValue(null);
+            filePathCallbacks = null;
         }
     }
 

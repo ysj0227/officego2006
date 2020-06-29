@@ -112,7 +112,6 @@ public class WebViewIdifyActivity extends BaseActivity {
         webSetting.setBlockNetworkImage(false);//解决图片不显示
         webView.addJavascriptInterface(new JsInterface(this), "android");
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-//        webView.setWebChromeClient(new WebChromeClient());//
         webChrome = new SMWebChromeClient(this);
         webView.setWebChromeClient(webChrome);
         webView.loadUrl(url);
