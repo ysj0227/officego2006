@@ -335,7 +335,6 @@ public class SMWebChromeClient extends WebChromeClient {
         void onShowCustomView(View view, CustomViewCallback callback);
 
         void onHideCustomView();
-
     }
 
 }
