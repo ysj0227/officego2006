@@ -37,8 +37,8 @@
             android:layout_marginStart="@dimen/dp_12"
             android:layout_marginTop="@dimen/dp_97"
             android:layout_toEndOf="@+id/civ_avatar"
-            android:maxLength="8"
             android:ellipsize="end"
+            android:maxLength="8"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_18" />
 
@@ -69,15 +69,15 @@
 
         <Button
             android:id="@+id/btn_identity"
-            android:layout_width="@dimen/dp_75"
+            android:layout_width="@dimen/dp_60"
             android:layout_height="@dimen/dp_28"
             android:layout_alignParentEnd="true"
-            android:layout_marginTop="@dimen/dp_110"
+            android:layout_marginTop="@dimen/dp_130"
             android:layout_marginEnd="@dimen/dp_18"
             android:background="@drawable/button_corners25_edge_transparent"
             android:text="去认证"
             android:textColor="@color/white"
-            android:textSize="@dimen/sp_14"
+            android:textSize="@dimen/sp_12"
             android:visibility="gone" />
     </RelativeLayout>
 

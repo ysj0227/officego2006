@@ -152,8 +152,8 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
     @Click(R.id.btn_test)
     void testClick() {
 //        mPresenter.login("19533333333", "123465");
-//        mPresenter.login("15981968964", "123465");
-        testDialog(context);
+        mPresenter.login("15981968964", "123465");
+//        testDialog(context);
     }
 
     @Click(R.id.tv_get_code)

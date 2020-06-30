@@ -105,7 +105,7 @@ public class ConversationViewingDateActivity extends BaseMvpActivity<Conversatio
         }
         String time = tvSelectTime.getText().toString().trim();
         if (mData != null) {
-            addRenter(mData.getBuilding().getBuildingId(), DateTimeUtils.dateToSecondStamp(time), targetId);
+            addRenter(mData.getBuilding().getBuildingId(), DateTimeUtils.dateToStamp(time), targetId);
         } else {
             shortTip("预约失败");
         }
@@ -160,7 +160,6 @@ public class ConversationViewingDateActivity extends BaseMvpActivity<Conversatio
                 new RetrofitCallback<RenterBean>() {
                     @Override
                     public void onSuccess(int code, String msg, RenterBean data) {
-                        LogCat.e(TAG, "1111 addRenter onSuccess =" + data.getId() + " name=" + data.getRenterName() + " time=" + time);
                         hideLoadingDialog();
                         //发起预约请求
                         SendMessageManager.getInstance().sendViewingDateMessage(
@@ -176,7 +175,6 @@ public class ConversationViewingDateActivity extends BaseMvpActivity<Conversatio
 
                     @Override
                     public void onFail(int code, String msg, RenterBean data) {
-                        LogCat.e(TAG, "addRenter onFail code=" + code + "  msg=" + msg);
                         hideLoadingDialog();
                         shortTip("预约失败");
                     }

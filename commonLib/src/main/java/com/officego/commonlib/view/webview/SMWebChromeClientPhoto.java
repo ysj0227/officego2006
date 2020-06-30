@@ -2,7 +2,6 @@ package com.officego.commonlib.view.webview;
 
 import android.app.Activity;
 import android.app.AlertDialog;
-import android.content.ActivityNotFoundException;
 import android.content.ClipData;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -31,15 +30,11 @@ import java.io.File;
  * Description: 自定义实现webView选择本地图片
  * Created by Bruce on 18/11/27
  */
-public class SMWebChromeClient extends WebChromeClient {
+public class SMWebChromeClientPhoto extends WebChromeClient {
     private static final int REQUEST_GALLERY = 0xa0;
     private static final int REQUEST_CAMERA = 0xa1;
-    private static final int INPUT_VIDEO_CODE = 0xa2;
-    private static final int REQUEST_CODE_FILE_CHOOSER = 0xa3;
     private ValueCallback<Uri> filePathCallback;
     private ValueCallback<Uri[]> filePathCallbacks;
-    private String[] acceptTypes;
-    private FileChooserParams mFileChooserParams;
     private BaseActivity mActivity;
 
     private boolean mIsInjectedJS;
@@ -48,11 +43,11 @@ public class SMWebChromeClient extends WebChromeClient {
     private Uri imgUri;
     private CustomViewListener customViewListener;
 
-    public SMWebChromeClient(BaseActivity activity) {
+    public SMWebChromeClientPhoto(BaseActivity activity) {
         mActivity = activity;
     }
 
-    public SMWebChromeClient(BaseActivity activity, String injectedName, Class injectedCls) {
+    public SMWebChromeClientPhoto(BaseActivity activity, String injectedName, Class injectedCls) {
         this.mActivity = activity;
         mJsCallJava = new JsCallJava(injectedName, injectedCls);
     }
@@ -140,8 +135,7 @@ public class SMWebChromeClient extends WebChromeClient {
     @Override
     public boolean onShowFileChooser(WebView webView, ValueCallback<Uri[]> filePathCallback,
                                      FileChooserParams fileChooserParams) {
-        acceptTypes = fileChooserParams.getAcceptTypes();
-        mFileChooserParams = fileChooserParams;
+//        String[] acceptTypes = fileChooserParams.getAcceptTypes();
         filePathCallbacks = filePathCallback;
         selectImage();
         return true;
@@ -149,20 +143,17 @@ public class SMWebChromeClient extends WebChromeClient {
 
     private void selectImage() {
         final String[] items = {mActivity.getResources().getString(R.string.str_take_photo),
-                mActivity.getResources().getString(R.string.str_choose_from_album), "视频", "文件"};
+                mActivity.getResources().getString(R.string.str_choose_from_album)};
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
         builder.setItems(items, (dialogInterface, i) -> {
             if (i == 0) {
                 takePhoto();
             } else if (i == 1) {
                 openGallery();
-            } else if (i == 2) {
-                selectVideo();
             } else {
-                openFile();
+                cancelCallback();
             }
         });
-        //取消必调
         builder.setPositiveButton(R.string.sm_cancel, (dialog, which) -> cancelCallback());
         AlertDialog alertDialog = builder.create();
         alertDialog.setCanceledOnTouchOutside(false);
@@ -174,6 +165,7 @@ public class SMWebChromeClient extends WebChromeClient {
         if (!PermissionUtils.checkSDCardCameraPermission(mActivity)) {
             return;
         }
+
         File fileUri = new File(FileHelper.SDCARD_CACHE_IMAGE_PATH + "/web_image.jpg");
         imgUri = Uri.fromFile(fileUri);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -188,7 +180,7 @@ public class SMWebChromeClient extends WebChromeClient {
     }
 
     private void openGallery() {
-        if (!PermissionUtils.checkSDCardCameraPermission(mActivity)) {
+        if (!PermissionUtils.checkStoragePermission(mActivity)) {
             return;
         }
         Intent photoPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -196,34 +188,6 @@ public class SMWebChromeClient extends WebChromeClient {
         photoPickerIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);//多选
         photoPickerIntent.addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION);
         mActivity.startActivityForResult(photoPickerIntent, REQUEST_GALLERY);
-    }
-
-    //手机录像
-    private void selectVideo() {
-        if (!PermissionUtils.checkStoragePermission(mActivity)) {
-            return;
-        }
-        Intent intent = new Intent(MediaStore.ACTION_VIDEO_CAPTURE);
-        intent.putExtra(MediaStore.EXTRA_VIDEO_QUALITY, 1);
-        //限制时长
-        intent.putExtra(MediaStore.EXTRA_DURATION_LIMIT, 10);
-        //开启摄像机
-        mActivity.startActivityForResult(intent, INPUT_VIDEO_CODE);
-    }
-    //打开系统文件
-    private void openFile() {
-        if (!PermissionUtils.checkStoragePermission(mActivity)) {
-            return;
-        }
-        if (mFileChooserParams != null) {
-            Intent intent = mFileChooserParams.createIntent();
-            intent.addCategory(Intent.CATEGORY_OPENABLE);
-            try {
-                mActivity.startActivityForResult(intent, REQUEST_CODE_FILE_CHOOSER);
-            } catch (ActivityNotFoundException e) {
-                filePathCallbacks = null;
-            }
-        }
     }
 
     /**
@@ -252,13 +216,6 @@ public class SMWebChromeClient extends WebChromeClient {
                         if (dataString != null) {
                             results = new Uri[]{Uri.parse(dataString)};
                         }
-                    }
-                    break;
-                case INPUT_VIDEO_CODE:
-                case REQUEST_CODE_FILE_CHOOSER:
-                    if (data != null) {
-                        String dataString = data.getDataString();
-                        results = new Uri[]{Uri.parse(dataString)};
                     }
                     break;
                 default:
