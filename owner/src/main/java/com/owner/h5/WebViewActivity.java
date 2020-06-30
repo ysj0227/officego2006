@@ -69,7 +69,7 @@ public class WebViewActivity extends BaseActivity {
             loadWebView(AppConfig.H5_ABOUT_US + chanel());
         } else if (flags == Constants.H5_ROLE) {
             titleBar.getAppTitle().setText(getString(R.string.str_title_role));
-            loadWebView(AppConfig.H5_ROLE + chanel());
+            loadWebView(AppConfig.H5_STAFF_LIST + chanel());
         }
     }
 
@@ -193,11 +193,13 @@ public class WebViewActivity extends BaseActivity {
             view.clearHistory();
             if (TextUtils.isEmpty(webViewUrl)) {
                 if (flags == Constants.H5_HELP) {
-                    webView.loadUrl(AppConfig.H5_HELP_FEEDBACK);
+                    webView.loadUrl(AppConfig.H5_HELP_FEEDBACK + chanel());
                 } else if (flags == Constants.H5_PROTOCOL) {
-                    webView.loadUrl(AppConfig.H5_PRIVACY);
+                    webView.loadUrl(AppConfig.H5_PRIVACY + chanel());
                 } else if (flags == Constants.H5_ABOUTS) {
-                    webView.loadUrl(AppConfig.H5_ABOUT_US);
+                    webView.loadUrl(AppConfig.H5_ABOUT_US + chanel());
+                } else if (flags == Constants.H5_ROLE) {
+                    webView.loadUrl(AppConfig.H5_ROLE + chanel());
                 }
             } else {
                 webView.loadUrl(webViewUrl);

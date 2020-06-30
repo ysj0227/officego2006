@@ -35,6 +35,16 @@
             android:textSize="@dimen/sp_15"
             tools:ignore="RelativeOverlap" />
 
+        <TextView
+            android:id="@+id/tv_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dp_28"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_15" />
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -51,14 +61,14 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:visibility="visible"
         android:id="@+id/rl_switch_id"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/dp_56"
         android:layout_below="@id/rl_version_update"
         android:background="@color/white"
         android:paddingLeft="@dimen/dp_18"
-        android:paddingRight="@dimen/dp_18">
+        android:paddingRight="@dimen/dp_18"
+        android:visibility="visible">
 
         <TextView
             android:layout_width="wrap_content"

@@ -4,6 +4,7 @@ import com.officego.commonlib.base.BaseView;
 import com.officego.ui.home.model.BuildingDetailsBean;
 import com.officego.ui.home.model.BuildingDetailsChildBean;
 import com.officego.ui.home.model.BuildingJointWorkBean;
+import com.officego.ui.home.model.ChatsBean;
 
 import java.util.List;
 
@@ -25,6 +26,7 @@ public interface BuildingDetailsJointWorkContract {
         void favoriteFail();
 
         void buildingSelectListSuccess(int total,List<BuildingDetailsChildBean.ListBean> list);
+        void chatSuccess(ChatsBean data);
     }
 
     interface Presenter {
@@ -36,5 +38,8 @@ public interface BuildingDetailsJointWorkContract {
 
         void getBuildingSelectList(int pageNo, String btype, String buildingId, String area, String dayPrice,
                                    String decoration, String houseTags, String seats);
+
+        //找房东去聊天
+        void gotoChat(String buildingId);
     }
 }

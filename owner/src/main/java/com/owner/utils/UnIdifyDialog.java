@@ -3,6 +3,7 @@ package com.owner.utils;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
 import com.owner.h5.WebViewIdifyActivity_;
@@ -20,16 +21,39 @@ public class UnIdifyDialog {
         unIdifyDialog(context, data);
     }
 
-    // 0待审核1审核通过2审核未通过
+    /**
+     * identityType :  "identityType": 0,//身份类型0个人1企业2联合
+     * auditStatus :  0待审核1审核通过2审核未通过
+     */
     private void unIdifyDialog(Context context, UserOwnerBean data) {
         if (dialog != null && !dialog.isShowing()) {
             dialog = null;
         }
         if (dialog == null) {
+            String title, message;
+            if (data.getAuditStatus() == 2) {
+                title = "审核驳回";
+                message = data.getRemark();
+            } else {
+                title = "认证提示";
+                message = idify(data) + "\n请您先认证信息";
+            }
             dialog = new CommonDialog.Builder(context)
-                    .setTitle(idify(data) + "\n请您先认证信息")
+                    .setTitle(title)
+                    .setMessage(message)
                     .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
-                        WebViewIdifyActivity_.intent(context).start();
+                        //当驳回时
+                        if (data.getAuditStatus() == 2) {
+                            if (data.getIdentityType() == 0) {//个人
+                                WebViewIdifyActivity_.intent(context).idifyTag(Constants.H5_OWNER_IDIFY_PERSION).start();
+                            } else if (data.getIdentityType() == 1) {//企业
+                                WebViewIdifyActivity_.intent(context).idifyTag(Constants.H5_OWNER_IDIFY_COMPANY).start();
+                            } else if (data.getIdentityType() == 2) { //联办
+                                WebViewIdifyActivity_.intent(context).idifyTag(Constants.H5_OWNER_IDIFY_JOINTWORK).start();
+                            }
+                        } else { //当需要认证时
+                            WebViewIdifyActivity_.intent(context).start();
+                        }
                         dialog.dismiss();
                         dialog = null;
                     }).create();

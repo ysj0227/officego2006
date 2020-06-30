@@ -15,6 +15,6 @@ public interface ConversationContract {
     }
 
     interface Presenter {
-        void getHouseDetails(String targetId);
+        void getHouseDetails(int buildingId,int houseId, String targetId);
     }
 }

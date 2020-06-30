@@ -34,7 +34,9 @@ import java.util.Objects;
 
 import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationFragment;
+import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.Message;
 import io.rong.imlib.model.UserInfo;
 
 /**
@@ -52,6 +54,11 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
     private String getHouseChatId; //去除 targetId  的最后一位 ,产品定义
     @Extra
     String targetId;//融云的id
+    @Extra
+    int buildingId;//楼盘详情传入
+    @Extra
+    int houseId;//房源详情传入
+
     private ChatHouseBean mData;
 
     @AfterViews
@@ -65,7 +72,8 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         llRoot.setPadding(0, CommonHelper.statusHeight(this), 0, 0);
         initRongCloudIM();
         //插入一次
-        mPresenter.getHouseDetails(getHouseChatId);
+        mPresenter.getHouseDetails(buildingId, houseId, getHouseChatId);
+//        RMSendMessage();
     }
 
     private void initRongCloudIM() {
@@ -101,6 +109,22 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             RongIM.getInstance().refreshUserInfoCache(userInfo);
         }
     }
+
+//    private void RMSendMessage(){
+//        RongIM.getInstance().setSendMessageListener(new RongIM.OnSendMessageListener() {
+//            @Override
+//            public Message onSend(Message message) {
+//                LogCat.e("TAG", "11111 onSend: " );
+//                return null;
+//            }
+//
+//            @Override
+//            public boolean onSent(Message message, RongIM.SentMessageErrorCode sentMessageErrorCode) {
+//                LogCat.e("TAG", "11111 boolean onSent: " );
+//                return false;
+//            }
+//        });
+//    }
 
     /**
      * 插入聊天大楼信息
@@ -221,7 +245,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             shortTip("暂无楼盘信息无法预约");
             return;
         }
-        ConversationViewingDateActivity_.intent(this).targetId(targetId).start();
+        ConversationViewingDateActivity_.intent(this).buildingId(buildingId).houseId(houseId).targetId(targetId).start();
     }
 
     /**

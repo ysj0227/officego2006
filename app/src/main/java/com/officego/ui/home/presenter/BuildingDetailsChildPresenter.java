@@ -79,7 +79,7 @@ public class BuildingDetailsChildPresenter extends BasePresenter<BuildingDetails
     @Override
     public void gotoChat(String houseId) {
         mView.showLoadingDialog();
-        OfficegoApi.getInstance().getTargetId(houseId, new RetrofitCallback<ChatsBean>() {
+        OfficegoApi.getInstance().getTargetId2(houseId, new RetrofitCallback<ChatsBean>() {
             @Override
             public void onSuccess(int code, String msg, ChatsBean data) {
                 if (isViewAttached()) {

@@ -23,4 +23,7 @@ public class CommonNotifications {
     //业主认证成功
     public static final int ownerIdentityComplete = totalEvents++;
 
+    //融云其他设备登录踢出
+    public static final int rongCloudkickDialog = totalEvents++;
+
 }

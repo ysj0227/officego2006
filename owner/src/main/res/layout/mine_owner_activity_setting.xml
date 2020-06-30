@@ -60,14 +60,14 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:visibility="gone"
         android:id="@+id/rl_wx"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/dp_56"
         android:layout_below="@id/rl_mobile"
         android:background="@color/white"
         android:paddingLeft="@dimen/dp_18"
-        android:paddingRight="@dimen/dp_18">
+        android:paddingRight="@dimen/dp_18"
+        android:visibility="gone">
 
         <TextView
             android:layout_width="wrap_content"
@@ -120,6 +120,16 @@
             android:textSize="@dimen/sp_15"
             tools:ignore="RelativeOverlap" />
 
+        <TextView
+            android:id="@+id/tv_version"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dp_28"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_15" />
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -151,6 +161,7 @@
             android:text="@string/str_switch_id"
             android:textColor="@color/text_33"
             android:textSize="@dimen/sp_15" />
+
         <TextView
             android:id="@+id/tv_text_right"
             android:layout_width="wrap_content"
@@ -161,6 +172,7 @@
             android:text="@string/str_switch_tenant"
             android:textColor="@color/text_33"
             android:textSize="@dimen/sp_14" />
+
         <ImageView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

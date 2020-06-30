@@ -26,12 +26,12 @@ public class ViewingDateInfo extends MessageContent {
     private String time;
     private String content;
     private String extraMessage;
-    private int fyId;//预约看房id
+    private String fyId;//预约看房id
     private String buildingName;//大楼名称
     private String buildingAddress;//大楼地址
 
     public static ViewingDateInfo setViewingDateData(String time, String content,
-                                                     String extraMessage, int id,
+                                                     String extraMessage, String id,
                                                      String buildingName, String buildingAddress) {
         ViewingDateInfo info = new ViewingDateInfo();
         info.time = time;
@@ -67,7 +67,7 @@ public class ViewingDateInfo extends MessageContent {
             setTime(object.getString("time"));
             setContent(object.getString("content"));
             setExtraMessage(object.getString("extraMessage"));
-            setId(object.getInteger("fyId"));
+            setId(object.getString("fyId"));
             setBuildingName(object.getString("buildingName"));
             setBuildingAddress(object.getString("buildingAddress"));
         } catch (Exception e) {
@@ -103,7 +103,7 @@ public class ViewingDateInfo extends MessageContent {
         time = ParcelUtils.readFromParcel(parcel);
         content = ParcelUtils.readFromParcel(parcel);
         extraMessage = ParcelUtils.readFromParcel(parcel);
-        fyId = ParcelUtils.readIntFromParcel(parcel);
+        fyId = ParcelUtils.readFromParcel(parcel);
         buildingName = ParcelUtils.readFromParcel(parcel);
         buildingAddress = ParcelUtils.readFromParcel(parcel);
     }
@@ -138,11 +138,11 @@ public class ViewingDateInfo extends MessageContent {
         this.extraMessage = extraMessage;
     }
 
-    public int getId() {
+    public String getId() {
         return fyId;
     }
 
-    public void setId(int id) {
+    public void setId(String id) {
         this.fyId = id;
     }
 

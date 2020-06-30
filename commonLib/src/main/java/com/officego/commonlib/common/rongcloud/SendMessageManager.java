@@ -96,7 +96,7 @@ public class SendMessageManager {
     /**
      * 发送自定义消息 预约看房
      */
-    public void sendViewingDateMessage(String targetId, int houseId, String time,
+    public void sendViewingDateMessage(String targetId, String houseId, String time,
                                        String buildingName, String buildingAddress,
                                        String content, String extraMessage) {
         ViewingDateInfo info = new ViewingDateInfo();

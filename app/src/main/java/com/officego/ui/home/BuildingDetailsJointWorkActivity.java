@@ -48,8 +48,10 @@ import com.officego.ui.home.model.BuildingDetailsBean;
 import com.officego.ui.home.model.BuildingDetailsChildBean;
 import com.officego.ui.home.model.BuildingIdBundleBean;
 import com.officego.ui.home.model.BuildingJointWorkBean;
+import com.officego.ui.home.model.ChatsBean;
 import com.officego.ui.home.model.ConditionBean;
 import com.officego.ui.home.presenter.BuildingDetailsJointWorkPresenter;
+import com.officego.ui.message.ConversationActivity_;
 import com.officego.utils.ImageLoaderUtils;
 import com.officego.utils.WeChatUtils;
 import com.youth.banner.Banner;
@@ -451,6 +453,21 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         }
         mPresenter.favorite(mBuildingBean.getBuildingId() + "", isFavorite ? 1 : 0);
     }
+    @Override
+    public void chatSuccess(ChatsBean data) {
+        //0:单业主,1:多业主  判断是否单业主
+        if (data.getMultiOwner() == 0) {
+            ConversationActivity_.intent(context).buildingId(mData.getBuilding().getBuildingId()).targetId(data.getTargetId() + "").start();
+        } else {
+            CommonDialog dialog = new CommonDialog.Builder(context)
+                    .setTitle("请从房源列表详情找业主聊")
+                    .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
+                        dialog12.dismiss();
+                        scrollViewY();
+                    }).create();
+            dialog.showWithOutTouchable(false);
+        }
+    }
 
     //聊天
     @Click(R.id.btn_chat)
@@ -458,13 +475,8 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         if (isFastClick(1200)) {
             return;
         }
-        CommonDialog dialog = new CommonDialog.Builder(context)
-                .setTitle("请从房源列表详情找业主聊")
-                .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
-                    dialog12.dismiss();
-                    scrollViewY();
-                }).create();
-        dialog.showWithOutTouchable(false);
+        //判断是否单业主
+        mPresenter.gotoChat(mData.getBuilding().getBuildingId() + "");
     }
 
     /**
@@ -922,6 +934,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         }
         childAdapter.notifyDataSetChanged();
     }
+
 
     private List<String> mBannerList = new ArrayList<>();
 

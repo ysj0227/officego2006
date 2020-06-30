@@ -23,6 +23,7 @@ import androidx.core.content.ContextCompat;
 import com.officego.commonlib.R;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.rpc.OfficegoApi;
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.DateTimeUtils;
@@ -84,7 +85,7 @@ public class ViewingDateProvider extends IContainerItemProvider.MessageProvider<
         holder.tvBuildingName.setText("名称：" + (TextUtils.isEmpty(info.getBuildingName()) ? "" : info.getBuildingName()));
         holder.tvAddress.setText("地址：" + (TextUtils.isEmpty(info.getBuildingAddress()) ? "" : info.getBuildingAddress()));
         if (!TextUtils.isEmpty(info.getTime())) {
-            holder.tvTime.setText("约看时间：" + DateTimeUtils.StampToDate(info.getTime() + "000", "yyyy-MM-dd HH:mm"));
+            holder.tvTime.setText("约看时间：" + DateTimeUtils.StampToDate(info.getTime(), "yyyy-MM-dd HH:mm"));
         }
     }
 
@@ -114,7 +115,7 @@ public class ViewingDateProvider extends IContainerItemProvider.MessageProvider<
     /**
      * 同意拒绝预约看房
      */
-    private void updateAuditStatus(ViewingDateInfoHolder holder, int id, int auditStatus) {
+    private void updateAuditStatus(ViewingDateInfoHolder holder, String id, int auditStatus) {
         if (!NetworkUtils.isNetworkAvailable(context)) {
             ToastUtils.toastForShort(context, R.string.str_check_net);
             return;
@@ -146,7 +147,7 @@ public class ViewingDateProvider extends IContainerItemProvider.MessageProvider<
                     @Override
                     public void onFail(int code, String msg, Object data) {
                         LogCat.e("TAG", "1111 updateAuditStatus onFail code=" + code + "  msg=" + msg);
-                        if (code == 5000) {
+                        if (code == Constants.DEFAULT_ERROR_CODE) {
                             ToastUtils.toastForShort(context, msg);
                         }
                     }

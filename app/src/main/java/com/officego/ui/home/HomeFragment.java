@@ -129,6 +129,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         mPresenter.getBannerList();
         //列表
         houseAdapter = null;
+        buildingList.clear();
         getBuildingList();
     }
 

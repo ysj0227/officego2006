@@ -16,6 +16,7 @@ import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.rongcloud.RongCloudSetUserInfoUtils;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.CircleImage;
 import com.owner.h5.WebViewActivity_;
@@ -191,7 +192,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
                 hasIdentityView();
             }
             //管理员显示员工管理  权职0普通员工1管理员 -1无
-            rlRole.setVisibility(data.getAuthority() == 1 ? View.VISIBLE : View.GONE);
+            rlRole.setVisibility(data.getIdentityType() == 1 || data.getIdentityType() == 2 ? View.VISIBLE : View.GONE);
         }
     }
 

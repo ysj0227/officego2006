@@ -301,8 +301,7 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
     @Override
     public void chatSuccess(ChatsBean data) {
         if (data != null) {
-            LogCat.e("TAG", "11111 details targetId: " + data.getTargetId());
-            ConversationActivity_.intent(context).targetId(data.getTargetId() + "").start();
+            ConversationActivity_.intent(context).houseId(mData.getHouse().getId()).targetId(data.getTargetId() + "").start();
         }
     }
 
