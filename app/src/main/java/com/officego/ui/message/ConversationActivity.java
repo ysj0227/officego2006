@@ -34,9 +34,7 @@ import java.util.Objects;
 
 import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationFragment;
-import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
-import io.rong.imlib.model.Message;
 import io.rong.imlib.model.UserInfo;
 
 /**
@@ -134,10 +132,10 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
     @SuppressLint("SetTextI18n")
     @Override
     public void houseSuccess(ChatHouseBean data) {
-        mData = data;
         if (data == null) {
             return;
         }
+        mData = data;
         //刷新用户信息
         if (data.getBuilding() != null) {
             refreshUserInfoCache(targetId, data.getChatted().getNickname(), data.getChatted().getAvatar());
@@ -147,9 +145,9 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
 
         if (data.getBuilding() != null) {
             //是否插入消息
-            if (TextUtils.equals(SpUtils.getSignToken() + data.getBuilding().getBuildingId() +
-                            (data.getBuilding().getHouseId() == null ? "" : data.getBuilding().getHouseId()) + targetId,
-                    SpUtils.getChatBuildingInfo())) {
+            String mValue = SpUtils.getSignToken() + data.getBuilding().getBuildingId() +
+                    (data.getBuilding().getHouseId() == null ? "" : data.getBuilding().getHouseId()) + targetId;
+            if (TextUtils.equals(mValue, SpUtils.getChatBuildingInfo(mValue))) {
                 return;
             }
             BuildingInfo info = new BuildingInfo();
@@ -179,8 +177,10 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             }
             SendMessageManager.getInstance().insertIncomingMessage(info, targetId, SpUtils.getRongChatId());
             //保存第一次插入状态
-            SpUtils.saveChatBuildingInfo(SpUtils.getSignToken(), data.getBuilding().getBuildingId() + "",
-                    (data.getBuilding().getHouseId() == null ? "" : data.getBuilding().getHouseId() + ""), targetId);
+            String key = SpUtils.getSignToken() + data.getBuilding().getBuildingId() +
+                    (data.getBuilding().getHouseId() == null ? "" : String.valueOf(data.getBuilding().getHouseId())) + targetId;
+            SpUtils.saveChatBuildingInfo(key, key);
+            ;
         }
     }
 

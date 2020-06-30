@@ -44,7 +44,7 @@ public class SpUtils {
         SharedManager.clearValue(BaseApplication.getContext(), RONG_CLOUD_TOKEN);
         SharedManager.clearValue(BaseApplication.getContext(), HEADER_IMG);
         SharedManager.clearValue(BaseApplication.getContext(), NICK_NAME);
-        SharedManager.clearValue(BaseApplication.getContext(), CHAT_INSERT_BUILDING_INFO);
+//        SharedManager.clearValue(BaseApplication.getContext(), CHAT_INSERT_BUILDING_INFO);
     }
 
     //uid
@@ -121,14 +121,13 @@ public class SpUtils {
     }
 
     //聊天插入楼盘消息 tooken+融云token+buildingId+houseId+targetId
-    public static void saveChatBuildingInfo(String userToken, String buildingId, String houseId, String targetId) {
-        SharedManager.putValue(BaseApplication.getContext(), CHAT_INSERT_BUILDING_INFO,
-                userToken + buildingId + houseId + targetId);
+    public static void saveChatBuildingInfo(String key, String value) {
+        SharedManager.putValue(BaseApplication.getContext(), key, value);
     }
 
     //获取聊天插入楼盘消息 tooken+houseId+targetId
-    public static String getChatBuildingInfo() {
-        return SharedManager.getValue(BaseApplication.getContext(), CHAT_INSERT_BUILDING_INFO);
+    public static String getChatBuildingInfo(String key) {
+        return SharedManager.getValue(BaseApplication.getContext(), key);
     }
 
     //role  ：0租户，1户主
