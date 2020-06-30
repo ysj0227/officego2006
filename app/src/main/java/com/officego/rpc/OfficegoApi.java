@@ -664,12 +664,25 @@ public class OfficegoApi {
      * 聊天**********************************************************
      * 聊天**********************************************************
      */
+    /**
+     * houseId 	是 	int 	从楼盘进入聊天页面需要传递
+     * token 	是 	是 	token
+     */
+    public void getTargetId(String buildingId, RetrofitCallback<ChatsBean> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("buildingId", requestBody(buildingId));
+        OfficegoRetrofitClient.getInstance().create(ChatInterface.class)
+                .getTargetId(map)
+                .enqueue(callback);
+    }
+
 
     /**
      * houseId 	是 	int 	从房源进入聊天页面需要传递
      * token 	是 	是 	token
      */
-    public void getTargetId(String houseId, RetrofitCallback<ChatsBean> callback) {
+    public void getTargetId2(String houseId, RetrofitCallback<ChatsBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("houseId", requestBody(houseId));

@@ -20,9 +20,9 @@ public class ConversationPresenter extends BasePresenter<ConversationContract.Vi
      * 获取聊天房源信息
      */
     @Override
-    public void getHouseDetails(String targetId) {
+    public void getHouseDetails(int buildingId,int houseId,  String targetId) {
         mView.showLoadingDialog();
-        OfficegoApi.getInstance().getChatHouseDetails(targetId,
+        OfficegoApi.getInstance().getChatHouseDetails(buildingId, houseId,  targetId,
                 new RetrofitCallback<ChatHouseBean>() {
                     @Override
                     public void onSuccess(int code, String msg, ChatHouseBean data) {

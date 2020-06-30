@@ -41,6 +41,8 @@ public class ChatHouseBean {
     private BuildingBean building;
     @SerializedName("IsFavorite")
     private boolean IsFavorite;
+    @SerializedName("isChat")
+    private int isChat;
 
     public int getIsBuildOrHouse() {
         return isBuildOrHouse;
@@ -112,6 +114,14 @@ public class ChatHouseBean {
 
     public void setIsFavorite(boolean IsFavorite) {
         this.IsFavorite = IsFavorite;
+    }
+
+    public int getIsChat() {
+        return isChat;
+    }
+
+    public void setIsChat(int isChat) {
+        this.isChat = isChat;
     }
 
     public static class ChattedBean {

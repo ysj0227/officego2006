@@ -18,7 +18,6 @@ import com.officego.commonlib.common.rongcloud.SendMessageManager;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.CircleImage;
 import com.officego.commonlib.view.RoundImageView;
 import com.officego.rpc.OfficegoApi;
@@ -66,6 +65,10 @@ public class ConversationViewingDateActivity extends BaseMvpActivity<Conversatio
     Button btnViewingDate;
     @Extra
     String targetId;
+    @Extra
+    int buildingId;//楼盘详情传入
+    @Extra
+    int houseId;//房源详情传入
     private ChatHouseBean mData;
 
     @AfterExtras
@@ -75,7 +78,7 @@ public class ConversationViewingDateActivity extends BaseMvpActivity<Conversatio
         mPresenter.attachView(this);
         //去除 targetId  的最后一位 ,产品定义
         String getHouseChatId = targetId.substring(0, targetId.length() - 1);
-        mPresenter.getHouseDetails(getHouseChatId);
+        mPresenter.getHouseDetails(buildingId, houseId, getHouseChatId);
     }
 
     @Click(R.id.rl_back)
@@ -105,7 +108,7 @@ public class ConversationViewingDateActivity extends BaseMvpActivity<Conversatio
         }
         String time = tvSelectTime.getText().toString().trim();
         if (mData != null) {
-            addRenter(mData.getBuilding().getBuildingId(), DateTimeUtils.dateToStamp(time), targetId);
+            addRenter(mData.getBuilding().getBuildingId(), DateTimeUtils.dateToSecondStamp(time), targetId);
         } else {
             shortTip("预约失败");
         }
@@ -164,8 +167,8 @@ public class ConversationViewingDateActivity extends BaseMvpActivity<Conversatio
                         //发起预约请求
                         SendMessageManager.getInstance().sendViewingDateMessage(
                                 targetId,//对方id
-                                data.getId()+"",
-                                time,
+                                String.valueOf(data.getId()),
+                                time + "000",//毫秒
                                 mData == null || mData.getBuilding() == null ? "" : mData.getBuilding().getBuildingName(),
                                 mData == null || mData.getBuilding() == null ? "" : mData.getBuilding().getAddress(),
                                 "",
