@@ -115,7 +115,7 @@ public class ViewingDateProvider extends IContainerItemProvider.MessageProvider<
     /**
      * 同意拒绝预约看房
      */
-    private void updateAuditStatus(ViewingDateInfoHolder holder, int id, int auditStatus) {
+    private void updateAuditStatus(ViewingDateInfoHolder holder, String id, int auditStatus) {
         if (!NetworkUtils.isNetworkAvailable(context)) {
             ToastUtils.toastForShort(context, R.string.str_check_net);
             return;

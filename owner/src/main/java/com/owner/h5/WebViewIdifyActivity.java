@@ -25,6 +25,7 @@ import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.constant.AppConfig;
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
@@ -37,6 +38,7 @@ import com.owner.R;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 /**
@@ -58,13 +60,23 @@ public class WebViewIdifyActivity extends BaseActivity {
     Button btnAgain;
     private String webViewUrl;
     private SMWebChromeClient webChrome;
+    @Extra
+    int idifyTag;
 
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarColor(this);
         CommonHelper.setRelativeLayoutParams(context, webView);
         setWebChromeClient();
-        loadWebView(AppConfig.H5_OWNER_idify + identity());//认证
+        if (idifyTag == Constants.H5_OWNER_IDIFY_PERSION) {
+            loadWebView(AppConfig.H5_OWNER_IDIFY_PERSION + identity());//个人
+        } else if (idifyTag == Constants.H5_OWNER_IDIFY_COMPANY) {
+            loadWebView(AppConfig.H5_OWNER_IDIFY_COMPANY + identity());//企业
+        } else if (idifyTag == Constants.H5_OWNER_IDIFY_JOINTWORK) {
+            loadWebView(AppConfig.H5_OWNER_IDIFY_JOINTWORK + identity());//联办
+        } else {
+            loadWebView(AppConfig.H5_OWNER_IDIFY + identity());//认证
+        }
     }
 
     private String identity() {
@@ -189,7 +201,15 @@ public class WebViewIdifyActivity extends BaseActivity {
             view.clearCache(true);
             view.clearHistory();
             if (TextUtils.isEmpty(webViewUrl)) {
-                webView.loadUrl(AppConfig.H5_OWNER_idify);
+                if (idifyTag == Constants.H5_OWNER_IDIFY_PERSION) {
+                    webView.loadUrl(AppConfig.H5_OWNER_IDIFY_PERSION + identity());//个人
+                } else if (idifyTag == Constants.H5_OWNER_IDIFY_COMPANY) {
+                    webView.loadUrl(AppConfig.H5_OWNER_IDIFY_COMPANY + identity());//企业
+                } else if (idifyTag == Constants.H5_OWNER_IDIFY_JOINTWORK) {
+                    webView.loadUrl(AppConfig.H5_OWNER_IDIFY_JOINTWORK + identity());//联办
+                } else {
+                    webView.loadUrl(AppConfig.H5_OWNER_IDIFY + identity());//认证
+                }
             } else {
                 webView.loadUrl(webViewUrl);
             }

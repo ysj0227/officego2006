@@ -338,8 +338,8 @@ public class ViewingDateActivity extends BaseMvpActivity<ViewingDatePresenter>
         calendarMarks(data); //标记
         //获取当天日期显示最近的一天数据
         viewingDateAllList = data;
-//        selectedDayDataList(mCurrentDayDate);
-        selectedDayDataList(viewingDateAllList.get(0).getDay());
+        selectedDayDataList(mCurrentDayDate);
+//        selectedDayDataList(viewingDateAllList.get(0).getDay());
     }
 
     @Override

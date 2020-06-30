@@ -15,6 +15,8 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.officego.commonlib.base.BaseActivity;
+import com.officego.commonlib.common.config.CommonNotifications;
+import com.officego.commonlib.common.rongcloud.kickDialog;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.MyFragmentTabHost;
 import com.officego.ui.message.MessageFragment_;
@@ -198,6 +200,23 @@ public class MainActivity extends BaseActivity implements TabHost.OnTabChangeLis
             for (Fragment mFragment : fragments) {
                 mFragment.onActivityResult(requestCode, resultCode, data);
             }
+        }
+    }
+
+    @Override
+    public int[] getStickNotificationId() {
+        return new int[]{CommonNotifications.rongCloudkickDialog};
+    }
+
+    @Override
+    public void didReceivedNotification(int id, Object... args) {
+        super.didReceivedNotification(id, args);
+        if (args == null) {
+            return;
+        }
+        //踢出登录
+        if (id == CommonNotifications.rongCloudkickDialog) {
+           new kickDialog(context);
         }
     }
 

@@ -35,10 +35,14 @@ import org.androidannotations.annotations.ViewById;
 public class MineSettingActivity extends BaseActivity {
     @ViewById(resName = "tv_mobile")
     TextView tvMobile;
+    @ViewById(resName = "tv_version")
+    TextView tvVersion;
+
 
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarColor(this);
+        tvVersion.setText("v" + CommonHelper.getAppVersionName(context));
         String mobile = SpUtils.getPhoneNum();
         if (!TextUtils.isEmpty(mobile) && mobile.length() == 11) {
             String phoneNumber = mobile.substring(0, 3) + "****" + mobile.substring(7);

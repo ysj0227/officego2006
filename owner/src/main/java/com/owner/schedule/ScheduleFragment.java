@@ -22,7 +22,6 @@ import com.officego.commonlib.common.date.ThemeDayView;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.owner.R;
 import com.owner.schedule.contract.ViewingDateContract;
 import com.owner.schedule.model.ViewingDateBean;
@@ -66,6 +65,8 @@ public class ScheduleFragment extends BaseMvpFragment<ViewingDatePresenter>
     private int mSelectedYear, mSelectedMonth;
     //今天日期
     private String mCurrentDayDate;
+    //是否第一次获取数据
+    private boolean isFirstGetListData;
 
     @AfterViews
     void init() {
@@ -85,19 +86,22 @@ public class ScheduleFragment extends BaseMvpFragment<ViewingDatePresenter>
         rvToDoList = mActivity.findViewById(R.id.rv_viewing_date);
         rvToDoList.setHasFixedSize(true);
         rvToDoList.setLayoutManager(new LinearLayoutManager(mActivity));
-        initCurrentDate();
-        initCalendarView();
         //初始化
         viewingDateAdapter = null;
+        currentCalendars = null;
+        calendarAdapter = null;
+        isFirstGetListData = true;
+        initCurrentDate();
+        initCalendarView();
         getViewingDateList();
     }
 
     //今天
     @Click(resName = "ll_appointment_record")
     void todayClick() {
+        isFirstGetListData = true;
         onSwitchBackToDay();
         initCurrentDate();
-        LogCat.e(TAG, "1111111 mSelectedMonth=" + mSelectedMonth);
         getViewingDateList();
     }
 
@@ -301,6 +305,7 @@ public class ScheduleFragment extends BaseMvpFragment<ViewingDatePresenter>
      * 添加日历的有数据的mark 2020-6-23 ok  | 2020-06-23 异常
      */
     private void calendarMarks(List<ViewingDateBean.DataBean> data) {
+        calendarAdapter.setMarkData(new HashMap<>());//清空标记
         HashMap<String, String> markData = new HashMap<>();
         for (int i = 0; i < data.size(); i++) {
             if (data.get(i).getDay().substring(5, 6).contains("0")) {
@@ -312,7 +317,11 @@ public class ScheduleFragment extends BaseMvpFragment<ViewingDatePresenter>
             }
         }
         calendarAdapter.setMarkData(markData);
-        calendarAdapter.notifyDataChanged();
+        //TODO 是否首次刷新 ，此时刷新选择上一月下一月，日历异常
+        if (isFirstGetListData) {
+            calendarAdapter.notifyDataChanged();
+            isFirstGetListData = false;
+        }
     }
 
     /**
@@ -321,7 +330,6 @@ public class ScheduleFragment extends BaseMvpFragment<ViewingDatePresenter>
     @Override
     public void viewingDateSuccess(List<ViewingDateBean.DataBean> data) {
         if (data == null || data.size() == 0) {
-//            shortTip(R.string.tip_current_day_no_data);
             noData();
             return;
         }
@@ -329,8 +337,8 @@ public class ScheduleFragment extends BaseMvpFragment<ViewingDatePresenter>
         calendarMarks(data); //标记
         //获取当天日期显示最近的一天数据
         viewingDateAllList = data;
-//        selectedDayDataList(mCurrentDayDate);
-        selectedDayDataList(viewingDateAllList.get(0).getDay());
+        selectedDayDataList(mCurrentDayDate);
+//        selectedDayDataList(viewingDateAllList.get(0).getDay());
     }
 
     @Override

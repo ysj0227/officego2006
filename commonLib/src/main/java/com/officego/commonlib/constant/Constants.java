@@ -41,9 +41,15 @@ public class Constants {
     public final static int H5_HELP = 0;
     public final static int H5_PROTOCOL = 1;
     public final static int H5_ABOUTS = 2;
-    public final static int H5_ROLE= 4;
+    public final static int H5_ROLE = 4;
     //客服
     public static final String SERVICE_HOT_MOBILE = "13817176560";
     public static final String SERVICE_TECHNICAL_SUPPORT = "13052007068";
     public static final String SERVICE_EMAIL = "Clientservice@officego.com";
+
+    //h5 认证
+    public final static int H5_OWNER_IDIFY_PERSION = 1000;//个人认证
+    public final static int H5_OWNER_IDIFY_COMPANY = 1001;//企业认证
+    public final static int H5_OWNER_IDIFY_JOINTWORK = 1002;//网点认证
+
 }

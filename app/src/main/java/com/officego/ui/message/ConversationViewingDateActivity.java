@@ -164,7 +164,7 @@ public class ConversationViewingDateActivity extends BaseMvpActivity<Conversatio
                         //发起预约请求
                         SendMessageManager.getInstance().sendViewingDateMessage(
                                 targetId,//对方id
-                                data.getId(),
+                                data.getId()+"",
                                 time,
                                 mData == null || mData.getBuilding() == null ? "" : mData.getBuilding().getBuildingName(),
                                 mData == null || mData.getBuilding() == null ? "" : mData.getBuilding().getAddress(),

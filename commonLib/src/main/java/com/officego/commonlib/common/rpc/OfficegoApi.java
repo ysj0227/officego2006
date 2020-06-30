@@ -53,7 +53,7 @@ public class OfficegoApi {
      * id 	是 	int 	行程id
      * auditStatus 	是 	int 	审核状态0预约1预约成功(同意)2预约失败(拒绝)3已看房4未看房
      */
-    public void updateAuditStatus(int id, int auditStatus,
+    public void updateAuditStatus(String id, int auditStatus,
                                   RetrofitCallback<Object> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));

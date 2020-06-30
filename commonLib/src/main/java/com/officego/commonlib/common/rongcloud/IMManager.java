@@ -1,5 +1,6 @@
 package com.officego.commonlib.common.rongcloud;
 
+import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
@@ -9,6 +10,7 @@ import android.widget.Toast;
 import com.officego.commonlib.R;
 import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.message.BuildingInfo;
 import com.officego.commonlib.common.message.BuildingProvider;
 import com.officego.commonlib.common.message.EcPhoneStatusInfo;
@@ -24,6 +26,7 @@ import com.officego.commonlib.common.message.ViewingDateStatusProvider;
 import com.officego.commonlib.common.message.WeChatInfo;
 import com.officego.commonlib.common.message.WeChatProvider;
 import com.officego.commonlib.constant.AppConfig;
+import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.dialog.CommonDialog;
 
@@ -266,7 +269,8 @@ public class IMManager {
                 if (connectionStatus.equals(ConnectionStatus.KICKED_OFFLINE_BY_OTHER_CLIENT)) {
                     //被其他提出时，需要返回登录界面 剔除其他登录
 //                    toast(context);
-                    kickDialog(context);
+//                    kickDialog(context);
+                    BaseNotification.newInstance().postNotificationName(CommonNotifications.rongCloudkickDialog, "ownerIdentityComplete");
                 } else if (connectionStatus == ConnectionStatus.TOKEN_INCORRECT) {
                     //token 错误时，重新登录
                     Toast.makeText(context, "融云token错误", Toast.LENGTH_SHORT).show();
@@ -283,26 +287,27 @@ public class IMManager {
 
     }
 
-    //踢出跳转登录
-    private void kickDialog(Context context) {
-        Handler mainHandler = new Handler(Looper.getMainLooper());
-        mainHandler.post(() -> {
-            CommonDialog dialog = new CommonDialog.Builder(context)
-                    .setTitle("账号已在其他设备登录\n是否重新连接")
-                    .setCancelButton(R.string.sm_cancel, (dialog12, which) -> {
-                        SpUtils.clearLoginInfo();
-                        GotoActivityUtils.loginClearActivity(context);
-                        dialog12.dismiss();
-                    })
-                    .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
-                        //重连
-                        new ConnectRongCloudUtils();
-                        dialog12.dismiss();
-                    }).create();
-            dialog.showWithOutTouchable(false);
-            dialog.setCancelable(false);
-        });
-    }
+//    //踢出跳转登录
+//    private void kickDialog(Context context) {
+////        Handler mainHandler = new Handler(Looper.getMainLooper());
+////        mainHandler.post(() -> {
+////
+////        });
+//        CommonDialog dialog = new CommonDialog.Builder(context)
+//                .setTitle("账号已在其他设备登录\n是否重新连接")
+//                .setCancelButton(R.string.sm_cancel, (dialog12, which) -> {
+//                    SpUtils.clearLoginInfo();
+//                    GotoActivityUtils.loginClearActivity(context);
+//                    dialog12.dismiss();
+//                })
+//                .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
+//                    //重连
+//                    new ConnectRongCloudUtils();
+//                    dialog12.dismiss();
+//                }).create();
+//        dialog.showWithOutTouchable(false);
+//        dialog.setCancelable(false);
+//    }
 
     private void initSendReceiveMessageListener() {
         RongIM.getInstance().setSendMessageListener(new RongIM.OnSendMessageListener() {

@@ -3,6 +3,7 @@ package com.officego.ui.mine;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
+import android.widget.TextView;
 
 import com.officego.R;
 import com.officego.commonlib.base.BaseActivity;
@@ -23,6 +24,7 @@ import com.officego.commonlib.common.GotoActivityUtils;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
 
 //import com.owner.MainOwnerActivity_;
 
@@ -34,9 +36,12 @@ import org.androidannotations.annotations.EActivity;
 @SuppressLint("Registered")
 @EActivity(R.layout.mine_activity_setting)
 public class MineSettingActivity extends BaseActivity {
+    @ViewById(R.id.tv_version)
+    TextView tvVersion;
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarColor(this);
+        tvVersion.setText("v" + CommonHelper.getAppVersionName(context));
     }
 
     @Click(R.id.rl_version_update)

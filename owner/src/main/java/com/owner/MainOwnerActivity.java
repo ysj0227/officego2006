@@ -16,7 +16,9 @@ import androidx.fragment.app.Fragment;
 
 import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.rongcloud.ConnectRongCloudUtils;
+import com.officego.commonlib.common.rongcloud.kickDialog;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.MyFragmentTabHost;
 import com.owner.message.MessageFragment_;
@@ -172,6 +174,7 @@ public class MainOwnerActivity extends BaseActivity implements TabHost.OnTabChan
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        removeUnReadMessageCountChangedObserver();
     }
 
     @Override
@@ -209,5 +212,22 @@ public class MainOwnerActivity extends BaseActivity implements TabHost.OnTabChan
         home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         home.addCategory(Intent.CATEGORY_HOME);
         context.startActivity(home);
+    }
+
+    @Override
+    public int[] getStickNotificationId() {
+        return new int[]{CommonNotifications.rongCloudkickDialog};
+    }
+
+    @Override
+    public void didReceivedNotification(int id, Object... args) {
+        super.didReceivedNotification(id, args);
+        if (args == null) {
+            return;
+        }
+        //踢出登录
+        if (id == CommonNotifications.rongCloudkickDialog) {
+            new kickDialog(context);
+        }
     }
 }
