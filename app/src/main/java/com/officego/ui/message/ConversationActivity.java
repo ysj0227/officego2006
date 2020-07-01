@@ -17,6 +17,7 @@ import com.officego.commonlib.common.dialog.ConfirmDialog;
 import com.officego.commonlib.common.dialog.InputContactsDialog;
 import com.officego.commonlib.common.message.BuildingInfo;
 import com.officego.commonlib.common.model.ChatHouseBean;
+import com.officego.commonlib.common.model.FirstChatBean;
 import com.officego.commonlib.common.presenter.ConversationPresenter;
 import com.officego.commonlib.common.rongcloud.SendMessageManager;
 import com.officego.commonlib.utils.CommonHelper;
@@ -24,6 +25,7 @@ import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.ToastUtils;
 import com.officego.commonlib.utils.log.LogCat;
+import com.officego.db.LitepalUtils;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -35,6 +37,7 @@ import java.util.Objects;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationFragment;
 import io.rong.imlib.model.Conversation;
+import io.rong.imlib.model.Message;
 import io.rong.imlib.model.UserInfo;
 
 /**
@@ -45,7 +48,7 @@ import io.rong.imlib.model.UserInfo;
 @SuppressLint("Registered")
 @EActivity(R.layout.conversation)
 public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
-        implements ConversationContract.View {
+        implements ConversationContract.View, RongIM.OnSendMessageListener {
     private LinearLayout llRoot;
     private String targetTitle;
     private TextView tvTitleName, tvJob;
@@ -58,6 +61,8 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
     int houseId;//房源详情传入
 
     private ChatHouseBean mData;
+    // "isChat": 0 :点击发送按钮的时候需要调用 addChat接口，1:不需要
+    private boolean isFirstChat = true;//是否第一次聊天
 
     @AfterViews
     void init() {
@@ -69,9 +74,9 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         tvJob = findViewById(R.id.tv_job);
         llRoot.setPadding(0, CommonHelper.statusHeight(this), 0, 0);
         initRongCloudIM();
+        RongIM.getInstance().setSendMessageListener(this);
         //插入一次
         mPresenter.getHouseDetails(buildingId, houseId, getHouseChatId);
-//        RMSendMessage();
     }
 
     private void initRongCloudIM() {
@@ -108,22 +113,6 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         }
     }
 
-//    private void RMSendMessage(){
-//        RongIM.getInstance().setSendMessageListener(new RongIM.OnSendMessageListener() {
-//            @Override
-//            public Message onSend(Message message) {
-//                LogCat.e("TAG", "11111 onSend: " );
-//                return null;
-//            }
-//
-//            @Override
-//            public boolean onSent(Message message, RongIM.SentMessageErrorCode sentMessageErrorCode) {
-//                LogCat.e("TAG", "11111 boolean onSent: " );
-//                return false;
-//            }
-//        });
-//    }
-
     /**
      * 插入聊天大楼信息
      *
@@ -136,6 +125,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             return;
         }
         mData = data;
+        isFirstChat = data.getIsChat() == 0;//是否第一次聊天
         //刷新用户信息
         if (data.getBuilding() != null) {
             refreshUserInfoCache(targetId, data.getChatted().getNickname(), data.getChatted().getAvatar());
@@ -145,9 +135,10 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
 
         if (data.getBuilding() != null) {
             //是否插入消息
-            String mValue = SpUtils.getSignToken() + data.getBuilding().getBuildingId() +
+            String mValue = SpUtils.getUserId() + data.getBuilding().getBuildingId() +
                     (data.getBuilding().getHouseId() == null ? "" : data.getBuilding().getHouseId()) + targetId;
-            if (TextUtils.equals(mValue, SpUtils.getChatBuildingInfo(mValue))) {
+            if (LitepalUtils.getBuildingInfo(mValue) != null &&
+                    TextUtils.equals(mValue, LitepalUtils.getBuildingInfo(mValue).getBuildingValue())) {
                 return;
             }
             BuildingInfo info = new BuildingInfo();
@@ -175,13 +166,18 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             if (data.getBuilding().getTags() != null && data.getBuilding().getTags().size() > 0) {
                 info.setTags(getTags(data));
             }
+            //插入消息
             SendMessageManager.getInstance().insertIncomingMessage(info, targetId, SpUtils.getRongChatId());
             //保存第一次插入状态
-            String key = SpUtils.getSignToken() + data.getBuilding().getBuildingId() +
+            String value = SpUtils.getUserId() + data.getBuilding().getBuildingId() +
                     (data.getBuilding().getHouseId() == null ? "" : String.valueOf(data.getBuilding().getHouseId())) + targetId;
-            SpUtils.saveChatBuildingInfo(key, key);
-            ;
+            LitepalUtils.saveBuilding(value);
         }
+    }
+
+    @Override
+    public void firstChatSuccess(FirstChatBean data) {
+        isFirstChat = data.getIsChat() == 0;//是否第一次聊天
     }
 
     private String getTags(ChatHouseBean data) {
@@ -305,5 +301,23 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             //开始发送交换微信信息
             setWechatMessage(dataMes);
         }
+    }
+
+    @Override
+    public Message onSend(Message message) {
+        return message;
+    }
+
+    /**
+     * 消息发送监听
+     * 第一次发送监听
+     */
+    @Override
+    public boolean onSent(Message message, RongIM.SentMessageErrorCode sentMessageErrorCode) {
+        LogCat.e("TAG", "11111 isFirstChat: " + isFirstChat);
+        if (isFirstChat) {
+            mPresenter.isFirstChat(buildingId, houseId, getHouseChatId);
+        }
+        return false;
     }
 }

@@ -2,6 +2,7 @@ package com.officego.commonlib.common.contract;
 
 import com.officego.commonlib.base.BaseView;
 import com.officego.commonlib.common.model.ChatHouseBean;
+import com.officego.commonlib.common.model.FirstChatBean;
 
 /**
  * Created by YangShiJie
@@ -12,9 +13,13 @@ public interface ConversationContract {
 
     interface View extends BaseView {
         void houseSuccess(ChatHouseBean data);
+
+        void firstChatSuccess(FirstChatBean data);
     }
 
     interface Presenter {
         void getHouseDetails(int buildingId,int houseId, String targetId);
+
+        void isFirstChat(int buildingId,int houseId,  String targetId);
     }
 }

@@ -2,11 +2,11 @@ package com.officego.commonlib.common.rpc;
 
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.model.ChatHouseBean;
+import com.officego.commonlib.common.model.FirstChatBean;
 import com.officego.commonlib.common.rpc.request.ChatInterface;
 import com.officego.commonlib.common.rpc.request.MineMsgInterface;
 import com.officego.commonlib.common.rpc.request.ScheduleInterface;
 import com.officego.commonlib.retrofit.RetrofitCallback;
-import com.officego.commonlib.utils.log.LogCat;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -87,7 +87,7 @@ public class OfficegoApi {
      * buildingId 	是 	int 	从楼盘进入聊天页面需要传递
      * 获取大楼详情
      */
-    public void getChatHouseDetails(int buildingId,int houseId,  String targetId, RetrofitCallback<ChatHouseBean> callback) {
+    public void getChatHouseDetails(int buildingId, int houseId, String targetId, RetrofitCallback<ChatHouseBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("uid", requestBody(targetId));
@@ -95,6 +95,35 @@ public class OfficegoApi {
         map.put("houseId", requestBody(houseId == 0 ? "" : String.valueOf(houseId)));
         OfficegoRetrofitClient.getInstance().create(ChatInterface.class)
                 .getChatHouseDetails(map)
+                .enqueue(callback);
+    }
+
+    /**
+     * 重新获取融云token
+     *
+     * @param callback
+     */
+    public void getRongCloudToken(RetrofitCallback<Object> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        OfficegoRetrofitClient.getInstance().create(ChatInterface.class)
+                .getRongCloudToken(map)
+                .enqueue(callback);
+    }
+
+    /**
+     * 重新获取融云token
+     *
+     * @param callback
+     */
+    public void isChat(int buildingId, int houseId, String targetId, RetrofitCallback<FirstChatBean> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("uid", requestBody(targetId));
+        map.put("buildingId", requestBody(buildingId == 0 ? "" : String.valueOf(buildingId)));
+        map.put("houseId", requestBody(houseId == 0 ? "" : String.valueOf(houseId)));
+        OfficegoRetrofitClient.getInstance().create(ChatInterface.class)
+                .isChat(map)
                 .enqueue(callback);
     }
 

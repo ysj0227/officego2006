@@ -192,7 +192,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
                 hasIdentityView();
             }
             //管理员显示员工管理  权职0普通员工1管理员 -1无
-            rlRole.setVisibility(data.getIdentityType() == 1 || data.getIdentityType() == 2 ? View.VISIBLE : View.GONE);
+            rlRole.setVisibility(data.getAuthority() == 1 ? View.VISIBLE : View.GONE);
         }
     }
 

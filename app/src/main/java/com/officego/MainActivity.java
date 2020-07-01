@@ -15,15 +15,16 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.officego.commonlib.base.BaseActivity;
+import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
+import com.officego.commonlib.common.rongcloud.ConnectRongCloudUtils;
 import com.officego.commonlib.common.rongcloud.kickDialog;
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.MyFragmentTabHost;
 import com.officego.ui.message.MessageFragment_;
-import com.officego.commonlib.common.rongcloud.ConnectRongCloudUtils;
 import com.officego.utils.GotoActivityUtils;
 import com.officego.utils.MainTab;
-import com.officego.commonlib.common.SpUtils;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -205,7 +206,8 @@ public class MainActivity extends BaseActivity implements TabHost.OnTabChangeLis
 
     @Override
     public int[] getStickNotificationId() {
-        return new int[]{CommonNotifications.rongCloudkickDialog};
+        return new int[]{CommonNotifications.rongCloudkickDialog,
+                CommonNotifications.identityChangeToRelogin};
     }
 
     @Override
@@ -216,7 +218,12 @@ public class MainActivity extends BaseActivity implements TabHost.OnTabChangeLis
         }
         //踢出登录
         if (id == CommonNotifications.rongCloudkickDialog) {
-           new kickDialog(context);
+            new kickDialog(context);
+        } else if (id == CommonNotifications.identityChangeToRelogin) {
+            //身份发生变化
+            shortTip((String) args[0]);
+            SpUtils.clearLoginInfo();
+            com.officego.commonlib.common.GotoActivityUtils.loginClearActivity(context, TextUtils.equals(Constants.TYPE_OWNER, SpUtils.getRole()));
         }
     }
 

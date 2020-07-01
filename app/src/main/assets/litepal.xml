@@ -5,6 +5,6 @@
     <version value="1" />
     <list>
         <!-- 设置映射列表-->
-         <mapping class="com.officego.db.Area"></mapping>
+         <mapping class="com.officego.db.InsertBuildingInfo"></mapping>
     </list>
 </litepal>

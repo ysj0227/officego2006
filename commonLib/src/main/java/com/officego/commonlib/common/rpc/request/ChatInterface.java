@@ -1,8 +1,8 @@
 package com.officego.commonlib.common.rpc.request;
 
 
-
 import com.officego.commonlib.common.model.ChatHouseBean;
+import com.officego.commonlib.common.model.FirstChatBean;
 import com.officego.commonlib.retrofit.BaseResponse;
 
 import java.util.Map;
@@ -28,5 +28,19 @@ public interface ChatInterface {
     @Multipart
     @POST(path + "chat/firstChatApp")
     Call<BaseResponse<ChatHouseBean>> getChatHouseDetails(@PartMap Map<String, RequestBody> params);
+
+    /**
+     * 聊天发送按钮APP 接口
+     */
+    @Multipart
+    @POST(path + "chat/addChatApp")
+    Call<BaseResponse<FirstChatBean>> isChat(@PartMap Map<String, RequestBody> params);
+
+    /**
+     * 获取融云token
+     */
+    @Multipart
+    @POST(path + "user/rongYunToken")
+    Call<BaseResponse<Object>> getRongCloudToken(@PartMap Map<String, RequestBody> params);
 
 }

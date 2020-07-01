@@ -1,14 +1,11 @@
 package com.officego.commonlib.common.rongcloud;
 
-import android.app.AlertDialog;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Looper;
 import android.util.Log;
 import android.widget.Toast;
 
-import com.officego.commonlib.R;
-import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.message.BuildingInfo;
@@ -27,8 +24,8 @@ import com.officego.commonlib.common.message.WeChatInfo;
 import com.officego.commonlib.common.message.WeChatProvider;
 import com.officego.commonlib.constant.AppConfig;
 import com.officego.commonlib.notification.BaseNotification;
+import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.log.LogCat;
-import com.officego.commonlib.view.dialog.CommonDialog;
 
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
@@ -265,18 +262,33 @@ public class IMManager {
         RongIM.setConnectionStatusListener(new RongIMClient.ConnectionStatusListener() {
             @Override
             public void onChanged(ConnectionStatus connectionStatus) {
-                LogCat.e(TAG, "ConnectionStatus onChanged = " + connectionStatus.getMessage() + " rcToken=" + SpUtils.getRongToken());
+                //LogCat.d(TAG, "ConnectionStatus onChanged = " + connectionStatus.getMessage() + " rcToken=" + SpUtils.getRongToken());
                 if (connectionStatus.equals(ConnectionStatus.KICKED_OFFLINE_BY_OTHER_CLIENT)) {
                     //被其他提出时，需要返回登录界面 剔除其他登录
-//                    toast(context);
-//                    kickDialog(context);
                     BaseNotification.newInstance().postNotificationName(CommonNotifications.rongCloudkickDialog, "ownerIdentityComplete");
                 } else if (connectionStatus == ConnectionStatus.TOKEN_INCORRECT) {
-                    //token 错误时，重新登录
-                    Toast.makeText(context, "融云token错误", Toast.LENGTH_SHORT).show();
-                    SpUtils.clearLoginInfo();
-                    GotoActivityUtils.loginClearActivity(context);
+                    //融云token错误
+                    rongCloudTokenError();
+                    //Toast.makeText(context, "融云token错误", Toast.LENGTH_SHORT).show();
                 }
+            }
+        });
+    }
+
+    /**
+     * token 错误时，重新登录
+     */
+    private void rongCloudTokenError() {
+        com.officego.commonlib.common.rpc.OfficegoApi.getInstance().getRongCloudToken(new RetrofitCallback<Object>() {
+            @Override
+            public void onSuccess(int code, String msg, Object data) {
+                if (data != null)
+                    SpUtils.saveRongToken(data.toString());
+                new ConnectRongCloudUtils();
+            }
+
+            @Override
+            public void onFail(int code, String msg, Object data) {
             }
         });
     }
@@ -286,28 +298,6 @@ public class IMManager {
         mainHandler.post(() -> Toast.makeText(context, "账号已在其他设备登录", Toast.LENGTH_LONG).show());
 
     }
-
-//    //踢出跳转登录
-//    private void kickDialog(Context context) {
-////        Handler mainHandler = new Handler(Looper.getMainLooper());
-////        mainHandler.post(() -> {
-////
-////        });
-//        CommonDialog dialog = new CommonDialog.Builder(context)
-//                .setTitle("账号已在其他设备登录\n是否重新连接")
-//                .setCancelButton(R.string.sm_cancel, (dialog12, which) -> {
-//                    SpUtils.clearLoginInfo();
-//                    GotoActivityUtils.loginClearActivity(context);
-//                    dialog12.dismiss();
-//                })
-//                .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
-//                    //重连
-//                    new ConnectRongCloudUtils();
-//                    dialog12.dismiss();
-//                }).create();
-//        dialog.showWithOutTouchable(false);
-//        dialog.setCancelable(false);
-//    }
 
     private void initSendReceiveMessageListener() {
         RongIM.getInstance().setSendMessageListener(new RongIM.OnSendMessageListener() {

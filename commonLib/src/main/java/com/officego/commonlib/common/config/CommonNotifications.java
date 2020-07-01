@@ -26,4 +26,7 @@ public class CommonNotifications {
     //融云其他设备登录踢出
     public static final int rongCloudkickDialog = totalEvents++;
 
+    //身份发送变化重新登录
+    public static final int identityChangeToRelogin = totalEvents++;
+
 }

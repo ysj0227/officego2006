@@ -8,6 +8,11 @@ import androidx.annotation.NonNull;
 import com.google.gson.Gson;
 import com.officego.commonlib.R;
 import com.officego.commonlib.base.BaseApplication;
+import com.officego.commonlib.common.GotoActivityUtils;
+import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.config.CommonNotifications;
+import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.utils.ToastUtils;
 import com.officego.commonlib.utils.log.LogCat;
 
@@ -74,6 +79,10 @@ public abstract class RetrofitCallback<T> implements Callback<BaseResponse<T>> {
                 Intent intent = new Intent();
                 intent.setAction(PACKAGE_NAME);
                 BaseApplication.getContext().sendBroadcast(intent);
+            } else if (response.getStatus() == Constants.ERROR_CODE_5009) {
+                //当前身份发送变化，重新登录
+                BaseNotification.newInstance().postNotificationName(
+                        CommonNotifications.identityChangeToRelogin, response.getMessage());
             }
         }
     }

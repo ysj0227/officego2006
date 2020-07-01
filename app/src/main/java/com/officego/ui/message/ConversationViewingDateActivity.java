@@ -12,6 +12,7 @@ import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.contract.ConversationContract;
 import com.officego.commonlib.common.dialog.ViewingDateDialog;
 import com.officego.commonlib.common.model.ChatHouseBean;
+import com.officego.commonlib.common.model.FirstChatBean;
 import com.officego.commonlib.common.model.RenterBean;
 import com.officego.commonlib.common.presenter.ConversationPresenter;
 import com.officego.commonlib.common.rongcloud.SendMessageManager;
@@ -155,6 +156,11 @@ public class ConversationViewingDateActivity extends BaseMvpActivity<Conversatio
 //            tvOwnerName.setText(data.getChatted().getNickname());
 //            tvPosition.setText(data.getChatted().getJob());
 //        }
+    }
+
+    @Override
+    public void firstChatSuccess(FirstChatBean data) {
+
     }
 
     public void addRenter(int buildingId, String time, String targetId) {
