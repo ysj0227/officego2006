@@ -26,6 +26,7 @@ import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.TitleBarView;
+import com.officego.commonlib.view.webview.SMWebChromeClientPhoto;
 import com.officego.view.webview.SMWebChromeClient;
 import com.officego.view.webview.SMWebViewClient;
 
@@ -53,7 +54,7 @@ public class WebViewActivity extends BaseActivity {
     @Extra
     int flags;
 
-    private SMWebChromeClient webChrome;
+    private SMWebChromeClientPhoto webChrome;
 
     @AfterViews
     void init() {
@@ -121,7 +122,7 @@ public class WebViewActivity extends BaseActivity {
 //        webView.addJavascriptInterface(new JsInterface(this), "android");
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
 //        webView.setWebChromeClient(new WebChromeClient());//
-        webChrome = new SMWebChromeClient(this);
+        webChrome = new SMWebChromeClientPhoto(this);
         webView.setWebChromeClient(webChrome);
         webView.loadUrl(url);
         webView.setWebViewClient(new SMWebViewClient(this) {

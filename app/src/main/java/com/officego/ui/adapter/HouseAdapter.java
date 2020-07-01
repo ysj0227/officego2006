@@ -21,6 +21,7 @@ import com.officego.ui.home.BuildingDetailsJointWorkActivity_;
 import com.officego.ui.home.model.BuildingBean;
 import com.officego.ui.home.model.ConditionBean;
 import com.officego.ui.home.utils.BundleUtils;
+import com.officego.commonlib.utils.GlideUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +46,7 @@ public class HouseAdapter extends CommonListAdapter<BuildingBean.ListBean> {
     @Override
     public void convert(ViewHolder holder, final BuildingBean.ListBean bean) {
         RoundImageView ivHouse = holder.getView(R.id.iv_house);
-        Glide.with(context).load(bean.getMainPic()).into(ivHouse);
+        Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getMainPic()).into(ivHouse);
         holder.setText(R.id.tv_house_name, bean.getName());
         holder.setText(R.id.tv_location, bean.getBusinessDistrict());
         if (bean.getBuildingMap() != null && bean.getBuildingMap().getStationline().size() > 0) {

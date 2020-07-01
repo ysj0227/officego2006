@@ -26,9 +26,7 @@ import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.RegexUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.ClearableEditText;
-import com.officego.db.InsertBuildingInfo;
 import com.officego.h5.WebViewActivity_;
 import com.officego.ui.login.contract.LoginContract;
 import com.officego.ui.login.presenter.LoginPresenter;
@@ -41,9 +39,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
-import org.litepal.LitePal;
 
-import java.util.List;
 import java.util.Locale;
 import java.util.Objects;
 
@@ -102,11 +98,6 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
             isOwnerLogin = getIntent().getExtras().getBoolean("isOwnerLogin");
             isReOwnerLogin = getIntent().getExtras().getBoolean("isReOwnerLogin");
             rlBack.setVisibility(isOwnerLogin ? View.GONE : View.VISIBLE);
-        }
-
-        List<InsertBuildingInfo>  list=LitePal.findAll(InsertBuildingInfo.class);
-        for (int i = 0; i <list.size() ; i++) {
-            LogCat.e(TAG,"1111111111 "+list.get(i).getBuildingValue());
         }
     }
 
@@ -214,7 +205,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
 
     @Override
     public void loginSuccess() {
-        shortTip(R.string.str_login_success);
+//        shortTip(R.string.str_login_success);
         if (TextUtils.equals(Constants.TYPE_OWNER, SpUtils.getRole())) {
             if (isReOwnerLogin) {
                 //业主退出登录后的，重新登录

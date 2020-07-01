@@ -1,7 +1,10 @@
 package com.owner.home;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.text.TextUtils;
@@ -18,6 +21,9 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentActivity;
 
 import com.officego.commonlib.base.BaseMvpFragment;
 import com.officego.commonlib.common.SpUtils;
@@ -25,7 +31,9 @@ import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.constant.AppConfig;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
+import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.webview.SMWebChromeClient;
 import com.officego.commonlib.view.webview.SMWebViewClient;
 import com.owner.R;
@@ -37,6 +45,8 @@ import com.owner.utils.UnIdifyDialog;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
+
+import static com.officego.commonlib.utils.PermissionUtils.REQ_PERMISSIONS_CAMERA_STORAGE;
 
 /**
  * Created by YangShiJie
@@ -63,6 +73,9 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements Home
         StatusBarUtils.setStatusBarColor(mActivity);
         CommonHelper.setRelativeLayoutParams(mActivity, webView);
         setWebChromeClient();
+        if (!fragmentCheckSDCardCameraPermission()) {
+            return;
+        }
         mPresenter.getUserInfo();
     }
 
@@ -136,6 +149,25 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements Home
         });
     }
 
+    // SD卡,相机 fragment
+    private boolean fragmentCheckSDCardCameraPermission() {
+        //mActivity1 必须使用this 在fragment
+        String[] PERMISSIONS_STORAGE = {Manifest.permission.CAMERA,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int permission1 = mActivity.checkSelfPermission(PERMISSIONS_STORAGE[0]);
+            int permission2 = mActivity.checkSelfPermission(PERMISSIONS_STORAGE[1]);
+            if (permission1 != PackageManager.PERMISSION_GRANTED ||
+                    permission2 != PackageManager.PERMISSION_GRANTED) {
+                this.requestPermissions(new String[]{
+                        PERMISSIONS_STORAGE[0], PERMISSIONS_STORAGE[1]}, REQ_PERMISSIONS_CAMERA_STORAGE);
+                return false;
+            } else {
+                return true;
+            }
+        }
+        return true;
+    }
     //上传图片
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -148,10 +180,13 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements Home
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            mPresenter.getUserInfo();
+        }
         if (webChrome != null) {
             webChrome.onPermissionResult(requestCode, grantResults);
         }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
     /**

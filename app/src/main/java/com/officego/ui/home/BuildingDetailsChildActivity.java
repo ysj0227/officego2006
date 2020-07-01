@@ -1,9 +1,11 @@
 package com.officego.ui.home;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -123,10 +125,18 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         StatusBarUtils.setStatusBarFullTransparent(this);
         mPresenter = new BuildingDetailsChildPresenter(context);
         mPresenter.attachView(this);
+        setImageViewLayoutParams(context, ivPattern);
         nsvView.setOnScrollChangeListener(this);
         rlRootHouseTitle.setPadding(0, CommonHelper.statusHeight(this), 0, 0);
         tvIndependentOffice.setVisibility(View.GONE);
         mPresenter.getDetails(String.valueOf(mChildHouseBean.getBtype()), String.valueOf(mChildHouseBean.getHouseId()));
+    }
+
+    public static void setImageViewLayoutParams(Context context, View view) {
+        ViewGroup.LayoutParams params = view.getLayoutParams();
+        params.width = RelativeLayout.LayoutParams.MATCH_PARENT;
+        params.height = CommonHelper.getScreenWidth(context) * 3 / 4;
+        view.setLayoutParams(params);
     }
 
     @Click(R.id.btn_back)

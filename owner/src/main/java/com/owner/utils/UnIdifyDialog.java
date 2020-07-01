@@ -1,9 +1,11 @@
 package com.owner.utils;
 
+import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
 
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
 import com.owner.h5.WebViewIdifyActivity_;
@@ -30,18 +32,20 @@ public class UnIdifyDialog {
             dialog = null;
         }
         if (dialog == null) {
-            String title, message;
+            String title, message, butText;
             if (data.getAuditStatus() == 2) {
                 title = "审核驳回";
                 message = data.getRemark();
+                butText = "重新认证";
             } else {
                 title = "认证提示";
                 message = idify(data) + "\n请您先认证信息";
+                butText = context.getResources().getString(R.string.str_confirm);
             }
             dialog = new CommonDialog.Builder(context)
                     .setTitle(title)
                     .setMessage(message)
-                    .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
+                    .setConfirmButton(butText, (dialog12, which) -> {
                         //当驳回时
                         if (data.getAuditStatus() == 2) {
                             if (data.getIdentityType() == 0) {//个人

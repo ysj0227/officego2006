@@ -1,9 +1,11 @@
 package com.officego.ui.home;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
@@ -18,7 +20,6 @@ import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.model.ShareBean;
 import com.officego.ui.home.contract.BuildingDetailsChildJointWorkContract;
 import com.officego.ui.home.model.ChatsBean;
@@ -120,11 +121,19 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         StatusBarUtils.setStatusBarFullTransparent(this);
         mPresenter = new BuildingDetailsChildJointWorkPresenter(context);
         mPresenter.attachView(this);
+        setImageViewLayoutParams(context, ivPattern);
         nsvView.setOnScrollChangeListener(this);
         rlRootHouseTitle.setPadding(0, CommonHelper.statusHeight(this), 0, 0);
         tvIndependentOffice.setVisibility(View.GONE);//独立办公室title
         rlCharacteristic.setVisibility(View.GONE);//网点无特色
         mPresenter.getDetails(String.valueOf(mChildHouseBean.getBtype()), String.valueOf(mChildHouseBean.getHouseId()));
+    }
+
+    public static void setImageViewLayoutParams(Context context, View view) {
+        ViewGroup.LayoutParams params = view.getLayoutParams();
+        params.width = RelativeLayout.LayoutParams.MATCH_PARENT;
+        params.height = CommonHelper.getScreenWidth(context) * 3 / 4;
+        view.setLayoutParams(params);
     }
 
     @Click(R.id.btn_back)
@@ -144,10 +153,9 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         //轮播图
         playBanner(data.getImgUrl());
         tvBuildingName.setText("独立办公室");
-
         //详情
         if (data.getHouse() != null) {
-            tvIndependentOfficeAreaText.setText( data.getHouse().getSeats() + "个工位");
+            tvIndependentOfficeAreaText.setText(data.getHouse().getSeats() + "个工位");
             if (data.getHouse().getArea() != null) {
                 tvIndependentOfficeArea.setText(Html.fromHtml("<font color='#46C3C2'>" + data.getHouse().getArea() + "</font>㎡"));
             } else {

@@ -1,13 +1,17 @@
 package com.owner.mine;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
-import android.net.Uri;
+import android.content.pm.PackageManager;
+import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+
+import androidx.annotation.NonNull;
 
 import com.bumptech.glide.Glide;
 import com.officego.commonlib.base.BaseMvpFragment;
@@ -16,7 +20,7 @@ import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.rongcloud.RongCloudSetUserInfoUtils;
 import com.officego.commonlib.constant.Constants;
-import com.officego.commonlib.utils.CommonHelper;
+import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.CircleImage;
 import com.owner.h5.WebViewActivity_;
@@ -34,6 +38,7 @@ import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import static android.app.Activity.RESULT_OK;
+import static com.officego.commonlib.utils.PermissionUtils.REQ_PERMISSIONS_CAMERA_STORAGE;
 
 /**
  * Created by YangShiJie
@@ -66,6 +71,9 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         StatusBarUtils.setStatusBarFullTransparent(mActivity);
         mPresenter = new UserPresenter();
         mPresenter.attachView(this);
+        if (!fragmentCheckSDCardCameraPermission()) {
+            return;
+        }
         mPresenter.getUserInfo();
     }
 
@@ -158,17 +166,6 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         WebViewActivity_.intent(mActivity).flags(Constants.H5_ABOUTS).start();
     }
 
-    /**
-     * 拨打电话（跳转到拨号界面，用户手动点击拨打）
-     *
-     * @param phoneNum 电话号码
-     */
-    public void callPhone(String phoneNum) {
-        Intent intent = new Intent(Intent.ACTION_DIAL);
-        Uri data = Uri.parse("tel:" + phoneNum);
-        intent.setData(data);
-        startActivity(intent);
-    }
 
     @SuppressLint("SetTextI18n")
     @Override
@@ -178,7 +175,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
             RongCloudSetUserInfoUtils.refreshUserInfoCache(SpUtils.getRongChatId(), data.getRealname(), data.getAvatar());
             mUserInfo = data;
             tvIdify.setText(idify(data));
-            Glide.with(mActivity).load(data.getAvatar()).into(civAvatar);
+            Glide.with(mActivity).applyDefaultRequestOptions(GlideUtils.avaOoptions()).load(data.getAvatar()).into(civAvatar);
             tvName.setText(data.getProprietorRealname());
             if (TextUtils.isEmpty(data.getProprietorCompany())) {
                 tvAccount.setText(TextUtils.isEmpty(data.getProprietorJob()) ? "" : data.getProprietorJob());
@@ -191,8 +188,12 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
             } else {
                 hasIdentityView();
             }
-            //管理员显示员工管理  权职0普通员工1管理员 -1无
-            rlRole.setVisibility(data.getAuthority() == 1 ? View.VISIBLE : View.GONE);
+            //1企业2联合 &&管理员显示员工管理  权职0普通员工1管理员 -1无
+            if (data.getIdentityType() == 1 || data.getIdentityType() == 2 && data.getAuthority() == 1) {
+                rlRole.setVisibility(View.VISIBLE);
+            } else {
+                rlRole.setVisibility(View.GONE);
+            }
         }
     }
 
@@ -268,5 +269,34 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
             hasIdentityView();
             mPresenter.getUserInfo();
         }
+    }
+
+    // SD卡,相机 fragment
+    private boolean fragmentCheckSDCardCameraPermission() {
+        //mActivity1 必须使用this 在fragment
+        String[] PERMISSIONS_STORAGE = {Manifest.permission.CAMERA,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE};
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            int permission1 = mActivity.checkSelfPermission(PERMISSIONS_STORAGE[0]);
+            int permission2 = mActivity.checkSelfPermission(PERMISSIONS_STORAGE[1]);
+            if (permission1 != PackageManager.PERMISSION_GRANTED ||
+                    permission2 != PackageManager.PERMISSION_GRANTED) {
+                this.requestPermissions(new String[]{
+                        PERMISSIONS_STORAGE[0], PERMISSIONS_STORAGE[1]}, REQ_PERMISSIONS_CAMERA_STORAGE);
+                return false;
+            } else {
+                return true;
+            }
+        }
+        return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            mPresenter.getUserInfo();
+        }
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }

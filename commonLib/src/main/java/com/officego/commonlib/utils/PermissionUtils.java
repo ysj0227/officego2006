@@ -10,6 +10,7 @@ import android.widget.Toast;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
 import com.officego.commonlib.R;
@@ -22,7 +23,7 @@ import com.officego.commonlib.R;
 public class PermissionUtils {
     public static final int REQ_PERMISSIONS_STORAGE = 0x101;
     public static final int REQ_PERMISSIONS_CAMERA_STORAGE = 0x102;
-    public static final int REQ_PERMISSIONS_PHONE_CODE= 0x103;
+    public static final int REQ_PERMISSIONS_PHONE_CODE = 0x103;
 
     //* 如果SDK版本大于等于23、或者Android系统版本是6.0以上，那么需要动态请求创建文件的权限 */
     public static void checkPermissionActivity(Activity activity) {
@@ -37,7 +38,8 @@ public class PermissionUtils {
                 "android.permission.RECEIVE_SMS",
                 "android.permission.READ_SMS",
                 "android.permission.WRITE_SETTINGS",//百度用到
-                "android.permission.REQUEST_INSTALL_PACKAGES"};
+                "android.permission.REQUEST_INSTALL_PACKAGES",
+                "android.permission.CAMERA"};
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             int permission0 = ContextCompat.checkSelfPermission(activity, PERMISSIONS_STORAGE[0]);
@@ -47,13 +49,15 @@ public class PermissionUtils {
             int permission5 = ContextCompat.checkSelfPermission(activity, PERMISSIONS_STORAGE[5]);
             int permission7 = ContextCompat.checkSelfPermission(activity, PERMISSIONS_STORAGE[7]);
             int permission8 = ContextCompat.checkSelfPermission(activity, PERMISSIONS_STORAGE[8]);
+            int permission9 = ContextCompat.checkSelfPermission(activity, PERMISSIONS_STORAGE[9]);
             if (permission0 != PackageManager.PERMISSION_GRANTED &&
                     permission2 != PackageManager.PERMISSION_GRANTED &&
                     permission3 != PackageManager.PERMISSION_GRANTED &&
                     permission4 != PackageManager.PERMISSION_GRANTED &&
                     permission5 != PackageManager.PERMISSION_GRANTED &&
                     permission7 != PackageManager.PERMISSION_GRANTED &&
-                    permission8 != PackageManager.PERMISSION_GRANTED) {
+                    permission8 != PackageManager.PERMISSION_GRANTED &&
+                    permission9 != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(activity, new String[]{
                         PERMISSIONS_STORAGE[0],
                         PERMISSIONS_STORAGE[1],
@@ -63,7 +67,8 @@ public class PermissionUtils {
                         PERMISSIONS_STORAGE[5],
                         PERMISSIONS_STORAGE[6],
                         PERMISSIONS_STORAGE[7],
-                        PERMISSIONS_STORAGE[8]
+                        PERMISSIONS_STORAGE[8],
+                        PERMISSIONS_STORAGE[9]
                 }, REQUEST_STORAGE);
             }
         }
@@ -136,7 +141,7 @@ public class PermissionUtils {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             int permission1 = ContextCompat.checkSelfPermission(activity, PERMISSIONS_STORAGE[0]);
-            if (permission1 != PackageManager.PERMISSION_GRANTED ) {
+            if (permission1 != PackageManager.PERMISSION_GRANTED) {
                 ActivityCompat.requestPermissions(activity, new String[]{
                         PERMISSIONS_STORAGE[0]}, REQ_PERMISSIONS_PHONE_CODE);
                 return false;

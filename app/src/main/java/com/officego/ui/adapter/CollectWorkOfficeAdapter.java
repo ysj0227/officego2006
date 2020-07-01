@@ -19,6 +19,7 @@ import com.officego.ui.collect.model.CollectHouseBean;
 import com.officego.ui.home.BuildingDetailsChildActivity_;
 import com.officego.ui.home.BuildingDetailsJointWorkChildActivity_;
 import com.officego.ui.home.utils.BundleUtils;
+import com.officego.commonlib.utils.GlideUtils;
 
 import java.util.List;
 
@@ -52,7 +53,7 @@ public class CollectWorkOfficeAdapter extends CommonListAdapter<CollectHouseBean
         TextView tvItemListChildRightDown = holder.getView(R.id.tv_item_list_child_right_down);
         tvHouseName.setText(bean.getBuildingName());
         tvLocation.setText(bean.getBusinessDistrict());
-        Glide.with(context).load(bean.getMainPic()).into(ivItemListChild);
+        Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getMainPic()).into(ivItemListChild);
         //"officeType": 1是独立办公室，2是开放工位
         if (TextUtils.equals("1", bean.getOfficeType())) {
             tvIsIndependentOffice.setVisibility(View.VISIBLE);

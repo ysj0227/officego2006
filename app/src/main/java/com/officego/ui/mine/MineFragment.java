@@ -16,6 +16,7 @@ import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.rongcloud.RongCloudSetUserInfoUtils;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.CircleImage;
 import com.officego.h5.WebViewActivity_;
@@ -174,7 +175,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         if (data != null) {
             RongCloudSetUserInfoUtils.refreshUserInfoCache(RongCloudSetUserInfoUtils.getRongTenantId(data.getUserId() + ""), data.getRealname(), data.getAvatar());
             SpUtils.saveWechat(mUserInfo.getWxId() == null || TextUtils.isEmpty((String) mUserInfo.getWxId()) ? "" : (String) mUserInfo.getWxId());
-            Glide.with(mActivity).load(data.getAvatar()).into(civAvatar);
+            Glide.with(mActivity).applyDefaultRequestOptions(GlideUtils.avaOoptions()).load(data.getAvatar()).into(civAvatar);
             tvName.setText(data.getRealname());
             if (TextUtils.isEmpty((String) data.getCompany())) {
                 tvAccount.setText(TextUtils.isEmpty((String) data.getJob()) ? "" : (String) data.getJob());

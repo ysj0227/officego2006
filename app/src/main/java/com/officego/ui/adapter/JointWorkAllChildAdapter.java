@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.Html;
 import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -15,6 +14,7 @@ import com.officego.ui.home.BuildingDetailsJointWorkChildActivity_;
 import com.officego.ui.home.model.BuildingDetailsChildBean;
 import com.officego.ui.home.utils.BundleUtils;
 import com.officego.commonlib.view.RoundImageView;
+import com.officego.commonlib.utils.GlideUtils;
 
 import java.util.List;
 
@@ -43,7 +43,7 @@ public class JointWorkAllChildAdapter extends CommonListAdapter<BuildingDetailsC
         TextView tvItemListChildRightUp = holder.getView(R.id.tv_item_list_child_right_up);
         TextView tvItemListChildRightDown = holder.getView(R.id.tv_item_list_child_right_down);
         //网点
-        Glide.with(context).load(bean.getMainPic()).into(ivItemListChild);
+        Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getMainPic()).into(ivItemListChild);
         tvItemListChildCenterUp.setVisibility(View.INVISIBLE);
         tvItemListChildCenterDown.setVisibility(View.INVISIBLE);
         tvItemListChildLeftUp.setText(bean.getArea() + "㎡");

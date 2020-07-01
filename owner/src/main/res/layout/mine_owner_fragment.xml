@@ -99,7 +99,8 @@
             <RelativeLayout
                 android:id="@+id/rl_role"
                 android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_56">
+                android:layout_height="@dimen/dp_56"
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/iv_role"

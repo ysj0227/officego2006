@@ -89,7 +89,6 @@
             android:background="@color/edit_bottom_line" />
     </RelativeLayout>
 
-
     <RelativeLayout
         android:id="@+id/rl_code"
         style="@style/marginLeftRight18"
@@ -185,7 +184,6 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
-
 
     <Button
         android:id="@+id/btn_test"

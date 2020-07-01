@@ -3,8 +3,6 @@ package com.officego.ui.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.Html;
-import android.view.View;
-import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -13,13 +11,11 @@ import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
-import com.officego.ui.home.BuildingDetailsChildActivity;
 import com.officego.ui.home.BuildingDetailsChildActivity_;
-import com.officego.ui.home.model.BuildingDetailsBean;
 import com.officego.ui.home.model.BuildingDetailsChildBean;
-import com.officego.ui.home.model.HouseIdBundleBean;
 import com.officego.ui.home.utils.BundleUtils;
 import com.officego.commonlib.view.RoundImageView;
+import com.officego.commonlib.utils.GlideUtils;
 
 import java.util.List;
 
@@ -48,7 +44,7 @@ public class IndependentAllChildAdapter extends CommonListAdapter<BuildingDetail
         TextView tvItemListChildRightUp = holder.getView(R.id.tv_item_list_child_right_up);
         TextView tvItemListChildRightDown = holder.getView(R.id.tv_item_list_child_right_down);
 
-        Glide.with(context).load(bean.getMainPic()).into(ivItemListChild);
+        Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getMainPic()).into(ivItemListChild);
         //楼盘 办公室
         String seats = "";
         if (bean.getSimple().contains(",")) {
