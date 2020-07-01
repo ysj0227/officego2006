@@ -153,11 +153,9 @@ public class ScheduleFragment extends BaseMvpFragment<ViewingDatePresenter>
         tvCurrentDate.setText(currentDate.getYear() + "年" + currentDate.getMonth() + "月");
         mSelectedYear = currentDate.getYear();
         mSelectedMonth = currentDate.getMonth();
-        if (String.valueOf(currentDate.getMonth()).length() == 1) {//0-9月前面补0
-            mCurrentDayDate = currentDate.getYear() + "-0" + currentDate.getMonth() + "-" + currentDate.getDay();
-        } else {
-            mCurrentDayDate = currentDate.getYear() + "-" + currentDate.getMonth() + "-" + currentDate.getDay();
-        }
+        String mMonth = String.valueOf(currentDate.getMonth()).length() == 1 ? "0" + currentDate.getMonth() : currentDate.getMonth() + "";
+        String mDay = String.valueOf(currentDate.getDay()).length() == 1 ? "0" + currentDate.getDay() : currentDate.getDay() + "";
+        mCurrentDayDate = currentDate.getYear() + "-" + mMonth + "-" + mDay;
     }
 
     /**
@@ -175,6 +173,7 @@ public class ScheduleFragment extends BaseMvpFragment<ViewingDatePresenter>
 
         calendarAdapter.setOnCalendarTypeChangedListener(type -> rvToDoList.scrollToPosition(0));
         //initMarkData();
+        calendarAdapter.setMarkData(new HashMap<>());
         initMonthPager();
 
     }
@@ -201,11 +200,9 @@ public class ScheduleFragment extends BaseMvpFragment<ViewingDatePresenter>
         currentDate = date;
         tvCurrentDate.setText(currentDate.getYear() + "年" + currentDate.getMonth() + "月");
         String mCurrentDate;
-        if (String.valueOf(currentDate.getMonth()).length() == 1) {//0-9月前面补0
-            mCurrentDate = currentDate.getYear() + "-0" + currentDate.getMonth() + "-" + currentDate.getDay();
-        } else {
-            mCurrentDate = currentDate.getYear() + "-" + currentDate.getMonth() + "-" + currentDate.getDay();
-        }
+        String mMonth = String.valueOf(currentDate.getMonth()).length() == 1 ? "0" + currentDate.getMonth() : currentDate.getMonth() + "";
+        String mDay = String.valueOf(currentDate.getDay()).length() == 1 ? "0" + currentDate.getDay() : currentDate.getDay() + "";
+        mCurrentDate = currentDate.getYear() + "-" + mMonth + "-" + mDay;
         selectedDayDataList(mCurrentDate);
     }
 
@@ -311,9 +308,22 @@ public class ScheduleFragment extends BaseMvpFragment<ViewingDatePresenter>
             if (data.get(i).getDay().substring(5, 6).contains("0")) {
                 StringBuffer sb = new StringBuffer(data.get(i).getDay());
                 sb.replace(5, 6, "");
-                markData.put(sb.toString(), "0");
+                String bb = sb.toString();
+                if (bb.substring(7, 8).contains("0")) {
+                    StringBuffer sb1 = new StringBuffer(bb);
+                    sb1.replace(7, 8, "");
+                    markData.put(sb1.toString(), "0");
+                } else {
+                    markData.put(sb.toString(), "0");
+                }
             } else {
-                markData.put(data.get(i).getDay(), "0");
+                if (data.get(i).getDay().substring(8, 9).contains("0")) {
+                    StringBuffer sb = new StringBuffer(data.get(i).getDay());
+                    sb.replace(8, 9, "");
+                    markData.put(sb.toString(), "0");
+                } else {
+                    markData.put(data.get(i).getDay(), "0");
+                }
             }
         }
         calendarAdapter.setMarkData(markData);
