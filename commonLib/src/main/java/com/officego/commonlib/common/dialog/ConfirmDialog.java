@@ -21,11 +21,11 @@ import com.officego.commonlib.common.config.CommonNotifications;
  **/
 public class ConfirmDialog {
 
-    public ConfirmDialog(Context context, String title, String weChat) {
-        serviceDialog(context, title, weChat);
+    public ConfirmDialog(Context context, boolean isPhone,String title, String weChat) {
+        serviceDialog(context, isPhone,title, weChat);
     }
 
-    public void serviceDialog(Context context, String title, String weChat) {
+    public void serviceDialog(Context context, boolean isPhone,String title, String weChat) {
         Dialog dialog = new Dialog(context, R.style.BottomDialog);
         View viewLayout = LayoutInflater.from(context).inflate(
                 R.layout.conversation_dialog_exchange_tip, null);
@@ -47,7 +47,11 @@ public class ConfirmDialog {
 
         viewLayout.findViewById(R.id.btn_Confirm).setOnClickListener(v -> {
             dialog.dismiss();
-            BaseNotification.newInstance().postNotificationName(CommonNotifications.conversationBindWeChat, weChat);
+            if (isPhone){
+                BaseNotification.newInstance().postNotificationName(CommonNotifications.conversationBindPhone, "conversationBindPhone");
+            }else {
+                BaseNotification.newInstance().postNotificationName(CommonNotifications.conversationBindWeChat, weChat);
+            }
         });
         viewLayout.findViewById(R.id.btn_cancel).setOnClickListener(v ->
                 dialog.dismiss());

@@ -209,7 +209,9 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             return;
         }
         if (!TextUtils.isEmpty(SpUtils.getPhoneNum())) {
-            setPhoneMessage();
+//            setPhoneMessage();
+            new ConfirmDialog(context, true, getString(
+                    R.string.dialog_title_exchange_phone_contacts), "");
         }
     }
 
@@ -224,7 +226,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         if (TextUtils.isEmpty(SpUtils.getWechat())) {
             new InputContactsDialog(context);
         } else {
-            new ConfirmDialog(context, getString(
+            new ConfirmDialog(context, false, getString(
                     R.string.dialog_title_exchange_wechat_contacts), SpUtils.getWechat());
         }
     }
@@ -270,7 +272,8 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
                 CommonNotifications.conversationWeChatReject,
                 CommonNotifications.conversationViewHouseAgree,
                 CommonNotifications.conversationViewHouseReject,
-                CommonNotifications.conversationBindWeChat};
+                CommonNotifications.conversationBindWeChat,
+                CommonNotifications.conversationBindPhone};
     }
 
     @Override
@@ -300,6 +303,9 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         } else if (id == CommonNotifications.conversationBindWeChat) {
             //开始发送交换微信信息
             setWechatMessage(dataMes);
+        } else if (id == CommonNotifications.conversationBindPhone) {
+            //开始发送交换手机信息
+            setPhoneMessage();
         }
     }
 
