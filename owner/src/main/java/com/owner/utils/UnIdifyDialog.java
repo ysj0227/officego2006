@@ -1,11 +1,9 @@
 package com.owner.utils;
 
-import android.app.Activity;
 import android.content.Context;
 import android.text.TextUtils;
 
 import com.officego.commonlib.constant.Constants;
-import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
 import com.owner.h5.WebViewIdifyActivity_;
@@ -45,6 +43,7 @@ public class UnIdifyDialog {
             dialog = new CommonDialog.Builder(context)
                     .setTitle(title)
                     .setMessage(message)
+                    .setCancelButton(R.string.sm_cancel)
                     .setConfirmButton(butText, (dialog12, which) -> {
                         //当驳回时
                         if (data.getAuditStatus() == 2) {
