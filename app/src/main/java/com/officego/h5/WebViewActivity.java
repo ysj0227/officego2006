@@ -1,6 +1,7 @@
 package com.officego.h5;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -8,6 +9,7 @@ import android.text.TextUtils;
 import android.util.Log;
 import android.view.View;
 import android.webkit.CookieManager;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -27,7 +29,6 @@ import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.TitleBarView;
 import com.officego.commonlib.view.webview.SMWebChromeClientPhoto;
-import com.officego.view.webview.SMWebChromeClient;
 import com.officego.view.webview.SMWebViewClient;
 
 import org.androidannotations.annotations.AfterViews;
@@ -62,13 +63,13 @@ public class WebViewActivity extends BaseActivity {
         setWebChromeClient();
         if (flags == Constants.H5_HELP) {
             titleBar.getAppTitle().setText(getString(R.string.str_title_help));
-            loadWebView(AppConfig.H5_HELP_FEEDBACK+chanel());
+            loadWebView(AppConfig.H5_HELP_FEEDBACK + chanel());
         } else if (flags == Constants.H5_PROTOCOL) {
             titleBar.getAppTitle().setText(getString(R.string.str_title_protocol));
-            loadWebView(AppConfig.H5_PRIVACY+chanel());
+            loadWebView(AppConfig.H5_PRIVACY + chanel());
         } else if (flags == Constants.H5_ABOUTS) {
             titleBar.getAppTitle().setText(getString(R.string.str_title_about_us));
-            loadWebView(AppConfig.H5_ABOUT_US+chanel());
+            loadWebView(AppConfig.H5_ABOUT_US + chanel());
         }
     }
 
@@ -119,7 +120,7 @@ public class WebViewActivity extends BaseActivity {
         webSetting.setLoadWithOverviewMode(true);
         webSetting.setBlockNetworkImage(false);//解决图片不显示
         webSetting.setAllowFileAccessFromFileURLs(true);
-//        webView.addJavascriptInterface(new JsInterface(this), "android");
+        webView.addJavascriptInterface(new JsInterface(this), "android");
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
 //        webView.setWebChromeClient(new WebChromeClient());//
         webChrome = new SMWebChromeClientPhoto(this);
@@ -199,13 +200,6 @@ public class WebViewActivity extends BaseActivity {
             } else if (flags == Constants.H5_ABOUTS) {
                 webView.loadUrl(AppConfig.H5_ABOUT_US);
             }
-//            webView.loadUrl(AppConfig.H5_MINE_CENTER_URL);
-//            if (TextUtils.isEmpty(webViewUrl)) {
-////                loadWebView(AppConfig.H5_MINE_CENTER_URL);
-//                webView.loadUrl(AppConfig.H5_MINE_CENTER_URL);
-//            } else {
-//                webView.loadUrl(webViewUrl);
-//            }
         });
     }
 
@@ -261,6 +255,21 @@ public class WebViewActivity extends BaseActivity {
             view.loadUrl("about:blank");// 避免出现默认的错误界面
             view.removeAllViews();
             receiverExceptionError(view);
+        }
+    }
+
+    //js传递给Android
+    private class JsInterface {
+        private Context mContext;
+
+        public JsInterface(Context context) {
+            this.mContext = context;
+        }
+
+        @JavascriptInterface
+        public void closeView() {
+            Log.d("TAG", "js to android closeView");
+            finish();
         }
     }
 }

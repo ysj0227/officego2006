@@ -123,9 +123,9 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
         }
         String webpageUrl;
         if (bean.isHouseChild()) {
-            webpageUrl = AppConfig.APP_SHARE_URL + "lessee/detail.html?" + bean.getId();
+            webpageUrl = AppConfig.APP_URL_MAIN + "lessee/detail.html?" + bean.getId();
         } else {
-            webpageUrl = AppConfig.APP_SHARE_URL + "lessee/housesDetail.html?" + bean.getId();
+            webpageUrl = AppConfig.APP_URL_MAIN + "lessee/housesDetail.html?" + bean.getId();
         }
         int THUMB_SIZE = 150;
         WXWebpageObject webpage = new WXWebpageObject();

@@ -2,7 +2,6 @@ package com.owner.home;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -21,19 +20,15 @@ import android.widget.Button;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
-import androidx.fragment.app.FragmentActivity;
 
 import com.officego.commonlib.base.BaseMvpFragment;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.constant.AppConfig;
+import com.officego.commonlib.update.VersionDialog;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
-import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.webview.SMWebChromeClient;
 import com.officego.commonlib.view.webview.SMWebViewClient;
 import com.owner.R;
@@ -76,6 +71,8 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements Home
         if (!fragmentCheckSDCardCameraPermission()) {
             return;
         }
+        //版本更新
+        new VersionDialog(mActivity);
         mPresenter.getUserInfo();
     }
 
@@ -168,6 +165,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements Home
         }
         return true;
     }
+
     //上传图片
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {

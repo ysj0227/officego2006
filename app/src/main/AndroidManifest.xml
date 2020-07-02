@@ -59,7 +59,8 @@
         tools:replace="label">
 
         <activity
-            android:name=".ui.IdSelectActivity_"
+            android:theme="@style/SplashStyle"
+            android:name=".LaunchActivity_"
             android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -67,10 +68,14 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
+        <activity
+            android:name=".ui.IdSelectActivity_"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity_"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".ui.login.LoginActivity_"
             android:exported="true"

@@ -20,6 +20,7 @@ import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.rongcloud.RongCloudSetUserInfoUtils;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.update.VersionDialog;
 import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.CircleImage;
@@ -74,6 +75,8 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         if (!fragmentCheckSDCardCameraPermission()) {
             return;
         }
+        //版本更新
+        new VersionDialog(mActivity);
         mPresenter.getUserInfo();
     }
 
@@ -100,9 +103,23 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         if (isFastClick(1500)) {
             return;
         }
-        WebViewIdifyActivity_.intent(mActivity).start();
+        if (mUserInfo == null) {
+            mPresenter.getUserInfo();
+            return;
+        }
+        //当驳回时
+        if (mUserInfo.getAuditStatus() == 2) {
+            if (mUserInfo.getIdentityType() == 0) {//个人
+                WebViewIdifyActivity_.intent(mActivity).idifyTag(Constants.H5_OWNER_IDIFY_PERSION).start();
+            } else if (mUserInfo.getIdentityType() == 1) {//企业
+                WebViewIdifyActivity_.intent(mActivity).idifyTag(Constants.H5_OWNER_IDIFY_COMPANY).start();
+            } else if (mUserInfo.getIdentityType() == 2) { //联办
+                WebViewIdifyActivity_.intent(mActivity).idifyTag(Constants.H5_OWNER_IDIFY_JOINTWORK).start();
+            }
+        } else { //当需要认证时
+            WebViewIdifyActivity_.intent(mActivity).start();
+        }
     }
-
 
     @Click(resName = "civ_avatar")
     void editMessageClick() {
@@ -250,10 +267,30 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         btnIdentity.setVisibility(View.GONE);
     }
 
+//    @Override
+//    public int[] getStickNotificationId() {
+//        return new int[]{CommonNotifications.updateUserOwnerInfoSuccess,
+//                CommonNotifications.ownerIdentityComplete};
+//    }
+//
+//    @Override
+//    public void didReceivedNotification(int id, Object... args) {
+//        super.didReceivedNotification(id, args);
+//        if (args == null) {
+//            return;
+//        }
+//        if (id == CommonNotifications.updateUserOwnerInfoSuccess) {
+//            mPresenter.getUserInfo();
+//        } else if (id == CommonNotifications.ownerIdentityComplete) {
+//            //认证完成
+//            hasIdentityView();
+//            mPresenter.getUserInfo();
+//        }
+//    }
+
     @Override
     public int[] getStickNotificationId() {
-        return new int[]{CommonNotifications.updateUserOwnerInfoSuccess,
-                CommonNotifications.ownerIdentityComplete};
+        return new int[]{CommonNotifications.updateUserOwnerInfoSuccess};
     }
 
     @Override
@@ -263,10 +300,6 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
             return;
         }
         if (id == CommonNotifications.updateUserOwnerInfoSuccess) {
-            mPresenter.getUserInfo();
-        } else if (id == CommonNotifications.ownerIdentityComplete) {
-            //认证完成
-            hasIdentityView();
             mPresenter.getUserInfo();
         }
     }

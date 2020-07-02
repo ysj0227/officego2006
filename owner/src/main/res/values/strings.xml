@@ -137,7 +137,6 @@
     <string name="tip_get_person_exception">获取个人信息异常</string>
     <string name="tip_save_success">保存成功</string>
     <string name="tip_current_newest_version">当前已是最新版本</string>
-    <string name="tip_current_no_data">暂无数据</string>
     <string name="tip_current_day_no_data">暂无看房行程</string>
     <string name="str_are_you_sure_to_logout">确定要退出吗？</string>
     <string name="tip_get_house_message_fail">获取房源信息失败</string>

@@ -73,6 +73,8 @@ public class ViewingDateActivity extends BaseMvpActivity<ViewingDatePresenter>
     private int mSelectedYear, mSelectedMonth;
     //今天日期
     private String mCurrentDayDate;
+    //是否第一次获取数据
+    private boolean isFirstGetListData;
 
     @AfterViews
     void init() {
@@ -94,6 +96,7 @@ public class ViewingDateActivity extends BaseMvpActivity<ViewingDatePresenter>
         initCurrentDate();
         initCalendarView();
         //初始化
+        isFirstGetListData = true;
         getViewingDateList();
     }
 
@@ -102,9 +105,10 @@ public class ViewingDateActivity extends BaseMvpActivity<ViewingDatePresenter>
         finish();
     }
 
-    //看房行程,记录
+    //今天
     @Click(R.id.ll_today)
     void appointmentRecordClick() {
+        isFirstGetListData = true;
         onSwitchBackToDay();
         initCurrentDate();
         getViewingDateList();
@@ -331,7 +335,11 @@ public class ViewingDateActivity extends BaseMvpActivity<ViewingDatePresenter>
             }
         }
         calendarAdapter.setMarkData(markData);
-        calendarAdapter.notifyDataChanged();
+        //TODO 是否首次刷新 ，此时刷新选择上一月下一月，日历异常
+        if (isFirstGetListData) {
+            calendarAdapter.notifyDataChanged();
+            isFirstGetListData = false;
+        }
     }
 
     /**

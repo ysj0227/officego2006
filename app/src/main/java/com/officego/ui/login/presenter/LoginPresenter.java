@@ -59,7 +59,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
                     SpUtils.saveLoginInfo(data, mobile);
                     new ConnectRongCloudUtils();
                     mView.hideLoadingDialog();
-                    mView.loginSuccess();
+                    mView.loginSuccess(data);
                 }
             }
 
@@ -87,7 +87,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
                 if (isViewAttached()) {
                     SpUtils.saveLoginInfo(data, mobile);
                     new ConnectRongCloudUtils();
-                    mView.loginSuccess();
+                    mView.loginSuccess(data);
                 }
             }
 

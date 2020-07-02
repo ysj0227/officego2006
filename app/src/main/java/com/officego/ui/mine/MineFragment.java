@@ -16,6 +16,7 @@ import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.rongcloud.RongCloudSetUserInfoUtils;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.update.VersionDialog;
 import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.CircleImage;
@@ -60,6 +61,8 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         StatusBarUtils.setStatusBarFullTransparent(mActivity);
         mPresenter = new UserPresenter();
         mPresenter.attachView(this);
+        //版本更新
+        new VersionDialog(mActivity);
         //当前未登录状态
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
             noLoginView();

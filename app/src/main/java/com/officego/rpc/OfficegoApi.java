@@ -1,12 +1,14 @@
 package com.officego.rpc;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.VersionBean;
 import com.officego.commonlib.common.model.ChatHouseBean;
 import com.officego.commonlib.common.model.RenterBean;
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.log.LogCat;
@@ -601,20 +603,20 @@ public class OfficegoApi {
                 .enqueue(callback);
     }
 
-    /**
-     * 版本更新
-     *
-     * @param versioncode
-     * @param callback
-     */
-    public void updateVersion(String versioncode, RetrofitCallback<VersionBean> callback) {
-        Map<String, RequestBody> map = new HashMap<>();
-        map.put("token", requestBody(SpUtils.getSignToken()));
-        map.put("versioncode", requestBody(versioncode));
-        OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
-                .updateVersion(map)
-                .enqueue(callback);
-    }
+//    /**
+//     * 版本更新
+//     *
+//     * @param versioncode
+//     * @param callback
+//     */
+//    public void updateVersion(String versioncode, RetrofitCallback<VersionBean> callback) {
+//        Map<String, RequestBody> map = new HashMap<>();
+//        map.put("token", requestBody(SpUtils.getSignToken()));
+//        map.put("versioncode", requestBody(versioncode));
+//        OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
+//                .updateVersion(map)
+//                .enqueue(callback);
+//    }
 
 
     /**
@@ -722,9 +724,17 @@ public class OfficegoApi {
 //        map.put("houseIds", requestBody(houseIds + ""));
         map.put("time", requestBody(time));
         map.put("chatUserId", requestBody(targetId));//聊天界面对方用户id
-        OfficegoRetrofitClient.getInstance().create(ScheduleInterface.class)
-                .addRenter(map)
-                .enqueue(callback);
+        if (TextUtils.equals(Constants.TYPE_OWNER, SpUtils.getRole())) {
+            LogCat.e(TAG, "11111111111 Owner");
+            OfficegoRetrofitClient.getInstance().create(ScheduleInterface.class)
+                    .addProprietorApp(map)
+                    .enqueue(callback);
+        } else {
+            LogCat.e(TAG, "11111111111 tentet");
+            OfficegoRetrofitClient.getInstance().create(ScheduleInterface.class)
+                    .addRenter(map)
+                    .enqueue(callback);
+        }
     }
 
     /**

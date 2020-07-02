@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
+import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.LabelsView;
@@ -68,7 +69,9 @@ public class SearchRecommendActivity extends BaseMvpActivity<SearchKeywordsPrese
         rvSearchList.setLayoutManager(new LinearLayoutManager(context));
         etSearch.setOnEditorActionListener(this);
         etSearch.addTextChangedListener(this);
-        mPresenter.getHistory();
+        if (!TextUtils.isEmpty(SpUtils.getSignToken())) {
+            mPresenter.getHistory();
+        }
         mPresenter.getHot();
     }
 

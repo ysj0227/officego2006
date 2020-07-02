@@ -265,7 +265,7 @@ public class IMManager {
                 //LogCat.d(TAG, "ConnectionStatus onChanged = " + connectionStatus.getMessage() + " rcToken=" + SpUtils.getRongToken());
                 if (connectionStatus.equals(ConnectionStatus.KICKED_OFFLINE_BY_OTHER_CLIENT)) {
                     //被其他提出时，需要返回登录界面 剔除其他登录
-                    BaseNotification.newInstance().postNotificationName(CommonNotifications.rongCloudkickDialog, "ownerIdentityComplete");
+                    BaseNotification.newInstance().postNotificationName(CommonNotifications.rongCloudkickDialog, "rongCloudkickDialog");
                 } else if (connectionStatus == ConnectionStatus.TOKEN_INCORRECT) {
                     //融云token错误
                     rongCloudTokenError();

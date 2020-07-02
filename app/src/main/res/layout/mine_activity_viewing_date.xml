@@ -190,7 +190,7 @@
             android:drawableTop="@mipmap/ic_empty"
             android:drawablePadding="@dimen/dp_6"
             android:gravity="center"
-            android:text="@string/tip_current_no_data"
+            android:text="@string/text_current_no_data"
             android:textColor="@color/text_caption"
             android:textSize="@dimen/sp_12"
             android:visibility="visible" />

@@ -1,6 +1,7 @@
 package com.officego.commonlib.common.rpc;
 
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.VersionBean;
 import com.officego.commonlib.common.model.ChatHouseBean;
 import com.officego.commonlib.common.model.FirstChatBean;
 import com.officego.commonlib.common.rpc.request.ChatInterface;
@@ -40,14 +41,14 @@ public class OfficegoApi {
      * @param versioncode
      * @param callback
      */
-//    public void updateVersion(String versioncode, RetrofitCallback<VersionBean> callback) {
-//        Map<String, RequestBody> map = new HashMap<>();
-//        map.put("token", requestBody(SpUtils.getSignToken()));
-//        map.put("versioncode", requestBody(versioncode));
-//        OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
-//                .updateVersion(map)
-//                .enqueue(callback);
-//    }
+    public void updateVersion(String versioncode, RetrofitCallback<VersionBean> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("versioncode", requestBody(versioncode));
+        OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
+                .updateVersion(map)
+                .enqueue(callback);
+    }
 
     /**
      * id 	是 	int 	行程id

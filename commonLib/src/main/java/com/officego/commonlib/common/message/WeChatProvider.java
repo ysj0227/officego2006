@@ -73,9 +73,6 @@ public class WeChatProvider extends IContainerItemProvider.MessageProvider<WeCha
             holder.tvSend.setVisibility(View.GONE);
             //此时需要判断接收人微信是否已经绑定
             holder.btnAgree.setOnClickListener(v -> {
-                holder.btnAgree.setText("已同意");
-                setClickableFalse(holder);
-                holder.btnAgree.setTextColor(ContextCompat.getColor(context, R.color.text_disable));
                 if (TextUtils.isEmpty(mineWx)) {
                     weChatInputDialog(context, otherWx);
                 } else {
@@ -83,9 +80,6 @@ public class WeChatProvider extends IContainerItemProvider.MessageProvider<WeCha
                 }
             });
             holder.btnReject.setOnClickListener(v -> {
-                holder.btnReject.setText("已拒绝");
-                setClickableFalse(holder);
-                holder.btnReject.setTextColor(ContextCompat.getColor(context, R.color.text_disable));
                 BaseNotification.newInstance().postNotificationName(CommonNotifications.conversationWeChatReject, "conversation");
             });
         } else {//消息方向，自己发送的

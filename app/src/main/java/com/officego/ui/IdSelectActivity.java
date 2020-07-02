@@ -33,19 +33,6 @@ public class IdSelectActivity extends BaseActivity {
     @ViewById(R.id.ib_house_owner)
     RadioButton ibOwner;
 
-    @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        //when app kill, reboot open app
-        if (!TextUtils.isEmpty(SpUtils.getRole())) {
-            if (TextUtils.equals(Constants.TYPE_TENANT, SpUtils.getRole())) {
-                MainActivity_.intent(context).start();
-            } else {
-                LoginActivity_.intent(context).start();
-            }
-        }
-    }
-
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarColor(this);

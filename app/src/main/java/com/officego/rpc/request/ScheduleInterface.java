@@ -1,7 +1,7 @@
 package com.officego.rpc.request;
 
-import com.officego.commonlib.retrofit.BaseResponse;
 import com.officego.commonlib.common.model.RenterBean;
+import com.officego.commonlib.retrofit.BaseResponse;
 import com.officego.ui.mine.model.ViewingDateBean;
 import com.officego.ui.mine.model.ViewingDateDetailsBean;
 
@@ -49,17 +49,22 @@ public interface ScheduleInterface {
     Call<BaseResponse<ViewingDateDetailsBean>> getScheduleDetails(@PartMap Map<String, RequestBody> params);
 
     /**
-     * @param
-     * @return 预约看房
+     * 租户
+     * 预约看房
      */
     @Multipart
     @POST(path + "schedule/addRenterApp")
     Call<BaseResponse<RenterBean>> addRenter(@PartMap Map<String, RequestBody> params);
 
     /**
+     * 业主
+     */
+    @Multipart
+    @POST(path + "schedule/addProprietorApp")
+    Call<BaseResponse<RenterBean>> addProprietorApp(@PartMap Map<String, RequestBody> params);
+
+    /**
      * 行程审核
-     * @param
-     * @return
      */
     @Multipart
     @POST(path + "schedule/updateAuditStatus")

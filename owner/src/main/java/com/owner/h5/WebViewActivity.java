@@ -1,12 +1,15 @@
 package com.owner.h5;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.text.TextUtils;
+import android.util.Log;
 import android.view.View;
 import android.webkit.CookieManager;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -19,6 +22,7 @@ import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 
 import com.officego.commonlib.base.BaseActivity;
+import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.constant.AppConfig;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.NetworkUtils;
@@ -60,7 +64,7 @@ public class WebViewActivity extends BaseActivity {
         setWebChromeClient();
         if (flags == Constants.H5_HELP) {
             titleBar.getAppTitle().setText(getString(R.string.str_title_help));
-            loadWebView(AppConfig.H5_HELP_FEEDBACK + chanel());
+            loadWebView(AppConfig.H5_HELP_FEEDBACK_OWNER + chanelHelp());
         } else if (flags == Constants.H5_PROTOCOL) {
             titleBar.getAppTitle().setText(getString(R.string.str_title_protocol));
             loadWebView(AppConfig.H5_PRIVACY + chanel());
@@ -75,6 +79,10 @@ public class WebViewActivity extends BaseActivity {
 
     private String chanel() {
         return "?channel=2";
+    }
+
+    private String chanelHelp() {
+        return "?token=" + SpUtils.getSignToken() + "&channel=2&identity=1";
     }
 
     /**
@@ -119,7 +127,7 @@ public class WebViewActivity extends BaseActivity {
         webSetting.setAllowFileAccess(true);// 设置允许访问文件数据
         webSetting.setLoadWithOverviewMode(true);
         webSetting.setBlockNetworkImage(false);//解决图片不显示
-//        webView.addJavascriptInterface(new JsInterface(this), "android");
+        webView.addJavascriptInterface(new JsInterface(this), "android");
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
 //        webView.setWebChromeClient(new WebChromeClient());//
         webChrome = new SMWebChromeClientPhoto(this);
@@ -193,13 +201,13 @@ public class WebViewActivity extends BaseActivity {
             view.clearHistory();
             if (TextUtils.isEmpty(webViewUrl)) {
                 if (flags == Constants.H5_HELP) {
-                    webView.loadUrl(AppConfig.H5_HELP_FEEDBACK + chanel());
+                    webView.loadUrl(AppConfig.H5_HELP_FEEDBACK_OWNER + chanelHelp());
                 } else if (flags == Constants.H5_PROTOCOL) {
                     webView.loadUrl(AppConfig.H5_PRIVACY + chanel());
                 } else if (flags == Constants.H5_ABOUTS) {
                     webView.loadUrl(AppConfig.H5_ABOUT_US + chanel());
                 } else if (flags == Constants.H5_ROLE) {
-                    webView.loadUrl(AppConfig.H5_ROLE + chanel());
+                    webView.loadUrl(AppConfig.H5_STAFF_LIST + chanel());
                 }
             } else {
                 webView.loadUrl(webViewUrl);
@@ -259,6 +267,21 @@ public class WebViewActivity extends BaseActivity {
             view.loadUrl("about:blank");// 避免出现默认的错误界面
             view.removeAllViews();
             receiverExceptionError(view);
+        }
+    }
+
+    //js传递给Android
+    private class JsInterface {
+        private Context mContext;
+
+        public JsInterface(Context context) {
+            this.mContext = context;
+        }
+
+        @JavascriptInterface
+        public void closeView() {
+            Log.d("TAG", "js to android closeView");
+            finish();
         }
     }
 }

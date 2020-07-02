@@ -1,4 +1,4 @@
-package com.owner.update;
+package com.officego.commonlib.update;
 
 /**
  * Created by shiJie.yang on 2018/5/25.

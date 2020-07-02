@@ -46,7 +46,7 @@
     <string name="str_check_net">请检查网络</string>
     <string name="str_net_exception">网络连接异常，请检查后重试</string>
     <string name="str_server_exception">服务器连接异常，请检查后重试</string>
-    <string name="str_btn_try_again">点击重试</string>
+    <string name="str_btn_try_again">再试一次</string>
     <string name="tip_forbid_by_server">该请求被服务端拒绝</string>
     <string name="str_bind_success">绑定成功</string>
     <string name="str_bind_fail">绑定失败</string>
@@ -167,5 +167,7 @@
     <string name="tip_delete_success">删除成功</string>
     <string name="tip_go_to_login">请先登录</string>
     <string name="str_query_more_data">查看更多</string>
+    <string name="text_net_exception">没有检测到网络 \n 请检查您的手机是否成功连接上网络</string>
+    <string name="text_current_no_data">暂无数据 \n 页面被外星人带走了，看看其他的吧</string>
 
 </resources>

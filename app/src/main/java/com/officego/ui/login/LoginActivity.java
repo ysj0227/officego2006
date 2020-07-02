@@ -18,8 +18,10 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.officego.MainActivity_;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
+import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
@@ -204,8 +206,17 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
     }
 
     @Override
-    public void loginSuccess() {
-//        shortTip(R.string.str_login_success);
+    public void loginSuccess(LoginBean data) {
+        //当身份变化
+        if (!TextUtils.equals(SpUtils.getRole(), String.valueOf(data.getRid()))) {
+            SpUtils.saveRole(String.valueOf(data.getRid()));//保存角色
+            if (TextUtils.equals(Constants.TYPE_OWNER, String.valueOf(data.getRid()))) {
+                MainOwnerActivity_.intent(context).start();
+            } else {
+                MainActivity_.intent(context).start();
+            }
+        }
+        //当身份未变化
         if (TextUtils.equals(Constants.TYPE_OWNER, SpUtils.getRole())) {
             if (isReOwnerLogin) {
                 //业主退出登录后的，重新登录

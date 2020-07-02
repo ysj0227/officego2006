@@ -1,4 +1,4 @@
-package com.officego.update;
+package com.officego.commonlib.update;
 
 import android.app.Activity;
 import android.content.DialogInterface;

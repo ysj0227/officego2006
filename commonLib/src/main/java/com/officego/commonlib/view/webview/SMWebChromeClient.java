@@ -191,6 +191,7 @@ public class SMWebChromeClient extends WebChromeClient {
         if (!PermissionUtils.checkSDCardCameraPermission(mActivity)) {
             return;
         }
+//        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK, android.provider.MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
         Intent photoPickerIntent = new Intent(Intent.ACTION_GET_CONTENT);
         photoPickerIntent.setType("image/*");
         photoPickerIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);//多选
