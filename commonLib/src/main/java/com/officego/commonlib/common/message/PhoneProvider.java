@@ -64,16 +64,10 @@ public class PhoneProvider extends IContainerItemProvider.MessageProvider<PhoneI
             holder.tvContent.setText(info.getContent());
             holder.ivIcon.setBackgroundResource(R.mipmap.ic_exchange_phone);
             holder.btnAgree.setOnClickListener(v -> {
-                holder.btnAgree.setText("已同意");
-                setClickableFalse(holder);
-                holder.btnAgree.setTextColor(ContextCompat.getColor(context, R.color.text_disable));
                 BaseNotification.newInstance().postNotificationName(
                         CommonNotifications.conversationPhoneAgree, oppositeSidePhone, minePhone);
             });
             holder.btnReject.setOnClickListener(v -> {
-                holder.btnReject.setText("已拒绝");
-                setClickableFalse(holder);
-                holder.btnReject.setTextColor(ContextCompat.getColor(context, R.color.text_disable));
                 BaseNotification.newInstance().postNotificationName(
                         CommonNotifications.conversationPhoneReject, "conversation");
             });

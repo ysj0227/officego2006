@@ -291,6 +291,9 @@ public class SearchPopupWindow extends PopupWindow implements
     private boolean isLine;//是否地铁
     private MeterAdapter meterAdapter;
 
+    private StationAdapter stationAdapter;
+    private BusinessCircleDetailsAdapter businessCircleDetailsAdapter;
+
     private void handleArea(View viewLayout) {
         RecyclerView recyclerViewCenter = viewLayout.findViewById(R.id.rv_center);
         recyclerViewCenter.setLayoutManager(new LinearLayoutManager(mContext));
@@ -311,6 +314,8 @@ public class SearchPopupWindow extends PopupWindow implements
         View.OnClickListener clickListener = v -> {
             switch (v.getId()) {
                 case R.id.tv_shopping://商圈
+                    //todo
+                    clearSelectedItem();
                     isLine = false;
                     tvBusinessCircleText.setTextColor(ContextCompat.getColor(mContext, R.color.common_blue_main));
                     tvMeterText.setTextColor(ContextCompat.getColor(mContext, R.color.text_33));
@@ -319,6 +324,8 @@ public class SearchPopupWindow extends PopupWindow implements
                     tvMeterNum.setVisibility(View.GONE);
                     break;
                 case R.id.tv_meter://地铁
+                    //todo
+                    clearSelectedItem();
                     isLine = true;
                     tvMeterText.setTextColor(ContextCompat.getColor(mContext, R.color.common_blue_main));
                     tvBusinessCircleText.setTextColor(ContextCompat.getColor(mContext, R.color.text_33));
@@ -356,6 +363,26 @@ public class SearchPopupWindow extends PopupWindow implements
         tvMeterText.setOnClickListener(clickListener);
         btnClear.setOnClickListener(clickListener);
         btnSure.setOnClickListener(clickListener);
+    }
+
+    /**
+     * 切换商圈和地铁的时候清空之前的选项
+     */
+    private void clearSelectedItem() {
+        business = "";
+        district = "";
+        mapMeter.clear();
+        if (businessCircleDetailsAdapter != null) {
+            businessCircleDetailsAdapter.setData(null);
+            businessCircleDetailsAdapter.notifyDataSetChanged();
+        }
+        line = "";
+        nearbySubway = "";
+        mapBusiness.clear();
+        if (stationAdapter != null) {
+            stationAdapter.setData(null);
+            stationAdapter.notifyDataSetChanged();
+        }
     }
 
     private void clearData() {
@@ -714,6 +741,8 @@ public class SearchPopupWindow extends PopupWindow implements
     /**
      * 地铁数据
      */
+    private Map<Integer, Boolean> mapMeter = new HashMap<>();
+
     private class MeterAdapter extends CommonListAdapter<MeterBean.DataBean> {
         /**
          * @param context 上下文
@@ -721,8 +750,6 @@ public class SearchPopupWindow extends PopupWindow implements
          */
         private RecyclerView recyclerViewRight;
         private TextView tvNum;
-
-        private Map<Integer, Boolean> map = new HashMap<>();
         private boolean onBind;
         private int checkedPosition = 0;//默认选中第一个
 
@@ -732,9 +759,10 @@ public class SearchPopupWindow extends PopupWindow implements
             this.tvNum = tvNum;
             if (TextUtils.isEmpty(line)) {
                 //如果没有选择条件，默认选择第一个
-                recyclerViewRight.setAdapter(new StationAdapter(mContext, tvNum, list.get(0).getList()));
+//                recyclerViewRight.setAdapter(new StationAdapter(mContext, tvNum, list.get(0).getList()));
             } else {
-                recyclerViewRight.setAdapter(new StationAdapter(mContext, tvNum, list.get(Integer.valueOf(line) - 1).getList()));
+                stationAdapter = new StationAdapter(mContext, tvNum, list.get(Integer.valueOf(line) - 1).getList());
+                recyclerViewRight.setAdapter(stationAdapter);
             }
         }
 
@@ -744,16 +772,17 @@ public class SearchPopupWindow extends PopupWindow implements
             itemMeter.setText(meterBean.getLine());
             //选择筛选条件的
             if (TextUtils.isEmpty(line)) {
-                if (checkedPosition == 0) {
-                    map.put(0, true);
-                }
+                //如果没有选择条件，默认选择第一个
+//                if (checkedPosition == 0) {
+//                    map.put(0, true);
+//                }
             } else {
-                map.put(Integer.valueOf(line) - 1, true);
+                mapMeter.put(Integer.valueOf(line) - 1, true);
             }
             holder.itemView.setOnClickListener(v -> {
-                map.clear();
+                mapMeter.clear();
                 checkedPosition = holder.getAdapterPosition();
-                map.put(holder.getAdapterPosition(), true);
+                mapMeter.put(holder.getAdapterPosition(), true);
                 if (!onBind) {
                     notifyDataSetChanged();
                 }
@@ -762,11 +791,12 @@ public class SearchPopupWindow extends PopupWindow implements
                 //赋值
                 line = meterBean.getLid();
                 //地铁列表详情列表
-                recyclerViewRight.setAdapter(new StationAdapter(mContext, tvNum, meterBean.getList()));
+                stationAdapter = new StationAdapter(mContext, tvNum, meterBean.getList());
+                recyclerViewRight.setAdapter(stationAdapter);
             });
             //显示选中的文本
             onBind = true;
-            if (map != null && map.containsKey(holder.getAdapterPosition())) {
+            if (mapMeter != null && mapMeter.containsKey(holder.getAdapterPosition())) {
                 itemMeter.setTextColor(ContextCompat.getColor(mContext, R.color.common_blue_main));
             } else {
                 itemMeter.setTextColor(ContextCompat.getColor(mContext, R.color.text_33));
@@ -839,10 +869,11 @@ public class SearchPopupWindow extends PopupWindow implements
     /**
      * 商圈
      */
+    private Map<Integer, Boolean> mapBusiness = new HashMap<>();
+
     private class BusinessCircleAdapter extends CommonListAdapter<BusinessCircleBean.DataBean> {
         private RecyclerView recyclerViewRight;
         private TextView tvNum;
-        private Map<Integer, Boolean> map = new HashMap<>();
         private boolean onBind;
         private int checkedPosition = 0;//默认选中第一个
 
@@ -852,10 +883,10 @@ public class SearchPopupWindow extends PopupWindow implements
             this.tvNum = tvNum;
             if (TextUtils.isEmpty(district)) {
                 //如果没有选择条件，默认选择第一个
-                recyclerViewRight.setAdapter(new BusinessCircleDetailsAdapter(mContext, tvNum, list.get(0).getList()));
+//                recyclerViewRight.setAdapter(new BusinessCircleDetailsAdapter(mContext, tvNum, list.get(0).getList()));
             } else {
-
-                recyclerViewRight.setAdapter(new BusinessCircleDetailsAdapter(mContext, tvNum, list.get(Integer.valueOf(district) - 1).getList()));
+                businessCircleDetailsAdapter = new BusinessCircleDetailsAdapter(mContext, tvNum, list.get(Integer.valueOf(district) - 1).getList());
+                recyclerViewRight.setAdapter(businessCircleDetailsAdapter);
             }
         }
 
@@ -864,16 +895,17 @@ public class SearchPopupWindow extends PopupWindow implements
             TextView itemMeter = holder.getView(R.id.tv_item_meter);
             itemMeter.setText(bean.getDistrict());
             if (TextUtils.isEmpty(district)) {
-                if (checkedPosition == 0) {
-                    map.put(0, true);
-                }
+                //如果没有选择条件，默认选择第一个
+//                if (checkedPosition == 0) {
+//                    map.put(0, true);
+//                }
             } else {
-                map.put(Integer.valueOf(district) - 1, true);//选择筛选条件的
+                mapBusiness.put(Integer.valueOf(district) - 1, true);//选择筛选条件的
             }
             holder.itemView.setOnClickListener(v -> {
-                map.clear();
+                mapBusiness.clear();
                 checkedPosition = holder.getAdapterPosition();
-                map.put(holder.getAdapterPosition(), true);
+                mapBusiness.put(holder.getAdapterPosition(), true);
                 if (!onBind) {
                     notifyDataSetChanged();
                 }
@@ -881,11 +913,12 @@ public class SearchPopupWindow extends PopupWindow implements
                 clearBusinessHashSet(tvNum);
                 //赋值
                 district = String.valueOf(bean.getDistrictID());
-                recyclerViewRight.setAdapter(new BusinessCircleDetailsAdapter(mContext, tvNum, bean.getList()));
+                businessCircleDetailsAdapter = new BusinessCircleDetailsAdapter(mContext, tvNum, bean.getList());
+                recyclerViewRight.setAdapter(businessCircleDetailsAdapter);
             });
             //显示选中的文本
             onBind = true;
-            if (map != null && map.containsKey(holder.getAdapterPosition())) {
+            if (mapBusiness != null && mapBusiness.containsKey(holder.getAdapterPosition())) {
                 itemMeter.setTextColor(ContextCompat.getColor(mContext, R.color.common_blue_main));
             } else {
                 itemMeter.setTextColor(ContextCompat.getColor(mContext, R.color.text_33));
