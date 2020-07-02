@@ -100,7 +100,7 @@
             android:id="@+id/tv_no_data"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_70"
+            android:layout_marginTop="@dimen/dp_80"
             android:drawableTop="@mipmap/ic_empty"
             android:drawablePadding="@dimen/dp_6"
             android:gravity="center"

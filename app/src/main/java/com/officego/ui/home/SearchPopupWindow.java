@@ -533,6 +533,7 @@ public class SearchPopupWindow extends PopupWindow implements
         RadioButton rbJointWork = viewLayout.findViewById(R.id.rb_joint_work);
         RecyclerView rvDecorationType = viewLayout.findViewById(R.id.rv_decoration_type);
         RecyclerView rvHouseUnique = viewLayout.findViewById(R.id.rv_house_characteristic);
+        TextView tvHouseType = viewLayout.findViewById(R.id.tv_house_type);
         TextView tvDecorationType = viewLayout.findViewById(R.id.tv_decoration_type);
         //选择面积租金工位
         TextView tvArea = viewLayout.findViewById(R.id.tv_area);
@@ -557,12 +558,15 @@ public class SearchPopupWindow extends PopupWindow implements
         rvHouseUnique.setLayoutManager(layoutManager1);
         rvHouseUnique.addItemDecoration(new SpaceItemDecoration(mContext, 3));
         if (btype == 0) {
+            tvHouseType.setVisibility(View.VISIBLE);
             rgHouseGroup.setVisibility(View.VISIBLE);
         } else if (btype == 1) {
+            tvHouseType.setVisibility(View.GONE);
             rgHouseGroup.setVisibility(View.GONE);
             showConditionOfficeLayout(true, rvDecorationType, tvDecorationType,
                     tvArea, sbpArea, sbpRent, tvWorkstation, sbpSimple, sbpRent2, sbpSimple2);
         } else if (btype == 2) {
+            tvHouseType.setVisibility(View.GONE);
             rgHouseGroup.setVisibility(View.GONE);
             showConditionOfficeLayout(false, rvDecorationType, tvDecorationType,
                     tvArea, sbpArea, sbpRent, tvWorkstation, sbpSimple, sbpRent2, sbpSimple2);

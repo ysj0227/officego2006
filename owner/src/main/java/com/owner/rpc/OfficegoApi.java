@@ -130,20 +130,20 @@ public class OfficegoApi {
                 .enqueue(callback);
     }
 
-    /**
-     * 版本更新
-     *
-     * @param versioncode
-     * @param callback
-     */
-    public void updateVersion(String versioncode, RetrofitCallback<VersionBean> callback) {
-        Map<String, RequestBody> map = new HashMap<>();
-        map.put("token", requestBody(SpUtils.getSignToken()));
-        map.put("versioncode", requestBody(versioncode));
-        OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
-                .updateVersion(map)
-                .enqueue(callback);
-    }
+//    /**
+//     * 版本更新
+//     *
+//     * @param versioncode
+//     * @param callback
+//     */
+//    public void updateVersion(String versioncode, RetrofitCallback<VersionBean> callback) {
+//        Map<String, RequestBody> map = new HashMap<>();
+//        map.put("token", requestBody(SpUtils.getSignToken()));
+//        map.put("versioncode", requestBody(versioncode));
+//        OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
+//                .updateVersion(map)
+//                .enqueue(callback);
+//    }
 
     /**
      * 添加微信

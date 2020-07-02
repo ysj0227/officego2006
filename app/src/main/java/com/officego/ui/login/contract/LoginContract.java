@@ -1,6 +1,7 @@
 package com.officego.ui.login.contract;
 
 import com.officego.commonlib.base.BaseView;
+import com.officego.commonlib.common.LoginBean;
 
 /**
  * Created by YangShiJie
@@ -12,7 +13,7 @@ public interface LoginContract {
     interface View extends BaseView {
         void sendSmsSuccess();
 
-        void loginSuccess();
+        void loginSuccess(LoginBean data);
 
         void loginFail(int code, String msg);
     }

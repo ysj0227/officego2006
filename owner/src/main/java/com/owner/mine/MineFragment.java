@@ -20,6 +20,7 @@ import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.rongcloud.RongCloudSetUserInfoUtils;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.update.VersionDialog;
 import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.CircleImage;
@@ -74,6 +75,8 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         if (!fragmentCheckSDCardCameraPermission()) {
             return;
         }
+        //版本更新
+        new VersionDialog(mActivity);
         mPresenter.getUserInfo();
     }
 
@@ -264,10 +267,30 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         btnIdentity.setVisibility(View.GONE);
     }
 
+//    @Override
+//    public int[] getStickNotificationId() {
+//        return new int[]{CommonNotifications.updateUserOwnerInfoSuccess,
+//                CommonNotifications.ownerIdentityComplete};
+//    }
+//
+//    @Override
+//    public void didReceivedNotification(int id, Object... args) {
+//        super.didReceivedNotification(id, args);
+//        if (args == null) {
+//            return;
+//        }
+//        if (id == CommonNotifications.updateUserOwnerInfoSuccess) {
+//            mPresenter.getUserInfo();
+//        } else if (id == CommonNotifications.ownerIdentityComplete) {
+//            //认证完成
+//            hasIdentityView();
+//            mPresenter.getUserInfo();
+//        }
+//    }
+
     @Override
     public int[] getStickNotificationId() {
-        return new int[]{CommonNotifications.updateUserOwnerInfoSuccess,
-                CommonNotifications.ownerIdentityComplete};
+        return new int[]{CommonNotifications.updateUserOwnerInfoSuccess};
     }
 
     @Override
@@ -277,10 +300,6 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
             return;
         }
         if (id == CommonNotifications.updateUserOwnerInfoSuccess) {
-            mPresenter.getUserInfo();
-        } else if (id == CommonNotifications.ownerIdentityComplete) {
-            //认证完成
-            hasIdentityView();
             mPresenter.getUserInfo();
         }
     }

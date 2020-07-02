@@ -1,6 +1,7 @@
 package com.officego.commonlib.common.rpc.request;
 
 import com.officego.commonlib.common.LoginBean;
+import com.officego.commonlib.common.VersionBean;
 import com.officego.commonlib.retrofit.BaseResponse;
 
 import java.util.Map;
@@ -37,5 +38,15 @@ public interface MineMsgInterface {
     @POST(path + "user/changeWxId")
     Call<BaseResponse<Object>> bindWechat(@PartMap Map<String, RequestBody> params);
 
+
+    /**
+     * 版本更新
+     *
+     * @param params
+     * @return
+     */
+    @Multipart
+    @POST(path + "version/android")
+    Call<BaseResponse<VersionBean>> updateVersion(@PartMap Map<String, RequestBody> params);
 
 }

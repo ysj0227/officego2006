@@ -7,19 +7,19 @@ import android.widget.TextView;
 
 import com.officego.R;
 import com.officego.commonlib.base.BaseActivity;
+import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.VersionBean;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
+import com.officego.commonlib.update.AppUpdate;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.rpc.OfficegoApi;
-import com.officego.update.AppUpdate;
 import com.owner.MainOwnerActivity_;
-import com.officego.commonlib.common.GotoActivityUtils;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -38,6 +38,7 @@ import org.androidannotations.annotations.ViewById;
 public class MineSettingActivity extends BaseActivity {
     @ViewById(R.id.tv_version)
     TextView tvVersion;
+
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarColor(this);
@@ -88,7 +89,7 @@ public class MineSettingActivity extends BaseActivity {
 
     private void updateVersion(String versionName) {
         showLoadingDialog();
-        OfficegoApi.getInstance().updateVersion(versionName, new RetrofitCallback<VersionBean>() {
+        com.officego.commonlib.common.rpc.OfficegoApi.getInstance().updateVersion(versionName, new RetrofitCallback<VersionBean>() {
             @Override
             public void onSuccess(int code, String msg, VersionBean data) {
                 hideLoadingDialog();

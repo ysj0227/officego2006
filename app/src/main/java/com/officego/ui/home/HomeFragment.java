@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.appbar.AppBarLayout;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpFragment;
+import com.officego.commonlib.update.VersionDialog;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
@@ -108,9 +109,12 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
 
     private float alphaPercent;//渐变色百分比
 
+    private View rootView;// 缓存Fragment view
+
     @SuppressLint("NewApi")
     @AfterViews
     void init() {
+        LogCat.e(TAG,"11111111111111 HomeFragment");
         StatusBarUtils.setStatusBarMainColor(mActivity, ContextCompat.getColor(mActivity, R.color.common_blue_main));
         mPresenter = new HomePresenter(mActivity);
         mPresenter.attachView(this);
@@ -125,6 +129,8 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
             netException();
             return;
         }
+        //版本更新
+        new VersionDialog(mActivity);
         //轮播图
         mPresenter.getBannerList();
         //列表

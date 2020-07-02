@@ -5,16 +5,15 @@ import android.content.Context;
 import com.officego.commonlib.base.BaseConfig;
 
 /**
- * 租户配置
+ * app配置
  */
 public class AppConfig extends BaseConfig {
+    public static String APP_URL = "";//接口调用
+    public static String APP_URL_MAIN = "";//数据连接
 
-    public static String APP_URL = "";
-    public static String APP_SHARE_URL = "";
-
-    public static String H5_ROLE = "";
-    public static String H5_ABOUT_US = "";
-    public static String H5_HELP_FEEDBACK = "";
+    public static String H5_ABOUT_US = "";//关于我们
+    public static String H5_HELP_FEEDBACK = "";//帮助反馈
+    public static String H5_HELP_FEEDBACK_OWNER = "";//业主帮助反馈
     public static String H5_PRIVACY = "";//隐私协议
     public static String H5_REGISTER = "";//注册协议
     public static String H5_QA = "";//常见问题
@@ -27,29 +26,30 @@ public class AppConfig extends BaseConfig {
     public static String H5_OWNER_IDIFY_COMPANY = "";//企业认证
     public static String H5_OWNER_IDIFY_JOINTWORK = "";//网点认证
 
-    public static String RC_APPKEY = "";
+    public static String RC_APPKEY = "";//融云key
     public static String RC_APPSECRET = "";
 
     @Override
     protected void initTest(Context context, String env) {
+        //URL
         APP_URL = "http://admin.officego.com.cn/";
-        APP_SHARE_URL = "http://test.officego.com.cn/";
-        H5_ROLE = "http://test.officego.com.cn/lessee/aboutUs.html";
-        H5_ABOUT_US = "http://test.officego.com.cn/lessee/aboutUs.html";
-        H5_HELP_FEEDBACK = "http://test.officego.com.cn/owner/opinion.html";
-        H5_PRIVACY = "http://test.officego.com.cn/lessee/privacy.html";
-        H5_REGISTER = "http://test.officego.com.cn/lessee/registerProtocol.html";
-        H5_QA = "http://test.officego.com.cn/lessee/issueList.html";
+        APP_URL_MAIN = "http://test.officego.com.cn/";
+        //个人中心
+        H5_ABOUT_US = APP_URL_MAIN + "lessee/aboutUs.html";
+        H5_HELP_FEEDBACK = APP_URL_MAIN + "lessee/opinion.html";
+        H5_HELP_FEEDBACK_OWNER = APP_URL_MAIN + "owner/opinion.html";
+        H5_PRIVACY = APP_URL_MAIN + "lessee/privacy.html";
+        H5_REGISTER = APP_URL_MAIN + "lessee/registerProtocol.html";
+        H5_QA = APP_URL_MAIN + "lessee/issueList.html";
         //楼盘网点管理
-        H5_OWNER_BUILDINGlIST = "http://test.officego.com.cn/owner/houseList.html";
-        H5_OWNER_HOUSElIST = "http://test.officego.com.cn/owner/branchList.html";
+        H5_OWNER_BUILDINGlIST = APP_URL_MAIN + "owner/houseList.html";
+        H5_OWNER_HOUSElIST = APP_URL_MAIN + "owner/branchList.html";
         //认证
-        H5_OWNER_IDIFY = "http://test.officego.com.cn/owner/myHome.html";
-        H5_OWNER_IDIFY_PERSION = "http://test.officego.com.cn/owner/attestationPersonage.html";
-        H5_OWNER_IDIFY_COMPANY = "http://test.officego.com.cn/owner/company.html";
-        H5_OWNER_IDIFY_JOINTWORK = "http://test.officego.com.cn/owner/company2.html";
-        //员工管理
-        H5_STAFF_LIST = "http://test.officego.com.cn/owner/staffList.html";
+        H5_OWNER_IDIFY = APP_URL_MAIN + "owner/myHome.html";
+        H5_OWNER_IDIFY_PERSION = APP_URL_MAIN + "owner/attestationPersonage.html";
+        H5_OWNER_IDIFY_COMPANY = APP_URL_MAIN + "owner/company.html";
+        H5_OWNER_IDIFY_JOINTWORK = APP_URL_MAIN + "owner/company2.html";
+        H5_STAFF_LIST = APP_URL_MAIN + "owner/staffList.html";  //员工管理
         //融云IM test
         RC_APPKEY = "kj7swf8oknm02";
         RC_APPSECRET = "OF78PpILjjRk4";
@@ -57,30 +57,49 @@ public class AppConfig extends BaseConfig {
 
     @Override
     protected void initRelease(Context context, String env) {
-        APP_URL = "http://admin.officego.com.cn/";
-        APP_SHARE_URL = "http://test.officego.com.cn/";
-        //融云IM release
-//        RC_APPKEY = "qf3d5gbjq94mh";
-//        RC_APPSECRET = "xtDkNCjJse";
-        H5_ROLE = "http://test.officego.com.cn/lessee/aboutUs.html";
-        H5_ABOUT_US = "http://test.officego.com.cn/lessee/aboutUs.html";
-        H5_HELP_FEEDBACK = "http://test.officego.com.cn/owner/opinion.html";
-        H5_PRIVACY = "http://test.officego.com.cn/lessee/privacy.html";
-        H5_REGISTER = "http://test.officego.com.cn/lessee/registerProtocol.html";
-        H5_QA = "http://test.officego.com.cn/lessee/issueList.html";
+        //URL
+        APP_URL = "https://api.officego.com/";
+        APP_URL_MAIN = "https://m.officego.com/";
+        //个人中心
+        H5_ABOUT_US = APP_URL_MAIN + "lessee/aboutUs.html";
+        H5_HELP_FEEDBACK = APP_URL_MAIN + "lessee/opinion.html";
+        H5_HELP_FEEDBACK_OWNER = APP_URL_MAIN + "owner/opinion.html";
+        H5_PRIVACY = APP_URL_MAIN + "lessee/privacy.html";
+        H5_REGISTER = APP_URL_MAIN + "lessee/registerProtocol.html";
+        H5_QA = APP_URL_MAIN + "lessee/issueList.html";
         //楼盘网点管理
-        H5_OWNER_BUILDINGlIST = "http://test.officego.com.cn/owner/houseList.html";
-        H5_OWNER_HOUSElIST = "http://test.officego.com.cn/owner/branchList.html";
+        H5_OWNER_BUILDINGlIST = APP_URL_MAIN + "owner/houseList.html";
+        H5_OWNER_HOUSElIST = APP_URL_MAIN + "owner/branchList.html";
         //认证
-        H5_OWNER_IDIFY = "http://test.officego.com.cn/owner/myHome.html";
-        H5_OWNER_IDIFY_PERSION = "http://test.officego.com.cn/owner/attestationPersonage.html";
-        H5_OWNER_IDIFY_COMPANY = "http://test.officego.com.cn/owner/company.html";
-        H5_OWNER_IDIFY_JOINTWORK = "http://test.officego.com.cn/owner/company2.html";
-        //员工管理
-        H5_STAFF_LIST = "http://test.officego.com.cn/owner/staffList.html";
-
-        //融云IM test
-        RC_APPKEY = "kj7swf8oknm02";
-        RC_APPSECRET = "OF78PpILjjRk4";
+        H5_OWNER_IDIFY = APP_URL_MAIN + "owner/myHome.html";
+        H5_OWNER_IDIFY_PERSION = APP_URL_MAIN + "owner/attestationPersonage.html";
+        H5_OWNER_IDIFY_COMPANY = APP_URL_MAIN + "owner/company.html";
+        H5_OWNER_IDIFY_JOINTWORK = APP_URL_MAIN + "owner/company2.html";
+        H5_STAFF_LIST = APP_URL_MAIN + "owner/staffList.html";  //员工管理
+        //融云IM release
+        RC_APPKEY = "qf3d5gbjq94mh";
+        RC_APPSECRET = "xtDkNCjJse";
+//        //URL
+//        APP_URL = "http://admin.officego.com.cn/";
+//        APP_URL_MAIN = "http://test.officego.com.cn/";
+//        //个人中心
+//        H5_ABOUT_US = APP_URL_MAIN + "lessee/aboutUs.html";
+//        H5_HELP_FEEDBACK = APP_URL_MAIN + "lessee/opinion.html";
+//        H5_HELP_FEEDBACK_OWNER = APP_URL_MAIN + "owner/opinion.html";
+//        H5_PRIVACY = APP_URL_MAIN + "lessee/privacy.html";
+//        H5_REGISTER = APP_URL_MAIN + "lessee/registerProtocol.html";
+//        H5_QA = APP_URL_MAIN + "lessee/issueList.html";
+//        //楼盘网点管理
+//        H5_OWNER_BUILDINGlIST = APP_URL_MAIN + "owner/houseList.html";
+//        H5_OWNER_HOUSElIST = APP_URL_MAIN + "owner/branchList.html";
+//        //认证
+//        H5_OWNER_IDIFY = APP_URL_MAIN + "owner/myHome.html";
+//        H5_OWNER_IDIFY_PERSION = APP_URL_MAIN + "owner/attestationPersonage.html";
+//        H5_OWNER_IDIFY_COMPANY = APP_URL_MAIN + "owner/company.html";
+//        H5_OWNER_IDIFY_JOINTWORK = APP_URL_MAIN + "owner/company2.html";
+//        H5_STAFF_LIST = APP_URL_MAIN + "owner/staffList.html";  //员工管理
+//        //融云IM test
+//        RC_APPKEY = "kj7swf8oknm02";
+//        RC_APPSECRET = "OF78PpILjjRk4";
     }
 }

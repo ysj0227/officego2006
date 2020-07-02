@@ -1,4 +1,4 @@
-package com.officego.update;
+package com.officego.commonlib.update;
 
 
 import androidx.annotation.NonNull;
@@ -26,7 +26,7 @@ public class UpdateAppHttpUtil implements HttpManager {
      */
     @Override
     public void asyncGet(@NonNull String url, @NonNull Map<String, String> params,
-                         @NonNull final HttpManager.Callback callBack) {
+                         @NonNull final Callback callBack) {
         OkHttpUtils.get()
                 .url(url)
                 .params(params)
@@ -53,7 +53,7 @@ public class UpdateAppHttpUtil implements HttpManager {
      */
     @Override
     public void asyncPost(@NonNull String url, @NonNull Map<String, String> params,
-                          @NonNull final HttpManager.Callback callBack) {
+                          @NonNull final Callback callBack) {
         OkHttpUtils.post()
                 .url(url)
                 .params(params)
@@ -81,7 +81,7 @@ public class UpdateAppHttpUtil implements HttpManager {
      */
     @Override
     public void download(@NonNull String url, @NonNull String path, @NonNull String fileName,
-                         @NonNull final HttpManager.FileCallback callback) {
+                         @NonNull final FileCallback callback) {
         try {
             OkHttpUtils.get().url(url).build()
                     .execute(new FileCallBack(path, fileName) {

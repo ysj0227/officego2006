@@ -57,8 +57,8 @@ public class BaseRetrofitClient {
         HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory();
         OkHttpClient okHttpClient = new OkHttpClient.Builder()
                 .addInterceptor(new BaseInterceptor(headers))
-//                .sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
-//                .hostnameVerifier(HttpsUtils.UnSafeHostnameVerifier)
+                .sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager)
+                .hostnameVerifier(HttpsUtils.UnSafeHostnameVerifier)
                 .addInterceptor(new LoggingInterceptor
                         .Builder()//构建者模式
                         .loggable(!TextUtils.equals(Utils.getMetaValue(BaseApplication.getContext(),

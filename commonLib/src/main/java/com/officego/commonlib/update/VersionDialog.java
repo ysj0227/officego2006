@@ -1,0 +1,58 @@
+package com.officego.commonlib.update;
+
+import android.app.Activity;
+import android.content.Context;
+
+import com.officego.commonlib.R;
+import com.officego.commonlib.common.VersionBean;
+import com.officego.commonlib.common.rpc.OfficegoApi;
+import com.officego.commonlib.retrofit.RetrofitCallback;
+import com.officego.commonlib.utils.CommonHelper;
+import com.officego.commonlib.view.dialog.CommonDialog;
+
+/**
+ * Created by YangShiJie
+ * Data 2020/5/14.
+ * Descriptions:
+ **/
+public class VersionDialog {
+
+    public VersionDialog(Context context) {
+        serviceDialog(context);
+    }
+
+    public void serviceDialog(Context context) {
+        updateVersion((Activity) context);
+    }
+
+    private void updateDialog(Activity context, boolean isForce, String title, String url) {
+        if (isForce) {
+            CommonDialog dialog = new CommonDialog.Builder(context)
+                    .setTitle(title)
+                    .setConfirmButton(R.string.str_update, (dialog12, which) -> AppUpdate.versionUpdate(context, url)).create();
+            dialog.showWithOutTouchable(false);
+            dialog.setCancelable(false);
+        } else {
+            CommonDialog dialog = new CommonDialog.Builder(context)
+                    .setTitle(title)
+                    .setConfirmButton(R.string.str_update, (dialog12, which) -> AppUpdate.versionUpdate(context, url))
+                    .setCancelButton(R.string.sm_cancel, (dialog1, which) -> dialog1.dismiss()).create();
+            dialog.showWithOutTouchable(false);
+        }
+    }
+
+    private void updateVersion(Activity context) {
+        OfficegoApi.getInstance().updateVersion(
+                CommonHelper.getAppVersionName(context), new RetrofitCallback<VersionBean>() {
+                    @Override
+                    public void onSuccess(int code, String msg, VersionBean data) {
+                        updateDialog(context, data.isForce(), data.getDesc(), data.getUploadUrl());
+                    }
+
+                    @Override
+                    public void onFail(int code, String msg, VersionBean data) {
+                    }
+                });
+    }
+
+}

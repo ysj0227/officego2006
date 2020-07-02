@@ -34,6 +34,7 @@ import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.TitleBarView;
 import com.officego.commonlib.view.webview.SMWebChromeClient;
 import com.officego.commonlib.view.webview.SMWebViewClient;
+import com.owner.MainOwnerActivity_;
 import com.owner.R;
 
 import org.androidannotations.annotations.AfterViews;
@@ -290,6 +291,7 @@ public class WebViewIdifyActivity extends BaseActivity {
             Log.d("TAG", "js to android identifyComplete");
             //认证完成
             BaseNotification.newInstance().postNotificationName(CommonNotifications.ownerIdentityComplete, "ownerIdentityComplete");
+            MainOwnerActivity_.intent(context).start();
             finish();
         }
     }
