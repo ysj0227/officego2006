@@ -100,9 +100,23 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         if (isFastClick(1500)) {
             return;
         }
-        WebViewIdifyActivity_.intent(mActivity).start();
+        if (mUserInfo == null) {
+            mPresenter.getUserInfo();
+            return;
+        }
+        //当驳回时
+        if (mUserInfo.getAuditStatus() == 2) {
+            if (mUserInfo.getIdentityType() == 0) {//个人
+                WebViewIdifyActivity_.intent(mActivity).idifyTag(Constants.H5_OWNER_IDIFY_PERSION).start();
+            } else if (mUserInfo.getIdentityType() == 1) {//企业
+                WebViewIdifyActivity_.intent(mActivity).idifyTag(Constants.H5_OWNER_IDIFY_COMPANY).start();
+            } else if (mUserInfo.getIdentityType() == 2) { //联办
+                WebViewIdifyActivity_.intent(mActivity).idifyTag(Constants.H5_OWNER_IDIFY_JOINTWORK).start();
+            }
+        } else { //当需要认证时
+            WebViewIdifyActivity_.intent(mActivity).start();
+        }
     }
-
 
     @Click(resName = "civ_avatar")
     void editMessageClick() {
