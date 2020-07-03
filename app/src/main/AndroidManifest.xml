@@ -59,9 +59,9 @@
         tools:replace="label">
 
         <activity
-            android:theme="@style/SplashStyle"
             android:name=".LaunchActivity_"
-            android:screenOrientation="portrait">
+            android:screenOrientation="portrait"
+            android:theme="@style/SplashStyle">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -207,6 +207,9 @@
         <activity
             android:name=".ui.mine.ServiceActivity_"
             android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".MainOwnerActivity_"
             android:screenOrientation="portrait" />
     </application>
 

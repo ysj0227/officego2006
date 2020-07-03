@@ -32,13 +32,13 @@ public class UnIdifyDialog {
         if (dialog == null) {
             String title, message, butText;
             if (data.getAuditStatus() == 2) {
-                title = "审核驳回";
+                title = "审核未通过";
                 message = data.getRemark();
-                butText = "重新认证";
+                butText = "去认证";
             } else {
                 title = "认证提示";
                 message = idify(data) + "\n请您先认证信息";
-                butText = context.getResources().getString(R.string.str_confirm);
+                butText = "去认证";
             }
             dialog = new CommonDialog.Builder(context)
                     .setTitle(title)
@@ -72,13 +72,13 @@ public class UnIdifyDialog {
     private String idify(UserOwnerBean data) {
         String id, status;
         if (data.getIdentityType() == 0) {
-            id = "个人";
-        } else if (data.getIdentityType() == 1) {
-            id = "企业";
-        } else if (data.getIdentityType() == 2) {
-            id = "联办";
-        } else {
             id = "";
+        } else if (data.getIdentityType() == 1) {
+            id = "";
+        } else if (data.getIdentityType() == 2) {
+            id = "";
+        } else {
+            id = "未认证";
         }
         if (data.getAuditStatus() == 0) {
             status = "待审核";
@@ -87,12 +87,12 @@ public class UnIdifyDialog {
         } else if (data.getAuditStatus() == 2) {
             status = "审核驳回";
         } else {
-            status = "未认证";
+            status = "";
         }
         if (TextUtils.isEmpty(id)) {
             return status;
         }
-        return id + "-" + status;
+        return id + status;
     }
 
 }

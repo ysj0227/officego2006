@@ -13,13 +13,13 @@ import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
+import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.view.RoundImageView;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.ui.collect.model.CollectHouseBean;
 import com.officego.ui.home.BuildingDetailsChildActivity_;
 import com.officego.ui.home.BuildingDetailsJointWorkChildActivity_;
 import com.officego.ui.home.utils.BundleUtils;
-import com.officego.commonlib.utils.GlideUtils;
 
 import java.util.List;
 
@@ -35,7 +35,6 @@ public class CollectWorkOfficeAdapter extends CommonListAdapter<CollectHouseBean
     public CollectWorkOfficeAdapter(Context context, List<CollectHouseBean.ListBean> childList) {
         super(context, R.layout.item_collect_work_office, childList);
         this.context = context;
-
     }
 
     @SuppressLint("SetTextI18n")
@@ -102,7 +101,6 @@ public class CollectWorkOfficeAdapter extends CommonListAdapter<CollectHouseBean
             } else {
                 dialog(isFailed);
             }
-
         });
     }
 

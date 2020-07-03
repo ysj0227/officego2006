@@ -74,7 +74,7 @@ public class WebViewActivity extends BaseActivity {
     }
 
     private String chanel() {
-        return "?channel=2";
+        return "?channel=2&identity=0";
     }
 
     /**

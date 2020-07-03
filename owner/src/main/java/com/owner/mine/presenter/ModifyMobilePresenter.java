@@ -60,7 +60,7 @@ public class ModifyMobilePresenter extends BasePresenter<ModifyMobileContract.Vi
                     if (code == Constants.DEFAULT_ERROR_CODE) {
                         mView.shortTip(msg);
                     } else {
-                        mView.shortTip("修改失败");
+                        mView.shortTip("修改失败，请重新提交");
                     }
                 }
             }

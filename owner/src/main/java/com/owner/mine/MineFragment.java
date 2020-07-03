@@ -206,7 +206,8 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
                 hasIdentityView();
             }
             //1企业2联合 &&管理员显示员工管理  权职0普通员工1管理员 -1无
-            if (data.getIdentityType() == 1 || data.getIdentityType() == 2 && data.getAuthority() == 1) {
+            if ((data.getIdentityType() == 1 || data.getIdentityType() == 2)
+                    && data.getAuthority() == 1 && data.getAuditStatus() == 1) {
                 rlRole.setVisibility(View.VISIBLE);
             } else {
                 rlRole.setVisibility(View.GONE);
@@ -224,18 +225,18 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
 
     /**
      * identityType :  "identityType": 0,//身份类型0个人1企业2联合
-     * auditStatus :  0待审核1审核通过2审核未通过
+     * auditStatus :  0待审核1审核通过2审核未通过 -1未认证
      */
     private String idify(UserOwnerBean data) {
         String id, status;
         if (data.getIdentityType() == 0) {
-            id = "个人";
-        } else if (data.getIdentityType() == 1) {
-            id = "企业";
-        } else if (data.getIdentityType() == 2) {
-            id = "联办";
-        } else {
             id = "";
+        } else if (data.getIdentityType() == 1) {
+            id = "";
+        } else if (data.getIdentityType() == 2) {
+            id = "";
+        } else {
+            id = "未认证";
         }
         if (data.getAuditStatus() == 0) {
             status = "待审核";
@@ -244,12 +245,12 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         } else if (data.getAuditStatus() == 2) {
             status = "审核驳回";
         } else {
-            status = "未认证";
+            status = "";
         }
         if (TextUtils.isEmpty(id)) {
             return status;
         }
-        return id + "-" + status;
+        return id + status;
     }
 
     @Override

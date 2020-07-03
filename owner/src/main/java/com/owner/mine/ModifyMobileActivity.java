@@ -69,7 +69,7 @@ public class ModifyMobileActivity extends BaseMvpActivity<ModifyMobilePresenter>
         //发送验证码
         mobile = RegexUtils.handleIllegalCharacter(etMobile.getText().toString().trim());
         if (TextUtils.isEmpty(mobile)) {
-            shortTip("请输入新手机号");
+            shortTip("请输入手机号");
             return;
         }
         startDownTimer(mobile);
@@ -82,7 +82,7 @@ public class ModifyMobileActivity extends BaseMvpActivity<ModifyMobilePresenter>
         }
         mobile = RegexUtils.handleIllegalCharacter(etMobile.getText().toString().trim());
         if (TextUtils.isEmpty(mobile)) {
-            shortTip("请输入新手机号");
+            shortTip("请输入手机号");
             return;
         }
         String code = etCode.getText() == null ? "" : etCode.getText().toString();

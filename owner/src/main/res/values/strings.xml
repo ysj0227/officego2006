@@ -116,8 +116,8 @@
     <string name="button_agree">同意</string>
     <string name="button_reject">拒绝</string>
     <!--    dialog-->
-    <string name="dialog_title_exchange_phone_contacts">确认与对方交换手机吗？</string>
-    <string name="dialog_title_exchange_wechat_contacts">确认与对方交换微信吗？</string>
+    <string name="dialog_title_exchange_phone_contacts">是否确认与对方交换手机号？</string>
+    <string name="dialog_title_exchange_wechat_contacts">是否确认与对方交换微信？</string>
     <string name="str_copy_phone">复制号码</string>
     <string name="str_call_phone">立即拨打</string>
     <string name="str_cannot_bind_wechat">当前未绑定微信</string>
@@ -138,7 +138,7 @@
     <string name="tip_save_success">保存成功</string>
     <string name="tip_current_newest_version">当前已是最新版本</string>
     <string name="tip_current_day_no_data">暂无看房行程</string>
-    <string name="str_are_you_sure_to_logout">确定要退出吗？</string>
+    <string name="str_are_you_sure_to_logout">是否确定退出？</string>
     <string name="tip_get_house_message_fail">获取房源信息失败</string>
     <string name="tip_delete_fail">删除失败</string>
     <string name="tip_delete_success">删除成功</string>

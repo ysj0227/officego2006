@@ -13,7 +13,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-
 import com.officego.commonlib.R;
 
 import io.rong.imkit.model.ProviderTag;
@@ -43,15 +42,15 @@ public class ViewingDateStatusProvider extends IContainerItemProvider.MessagePro
         ViewingDateStatusInfoHolder holder = (ViewingDateStatusInfoHolder) view.getTag();
         if (uiMessage.getMessageDirection() == Message.MessageDirection.RECEIVE) {//接收显示同意拒绝
             if (info.isAgree()) {
-                holder.tvStatus.setText("已同意预约看房");
+                holder.tvStatus.setText("对方已同意看房邀约");
             } else {
-                holder.tvStatus.setText("已拒绝预约看房");
+                holder.tvStatus.setText("对方已拒绝看房邀约");
             }
         } else {//消息方向，自己发送的
             if (info.isAgree()) {
-                holder.tvStatus.setText("已同意预约看房");
+                holder.tvStatus.setText("已同意");
             } else {
-                holder.tvStatus.setText("已拒绝预约看房");
+                holder.tvStatus.setText("已拒绝");
             }
         }
     }

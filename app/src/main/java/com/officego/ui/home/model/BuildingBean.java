@@ -150,8 +150,6 @@ public class BuildingBean implements Serializable {
         private BuildingMapBean buildingMap;
         @SerializedName("independenceOffice")
         private int independenceOffice;
-        @SerializedName("minSeats")
-        private int minSeats;
         @SerializedName("mainPic")
         private String mainPic;
         @SerializedName("id")
@@ -168,6 +166,8 @@ public class BuildingBean implements Serializable {
         private Object maxDayPrice;
         @SerializedName("address")
         private String address;
+        @SerializedName("minSeats")
+        private int minSeats;
         @SerializedName("maxSeats")
         private int maxSeats;
         @SerializedName("updateTime")

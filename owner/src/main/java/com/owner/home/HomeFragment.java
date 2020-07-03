@@ -226,7 +226,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements Home
         clearCache();
     }
 
-
     /**
      * Android 6.0以下处理方法：
      * onReceivedHttpError

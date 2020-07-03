@@ -73,4 +73,16 @@ public class GotoActivityUtils {
         intent.setAction("android.intent.action.VIEW");
         context.startActivity(intent);
     }
+
+    //业主
+    public static void mainOwnerActivity(Context context) {
+        ComponentName comp = new ComponentName(context, "com.officego.MainOwnerActivity_");
+        Intent intent = new Intent();
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
+        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        intent.setComponent(comp);
+        intent.setAction("android.intent.action.VIEW");
+        context.startActivity(intent);
+    }
 }

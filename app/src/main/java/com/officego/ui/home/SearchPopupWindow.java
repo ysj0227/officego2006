@@ -151,6 +151,7 @@ public class SearchPopupWindow extends PopupWindow implements
         this.mSetTitleView = setTextView;
         this.mSearchType = searchType;
         this.btype = btype;
+        LogCat.e("TAG","1111111111 btype="+this.btype);
         if (TextUtils.isEmpty(district) && TextUtils.isEmpty(business)) {
             this.mHashSetLine = hashSet;
             this.mCheckStatesLine = checkStates;
@@ -431,7 +432,6 @@ public class SearchPopupWindow extends PopupWindow implements
         OfficegoApi.getInstance().getDistrictList(new RetrofitCallback<List<BusinessCircleBean.DataBean>>() {
             @Override
             public void onSuccess(int code, String msg, List<BusinessCircleBean.DataBean> data) {
-                LogCat.e("TAG", "getDistrictList onSuccess =" + data);
                 businessCircleList.clear();
                 businessCircleList = data;
                 //初始化默认选中商圈
@@ -444,8 +444,6 @@ public class SearchPopupWindow extends PopupWindow implements
 
             @Override
             public void onFail(int code, String msg, List<BusinessCircleBean.DataBean> data) {
-                LogCat.e("TAG", "getDistrictList onFail code=" + code + "  msg=" + msg);
-
             }
         });
     }
@@ -558,14 +556,17 @@ public class SearchPopupWindow extends PopupWindow implements
         rvHouseUnique.setLayoutManager(layoutManager1);
         rvHouseUnique.addItemDecoration(new SpaceItemDecoration(mContext, 3));
         if (btype == 0) {
+            rbOffice.setChecked(true);
             tvHouseType.setVisibility(View.VISIBLE);
             rgHouseGroup.setVisibility(View.VISIBLE);
         } else if (btype == 1) {
+            rbOffice.setChecked(true);
             tvHouseType.setVisibility(View.GONE);
             rgHouseGroup.setVisibility(View.GONE);
             showConditionOfficeLayout(true, rvDecorationType, tvDecorationType,
                     tvArea, sbpArea, sbpRent, tvWorkstation, sbpSimple, sbpRent2, sbpSimple2);
         } else if (btype == 2) {
+            rbOffice.setChecked(false);
             tvHouseType.setVisibility(View.GONE);
             rgHouseGroup.setVisibility(View.GONE);
             showConditionOfficeLayout(false, rvDecorationType, tvDecorationType,
@@ -574,13 +575,18 @@ public class SearchPopupWindow extends PopupWindow implements
         //请求list
         getDecorationTypeList(rvDecorationType);
         getHouseUniqueList(rvHouseUnique);
-        LogCat.e("TAG", "constructionArea=" + constructionArea + "rentPrice=" + rentPrice);
-        //初始化数据
-        sbpArea.setProgressMax(1000, 1000);
-        sbpRent.setProgressMax(10, 10);
+//        写字楼
+//        面积：    范围 0 -2000
+//        租金：    范围 0- 50
+//        工位：    范围 0 - 500
+//        联合办公
+//        工位：    范围 0 - 30
+//        租金：    范围 0 - 10万
+        sbpArea.setProgressMax(2000, 2000);
+        sbpRent.setProgressMax(50, 50);
         sbpSimple.setProgressMax(500, 500);
         sbpRent2.setProgressMax(100000, 100000);
-        sbpSimple2.setProgressMax(20, 20);
+        sbpSimple2.setProgressMax(30, 30);
         if (btype == 0 || btype == 1) {
             setSeekBarPressure(this.constructionArea, sbpArea);
             setSeekBarPressure(this.rentPrice, sbpRent);
@@ -618,15 +624,15 @@ public class SearchPopupWindow extends PopupWindow implements
             getHouseUniqueList(rvHouseUnique);
             //初始化数
             sbpArea.setProgressLow(0);
-            sbpArea.setProgressHigh(1000);
+            sbpArea.setProgressHigh(2000);
             sbpRent.setProgressLow(0);
-            sbpRent.setProgressHigh(10);
-            sbpSimple.setProgressLow(0);
-            sbpSimple.setProgressHigh(500);
+            sbpRent.setProgressHigh(50);
+//            sbpSimple.setProgressLow(0);
+//            sbpSimple.setProgressHigh(500);
             sbpRent2.setProgressLow(0);
             sbpRent2.setProgressHigh(100000);
             sbpSimple2.setProgressLow(0);
-            sbpSimple2.setProgressHigh(20);
+            sbpSimple2.setProgressHigh(30);
             //清理
             clearCondition(rbOffice);
         });
@@ -643,10 +649,10 @@ public class SearchPopupWindow extends PopupWindow implements
         mRentPrice = rbOffice.isChecked() ? rentPrice : rentPrice2;
         mSimple = rbOffice.isChecked() ? simple : simple2;
         mArea = rbOffice.isChecked() ? constructionArea : "";
+        LogCat.e("TAG", "11111111 btype=" + btype + " mRentPrice=" + mRentPrice + "  mSimple=" + mSimple + " mArea=" + mArea);
         onSureClickListener.onConditionPopUpWindow(mSearchType, btype, mArea, mRentPrice, mSimple, decoration, houseTags);
 
     }
-
 
     private void showConditionOfficeLayout(boolean isOffice, RecyclerView rvDecorationType, TextView tvDecorationType,
                                            TextView tvArea, SeekBarPressure sbpArea, SeekBarPressure sbpRent, TextView tvWorkstation,

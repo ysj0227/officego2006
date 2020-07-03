@@ -56,6 +56,7 @@ public class EcPhoneStatusProvider extends IContainerItemProvider.MessageProvide
                 //我同意了对方的请求
                 String phone = info.getReceiveNumber();
                 holder.tv_title.setText(info.getContent());
+//                holder.tv_title.setText("对方同意和您交换手机号");
                 holder.tv_content.setText("对方电话：" + phone);
                 holder.rlBtn.setVisibility(View.VISIBLE);
                 holder.v_line.setVisibility(View.VISIBLE);

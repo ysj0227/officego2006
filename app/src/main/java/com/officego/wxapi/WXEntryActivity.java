@@ -122,10 +122,22 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
             return;
         }
         String webpageUrl;
-        if (bean.isHouseChild()) {
-            webpageUrl = AppConfig.APP_URL_MAIN + "lessee/detail.html?" + bean.getId();
-        } else {
-            webpageUrl = AppConfig.APP_URL_MAIN + "lessee/housesDetail.html?" + bean.getId();
+//        楼盘详情分享回调链接：https://m.officego.com/lessee/housesDetail.html?buildingId=7154
+//        楼盘下的房源分享回调链接：https://m.officego.com/lessee/detail.html?buildingId=7154&houseId=9519
+//        网点分享回调链接：https://m.officego.com/lessee/housesDetail2.html?buildingId=7154
+//        网点下的房源分享回调链接：https://m.officego.com/lessee/detail2.html?buildingId=7154&houseId=9519
+        if (bean.getbType()==Constants.TYPE_BUILDING){
+            if (!bean.isHouseChild()) {
+                webpageUrl = AppConfig.APP_URL_MAIN + "lessee/housesDetail.html?" + bean.getId();
+            } else {
+                webpageUrl = AppConfig.APP_URL_MAIN + "lessee/detail.html?" + bean.getId();
+            }
+        }else {
+            if (!bean.isHouseChild()) {
+                webpageUrl = AppConfig.APP_URL_MAIN + "lessee/housesDetail2.html?" + bean.getId();
+            } else {
+                webpageUrl = AppConfig.APP_URL_MAIN + "lessee/detail2.html?" + bean.getId();
+            }
         }
         int THUMB_SIZE = 150;
         WXWebpageObject webpage = new WXWebpageObject();

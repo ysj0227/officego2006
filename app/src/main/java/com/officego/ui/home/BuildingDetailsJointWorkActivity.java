@@ -36,6 +36,7 @@ import com.officego.commonlib.view.IVideoPlayer;
 import com.officego.commonlib.view.LabelsView;
 import com.officego.commonlib.view.RoundImageView;
 import com.officego.commonlib.view.dialog.CommonDialog;
+import com.officego.config.ConditionConfig;
 import com.officego.model.ShareBean;
 import com.officego.ui.adapter.HouseItemAllAdapter;
 import com.officego.ui.adapter.JointWorkAllChildAdapter;
@@ -308,6 +309,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         rlRootHouseTitle.setPadding(0, CommonHelper.statusHeight(this), 0, 0);
         tvIndependentOffice.setVisibility(View.VISIBLE);
         ctlShareService.setVisibility(View.VISIBLE);
+        mConditionBean= ConditionConfig.mConditionBean;
         initIndependentBuildingRecView();
         centerPlayIsShow(true);
         initVideo();
@@ -460,7 +462,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
             ConversationActivity_.intent(context).buildingId(mData.getBuilding().getBuildingId()).targetId(data.getTargetId() + "").start();
         } else {
             CommonDialog dialog = new CommonDialog.Builder(context)
-                    .setTitle("请从房源列表详情找业主聊")
+                    .setTitle("请先选择房源，再和业主聊")
                     .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
                         dialog12.dismiss();
                         scrollViewY();

@@ -96,6 +96,11 @@ public class ScheduleFragment extends BaseMvpFragment<ViewingDatePresenter>
         getViewingDateList();
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+    }
+
     //今天
     @Click(resName = "ll_appointment_record")
     void todayClick() {

@@ -5,6 +5,7 @@ import android.app.Activity;
 import android.content.Intent;
 import android.widget.TextView;
 
+import com.officego.MainOwnerActivity_;
 import com.officego.R;
 import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.GotoActivityUtils;
@@ -19,14 +20,11 @@ import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.rpc.OfficegoApi;
-import com.owner.MainOwnerActivity_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
-
-//import com.owner.MainOwnerActivity_;
 
 /**
  * Created by YangShiJie

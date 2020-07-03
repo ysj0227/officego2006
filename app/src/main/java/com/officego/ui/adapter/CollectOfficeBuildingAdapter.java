@@ -48,12 +48,16 @@ public class CollectOfficeBuildingAdapter extends CommonListAdapter<CollectBuild
         Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getMainPic()).into(ivHouse);
         holder.setText(R.id.tv_house_name, bean.getName());
         holder.setText(R.id.tv_location, bean.getBusinessDistrict());
+        String line;
         if (bean.getBuildingMap() != null && bean.getBuildingMap().getStationline().size() > 0) {
             String workTime = bean.getBuildingMap().getNearbySubwayTime().get(0);
             String stationLine = bean.getBuildingMap().getStationline().get(0);
             String stationName = bean.getBuildingMap().getStationNames().get(0);
-            holder.setText(R.id.tv_bus, "步行" + workTime + "分钟到 | " + stationLine + "号线 ·" + stationName);
+            line = "步行" + workTime + "分钟到 | " + stationLine + "号线 ·" + stationName;
+        } else {
+            line = "";
         }
+        holder.setText(R.id.tv_bus, line);
         holder.setText(R.id.tv_km, bean.getDistance());
         TextView price = holder.getView(R.id.tv_price);
         TextView unit = holder.getView(R.id.tv_unit);
@@ -77,21 +81,25 @@ public class CollectOfficeBuildingAdapter extends CommonListAdapter<CollectBuild
         LabelsView labelsView = holder.getView(R.id.ll_house_area);
         //1:楼盘 写字楼
         if (bean.getBtype() == 1) {
+            List<Object> areaMap = new ArrayList<>();
             if (bean.getAreaMap() != null && bean.getAreaMap().size() > 0) {
                 labelsView.setLabelTextSize(CommonHelper.sp2px(context, 12));
                 labelsView.setWordMargin(24);
                 labelsView.setLabelTextPadding(24, 8, 24, 8);
                 labelsView.setLabelTextColor(ContextCompat.getColor(context, R.color.text_66));
                 labelsView.setLabelBackgroundResource(R.drawable.text_label_gray);
-                labelsView.setLabels(bean.getAreaMap(), (label, position, data) -> data == null ? "0" : data.toString() + "m²");
+                labelsView.setVisibility(View.VISIBLE);
+                areaMap = bean.getAreaMap();
+            } else {
+                labelsView.setVisibility(View.GONE);
             }
+            labelsView.setLabels(areaMap, (label, position, data) -> data == null ? "0" : data.toString() + "m²");
         } else {//2:网点 联合办公
             labelsView.setLabelTextSize(CommonHelper.sp2px(context, 12));
             labelsView.setWordMargin(40);
             labelsView.setLabelTextPadding(8, 5, 8, 5);
             labelsView.setLabelTextColor(ContextCompat.getColor(context, R.color.white));
             labelsView.setLabelBackgroundResource(R.drawable.text_label_deep_blue);
-
             ArrayList<LabelBean> officeList = new ArrayList<>();
             if (bean.getOpenStation() == 0 && bean.getIndependenceOffice() == 0) {
                 labelsView.setVisibility(View.GONE);

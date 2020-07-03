@@ -96,7 +96,8 @@ public class MineSettingActivity extends BaseActivity {
 
     private void updateDialog(Activity context, String title, String url) {
         CommonDialog dialog = new CommonDialog.Builder(context)
-                .setTitle(title)
+                .setTitle("发现新版本")
+                .setMessage(title)
                 .setConfirmButton(R.string.str_update, (dialog12, which) -> AppUpdate.versionUpdate(context, url))
                 .setCancelButton(R.string.sm_cancel, (dialog1, which) -> dialog1.dismiss()).create();
         dialog.showWithOutTouchable(false);
