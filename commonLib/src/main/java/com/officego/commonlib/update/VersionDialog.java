@@ -25,16 +25,17 @@ public class VersionDialog {
         updateVersion((Activity) context);
     }
 
-    private void updateDialog(Activity context, boolean isForce, String title, String url) {
+    private void updateDialog(Activity context, boolean isForce, String dec, String url) {
         if (isForce) {
             CommonDialog dialog = new CommonDialog.Builder(context)
-                    .setTitle(title)
+                    .setTitle("发现新版本")
+                    .setMessage(dec)
                     .setConfirmButton(R.string.str_update, (dialog12, which) -> AppUpdate.versionUpdate(context, url)).create();
             dialog.showWithOutTouchable(false);
             dialog.setCancelable(false);
         } else {
             CommonDialog dialog = new CommonDialog.Builder(context)
-                    .setTitle(title)
+                    .setTitle(dec)
                     .setConfirmButton(R.string.str_update, (dialog12, which) -> AppUpdate.versionUpdate(context, url))
                     .setCancelButton(R.string.sm_cancel, (dialog1, which) -> dialog1.dismiss()).create();
             dialog.showWithOutTouchable(false);
