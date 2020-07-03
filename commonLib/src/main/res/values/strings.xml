@@ -121,7 +121,7 @@
     <string name="webview_cannot_find_page">找不到网页</string>
     <string name="webview_cannot_open_page">网页无法打开</string>
     <string name="str_title_help">帮助与反馈</string>
-    <string name="str_title_protocol">协议</string>
+    <string name="str_title_protocol">隐私条款</string>
     <string name="str_title_about_us">关于我们</string>
     <string name="str_text_right_now_look">立即查看</string>
     <string name="str_click_login_agree_service"><![CDATA[点击登录代表您已阅读并同意<font color=\'#46C3C2\'>隐私条款</font>]]></string>

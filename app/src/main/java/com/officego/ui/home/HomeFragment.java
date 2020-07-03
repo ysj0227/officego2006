@@ -194,9 +194,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
                 mSeats = seats;
             }
         }
-//        mPresenter.getBuildingList(pageNum, String.valueOf(btype), district, business,
-//                line, nearbySubway, area, dayPrice, seats,
-//                decoration, houseTags, sort, "");
         mPresenter.getBuildingList(pageNum, String.valueOf(btype), district, business,
                 line, nearbySubway, mArea, mDayPrice, mSeats,
                 decoration, houseTags, sort, "");
@@ -286,6 +283,9 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         super.onResume();
     }
 
+    /**
+     * 滑动位置
+     */
     private AppBarStateChangeListener appBarStateChangeListener = new AppBarStateChangeListener() {
         @Override
         public void onStateChanged(AppBarLayout appBarLayout, State state, int offset) {
@@ -306,8 +306,18 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
 
         @Override
         public void onStateAbs(int abs) {
-            //LogCat.e("TAG", "1111 " + alphaPercent + " abs=" + abs);
             rlHomeTitle.setAlpha(abs * alphaPercent);
+            if (abs * alphaPercent < 0.9) {
+                tvSearchArea.setEnabled(false);
+                tvSearchOffice.setEnabled(false);
+                tvSearchOrder.setEnabled(false);
+                tvSearchCondition.setEnabled(false);
+            } else {
+                tvSearchArea.setEnabled(true);
+                tvSearchOffice.setEnabled(true);
+                tvSearchOrder.setEnabled(true);
+                tvSearchCondition.setEnabled(true);
+            }
         }
     };
 
@@ -446,7 +456,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         this.seats = simple;
         this.decoration = decoration;
         this.houseTags = tags;
-        ConditionConfig.mConditionBean=setConditionBean();
+        ConditionConfig.mConditionBean = setConditionBean();
         if (btype == 0) {
             tvSearchOffice.setText(R.string.str_house_all);
         } else if (btype == 1) {
