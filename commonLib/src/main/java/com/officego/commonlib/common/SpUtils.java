@@ -21,6 +21,8 @@ public class SpUtils {
     private static final String NICK_NAME = PACKAGE_NAME + "NICK_NAME";
     //聊天插入楼盘消息
     private static final String CHAT_INSERT_BUILDING_INFO = PACKAGE_NAME + "CHAT_INSERT_BUILDING_INFO";
+    //是否取消更新
+    private static final String CANCEL_UPDATE = PACKAGE_NAME + "CANCEL_UPDATE";
 
     private static SharedPreferences getSharedPreference() {
         return SharedManager.getSharedPreference(BaseApplication.getContext());
@@ -44,7 +46,7 @@ public class SpUtils {
         SharedManager.clearValue(BaseApplication.getContext(), RONG_CLOUD_TOKEN);
         SharedManager.clearValue(BaseApplication.getContext(), HEADER_IMG);
         SharedManager.clearValue(BaseApplication.getContext(), NICK_NAME);
-//        SharedManager.clearValue(BaseApplication.getContext(), CHAT_INSERT_BUILDING_INFO);
+        SharedManager.clearValue(BaseApplication.getContext(), CANCEL_UPDATE);
     }
 
     //uid
@@ -137,6 +139,15 @@ public class SpUtils {
 
     public static String getRole() {
         return SharedManager.getValue(BaseApplication.getContext(), LOGIN_ROLE);
+    }
+
+    //取消版本更新
+    public static void saveCancelUpdate() {
+        SharedManager.putValue(BaseApplication.getContext(), CANCEL_UPDATE, "Y");
+    }
+
+    public static String getCancelUpdate() {
+        return SharedManager.getValue(BaseApplication.getContext(), CANCEL_UPDATE);
     }
 
 }

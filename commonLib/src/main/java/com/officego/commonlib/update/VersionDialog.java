@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 
 import com.officego.commonlib.R;
+import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.VersionBean;
 import com.officego.commonlib.common.rpc.OfficegoApi;
 import com.officego.commonlib.retrofit.RetrofitCallback;
@@ -23,9 +24,13 @@ public class VersionDialog {
 
     public void serviceDialog(Context context) {
         updateVersion((Activity) context);
+//        updateDialog((Activity) context, false, "ddd", "ddd");
     }
 
     private void updateDialog(Activity context, boolean isForce, String dec, String url) {
+//        if (!TextUtils.isEmpty(SpUtils.getCancelUpdate())) {
+//            return;
+//        }
         if (isForce) {
             CommonDialog dialog = new CommonDialog.Builder(context)
                     .setTitle("发现新版本")
@@ -37,8 +42,12 @@ public class VersionDialog {
             CommonDialog dialog = new CommonDialog.Builder(context)
                     .setTitle(dec)
                     .setConfirmButton(R.string.str_update, (dialog12, which) -> AppUpdate.versionUpdate(context, url))
-                    .setCancelButton(R.string.sm_cancel, (dialog1, which) -> dialog1.dismiss()).create();
+                    .setCancelButton(R.string.sm_cancel, (dialog1, which) -> {
+//                        SpUtils.saveCancelUpdate();
+                        dialog1.dismiss();
+                    }).create();
             dialog.showWithOutTouchable(false);
+            dialog.setCancelable(false);
         }
     }
 
