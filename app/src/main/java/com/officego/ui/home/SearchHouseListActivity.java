@@ -155,7 +155,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
                 mDayPrice = dayPrice;
             }
         } else if (btype == 2) {
-            if (TextUtils.equals("", dayPrice) || TextUtils.equals("0,100000", dayPrice)) {
+            if (TextUtils.equals("", dayPrice) || TextUtils.equals("0,50000", dayPrice)) {
                 mDayPrice = "0,999999";
             } else {
                 mDayPrice = dayPrice;

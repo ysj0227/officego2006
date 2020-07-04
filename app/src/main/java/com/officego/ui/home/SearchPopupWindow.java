@@ -585,7 +585,7 @@ public class SearchPopupWindow extends PopupWindow implements
         sbpArea.setProgressMax(2000, 2000);
         sbpRent.setProgressMax(50, 50);
         sbpSimple.setProgressMax(500, 500);
-        sbpRent2.setProgressMax(100000, 100000);
+        sbpRent2.setProgressMax(50000, 50000);
         sbpSimple2.setProgressMax(30, 30);
         if (btype == 0 || btype == 1) {
             setSeekBarPressure(this.constructionArea, sbpArea);
@@ -630,7 +630,7 @@ public class SearchPopupWindow extends PopupWindow implements
 //            sbpSimple.setProgressLow(0);
 //            sbpSimple.setProgressHigh(500);
             sbpRent2.setProgressLow(0);
-            sbpRent2.setProgressHigh(100000);
+            sbpRent2.setProgressHigh(50000);
             sbpSimple2.setProgressLow(0);
             sbpSimple2.setProgressHigh(30);
             //清理

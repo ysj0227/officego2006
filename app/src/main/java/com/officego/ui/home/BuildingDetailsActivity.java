@@ -1,12 +1,14 @@
 package com.officego.ui.home;
 
 import android.annotation.SuppressLint;
+import android.graphics.Paint;
 import android.os.Build;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -830,9 +832,14 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
                 } else {
                     tvIndependentOfficeArea.setText(Html.fromHtml("<font color='#46C3C2'>" + data.getBuilding().getMinArea() + "~" + data.getBuilding().getMaxArea() + "</font>㎡"));
                 }
+            }else {
+                tvIndependentOfficeArea.setText(Html.fromHtml("<font color='#46C3C2'>" + 0 + "</font>㎡"));
             }
             if (data.getBuilding().getMinDayPrice() != null) {
                 tvIndependentOfficePrice.setText(Html.fromHtml("<font color='#46C3C2'>¥" + data.getBuilding().getMinDayPrice() + "</font>/㎡/天起"));
+//                reSizeTextView(tvIndependentOfficePrice,"888888888888888/㎡/天起");
+            }else {
+                tvIndependentOfficePrice.setText(Html.fromHtml("<font color='#46C3C2'>¥" + 0.0 + "</font>/㎡/天起"));
             }
             tvIndependentOfficeNum.setText(Html.fromHtml("<font color='#46C3C2'>" + data.getBuilding().getHouseCount() + "套" + "</font>"));
             //线路
@@ -891,6 +898,27 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         //独立办公室子列表
         getChildBuildingList();
     }
+
+    private void reSizeTextView(TextView textView, String text){
+
+        float maxWidth=(getResources().getDisplayMetrics().widthPixels - 30*2)/3;
+        Paint paint = textView.getPaint();
+        float textWidth = paint.measureText(text);
+        int textSizeInDp = 30;
+        if(textWidth > maxWidth){
+            for(;textSizeInDp > 0; textSizeInDp--){
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSizeInDp);
+                paint = textView.getPaint();
+                textWidth = paint.measureText(text);
+                if(textWidth <= maxWidth){
+                    break;
+                }
+            }
+        }
+        textView.invalidate();
+        textView.setText(text);
+    }
+
 
     @Override
     public void BuildingJointWorkDetailsSuccess(BuildingJointWorkBean data) {
