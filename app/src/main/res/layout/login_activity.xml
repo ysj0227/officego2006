@@ -192,7 +192,7 @@
         android:layout_margin="@dimen/dp_20"
         android:background="@drawable/bg_circle_line_grey"
         android:text="Test"
-        android:visibility="visible"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent" />
 

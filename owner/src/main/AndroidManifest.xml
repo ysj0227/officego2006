@@ -32,9 +32,6 @@
             android:name=".mine.MineFragment_"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".MainOwnerActivity_"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".h5.WebViewActivity_"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
@@ -55,22 +52,22 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
-<!--        &lt;!&ndash;会话界面&ndash;&gt;-->
-<!--        <activity-->
-<!--            android:name=".message.ConversationActivity_"-->
-<!--            android:screenOrientation="portrait"-->
-<!--            android:windowSoftInputMode="stateHidden|adjustPan">-->
-<!--            &lt;!&ndash; android:windowSoftInputMode="stateHidden|adjustResize">&ndash;&gt;-->
-<!--            <intent-filter>-->
-<!--                <action android:name="android.intent.action.VIEW" />-->
-<!--                <category android:name="android.intent.category.DEFAULT" />-->
-<!--                &lt;!&ndash; android:host="com.owner" 必须当前包名&ndash;&gt;-->
-<!--                <data-->
-<!--                    android:host="com.owner"-->
-<!--                    android:pathPrefix="/conversation/"-->
-<!--                    android:scheme="rong" />-->
-<!--            </intent-filter>-->
-<!--        </activity>-->
+        <!--        &lt;!&ndash;会话界面&ndash;&gt;-->
+        <!--        <activity-->
+        <!--            android:name=".message.ConversationActivity_"-->
+        <!--            android:screenOrientation="portrait"-->
+        <!--            android:windowSoftInputMode="stateHidden|adjustPan">-->
+        <!--            &lt;!&ndash; android:windowSoftInputMode="stateHidden|adjustResize">&ndash;&gt;-->
+        <!--            <intent-filter>-->
+        <!--                <action android:name="android.intent.action.VIEW" />-->
+        <!--                <category android:name="android.intent.category.DEFAULT" />-->
+        <!--                &lt;!&ndash; android:host="com.owner" 必须当前包名&ndash;&gt;-->
+        <!--                <data-->
+        <!--                    android:host="com.owner"-->
+        <!--                    android:pathPrefix="/conversation/"-->
+        <!--                    android:scheme="rong" />-->
+        <!--            </intent-filter>-->
+        <!--        </activity>-->
         <activity
             android:name=".h5.WebViewIdifyActivity_"
             android:launchMode="singleTop"

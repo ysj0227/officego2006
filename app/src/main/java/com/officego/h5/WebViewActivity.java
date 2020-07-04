@@ -74,7 +74,7 @@ public class WebViewActivity extends BaseActivity {
     }
 
     private String chanel() {
-        return "?channel=2";
+        return "?channel=2&identity=0";
     }
 
     /**
@@ -194,11 +194,11 @@ public class WebViewActivity extends BaseActivity {
             view.clearCache(true);
             view.clearHistory();
             if (flags == Constants.H5_HELP) {
-                webView.loadUrl(AppConfig.H5_HELP_FEEDBACK);
+                webView.loadUrl(AppConfig.H5_HELP_FEEDBACK + chanel());
             } else if (flags == Constants.H5_PROTOCOL) {
-                webView.loadUrl(AppConfig.H5_PRIVACY);
+                webView.loadUrl(AppConfig.H5_PRIVACY + chanel());
             } else if (flags == Constants.H5_ABOUTS) {
-                webView.loadUrl(AppConfig.H5_ABOUT_US);
+                webView.loadUrl(AppConfig.H5_ABOUT_US + chanel());
             }
         });
     }

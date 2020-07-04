@@ -21,6 +21,7 @@ import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.log.LogCat;
+import com.officego.config.ConditionConfig;
 import com.officego.ui.adapter.HouseAdapter;
 import com.officego.ui.home.contract.HomeContract;
 import com.officego.ui.home.model.BuildingBean;
@@ -109,12 +110,9 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
 
     private float alphaPercent;//渐变色百分比
 
-    private View rootView;// 缓存Fragment view
-
     @SuppressLint("NewApi")
     @AfterViews
     void init() {
-        LogCat.e(TAG,"11111111111111 HomeFragment");
         StatusBarUtils.setStatusBarMainColor(mActivity, ContextCompat.getColor(mActivity, R.color.common_blue_main));
         mPresenter = new HomePresenter(mActivity);
         mPresenter.attachView(this);
@@ -139,6 +137,15 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         getBuildingList();
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            StatusBarUtils.setStatusBarMainColor(mActivity, ContextCompat.getColor(mActivity, R.color.common_blue_main));
+            initBarLayoutBg();
+        }
+    }
+
     /**
      * 列表
      * district 	否 	string 	大区
@@ -160,8 +167,35 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
      * pageSize 	否 	int 	每页条数
      */
     private void getBuildingList() {
+//        LogCat.e("TAG", "list pageNum=" + pageNum + " btype= " + btype + " constructionArea=" + area +
+//                " rentPrice=" + dayPrice + " simple=" + seats +
+//                " decoration=" + decoration + " tags=" + houseTags + "sort=" + sort);
+        String mArea = "", mDayPrice = "", mSeats = "";
+        if (btype == 1) {
+            if (TextUtils.equals("", area) || TextUtils.equals("0,2000", area)) {
+                mArea = "0,999999";
+            } else {
+                mArea = area;
+            }
+            if (TextUtils.equals("", dayPrice) || TextUtils.equals("0,50", dayPrice)) {
+                mDayPrice = "0,999999";
+            } else {
+                mDayPrice = dayPrice;
+            }
+        } else if (btype == 2) {
+            if (TextUtils.equals("", dayPrice) || TextUtils.equals("0,100000", dayPrice)) {
+                mDayPrice = "0,999999";
+            } else {
+                mDayPrice = dayPrice;
+            }
+            if (TextUtils.equals("", seats) || TextUtils.equals("0,30", seats)) {
+                mSeats = "0,999999";
+            } else {
+                mSeats = seats;
+            }
+        }
         mPresenter.getBuildingList(pageNum, String.valueOf(btype), district, business,
-                line, nearbySubway, area, dayPrice, seats,
+                line, nearbySubway, mArea, mDayPrice, mSeats,
                 decoration, houseTags, sort, "");
     }
 
@@ -249,6 +283,9 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         super.onResume();
     }
 
+    /**
+     * 滑动位置
+     */
     private AppBarStateChangeListener appBarStateChangeListener = new AppBarStateChangeListener() {
         @Override
         public void onStateChanged(AppBarLayout appBarLayout, State state, int offset) {
@@ -269,8 +306,18 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
 
         @Override
         public void onStateAbs(int abs) {
-            //LogCat.e("TAG", "1111 " + alphaPercent + " abs=" + abs);
             rlHomeTitle.setAlpha(abs * alphaPercent);
+            if (abs * alphaPercent < 0.9) {
+                tvSearchArea.setEnabled(false);
+                tvSearchOffice.setEnabled(false);
+                tvSearchOrder.setEnabled(false);
+                tvSearchCondition.setEnabled(false);
+            } else {
+                tvSearchArea.setEnabled(true);
+                tvSearchOffice.setEnabled(true);
+                tvSearchOrder.setEnabled(true);
+                tvSearchCondition.setEnabled(true);
+            }
         }
     };
 
@@ -379,6 +426,12 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         //查询列表
         buildingList.clear();
         houseAdapter = null;
+        //初始化选择的写字楼或联合办公
+        area = "";
+        seats = "";
+        dayPrice = "";
+        decoration = "";
+        houseTags = "";
         getBuildingList();
     }
 
@@ -403,6 +456,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         this.seats = simple;
         this.decoration = decoration;
         this.houseTags = tags;
+        ConditionConfig.mConditionBean = setConditionBean();
         if (btype == 0) {
             tvSearchOffice.setText(R.string.str_house_all);
         } else if (btype == 1) {
@@ -410,7 +464,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         } else if (btype == 2) {
             tvSearchOffice.setText(R.string.str_house_tenant);
         }
-        setConditionBean();
         //查询列表
         buildingList.clear();
         getBuildingList();
@@ -449,7 +502,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     private ConditionBean setConditionBean() {
         ConditionBean bean = new ConditionBean();
         //面积
-        if (TextUtils.equals("", this.area) || TextUtils.equals("0,1000", this.area)) {
+        if (TextUtils.equals("", this.area) || TextUtils.equals("0,2000", this.area)) {
             this.area = "";
         } else {
             String start, end;
@@ -467,7 +520,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
                 bean.setSeatsValue(setSeatsValue());
             }
         } else if (btype == 2) {//网点 没有面积条件
-            if (TextUtils.equals("", this.seats) || TextUtils.equals("0,20", this.seats)) {
+            if (TextUtils.equals("", this.seats) || TextUtils.equals("0,30", this.seats)) {
                 this.seats = "";
                 this.area = "";
             } else {

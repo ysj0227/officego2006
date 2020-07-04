@@ -68,7 +68,7 @@ public class ViewingDateProvider extends IContainerItemProvider.MessageProvider<
         ViewingDateInfoHolder holder = (ViewingDateInfoHolder) view.getTag();
         LogCat.d("TAG", "1111 msg=" + info.getContent() + " exc= " + info.getExtraMessage() + " id=" + info.getId());
         if (uiMessage.getMessageDirection() == Message.MessageDirection.RECEIVE) {//接收显示同意拒绝
-            holder.tvContent.setText("你收到一个预约看房消息");
+            holder.tvContent.setText("我想到现场看房，是否同意？");
             holder.rlBtn.setVisibility(View.VISIBLE);
             holder.ivIcon.setVisibility(View.VISIBLE);
             holder.vLine.setVisibility(View.VISIBLE);
@@ -77,7 +77,7 @@ public class ViewingDateProvider extends IContainerItemProvider.MessageProvider<
             //预约看房拒绝  行程id  1预约成功(同意)2预约失败(拒绝)
             holder.btnReject.setOnClickListener(v -> updateAuditStatus(holder, info.getId(), 2));
         } else {//消息方向自己发送
-            holder.tvContent.setText("你发起了一个看房邀约，等待对方接受");
+            holder.tvContent.setText("你发起的看房邀约，等待对方接受");
             holder.rlBtn.setVisibility(View.GONE);
             holder.ivIcon.setVisibility(View.GONE);
             holder.vLine.setVisibility(View.GONE);

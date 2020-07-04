@@ -1,5 +1,7 @@
 package com.officego;
 
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
@@ -13,17 +15,17 @@ import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.officego.commonlib.base.BaseActivity;
+import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.rongcloud.ConnectRongCloudUtils;
 import com.officego.commonlib.common.rongcloud.kickDialog;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.ui.collect.CollectFragment_;
-import com.officego.ui.home.HomeFragment_;
-import com.officego.ui.message.MessageFragment_;
-import com.officego.ui.mine.MineFragment_;
-import com.officego.utils.GotoActivityUtils;
+import com.owner.home.HomeFragment_;
+import com.owner.message.MessageFragment_;
+import com.owner.mine.MineFragment_;
+import com.owner.schedule.ScheduleFragment_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
@@ -38,10 +40,11 @@ import io.rong.imlib.model.Conversation;
 /**
  * Created by YangShiJie
  * Data 2020/7/3.
- * Descriptions:
+ * Descriptions: 业主
  **/
+@SuppressLint("Registered")
 @EActivity(R.layout.activity_main_test)
-public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener {
+public class MainOwnerActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener {
     @ViewById(R.id.rg_tab_bar)
     RadioGroup rg_tab_bar;
     @ViewById(R.id.tab_home)
@@ -54,7 +57,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     RadioButton rb_4;
     private HomeFragment_ fg1;
     private MessageFragment_ fg2;
-    private CollectFragment_ fg3;
+    private ScheduleFragment_ fg3;
     private MineFragment_ fg4;
     private FragmentManager fManager;
     private long mExitTime;
@@ -64,6 +67,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         StatusBarUtils.setStatusBarColor(this);
         fManager = getSupportFragmentManager();
         rg_tab_bar.setOnCheckedChangeListener(this);
+        rb_3.setText(R.string.str_tab_schedule);
         rb_1.setChecked(true);
         initBottomImage();
         if (!TextUtils.isEmpty(SpUtils.getSignToken())) {
@@ -78,12 +82,14 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         hideAllFragment(fTransaction);
         switch (checkedId) {
             case R.id.tab_home:
-                if (fg1 == null) {
-                    fg1 = new HomeFragment_();
-                    fTransaction.add(R.id.ly_content, fg1, "Fragment1");
-                } else {
-                    fTransaction.show(fg1);
-                }
+//                if (fg1 == null) {
+//                    fg1 = new HomeFragment_();
+//                    fTransaction.add(R.id.ly_content, fg1, "Fragment1");
+//                } else {
+//                    fTransaction.show(fg1);
+//                }
+                fg1 = new HomeFragment_();
+                fTransaction.add(R.id.ly_content, fg1, "Fragment1");
                 break;
             case R.id.tab_message:
                 if (fg2 == null) {
@@ -92,16 +98,16 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                 } else {
                     fTransaction.show(fg2);
                 }
+//                fg2 = new MessageFragment_();
+//                fTransaction.add(R.id.ly_content, fg2, "Fragment2");
                 break;
             case R.id.tab_collect:
-//                if (fg3 == null) {
-//                    fg3 = new CollectFragment_();
-//                    fTransaction.add(R.id.ly_content, fg3, "Fragment3");
-//                } else {
-//                    fTransaction.show(fg3);
-//                }
-                fg3 = new CollectFragment_();
-                fTransaction.add(R.id.ly_content, fg3, "Fragment3");
+                if (fg3 == null) {
+                    fg3 = new ScheduleFragment_();
+                    fTransaction.add(R.id.ly_content, fg3, "Fragment3");
+                } else {
+                    fTransaction.show(fg3);
+                }
                 break;
             case R.id.tab_mine:
 //                if (fg4 == null) {
@@ -143,7 +149,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         rb_2.setCompoundDrawables(null, drawable_live, null, null);
 
         //定义底部标签图片大小和位置
-        Drawable drawable_tuijian = getResources().getDrawable(R.drawable.ic_tab_collect);
+        Drawable drawable_tuijian = getResources().getDrawable(R.drawable.ic_tab_schedule);
         //当这个图片被绘制时，给他绑定一个矩形 ltrb规定这个矩形
         drawable_tuijian.setBounds(0, 0, 50, 50);
         //设置图片在文字的哪个方向
@@ -207,10 +213,10 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
             if ((System.currentTimeMillis() - mExitTime) > 2000) {
-                shortTip(R.string.toast_press_again_quit);
+                shortTip(com.owner.R.string.toast_press_again_quit);
                 mExitTime = System.currentTimeMillis();
             } else {
-                GotoActivityUtils.gotoHome(context);
+                gotoHome(context);
             }
             return true;
         }
@@ -228,6 +234,16 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                 mFragment.onActivityResult(requestCode, resultCode, data);
             }
         }
+    }
+
+    /**
+     * 回到桌面
+     */
+    private void gotoHome(Context context) {
+        Intent home = new Intent(Intent.ACTION_MAIN);
+        home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        home.addCategory(Intent.CATEGORY_HOME);
+        context.startActivity(home);
     }
 
     @Override
@@ -249,7 +265,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
             //身份发生变化
             shortTip((String) args[0]);
             SpUtils.clearLoginInfo();
-            com.officego.commonlib.common.GotoActivityUtils.loginClearActivity(context, TextUtils.equals(Constants.TYPE_OWNER, SpUtils.getRole()));
+            GotoActivityUtils.loginClearActivity(context, TextUtils.equals(Constants.TYPE_OWNER, SpUtils.getRole()));
         }
     }
 }

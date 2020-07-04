@@ -150,8 +150,6 @@ public class BuildingBean implements Serializable {
         private BuildingMapBean buildingMap;
         @SerializedName("independenceOffice")
         private int independenceOffice;
-        @SerializedName("minSeats")
-        private int minSeats;
         @SerializedName("mainPic")
         private String mainPic;
         @SerializedName("id")
@@ -168,8 +166,10 @@ public class BuildingBean implements Serializable {
         private Object maxDayPrice;
         @SerializedName("address")
         private String address;
+        @SerializedName("minSeats")
+        private Object minSeats;
         @SerializedName("maxSeats")
-        private int maxSeats;
+        private Object maxSeats;
         @SerializedName("updateTime")
         private int updateTime;
         @SerializedName("userId")
@@ -257,11 +257,11 @@ public class BuildingBean implements Serializable {
             this.maxArea = maxArea;
         }
 
-        public int getMinSeats() {
+        public Object getMinSeats() {
             return minSeats;
         }
 
-        public void setMinSeats(int minSeats) {
+        public void setMinSeats(Object minSeats) {
             this.minSeats = minSeats;
         }
 
@@ -305,11 +305,11 @@ public class BuildingBean implements Serializable {
             this.address = address;
         }
 
-        public int getMaxSeats() {
+        public Object getMaxSeats() {
             return maxSeats;
         }
 
-        public void setMaxSeats(int maxSeats) {
+        public void setMaxSeats(Object maxSeats) {
             this.maxSeats = maxSeats;
         }
 

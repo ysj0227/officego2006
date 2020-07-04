@@ -240,7 +240,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             return;
         }
         if (mData == null) {
-            shortTip("暂无楼盘信息无法预约");
+            shortTip("暂无楼盘信息，无法预约");
             return;
         }
         ConversationViewingDateActivity_.intent(this).buildingId(buildingId).houseId(houseId).targetId(targetId).start();
