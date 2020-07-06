@@ -124,7 +124,7 @@ public class BuildingDetailsJointWorkPresenter extends BasePresenter<BuildingDet
             public void onFail(int code, String msg, ChatsBean data) {
                 if (isViewAttached()) {
                     mView.hideLoadingDialog();
-                    mView.shortTip(R.string.server_noreponse);
+//                    mView.shortTip(R.string.server_noreponse);
                 }
             }
         });
