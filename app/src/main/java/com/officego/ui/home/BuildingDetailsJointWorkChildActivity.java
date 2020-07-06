@@ -11,6 +11,7 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 
@@ -99,6 +100,8 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
     ImageView ivPattern;
     @ViewById(R.id.tv_pattern_description)
     TextView tvPatternDescription;
+    @ViewById(R.id.ctl_pattern_details)
+    ConstraintLayout ctlPatternDetails;
     //线路，特色
     @ViewById(R.id.rl_characteristic)
     RelativeLayout rlCharacteristic;
@@ -106,6 +109,8 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
     TextView tvLocation;
     @ViewById(R.id.tv_bus_line)
     TextView tvBusLine;
+    @ViewById(R.id.ctl_bus_line)
+    ConstraintLayout ctlBusLine;
     //收藏取消
     @ViewById(R.id.tv_favorite)
     TextView tvFavorite;
@@ -189,12 +194,19 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
                         getResources().getString(R.string.str_text_line) : data.getHouse().getBasicInformation().getRentFreePeriod());
                 tvMinimumLease.setText(TextUtils.isEmpty(data.getHouse().getBasicInformation().getMinimumLease()) ?
                         getResources().getString(R.string.str_text_line) : data.getHouse().getBasicInformation().getMinimumLease() + "月起");
-                Glide.with(context).load(data.getHouse().getBasicInformation().getUnitPatternImg()).into(ivPattern);
-                if (TextUtils.isEmpty(data.getHouse().getBasicInformation().getUnitPatternRemark())) {
-                    tvPatternDescription.setVisibility(View.GONE);
+                //户型介绍
+                if (TextUtils.isEmpty(data.getHouse().getBasicInformation().getUnitPatternImg()) &&
+                        TextUtils.isEmpty(data.getHouse().getBasicInformation().getUnitPatternRemark())) {
+                    ctlPatternDetails.setVisibility(View.GONE);
                 } else {
-                    tvPatternDescription.setVisibility(View.VISIBLE);
-                    tvPatternDescription.setText(data.getHouse().getBasicInformation().getUnitPatternRemark());
+                    ctlPatternDetails.setVisibility(View.VISIBLE);
+                    Glide.with(context).load(data.getHouse().getBasicInformation().getUnitPatternImg()).into(ivPattern);
+                    if (TextUtils.isEmpty(data.getHouse().getBasicInformation().getUnitPatternRemark())) {
+                        tvPatternDescription.setVisibility(View.GONE);
+                    } else {
+                        tvPatternDescription.setVisibility(View.VISIBLE);
+                        tvPatternDescription.setText(data.getHouse().getBasicInformation().getUnitPatternRemark());
+                    }
                 }
             }
             //交通
@@ -210,7 +222,7 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
             } else {
                 tvLocation.setText(data.getHouse().getBusinessDistrict());
             }
-            if (data.getHouse().getStationline() != null) {
+            if (data.getHouse().getStationline() != null && data.getHouse().getStationline().size() > 0) {
                 List<String> stationLine = data.getHouse().getStationline();
                 List<String> stationName = data.getHouse().getStationNames();
                 List<String> workTime = data.getHouse().getNearbySubwayTime();
@@ -222,7 +234,10 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
                         linePlan.append("步行").append(workTime.get(i)).append("分钟到 | ").append(stationLine.get(i)).append("号线 ·").append(stationName.get(i)).append("\n");
                     }
                 }
+                ctlBusLine.setVisibility(View.VISIBLE);
                 tvBusLine.setText(linePlan);
+            } else {
+                ctlBusLine.setVisibility(View.GONE);
             }
         }
     }

@@ -851,7 +851,12 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         tvTitle.setText(data.getBuilding().getName());
         tvBuildingName.setText(data.getBuilding().getName());
         //线路
-        tvLocation.setText(data.getBuilding().getAddress());
+        if (TextUtils.isEmpty(data.getBuilding().getAddress())) {
+            tvLocation.setVisibility(View.GONE);
+        } else {
+            tvLocation.setVisibility(View.VISIBLE);
+            tvLocation.setText(data.getBuilding().getAddress());
+        }
         if (data.getBuilding().getStationline() != null && data.getBuilding().getStationline().size() > 0) {
             List<String> stationLine = data.getBuilding().getStationline();
             List<String> stationName = data.getBuilding().getStationNames();
@@ -1048,13 +1053,27 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         if (data.getFactorMap() != null) {
             List<BuildingConditionItem> conditionList = new ArrayList<>();
             conditionList.add(new BuildingConditionItem("全部", "", data.getFactorMap().getJointworkItem0() + "套"));
-            conditionList.add(new BuildingConditionItem("1人", "0,1", data.getFactorMap().getJointworkItem1() + "套"));
-            conditionList.add(new BuildingConditionItem("2～3人", "2,3", data.getFactorMap().getJointworkItem2() + "套"));
-            conditionList.add(new BuildingConditionItem("4～6人", "4,6", data.getFactorMap().getJointworkItem3() + "套"));
-            conditionList.add(new BuildingConditionItem("7～10人", "7,10", data.getFactorMap().getJointworkItem4() + "套"));
-            conditionList.add(new BuildingConditionItem("11～15人", "11,15", data.getFactorMap().getJointworkItem5() + "套"));
-            conditionList.add(new BuildingConditionItem("16～20人", "16,20", data.getFactorMap().getJointworkItem6() + "套"));
-            conditionList.add(new BuildingConditionItem("20人以上", "20,9999", data.getFactorMap().getJointworkItem7() + "套"));
+            if (data.getFactorMap().getJointworkItem1() > 0) {
+                conditionList.add(new BuildingConditionItem("1人", "0,1", data.getFactorMap().getJointworkItem1() + "套"));
+            }
+            if (data.getFactorMap().getJointworkItem2() > 0) {
+                conditionList.add(new BuildingConditionItem("2～3人", "2,3", data.getFactorMap().getJointworkItem2() + "套"));
+            }
+            if (data.getFactorMap().getJointworkItem3() > 0) {
+                conditionList.add(new BuildingConditionItem("4～6人", "4,6", data.getFactorMap().getJointworkItem3() + "套"));
+            }
+            if (data.getFactorMap().getJointworkItem4() > 0) {
+                conditionList.add(new BuildingConditionItem("7～10人", "7,10", data.getFactorMap().getJointworkItem4() + "套"));
+            }
+            if (data.getFactorMap().getJointworkItem5() > 0) {
+                conditionList.add(new BuildingConditionItem("11～15人", "11,15", data.getFactorMap().getJointworkItem5() + "套"));
+            }
+            if (data.getFactorMap().getJointworkItem6() > 0) {
+                conditionList.add(new BuildingConditionItem("16～20人", "16,20", data.getFactorMap().getJointworkItem6() + "套"));
+            }
+            if (data.getFactorMap().getJointworkItem7() > 0) {
+                conditionList.add(new BuildingConditionItem("20人以上", "20,9999", data.getFactorMap().getJointworkItem7() + "套"));
+            }
             rvHorizontalAll.setAdapter(new HouseItemAllAdapter(context, conditionList));
         }
     }

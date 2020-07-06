@@ -847,7 +847,12 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             tvIndependentOfficePrice.setTextColor(ContextCompat.getColor(context, R.color.common_blue_main));
             tvIndependentOfficeNum.setText(Html.fromHtml("<font color='#46C3C2'>" + data.getBuilding().getHouseCount() + "套" + "</font>"));
             //线路
-            tvLocation.setText(data.getBuilding().getAddress());
+            if (TextUtils.isEmpty(data.getBuilding().getAddress())) {
+                tvLocation.setVisibility(View.GONE);
+            } else {
+                tvLocation.setVisibility(View.VISIBLE);
+                tvLocation.setText(data.getBuilding().getAddress());
+            }
             if (data.getBuilding().getStationline() != null && data.getBuilding().getStationline().size() > 0) {
                 List<String> stationLine = data.getBuilding().getStationline();
                 List<String> stationName = data.getBuilding().getStationNames();
@@ -997,13 +1002,27 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     private void independentBuildingList(BuildingDetailsBean data) {
         List<BuildingConditionItem> conditionList = new ArrayList<>();
         conditionList.add(new BuildingConditionItem("全部", "", data.getFactorMap().getBuildingItem0() + "套"));
-        conditionList.add(new BuildingConditionItem("0-100㎡", "0,100", data.getFactorMap().getBuildingItem1() + "套"));
-        conditionList.add(new BuildingConditionItem("100-200㎡", "100,200", data.getFactorMap().getBuildingItem2() + "套"));
-        conditionList.add(new BuildingConditionItem("200-300㎡", "200,300", data.getFactorMap().getBuildingItem3() + "套"));
-        conditionList.add(new BuildingConditionItem("300-400㎡", "300,400", data.getFactorMap().getBuildingItem4() + "套"));
-        conditionList.add(new BuildingConditionItem("400-500㎡", "400,500", data.getFactorMap().getBuildingItem5() + "套"));
-        conditionList.add(new BuildingConditionItem("500-1000㎡", "500,1000", data.getFactorMap().getBuildingItem6() + "套"));
-        conditionList.add(new BuildingConditionItem("1000㎡以上", "1000,9999", data.getFactorMap().getBuildingItem7() + "套"));
+        if (data.getFactorMap().getBuildingItem1()>0){
+            conditionList.add(new BuildingConditionItem("0-100㎡", "0,100", data.getFactorMap().getBuildingItem1() + "套"));
+        }
+        if (data.getFactorMap().getBuildingItem2()>0){
+            conditionList.add(new BuildingConditionItem("100-200㎡", "100,200", data.getFactorMap().getBuildingItem2() + "套"));
+        }
+        if (data.getFactorMap().getBuildingItem3()>0){
+            conditionList.add(new BuildingConditionItem("200-300㎡", "200,300", data.getFactorMap().getBuildingItem3() + "套"));
+        }
+        if (data.getFactorMap().getBuildingItem4()>0){
+            conditionList.add(new BuildingConditionItem("300-400㎡", "300,400", data.getFactorMap().getBuildingItem4() + "套"));
+        }
+        if (data.getFactorMap().getBuildingItem5()>0){
+            conditionList.add(new BuildingConditionItem("400-500㎡", "400,500", data.getFactorMap().getBuildingItem5() + "套"));
+        }
+        if (data.getFactorMap().getBuildingItem6()>0){
+            conditionList.add(new BuildingConditionItem("500-1000㎡", "500,1000", data.getFactorMap().getBuildingItem6() + "套"));
+        }
+        if (data.getFactorMap().getBuildingItem7()>0){
+            conditionList.add(new BuildingConditionItem("1000㎡以上", "1000,9999", data.getFactorMap().getBuildingItem7() + "套"));
+        }
         rvHorizontalAll.setAdapter(new HouseItemAllAdapter(context, conditionList));
     }
 

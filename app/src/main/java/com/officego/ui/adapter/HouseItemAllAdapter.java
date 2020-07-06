@@ -2,6 +2,8 @@ package com.officego.ui.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.text.TextUtils;
+import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -10,8 +12,8 @@ import androidx.core.content.ContextCompat;
 import com.officego.R;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
-import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.common.config.CommonNotifications;
+import com.officego.commonlib.notification.BaseNotification;
 import com.officego.ui.home.model.BuildingConditionItem;
 
 import java.util.HashMap;
