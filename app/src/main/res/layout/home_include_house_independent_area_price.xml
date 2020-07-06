@@ -33,8 +33,9 @@
         <TextView
             android:id="@+id/tv_independent_office_area"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dp_25"
             android:layout_centerHorizontal="true"
+            android:maxLines="1"
             android:textColor="@color/text_33"
             android:textSize="@dimen/sp_15" />
 
@@ -69,7 +70,7 @@
         <TextView
             android:id="@+id/tv_independent_office_price"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dp_25"
             android:layout_centerHorizontal="true"
             android:textColor="@color/text_33"
             android:textSize="@dimen/sp_15" />
@@ -106,7 +107,7 @@
         <TextView
             android:id="@+id/tv_independent_office_num"
             android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
+            android:layout_height="@dimen/dp_25"
             android:layout_centerHorizontal="true"
             android:textColor="@color/text_33"
             android:textSize="@dimen/sp_15"

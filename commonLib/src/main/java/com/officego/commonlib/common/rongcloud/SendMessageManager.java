@@ -14,6 +14,7 @@ import io.rong.imlib.IRongCallback;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
+import io.rong.message.TextMessage;
 
 /**
  * Created by YangShiJie
@@ -175,4 +176,28 @@ public class SendMessageManager {
             LogCat.e("TAG", "message error");
         }
     };
+
+    /**
+     * 发送文本消息
+     *
+     * @param targetId targetId
+     */
+    public void sendTextMessage(String targetId) {
+        TextMessage textMessage = TextMessage.obtain("我对你发布的房源有兴趣，能聊聊吗？");
+        RongIM.getInstance().sendMessage(Message.obtain(targetId, Conversation.ConversationType.PRIVATE,
+                textMessage),
+                null, null, new IRongCallback.ISendMessageCallback() {
+                    @Override
+                    public void onAttached(Message message) {
+                    }
+
+                    @Override
+                    public void onSuccess(Message message) {
+                    }
+
+                    @Override
+                    public void onError(Message message, RongIMClient.ErrorCode errorCode) {
+                    }
+                });
+    }
 }

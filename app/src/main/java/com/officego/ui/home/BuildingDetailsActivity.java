@@ -32,6 +32,7 @@ import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.utils.CommonHelper;
+import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.log.LogCat;
@@ -297,7 +298,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         mPresenter.attachView(this);
         rlRootHouseTitle.setPadding(0, CommonHelper.statusHeight(this), 0, 0);
         nsvView.setOnScrollChangeListener(this);
-        mConditionBean=ConditionConfig.mConditionBean;
+        mConditionBean = ConditionConfig.mConditionBean;
         initIndependentBuildingRecView();
         centerPlayIsShow(true);
         initVideo();
@@ -413,7 +414,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     public void chatSuccess(ChatsBean data) {
         //0:单业主,1:多业主  判断是否单业主
         if (data.getMultiOwner() == 0) {
-            ConversationActivity_.intent(context).buildingId(mData.getBuilding().getBuildingId()).targetId(data.getTargetId() + "").start();
+            ConversationActivity_.intent(context).buildingId(mData.getBuilding().getBuildingId()).targetId(data.getTargetId()).start();
         } else {
             CommonDialog dialog = new CommonDialog.Builder(context)
                     .setTitle("请先选择房源，再和业主聊")
@@ -826,21 +827,24 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             tvIndependentOfficeAreaText.setText("面积");
             tvIndependentOfficePriceText.setText("租金");
             tvIndependentOfficeNumText.setText("在租房源");
+            String mArea = "0㎡";
             if (data.getBuilding().getMinArea() != null && data.getBuilding().getMaxArea() != null) {
                 if (TextUtils.equals(data.getBuilding().getMinArea().toString(), data.getBuilding().getMaxArea().toString())) {
-                    tvIndependentOfficeArea.setText(Html.fromHtml("<font color='#46C3C2'>" + data.getBuilding().getMaxArea() + "</font>㎡"));
+                    mArea = data.getBuilding().getMaxArea() + "㎡";
                 } else {
-                    tvIndependentOfficeArea.setText(Html.fromHtml("<font color='#46C3C2'>" + data.getBuilding().getMinArea() + "~" + data.getBuilding().getMaxArea() + "</font>㎡"));
+                    mArea = data.getBuilding().getMinArea() + "~" + data.getBuilding().getMaxArea() + "㎡";
                 }
-            }else {
-                tvIndependentOfficeArea.setText(Html.fromHtml("<font color='#46C3C2'>" + 0 + "</font>㎡"));
             }
+            reSizeTextView(tvIndependentOfficeArea, mArea);
+            tvIndependentOfficeArea.setTextColor(ContextCompat.getColor(context, R.color.common_blue_main));
+            String mPrice;
             if (data.getBuilding().getMinDayPrice() != null) {
-                tvIndependentOfficePrice.setText(Html.fromHtml("<font color='#46C3C2'>¥" + data.getBuilding().getMinDayPrice() + "</font>/㎡/天起"));
-//                reSizeTextView(tvIndependentOfficePrice,"888888888888888/㎡/天起");
-            }else {
-                tvIndependentOfficePrice.setText(Html.fromHtml("<font color='#46C3C2'>¥" + 0.0 + "</font>/㎡/天起"));
+                mPrice = "¥" + data.getBuilding().getMinDayPrice() + "/㎡/天起";
+            } else {
+                mPrice = "¥0.0/㎡/天起";
             }
+            reSizeTextView(tvIndependentOfficePrice, mPrice);
+            tvIndependentOfficePrice.setTextColor(ContextCompat.getColor(context, R.color.common_blue_main));
             tvIndependentOfficeNum.setText(Html.fromHtml("<font color='#46C3C2'>" + data.getBuilding().getHouseCount() + "套" + "</font>"));
             //线路
             tvLocation.setText(data.getBuilding().getAddress());
@@ -899,18 +903,18 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         getChildBuildingList();
     }
 
-    private void reSizeTextView(TextView textView, String text){
+    private void reSizeTextView(TextView textView, String text) {
 
-        float maxWidth=(getResources().getDisplayMetrics().widthPixels - 30*2)/3;
+        float maxWidth = (getResources().getDisplayMetrics().widthPixels - 80 * 2) / 3;
         Paint paint = textView.getPaint();
         float textWidth = paint.measureText(text);
         int textSizeInDp = 30;
-        if(textWidth > maxWidth){
-            for(;textSizeInDp > 0; textSizeInDp--){
+        if (textWidth > maxWidth) {
+            for (; textSizeInDp > 0; textSizeInDp--) {
                 textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSizeInDp);
                 paint = textView.getPaint();
                 textWidth = paint.measureText(text);
-                if(textWidth <= maxWidth){
+                if (textWidth <= maxWidth) {
                     break;
                 }
             }
@@ -964,6 +968,10 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     private List<String> mBannerList = new ArrayList<>();
 
     private void playBanner(List<BuildingDetailsBean.ImgUrlBean> list) {
+        //视频设置第一张图为默认背景
+        if (list.size() > 0) {
+            GlideUtils.urlToDrawable(this, rlDefaultHousePic, list.get(0).getImgUrl());
+        }
         for (int i = 0; i < list.size(); i++) {
             if (!TextUtils.isEmpty(list.get(i).getImgUrl())) {
                 mBannerList.add(list.get(i).getImgUrl());

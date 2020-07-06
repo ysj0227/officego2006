@@ -52,7 +52,7 @@ import cn.bingoogolapple.refreshlayout.BGARefreshViewHolder;
  * Data 2020/5/11.
  * Descriptions:
  **/
-@EFragment(R.layout.home_fragment1)
+@EFragment(R.layout.home_fragment)
 public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         HomeContract.View, OnBannerListener,
         SearchPopupWindow.onSureClickListener,
@@ -81,7 +81,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     RelativeLayout rlIbtnSearch;
     @ViewById(R.id.rl_home_title)
     RelativeLayout rlHomeTitle;
-    //搜索-- 区域，写字楼，排序，筛选
+    //搜索 区域，写字楼，排序，筛选
     @ViewById(R.id.tv_search_area)
     TextView tvSearchArea;
     @ViewById(R.id.tv_search_office)

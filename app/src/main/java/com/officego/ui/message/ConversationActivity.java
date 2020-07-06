@@ -20,6 +20,7 @@ import com.officego.commonlib.common.model.ChatHouseBean;
 import com.officego.commonlib.common.model.FirstChatBean;
 import com.officego.commonlib.common.presenter.ConversationPresenter;
 import com.officego.commonlib.common.rongcloud.SendMessageManager;
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
@@ -86,8 +87,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             targetTitle = Objects.requireNonNull(getIntent().getData().getQueryParameter("title")); //对方 昵称
         }
         getHouseChatId = targetId.substring(0, targetId.length() - 1);
-        LogCat.e("TAG", "11111 targetId: " + targetId + "getHouseChatId: " + getHouseChatId + "  title: " + targetTitle);
-
+        //LogCat.e("TAG", "11111 targetId: " + targetId + "getHouseChatId: " + getHouseChatId + "  title: " + targetTitle);
         FragmentManager fragmentManage = getSupportFragmentManager();
         ConversationFragment fragment = (ConversationFragment) fragmentManage.findFragmentById(R.id.conversation);
         Uri uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon()
@@ -166,6 +166,10 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             if (data.getBuilding().getTags() != null && data.getBuilding().getTags().size() > 0) {
                 info.setTags(getTags(data));
             }
+            //租户第一次聊天,发送默认消息
+            if (isFirstChat && TextUtils.equals(Constants.TYPE_TENANT, SpUtils.getRole())) {
+                SendMessageManager.getInstance().sendTextMessage(targetId);
+            }
             //插入消息
             SendMessageManager.getInstance().insertIncomingMessage(info, targetId, SpUtils.getRongChatId());
             //保存第一次插入状态
@@ -209,7 +213,6 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             return;
         }
         if (!TextUtils.isEmpty(SpUtils.getPhoneNum())) {
-//            setPhoneMessage();
             new ConfirmDialog(context, true, getString(
                     R.string.dialog_title_exchange_phone_contacts), "");
         }

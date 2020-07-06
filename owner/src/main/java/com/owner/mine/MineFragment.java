@@ -183,7 +183,6 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         WebViewActivity_.intent(mActivity).flags(Constants.H5_ABOUTS).start();
     }
 
-
     @SuppressLint("SetTextI18n")
     @Override
     public void userInfoSuccess(UserOwnerBean data) {
@@ -236,16 +235,16 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         } else if (data.getIdentityType() == 2) {
             id = "";
         } else {
-            id = "未认证";
+            id = "";
         }
         if (data.getAuditStatus() == 0) {
             status = "待审核";
         } else if (data.getAuditStatus() == 1) {
             status = "已认证";
         } else if (data.getAuditStatus() == 2) {
-            status = "审核驳回";
+            status = "审核未通过";
         } else {
-            status = "";
+            status = "未认证";
         }
         if (TextUtils.isEmpty(id)) {
             return status;
@@ -267,27 +266,6 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
     void hasIdentityView() {
         btnIdentity.setVisibility(View.GONE);
     }
-
-//    @Override
-//    public int[] getStickNotificationId() {
-//        return new int[]{CommonNotifications.updateUserOwnerInfoSuccess,
-//                CommonNotifications.ownerIdentityComplete};
-//    }
-//
-//    @Override
-//    public void didReceivedNotification(int id, Object... args) {
-//        super.didReceivedNotification(id, args);
-//        if (args == null) {
-//            return;
-//        }
-//        if (id == CommonNotifications.updateUserOwnerInfoSuccess) {
-//            mPresenter.getUserInfo();
-//        } else if (id == CommonNotifications.ownerIdentityComplete) {
-//            //认证完成
-//            hasIdentityView();
-//            mPresenter.getUserInfo();
-//        }
-//    }
 
     @Override
     public int[] getStickNotificationId() {

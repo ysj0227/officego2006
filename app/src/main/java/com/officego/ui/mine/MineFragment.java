@@ -162,10 +162,6 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
 
     @Click(R.id.rl_about)
     void aboutClick() {
-        if (TextUtils.isEmpty(SpUtils.getSignToken())) {
-
-            return;
-        }
         WebViewActivity_.intent(mActivity).flags(Constants.H5_ABOUTS).start();
     }
 

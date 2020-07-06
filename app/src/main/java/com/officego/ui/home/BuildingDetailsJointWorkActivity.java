@@ -29,6 +29,7 @@ import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.utils.CommonHelper;
+import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.log.LogCat;
@@ -309,7 +310,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         rlRootHouseTitle.setPadding(0, CommonHelper.statusHeight(this), 0, 0);
         tvIndependentOffice.setVisibility(View.VISIBLE);
         ctlShareService.setVisibility(View.VISIBLE);
-        mConditionBean= ConditionConfig.mConditionBean;
+        mConditionBean = ConditionConfig.mConditionBean;
         initIndependentBuildingRecView();
         centerPlayIsShow(true);
         initVideo();
@@ -455,6 +456,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         }
         mPresenter.favorite(mBuildingBean.getBuildingId() + "", isFavorite ? 1 : 0);
     }
+
     @Override
     public void chatSuccess(ChatsBean data) {
         //0:单业主,1:多业主  判断是否单业主
@@ -864,7 +866,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
             }
             ctlBusLine.setVisibility(View.VISIBLE);
             tvBusLine.setText(linePlan);
-        }else {
+        } else {
             ctlBusLine.setVisibility(View.GONE);
         }
         //楼盘信息
@@ -942,6 +944,10 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
 
     private void playBanner(List<BuildingJointWorkBean.ImgUrlBean> list) {
         mBannerList.clear();
+        //视频设置第一张图为默认背景
+        if (list.size() > 0) {
+            GlideUtils.urlToDrawable(this, rlDefaultHousePic, list.get(0).getImgUrl());
+        }
         for (int i = 0; i < list.size(); i++) {
             if (!TextUtils.isEmpty(list.get(i).getImgUrl())) {
                 mBannerList.add(list.get(i).getImgUrl());

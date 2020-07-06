@@ -8,18 +8,10 @@ import com.google.gson.annotations.SerializedName;
  * Descriptions:
  **/
 public class ChatsBean {
-    @SerializedName("targetId")
-    private int targetId;
     @SerializedName("multiOwner")
     private int multiOwner;
-
-    public int getTargetId() {
-        return targetId;
-    }
-
-    public void setTargetId(int targetId) {
-        this.targetId = targetId;
-    }
+    @SerializedName("targetId")
+    private String targetId;
 
     public int getMultiOwner() {
         return multiOwner;
@@ -28,4 +20,13 @@ public class ChatsBean {
     public void setMultiOwner(int multiOwner) {
         this.multiOwner = multiOwner;
     }
+
+    public String getTargetId() {
+        return targetId;
+    }
+
+    public void setTargetId(String targetId) {
+        this.targetId = targetId;
+    }
+
 }

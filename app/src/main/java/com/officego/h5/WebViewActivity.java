@@ -152,7 +152,8 @@ public class WebViewActivity extends BaseActivity {
 
             @Override
             public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
-                exceptionPageHttpError(view, errorResponse);
+                //exceptionPageHttpError(view, errorResponse);
+                Log.e(TAG, "webview favicon.ico onReceivedHttpError" + errorResponse.getStatusCode() + errorResponse.getReasonPhrase());
                 super.onReceivedHttpError(view, request, errorResponse);
             }
         });

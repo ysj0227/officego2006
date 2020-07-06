@@ -78,16 +78,16 @@ public class UnIdifyDialog {
         } else if (data.getIdentityType() == 2) {
             id = "";
         } else {
-            id = "未认证";
+            id = "";
         }
         if (data.getAuditStatus() == 0) {
             status = "待审核";
         } else if (data.getAuditStatus() == 1) {
             status = "已认证";
         } else if (data.getAuditStatus() == 2) {
-            status = "审核驳回";
+            status = "审核未通过";
         } else {
-            status = "";
+            status = "未认证";
         }
         if (TextUtils.isEmpty(id)) {
             return status;

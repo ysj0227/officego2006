@@ -324,7 +324,7 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
     @Override
     public void chatSuccess(ChatsBean data) {
         if (data != null) {
-            ConversationActivity_.intent(context).houseId(mData.getHouse().getId()).targetId(data.getTargetId() + "").start();
+            ConversationActivity_.intent(context).houseId(mData.getHouse().getId()).targetId(data.getTargetId()).start();
         }
     }
 

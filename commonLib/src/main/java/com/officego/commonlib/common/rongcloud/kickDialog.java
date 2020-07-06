@@ -24,7 +24,7 @@ public class kickDialog {
         Handler mainHandler = new Handler(Looper.getMainLooper());
         mainHandler.post(() -> {
             CommonDialog dialog = new CommonDialog.Builder(context)
-                    .setTitle("你的账号已在其他设备上登录\n是否重连")
+                    .setMessage("你的账号已在其他设备上登录，是否重连，如果不是你的操作，请尽快修改密码")
                     .setCancelButton(R.string.sm_cancel, (dialog12, which) -> {
                         SpUtils.clearLoginInfo();
                         GotoActivityUtils.loginClearActivity(context);
