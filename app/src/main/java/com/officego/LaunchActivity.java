@@ -14,12 +14,8 @@ import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.ui.IdSelectActivity_;
 import com.officego.ui.login.LoginActivity_;
 
-import org.androidannotations.annotations.AfterViews;
-import org.androidannotations.annotations.EActivity;
-
 
 @SuppressLint("Registered")
-@EActivity(R.layout.activity_launch)
 public class LaunchActivity extends BaseActivity {
 
     @Override
@@ -28,10 +24,6 @@ public class LaunchActivity extends BaseActivity {
         if (!isTaskRoot()) {
             finish();
         }
-    }
-
-    @AfterViews
-    void init() {
         StatusBarUtils.setStatusBarFullTransparent(this);
         new Handler().postDelayed(this::gotoMainActivity, 500);
     }

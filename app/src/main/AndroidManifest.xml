@@ -59,7 +59,7 @@
         tools:replace="label">
 
         <activity
-            android:name=".LaunchActivity_"
+            android:name=".LaunchActivity"
             android:screenOrientation="portrait"
             android:theme="@style/SplashStyle">
             <intent-filter>
