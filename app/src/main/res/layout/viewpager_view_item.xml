@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <ImageView
+        android:id="@+id/viewpager_view_page_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:scaleType="fitXY"
+        tools:ignore="ContentDescription" />
+
+    <Button
+        android:id="@+id/btn_text"
+        android:layout_width="@dimen/dp_100"
+        android:layout_height="@dimen/dp_40"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/dp_120"
+        android:background="@drawable/btn_common_bg_primary"
+        android:gravity="center"
+        android:text="@string/text_right_now_try"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_15" />
+
+</RelativeLayout>

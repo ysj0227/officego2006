@@ -70,6 +70,7 @@
     <string name="are_you_sure_switch_owner">是否确认切换为业主?</string>
     <string name="str_cannot_get_mine_phone_use_sms">无法获取本机号码，请使用验证码登录</string>
     <string name="rc_chat_tip">我对你发布的房源有兴趣，能聊聊吗？</string>
+    <string name="text_right_now_try">即刻体验</string>
 
 
 </resources>

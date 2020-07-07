@@ -23,6 +23,8 @@ public class SpUtils {
     private static final String CHAT_INSERT_BUILDING_INFO = PACKAGE_NAME + "CHAT_INSERT_BUILDING_INFO";
     //是否取消更新
     private static final String CANCEL_UPDATE = PACKAGE_NAME + "CANCEL_UPDATE";
+    //保存引导页
+    private static final String LEAD_PAGES = PACKAGE_NAME + "LEAD_PAGES";
 
     private static SharedPreferences getSharedPreference() {
         return SharedManager.getSharedPreference(BaseApplication.getContext());
@@ -148,6 +150,16 @@ public class SpUtils {
 
     public static String getCancelUpdate() {
         return SharedManager.getValue(BaseApplication.getContext(), CANCEL_UPDATE);
+    }
+
+    //保存是否显示引导页
+    public static void saveLead() {
+        SharedManager.putValue(BaseApplication.getContext(), LEAD_PAGES, "TRUE");
+    }
+
+    //获取引导页值
+    public static String getLead() {
+        return SharedManager.getValue(BaseApplication.getContext(), LEAD_PAGES);
     }
 
 }

@@ -1,0 +1,50 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.viewpager.widget.ViewPager
+        android:id="@+id/viewpager"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <RadioGroup
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerInParent="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="@dimen/dp_36"
+        android:orientation="horizontal"
+        android:visibility="visible">
+
+        <RadioButton
+            android:id="@+id/point1"
+            android:layout_width="6dp"
+            android:layout_height="6dp"
+            android:background="@drawable/point_selector"
+            android:button="@null"
+            android:checked="true" />
+
+        <RadioButton
+            android:id="@+id/point2"
+            android:layout_width="6dp"
+            android:layout_height="6dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/point_selector" />
+
+        <RadioButton
+            android:id="@+id/point3"
+            android:layout_width="6dp"
+            android:layout_height="6dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/point_selector" />
+
+        <RadioButton
+            android:id="@+id/point4"
+            android:layout_width="6dp"
+            android:layout_height="6dp"
+            android:layout_marginStart="10dp"
+            android:background="@drawable/point_selector" />
+    </RadioGroup>
+
+</RelativeLayout>

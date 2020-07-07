@@ -37,14 +37,18 @@ public class LaunchActivity extends BaseActivity {
     }
 
     private void gotoMainActivity() {
-        if (!TextUtils.isEmpty(SpUtils.getRole())) {
-            if (TextUtils.equals(Constants.TYPE_TENANT, SpUtils.getRole())) {
-                MainActivity_.intent(context).start();
-            } else {
-                LoginActivity_.intent(context).start();
-            }
+        if (TextUtils.isEmpty(SpUtils.getLead())) {
+            LeadPagesActivity_.intent(context).start();
         } else {
-            IdSelectActivity_.intent(context).start();
+            if (!TextUtils.isEmpty(SpUtils.getRole())) {
+                if (TextUtils.equals(Constants.TYPE_TENANT, SpUtils.getRole())) {
+                    MainActivity_.intent(context).start();
+                } else {
+                    LoginActivity_.intent(context).start();
+                }
+            } else {
+                IdSelectActivity_.intent(context).start();
+            }
         }
         finish();
     }

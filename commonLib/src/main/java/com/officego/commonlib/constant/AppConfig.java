@@ -42,7 +42,9 @@ public class AppConfig extends BaseConfig {
         H5_REGISTER = APP_URL_MAIN + "lessee/registerProtocol.html";
         H5_QA = APP_URL_MAIN + "lessee/issueList.html";
         //楼盘网点管理
-        H5_OWNER_BUILDINGlIST = APP_URL_MAIN + "owner/houseList.html";
+//        H5_OWNER_BUILDINGlIST = "http//172.16.4.12:8080/owner/houseList.html";
+//        H5_OWNER_HOUSElIST = "http//172.16.4.12:8080/owner/branchList.html";
+        H5_OWNER_BUILDINGlIST =APP_URL_MAIN + "owner/houseList.html";
         H5_OWNER_HOUSElIST = APP_URL_MAIN + "owner/branchList.html";
         //认证
         H5_OWNER_IDIFY = APP_URL_MAIN + "owner/myHome.html";

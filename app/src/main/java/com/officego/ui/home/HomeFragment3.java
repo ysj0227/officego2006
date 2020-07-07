@@ -12,7 +12,6 @@ import androidx.coordinatorlayout.widget.CoordinatorLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.officego.R;
@@ -44,20 +43,24 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
+import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
+import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
+import cn.bingoogolapple.refreshlayout.BGARefreshViewHolder;
+
 /**
  * Created by YangShiJie
  * Data 2020/5/11.
  * Descriptions:
  **/
-@EFragment(R.layout.home_fragment3)
-public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
+@EFragment(R.layout.home_fragment)
+public class HomeFragment3 extends BaseMvpFragment<HomePresenter> implements
         HomeContract.View, OnBannerListener,
         SearchPopupWindow.onSureClickListener,
-        SwipeRefreshLayout.OnRefreshListener {
+        BGARefreshLayout.BGARefreshLayoutDelegate {
     @ViewById(R.id.cdl_root)
     CoordinatorLayout cdlRoot;
     @ViewById(R.id.bga_refresh)
-    SwipeRefreshLayout mSwipeRefreshLayout;
+    BGARefreshLayout refreshLayout;
     @ViewById(R.id.rv_house)
     RecyclerView rvHouse;
     @ViewById(R.id.banner)
@@ -164,6 +167,9 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
      * pageSize 	否 	int 	每页条数
      */
     private void getBuildingList() {
+//        LogCat.e("TAG", "list pageNum=" + pageNum + " btype= " + btype + " constructionArea=" + area +
+//                " rentPrice=" + dayPrice + " simple=" + seats +
+//                " decoration=" + decoration + " tags=" + houseTags + "sort=" + sort);
         String mArea = "", mDayPrice = "", mSeats = "";
         if (btype == 1) {
             if (TextUtils.equals("", area) || TextUtils.equals("0,2000", area)) {
@@ -194,56 +200,27 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     }
 
     private void initRefresh() {
-        mSwipeRefreshLayout.setOnRefreshListener(this);
-        mSwipeRefreshLayout.setProgressViewOffset(true, -20, 100);
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.common_blue_main_80a, R.color.common_blue_main);
-        //加载更多
-        rvHouse.addOnScrollListener(new OnLoadMoreListener() {
-            @Override
-            protected void onLoading(int countItem, int lastItem) {
-                if (mSwipeRefreshLayout.isRefreshing()) {
-                    mSwipeRefreshLayout.setRefreshing(false);
-                }
-                loadingMoreList();
-            }
-        });
+        refreshLayout.setDelegate(this);
+        BGARefreshViewHolder viewHolder = new BGANormalRefreshViewHolder(mActivity, true);
+        viewHolder.setLoadingMoreText(getString(R.string.str_loding_more));
+        viewHolder.setLoadMoreBackgroundColorRes(R.color.common_bg);
+        refreshLayout.setRefreshViewHolder(viewHolder);
     }
 
     private void initBarLayoutBg() {
         hasData();
+        if (currentScrollPosition == 0) {
+            refreshLayout.setPullDownRefreshEnable(true);
+        } else if (currentScrollPosition == 1) {
+            refreshLayout.setPullDownRefreshEnable(false);
+        } else {
+            refreshLayout.setPullDownRefreshEnable(false);
+        }
     }
 
     @Override
     public void OnBannerClick(int position) {
 
-    }
-
-    //下拉刷新
-    private void pullDownRefreshList() {
-        pageNum = 1;
-        buildingList.clear();
-        houseAdapter = null;
-        getBuildingList();
-    }
-
-    //加载更多
-    private void loadingMoreList() {
-        if (NetworkUtils.isNetworkAvailable(mActivity) && hasMore) {
-            pageNum++;
-            getBuildingList();
-        }
-    }
-
-    //开始下拉刷新
-    @Override
-    public void onRefresh() {
-        pullDownRefreshList();
-    }
-
-    //刷新完成
-    @Override
-    public void endRefresh() {
-        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     //搜索
@@ -312,11 +289,23 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     private AppBarStateChangeListener appBarStateChangeListener = new AppBarStateChangeListener() {
         @Override
         public void onStateChanged(AppBarLayout appBarLayout, State state, int offset) {
+            if (state == State.EXPANDED) {
+                //展开状态
+                currentScrollPosition = 0;
+                refreshLayout.setPullDownRefreshEnable(true);
+            } else if (state == State.COLLAPSED) {
+                //折叠状态
+                currentScrollPosition = 1;
+                refreshLayout.setPullDownRefreshEnable(false);
+            } else {
+                //中间状态
+                currentScrollPosition = 2;
+                refreshLayout.setPullDownRefreshEnable(false);
+            }
         }
 
         @Override
         public void onStateAbs(int abs) {
-            //title滑动透明度
             rlHomeTitle.setAlpha(abs * alphaPercent);
             if (abs * alphaPercent < 0.9) {
                 tvSearchArea.setEnabled(false);
@@ -328,12 +317,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
                 tvSearchOffice.setEnabled(true);
                 tvSearchOrder.setEnabled(true);
                 tvSearchCondition.setEnabled(true);
-            }
-            //是否可以下拉刷新
-            if (abs * alphaPercent < 0.2) {
-                mSwipeRefreshLayout.setEnabled(true);
-            } else {
-                mSwipeRefreshLayout.setEnabled(false);
             }
         }
     };
@@ -486,6 +469,36 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         getBuildingList();
     }
 
+    //初始化刷新
+    private void pullDownRefreshList() {
+        pageNum = 1;
+        buildingList.clear();
+        houseAdapter = null;
+        getBuildingList();
+    }
+
+    @Override
+    public void endRefresh() {
+        refreshLayout.endLoadingMore();
+        refreshLayout.endRefreshing();
+    }
+
+    //刷新
+    @Override
+    public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
+        pullDownRefreshList();
+    }
+
+    @Override
+    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
+        if (NetworkUtils.isNetworkAvailable(mActivity) && hasMore) {
+            pageNum++;
+            getBuildingList();
+            return true;
+        }
+        return false;
+    }
+
     private ConditionBean setConditionBean() {
         ConditionBean bean = new ConditionBean();
         //面积
@@ -536,16 +549,18 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     private void noData() {
         tvNoData.setVisibility(View.VISIBLE);
         rlException.setVisibility(View.GONE);
+        refreshLayout.setVisibility(View.GONE);
     }
 
     private void hasData() {
         tvNoData.setVisibility(View.GONE);
         rlException.setVisibility(View.GONE);
+        refreshLayout.setVisibility(View.VISIBLE);
     }
 
     private void netException() {
         tvNoData.setVisibility(View.GONE);
         rlException.setVisibility(View.VISIBLE);
+        refreshLayout.setVisibility(View.GONE);
     }
-
 }

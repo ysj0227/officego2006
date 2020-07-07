@@ -44,7 +44,7 @@ public class Constants {
     public final static int H5_ROLE = 4;
 
     //客服
-    public static final String SERVICE_HOT_MOBILE = "13817176560";
+    public static final String SERVICE_HOT_MOBILE = "17321221162";
     public static final String SERVICE_TECHNICAL_SUPPORT = "13052007068";
     public static final String SERVICE_EMAIL = "Clientservice@officego.com";
 
