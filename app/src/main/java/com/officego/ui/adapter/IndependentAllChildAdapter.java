@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
+import com.officego.commonlib.constant.Constants;
 import com.officego.ui.home.BuildingDetailsChildActivity_;
 import com.officego.ui.home.model.BuildingDetailsChildBean;
 import com.officego.ui.home.utils.BundleUtils;
@@ -61,7 +62,7 @@ public class IndependentAllChildAdapter extends CommonListAdapter<BuildingDetail
 
         holder.itemView.setOnClickListener(v -> {
             BuildingDetailsChildActivity_.intent(context)
-                    .mChildHouseBean(BundleUtils.houseMessage(1, bean.getId())).start();
+                    .mChildHouseBean(BundleUtils.houseMessage(Constants.TYPE_BUILDING, bean.getId())).start();
         });
     }
 }

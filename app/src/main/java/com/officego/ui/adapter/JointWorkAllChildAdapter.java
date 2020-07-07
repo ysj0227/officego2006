@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
+import com.officego.commonlib.constant.Constants;
 import com.officego.ui.home.BuildingDetailsJointWorkChildActivity_;
 import com.officego.ui.home.model.BuildingDetailsChildBean;
 import com.officego.ui.home.utils.BundleUtils;
@@ -52,7 +53,7 @@ public class JointWorkAllChildAdapter extends CommonListAdapter<BuildingDetailsC
         tvItemListChildRightDown.setText(Html.fromHtml("<font color='#46C3C2'>¥" + bean.getDayPrice() + "</font>/位/天"));
         holder.itemView.setOnClickListener(v -> {
             BuildingDetailsJointWorkChildActivity_.intent(context)
-                    .mChildHouseBean(BundleUtils.houseMessage(2, bean.getId())).start();
+                    .mChildHouseBean(BundleUtils.houseMessage(Constants.TYPE_JOINTWORK, bean.getId())).start();
         });
     }
 }

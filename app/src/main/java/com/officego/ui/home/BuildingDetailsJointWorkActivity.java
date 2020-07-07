@@ -934,7 +934,8 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     public void buildingSelectListSuccess(int totals, List<BuildingDetailsChildBean.ListBean> list) {
         tvItemListBottom.setText(totals + "套");//自选面积多少套
         hasMore = list == null || list.size() >= 9;
-        btnQueryMore.setText(hasMore ? getString(R.string.str_query_more_data) : getResources().getString(R.string.tip_no_more_data));
+       // btnQueryMore.setText(hasMore ? getString(R.string.str_query_more_data) : getResources().getString(R.string.tip_no_more_data));
+        btnQueryMore.setVisibility(hasMore ? View.VISIBLE : View.GONE);
         assert list != null;
         childList.addAll(list);
         if (childAdapter == null) {
