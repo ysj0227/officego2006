@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.meituan.android.walle.WalleChannelReader;
 import com.officego.MainActivity_;
 import com.officego.MainOwnerActivity_;
 import com.officego.R;
@@ -29,6 +30,7 @@ import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.RegexUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.h5.WebViewActivity_;
 import com.officego.ui.login.contract.LoginContract;
@@ -101,6 +103,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
             isReOwnerLogin = getIntent().getExtras().getBoolean("isReOwnerLogin");
             rlBack.setVisibility(isOwnerLogin ? View.GONE : View.VISIBLE);
         }
+        //String channel = WalleChannelReader.getChannel(this.getApplicationContext());
     }
 
     @Click(R.id.btn_login)
