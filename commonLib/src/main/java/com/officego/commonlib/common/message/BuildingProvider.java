@@ -8,6 +8,7 @@ package com.officego.commonlib.common.message;
 
 import android.content.Context;
 import android.text.Spannable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -43,7 +44,6 @@ public class BuildingProvider extends IContainerItemProvider.MessageProvider<Bui
         holder.tvLocation = view.findViewById(R.id.tv_location);
         holder.tvRouteMap = view.findViewById(R.id.tv_bus);
         holder.tvPrice = view.findViewById(R.id.tv_price);
-        holder.tvUnit = view.findViewById(R.id.tv_unit);
         holder.tvStartConversationTime = view.findViewById(R.id.tv_start_conversation_time);
         holder.tvCollect = view.findViewById(R.id.tv_collect);
         holder.lvLabel = view.findViewById(R.id.lv_label);
@@ -59,8 +59,18 @@ public class BuildingProvider extends IContainerItemProvider.MessageProvider<Bui
         holder.tvHouseName.setText(info.getbuildingName());
         holder.tvStartConversationTime.setText(info.getCreateTime());
         holder.tvPrice.setText(info.getMinSinglePrice());
-        holder.tvLocation.setText(info.getDistrict());
-        holder.tvRouteMap.setText(info.getRouteMap());
+        if (TextUtils.isEmpty(info.getDistrict())) {
+            holder.tvLocation.setVisibility(View.GONE);
+        } else {
+            holder.tvLocation.setVisibility(View.VISIBLE);
+            holder.tvLocation.setText(info.getDistrict());
+        }
+        if (TextUtils.isEmpty(info.getRouteMap())) {
+            holder.tvRouteMap.setVisibility(View.GONE);
+        } else {
+            holder.tvRouteMap.setVisibility(View.VISIBLE);
+            holder.tvRouteMap.setText(info.getRouteMap());
+        }
         if (info.getTags() != null) {
             List<String> list = Arrays.asList(info.getTags().split(","));
             holder.lvLabel.setLabels(list, (label, position, data) -> data);
@@ -83,7 +93,6 @@ public class BuildingProvider extends IContainerItemProvider.MessageProvider<Bui
         TextView tvLocation;
         TextView tvRouteMap;
         TextView tvPrice;
-        TextView tvUnit;
         TextView tvStartConversationTime;
         TextView tvCollect;
         LabelsView lvLabel;

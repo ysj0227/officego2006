@@ -59,7 +59,7 @@
 
     </RelativeLayout>
 
-    <cn.bingoogolapple.refreshlayout.BGARefreshLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/bga_refresh"
         android:layout_width="0dp"
         android:layout_height="0dp"
@@ -78,7 +78,7 @@
             android:layout_height="wrap_content"
             android:background="@color/white" />
 
-    </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <FrameLayout
         android:id="@+id/fl_no_data"

@@ -12,6 +12,7 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpFragment;
@@ -25,6 +26,7 @@ import com.officego.ui.collect.contract.CollectedContract;
 import com.officego.ui.collect.model.CollectBuildingBean;
 import com.officego.ui.collect.model.CollectHouseBean;
 import com.officego.ui.collect.presenter.CollectedPresenter;
+import com.officego.ui.home.OnLoadMoreListener;
 import com.officego.ui.login.LoginActivity_;
 
 import org.androidannotations.annotations.AfterViews;
@@ -36,10 +38,6 @@ import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 import java.util.List;
 
-import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
-import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
-import cn.bingoogolapple.refreshlayout.BGARefreshViewHolder;
-
 import static android.app.Activity.RESULT_OK;
 
 /**
@@ -49,14 +47,14 @@ import static android.app.Activity.RESULT_OK;
  **/
 @EFragment(R.layout.collect_fragment)
 public class CollectFragment extends BaseMvpFragment<CollectedPresenter>
-        implements CollectedContract.View, BGARefreshLayout.BGARefreshLayoutDelegate {
+        implements CollectedContract.View, SwipeRefreshLayout.OnRefreshListener {
     private static final int REQUEST_CODE = 1002;
     @ViewById(R.id.ctl_root)
     ConstraintLayout ctlRoot;
     @ViewById(R.id.ctl_no_login)
     ConstraintLayout ctlNoLogin;
     @ViewById(R.id.bga_refresh)
-    BGARefreshLayout refreshLayout;
+    SwipeRefreshLayout mSwipeRefreshLayout;
     @ViewById(R.id.rl_collect)
     RecyclerView rlCollect;
     @ViewById(R.id.tv_office_building)
@@ -120,11 +118,19 @@ public class CollectFragment extends BaseMvpFragment<CollectedPresenter>
 
     //刷新
     private void initRefresh() {
-        refreshLayout.setDelegate(this);
-        BGARefreshViewHolder viewHolder = new BGANormalRefreshViewHolder(mActivity, true);
-        viewHolder.setLoadingMoreText(getString(R.string.str_loding_more));
-        viewHolder.setLoadMoreBackgroundColorRes(R.color.common_bg);
-        refreshLayout.setRefreshViewHolder(viewHolder);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout.setProgressViewOffset(true, -20, 100);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.common_blue_main_80a, R.color.common_blue_main);
+        //加载更多
+        rlCollect.addOnScrollListener(new OnLoadMoreListener() {
+            @Override
+            protected void onLoading(int countItem, int lastItem) {
+                if (mSwipeRefreshLayout.isRefreshing()) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
+                loadingMoreList();
+            }
+        });
     }
 
     @Click(R.id.btn_login)
@@ -182,10 +188,32 @@ public class CollectFragment extends BaseMvpFragment<CollectedPresenter>
         }
     }
 
+    //下拉刷新
+    private void pullDownRefreshList() {
+        pageNum = 1;
+        collectBuildingList.clear();
+        workOfficeList.clear();
+        getList(isOffice);
+    }
+
+    //加载更多
+    private void loadingMoreList() {
+        if (NetworkUtils.isNetworkAvailable(mActivity) && hasMore) {
+            pageNum++;
+            getList(isOffice);
+        }
+    }
+
+    //开始下拉刷新
+    @Override
+    public void onRefresh() {
+        pullDownRefreshList();
+    }
+
+    //刷新完成
     @Override
     public void endRefresh() {
-        refreshLayout.endLoadingMore();
-        refreshLayout.endRefreshing();
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     //网络异常重试
@@ -246,49 +274,32 @@ public class CollectFragment extends BaseMvpFragment<CollectedPresenter>
 
     }
 
-    @Override
-    public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
-        pageNum = 1;
-        collectBuildingList.clear();
-        workOfficeList.clear();
-        getList(isOffice);
-    }
-
-    @Override
-    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
-        if (NetworkUtils.isNetworkAvailable(mActivity) && hasMore) {
-            pageNum++;
-            getList(isOffice);
-            return true;
-        }
-        return false;
-    }
-
     private void noData() {
         tvNoData.setVisibility(View.VISIBLE);
         rlException.setVisibility(View.GONE);
-        refreshLayout.setVisibility(View.GONE);
+        mSwipeRefreshLayout.setVisibility(View.GONE);
         ctlNoLogin.setVisibility(View.GONE);
     }
 
     private void hasData() {
         tvNoData.setVisibility(View.GONE);
         rlException.setVisibility(View.GONE);
-        refreshLayout.setVisibility(View.VISIBLE);
+        mSwipeRefreshLayout.setVisibility(View.VISIBLE);
         ctlNoLogin.setVisibility(View.GONE);
     }
 
     private void netException() {
         tvNoData.setVisibility(View.GONE);
         rlException.setVisibility(View.VISIBLE);
-        refreshLayout.setVisibility(View.GONE);
+        mSwipeRefreshLayout.setVisibility(View.GONE);
         ctlNoLogin.setVisibility(View.GONE);
     }
 
     private void noLoginView() {
         tvNoData.setVisibility(View.GONE);
         rlException.setVisibility(View.GONE);
-        refreshLayout.setVisibility(View.GONE);
+        mSwipeRefreshLayout.setVisibility(View.GONE);
         ctlNoLogin.setVisibility(View.VISIBLE);
     }
+
 }

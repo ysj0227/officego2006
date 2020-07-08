@@ -160,7 +160,11 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
                 info.setRouteMap("步行" + workTime + "分钟到 | " + stationLine + "号线 ·" + stationName);
             }
             if (data.getBuilding().getMinSinglePrice() != null) {
-                info.setMinSinglePrice("¥" + data.getBuilding().getMinSinglePrice());
+                if (data.getBuilding().getBtype()==Constants.TYPE_BUILDING){
+                    info.setMinSinglePrice("¥" + data.getBuilding().getMinSinglePrice()+"/㎡/天");
+                }else {
+                    info.setMinSinglePrice("¥" + data.getBuilding().getMinSinglePrice()+"/位/月");
+                }
             }
             info.setFavorite(data.isIsFavorite());
             if (data.getBuilding().getTags() != null && data.getBuilding().getTags().size() > 0) {

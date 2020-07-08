@@ -16,6 +16,7 @@ import com.officego.commonlib.common.model.FirstChatBean;
 import com.officego.commonlib.common.model.RenterBean;
 import com.officego.commonlib.common.presenter.ConversationPresenter;
 import com.officego.commonlib.common.rongcloud.SendMessageManager;
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
@@ -138,24 +139,29 @@ public class ConversationViewingDateActivity extends BaseMvpActivity<Conversatio
         if (data.getBuilding() != null) {
             Glide.with(context).load(data.getBuilding().getMainPic()).into(ivHouseImg);
             tvHouseName.setText(data.getBuilding().getBuildingName());
-            tvLocation.setText(data.getBuilding().getDistrict());
+            if (TextUtils.isEmpty(data.getBuilding().getDistrict())){
+                tvLocation.setVisibility(View.GONE);
+            }else {
+                tvLocation.setVisibility(View.VISIBLE);
+                tvLocation.setText(data.getBuilding().getDistrict());
+            }
             if (data.getBuilding().getStationline().size() > 0) {
+                tvRouteMap.setVisibility(View.VISIBLE);
                 String workTime = data.getBuilding().getNearbySubwayTime().get(0);
                 String stationLine = data.getBuilding().getStationline().get(0);
                 String stationName = data.getBuilding().getStationNames().get(0);
                 tvRouteMap.setText("步行" + workTime + "分钟到 | " + stationLine + "号线 ·" + stationName);
+            }else {
+                tvRouteMap.setVisibility(View.GONE);
             }
             if (data.getBuilding().getMinSinglePrice() != null) {
-                tvPrice.setText("¥" + data.getBuilding().getMinSinglePrice());
+                if (data.getBuilding().getBtype()== Constants.TYPE_BUILDING){
+                    tvPrice.setText("¥" + data.getBuilding().getMinSinglePrice()+"/㎡/天");
+                }else {
+                    tvPrice.setText("¥" + data.getBuilding().getMinSinglePrice()+"/位/月");
+                }
             }
         }
-//        tvName.setText("姓名  " + data.getCreateUser());
-//        tvMobile.setText("联系方式  " + data.getUser().getPhone());
-//        if (data.getChatted() != null) {
-//            Glide.with(context).load(data.getChatted().getAvatar()).into(civAvatar);
-//            tvOwnerName.setText(data.getChatted().getNickname());
-//            tvPosition.setText(data.getChatted().getJob());
-//        }
     }
 
     @Override
