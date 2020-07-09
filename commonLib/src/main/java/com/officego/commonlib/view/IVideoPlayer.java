@@ -281,11 +281,16 @@ public class IVideoPlayer extends RelativeLayout {
         ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "enable-accurate-seek", 1);
 
         ijkMediaPlayer.setVolume(1.0f, 1.0f);
-        setEnableMediaCodec(ijkMediaPlayer, false);
+        setEnableMediaCodec(ijkMediaPlayer, true);
         return ijkMediaPlayer;
     }
 
-    //设置是否开启硬解码
+    /**
+     * 设置是否开启硬解码
+     * jkPlayer支持硬解码和软解码。
+     * 软解码时不会旋转视频角度这时需要你通过onInfo的what == IMediaPlayer.MEDIA_INFO_VIDEO_ROTATION_CHANGED去获取角度，
+     * 自己旋转画面。或者开启硬解硬解码，不过硬解码容易造成黑屏无声（硬件兼容问题）
+     */
     private void setEnableMediaCodec(IjkMediaPlayer ijkMediaPlayer, boolean isEnable) {
         int value = isEnable ? 1 : 0;
         ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "mediacodec", value);//开启硬解码
