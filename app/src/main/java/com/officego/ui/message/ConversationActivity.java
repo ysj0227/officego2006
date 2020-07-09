@@ -110,6 +110,10 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         if (!TextUtils.isEmpty(id)) {
             UserInfo userInfo = new UserInfo(id, name, Uri.parse(imgUrl));
             RongIM.getInstance().refreshUserInfoCache(userInfo);
+            //是否携带用户信息，true 携带，false 不携带。
+            RongIM.getInstance().setMessageAttachedUserInfo(true);
+            RongIM.getInstance().enableNewComingMessageIcon(true);
+            RongIM.getInstance().enableUnreadMessageIcon(true);
         }
     }
 
@@ -129,6 +133,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         //刷新用户信息
         if (data.getBuilding() != null) {
             refreshUserInfoCache(targetId, data.getChatted().getNickname(), data.getChatted().getAvatar());
+            refreshUserInfoCache(SpUtils.getRongChatId(), SpUtils.getNickName(), SpUtils.getHeaderImg());
             tvTitleName.setText(data.getChatted().getNickname());
             tvJob.setText(data.getChatted().getCompany() + data.getChatted().getJob());
         }

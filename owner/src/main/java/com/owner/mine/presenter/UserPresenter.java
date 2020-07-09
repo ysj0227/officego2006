@@ -1,6 +1,7 @@
 package com.owner.mine.presenter;
 
 import com.officego.commonlib.base.BasePresenter;
+import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.log.LogCat;
 import com.owner.mine.contract.UserContract;
@@ -24,6 +25,7 @@ public class UserPresenter extends BasePresenter<UserContract.View>
             public void onSuccess(int code, String msg, UserOwnerBean data) {
                 if (isViewAttached()) {
                     mView.hideLoadingDialog();
+                    SpUtils.saveHeaderImg(data.getAvatar());
                     mView.userInfoSuccess(data);
                 }
             }
