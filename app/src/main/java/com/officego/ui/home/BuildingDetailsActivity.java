@@ -638,7 +638,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
      **/
     @Override
     public boolean onError(IMediaPlayer iMediaPlayer, int i, int i1) {
-        shortTip(R.string.str_server_exception);
+//        shortTip(R.string.str_server_exception);
         errorView();
         return false;
     }
