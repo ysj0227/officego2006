@@ -8,6 +8,7 @@ package com.officego;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.content.Intent;
 import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -86,6 +87,9 @@ public class LeadPagesActivity extends BaseActivity {
                     case 0:
                         imgContent.setImageResource(R.mipmap.ic_lead_page1);
                         btnText.setVisibility(View.INVISIBLE);
+
+                        Intent a = new Intent(LeadPagesActivity.this, IDCameraActivity.class);
+                        startActivity(a);
                         break;
                     case 1:
                         imgContent.setImageResource(R.mipmap.ic_lead_page2);

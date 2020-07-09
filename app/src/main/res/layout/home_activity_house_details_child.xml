@@ -16,18 +16,70 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.youth.banner.Banner
-                android:id="@+id/banner_image"
+            <RelativeLayout
+                android:id="@+id/rl_video_picture"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dp_300"
-                android:background="@mipmap/ic_loading_def_bg"
-                app:indicator_drawable_selected="@color/transparent"
-                app:indicator_drawable_unselected="@color/transparent"
-                app:is_auto_play="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                app:title_height="@dimen/dp_8" />
+                app:layout_constraintTop_toTopOf="parent">
+
+                <com.youth.banner.Banner
+                    android:id="@+id/banner_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_300"
+                    android:background="@mipmap/ic_loading_def_bg"
+                    android:visibility="gone"
+                    app:indicator_drawable_selected="@color/transparent"
+                    app:indicator_drawable_unselected="@color/transparent"
+                    app:is_auto_play="false"
+                    app:title_height="@dimen/dp_8" />
+
+                <include
+                    layout="@layout/video_activity_play"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_300" />
+
+                <RadioGroup
+                    android:id="@+id/rg_video_picture"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_centerHorizontal="true"
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="@dimen/dp_50"
+                    android:background="@drawable/button_selected_white_solid12"
+                    android:orientation="horizontal"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent">
+
+                    <RadioButton
+                        android:id="@+id/rb_video"
+                        android:layout_width="@dimen/dp_45"
+                        android:layout_height="@dimen/dp_24"
+                        android:background="@drawable/button_selector_left"
+                        android:button="@null"
+                        android:checked="true"
+                        android:gravity="center"
+                        android:text="@string/str_text_video"
+                        android:textColor="@color/text_selector_blue_white"
+                        android:textSize="@dimen/sp_11" />
+
+                    <RadioButton
+                        android:id="@+id/rb_picture"
+                        android:layout_width="@dimen/dp_45"
+                        android:layout_height="@dimen/dp_24"
+                        android:background="@drawable/button_selector_right"
+                        android:button="@null"
+                        android:checked="false"
+                        android:gravity="center"
+                        android:text="@string/str_text_picture"
+                        android:textColor="@color/text_selector_blue_white"
+                        android:textSize="@dimen/sp_11" />
+                </RadioGroup>
+
+            </RelativeLayout>
 
             <TextView
                 android:id="@+id/tv_building_name"
@@ -38,7 +90,7 @@
                 android:textColor="@color/text_33"
                 android:textSize="@dimen/sp_18"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/banner_image" />
+                app:layout_constraintTop_toBottomOf="@id/rl_video_picture" />
 
             <!--            独立办公室-->
             <include

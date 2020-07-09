@@ -111,4 +111,7 @@ dependencies {
     api 'com.alibaba:fastjson:1.2.46'
 //    日历周月切换
     api 'com.github.MagicMashRoom:SuperCalendar:1.6'
+    //身份证
+    api 'com.github.wildma:IDCardCamera:1.1.1'
+    api 'com.github.donkingliang:ImageSelector:2.2.0'
 }

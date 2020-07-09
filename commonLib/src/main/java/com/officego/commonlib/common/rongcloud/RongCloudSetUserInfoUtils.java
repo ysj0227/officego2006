@@ -24,6 +24,10 @@ public class RongCloudSetUserInfoUtils {
         if (TextUtils.isEmpty(id)) return;
         UserInfo userInfo = new UserInfo(id, name, Uri.parse(imgUrl));
         RongIM.getInstance().refreshUserInfoCache(userInfo);
+        //是否携带用户信息，true 携带，false 不携带。
+        RongIM.getInstance().setMessageAttachedUserInfo(true);
+        RongIM.getInstance().enableNewComingMessageIcon(true);
+        RongIM.getInstance().enableUnreadMessageIcon(true);
     }
 
     /**

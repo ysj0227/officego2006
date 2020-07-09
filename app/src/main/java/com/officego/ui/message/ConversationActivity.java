@@ -110,6 +110,10 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         if (!TextUtils.isEmpty(id)) {
             UserInfo userInfo = new UserInfo(id, name, Uri.parse(imgUrl));
             RongIM.getInstance().refreshUserInfoCache(userInfo);
+            //是否携带用户信息，true 携带，false 不携带。
+            RongIM.getInstance().setMessageAttachedUserInfo(true);
+            RongIM.getInstance().enableNewComingMessageIcon(true);
+            RongIM.getInstance().enableUnreadMessageIcon(true);
         }
     }
 
@@ -129,6 +133,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         //刷新用户信息
         if (data.getBuilding() != null) {
             refreshUserInfoCache(targetId, data.getChatted().getNickname(), data.getChatted().getAvatar());
+            refreshUserInfoCache(SpUtils.getRongChatId(), SpUtils.getNickName(), SpUtils.getHeaderImg());
             tvTitleName.setText(data.getChatted().getNickname());
             tvJob.setText(data.getChatted().getCompany() + data.getChatted().getJob());
         }
@@ -160,7 +165,11 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
                 info.setRouteMap("步行" + workTime + "分钟到 | " + stationLine + "号线 ·" + stationName);
             }
             if (data.getBuilding().getMinSinglePrice() != null) {
-                info.setMinSinglePrice("¥" + data.getBuilding().getMinSinglePrice());
+                if (data.getBuilding().getBtype()==Constants.TYPE_BUILDING){
+                    info.setMinSinglePrice("¥" + data.getBuilding().getMinSinglePrice()+"/㎡/天");
+                }else {
+                    info.setMinSinglePrice("¥" + data.getBuilding().getMinSinglePrice()+"/位/月");
+                }
             }
             info.setFavorite(data.isIsFavorite());
             if (data.getBuilding().getTags() != null && data.getBuilding().getTags().size() > 0) {

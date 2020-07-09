@@ -1,6 +1,7 @@
 package com.officego.ui.mine.presenter;
 
 import com.officego.commonlib.base.BasePresenter;
+import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.log.LogCat;
 import com.officego.rpc.OfficegoApi;
@@ -27,6 +28,8 @@ public class UserPresenter extends BasePresenter<UserContract.View>
             public void onSuccess(int code, String msg, UserBean data) {
                 if (isViewAttached()) {
                     mView.hideLoadingDialog();
+                    SpUtils.saveHeaderImg(data.getAvatar());
+                    SpUtils.saveNickName(data.getNickname());
                     mView.userInfoSuccess(data);
                 }
             }

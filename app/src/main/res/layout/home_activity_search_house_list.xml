@@ -22,12 +22,14 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rl_title" />
 
-    <cn.bingoogolapple.refreshlayout.BGARefreshLayout
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/bga_refresh"
         android:layout_width="0dp"
         android:layout_height="0dp"
         android:background="@color/c_white"
         android:visibility="gone"
+        android:paddingStart="@dimen/dp_18"
+        android:paddingEnd="@dimen/dp_18"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -35,11 +37,10 @@
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_house"
-            style="@style/marginLeftRight18"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
-    </cn.bingoogolapple.refreshlayout.BGARefreshLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <TextView
         android:id="@+id/tv_no_data"

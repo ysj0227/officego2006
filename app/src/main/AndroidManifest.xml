@@ -215,6 +215,8 @@
         <activity
             android:name=".MainOwnerActivity_"
             android:screenOrientation="portrait" />
+        <activity android:name=".IDCameraActivity"
+            android:screenOrientation="portrait"/>
 
     </application>
 

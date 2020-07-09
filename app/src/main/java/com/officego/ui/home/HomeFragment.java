@@ -536,16 +536,18 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     private void noData() {
         tvNoData.setVisibility(View.VISIBLE);
         rlException.setVisibility(View.GONE);
+        rvHouse.setVisibility(View.GONE);
     }
 
     private void hasData() {
         tvNoData.setVisibility(View.GONE);
         rlException.setVisibility(View.GONE);
+        rvHouse.setVisibility(View.VISIBLE);
     }
 
     private void netException() {
         tvNoData.setVisibility(View.GONE);
         rlException.setVisibility(View.VISIBLE);
+        rvHouse.setVisibility(View.GONE);
     }
-
 }

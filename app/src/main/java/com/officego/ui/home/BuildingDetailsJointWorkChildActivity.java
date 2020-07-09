@@ -2,13 +2,20 @@ package com.officego.ui.home;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.os.Handler;
+import android.os.Looper;
+import android.os.Message;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
+import android.widget.SeekBar;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -19,8 +26,10 @@ import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.utils.CommonHelper;
+import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.view.IVideoPlayer;
 import com.officego.model.ShareBean;
 import com.officego.ui.home.contract.BuildingDetailsChildJointWorkContract;
 import com.officego.ui.home.model.ChatsBean;
@@ -38,10 +47,14 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
+
+import tv.danmaku.ijk.media.player.IMediaPlayer;
 
 /**
  * Created by YangShiJie
@@ -51,7 +64,14 @@ import java.util.List;
 @SuppressLint("Registered")
 @EActivity(R.layout.home_activity_house_details_child)
 public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<BuildingDetailsChildJointWorkPresenter>
-        implements BuildingDetailsChildJointWorkContract.View, NestedScrollView.OnScrollChangeListener {
+        implements BuildingDetailsChildJointWorkContract.View,
+        NestedScrollView.OnScrollChangeListener,
+        SeekBar.OnSeekBarChangeListener,
+        IMediaPlayer.OnBufferingUpdateListener,
+        IMediaPlayer.OnCompletionListener,
+        IMediaPlayer.OnPreparedListener,
+        IMediaPlayer.OnErrorListener,
+        IMediaPlayer.OnSeekCompleteListener {
     //title
     @ViewById(R.id.nsv_view)
     NestedScrollView nsvView;
@@ -114,6 +134,80 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
     //收藏取消
     @ViewById(R.id.tv_favorite)
     TextView tvFavorite;
+    //视频图片切换
+    @ViewById(R.id.rb_video)
+    RadioButton rbVideo;
+    @ViewById(R.id.rb_picture)
+    RadioButton rbPicture;
+    @ViewById(R.id.rg_video_picture)
+    RadioGroup rgVideoPicture;
+    //视频
+    @ViewById(R.id.ctl_video_play)
+    ConstraintLayout ctlVideoPlay;
+    @ViewById(R.id.rl_default_house_picture)
+    RelativeLayout rlDefaultHousePic;
+    @ViewById(R.id.ib_init_start)
+    ImageButton ibInitStart;
+    @ViewById(R.id.ivp_player)
+    IVideoPlayer iVideoPlayer;
+    @ViewById(R.id.ib_play)
+    ImageButton ibPlay;
+    @ViewById(R.id.tv_current_play_time)
+    TextView tvCurrentPlayTime;
+    @ViewById(R.id.tv_count_play_time)
+    TextView tvCountPlayTime;
+    @ViewById(R.id.sb_bar)
+    SeekBar sbBar;
+    @ViewById(R.id.ll_play_fail)
+    LinearLayout llPlayFail;
+    @ViewById(R.id.rl_bottom_panel)
+    RelativeLayout rlBottomPanel;
+    @ViewById(R.id.ll_play_loading)
+    LinearLayout llPlayLoading;
+    /**
+     * ******************************
+     * 同步进度
+     */
+    private static final int MESSAGE_SHOW_PROGRESS = 1;
+    /**
+     * 缓冲进度界限值
+     */
+    private static final int BUFFERING_PROGRESS = 95;
+    /**
+     * 延迟毫秒数
+     */
+    private static final int DELAY_MILLIS = 10;
+    /**
+     * 是否在拖动进度条中，默认为停止拖动，true为在拖动中，false为停止拖动
+     */
+    private boolean isDragging;
+    /**
+     * 是否暂停，是否静音，是否初始化了截屏
+     */
+    private boolean isPaused;
+    /**
+     * 音量
+     */
+    private int bufferingUpdate;
+    private String videoUrl;
+//    String videoUrl = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
+    /**
+     * 消息处理
+     */
+    private Handler mHandler = new Handler(Looper.getMainLooper()) {
+        @Override
+        public void handleMessage(Message msg) {
+            //滑动中，同步播放进度
+            if (msg.what == MESSAGE_SHOW_PROGRESS) {
+                if (!isDragging) {
+                    msg = obtainMessage(MESSAGE_SHOW_PROGRESS, iVideoPlayer.getCurrentPosition());
+                    sendMessageDelayed(msg, DELAY_MILLIS);
+                    syncProgress(msg.obj);
+                }
+            }
+        }
+    };
+    //******************************
     private String houseId = "";
     //是否已经收藏
     private boolean isFavorite;
@@ -127,6 +221,8 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         mPresenter = new BuildingDetailsChildJointWorkPresenter(context);
         mPresenter.attachView(this);
         setImageViewLayoutParams(context, ivPattern);
+        centerPlayIsShow(true);
+        initVideo();
         nsvView.setOnScrollChangeListener(this);
         rlRootHouseTitle.setPadding(0, CommonHelper.statusHeight(this), 0, 0);
         tvIndependentOffice.setVisibility(View.GONE);//独立办公室title
@@ -150,6 +246,7 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
     @Override
     public void detailsSuccess(HouseOfficeDetailsJointWorkBean data) {
         mData = data;
+        getVideoUrl(data);
         houseId = data.getHouse().getId() + "";
         isFavorite = data.isIsFavorite();
         isFavoriteView(isFavorite);
@@ -248,6 +345,8 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         if (list == null || list.size() == 0) {
             return;
         }
+        //视频设置第一张图为默认背景
+        GlideUtils.urlToDrawable(this, rlDefaultHousePic, list.get(0).getImgUrl());
         for (int i = 0; i < list.size(); i++) {
             if (!TextUtils.isEmpty(list.get(i).getImgUrl())) {
                 mBannerList.add(list.get(i).getImgUrl());
@@ -359,6 +458,335 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
                 llTitle.setVisibility(View.GONE);
                 rlRootHouseTitle.setBackgroundColor(ContextCompat.getColor(context, R.color.transparent));
             }
+        }
+    }
+
+    /**
+     * video****************************
+     */
+    private void getVideoUrl(HouseOfficeDetailsJointWorkBean data) {
+        if (data.getVideoUrl() != null && data.getVideoUrl().size() > 0) {
+            videoUrl = data.getVideoUrl().get(0).getImgUrl();
+        } else {
+            //没有视频只显示轮播图
+            ctlVideoPlay.setVisibility(View.GONE);
+            bannerImage.setVisibility(View.VISIBLE);
+            centerPlayIsShow(false);
+            radioGroupIsShow(false);
+        }
+    }
+
+    //初始化中间播放按钮显示
+    private void centerPlayIsShow(boolean isShow) {
+        rlDefaultHousePic.setVisibility(isShow ? View.VISIBLE : View.GONE);
+    }
+
+    //是否显示视频，图片按钮
+    private void radioGroupIsShow(boolean isShow) {
+        rgVideoPicture.setVisibility(isShow ? View.VISIBLE : View.GONE);
+    }
+
+    //视频按钮
+    @Click(R.id.rb_video)
+    void videoClick() {
+        ctlVideoPlay.setVisibility(View.VISIBLE);
+        bannerImage.setVisibility(View.GONE);
+    }
+
+    //开始播放中间按钮
+    @Click(R.id.ib_init_start)
+    void ibStartClick() {
+        centerPlayIsShow(false);
+        radioGroupIsShow(false);
+        ctlVideoPlay.setVisibility(View.VISIBLE);
+        bannerImage.setVisibility(View.GONE);
+        //loading
+        loadingView();
+        //初始化播放
+        initVideoPlay();
+    }
+
+    //图片按钮
+    @Click(R.id.rb_picture)
+    void pictureClick() {
+        ctlVideoPlay.setVisibility(View.GONE);
+        bannerImage.setVisibility(View.VISIBLE);
+        pauseVideo();
+    }
+
+    //onPause
+    @Override
+    protected void onPause() {
+        super.onPause();
+        pauseVideo();
+    }
+
+    //视频暂停
+    private void pauseVideo() {
+        if (iVideoPlayer != null && iVideoPlayer.isPlaying()) {
+            iVideoPlayer.pauseVideo();
+            isPaused = true;
+            ibPlay.setBackgroundResource(R.mipmap.play_normal);
+            radioGroupIsShow(true);
+        }
+    }
+
+    /**
+     * 初始视频设置
+     */
+    private void initVideo() {
+        initScreenWidthHeight();
+        if (!NetworkUtils.isNetworkAvailable(context)) {
+            errorView();
+        }
+    }
+
+    /**
+     * 初始视频宽高
+     */
+    private void initScreenWidthHeight() {
+        int screenWidth = CommonHelper.getScreenWidth(context);
+        ViewGroup.LayoutParams params = iVideoPlayer.getLayoutParams();
+        params.width = screenWidth;
+        params.height = screenWidth;
+        iVideoPlayer.setLayoutParams(params);
+    }
+
+    /**
+     * 初始化播放
+     */
+    private void initVideoPlay() {
+        if (TextUtils.isEmpty(videoUrl)) {
+            return;
+        }
+        new Handler().postDelayed(() -> {
+            iVideoPlayer.load(videoUrl);
+            setVideoListener();
+            isPaused = false;
+            ibPlay.setBackgroundResource(R.mipmap.pause_normal);
+            sbBar.setProgress(0);
+            tvCurrentPlayTime.setText(iVideoPlayer.generateTime(0));
+        }, 200);
+    }
+
+    /**
+     * 初始化video listener
+     */
+    private void setVideoListener() {
+        sbBar.setOnSeekBarChangeListener(this);
+        iVideoPlayer.setOnPreparedListener(this);
+        iVideoPlayer.setOnBufferingUpdateListener(this);
+        iVideoPlayer.setOnCompletionListener(this);
+        iVideoPlayer.setOnErrorListener(this);
+        iVideoPlayer.setOnSeekCompleteListener(this);
+    }
+
+    @Click(R.id.tv_retry)
+    void retryClick() {
+        if (!NetworkUtils.isNetworkAvailable(context)) {
+            shortTip(R.string.toast_network_error);
+            return;
+        }
+        if (isFastClick(1500)) {
+            return;
+        }
+        loadingView();
+    }
+
+    @Click(R.id.ib_play)
+    void onPlayClick() {
+        if (iVideoPlayer == null) {
+            return;
+        }
+        ibPlay.setBackgroundResource(isPaused ? R.mipmap.pause_normal : R.mipmap.play_normal);
+        isPaused = !isPaused;
+        if (isPaused) {
+            iVideoPlayer.pauseVideo();
+            radioGroupIsShow(true);
+        } else {
+            if (sbBar.getProgress() == sbBar.getMax()) {
+                //循环播放
+                iVideoPlayer.seekTo(0);
+                if (!iVideoPlayer.isPlaying()) {
+                    iVideoPlayer.startVideo();
+                    radioGroupIsShow(false);
+                }
+                isDragging = false;
+                mHandler.sendEmptyMessageDelayed(MESSAGE_SHOW_PROGRESS, DELAY_MILLIS);
+            } else {
+                iVideoPlayer.startVideo();
+                radioGroupIsShow(false);
+            }
+        }
+    }
+
+    /**
+     * 更新进度
+     */
+    private void syncProgress(Object obj) {
+        if (obj != null) {
+            String strProgress = String.valueOf(obj);
+            int progress = Integer.valueOf(strProgress);
+            if ((progress == 0)) {
+                return;
+            }
+            long generateTime;
+            if (progress + DELAY_MILLIS >= iVideoPlayer.getDuration()) {
+                progress = sbBar.getMax();
+                generateTime = sbBar.getMax();//毫秒
+            } else {
+                generateTime = (Long) obj;
+            }
+            sbBar.setProgress(progress);
+            tvCurrentPlayTime.setText(iVideoPlayer.generateTime(generateTime));
+        }
+    }
+
+    @UiThread
+    void errorView() {
+        rlBottomPanel.setVisibility(View.GONE);
+        iVideoPlayer.setVisibility(View.GONE);
+        llPlayFail.setVisibility(View.VISIBLE);
+        llPlayLoading.setVisibility(View.GONE);
+    }
+
+    private void isShowBottomView() {
+        iVideoPlayer.setVisibility(View.VISIBLE);
+        llPlayFail.setVisibility(View.GONE);
+        rlBottomPanel.setVisibility(View.VISIBLE);
+        llPlayLoading.setVisibility(View.GONE);
+    }
+
+    private void loadingView() {
+        rlBottomPanel.setVisibility(View.GONE);
+        iVideoPlayer.setVisibility(View.GONE);
+        llPlayFail.setVisibility(View.GONE);
+        llPlayLoading.setVisibility(View.VISIBLE);
+        rlDefaultHousePic.setVisibility(View.GONE);
+    }
+
+    /**
+     * 缓存状态
+     **/
+    @Override
+    public void onBufferingUpdate(IMediaPlayer iMediaPlayer, int i) {
+        if (iVideoPlayer != null) {
+            bufferingUpdate = i;
+            int onBufferingProgress;
+            if (i >= BUFFERING_PROGRESS) {
+                onBufferingProgress = (int) iVideoPlayer.getDuration();
+            } else {
+                onBufferingProgress = (int) (iVideoPlayer.getDuration() / 100 * i);
+            }
+            sbBar.setSecondaryProgress(onBufferingProgress);
+        }
+    }
+
+    /**
+     * 播放完毕
+     **/
+    @Override
+    public void onCompletion(IMediaPlayer iMediaPlayer) {
+        if (iVideoPlayer != null) {
+            isPaused = true;
+            ibPlay.setBackgroundResource(R.mipmap.play_normal);
+        }
+        if (mHandler != null) {
+            mHandler.removeMessages(MESSAGE_SHOW_PROGRESS);
+        }
+        if (bufferingUpdate == 0) {
+            errorView();
+        } else {
+            sbBar.setProgress(sbBar.getMax());
+            tvCurrentPlayTime.setText(iVideoPlayer.generateTime(sbBar.getMax()));
+        }
+    }
+
+    /**
+     * 播放异常
+     **/
+    @Override
+    public boolean onError(IMediaPlayer iMediaPlayer, int i, int i1) {
+//        shortTip(R.string.str_server_exception);
+        errorView();
+        return false;
+    }
+
+
+    /**
+     * 开始播放
+     **/
+    @Override
+    public void onPrepared(IMediaPlayer iMediaPlayer) {
+        if (iVideoPlayer != null) {
+            isShowBottomView();
+            iVideoPlayer.startVideo();
+            //设置seekBar的最大限度值，当前视频的总时长（毫秒）
+            long duration = iVideoPlayer.getDuration();
+            //不足一秒补一秒
+            if (duration % 1000 > 0) {
+                duration = duration + (1000 - duration % 1000);
+            }
+            sbBar.setMax((int) duration);
+            //视频总时长
+            tvCountPlayTime.setText(Objects.requireNonNull(iVideoPlayer).generateTime(duration));
+            //发送当前播放时间点通知
+            mHandler.sendEmptyMessageDelayed(MESSAGE_SHOW_PROGRESS, DELAY_MILLIS);
+        }
+    }
+
+    /**
+     * Seek拖动完毕
+     **/
+    @Override
+    public void onSeekComplete(IMediaPlayer iMediaPlayer) {
+    }
+
+    /**
+     * 进度条滑动监听
+     */
+    @Override
+    public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
+        if (fromUser) {
+            String time = iVideoPlayer.generateTime(progress);
+            tvCurrentPlayTime.setText(time);
+        }
+    }
+
+    /**
+     * 开始拖动
+     */
+    @Override
+    public void onStartTrackingTouch(SeekBar seekBar) {
+        isDragging = true;
+        mHandler.removeMessages(MESSAGE_SHOW_PROGRESS);
+    }
+
+    /**
+     * 停止拖动
+     */
+    @Override
+    public void onStopTrackingTouch(SeekBar seekBar) {
+        if (iVideoPlayer != null) {
+            iVideoPlayer.seekTo(seekBar.getProgress());
+            if (!iVideoPlayer.isPlaying()) {
+                iVideoPlayer.startVideo();
+                isPaused = false;
+                ibPlay.setBackgroundResource(R.mipmap.pause_normal);
+            }
+            isDragging = false;
+            mHandler.sendEmptyMessageDelayed(MESSAGE_SHOW_PROGRESS, DELAY_MILLIS);
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (mHandler != null) {
+            mHandler.removeCallbacksAndMessages(null);
+        }
+        if (iVideoPlayer != null) {
+            iVideoPlayer.release();
         }
     }
 }

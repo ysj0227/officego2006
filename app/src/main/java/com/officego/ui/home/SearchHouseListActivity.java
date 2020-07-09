@@ -13,6 +13,7 @@ import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
@@ -50,7 +51,7 @@ import cn.bingoogolapple.refreshlayout.BGARefreshViewHolder;
 @EActivity(R.layout.home_activity_search_house_list)
 public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> implements
         HomeContract.View, SearchPopupWindow.onSureClickListener,
-        BGARefreshLayout.BGARefreshLayoutDelegate {
+        SwipeRefreshLayout.OnRefreshListener {
     @ViewById(R.id.btn_back)
     LinearLayout btnBack;
     @ViewById(R.id.et_search)
@@ -58,7 +59,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
     @ViewById(R.id.btn_cancel)
     Button btnCancel;
     @ViewById(R.id.bga_refresh)
-    BGARefreshLayout refreshLayout;
+    SwipeRefreshLayout mSwipeRefreshLayout;
     @ViewById(R.id.rv_house)
     RecyclerView rvHouse;
     //暂无数据，网络异常
@@ -95,6 +96,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
     private SparseBooleanArray checkStates; //记录选中的位置
     private String district = "", business = "", line = "", nearbySubway = "",
             area = "", dayPrice = "", seats = "", decoration = "", houseTags = "", sort = "0";
+
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarFullTransparent(this);
@@ -166,21 +168,25 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
                 mSeats = seats;
             }
         }
-//        mPresenter.getBuildingList(pageNum, String.valueOf(btype), district, business,
-//                line, nearbySubway, area, dayPrice, seats,
-//                decoration, houseTags, sort, searchKeywords);
         mPresenter.getBuildingList(pageNum, String.valueOf(btype), district, business,
                 line, nearbySubway, mArea, mDayPrice, mSeats,
                 decoration, houseTags, sort, searchKeywords);
     }
 
     private void initRefresh() {
-        refreshLayout.setDelegate(this);
-        BGARefreshViewHolder viewHolder = new BGANormalRefreshViewHolder(context, true);
-        viewHolder.setLoadingMoreText(getString(R.string.str_loding_more));
-        viewHolder.setLoadMoreBackgroundColorRes(R.color.common_bg);
-        // 设置下拉刷新和上拉加载更多的风格(参数1：应用程序上下文，参数2：是否具有上拉加载更多功能)
-        refreshLayout.setRefreshViewHolder(viewHolder);
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout.setProgressViewOffset(true, -20, 100);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.common_blue_main_80a, R.color.common_blue_main);
+        //加载更多
+        rvHouse.addOnScrollListener(new OnLoadMoreListener() {
+            @Override
+            protected void onLoading(int countItem, int lastItem) {
+                if (mSwipeRefreshLayout.isRefreshing()) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
+                loadingMoreList();
+            }
+        });
     }
 
     //搜索
@@ -334,7 +340,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
         this.seats = simple;
         this.decoration = decoration;
         this.houseTags = tags;
-        ConditionConfig.mConditionBean=setConditionBean();
+        ConditionConfig.mConditionBean = setConditionBean();
         if (btype == 0) {
             tvSearchOffice.setText(R.string.str_house_all);
         } else if (btype == 1) {
@@ -348,38 +354,36 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
         getBuildingList();
     }
 
-    //初始化刷新
+    //初始化下拉刷新
     private void pullDownRefreshList() {
         pageNum = 1;
         buildingList.clear();
         getBuildingList();
     }
 
+    //加载更多
+    private void loadingMoreList() {
+        if (NetworkUtils.isNetworkAvailable(context) && hasMore) {
+            pageNum++;
+            getBuildingList();
+        }
+    }
+
+    //刷新完成
     @Override
     public void endRefresh() {
-        refreshLayout.endLoadingMore();
-        refreshLayout.endRefreshing();
+        mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    //开始下拉刷新
+    @Override
+    public void onRefresh() {
+        pullDownRefreshList();
     }
 
     @Override
     public void bannerListSuccess(List<String> bannerList) {
 
-    }
-
-    //刷新
-    @Override
-    public void onBGARefreshLayoutBeginRefreshing(BGARefreshLayout refreshLayout) {
-        pullDownRefreshList();
-    }
-
-    @Override
-    public boolean onBGARefreshLayoutBeginLoadingMore(BGARefreshLayout refreshLayout) {
-        if (NetworkUtils.isNetworkAvailable(context) && hasMore) {
-            pageNum++;
-            getBuildingList();
-            return true;
-        }
-        return false;
     }
 
     private ConditionBean setConditionBean() {
@@ -433,18 +437,18 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
     private void noData() {
         tvNoData.setVisibility(View.VISIBLE);
         rlException.setVisibility(View.GONE);
-        refreshLayout.setVisibility(View.GONE);
+        mSwipeRefreshLayout.setVisibility(View.GONE);
     }
 
     private void hasData() {
         tvNoData.setVisibility(View.GONE);
         rlException.setVisibility(View.GONE);
-        refreshLayout.setVisibility(View.VISIBLE);
+        mSwipeRefreshLayout.setVisibility(View.VISIBLE);
     }
 
     private void netException() {
         tvNoData.setVisibility(View.GONE);
         rlException.setVisibility(View.VISIBLE);
-        refreshLayout.setVisibility(View.GONE);
+        mSwipeRefreshLayout.setVisibility(View.GONE);
     }
 }
