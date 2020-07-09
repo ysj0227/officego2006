@@ -192,7 +192,6 @@ public class MineMessageActivity extends BaseMvpActivity<UpdateUserPresenter>
                     Constants.FILE_PROVIDER_AUTHORITY, fileUri);
         }
         PhotoUtils.takePicture(this, localPhotoUri, REQUEST_CAMERA);
-        LogCat.d(TAG,"1111 file_provider_authority="+Constants.FILE_PROVIDER_AUTHORITY);
     }
 
     private void openGallery() {
