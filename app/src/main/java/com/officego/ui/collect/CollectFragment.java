@@ -190,6 +190,10 @@ public class CollectFragment extends BaseMvpFragment<CollectedPresenter>
 
     //下拉刷新
     private void pullDownRefreshList() {
+        if (!NetworkUtils.isNetworkAvailable(mActivity)) {
+            netException();
+            return;
+        }
         pageNum = 1;
         collectBuildingList.clear();
         workOfficeList.clear();

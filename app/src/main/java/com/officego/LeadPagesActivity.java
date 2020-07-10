@@ -142,7 +142,6 @@ public class LeadPagesActivity extends BaseActivity {
 
         @Override
         public void onPageSelected(int position) {
-            LogCat.e("TAG", "position: " + position);
             switch (position) {
                 case 0:
                     point1.setChecked(true);

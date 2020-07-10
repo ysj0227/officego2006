@@ -3,6 +3,7 @@ package com.officego;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
@@ -12,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 
 import com.donkingliang.imageselector.utils.ImageSelector;
@@ -21,6 +23,8 @@ import com.officego.commonlib.utils.FileHelper;
 import com.officego.commonlib.utils.FileUtils;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.PhotoUtils;
+import com.officego.commonlib.utils.ToastUtils;
+import com.officego.commonlib.utils.log.LogCat;
 import com.wildma.idcardcamera.camera.IDCardCamera;
 
 import java.io.File;
@@ -54,19 +58,25 @@ public class IDCameraActivity extends Activity {
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final String[] items = {"身份证正面", "身份证反面", "拍照"};
-                new AlertDialog.Builder(IDCameraActivity.this)
-                        .setItems(items, (dialogInterface, i) -> {
-                            if (i == 0) {
-                                IDCardCamera.create(IDCameraActivity.this).openCamera(IDCardCamera.TYPE_IDCARD_FRONT);
-                            } else if (i == 1) {
-                                IDCardCamera.create(IDCameraActivity.this).openCamera(IDCardCamera.TYPE_IDCARD_BACK);
-                            } else if (i == 2) {
-                                takePhoto();
-                            }
-                        }).create().show();
+                selectedDialog();
             }
         });
+    }
+
+    private void selectedDialog() {
+        final String[] items = {"身份证正面", "身份证反面", "拍照", "相册"};
+        new AlertDialog.Builder(IDCameraActivity.this)
+                .setItems(items, (dialogInterface, i) -> {
+                    if (i == 0) {
+                        IDCardCamera.create(IDCameraActivity.this).openCamera(IDCardCamera.TYPE_IDCARD_FRONT);
+                    } else if (i == 1) {
+                        IDCardCamera.create(IDCameraActivity.this).openCamera(IDCardCamera.TYPE_IDCARD_BACK);
+                    } else if (i == 2) {
+                        takePhoto();
+                    } else if (i == 3) {
+                        openGallery();
+                    }
+                }).create().show();
     }
 
     private void takePhoto() {
@@ -90,20 +100,20 @@ public class IDCameraActivity extends Activity {
             return;
         }
         //单选
-        ImageSelector.builder()
-                .useCamera(false) // 设置是否使用拍照
-                .setSingle(true)  //设置是否单选
-                .canPreview(true) //是否可以预览图片，默认为true
-                .start(this, REQUEST_GALLERY); // 打开相册
-
-        //限数量的多选(比如最多9张)
 //        ImageSelector.builder()
 //                .useCamera(false) // 设置是否使用拍照
-//                .setSingle(false)  //设置是否单选
-//                .setMaxSelectCount(9) // 图片的最大选择数量，小于等于0时，不限数量。
-//                .setSelected(selected) // 把已选的图片传入默认选中。
+//                .setSingle(true)  //设置是否单选
 //                .canPreview(true) //是否可以预览图片，默认为true
 //                .start(this, REQUEST_GALLERY); // 打开相册
+        //限数量的多选(比如最多9张)
+        ImageSelector.builder()
+                .useCamera(false) // 设置是否使用拍照
+                .setSingle(false)  //设置是否单选
+                .setMaxSelectCount(9) // 图片的最大选择数量，小于等于0时，不限数量。
+//                .setCropRatio(0.5f)
+//                .setSelected(selected) // 把已选的图片传入默认选中。
+                .canPreview(true) //是否可以预览图片，默认为true
+                .start(this, REQUEST_GALLERY); // 打开相册
     }
 
     @Override
@@ -119,17 +129,44 @@ public class IDCameraActivity extends Activity {
                 }
             }
         }
-        if (resultCode == RESULT_OK) {
-            if (requestCode == REQUEST_CAMERA) {
+        if (resultCode == RESULT_OK ) {
+            if (requestCode == REQUEST_CAMERA) {//拍照
                 imageview.setImageBitmap(BitmapFactory.decodeFile(localAvatarPath));
-            } else if (requestCode == REQUEST_GALLERY) {
-                if (data != null) {
-                    //获取选择器返回的数据
-                    ArrayList<String> images = data.getStringArrayListExtra(
-                            ImageSelector.SELECT_RESULT);
+            } else if (requestCode == REQUEST_GALLERY && data != null) {//相册
+                ArrayList<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
+                for (int i = 0; i < images.size(); i++) {
+                    LogCat.e("TAG", "11111111111 images=" + images.get(i));
+                    imageview.setImageBitmap(BitmapFactory.decodeFile(images.get(0)));
 //                    boolean isCameraImage = data.getBooleanExtra(ImageSelector.IS_CAMERA_IMAGE, false);
                 }
             }
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        switch (requestCode) {
+            case PermissionUtils.REQ_PERMISSIONS_CAMERA_STORAGE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (FileUtils.isSDExist()) {
+                        takePhoto();
+                    } else {
+                        ToastUtils.toastForShort(this, getString(R.string.str_no_sd));
+                    }
+                } else {
+                    ToastUtils.toastForShort(this, getString(R.string.str_please_open_camera));
+                }
+                break;
+            case PermissionUtils.REQ_PERMISSIONS_STORAGE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    openGallery();
+                } else {
+                    ToastUtils.toastForShort(this, getString(R.string.str_please_open_sd));
+                }
+                break;
+            default:
         }
     }
 }
