@@ -1,10 +1,12 @@
-package com.officego;
+package com.owner;
 
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -28,6 +30,8 @@ import com.officego.commonlib.utils.log.LogCat;
 import com.wildma.idcardcamera.camera.IDCardCamera;
 
 import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.util.ArrayList;
 
 /**
@@ -129,15 +133,16 @@ public class IDCameraActivity extends Activity {
                 }
             }
         }
-        if (resultCode == RESULT_OK ) {
+        if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CAMERA) {//拍照
                 imageview.setImageBitmap(BitmapFactory.decodeFile(localAvatarPath));
+                saveCropImageView();
+
             } else if (requestCode == REQUEST_GALLERY && data != null) {//相册
                 ArrayList<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
                 for (int i = 0; i < images.size(); i++) {
                     LogCat.e("TAG", "11111111111 images=" + images.get(i));
                     imageview.setImageBitmap(BitmapFactory.decodeFile(images.get(0)));
-//                    boolean isCameraImage = data.getBooleanExtra(ImageSelector.IS_CAMERA_IMAGE, false);
                 }
             }
         }
@@ -167,6 +172,35 @@ public class IDCameraActivity extends Activity {
                 }
                 break;
             default:
+        }
+    }
+
+    private void saveCropImageView() {
+        BitmapFactory.Options op = new BitmapFactory.Options();
+        Bitmap bitMap = BitmapFactory.decodeFile(localAvatarPath);
+        int width = bitMap.getWidth();
+        int height = bitMap.getHeight();
+        // 设置想要的大小  TODO
+        int newWidth = 400;
+        int newHeight = 400;
+        // 计算缩放比例
+        float scaleWidth = ((float) newWidth) / width;
+        float scaleHeight = ((float) newHeight) / height;
+        // 取得想要缩放的matrix参数
+        Matrix matrix = new Matrix();
+        matrix.postScale(scaleWidth, scaleHeight);
+        // 得到新的图片
+        bitMap = Bitmap.createBitmap(bitMap, 0, 0, width, height, matrix, true);
+        imageview.setImageBitmap(bitMap);
+        //将新文件回写到本地
+        FileOutputStream b = null;
+        try {
+            b = new FileOutputStream(localAvatarPath);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (bitMap != null) {
+            bitMap.compress(Bitmap.CompressFormat.JPEG, 100, b);
         }
     }
 }

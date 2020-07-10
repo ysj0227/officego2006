@@ -26,6 +26,7 @@ import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.CircleImage;
 import com.owner.h5.WebViewActivity_;
 import com.owner.h5.WebViewIdifyActivity_;
+import com.owner.identity.SelectIdActivity_;
 import com.owner.mine.contract.UserContract;
 import com.owner.mine.model.UserOwnerBean;
 import com.owner.mine.presenter.UserPresenter;
@@ -136,15 +137,17 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
 
     @Click(resName = "tv_name")
     void nameClick() {
-        if (mUserInfo == null) {
-            mPresenter.getUserInfo();
-            return;
-        }
-        if (isIdentity()) {
-            new UnIdifyDialog(mActivity, mUserInfo);
-            return;
-        }
-        MineMessageActivity_.intent(mActivity).mUserInfo(mUserInfo).startForResult(REQUEST_CODE);
+//        if (mUserInfo == null) {
+//            mPresenter.getUserInfo();
+//            return;
+//        }
+//        if (isIdentity()) {
+//            new UnIdifyDialog(mActivity, mUserInfo);
+//            return;
+//        }
+//        MineMessageActivity_.intent(mActivity).mUserInfo(mUserInfo).startForResult(REQUEST_CODE);
+
+        SelectIdActivity_.intent(mActivity).start();
     }
 
     @OnActivityResult(REQUEST_CODE)

@@ -215,9 +215,6 @@
         <activity
             android:name=".MainOwnerActivity_"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".IDCameraActivity"
-            android:screenOrientation="portrait" />
 
         <!--    图片选择Activity
                 去掉Activity的ActionBar。

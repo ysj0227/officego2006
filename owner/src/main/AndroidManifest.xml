@@ -72,6 +72,12 @@
             android:name=".h5.WebViewIdifyActivity_"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".identity.SelectIdActivity_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name="com.owner.IDCameraActivity"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
