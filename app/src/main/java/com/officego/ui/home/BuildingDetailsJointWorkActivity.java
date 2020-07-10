@@ -264,6 +264,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
      * 音量
      */
     private int bufferingUpdate;
+    private boolean isSetVideoRate;
     private String videoUrl;
 //    String videoUrl = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
     /**
@@ -705,6 +706,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         llPlayLoading.setVisibility(View.VISIBLE);
         rlDefaultHousePic.setVisibility(View.GONE);
     }
+
     /**
      * 视频尺寸
      */
@@ -712,22 +714,26 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     public void onVideoSizeChanged(IMediaPlayer iMediaPlayer, int width, int height, int i2, int i3) {
         setVideoPlayerScreenRate(width, height);
     }
+
     private void setVideoPlayerScreenRate(int width, int height) {
-        ViewGroup.LayoutParams params = iVideoPlayer.getLayoutParams();
-        int screenWidth = CommonHelper.getScreenWidth(context);
-        int videoWidth, videoHeight;
-        if (width - height > 10) {
-            videoWidth = screenWidth;
-            videoHeight = (int) (screenWidth / CommonHelper.digits(width, height));
-        } else if (height - width > 10) {
-            videoWidth = (int) (screenWidth / CommonHelper.digits(height, width));
-            videoHeight = screenWidth;
-        } else {
-            videoWidth = videoHeight = screenWidth;
+        if (!isSetVideoRate) {
+            isSetVideoRate = true;
+            ViewGroup.LayoutParams params = iVideoPlayer.getLayoutParams();
+            int screenWidth = CommonHelper.getScreenWidth(context);
+            int videoWidth, videoHeight;
+            if (width - height > 10) {
+                videoWidth = screenWidth;
+                videoHeight = (int) (screenWidth / CommonHelper.digits(width, height));
+            } else if (height - width > 10) {
+                videoWidth = (int) (screenWidth / CommonHelper.digits(height, width));
+                videoHeight = screenWidth;
+            } else {
+                videoWidth = videoHeight = screenWidth;
+            }
+            params.width = videoWidth;
+            params.height = videoHeight;
+            iVideoPlayer.setLayoutParams(params);
         }
-        params.width = videoWidth;
-        params.height = videoHeight;
-        iVideoPlayer.setLayoutParams(params);
     }
 
     /**
@@ -960,7 +966,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     public void buildingSelectListSuccess(int totals, List<BuildingDetailsChildBean.ListBean> list) {
         tvItemListBottom.setText(totals + "套");//自选面积多少套
         hasMore = list == null || list.size() >= 9;
-       // btnQueryMore.setText(hasMore ? getString(R.string.str_query_more_data) : getResources().getString(R.string.tip_no_more_data));
+        // btnQueryMore.setText(hasMore ? getString(R.string.str_query_more_data) : getResources().getString(R.string.tip_no_more_data));
         btnQueryMore.setVisibility(hasMore ? View.VISIBLE : View.GONE);
         assert list != null;
         childList.addAll(list);

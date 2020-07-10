@@ -190,6 +190,7 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
      * 音量
      */
     private int bufferingUpdate;
+    private boolean isSetVideoRate;
     private String videoUrl;
 //    String videoUrl = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
     /**
@@ -675,21 +676,24 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         setVideoPlayerScreenRate(width, height);
     }
     private void setVideoPlayerScreenRate(int width, int height) {
-        ViewGroup.LayoutParams params = iVideoPlayer.getLayoutParams();
-        int screenWidth = CommonHelper.getScreenWidth(context);
-        int videoWidth, videoHeight;
-        if (width - height > 10) {
-            videoWidth = screenWidth;
-            videoHeight = (int) (screenWidth / CommonHelper.digits(width, height));
-        } else if (height - width > 10) {
-            videoWidth = (int) (screenWidth / CommonHelper.digits(height, width));
-            videoHeight = screenWidth;
-        } else {
-            videoWidth = videoHeight = screenWidth;
+        if (!isSetVideoRate) {
+            isSetVideoRate = true;
+            ViewGroup.LayoutParams params = iVideoPlayer.getLayoutParams();
+            int screenWidth = CommonHelper.getScreenWidth(context);
+            int videoWidth, videoHeight;
+            if (width - height > 10) {
+                videoWidth = screenWidth;
+                videoHeight = (int) (screenWidth / CommonHelper.digits(width, height));
+            } else if (height - width > 10) {
+                videoWidth = (int) (screenWidth / CommonHelper.digits(height, width));
+                videoHeight = screenWidth;
+            } else {
+                videoWidth = videoHeight = screenWidth;
+            }
+            params.width = videoWidth;
+            params.height = videoHeight;
+            iVideoPlayer.setLayoutParams(params);
         }
-        params.width = videoWidth;
-        params.height = videoHeight;
-        iVideoPlayer.setLayoutParams(params);
     }
 
     /**
