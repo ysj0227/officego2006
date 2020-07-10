@@ -281,7 +281,7 @@ public class IVideoPlayer extends RelativeLayout {
         ijkMediaPlayer.setOption(IjkMediaPlayer.OPT_CATEGORY_PLAYER, "enable-accurate-seek", 1);
 
         ijkMediaPlayer.setVolume(1.0f, 1.0f);
-        setEnableMediaCodec(ijkMediaPlayer, false);
+        setEnableMediaCodec(ijkMediaPlayer, true);
         return ijkMediaPlayer;
     }
 

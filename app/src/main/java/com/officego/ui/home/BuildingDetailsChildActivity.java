@@ -72,7 +72,8 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         IMediaPlayer.OnCompletionListener,
         IMediaPlayer.OnPreparedListener,
         IMediaPlayer.OnErrorListener,
-        IMediaPlayer.OnSeekCompleteListener {
+        IMediaPlayer.OnSeekCompleteListener,
+        IMediaPlayer.OnVideoSizeChangedListener {
     //title
     @ViewById(R.id.nsv_view)
     NestedScrollView nsvView;
@@ -192,6 +193,7 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
      * 音量
      */
     private int bufferingUpdate;
+    private boolean isSetVideoRate;
     private String videoUrl;
 //    String videoUrl = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
     /**
@@ -603,6 +605,7 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         iVideoPlayer.setOnCompletionListener(this);
         iVideoPlayer.setOnErrorListener(this);
         iVideoPlayer.setOnSeekCompleteListener(this);
+        iVideoPlayer.setOnVideoSizeChangedListener(this);
     }
 
     @Click(R.id.tv_retry)
@@ -687,6 +690,33 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         llPlayFail.setVisibility(View.GONE);
         llPlayLoading.setVisibility(View.VISIBLE);
         rlDefaultHousePic.setVisibility(View.GONE);
+    }
+    /**
+     * 视频尺寸
+     */
+    @Override
+    public void onVideoSizeChanged(IMediaPlayer iMediaPlayer, int width, int height, int i2, int i3) {
+        setVideoPlayerScreenRate(width, height);
+    }
+    private void setVideoPlayerScreenRate(int width, int height) {
+        if (!isSetVideoRate) {
+            isSetVideoRate = true;
+            ViewGroup.LayoutParams params = iVideoPlayer.getLayoutParams();
+            int screenWidth = CommonHelper.getScreenWidth(context);
+            int videoWidth, videoHeight;
+            if (width - height > 10) {
+                videoWidth = screenWidth;
+                videoHeight = (int) (screenWidth / CommonHelper.digits(width, height));
+            } else if (height - width > 10) {
+                videoWidth = (int) (screenWidth / CommonHelper.digits(height, width));
+                videoHeight = screenWidth;
+            } else {
+                videoWidth = videoHeight = screenWidth;
+            }
+            params.width = videoWidth;
+            params.height = videoHeight;
+            iVideoPlayer.setLayoutParams(params);
+        }
     }
 
     /**

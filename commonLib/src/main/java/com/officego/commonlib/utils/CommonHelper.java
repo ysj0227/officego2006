@@ -37,6 +37,7 @@ import java.net.Inet4Address;
 import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
+import java.text.DecimalFormat;
 import java.util.Enumeration;
 import java.util.Locale;
 import java.util.Objects;
@@ -466,5 +467,11 @@ public class CommonHelper {
         params.topMargin = CommonHelper.statusHeight(context);
         params.width = RelativeLayout.LayoutParams.MATCH_PARENT;
         view.setLayoutParams(params);
+    }
+    //整数相除 保留一位小数
+    public static float digits(int a, int b) {
+        float num = (float) a / b;
+        DecimalFormat df = new DecimalFormat("0.0");
+        return Float.parseFloat(df.format(num));
     }
 }

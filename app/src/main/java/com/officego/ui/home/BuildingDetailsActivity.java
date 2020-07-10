@@ -66,6 +66,7 @@ import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
+import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
@@ -86,7 +87,8 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         IMediaPlayer.OnCompletionListener,
         IMediaPlayer.OnPreparedListener,
         IMediaPlayer.OnErrorListener,
-        IMediaPlayer.OnSeekCompleteListener {
+        IMediaPlayer.OnSeekCompleteListener,
+        IMediaPlayer.OnVideoSizeChangedListener {
     //title
     @ViewById(R.id.nsv_view)
     NestedScrollView nsvView;
@@ -257,7 +259,8 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
      */
     private int bufferingUpdate;
     private String videoUrl;
-//    String videoUrl = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
+    //    String videoUrl = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
+    private boolean isSetVideoRate;
     /**
      * 消息处理
      */
@@ -510,6 +513,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         iVideoPlayer.setOnCompletionListener(this);
         iVideoPlayer.setOnErrorListener(this);
         iVideoPlayer.setOnSeekCompleteListener(this);
+        iVideoPlayer.setOnVideoSizeChangedListener(this);
     }
 
     @Click(R.id.tv_retry)
@@ -594,6 +598,36 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         llPlayFail.setVisibility(View.GONE);
         llPlayLoading.setVisibility(View.VISIBLE);
         rlDefaultHousePic.setVisibility(View.GONE);
+    }
+
+
+    /**
+     * 视频尺寸
+     */
+    @Override
+    public void onVideoSizeChanged(IMediaPlayer iMediaPlayer, int width, int height, int i2, int i3) {
+        setVideoPlayerScreenRate(width, height);
+    }
+
+    private void setVideoPlayerScreenRate(int width, int height) {
+        if (!isSetVideoRate) {
+            isSetVideoRate = true;
+            ViewGroup.LayoutParams params = iVideoPlayer.getLayoutParams();
+            int screenWidth = CommonHelper.getScreenWidth(context);
+            int videoWidth, videoHeight;
+            if (width - height > 10) {
+                videoWidth = screenWidth;
+                videoHeight = (int) (screenWidth / CommonHelper.digits(width, height));
+            } else if (height - width > 10) {
+                videoWidth = (int) (screenWidth / CommonHelper.digits(height, width));
+                videoHeight = screenWidth;
+            } else {
+                videoWidth = videoHeight = screenWidth;
+            }
+            params.width = videoWidth;
+            params.height = videoHeight;
+            iVideoPlayer.setLayoutParams(params);
+        }
     }
 
     /**
