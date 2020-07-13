@@ -45,6 +45,8 @@
     <!-- OPPPO 权限配置-->
     <uses-permission android:name="com.coloros.mcs.permission.SEND_MCS_MESSAGE" />
     <!-- OPPO 配置结束-->
+    <!--    三星发布权限-->
+    <uses-permission android:name="com.samsung.android.providers.context.permission.WRITE_USE_APP_FEATURE_SURVEY" />
 
     <application
         android:name=".application.MyApplication"
