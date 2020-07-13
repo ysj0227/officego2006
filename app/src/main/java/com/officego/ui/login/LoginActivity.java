@@ -18,19 +18,18 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
-import com.meituan.android.walle.WalleChannelReader;
 import com.officego.MainActivity_;
 import com.officego.MainOwnerActivity_;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.constant.AppConfig;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.RegexUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.h5.WebViewActivity_;
 import com.officego.ui.login.contract.LoginContract;
@@ -297,11 +296,20 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         Window dialogWindow = dialog.getWindow();
         if (dialogWindow != null) {
             WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-            lp.width = 600;
+            lp.width = 900;
             dialogWindow.setAttributes(lp);
+            ClearableEditText cetInfact = viewLayout.findViewById(R.id.cet_infact);
+            ClearableEditText cetUrl = viewLayout.findViewById(R.id.cet_url);
             ClearableEditText cetTest = viewLayout.findViewById(R.id.cet_test);
+
             Button btnGo = viewLayout.findViewById(R.id.btn_go);
             btnGo.setOnClickListener(v -> {
+                if (!TextUtils.isEmpty(cetInfact.getText().toString().trim())) {
+                    AppConfig.APP_URL = cetInfact.getText().toString().trim() + "/";
+                }
+                if (!TextUtils.isEmpty(cetUrl.getText().toString().trim())) {
+                    AppConfig.APP_URL_MAIN = cetUrl.getText().toString().trim() + "/";
+                }
                 mPresenter.login(cetTest.getText().toString().trim(), "123465");
                 dialog.dismiss();
             });
@@ -309,5 +317,4 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
             dialog.show();
         }
     }
-
 }

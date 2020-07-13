@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -18,7 +19,8 @@
         android:textStyle="bold"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        tools:ignore="RtlSymmetry" />
 
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
@@ -54,10 +56,12 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_select">
 
                 <ImageView
-                    android:scaleType="centerCrop"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@mipmap/ic_owner" />
+                    android:layout_marginLeft="@dimen/dp_18"
+                    android:layout_marginRight="@dimen/dp_18"
+                    android:background="@mipmap/ic_id_company"
+                    android:scaleType="centerCrop" />
 
                 <TextView
                     android:id="@+id/tv_company"
@@ -69,7 +73,8 @@
                     android:layout_marginBottom="@dimen/dp_20"
                     android:text="我是公司业主"
                     android:textColor="@color/text_33"
-                    android:textSize="@dimen/sp_14" />
+                    android:textSize="@dimen/sp_14"
+                    android:visibility="gone" />
 
             </RelativeLayout>
 
@@ -83,10 +88,13 @@
                 app:layout_constraintTop_toBottomOf="@id/rl_company">
 
                 <ImageView
-                    android:scaleType="centerCrop"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@mipmap/ic_owner" />
+                    android:layout_marginLeft="@dimen/dp_18"
+                    android:layout_marginRight="@dimen/dp_18"
+                    android:background="@mipmap/ic_id_jointwork"
+                    android:scaleType="centerCrop" />
+
 
                 <TextView
                     android:id="@+id/tv_jointwork"
@@ -98,7 +106,8 @@
                     android:layout_marginBottom="@dimen/dp_20"
                     android:text="我是联合办公业主"
                     android:textColor="@color/text_33"
-                    android:textSize="@dimen/sp_14" />
+                    android:textSize="@dimen/sp_14"
+                    android:visibility="gone" />
 
             </RelativeLayout>
 
@@ -112,10 +121,12 @@
                 app:layout_constraintTop_toBottomOf="@id/rl_jointwork">
 
                 <ImageView
-                    android:scaleType="centerCrop"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@mipmap/ic_owner" />
+                    android:layout_marginLeft="@dimen/dp_18"
+                    android:layout_marginRight="@dimen/dp_18"
+                    android:background="@mipmap/ic_id_personal"
+                    android:scaleType="centerCrop" />
 
                 <TextView
                     android:id="@+id/tv_personal"
@@ -127,7 +138,8 @@
                     android:layout_marginBottom="@dimen/dp_20"
                     android:text="我是个人业主"
                     android:textColor="@color/text_33"
-                    android:textSize="@dimen/sp_14" />
+                    android:textSize="@dimen/sp_14"
+                    android:visibility="gone" />
 
             </RelativeLayout>
 
@@ -135,9 +147,10 @@
                 android:id="@+id/tv_back"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_18"
+                android:layout_marginStart="@dimen/dp_18"
                 android:layout_marginTop="@dimen/dp_18"
-                android:drawableRight="@mipmap/ic_right_arrow_small"
+                android:drawableEnd="@mipmap/ic_back_tendent"
+                android:drawablePadding="@dimen/dp_6"
                 android:paddingBottom="@dimen/dp_18"
                 android:text="返回租户"
                 android:textColor="@color/common_blue_main"

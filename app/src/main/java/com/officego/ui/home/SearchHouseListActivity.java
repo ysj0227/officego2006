@@ -38,10 +38,6 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 
-import cn.bingoogolapple.refreshlayout.BGANormalRefreshViewHolder;
-import cn.bingoogolapple.refreshlayout.BGARefreshLayout;
-import cn.bingoogolapple.refreshlayout.BGARefreshViewHolder;
-
 /**
  * Created by YangShiJie
  * Data 2020/5/11.
@@ -141,9 +137,6 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
      * pageSize 	否 	int 	每页条数
      */
     private void getBuildingList() {
-//        LogCat.e("TAG", "list pageNum=" + pageNum + " btype= " + btype + " constructionArea=" + area +
-//                " rentPrice=" + dayPrice + " simple=" + seats +
-//                " decoration=" + decoration + " tags=" + houseTags + "sort=" + sort);
         String mArea = "", mDayPrice = "", mSeats = "";
         if (btype == 1) {
             if (TextUtils.equals("", area) || TextUtils.equals("0,2000", area)) {
@@ -295,6 +288,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
             nearbySubway = "";
         }
         //查询列表
+        pageNum = 1;
         buildingList.clear();
         houseAdapter = null;
         getBuildingList();
@@ -306,15 +300,16 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
         LogCat.e("TAG", "onOfficeTypePopUpWindow data= " + officeType + "text=" + text);
         btype = officeType;
         tvSearchOffice.setText(text);
-        //查询列表
-        buildingList.clear();
-        houseAdapter = null;
         //初始化选择的写字楼或联合办公
         area = "";
         seats = "";
         dayPrice = "";
         decoration = "";
         houseTags = "";
+        //查询列表
+        pageNum = 1;
+        buildingList.clear();
+        houseAdapter = null;
         getBuildingList();
     }
 
@@ -324,6 +319,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
         LogCat.e("TAG", "onOfficeOrderPopUpWindow data= " + order);
         sort = order;
         //查询列表
+        pageNum = 1;
         buildingList.clear();
         houseAdapter = null;
         getBuildingList();
@@ -349,6 +345,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
             tvSearchOffice.setText(R.string.str_house_tenant);
         }
         //查询列表
+        pageNum = 1;
         buildingList.clear();
         houseAdapter = null;
         getBuildingList();

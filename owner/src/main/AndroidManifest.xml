@@ -78,6 +78,7 @@
         <activity
             android:name="com.owner.IDCameraActivity"
             android:screenOrientation="portrait" />
+        <activity android:name=".identity.CompanyActivity_" />
     </application>
 
 </manifest>

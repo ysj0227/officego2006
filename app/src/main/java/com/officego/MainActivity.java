@@ -86,12 +86,15 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                 }
                 break;
             case R.id.tab_message:
-                if (fg2 == null) {
-                    fg2 = new MessageFragment_();
-                    fTransaction.add(R.id.ly_content, fg2, "Fragment2");
-                } else {
-                    fTransaction.show(fg2);
-                }
+                //实时切换刷新，保证是否登录的UI更新
+//                if (fg2 == null) {
+//                    fg2 = new MessageFragment_();
+//                    fTransaction.add(R.id.ly_content, fg2, "Fragment2");
+//                } else {
+//                    fTransaction.show(fg2);
+//                }
+                fg2 = new MessageFragment_();
+                fTransaction.add(R.id.ly_content, fg2, "Fragment2");
                 break;
             case R.id.tab_collect:
 //                if (fg3 == null) {
@@ -104,12 +107,6 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                 fTransaction.add(R.id.ly_content, fg3, "Fragment3");
                 break;
             case R.id.tab_mine:
-//                if (fg4 == null) {
-//                    fg4 = new MineFragment_();
-//                    fTransaction.add(R.id.ly_content, fg4, "Fragment4");
-//                } else {
-//                    fTransaction.show(fg4);
-//                }
                 fg4 = new MineFragment_();
                 fTransaction.add(R.id.ly_content, fg4, "Fragment4");
                 break;

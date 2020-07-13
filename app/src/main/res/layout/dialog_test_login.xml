@@ -1,18 +1,78 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="@dimen/dp_400"
-    android:layout_height="@dimen/dp_180"
+    android:layout_height="@dimen/dp_260"
     android:background="@drawable/bg_shape_white"
     android:orientation="vertical">
 
-    <com.officego.commonlib.view.ClearableEditText
-        android:id="@+id/cet_test"
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_gravity="center"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="接口:"
+            android:textSize="@dimen/sp_18" />
+
+        <com.officego.commonlib.view.ClearableEditText
+            android:id="@+id/cet_infact"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/common_blue_main"
+            android:hint="http://admin.officego.com.cn"
+            android:textSize="@dimen/sp_18" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_10"
-        android:inputType="phone"
-        android:textSize="@dimen/sp_20" />
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="URL:"
+            android:textSize="@dimen/sp_18" />
+
+        <com.officego.commonlib.view.ClearableEditText
+            android:id="@+id/cet_url"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:textColor="@color/common_blue_main"
+            android:hint="http://test.officego.com.cn"
+            android:textSize="@dimen/sp_18" />
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_15"
+        android:orientation="horizontal">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="账号:"
+            android:textSize="@dimen/sp_18" />
+
+        <com.officego.commonlib.view.ClearableEditText
+            android:id="@+id/cet_test"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:hint="必填"
+            android:textColor="@color/common_blue_main"
+            android:inputType="phone"
+            android:textSize="@dimen/sp_18" />
+    </LinearLayout>
 
     <Button
         android:id="@+id/btn_go"
@@ -20,10 +80,10 @@
         android:layout_height="@dimen/dp_40"
         android:layout_gravity="center"
         android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginBottom="@dimen/dp_10"
         android:background="@drawable/button_corners25_solid_main"
         android:padding="8dp"
         android:text="登录"
-        android:layout_marginBottom="@dimen/dp_10"
         android:textColor="@color/white"
         android:textSize="@dimen/sp_16" />
 
