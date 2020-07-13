@@ -157,7 +157,6 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
     @Click(R.id.btn_test)
     void testClick() {
 //        testDialog(context);
-
         SelectIdActivity_.intent(context).start();
     }
 

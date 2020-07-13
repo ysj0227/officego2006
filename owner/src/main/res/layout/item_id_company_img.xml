@@ -9,6 +9,7 @@
         android:layout_width="@dimen/dp_100"
         android:layout_height="@dimen/dp_100"
         android:layout_marginTop="@dimen/dp_5"
+        android:scaleType="centerCrop"
         android:background="@mipmap/ic_add_img"
         android:layout_marginBottom="@dimen/dp_5"
         tools:ignore="ContentDescription" />
