@@ -35,6 +35,7 @@ import com.officego.h5.WebViewActivity_;
 import com.officego.ui.login.contract.LoginContract;
 import com.officego.ui.login.presenter.LoginPresenter;
 import com.officego.utils.MonitorEditTextUtils;
+import com.owner.identity.SelectIdActivity_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -155,10 +156,9 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
 
     @Click(R.id.btn_test)
     void testClick() {
-//        mPresenter.login("19533333333", "123465");
-//        mPresenter.login("15981968964", "123465");
-//        mPresenter.login("19577777777", "123465");
-        testDialog(context);
+//        testDialog(context);
+
+        SelectIdActivity_.intent(context).start();
     }
 
     @Click(R.id.tv_get_code)

@@ -33,6 +33,7 @@ public class AppConfig extends BaseConfig {
     protected void initTest(Context context, String env) {
         //URL
         APP_URL = "http://admin.officego.com.cn/";
+//        APP_URL = "http://192.168.1.120/";
         APP_URL_MAIN = "http://test.officego.com.cn/";
         //个人中心
         H5_ABOUT_US = APP_URL_MAIN + "lessee/aboutUs.html";

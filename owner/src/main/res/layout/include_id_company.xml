@@ -2,7 +2,7 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content">
+    android:layout_height="match_parent">
 
     <TextView
         android:id="@+id/tv_text_property_ownership_certificate"
@@ -24,7 +24,7 @@
         android:layout_marginTop="@dimen/dp_6"
         android:text="请确保所上传的房产信息与公司信息一致"
         android:textColor="@color/text_66_p50"
-        android:textSize="@dimen/sp_13"
+        android:textSize="@dimen/sp_12"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_text_property_ownership_certificate" />
 
@@ -57,7 +57,7 @@
         android:layout_marginTop="@dimen/dp_6"
         android:text="上传内容务必包含承租方名称、租赁大厦名称和出租方公章"
         android:textColor="@color/text_66_p50"
-        android:textSize="@dimen/sp_13"
+        android:textSize="@dimen/sp_12"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_text_rental_agreement" />
 

@@ -19,15 +19,18 @@
         app:titleTextColor="@color/white" />
 
     <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:id="@+id/nsv_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/dp_70"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title_bar">
 
         <androidx.constraintlayout.widget.ConstraintLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <RelativeLayout
                 android:id="@+id/rl_identity"
@@ -84,7 +87,7 @@
                 <com.officego.commonlib.view.ClearableEditText
                     android:id="@+id/cet_company_name"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/dp_4"
                     android:layout_toEndOf="@id/tv_text_company_name"
@@ -124,7 +127,7 @@
                 <com.officego.commonlib.view.ClearableEditText
                     android:id="@+id/tv_office_name"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"
+                    android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/dp_4"
                     android:layout_toEndOf="@id/tv_text_office"
@@ -157,13 +160,14 @@
                     android:textColor="@color/text_33"
                     android:textSize="@dimen/sp_15" />
 
-                <TextView
-                    android:id="@+id/tv_office_address"
-                    android:layout_width="wrap_content"
+                <com.officego.commonlib.view.ClearableEditText
+                    android:id="@+id/cet_office_address"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/dp_4"
                     android:layout_toEndOf="@id/tv_text_office_address"
+                    android:background="@null"
                     android:text="上海市静安区胶州路699号"
                     android:textColor="@color/text_33"
                     android:textSize="@dimen/sp_15" />
@@ -212,13 +216,32 @@
 
             <include
                 layout="@layout/include_id_company"
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginLeft="@dimen/dp_18"
+                android:layout_marginStart="@dimen/dp_18"
+                app:layout_constrainedHeight="true"
+                app:layout_constraintBottom_toBottomOf="parent"
+                app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rl_type" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
+
+    <Button
+        android:id="@+id/btn_upload"
+        style="@style/marginLeftRight18"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:background="@drawable/btn_common_bg_primary"
+        android:gravity="center"
+        android:text="提交认证"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_15"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/nsv_view" />
 </androidx.constraintlayout.widget.ConstraintLayout>
 

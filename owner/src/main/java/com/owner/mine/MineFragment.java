@@ -137,17 +137,15 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
 
     @Click(resName = "tv_name")
     void nameClick() {
-//        if (mUserInfo == null) {
-//            mPresenter.getUserInfo();
-//            return;
-//        }
-//        if (isIdentity()) {
-//            new UnIdifyDialog(mActivity, mUserInfo);
-//            return;
-//        }
-//        MineMessageActivity_.intent(mActivity).mUserInfo(mUserInfo).startForResult(REQUEST_CODE);
-
-        SelectIdActivity_.intent(mActivity).start();
+        if (mUserInfo == null) {
+            mPresenter.getUserInfo();
+            return;
+        }
+        if (isIdentity()) {
+            new UnIdifyDialog(mActivity, mUserInfo);
+            return;
+        }
+        MineMessageActivity_.intent(mActivity).mUserInfo(mUserInfo).startForResult(REQUEST_CODE);
     }
 
     @OnActivityResult(REQUEST_CODE)
