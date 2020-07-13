@@ -82,14 +82,13 @@ public class CompanyActivity extends BaseActivity implements
         localBuildingPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "buildingdec.jpg";
 
         GridLayoutManager layoutManager = new GridLayoutManager(context, 3);
-        layoutManager.setSmoothScrollbarEnabled(false);
         rvPropertyOwnershipCertificate.setLayoutManager(layoutManager);
         GridLayoutManager layoutManager1 = new GridLayoutManager(context, 3);
-        layoutManager1.setSmoothScrollbarEnabled(false);
         rvRentalAgreement.setLayoutManager(layoutManager1);
-
-        rvPropertyOwnershipCertificate.setHasFixedSize(true);
-        rvRentalAgreement.setHasFixedSize(true);
+//        rvPropertyOwnershipCertificate.setHasFixedSize(true);
+        rvPropertyOwnershipCertificate.setNestedScrollingEnabled(false);
+//        rvRentalAgreement.setHasFixedSize(true);
+        rvRentalAgreement.setNestedScrollingEnabled(false);
         //初始化默认添加一个
         listCertificate.add("");
         listRental.add("");
