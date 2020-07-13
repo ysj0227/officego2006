@@ -295,6 +295,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
             nearbySubway = "";
         }
         //查询列表
+        pageNum=1;
         buildingList.clear();
         houseAdapter = null;
         getBuildingList();
@@ -306,15 +307,16 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
         LogCat.e("TAG", "onOfficeTypePopUpWindow data= " + officeType + "text=" + text);
         btype = officeType;
         tvSearchOffice.setText(text);
-        //查询列表
-        buildingList.clear();
-        houseAdapter = null;
         //初始化选择的写字楼或联合办公
         area = "";
         seats = "";
         dayPrice = "";
         decoration = "";
         houseTags = "";
+        //查询列表
+        pageNum=1;
+        buildingList.clear();
+        houseAdapter = null;
         getBuildingList();
     }
 
@@ -324,6 +326,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
         LogCat.e("TAG", "onOfficeOrderPopUpWindow data= " + order);
         sort = order;
         //查询列表
+        pageNum=1;
         buildingList.clear();
         houseAdapter = null;
         getBuildingList();
@@ -349,6 +352,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
             tvSearchOffice.setText(R.string.str_house_tenant);
         }
         //查询列表
+        pageNum=1;
         buildingList.clear();
         houseAdapter = null;
         getBuildingList();
