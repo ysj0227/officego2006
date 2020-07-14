@@ -78,7 +78,13 @@
         <activity
             android:name="com.owner.IDCameraActivity"
             android:screenOrientation="portrait" />
-        <activity android:name=".identity.CompanyActivity_" />
+        <activity
+            android:name=".identity.CompanyActivity_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".identity.CreateCompanyActivity_"
+            android:screenOrientation="portrait"
+            android:windowSoftInputMode="stateHidden|adjustPan" />
     </application>
 
 </manifest>

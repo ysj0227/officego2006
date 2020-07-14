@@ -6,15 +6,23 @@ import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
+import android.text.Editable;
+import android.text.Html;
+import android.text.TextUtils;
+import android.text.TextWatcher;
+import android.view.View;
+import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.donkingliang.imageselector.utils.ImageSelector;
-import com.officego.commonlib.base.BaseActivity;
+import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.FileHelper;
@@ -22,10 +30,17 @@ import com.officego.commonlib.utils.FileUtils;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.PhotoUtils;
 import com.officego.commonlib.utils.ToastUtils;
+import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.TitleBarView;
 import com.owner.R;
+import com.owner.adapter.IdentityBuildingAdapter;
+import com.owner.adapter.IdentityCompanyAdapter;
 import com.owner.adapter.PropertyOwnershipCertificateAdapter;
 import com.owner.adapter.RentalAgreementAdapter;
+import com.owner.identity.contract.CompanyContract;
+import com.owner.identity.model.IdentityBuildingBean;
+import com.owner.identity.model.IdentityCompanyBean;
+import com.owner.identity.presenter.CompanyPresenter;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -42,9 +57,12 @@ import java.util.List;
  * Descriptions:
  **/
 @EActivity(resName = "activity_id_company")
-public class CompanyActivity extends BaseActivity implements
+public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implements
+        CompanyContract.View,
         PropertyOwnershipCertificateAdapter.CertificateListener,
-        RentalAgreementAdapter.RentalAgreementListener {
+        RentalAgreementAdapter.RentalAgreementListener,
+        IdentityBuildingAdapter.IdentityBuildingListener,
+        IdentityCompanyAdapter.IdentityCompanyListener {
     private static final int REQUEST_GALLERY = 0xa0;
     private static final int REQUEST_CAMERA = 0xa1;
     private static final int TYPE_CER = 1;
@@ -56,12 +74,27 @@ public class CompanyActivity extends BaseActivity implements
 
     @ViewById(resName = "title_bar")
     TitleBarView titleBar;
+    @ViewById(resName = "rv_recommend_company")
+    RecyclerView rvRecommendCompany;
+    @ViewById(resName = "rl_search_company")
+    RelativeLayout rlSearchCompany;
+    @ViewById(resName = "rv_recommend_building")
+    RecyclerView rvRecommendBuilding;
+    @ViewById(resName = "rl_search_building")
+    RelativeLayout rlSearchBuilding;
     @ViewById(resName = "rv_property_ownership_certificate")
     RecyclerView rvPropertyOwnershipCertificate;
     @ViewById(resName = "rv_rental_agreement")
     RecyclerView rvRentalAgreement;
     @ViewById(resName = "iv_building_introduce")
     ImageView ivBuildingIntroduce;
+
+    @ViewById(resName = "cet_company_name")
+    ClearableEditText cetCompanyName;
+    @ViewById(resName = "cet_office_name")
+    ClearableEditText cetOfficeName;
+    @ViewById(resName = "cet_office_address")
+    ClearableEditText cetOfficeAddress;
 
     private List<String> listCertificate = new ArrayList<>();
     private List<String> listRental = new ArrayList<>();
@@ -73,20 +106,37 @@ public class CompanyActivity extends BaseActivity implements
 
     @AfterViews
     void init() {
+        mPresenter = new CompanyPresenter();
+        mPresenter.attachView(this);
         initRecyclerView();
+        initData();
     }
 
     private void initRecyclerView() {
+        //房产证，租赁，封面图path
         localCerPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "certificate.jpg";
         localRenPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "rental.jpg";
         localBuildingPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "buildingdec.jpg";
-
+        //搜索列表
+        LinearLayoutManager companyManager = new LinearLayoutManager(context);
+        rvRecommendCompany.setLayoutManager(companyManager);
+        LinearLayoutManager buildingManager = new LinearLayoutManager(context);
+        rvRecommendBuilding.setLayoutManager(buildingManager);
+        //图片
         GridLayoutManager layoutManager = new GridLayoutManager(context, 3);
+        layoutManager.setSmoothScrollbarEnabled(true);
+        layoutManager.setAutoMeasureEnabled(true);
         rvPropertyOwnershipCertificate.setLayoutManager(layoutManager);
         GridLayoutManager layoutManager1 = new GridLayoutManager(context, 3);
+        layoutManager1.setSmoothScrollbarEnabled(true);
+        layoutManager1.setAutoMeasureEnabled(true);
         rvRentalAgreement.setLayoutManager(layoutManager1);
         rvPropertyOwnershipCertificate.setNestedScrollingEnabled(false);
         rvRentalAgreement.setNestedScrollingEnabled(false);
+    }
+
+    private void initData() {
+        searchCompany();
         //初始化默认添加一个
         listCertificate.add("");
         listRental.add("");
@@ -105,12 +155,13 @@ public class CompanyActivity extends BaseActivity implements
 
     }
 
-    @Click(resName = "rl_company_name")
-    void companyNameClick() {
-
+    @Click(resName = "tv_goto_create_company")
+    void createCompanyNameClick() {
+        CreateCompanyActivity_.intent(context).start();
     }
 
     private void selectedDialog() {
+        hideView();
         final String[] items = {"拍照", "相册"};
         new AlertDialog.Builder(CompanyActivity.this)
                 .setItems(items, (dialogInterface, i) -> {
@@ -165,7 +216,7 @@ public class CompanyActivity extends BaseActivity implements
                 .useCamera(false) // 设置是否使用拍照
                 .setSingle(false)  //设置是否单选
                 .setMaxSelectCount(TYPE_BUI == mUploadType ? 1 : 9)
-                .setSelected((ArrayList<String>) selectList)
+//                .setSelected((ArrayList<String>) selectList)
                 .canPreview(true) //是否可以预览图片，默认为true
                 .start(this, REQUEST_GALLERY); // 打开相册
     }
@@ -256,5 +307,121 @@ public class CompanyActivity extends BaseActivity implements
     void addBuildingIntroduceClick() {
         mUploadType = TYPE_BUI;
         selectedDialog();
+    }
+
+    private void hideView() {
+        rlSearchCompany.setVisibility(View.GONE);
+        rlSearchBuilding.setVisibility(View.GONE);
+    }
+
+    //search
+    private void searchCompany() {
+//        cetCompanyName.setOnFocusChangeListener((v, hasFocus) -> {
+//            if (hasFocus) {
+//                rlSearchCompany.setVisibility(View.VISIBLE);
+//                rlSearchBuilding.setVisibility(View.GONE);
+//            } else {
+//                hideView();
+//            }
+//        });
+        cetCompanyName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (TextUtils.isEmpty(s.toString())) {
+                    hideView();
+                } else {
+                    rlSearchCompany.setVisibility(View.VISIBLE);
+                    rlSearchBuilding.setVisibility(View.GONE);
+                    mPresenter.getCompany(s.toString());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+//        cetOfficeName.setOnFocusChangeListener((v, hasFocus) -> {
+//            if (hasFocus) {
+//                rlSearchCompany.setVisibility(View.GONE);
+//                rlSearchBuilding.setVisibility(View.VISIBLE);
+//            } else {
+//                hideView();
+//            }
+//        });
+        cetOfficeName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (TextUtils.isEmpty(s.toString())) {
+                    hideView();
+                } else {
+                    rlSearchCompany.setVisibility(View.GONE);
+                    rlSearchBuilding.setVisibility(View.VISIBLE);
+                    mPresenter.getBuilding(s.toString());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
+
+    private IdentityCompanyAdapter companyAdapter;
+    private IdentityBuildingAdapter buildingAdapter;
+
+    @Override
+    public void searchCompanySuccess(List<IdentityCompanyBean.DataBean> data) {
+        if (companyAdapter == null) {
+            companyAdapter = new IdentityCompanyAdapter(context, data);
+            companyAdapter.setListener(this);
+            rvRecommendCompany.setAdapter(companyAdapter);
+        }
+        companyAdapter.setData(data);
+        companyAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void searchBuildingSuccess(List<IdentityBuildingBean.DataBean> data) {
+        if (buildingAdapter == null) {
+            buildingAdapter = new IdentityBuildingAdapter(context, data);
+            buildingAdapter.setListener(this);
+            rvRecommendBuilding.setAdapter(buildingAdapter);
+        }
+        buildingAdapter.setData(data);
+        buildingAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void associateCompany(IdentityCompanyBean.DataBean bean) {
+        showHtmlView(cetCompanyName, bean.getCompany());
+        hideView();
+    }
+
+    @Override
+    public void associateBuilding(IdentityBuildingBean.DataBean bean) {
+        showHtmlView(cetOfficeName, bean.getBuildingName());
+        showHtmlView(cetOfficeAddress, bean.getAddress());
+        hideView();
+    }
+
+    private void showHtmlView(EditText textView, String info) {
+        if (info.contains("strong style='color:")) {
+            String next = info.replace("strong", "font");
+            textView.setText(Html.fromHtml(next));
+        } else {
+            textView.setText(Html.fromHtml(info));
+        }
     }
 }

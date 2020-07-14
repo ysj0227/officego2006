@@ -32,9 +32,11 @@ public class AppConfig extends BaseConfig {
     @Override
     protected void initTest(Context context, String env) {
         //URL
-        APP_URL = "http://admin.officego.com.cn/";
-//        APP_URL = "http://192.168.1.120/";
-        APP_URL_MAIN = "http://test.officego.com.cn/";
+//        APP_URL = "http://admin.officego.com.cn/";
+//        APP_URL_MAIN = "http://test.officego.com.cn/";
+        APP_URL = "http://debug.officego.com.cn/";
+        APP_URL_MAIN = "http://test1.officego.com.cn/";
+
         //个人中心
         H5_ABOUT_US = APP_URL_MAIN + "lessee/aboutUs.html";
         H5_HELP_FEEDBACK = APP_URL_MAIN + "lessee/opinion.html";
@@ -45,7 +47,7 @@ public class AppConfig extends BaseConfig {
         //楼盘网点管理
 //        H5_OWNER_BUILDINGlIST = "http//172.16.4.12:8080/owner/houseList.html";
 //        H5_OWNER_HOUSElIST = "http//172.16.4.12:8080/owner/branchList.html";
-        H5_OWNER_BUILDINGlIST =APP_URL_MAIN + "owner/houseList.html";
+        H5_OWNER_BUILDINGlIST = APP_URL_MAIN + "owner/houseList.html";
         H5_OWNER_HOUSElIST = APP_URL_MAIN + "owner/branchList.html";
         //认证
         H5_OWNER_IDIFY = APP_URL_MAIN + "owner/myHome.html";

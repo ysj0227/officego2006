@@ -12,7 +12,9 @@ import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.VersionBean;
+import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.update.AppUpdate;
 import com.officego.commonlib.utils.CommonHelper;
@@ -68,6 +70,8 @@ public class MineSettingActivity extends BaseActivity {
         CommonDialog dialog = new CommonDialog.Builder(context)
                 .setTitle(R.string.str_are_you_sure_to_logout)
                 .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
+                    BaseNotification.newInstance().postNotificationName(
+                            CommonNotifications.loginOut, "loginOut");
                     SpUtils.clearLoginInfo();
                     Intent intent = getIntent();
                     setResult(RESULT_OK, intent);

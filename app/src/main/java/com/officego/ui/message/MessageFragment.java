@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentTransaction;
 import com.officego.R;
 import com.officego.commonlib.base.BaseFragment;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.ui.login.LoginActivity_;
@@ -21,6 +22,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.OnActivityResult;
+import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import io.rong.imkit.fragment.ConversationListFragment;
@@ -58,11 +60,11 @@ public class MessageFragment extends BaseFragment {
         rlTitle.setLayoutParams(params);
         //当前未登录状态
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
-            ctlNoLogin.setVisibility(View.VISIBLE);
-            conversationList.setVisibility(View.GONE);
+            loginOut();
         } else {
-            initIm();
+            loginIn();
         }
+        initIm();
     }
 
     @Click(R.id.btn_login)
@@ -84,8 +86,6 @@ public class MessageFragment extends BaseFragment {
      * 初始化聊天列表
      */
     private void initIm() {
-        ctlNoLogin.setVisibility(View.GONE);
-        conversationList.setVisibility(View.VISIBLE);
         ConversationListFragment fragment = new ConversationListFragment();
         Uri uri = Uri.parse("rong://" + mActivity.getApplicationInfo().packageName).buildUpon()
                 .appendPath("conversationlist")
@@ -97,5 +97,33 @@ public class MessageFragment extends BaseFragment {
         FragmentTransaction transaction = mActivity.getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.conversationlist, fragment);
         transaction.commit();
+    }
+
+    @Override
+    public int[] getStickNotificationId() {
+        return new int[]{CommonNotifications.loginIn,
+                CommonNotifications.loginOut};
+    }
+
+    @Override
+    public void didReceivedNotification(int id, Object... args) {
+        super.didReceivedNotification(id, args);
+        if (id == CommonNotifications.loginIn) {
+            loginIn();
+        } else if (id == CommonNotifications.loginOut) {
+            loginOut();
+        }
+    }
+
+    @UiThread
+    void loginIn() {
+        ctlNoLogin.setVisibility(View.GONE);
+        conversationList.setVisibility(View.VISIBLE);
+    }
+
+    @UiThread
+    void loginOut() {
+        ctlNoLogin.setVisibility(View.VISIBLE);
+        conversationList.setVisibility(View.GONE);
     }
 }

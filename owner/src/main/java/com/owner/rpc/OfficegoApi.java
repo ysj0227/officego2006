@@ -5,8 +5,12 @@ import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.VersionBean;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.log.LogCat;
+import com.owner.identity.model.IdentityBuildingBean;
+import com.owner.identity.model.IdentityCompanyBean;
+import com.owner.identity.model.IdentityJointWorkBean;
 import com.owner.mine.model.AvatarBean;
 import com.owner.mine.model.UserOwnerBean;
+import com.owner.rpc.request.IdentitySearchInterface;
 import com.owner.rpc.request.LoginInterface;
 import com.owner.rpc.request.MineMsgInterface;
 import com.owner.rpc.request.ScheduleInterface;
@@ -119,7 +123,7 @@ public class OfficegoApi {
     /**
      * 修改手机号
      */
-    public void modifyMobile(String mobile,String code, RetrofitCallback<Object> callback) {
+    public void modifyMobile(String mobile, String code, RetrofitCallback<Object> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("newPhone", requestBody(mobile));
@@ -204,6 +208,47 @@ public class OfficegoApi {
         LogCat.e(TAG, "1111  chat/regTokenApp  token=" + SpUtils.getSignToken() + " roleType=" + roleType);
         OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
                 .switchId(map)
+                .enqueue(callback);
+    }
+
+
+    /**
+     * ***********************************************
+     * 认证搜索
+     */
+    public void searchCompany(String keywords,
+                              RetrofitCallback<List<IdentityCompanyBean.DataBean>> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("keywords", requestBody(keywords));
+        OfficegoRetrofitClient.getInstance().create(IdentitySearchInterface.class)
+                .searchCompany(map)
+                .enqueue(callback);
+    }
+
+    /**
+     * 搜索楼盘
+     */
+    public void searchListBuild(String keywords,
+                                RetrofitCallback<List<IdentityBuildingBean.DataBean>> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("keywords", requestBody(keywords));
+        OfficegoRetrofitClient.getInstance().create(IdentitySearchInterface.class)
+                .searchListBuild(map)
+                .enqueue(callback);
+    }
+
+    /**
+     * 搜索网点
+     */
+    public void searchListBranch(String keywords,
+                                 RetrofitCallback<List<IdentityJointWorkBean.DataBean>> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("keywords", requestBody(keywords));
+        OfficegoRetrofitClient.getInstance().create(IdentitySearchInterface.class)
+                .searchListBranch(map)
                 .enqueue(callback);
     }
 

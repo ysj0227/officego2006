@@ -5,7 +5,9 @@ import android.content.Context;
 import com.officego.commonlib.base.BasePresenter;
 import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.rongcloud.ConnectRongCloudUtils;
+import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.log.LogCat;
 import com.officego.rpc.OfficegoApi;
@@ -56,6 +58,8 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
             @Override
             public void onSuccess(int code, String msg, LoginBean data) {
                 if (isViewAttached()) {
+                    BaseNotification.newInstance().postNotificationName(
+                            CommonNotifications.loginIn, "loginIn");
                     SpUtils.saveLoginInfo(data, mobile);
                     new ConnectRongCloudUtils();
                     mView.hideLoadingDialog();
@@ -85,6 +89,8 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
             public void onSuccess(int code, String msg, LoginBean data) {
                 LogCat.e(TAG, "loginOnlyPhone onSuccess =" + data);
                 if (isViewAttached()) {
+                    BaseNotification.newInstance().postNotificationName(
+                            CommonNotifications.loginIn, "loginIn");
                     SpUtils.saveLoginInfo(data, mobile);
                     new ConnectRongCloudUtils();
                     mView.loginSuccess(data);
