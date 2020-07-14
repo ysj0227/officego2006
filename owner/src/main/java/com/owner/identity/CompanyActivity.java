@@ -16,6 +16,7 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -71,9 +72,10 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
 
     private String localCerPath, localRenPath, localBuildingPath;
     private Uri localPhotoUri;
-
+    //title
     @ViewById(resName = "title_bar")
     TitleBarView titleBar;
+    //搜索list
     @ViewById(resName = "rv_recommend_company")
     RecyclerView rvRecommendCompany;
     @ViewById(resName = "rl_search_company")
@@ -82,19 +84,31 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
     RecyclerView rvRecommendBuilding;
     @ViewById(resName = "rl_search_building")
     RelativeLayout rlSearchBuilding;
+    //图片list
     @ViewById(resName = "rv_property_ownership_certificate")
     RecyclerView rvPropertyOwnershipCertificate;
     @ViewById(resName = "rv_rental_agreement")
     RecyclerView rvRentalAgreement;
     @ViewById(resName = "iv_building_introduce")
     ImageView ivBuildingIntroduce;
-
+    //编辑框
     @ViewById(resName = "cet_company_name")
     ClearableEditText cetCompanyName;
     @ViewById(resName = "cet_office_name")
     ClearableEditText cetOfficeName;
     @ViewById(resName = "cet_office_address")
     ClearableEditText cetOfficeAddress;
+    //布局
+    @ViewById(resName = "v_gray_spaces")
+    View vGraySpaces;
+    @ViewById(resName = "rl_office")
+    RelativeLayout rlOffice;
+    @ViewById(resName = "rl_office_address")
+    RelativeLayout rlOfficeAddress;
+    @ViewById(resName = "rl_type")
+    RelativeLayout rlType;
+    @ViewById(resName = "ctl_identity_root")
+    ConstraintLayout ctlIdentityRoot;
 
     private List<String> listCertificate = new ArrayList<>();
     private List<String> listRental = new ArrayList<>();
@@ -316,14 +330,6 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
 
     //search
     private void searchCompany() {
-//        cetCompanyName.setOnFocusChangeListener((v, hasFocus) -> {
-//            if (hasFocus) {
-//                rlSearchCompany.setVisibility(View.VISIBLE);
-//                rlSearchBuilding.setVisibility(View.GONE);
-//            } else {
-//                hideView();
-//            }
-//        });
         cetCompanyName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -346,14 +352,6 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
 
             }
         });
-//        cetOfficeName.setOnFocusChangeListener((v, hasFocus) -> {
-//            if (hasFocus) {
-//                rlSearchCompany.setVisibility(View.GONE);
-//                rlSearchBuilding.setVisibility(View.VISIBLE);
-//            } else {
-//                hideView();
-//            }
-//        });
         cetOfficeName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -392,6 +390,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         companyAdapter.notifyDataSetChanged();
     }
 
+    private List<IdentityBuildingBean.DataBean> mList=new ArrayList<>();
     @Override
     public void searchBuildingSuccess(List<IdentityBuildingBean.DataBean> data) {
         if (buildingAdapter == null) {
@@ -399,7 +398,13 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
             buildingAdapter.setListener(this);
             rvRecommendBuilding.setAdapter(buildingAdapter);
         }
-        buildingAdapter.setData(data);
+        mList.clear();
+        mList.addAll(data);
+        IdentityBuildingBean.DataBean bean=new IdentityBuildingBean.DataBean();
+        bean.setBuildingName("11111111111");
+        bean.setAddress("写字楼不存在，去创建写字楼");
+        mList.add(bean);
+        buildingAdapter.setData(mList);
         buildingAdapter.notifyDataSetChanged();
     }
 
@@ -407,6 +412,8 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
     public void associateCompany(IdentityCompanyBean.DataBean bean) {
         showHtmlView(cetCompanyName, bean.getCompany());
         hideView();
+        rlOffice.setVisibility(View.VISIBLE);
+        rlOfficeAddress.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -414,14 +421,16 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         showHtmlView(cetOfficeName, bean.getBuildingName());
         showHtmlView(cetOfficeAddress, bean.getAddress());
         hideView();
+        rlType.setVisibility(View.VISIBLE);
+        ctlIdentityRoot.setVisibility(View.VISIBLE);
     }
 
     private void showHtmlView(EditText textView, String info) {
         if (info.contains("strong style='color:")) {
             String next = info.replace("strong", "font");
-            textView.setText(Html.fromHtml(next));
+            textView.setText(Html.fromHtml(next.trim()));
         } else {
-            textView.setText(Html.fromHtml(info));
+            textView.setText(info.trim());
         }
     }
 }

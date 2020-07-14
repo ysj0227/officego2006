@@ -28,13 +28,16 @@ public class IdentityBuildingAdapter extends CommonListAdapter<IdentityBuildingB
     }
 
     private IdentityBuildingListener listener;
-    public interface IdentityBuildingListener{
+
+    public interface IdentityBuildingListener {
         void associateBuilding(IdentityBuildingBean.DataBean bean);
     }
 
+    private List<IdentityBuildingBean.DataBean> list;
 
     public IdentityBuildingAdapter(Context context, List<IdentityBuildingBean.DataBean> list) {
         super(context, R.layout.item_id_building_search, list);
+        this.list = list;
     }
 
     @Override
@@ -44,16 +47,13 @@ public class IdentityBuildingAdapter extends CommonListAdapter<IdentityBuildingB
         TextView tvAdd = holder.getView(R.id.tv_add);
         tvBuildingName.setText(Html.fromHtml(bean.getBuildingName()));
         tvAddress.setText(Html.fromHtml(bean.getAddress()));
-        tvAdd.setOnClickListener(v -> listener.associateBuilding(bean));
-    }
-
-    private void showHtmlView(TextView textView, String info) {
-        if (info.contains("strong style='color:")) {
-            String pre = info.replace("strong style='color:#46C3C2'", "font color=#07B2B0");
-            String next = pre.replace("</strong>", "</font>");
-            textView.setText(Html.fromHtml(next));
+        if (list != null && list.size() > 0 && holder.getAdapterPosition() == list.size()) {
+            tvBuildingName.setVisibility(View.GONE);
+            tvAdd.setText("创建写字楼");
         } else {
-            textView.setText(Html.fromHtml(info));
+            tvBuildingName.setVisibility(View.VISIBLE);
+            tvAdd.setText("关联写字楼");
         }
+        tvAdd.setOnClickListener(v -> listener.associateBuilding(bean));
     }
 }

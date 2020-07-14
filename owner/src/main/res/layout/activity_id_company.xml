@@ -117,10 +117,11 @@
                 app:layout_constraintTop_toBottomOf="@id/rl_company_name" />
 
             <RelativeLayout
+                android:visibility="gone"
                 android:id="@+id/rl_office"
                 style="@style/marginLeftRight18"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/dp_58"
+                android:layout_height="@dimen/dp_68"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rl_company_name">
@@ -155,6 +156,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:visibility="gone"
                 android:id="@+id/rl_office_address"
                 style="@style/marginLeftRight18"
                 android:layout_width="0dp"
@@ -194,6 +196,7 @@
             </RelativeLayout>
 
             <RelativeLayout
+                android:visibility="gone"
                 android:id="@+id/rl_type"
                 style="@style/marginLeftRight18"
                 android:layout_width="0dp"
@@ -314,28 +317,6 @@
                     android:id="@+id/rv_recommend_building"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_180" />
-
-                <TextView
-                    android:id="@+id/tv_building_tip"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/dp_58"
-                    android:layout_below="@id/rv_recommend_building"
-                    android:gravity="center_vertical"
-                    android:text="写字楼不存在，去创建写字楼"
-                    android:textColor="@color/text_66_p50"
-                    android:textSize="@dimen/sp_12" />
-
-                <TextView
-                    android:id="@+id/tv_goto_create_building"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@id/tv_building_tip"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/dp_10"
-                    android:text="创建写字楼"
-                    android:textColor="@color/common_blue_main"
-                    android:textSize="@dimen/sp_12" />
             </RelativeLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
