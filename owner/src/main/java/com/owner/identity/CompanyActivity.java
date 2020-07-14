@@ -85,9 +85,7 @@ public class CompanyActivity extends BaseActivity implements
         rvPropertyOwnershipCertificate.setLayoutManager(layoutManager);
         GridLayoutManager layoutManager1 = new GridLayoutManager(context, 3);
         rvRentalAgreement.setLayoutManager(layoutManager1);
-//        rvPropertyOwnershipCertificate.setHasFixedSize(true);
         rvPropertyOwnershipCertificate.setNestedScrollingEnabled(false);
-//        rvRentalAgreement.setHasFixedSize(true);
         rvRentalAgreement.setNestedScrollingEnabled(false);
         //初始化默认添加一个
         listCertificate.add("");
