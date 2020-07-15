@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:leftDefaultClickEnable="true"
         app:leftIcon="@drawable/ic_back_light"
-        app:titleText="公司业主认证"
+        app:titleText="联合办公业主认证"
         app:titleTextColor="@color/white" />
 
     <androidx.core.widget.NestedScrollView
@@ -57,7 +57,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/dp_4"
                     android:layout_toEndOf="@id/tv_identity"
-                    android:text="公司"
+                    android:text="联合办公"
                     android:textColor="@color/text_33"
                     android:textSize="@dimen/sp_15" />
 
@@ -76,7 +76,7 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:id="@+id/rl_company_name"
+                android:id="@+id/rl_jointwork_name"
                 style="@style/marginLeftRight18"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dp_58"
@@ -85,11 +85,47 @@
                 app:layout_constraintTop_toBottomOf="@id/rl_identity">
 
                 <TextView
+                    android:id="@+id/tv_text_jointwork_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:text="网点名称："
+                    android:textColor="@color/text_33"
+                    android:textSize="@dimen/sp_15" />
+
+                <com.officego.commonlib.view.ClearableEditText
+                    android:id="@+id/cet_jointwork_name"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/dp_4"
+                    android:layout_toEndOf="@id/tv_text_jointwork_name"
+                    android:background="@null"
+                    android:maxLines="1"
+                    android:textColor="@color/text_33"
+                    android:textSize="@dimen/sp_15" />
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_1"
+                    android:layout_alignParentBottom="true"
+                    android:background="@color/common_divider" />
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:id="@+id/rl_company_name"
+                style="@style/marginLeftRight18"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp_58"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rl_jointwork_name">
+
+                <TextView
                     android:id="@+id/tv_text_company_name"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="公司名称："
+                    android:text="所属公司："
                     android:textColor="@color/text_33"
                     android:textSize="@dimen/sp_15" />
 
@@ -131,7 +167,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
-                    android:text="写字楼名称："
+                    android:text="所在楼盘："
                     android:textColor="@color/text_33"
                     android:textSize="@dimen/sp_15" />
 
@@ -233,7 +269,7 @@
             </RelativeLayout>
 
             <include
-                layout="@layout/include_id_company"
+                layout="@layout/include_id_jointwork"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_18"
@@ -242,6 +278,17 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rl_type" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_recommend_jointwork"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:background="@color/white"
+                android:paddingLeft="@dimen/dp_18"
+                android:visibility="gone"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/rl_jointwork_name" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_recommend_company"

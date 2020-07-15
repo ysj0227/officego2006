@@ -44,17 +44,17 @@ public class SelectIdActivity extends BaseActivity {
 
     @Click(resName = "rl_jointwork")
     void jointWorkClick() {
-
+        JointWorkActivity_.intent(context).start();
     }
 
     @Click(resName = "rl_personal")
     void personalClick() {
-        Intent intent = new Intent(this, IDCameraActivity.class);
-        startActivity(intent);
+
     }
 
     @Click(resName = "tv_back")
     void returnTenantClick() {
-
+        Intent intent = new Intent(this, IDCameraActivity.class);
+        startActivity(intent);
     }
 }

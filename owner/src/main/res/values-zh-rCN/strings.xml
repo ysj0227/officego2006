@@ -146,5 +146,7 @@
     <string name="str_switch_tenant">切换为租户</string>
     <string name="are_you_sure_switch_tenant">是否确认切换为租户?</string>
     <string name="str_title_role">员工管理</string>
+    <string name="str_go_away">离开</string>
+    <string name="str_submit_identity">提交认证</string>
 
 </resources>

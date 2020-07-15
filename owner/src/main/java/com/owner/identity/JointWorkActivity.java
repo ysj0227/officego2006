@@ -3,7 +3,6 @@ package com.owner.identity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.text.Editable;
@@ -11,7 +10,6 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
@@ -38,10 +36,11 @@ import com.owner.adapter.IdentityBuildingAdapter;
 import com.owner.adapter.IdentityCompanyAdapter;
 import com.owner.adapter.PropertyOwnershipCertificateAdapter;
 import com.owner.adapter.RentalAgreementAdapter;
-import com.owner.identity.contract.CompanyContract;
+import com.owner.identity.contract.JointWorkContract;
 import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.model.IdentityCompanyBean;
-import com.owner.identity.presenter.CompanyPresenter;
+import com.owner.identity.model.IdentityJointWorkBean;
+import com.owner.identity.presenter.JointWorkPresenter;
 import com.owner.utils.CommUtils;
 
 import org.androidannotations.annotations.AfterViews;
@@ -58,9 +57,9 @@ import java.util.List;
  * Data 2020/7/13.
  * Descriptions:
  **/
-@EActivity(resName = "activity_id_company")
-public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implements
-        CompanyContract.View,
+@EActivity(resName = "activity_id_jointwork")
+public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> implements
+        JointWorkContract.View,
         PropertyOwnershipCertificateAdapter.CertificateListener,
         RentalAgreementAdapter.RentalAgreementListener,
         IdentityBuildingAdapter.IdentityBuildingListener,
@@ -77,6 +76,8 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
     @ViewById(resName = "title_bar")
     TitleBarView titleBar;
     //搜索list
+    @ViewById(resName = "rv_recommend_jointwork")
+    RecyclerView rvRecommendJointwork;
     @ViewById(resName = "rv_recommend_company")
     RecyclerView rvRecommendCompany;
     @ViewById(resName = "rv_recommend_building")
@@ -86,9 +87,9 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
     RecyclerView rvPropertyOwnershipCertificate;
     @ViewById(resName = "rv_rental_agreement")
     RecyclerView rvRentalAgreement;
-    @ViewById(resName = "iv_building_introduce")
-    ImageView ivBuildingIntroduce;
     //编辑框
+    @ViewById(resName = "cet_jointwork_name")
+    ClearableEditText cetJointworkName;
     @ViewById(resName = "cet_company_name")
     ClearableEditText cetCompanyName;
     @ViewById(resName = "cet_office_name")
@@ -111,10 +112,8 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
 
     private List<String> listCertificate = new ArrayList<>();
     private List<String> listRental = new ArrayList<>();
-    private List<String> listBuilding = new ArrayList<>();
     private PropertyOwnershipCertificateAdapter certificateAdapter;
     private RentalAgreementAdapter rentalAdapter;
-
     private int mUploadType;
     //搜索公司,办公室
     private IdentityCompanyAdapter companyAdapter;
@@ -124,7 +123,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
 
     @AfterViews
     void init() {
-        mPresenter = new CompanyPresenter();
+        mPresenter = new JointWorkPresenter();
         mPresenter.attachView(this);
         initRecyclerView();
         initData();
@@ -136,6 +135,8 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         localRenPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "rental.jpg";
         localBuildingPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "buildingdec.jpg";
         //搜索列表
+        LinearLayoutManager jointWorkManager = new LinearLayoutManager(context);
+        rvRecommendJointwork.setLayoutManager(jointWorkManager);
         LinearLayoutManager companyManager = new LinearLayoutManager(context);
         rvRecommendCompany.setLayoutManager(companyManager);
         LinearLayoutManager buildingManager = new LinearLayoutManager(context);
@@ -154,7 +155,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
     }
 
     private void initData() {
-        searchCompany();
+        searchList();
         //初始化默认添加一个
         listCertificate.add("");
         listRental.add("");
@@ -195,7 +196,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
     private void selectedDialog() {
         hideView();
         final String[] items = {"拍照", "相册"};
-        new AlertDialog.Builder(CompanyActivity.this)
+        new AlertDialog.Builder(JointWorkActivity.this)
                 .setItems(items, (dialogInterface, i) -> {
                     if (i == 0) {
                         takePhoto();
@@ -241,8 +242,6 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
             selectList.addAll(listCertificate);
         } else if (TYPE_REN == mUploadType) {
             selectList.addAll(listRental);
-        } else if (TYPE_BUI == mUploadType) {
-            selectList.addAll(listBuilding);
         }
         ImageSelector.builder()
                 .useCamera(false) // 设置是否使用拍照
@@ -264,8 +263,6 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
                 } else if (TYPE_REN == mUploadType) {
                     listRental.add(listRental.size() - 1, localRenPath);
                     rentalAdapter.notifyDataSetChanged();
-                } else if (TYPE_BUI == mUploadType) {
-                    ivBuildingIntroduce.setImageBitmap(BitmapFactory.decodeFile(localBuildingPath));
                 }
             } else if (requestCode == REQUEST_GALLERY && data != null) {//相册
                 List<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
@@ -275,10 +272,6 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
                 } else if (TYPE_REN == mUploadType) {
                     listRental.addAll(listRental.size() - 1, images);
                     rentalAdapter.notifyDataSetChanged();
-                } else if (TYPE_BUI == mUploadType) {
-                    listBuilding.clear();
-                    listBuilding.add(images.get(0));
-                    ivBuildingIntroduce.setImageBitmap(BitmapFactory.decodeFile(images.get(0)));
                 }
             }
         }
@@ -347,7 +340,29 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
     }
 
     //search
-    private void searchCompany() {
+    private void searchList() {
+        cetJointworkName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (TextUtils.isEmpty(s.toString())) {
+                    hideView();
+                } else {
+                    rvRecommendCompany.setVisibility(View.VISIBLE);
+                    rvRecommendBuilding.setVisibility(View.GONE);
+                    mPresenter.getJointWork(s.toString());
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
         cetCompanyName.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) {
@@ -394,6 +409,17 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         });
     }
 
+    /**
+     * 网点
+     */
+    @Override
+    public void searchJointWorkSuccess(List<IdentityJointWorkBean.DataBean> data) {
+
+    }
+
+    /**
+     * 公司
+     */
     @Override
     public void searchCompanySuccess(List<IdentityCompanyBean.DataBean> data) {
         mCompanyList.clear();
@@ -409,6 +435,9 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         companyAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * 楼盘
+     */
     @Override
     public void searchBuildingSuccess(List<IdentityBuildingBean.DataBean> data) {
         mList.clear();
