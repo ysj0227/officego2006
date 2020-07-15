@@ -117,11 +117,11 @@
                 app:layout_constraintTop_toBottomOf="@id/rl_company_name" />
 
             <RelativeLayout
-                android:visibility="gone"
                 android:id="@+id/rl_office"
                 style="@style/marginLeftRight18"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dp_68"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rl_company_name">
@@ -156,11 +156,11 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:visibility="gone"
                 android:id="@+id/rl_office_address"
                 style="@style/marginLeftRight18"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dp_58"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rl_office">
@@ -196,11 +196,11 @@
             </RelativeLayout>
 
             <RelativeLayout
-                android:visibility="gone"
                 android:id="@+id/rl_type"
                 style="@style/marginLeftRight18"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dp_58"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rl_office_address">
@@ -267,29 +267,8 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_recommend_company"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_180" />
+                    android:layout_height="wrap_content" />
 
-                <TextView
-                    android:id="@+id/tv_company_tip"
-                    android:layout_width="wrap_content"
-                    android:layout_height="@dimen/dp_58"
-                    android:layout_below="@id/rv_recommend_company"
-                    android:gravity="center_vertical"
-                    android:text="加入公司，即可共同管理公司房源"
-                    android:textColor="@color/text_66_p50"
-                    android:textSize="@dimen/sp_12" />
-
-                <TextView
-                    android:id="@+id/tv_goto_create_company"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBaseline="@id/tv_company_tip"
-                    android:layout_alignParentRight="true"
-                    android:layout_centerVertical="true"
-                    android:layout_marginRight="@dimen/dp_10"
-                    android:text="创建公司"
-                    android:textColor="@color/common_blue_main"
-                    android:textSize="@dimen/sp_12" />
             </RelativeLayout>
 
             <RelativeLayout
@@ -316,7 +295,7 @@
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_recommend_building"
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_180" />
+                    android:layout_height="wrap_content" />
             </RelativeLayout>
 
         </androidx.constraintlayout.widget.ConstraintLayout>
@@ -333,6 +312,7 @@
         android:text="提交认证"
         android:textColor="@color/white"
         android:textSize="@dimen/sp_15"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

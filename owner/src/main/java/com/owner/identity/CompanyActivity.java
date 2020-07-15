@@ -117,6 +117,11 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
     private RentalAgreementAdapter rentalAdapter;
 
     private int mUploadType;
+    //搜索公司,办公室
+    private IdentityCompanyAdapter companyAdapter;
+    private IdentityBuildingAdapter buildingAdapter;
+    private List<IdentityCompanyBean.DataBean> mCompanyList = new ArrayList<>();
+    private List<IdentityBuildingBean.DataBean> mList = new ArrayList<>();
 
     @AfterViews
     void init() {
@@ -169,10 +174,6 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
 
     }
 
-    @Click(resName = "tv_goto_create_company")
-    void createCompanyNameClick() {
-        CreateCompanyActivity_.intent(context).start();
-    }
 
     private void selectedDialog() {
         hideView();
@@ -376,40 +377,38 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         });
     }
 
-    private IdentityCompanyAdapter companyAdapter;
-    private IdentityBuildingAdapter buildingAdapter;
-
     @Override
     public void searchCompanySuccess(List<IdentityCompanyBean.DataBean> data) {
+        mCompanyList.clear();
+        mCompanyList.addAll(data);
+        mCompanyList.add(data.size(), new IdentityCompanyBean.DataBean());
         if (companyAdapter == null) {
-            companyAdapter = new IdentityCompanyAdapter(context, data);
+            companyAdapter = new IdentityCompanyAdapter(context, mCompanyList);
             companyAdapter.setListener(this);
             rvRecommendCompany.setAdapter(companyAdapter);
+            return;
         }
-        companyAdapter.setData(data);
+        companyAdapter.setData(mCompanyList);
         companyAdapter.notifyDataSetChanged();
     }
 
-    private List<IdentityBuildingBean.DataBean> mList=new ArrayList<>();
     @Override
     public void searchBuildingSuccess(List<IdentityBuildingBean.DataBean> data) {
-        if (buildingAdapter == null) {
-            buildingAdapter = new IdentityBuildingAdapter(context, data);
-            buildingAdapter.setListener(this);
-            rvRecommendBuilding.setAdapter(buildingAdapter);
-        }
         mList.clear();
         mList.addAll(data);
-        IdentityBuildingBean.DataBean bean=new IdentityBuildingBean.DataBean();
-        bean.setBuildingName("11111111111");
-        bean.setAddress("写字楼不存在，去创建写字楼");
-        mList.add(bean);
+        mList.add(data.size(), new IdentityBuildingBean.DataBean());
+        if (buildingAdapter == null) {
+            buildingAdapter = new IdentityBuildingAdapter(context, mList);
+            buildingAdapter.setListener(this);
+            rvRecommendBuilding.setAdapter(buildingAdapter);
+            return;
+        }
         buildingAdapter.setData(mList);
         buildingAdapter.notifyDataSetChanged();
     }
 
     @Override
-    public void associateCompany(IdentityCompanyBean.DataBean bean) {
+    public void associateCompany(IdentityCompanyBean.DataBean bean, boolean isCreate) {
         showHtmlView(cetCompanyName, bean.getCompany());
         hideView();
         rlOffice.setVisibility(View.VISIBLE);
@@ -417,7 +416,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
     }
 
     @Override
-    public void associateBuilding(IdentityBuildingBean.DataBean bean) {
+    public void associateBuilding(IdentityBuildingBean.DataBean bean, boolean isCreate) {
         showHtmlView(cetOfficeName, bean.getBuildingName());
         showHtmlView(cetOfficeAddress, bean.getAddress());
         hideView();
