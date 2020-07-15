@@ -28,5 +28,7 @@ public class CommonNotifications {
 
     //身份发送变化重新登录
     public static final int identityChangeToRelogin = totalEvents++;
-
+    //登录登出
+    public static final int loginIn = totalEvents++;
+    public static final int loginOut = totalEvents++;
 }

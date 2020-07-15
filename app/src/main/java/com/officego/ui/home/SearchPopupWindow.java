@@ -151,7 +151,7 @@ public class SearchPopupWindow extends PopupWindow implements
         this.mSetTitleView = setTextView;
         this.mSearchType = searchType;
         this.btype = btype;
-        LogCat.e("TAG","1111111111 btype="+this.btype);
+        LogCat.e("TAG", "1111111111 btype=" + this.btype);
         if (TextUtils.isEmpty(district) && TextUtils.isEmpty(business)) {
             this.mHashSetLine = hashSet;
             this.mCheckStatesLine = checkStates;
@@ -649,7 +649,6 @@ public class SearchPopupWindow extends PopupWindow implements
         mRentPrice = rbOffice.isChecked() ? rentPrice : rentPrice2;
         mSimple = rbOffice.isChecked() ? simple : simple2;
         mArea = rbOffice.isChecked() ? constructionArea : "";
-        LogCat.e("TAG", "11111111 btype=" + btype + " mRentPrice=" + mRentPrice + "  mSimple=" + mSimple + " mArea=" + mArea);
         onSureClickListener.onConditionPopUpWindow(mSearchType, btype, mArea, mRentPrice, mSimple, decoration, houseTags);
 
     }
@@ -891,26 +890,29 @@ public class SearchPopupWindow extends PopupWindow implements
             super(context, R.layout.item_search_meter, list);
             this.recyclerViewRight = recyclerViewRight;
             this.tvNum = tvNum;
-            if (TextUtils.isEmpty(district)) {
-                //如果没有选择条件，默认选择第一个
-//                recyclerViewRight.setAdapter(new BusinessCircleDetailsAdapter(mContext, tvNum, list.get(0).getList()));
-            } else {
-                businessCircleDetailsAdapter = new BusinessCircleDetailsAdapter(mContext, tvNum, list.get(Integer.valueOf(district) - 1).getList());
-                recyclerViewRight.setAdapter(businessCircleDetailsAdapter);
+            if (!TextUtils.isEmpty(district)) {
+                for (int i = 0; i <list.size() ; i++) {
+                    if (TextUtils.equals(district,String.valueOf(list.get(i).getDistrictID()))){
+                        businessCircleDetailsAdapter = new BusinessCircleDetailsAdapter(mContext, tvNum, list.get(i).getList());
+                        recyclerViewRight.setAdapter(businessCircleDetailsAdapter);
+                    }
+                }
             }
         }
 
         @Override
         public void convert(ViewHolder holder, BusinessCircleBean.DataBean bean) {
-            TextView itemMeter = holder.getView(R.id.tv_item_meter);
-            itemMeter.setText(bean.getDistrict());
+            TextView itemBusiness = holder.getView(R.id.tv_item_meter);
+            itemBusiness.setText(bean.getDistrict());
             if (TextUtils.isEmpty(district)) {
                 //如果没有选择条件，默认选择第一个
 //                if (checkedPosition == 0) {
 //                    map.put(0, true);
 //                }
             } else {
-                mapBusiness.put(Integer.valueOf(district) - 1, true);//选择筛选条件的
+                if (TextUtils.equals(district,String.valueOf(bean.getDistrictID()))){
+                    mapBusiness.put(holder.getAdapterPosition(), true);//选择筛选条件的
+                }
             }
             holder.itemView.setOnClickListener(v -> {
                 mapBusiness.clear();
@@ -923,15 +925,16 @@ public class SearchPopupWindow extends PopupWindow implements
                 clearBusinessHashSet(tvNum);
                 //赋值
                 district = String.valueOf(bean.getDistrictID());
+                LogCat.e("TAG", "111111111 district=" + district);
                 businessCircleDetailsAdapter = new BusinessCircleDetailsAdapter(mContext, tvNum, bean.getList());
                 recyclerViewRight.setAdapter(businessCircleDetailsAdapter);
             });
             //显示选中的文本
             onBind = true;
             if (mapBusiness != null && mapBusiness.containsKey(holder.getAdapterPosition())) {
-                itemMeter.setTextColor(ContextCompat.getColor(mContext, R.color.common_blue_main));
+                itemBusiness.setTextColor(ContextCompat.getColor(mContext, R.color.common_blue_main));
             } else {
-                itemMeter.setTextColor(ContextCompat.getColor(mContext, R.color.text_33));
+                itemBusiness.setTextColor(ContextCompat.getColor(mContext, R.color.text_33));
             }
             onBind = false;
         }

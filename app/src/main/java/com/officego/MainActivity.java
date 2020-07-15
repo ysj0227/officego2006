@@ -86,8 +86,12 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                 }
                 break;
             case R.id.tab_message:
-                fg2 = new MessageFragment_();
-                fTransaction.add(R.id.ly_content, fg2, "Fragment2");
+                if (fg2 == null) {
+                    fg2 = new MessageFragment_();
+                    fTransaction.add(R.id.ly_content, fg2, "Fragment2");
+                } else {
+                    fTransaction.show(fg2);
+                }
                 break;
             case R.id.tab_collect:
 //                if (fg3 == null) {
