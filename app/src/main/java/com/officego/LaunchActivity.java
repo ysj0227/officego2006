@@ -16,7 +16,8 @@ import com.officego.ui.login.LoginActivity_;
 
 
 @SuppressLint("Registered")
-public class LaunchActivity extends BaseActivity {
+public class LaunchActivity extends BaseActivity
+        implements ProtocolDialog.AgreeProtocolListener {
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -25,7 +26,11 @@ public class LaunchActivity extends BaseActivity {
             finish();
         }
         StatusBarUtils.setStatusBarFullTransparent(this);
-        new Handler().postDelayed(this::gotoMainActivity, 500);
+        if (TextUtils.isEmpty(SpUtils.getProtocol())) {
+            new ProtocolDialog(context).setListener(this);
+        } else {
+            new Handler().postDelayed(this::gotoMainActivity, 500);
+        }
     }
 
     private void gotoMainActivity() {
@@ -43,5 +48,10 @@ public class LaunchActivity extends BaseActivity {
             }
         }
         finish();
+    }
+
+    @Override
+    public void sureProtocol() {
+        gotoMainActivity();
     }
 }
