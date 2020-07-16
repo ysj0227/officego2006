@@ -49,7 +49,7 @@ public class SelectIdActivity extends BaseActivity {
 
     @Click(resName = "rl_personal")
     void personalClick() {
-
+      PersonalActivity_.intent(context).start();
     }
 
     @Click(resName = "tv_back")

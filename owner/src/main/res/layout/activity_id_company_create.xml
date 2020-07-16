@@ -125,6 +125,7 @@
         style="@style/marginLeftRight18"
         android:layout_width="0dp"
         android:layout_height="@dimen/dp_56"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/rl_address">
@@ -185,9 +186,10 @@
         app:layout_constraintTop_toBottomOf="@+id/rl_register_no" />
 
     <RelativeLayout
+        android:id="@+id/rl_license"
         style="@style/marginLeftRight18"
         android:layout_width="0dp"
-        android:layout_height="@dimen/dp_158"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_16"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -195,10 +197,10 @@
 
         <com.officego.commonlib.view.RoundImageView
             android:id="@+id/riv_image"
-            android:scaleType="centerCrop"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:background="@color/common_blue_normal" />
+            android:background="@color/common_blue_normal"
+            android:scaleType="fitCenter" />
 
         <TextView
             android:id="@+id/tv_upload"

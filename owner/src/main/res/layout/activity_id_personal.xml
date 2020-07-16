@@ -101,6 +101,7 @@
                     android:layout_marginStart="@dimen/dp_4"
                     android:layout_toEndOf="@id/tv_text_name"
                     android:background="@null"
+                    android:maxLength="15"
                     android:maxLines="1"
                     android:textColor="@color/text_33"
                     android:textSize="@dimen/sp_15" />
@@ -138,6 +139,7 @@
                     android:layout_marginStart="@dimen/dp_4"
                     android:layout_toEndOf="@id/tv_text_personal_id"
                     android:background="@null"
+                    android:maxLength="18"
                     android:maxLines="1"
                     android:textColor="@color/text_33"
                     android:textSize="@dimen/sp_15" />
@@ -171,6 +173,7 @@
                 app:layout_constraintTop_toBottomOf="@+id/tv_upload_id">
 
                 <RelativeLayout
+                    android:id="@+id/rl_image_front"
                     style="@style/marginLeftRight18"
                     android:layout_width="@dimen/dp_154"
                     android:layout_height="@dimen/dp_115"
@@ -189,14 +192,15 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:drawableTop="@mipmap/ic_upload_registe_no"
+                        android:drawableTop="@mipmap/ic_idcard_img"
                         android:drawablePadding="@dimen/dp_6"
-                        android:text="点击上传"
+                        android:text="上传身份证人像面"
                         android:textColor="@color/common_blue_main"
                         android:textSize="@dimen/sp_13" />
                 </RelativeLayout>
 
                 <RelativeLayout
+                    android:id="@+id/rl_image_back"
                     style="@style/marginLeftRight18"
                     android:layout_width="@dimen/dp_154"
                     android:layout_height="@dimen/dp_115"
@@ -215,15 +219,14 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true"
-                        android:drawableTop="@mipmap/ic_upload_registe_no"
+                        android:drawableTop="@mipmap/ic_idcard_img"
                         android:drawablePadding="@dimen/dp_6"
-                        android:text="点击上传"
+                        android:text="上传身份证国徽面"
                         android:textColor="@color/common_blue_main"
                         android:textSize="@dimen/sp_13" />
                 </RelativeLayout>
 
             </LinearLayout>
-
 
             <View
                 android:id="@+id/v_gray_spaces"
@@ -240,10 +243,10 @@
                 style="@style/marginLeftRight18"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dp_68"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rl_company_name">
+                app:layout_constraintTop_toBottomOf="@id/v_gray_spaces">
 
                 <TextView
                     android:id="@+id/tv_text_office"
@@ -279,7 +282,7 @@
                 style="@style/marginLeftRight18"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dp_58"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rl_office">
@@ -319,7 +322,7 @@
                 style="@style/marginLeftRight18"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dp_58"
-                android:visibility="gone"
+                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rl_office_address">
@@ -344,6 +347,13 @@
                     android:textColor="@color/text_33"
                     android:textSize="@dimen/sp_15" />
 
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="@mipmap/ic_right_arrow_small" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_1"
@@ -356,7 +366,6 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_18"
-                app:layout_constrainedHeight="true"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -386,7 +395,7 @@
         android:text="@string/str_submit_identity"
         android:textColor="@color/white"
         android:textSize="@dimen/sp_15"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

@@ -45,7 +45,7 @@ public class IdentityJointWorkBean {
         @SerializedName("business")
         private String business;
         @SerializedName("dayPrice")
-        private int dayPrice;
+        private Object dayPrice;
         @SerializedName("buildType")
         private int buildType;
 
@@ -89,11 +89,11 @@ public class IdentityJointWorkBean {
             this.business = business;
         }
 
-        public int getDayPrice() {
+        public Object getDayPrice() {
             return dayPrice;
         }
 
-        public void setDayPrice(int dayPrice) {
+        public void setDayPrice(Object dayPrice) {
             this.dayPrice = dayPrice;
         }
 
