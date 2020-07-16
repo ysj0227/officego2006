@@ -431,6 +431,8 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
             CreateCompanyActivity_.intent(context).start();
             return;
         }
+        //发送聊天
+        IdentitySendMsgActivity_.intent(context).start();
         CommUtils.showHtmlView(cetCompanyName, bean.getCompany());
         hideView();
         rlOffice.setVisibility(View.VISIBLE);

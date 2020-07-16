@@ -4,7 +4,7 @@
     android:id="@+id/ctl_identity_root"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:visibility="gone">
+    android:visibility="visible">
 
     <TextView
         android:id="@+id/tv_text_property_ownership_certificate"
