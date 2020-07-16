@@ -144,7 +144,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         layoutManager.setAutoMeasureEnabled(true);
         rvPropertyOwnershipCertificate.setLayoutManager(layoutManager);
         rvPropertyOwnershipCertificate.setNestedScrollingEnabled(false);
-        int screenWidth = CommonHelper.getScreenWidth(context)-CommonHelper.dp2px(context, 36);
+        int screenWidth = CommonHelper.getScreenWidth(context) - CommonHelper.dp2px(context, 36);
         int itemWidth = CommonHelper.dp2px(context, 100); //每个item的宽度
         rvPropertyOwnershipCertificate.addItemDecoration(new SpaceItemDecoration((screenWidth - itemWidth * 3) / 6));
     }
@@ -383,6 +383,9 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         certificateAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * @param data
+     */
     @Override
     public void searchBuildingSuccess(List<IdentityBuildingBean.DataBean> data) {
         mList.clear();

@@ -30,6 +30,7 @@ import com.officego.commonlib.utils.ToastUtils;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.RoundImageView;
 import com.officego.commonlib.view.TitleBarView;
+import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
 
 import org.androidannotations.annotations.AfterViews;
@@ -68,6 +69,7 @@ public class CreateCompanyActivity extends BaseActivity {
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarColor(this);
+        titleBar.getLeftImg().setOnClickListener(view -> onBackPressed());
         setImageViewLayoutParams(context, rivImage);
         localLicensePath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "businessLicense.jpg";
     }
@@ -87,6 +89,21 @@ public class CreateCompanyActivity extends BaseActivity {
     @Click(resName = "btn_save")
     void saveClick() {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        CommonDialog dialog = new CommonDialog.Builder(context)
+                .setTitle("确认离开吗？")
+                .setMessage("公司未创建成功，点击保存下次可继续编辑。点击离开，已编辑信息不保存")
+                .setConfirmButton(R.string.str_save, (dialog12, which) -> {
+                    //TODO
+                    shortTip("save");
+                })
+                .setCancelButton(R.string.str_go_away, (dialog12, which) -> {
+                    super.onBackPressed();
+                }).create();
+        dialog.showWithOutTouchable(false);
     }
 
     private void selectedDialog() {

@@ -36,7 +36,6 @@ public class AppConfig extends BaseConfig {
 //        APP_URL_MAIN = "http://test.officego.com.cn/";
         APP_URL = "http://debug.officego.com.cn/";
         APP_URL_MAIN = "http://test1.officego.com.cn/";
-
         //个人中心
         H5_ABOUT_US = APP_URL_MAIN + "lessee/aboutUs.html";
         H5_HELP_FEEDBACK = APP_URL_MAIN + "lessee/opinion.html";

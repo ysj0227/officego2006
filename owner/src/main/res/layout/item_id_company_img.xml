@@ -9,9 +9,9 @@
         android:layout_width="@dimen/dp_100"
         android:layout_height="@dimen/dp_100"
         android:layout_marginTop="@dimen/dp_5"
-        android:scaleType="centerCrop"
-        android:background="@mipmap/ic_add_img"
         android:layout_marginBottom="@dimen/dp_5"
+        android:background="@mipmap/ic_add_img"
+        android:scaleType="centerCrop"
         tools:ignore="ContentDescription" />
 
     <ImageView
@@ -20,7 +20,7 @@
         android:layout_height="wrap_content"
         android:layout_gravity="right"
         android:layout_marginTop="@dimen/dp_5"
-        android:background="@mipmap/ic_quit"
+        android:background="@mipmap/ic_small_delete_blue"
         tools:ignore="ContentDescription" />
 
 </FrameLayout>
