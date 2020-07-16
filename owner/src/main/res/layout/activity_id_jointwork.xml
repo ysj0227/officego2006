@@ -104,6 +104,7 @@
                     android:maxLines="1"
                     android:textColor="@color/text_33"
                     android:textSize="@dimen/sp_15" />
+
                 <View
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_1"
@@ -116,6 +117,7 @@
                 style="@style/marginLeftRight18"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dp_58"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rl_jointwork_name">
@@ -191,83 +193,6 @@
                     android:background="@color/common_divider" />
             </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/rl_office_address"
-                style="@style/marginLeftRight18"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/dp_58"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rl_office">
-
-                <TextView
-                    android:id="@+id/tv_text_office_address"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="写字楼地址："
-                    android:textColor="@color/text_33"
-                    android:textSize="@dimen/sp_15" />
-
-                <com.officego.commonlib.view.ClearableEditText
-                    android:id="@+id/cet_office_address"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/dp_4"
-                    android:layout_toEndOf="@id/tv_text_office_address"
-                    android:background="@null"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:textColor="@color/text_33"
-                    android:textSize="@dimen/sp_15" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_1"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/common_divider" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/rl_type"
-                style="@style/marginLeftRight18"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/dp_58"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rl_office_address">
-
-                <TextView
-                    android:id="@+id/tv_text_type"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="房产类型："
-                    android:textColor="@color/text_33"
-                    android:textSize="@dimen/sp_15" />
-
-                <TextView
-                    android:id="@+id/tv_type"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/dp_4"
-                    android:layout_toEndOf="@id/tv_text_type"
-                    android:text="租赁房产"
-                    android:textColor="@color/text_33"
-                    android:textSize="@dimen/sp_15" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_1"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/common_divider" />
-            </RelativeLayout>
-
             <include
                 layout="@layout/include_id_jointwork"
                 android:layout_width="0dp"
@@ -277,7 +202,7 @@
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rl_type" />
+                app:layout_constraintTop_toBottomOf="@id/rl_office" />
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_recommend_jointwork"

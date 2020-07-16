@@ -34,6 +34,7 @@ import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
 import com.owner.adapter.IdentityBuildingAdapter;
 import com.owner.adapter.IdentityCompanyAdapter;
+import com.owner.adapter.IdentityJointWorkAdapter;
 import com.owner.adapter.PropertyOwnershipCertificateAdapter;
 import com.owner.adapter.RentalAgreementAdapter;
 import com.owner.identity.contract.JointWorkContract;
@@ -62,6 +63,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
         JointWorkContract.View,
         PropertyOwnershipCertificateAdapter.CertificateListener,
         RentalAgreementAdapter.RentalAgreementListener,
+        IdentityJointWorkAdapter.IdentityJointWorkListener,
         IdentityBuildingAdapter.IdentityBuildingListener,
         IdentityCompanyAdapter.IdentityCompanyListener {
     private static final int REQUEST_GALLERY = 0xa0;
@@ -94,17 +96,13 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
     ClearableEditText cetCompanyName;
     @ViewById(resName = "cet_office_name")
     ClearableEditText cetOfficeName;
-    @ViewById(resName = "cet_office_address")
-    ClearableEditText cetOfficeAddress;
     //布局
     @ViewById(resName = "v_gray_spaces")
     View vGraySpaces;
+    @ViewById(resName = "rl_company_name")
+    RelativeLayout rlCompanyName;
     @ViewById(resName = "rl_office")
     RelativeLayout rlOffice;
-    @ViewById(resName = "rl_office_address")
-    RelativeLayout rlOfficeAddress;
-    @ViewById(resName = "rl_type")
-    RelativeLayout rlType;
     @ViewById(resName = "ctl_identity_root")
     ConstraintLayout ctlIdentityRoot;
     @ViewById(resName = "btn_upload")
@@ -116,8 +114,10 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
     private RentalAgreementAdapter rentalAdapter;
     private int mUploadType;
     //搜索公司,办公室
+    private IdentityJointWorkAdapter jointWorkAdapter;
     private IdentityCompanyAdapter companyAdapter;
     private IdentityBuildingAdapter buildingAdapter;
+    private List<IdentityJointWorkBean.DataBean> mJointWorkList = new ArrayList<>();
     private List<IdentityCompanyBean.DataBean> mCompanyList = new ArrayList<>();
     private List<IdentityBuildingBean.DataBean> mList = new ArrayList<>();
 
@@ -328,15 +328,10 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
         rentalAdapter.notifyDataSetChanged();
     }
 
-    @Click(resName = "iv_building_introduce")
-    void addBuildingIntroduceClick() {
-        mUploadType = TYPE_BUI;
-        selectedDialog();
-    }
-
     private void hideView() {
         rvRecommendCompany.setVisibility(View.GONE);
         rvRecommendBuilding.setVisibility(View.GONE);
+        rvRecommendJointwork.setVisibility(View.GONE);
     }
 
     //search
@@ -352,7 +347,8 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
                 if (TextUtils.isEmpty(s.toString())) {
                     hideView();
                 } else {
-                    rvRecommendCompany.setVisibility(View.VISIBLE);
+                    rvRecommendJointwork.setVisibility(View.VISIBLE);
+                    rvRecommendCompany.setVisibility(View.GONE);
                     rvRecommendBuilding.setVisibility(View.GONE);
                     mPresenter.getJointWork(s.toString());
                 }
@@ -374,6 +370,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
                 if (TextUtils.isEmpty(s.toString())) {
                     hideView();
                 } else {
+                    rvRecommendJointwork.setVisibility(View.GONE);
                     rvRecommendCompany.setVisibility(View.VISIBLE);
                     rvRecommendBuilding.setVisibility(View.GONE);
                     mPresenter.getCompany(s.toString());
@@ -396,6 +393,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
                 if (TextUtils.isEmpty(s.toString())) {
                     hideView();
                 } else {
+                    rvRecommendJointwork.setVisibility(View.GONE);
                     rvRecommendCompany.setVisibility(View.GONE);
                     rvRecommendBuilding.setVisibility(View.VISIBLE);
                     mPresenter.getBuilding(s.toString());
@@ -414,7 +412,17 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
      */
     @Override
     public void searchJointWorkSuccess(List<IdentityJointWorkBean.DataBean> data) {
-
+        mJointWorkList.clear();
+        mJointWorkList.addAll(data);
+        mJointWorkList.add(data.size(), new IdentityJointWorkBean.DataBean());
+        if (jointWorkAdapter == null) {
+            jointWorkAdapter = new IdentityJointWorkAdapter(context, mJointWorkList);
+            jointWorkAdapter.setListener(this);
+            rvRecommendJointwork.setAdapter(jointWorkAdapter);
+            return;
+        }
+        jointWorkAdapter.setData(mJointWorkList);
+        jointWorkAdapter.notifyDataSetChanged();
     }
 
     /**
@@ -454,6 +462,18 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
     }
 
     @Override
+    public void associateJointWork(IdentityJointWorkBean.DataBean bean, boolean isCreate) {
+        if (isCreate) {
+            //创建网点
+            CreateJointWorkActivity_.intent(context).start();
+            return;
+        }
+        CommUtils.showHtmlView(cetJointworkName, bean.getBuildingName());
+        hideView();
+        rlCompanyName.setVisibility(View.VISIBLE);
+    }
+
+    @Override
     public void associateCompany(IdentityCompanyBean.DataBean bean, boolean isCreate) {
         if (isCreate) {
             //创建公司
@@ -463,18 +483,17 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
         CommUtils.showHtmlView(cetCompanyName, bean.getCompany());
         hideView();
         rlOffice.setVisibility(View.VISIBLE);
-        rlOfficeAddress.setVisibility(View.VISIBLE);
     }
 
     @Override
     public void associateBuilding(IdentityBuildingBean.DataBean bean, boolean isCreate) {
         if (!isCreate) {
+            //创建楼盘
             CommUtils.showHtmlView(cetOfficeName, bean.getBuildingName());
-            CommUtils.showHtmlView(cetOfficeAddress, bean.getAddress());
         }
         hideView();
-        rlType.setVisibility(View.VISIBLE);
         ctlIdentityRoot.setVisibility(View.VISIBLE);
         btnUpload.setVisibility(View.VISIBLE);
     }
+
 }
