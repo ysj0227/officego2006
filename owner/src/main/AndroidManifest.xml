@@ -92,7 +92,6 @@
         <activity
             android:name=".identity.CreateJointWorkActivity_"
             android:screenOrientation="portrait" />
-        <activity android:name=".identity.PersonalActivity" />
     </application>
 
 </manifest>
