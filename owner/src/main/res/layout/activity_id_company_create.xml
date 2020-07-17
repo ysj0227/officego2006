@@ -80,6 +80,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:visibility="gone"
             android:id="@+id/rl_address"
             style="@style/marginLeftRight18"
             android:layout_width="0dp"

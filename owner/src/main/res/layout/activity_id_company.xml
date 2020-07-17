@@ -47,7 +47,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="认证身份："
-                    android:textColor="@color/text_33"
+                    android:textColor="@color/text_99"
                     android:textSize="@dimen/sp_15" />
 
                 <TextView
@@ -90,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="公司名称："
-                    android:textColor="@color/text_33"
+                    android:textColor="@color/text_99"
                     android:textSize="@dimen/sp_15" />
 
                 <com.officego.commonlib.view.ClearableEditText
@@ -120,7 +120,7 @@
                 android:id="@+id/rl_office"
                 style="@style/marginLeftRight18"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/dp_68"
+                android:layout_height="@dimen/dp_86"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -128,11 +128,11 @@
 
                 <TextView
                     android:id="@+id/tv_text_office"
-                    android:layout_width="wrap_content"
+                    android:layout_width="@dimen/dp_94"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="写字楼名称："
-                    android:textColor="@color/text_33"
+                    android:textColor="@color/text_99"
                     android:textSize="@dimen/sp_15" />
 
                 <com.officego.commonlib.view.ClearableEditText
@@ -148,45 +148,18 @@
                     android:textColor="@color/text_33"
                     android:textSize="@dimen/sp_15" />
 
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_1"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/common_divider" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/rl_office_address"
-                style="@style/marginLeftRight18"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/dp_58"
-                android:visibility="gone"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rl_office">
-
                 <TextView
-                    android:id="@+id/tv_text_office_address"
+                    android:id="@+id/tv_address"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_text_office"
                     android:layout_centerVertical="true"
-                    android:text="写字楼地址："
-                    android:textColor="@color/text_33"
-                    android:textSize="@dimen/sp_15" />
-
-                <com.officego.commonlib.view.ClearableEditText
-                    android:id="@+id/cet_office_address"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/dp_4"
-                    android:layout_toEndOf="@id/tv_text_office_address"
-                    android:background="@null"
-                    android:ellipsize="end"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:textColor="@color/text_33"
-                    android:textSize="@dimen/sp_15" />
+                    android:layout_marginLeft="@dimen/dp_98"
+                    android:layout_marginTop="@dimen/dp_5"
+                    android:drawablePadding="@dimen/dp_4"
+                    android:textColor="@color/text_99"
+                    android:textSize="@dimen/sp_12"
+                    android:visibility="gone" />
 
                 <View
                     android:layout_width="match_parent"
@@ -203,7 +176,7 @@
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rl_office_address">
+                app:layout_constraintTop_toBottomOf="@id/rl_office">
 
                 <TextView
                     android:id="@+id/tv_text_type"
@@ -211,7 +184,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="房产类型："
-                    android:textColor="@color/text_33"
+                    android:textColor="@color/text_99"
                     android:textSize="@dimen/sp_15" />
 
                 <TextView

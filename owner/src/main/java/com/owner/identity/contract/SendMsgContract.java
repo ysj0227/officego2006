@@ -21,6 +21,6 @@ public interface SendMsgContract {
 
     interface Presenter {
 
-        void getDetails(int id);
+        void getDetails(int identityType, int id);
     }
 }

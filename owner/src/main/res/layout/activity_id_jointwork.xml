@@ -47,7 +47,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="认证身份："
-                    android:textColor="@color/text_33"
+                    android:textColor="@color/text_99"
                     android:textSize="@dimen/sp_15" />
 
                 <TextView
@@ -90,7 +90,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="网点名称："
-                    android:textColor="@color/text_33"
+                    android:textColor="@color/text_99"
                     android:textSize="@dimen/sp_15" />
 
                 <com.officego.commonlib.view.ClearableEditText
@@ -128,7 +128,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="所属公司："
-                    android:textColor="@color/text_33"
+                    android:textColor="@color/text_99"
                     android:textSize="@dimen/sp_15" />
 
                 <com.officego.commonlib.view.ClearableEditText
@@ -170,7 +170,7 @@
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="所在楼盘："
-                    android:textColor="@color/text_33"
+                    android:textColor="@color/text_99"
                     android:textSize="@dimen/sp_15" />
 
                 <com.officego.commonlib.view.ClearableEditText

@@ -98,10 +98,8 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
     RelativeLayout rlOffice;
     @ViewById(resName = "cet_office_name")
     ClearableEditText cetOfficeName;
-    @ViewById(resName = "rl_office_address")
-    RelativeLayout rlOfficeAddress;
-    @ViewById(resName = "cet_office_address")
-    ClearableEditText cetOfficeAddress;
+    @ViewById(resName = "tv_address")
+    TextView tvAddress;
     @ViewById(resName = "ctl_identity_root")
     ConstraintLayout ctlIdentityRoot;
     //房产类型pe;
@@ -348,6 +346,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (TextUtils.isEmpty(s.toString())) {
                     hideView();
+                    tvAddress.setVisibility(View.GONE);
                 } else {
                     rvRecommendBuilding.setVisibility(View.VISIBLE);
                     mPresenter.getBuilding(s.toString());
@@ -364,9 +363,10 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
     public void associateBuilding(IdentityBuildingBean.DataBean bean, boolean isCreate) {
         if (!isCreate) {
             CommUtils.showHtmlView(cetOfficeName, bean.getBuildingName());
-            CommUtils.showHtmlView(cetOfficeAddress, bean.getAddress());
+            CommUtils.showHtmlTextView(tvAddress, bean.getAddress());
         }
         hideView();
+        tvAddress.setVisibility(View.VISIBLE);
         ctlIdentityRoot.setVisibility(View.VISIBLE);
         btnUpload.setVisibility(View.VISIBLE);
     }

@@ -5,6 +5,7 @@ import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.VersionBean;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.log.LogCat;
+import com.owner.identity.model.ApplyLicenceBean;
 import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.model.IdentityCompanyBean;
 import com.owner.identity.model.IdentityJointWorkBean;
@@ -249,6 +250,20 @@ public class OfficegoApi {
         map.put("keywords", requestBody(keywords));
         OfficegoRetrofitClient.getInstance().create(IdentitySearchInterface.class)
                 .searchListBranch(map)
+                .enqueue(callback);
+    }
+
+    /**
+     * 认证公司，网点id信息
+     */
+    public void selectApplyLicence(int identityType, int id,
+                                   RetrofitCallback<ApplyLicenceBean> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("identityType", requestBody(identityType + ""));
+        map.put("id", requestBody(id + ""));
+        OfficegoRetrofitClient.getInstance().create(IdentitySearchInterface.class)
+                .selectApplyLicence(map)
                 .enqueue(callback);
     }
 

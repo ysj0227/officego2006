@@ -469,11 +469,12 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
             CreateJointWorkActivity_.intent(context).start();
             return;
         }
-        //发送消息
-        SendMsgBean sb=new SendMsgBean();
+        //发送消息 0个人1企业2联合
+        SendMsgBean sb = new SendMsgBean();
         sb.setId(bean.getBid());
         sb.setName(bean.getBuildingName());
         sb.setAddress(bean.getAddress());
+        sb.setIdentityType(2);
         IdentitySendMsgActivity_.intent(context).sendMsgBean(sb).start();
         CommUtils.showHtmlView(cetJointworkName, bean.getBuildingName());
         hideView();

@@ -13,6 +13,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -94,15 +95,13 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
     ClearableEditText cetCompanyName;
     @ViewById(resName = "cet_office_name")
     ClearableEditText cetOfficeName;
-    @ViewById(resName = "cet_office_address")
-    ClearableEditText cetOfficeAddress;
+    @ViewById(resName = "tv_address")
+    TextView tvAddress;
     //布局
     @ViewById(resName = "v_gray_spaces")
     View vGraySpaces;
     @ViewById(resName = "rl_office")
     RelativeLayout rlOffice;
-    @ViewById(resName = "rl_office_address")
-    RelativeLayout rlOfficeAddress;
     @ViewById(resName = "rl_type")
     RelativeLayout rlType;
     @ViewById(resName = "ctl_identity_root")
@@ -381,6 +380,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (TextUtils.isEmpty(s.toString())) {
                     hideView();
+                    tvAddress.setVisibility(View.GONE);
                 } else {
                     rvRecommendCompany.setVisibility(View.GONE);
                     rvRecommendBuilding.setVisibility(View.VISIBLE);
@@ -432,25 +432,27 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
             CreateCompanyActivity_.intent(context).start();
             return;
         }
-        //发送聊天
-        SendMsgBean sb=new SendMsgBean();
+        //发送聊天  0个人1企业2联合
+        SendMsgBean sb = new SendMsgBean();
         sb.setId(bean.getBid());
         sb.setName(bean.getCompany());
         sb.setAddress(bean.getAddress());
+        sb.setIdentityType(1);
         IdentitySendMsgActivity_.intent(context).sendMsgBean(sb).start();
         CommUtils.showHtmlView(cetCompanyName, bean.getCompany());
         hideView();
         rlOffice.setVisibility(View.VISIBLE);
-        rlOfficeAddress.setVisibility(View.VISIBLE);
+
     }
 
     @Override
     public void associateBuilding(IdentityBuildingBean.DataBean bean, boolean isCreate) {
         if (!isCreate) {
             CommUtils.showHtmlView(cetOfficeName, bean.getBuildingName());
-            CommUtils.showHtmlView(cetOfficeAddress, bean.getAddress());
+            CommUtils.showHtmlTextView(tvAddress, bean.getAddress());
         }
         hideView();
+        tvAddress.setVisibility(View.VISIBLE);
         rlType.setVisibility(View.VISIBLE);
         ctlIdentityRoot.setVisibility(View.VISIBLE);
         btnUpload.setVisibility(View.VISIBLE);

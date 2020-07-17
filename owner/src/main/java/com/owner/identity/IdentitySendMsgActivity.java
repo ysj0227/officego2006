@@ -6,13 +6,15 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.TextView;
 
-import com.officego.commonlib.base.BaseActivity;
+import com.bumptech.glide.Glide;
 import com.officego.commonlib.base.BaseMvpActivity;
+import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.utils.GlideUtils;
+import com.officego.commonlib.view.CircleImage;
 import com.officego.commonlib.view.ClearableEditText;
 import com.owner.identity.contract.SendMsgContract;
 import com.owner.identity.model.ApplyLicenceBean;
 import com.owner.identity.model.SendMsgBean;
-import com.owner.identity.presenter.CompanyPresenter;
 import com.owner.identity.presenter.SendMsgPresenter;
 import com.owner.utils.CommUtils;
 
@@ -34,6 +36,12 @@ public class IdentitySendMsgActivity extends BaseMvpActivity<SendMsgPresenter>
     ClearableEditText cetSendContent;
     @ViewById(resName = "tv_counts")
     TextView tvCounts;
+    @ViewById(resName = "civ_avatar")
+    CircleImage civAvatar;
+    @ViewById(resName = "tv_name")
+    TextView tvName;
+    @ViewById(resName = "tv_position")
+    TextView tvPosition;
 
     @Extra
     SendMsgBean sendMsgBean;
@@ -42,8 +50,10 @@ public class IdentitySendMsgActivity extends BaseMvpActivity<SendMsgPresenter>
     void init() {
         mPresenter = new SendMsgPresenter();
         mPresenter.attachView(this);
+        mPresenter.getDetails(sendMsgBean.getIdentityType(), sendMsgBean.getId());
         counts();
         CommUtils.showHtmlTextView(tvTitleName, sendMsgBean.getName());
+        cetSendContent.setText("我是" + SpUtils.getNickName() + "，希望加入公司，请通过。");
         if (TextUtils.isEmpty(sendMsgBean.getAddress())) {
             tvAddress.setVisibility(View.GONE);
         } else {
@@ -55,6 +65,13 @@ public class IdentitySendMsgActivity extends BaseMvpActivity<SendMsgPresenter>
     @Click(resName = "iv_back")
     void backClick() {
         finish();
+    }
+
+    @Override
+    public void messageSuccess(ApplyLicenceBean data) {
+        Glide.with(context).applyDefaultRequestOptions(GlideUtils.avaOoptions()).load(data.getAvatar()).into(civAvatar);
+        tvName.setText(data.getProprietorRealname());
+        tvPosition.setText(data.getProprietorJob());
     }
 
     private void counts() {
@@ -91,10 +108,5 @@ public class IdentitySendMsgActivity extends BaseMvpActivity<SendMsgPresenter>
 
             }
         });
-    }
-
-    @Override
-    public void messageSuccess(ApplyLicenceBean data) {
-
     }
 }

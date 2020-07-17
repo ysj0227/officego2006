@@ -2,6 +2,7 @@ package com.owner.rpc.request;
 
 import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.retrofit.BaseResponse;
+import com.owner.identity.model.ApplyLicenceBean;
 import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.model.IdentityCompanyBean;
 import com.owner.identity.model.IdentityJointWorkBean;
@@ -44,5 +45,13 @@ public interface IdentitySearchInterface {
     @Multipart
     @POST(path + "esearch/searchListBranch")
     Call<BaseResponse<List<IdentityJointWorkBean.DataBean>>> searchListBranch(@PartMap Map<String, RequestBody> params);
+
+
+    /**
+     * 认证公司，网点id信息
+     */
+    @Multipart
+    @POST(path + "licence/selectApplyLicenceApp")
+    Call<BaseResponse<ApplyLicenceBean>> selectApplyLicence(@PartMap Map<String, RequestBody> params);
 
 }
