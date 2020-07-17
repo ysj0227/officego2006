@@ -2,6 +2,7 @@ package com.owner.identity;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -20,6 +21,7 @@ import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.rpc.OfficegoApi;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.utils.ToastUtils;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.TitleBarView;
 import com.officego.commonlib.view.dialog.CommonDialog;
@@ -67,6 +69,22 @@ public class CreateBuildingActivity extends BaseActivity
 
     @Click(resName = "btn_save")
     void saveClick() {
+        String name = etNameContent.getText().toString();
+        String area = tvArea.getText().toString();
+        String address = etAddressContent.getText().toString();
+        if (TextUtils.isEmpty(name)) {
+            ToastUtils.toastForShort(context, "请输入写字楼名称");
+            return;
+        }
+        if (TextUtils.isEmpty(area)) {
+            ToastUtils.toastForShort(context, "请选择区域");
+            return;
+        }
+        if (TextUtils.isEmpty(address)) {
+            ToastUtils.toastForShort(context, "请输入详细地址");
+            return;
+        }
+        finish();
     }
 
     @Override
