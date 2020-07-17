@@ -242,7 +242,7 @@
                 android:id="@+id/rl_office"
                 style="@style/marginLeftRight18"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/dp_68"
+                android:layout_height="@dimen/dp_86"
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"

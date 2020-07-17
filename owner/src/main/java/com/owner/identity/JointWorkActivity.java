@@ -11,6 +11,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -97,6 +98,8 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
     ClearableEditText cetCompanyName;
     @ViewById(resName = "cet_office_name")
     ClearableEditText cetOfficeName;
+    @ViewById(resName = "tv_address")
+    TextView tvAddress;
     //布局
     @ViewById(resName = "v_gray_spaces")
     View vGraySpaces;
@@ -393,6 +396,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (TextUtils.isEmpty(s.toString())) {
                     hideView();
+                    tvAddress.setVisibility(View.GONE);
                 } else {
                     rvRecommendJointwork.setVisibility(View.GONE);
                     rvRecommendCompany.setVisibility(View.GONE);
@@ -500,7 +504,9 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
             CreateBuildingActivity_.intent(context).start();
         } else {
             CommUtils.showHtmlView(cetOfficeName, bean.getBuildingName());
+            CommUtils.showHtmlTextView(tvAddress, bean.getAddress());
         }
+        tvAddress.setVisibility(View.VISIBLE);
         hideView();
         ctlIdentityRoot.setVisibility(View.VISIBLE);
         btnUpload.setVisibility(View.VISIBLE);
