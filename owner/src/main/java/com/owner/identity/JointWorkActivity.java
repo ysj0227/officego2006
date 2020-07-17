@@ -41,6 +41,7 @@ import com.owner.identity.contract.JointWorkContract;
 import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.model.IdentityCompanyBean;
 import com.owner.identity.model.IdentityJointWorkBean;
+import com.owner.identity.model.SendMsgBean;
 import com.owner.identity.presenter.JointWorkPresenter;
 import com.owner.utils.CommUtils;
 
@@ -468,6 +469,12 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
             CreateJointWorkActivity_.intent(context).start();
             return;
         }
+        //发送消息
+        SendMsgBean sb=new SendMsgBean();
+        sb.setId(bean.getBid());
+        sb.setName(bean.getBuildingName());
+        sb.setAddress(bean.getAddress());
+        IdentitySendMsgActivity_.intent(context).sendMsgBean(sb).start();
         CommUtils.showHtmlView(cetJointworkName, bean.getBuildingName());
         hideView();
         rlCompanyName.setVisibility(View.VISIBLE);

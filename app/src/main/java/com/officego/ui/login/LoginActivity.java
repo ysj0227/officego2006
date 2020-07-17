@@ -35,7 +35,6 @@ import com.officego.h5.WebViewActivity_;
 import com.officego.ui.login.contract.LoginContract;
 import com.officego.ui.login.presenter.LoginPresenter;
 import com.officego.utils.MonitorEditTextUtils;
-import com.owner.identity.SelectIdActivity_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;

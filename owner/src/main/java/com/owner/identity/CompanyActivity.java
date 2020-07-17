@@ -41,6 +41,7 @@ import com.owner.adapter.RentalAgreementAdapter;
 import com.owner.identity.contract.CompanyContract;
 import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.model.IdentityCompanyBean;
+import com.owner.identity.model.SendMsgBean;
 import com.owner.identity.presenter.CompanyPresenter;
 import com.owner.utils.CommUtils;
 
@@ -432,7 +433,11 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
             return;
         }
         //发送聊天
-        IdentitySendMsgActivity_.intent(context).start();
+        SendMsgBean sb=new SendMsgBean();
+        sb.setId(bean.getBid());
+        sb.setName(bean.getCompany());
+        sb.setAddress(bean.getAddress());
+        IdentitySendMsgActivity_.intent(context).sendMsgBean(sb).start();
         CommUtils.showHtmlView(cetCompanyName, bean.getCompany());
         hideView();
         rlOffice.setVisibility(View.VISIBLE);
