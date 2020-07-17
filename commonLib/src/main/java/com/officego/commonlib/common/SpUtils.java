@@ -25,6 +25,8 @@ public class SpUtils {
     private static final String CANCEL_UPDATE = PACKAGE_NAME + "CANCEL_UPDATE";
     //保存引导页
     private static final String LEAD_PAGES = PACKAGE_NAME + "LEAD_PAGES";
+    //协议
+    private static final String AGREE_PROTOCOL = PACKAGE_NAME + "AGREE_PROTOCOL";
 
     private static SharedPreferences getSharedPreference() {
         return SharedManager.getSharedPreference(BaseApplication.getContext());
@@ -161,5 +163,14 @@ public class SpUtils {
     public static String getLead() {
         return SharedManager.getValue(BaseApplication.getContext(), LEAD_PAGES);
     }
+
+    public static void saveProtocol() {
+        SharedManager.putValue(BaseApplication.getContext(), AGREE_PROTOCOL, "Y");
+    }
+
+    public static String getProtocol() {
+        return SharedManager.getValue(BaseApplication.getContext(), AGREE_PROTOCOL);
+    }
+
 
 }

@@ -47,7 +47,6 @@
     <string name="str_viewing_date">看房行程</string>
     <string name="str_help">帮助与反馈</string>
     <string name="str_customer_service">客服</string>
-    <string name="str_protocol">注册协议与隐私条款</string>
     <string name="str_privacy">隐私条款</string>
     <string name="str_about_us">关于我们</string>
     <!--微信-->
@@ -71,6 +70,14 @@
     <string name="str_cannot_get_mine_phone_use_sms">无法获取本机号码，请使用验证码登录</string>
     <string name="rc_chat_tip">我对你发布的房源有兴趣，能聊聊吗？</string>
     <string name="text_right_now_try">即刻体验</string>
+    <string name="str_protocol">
+感谢你对OfficeGo（伙伴连）的信任！我们依据监管要求更新了《隐私保护政策》，特向 你说明如下：\t
+\t\n1.为了向你提供相关功能，我们会收集、使用必要的信息；
+\t\n2.基于你的授权我们可能会获取你的位置、相机权限、麦克风权限等信息，你有权拒绝或取消授权；
+\t\n3.在你浏览视频时缓存相关文件，我们会申请存储权限，同时，为了信息推送和安全风控所需，我们会申请系统权限收集设备信息、日志信息；
+\t\n4.通过获取用户手机状态权限确定本机设备ID，以保证为你个性化推荐内容；通过获取网络状态权限和用户wifi信息权限，观看视频时提醒用户网络状态；
+\t\n5.我们会采取业界先进的安全措施保护你的信息安全；
+\t\n6.未经你的同意，我们不会从第三方处获取、共享或向其提供你的信息。</string>
 
 
 </resources>
