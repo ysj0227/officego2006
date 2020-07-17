@@ -151,7 +151,6 @@ public class SearchPopupWindow extends PopupWindow implements
         this.mSetTitleView = setTextView;
         this.mSearchType = searchType;
         this.btype = btype;
-        LogCat.e("TAG", "1111111111 btype=" + this.btype);
         if (TextUtils.isEmpty(district) && TextUtils.isEmpty(business)) {
             this.mHashSetLine = hashSet;
             this.mCheckStatesLine = checkStates;

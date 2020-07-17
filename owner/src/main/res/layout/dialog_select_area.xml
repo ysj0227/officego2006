@@ -1,0 +1,125 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_400"
+    android:background="@drawable/bg_shape_white">
+
+    <RelativeLayout
+        android:id="@+id/rl_title"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_64">
+
+        <TextView
+            android:id="@+id/tv_cancel"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dp_18"
+            android:text="@string/sm_cancel"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_16" />
+
+        <TextView
+            android:id="@+id/tv_sure"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dp_18"
+            android:text="@string/str_confirm"
+            android:textColor="@color/common_blue_main"
+            android:textSize="@dimen/sp_16"
+            tools:ignore="RelativeOverlap" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_selected"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        android:layout_below="@id/rl_title">
+
+        <TextView
+            android:id="@+id/tv_province"
+            android:layout_width="@dimen/dp_96"
+            android:layout_height="wrap_content"
+            android:gravity="center"
+            android:layout_centerVertical="true"
+            android:text="上海市"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_16" />
+
+        <TextView
+            android:id="@+id/tv_city"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_toRightOf="@id/tv_province"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_15" />
+
+        <TextView
+            android:id="@+id/tv_area"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dp_22"
+            android:layout_toRightOf="@id/tv_city"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_16" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"
+            android:layout_alignParentBottom="true"
+            android:background="@color/common_divider" />
+
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_topview"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rl_selected"
+        android:background="@color/white">
+
+        <TextView
+            android:id="@+id/tv_left"
+            android:layout_width="@dimen/dp_98"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_8"
+            android:gravity="center"
+            android:text="上海市"
+            android:textColor="@color/common_blue_main"
+            android:textSize="@dimen/sp_15" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_center"
+            android:layout_width="@dimen/dp_108"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/dp_20"
+            android:layout_toEndOf="@id/tv_left"
+            android:gravity="center_horizontal" />
+
+        <View
+            android:layout_width="@dimen/dp_1"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/dp_20"
+            android:layout_toEndOf="@id/rv_center"
+            android:background="@color/common_divider" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_right"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_marginBottom="@dimen/dp_20"
+            android:layout_toEndOf="@id/rv_center"
+            android:paddingStart="@dimen/dp_10"
+            tools:ignore="RtlSymmetry" />
+
+    </RelativeLayout>
+
+
+</RelativeLayout>

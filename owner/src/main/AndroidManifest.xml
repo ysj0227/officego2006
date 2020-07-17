@@ -95,8 +95,12 @@
         <activity
             android:name=".identity.PersonalActivity_"
             android:screenOrientation="portrait" />
-        <activity android:name=".identity.IdentitySendMsgActivity_"
-            android:screenOrientation="portrait"/>
+        <activity
+            android:name=".identity.IdentitySendMsgActivity_"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".identity.CreateBuildingActivity_"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

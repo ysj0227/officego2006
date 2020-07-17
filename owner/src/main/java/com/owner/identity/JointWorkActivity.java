@@ -495,8 +495,10 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
 
     @Override
     public void associateBuilding(IdentityBuildingBean.DataBean bean, boolean isCreate) {
-        if (!isCreate) {
+        if (isCreate) {
             //创建楼盘
+            CreateBuildingActivity_.intent(context).start();
+        } else {
             CommUtils.showHtmlView(cetOfficeName, bean.getBuildingName());
         }
         hideView();

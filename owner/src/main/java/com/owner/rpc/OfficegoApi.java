@@ -6,6 +6,7 @@ import com.officego.commonlib.common.VersionBean;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.log.LogCat;
 import com.owner.identity.model.ApplyLicenceBean;
+import com.owner.identity.model.BusinessCircleBean;
 import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.model.IdentityCompanyBean;
 import com.owner.identity.model.IdentityJointWorkBean;
@@ -264,6 +265,20 @@ public class OfficegoApi {
         map.put("id", requestBody(id + ""));
         OfficegoRetrofitClient.getInstance().create(IdentitySearchInterface.class)
                 .selectApplyLicence(map)
+                .enqueue(callback);
+    }
+
+    /**
+     * 商圈
+     *
+     * @param callback
+     */
+    public void getDistrictList(RetrofitCallback<List<BusinessCircleBean.DataBean>> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("city", requestBody("上海市"));
+        map.put("type", requestBody("1")); //1：全部，0：系统已有楼盘的地铁
+        OfficegoRetrofitClient.getInstance().create(IdentitySearchInterface.class)
+                .getDistrictList(map)
                 .enqueue(callback);
     }
 
