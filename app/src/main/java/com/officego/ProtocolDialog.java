@@ -49,7 +49,7 @@ public class ProtocolDialog {
         TextView tvContent = inflate.findViewById(R.id.tv_content);
         String str = context.getString(R.string.str_protocol);
 
-        SpannableStringBuilder spannableBuilder = new SpannableStringBuilder(str);
+        SpannableStringBuilder spannableBuilder = new SpannableStringBuilder(ToDBC(str));
         // 设置字体大小
 //        AbsoluteSizeSpan sizeSpan = new AbsoluteSizeSpan(30);
 //        // 相对于默认字体大小的倍数,这里是1.3倍
@@ -78,6 +78,25 @@ public class ProtocolDialog {
         dialog.setCancelable(false);
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();//显示对话框
+    }
+
+    /**
+     * 半角转换为全角
+     *
+     * @param input
+     * @return
+     */
+    public static String ToDBC(String input) {
+        char[] c = input.toCharArray();
+        for (int i = 0; i < c.length; i++) {
+            if (c[i] == 12288) {// 全角空格为12288，半角空格为32
+                c[i] = (char) 32;
+                continue;
+            }
+            if (c[i] > 65280 && c[i] < 65375)// 其他字符半角(33-126)与全角(65281-65374)的对应关系是：均相差65248
+                c[i] = (char) (c[i] - 65248);
+        }
+        return new String(c);
     }
 
 
