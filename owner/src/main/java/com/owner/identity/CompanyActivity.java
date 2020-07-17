@@ -186,12 +186,10 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
                 }).create();
         dialog.showWithOutTouchable(false);
     }
-
     @Click(resName = "rl_identity")
     void identityClick() {
-        finish();
+        SwitchRoleDialog.switchDialog(this);
     }
-
     private void selectedDialog() {
         hideView();
         final String[] items = {"拍照", "相册"};

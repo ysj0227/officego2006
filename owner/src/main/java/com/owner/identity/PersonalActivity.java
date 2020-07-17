@@ -164,7 +164,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
 
     @Click(resName = "rl_identity")
     void identityClick() {
-        finish();
+        SwitchRoleDialog.switchDialog(this);
     }
 
     @Click(resName = "rl_image_front")

@@ -6,9 +6,18 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.officego.commonlib.base.BaseActivity;
+import com.officego.commonlib.common.GotoActivityUtils;
+import com.officego.commonlib.common.LoginBean;
+import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.utils.log.LogCat;
+import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.IDCameraActivity;
+import com.owner.R;
+import com.owner.rpc.OfficegoApi;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -49,12 +58,50 @@ public class SelectIdActivity extends BaseActivity {
 
     @Click(resName = "rl_personal")
     void personalClick() {
-      PersonalActivity_.intent(context).start();
+        PersonalActivity_.intent(context).start();
     }
 
     @Click(resName = "tv_back")
     void returnTenantClick() {
-        Intent intent = new Intent(this, IDCameraActivity.class);
-        startActivity(intent);
+        switchDialog();
+    }
+
+    private void switchDialog() {
+        CommonDialog dialog = new CommonDialog.Builder(context)
+                .setTitle(R.string.are_you_sure_switch_tenant)
+                .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
+                    switchId(Constants.TYPE_TENANT);
+                })
+                .setCancelButton(R.string.sm_cancel, (dialog1, which) -> dialog1.dismiss()).create();
+        dialog.showWithOutTouchable(false);
+    }
+
+    //用户身份标：0租户，1户主
+    private void switchId(String role) {
+        showLoadingDialog();
+        OfficegoApi.getInstance().switchId(role, new RetrofitCallback<LoginBean>() {
+            @Override
+            public void onSuccess(int code, String msg, LoginBean data) {
+                LogCat.e(TAG, "switchId onSuccess code");
+                hideLoadingDialog();
+                SpUtils.saveLoginInfo(data, SpUtils.getPhoneNum());
+                SpUtils.saveRole(role);
+                //跳转租户首页
+                GotoActivityUtils.mainActivity(context);
+            }
+
+            @Override
+            public void onFail(int code, String msg, LoginBean data) {
+                LogCat.e(TAG, "switchId owner onFail code=" + code + "  msg=" + msg);
+                hideLoadingDialog();
+                if (code == Constants.DEFAULT_ERROR_CODE || code == Constants.ERROR_CODE_5009) {
+                    shortTip(msg);
+                    SpUtils.clearLoginInfo();
+                    GotoActivityUtils.loginClearActivity(context, true);
+                } else {
+                    shortTip("切换角色失败");
+                }
+            }
+        });
     }
 }

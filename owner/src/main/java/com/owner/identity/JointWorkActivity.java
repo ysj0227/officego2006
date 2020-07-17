@@ -191,7 +191,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
 
     @Click(resName = "rl_identity")
     void identityClick() {
-        finish();
+        SwitchRoleDialog.switchDialog(this);
     }
 
     private void selectedDialog() {
