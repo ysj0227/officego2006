@@ -3,7 +3,6 @@ package com.owner.identity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.text.Editable;
@@ -11,7 +10,6 @@ import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -26,6 +24,7 @@ import com.donkingliang.imageselector.utils.ImageSelector;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.FileHelper;
 import com.officego.commonlib.utils.FileUtils;
 import com.officego.commonlib.utils.PermissionUtils;
@@ -71,9 +70,8 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
     private static final int REQUEST_CAMERA = 0xa1;
     private static final int TYPE_CER = 1;
     private static final int TYPE_REN = 2;
-    private static final int TYPE_BUI = 3;
 
-    private String localCerPath, localRenPath, localBuildingPath;
+    private String localCerPath, localRenPath;
     private Uri localPhotoUri;
     //title
     @ViewById(resName = "title_bar")
@@ -86,10 +84,16 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
     //图片list
     @ViewById(resName = "rv_property_ownership_certificate")
     RecyclerView rvPropertyOwnershipCertificate;
+    @ViewById(resName = "tv_text_property_ownership_certificate")
+    TextView tvTextPropertyOwnershipCertificate;
+    @ViewById(resName = "tv_tip_property_ownership_certificate")
+    TextView tvTipPropertyOwnershipCertificate;
     @ViewById(resName = "rv_rental_agreement")
     RecyclerView rvRentalAgreement;
-    @ViewById(resName = "iv_building_introduce")
-    ImageView ivBuildingIntroduce;
+    @ViewById(resName = "tv_text_rental_agreement")
+    TextView tvTextRentalAgreement;
+    @ViewById(resName = "tv_tip_rental_agreement")
+    TextView tvTipRentalAgreement;
     //编辑框
     @ViewById(resName = "cet_company_name")
     ClearableEditText cetCompanyName;
@@ -97,6 +101,9 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
     ClearableEditText cetOfficeName;
     @ViewById(resName = "tv_address")
     TextView tvAddress;
+    //房产类型
+    @ViewById(resName = "tv_type")
+    TextView tvType;
     //布局
     @ViewById(resName = "v_gray_spaces")
     View vGraySpaces;
@@ -111,7 +118,6 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
 
     private List<String> listCertificate = new ArrayList<>();
     private List<String> listRental = new ArrayList<>();
-    private List<String> listBuilding = new ArrayList<>();
     private PropertyOwnershipCertificateAdapter certificateAdapter;
     private RentalAgreementAdapter rentalAdapter;
 
@@ -134,22 +140,25 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         //房产证，租赁，封面图path
         localCerPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "certificate.jpg";
         localRenPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "rental.jpg";
-        localBuildingPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "buildingdec.jpg";
         //搜索列表
         LinearLayoutManager companyManager = new LinearLayoutManager(context);
         rvRecommendCompany.setLayoutManager(companyManager);
         LinearLayoutManager buildingManager = new LinearLayoutManager(context);
         rvRecommendBuilding.setLayoutManager(buildingManager);
         //图片
+        int screenWidth = CommonHelper.getScreenWidth(context) - CommonHelper.dp2px(context, 36);
+        int itemWidth = CommonHelper.dp2px(context, 100); //每个item的宽度
         GridLayoutManager layoutManager = new GridLayoutManager(context, 3);
         layoutManager.setSmoothScrollbarEnabled(true);
         layoutManager.setAutoMeasureEnabled(true);
         rvPropertyOwnershipCertificate.setLayoutManager(layoutManager);
+        rvPropertyOwnershipCertificate.addItemDecoration(new SpaceItemDecoration((screenWidth - itemWidth * 3) / 6));
+        rvPropertyOwnershipCertificate.setNestedScrollingEnabled(false);
         GridLayoutManager layoutManager1 = new GridLayoutManager(context, 3);
         layoutManager1.setSmoothScrollbarEnabled(true);
         layoutManager1.setAutoMeasureEnabled(true);
         rvRentalAgreement.setLayoutManager(layoutManager1);
-        rvPropertyOwnershipCertificate.setNestedScrollingEnabled(false);
+        rvRentalAgreement.addItemDecoration(new SpaceItemDecoration((screenWidth - itemWidth * 3) / 6));
         rvRentalAgreement.setNestedScrollingEnabled(false);
     }
 
@@ -186,10 +195,44 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
                 }).create();
         dialog.showWithOutTouchable(false);
     }
+
+    @Click(resName = "rl_type")
+    void typeClick() {
+        selectedBuildingType();
+    }
+
+    private void selectedBuildingType() {
+        final String[] items = {"自有房产", "租赁房产"};
+        new AlertDialog.Builder(CompanyActivity.this)
+                .setItems(items, (dialogInterface, i) -> {
+                    if (i == 0) {
+                        showCertificateView();
+                    } else {
+                        showCerAgreementView();
+                    }
+                    tvType.setText(items[i]);
+                }).create().show();
+    }
+
+    private void showCertificateView() {
+        ctlIdentityRoot.setVisibility(View.VISIBLE);
+        rvRentalAgreement.setVisibility(View.GONE);
+        tvTextRentalAgreement.setVisibility(View.GONE);
+        tvTipRentalAgreement.setVisibility(View.GONE);
+    }
+
+    private void showCerAgreementView() {
+        ctlIdentityRoot.setVisibility(View.VISIBLE);
+        rvRentalAgreement.setVisibility(View.VISIBLE);
+        tvTextRentalAgreement.setVisibility(View.VISIBLE);
+        tvTipRentalAgreement.setVisibility(View.VISIBLE);
+    }
+
     @Click(resName = "rl_identity")
     void identityClick() {
         SwitchRoleDialog.switchDialog(this);
     }
+
     private void selectedDialog() {
         hideView();
         final String[] items = {"拍照", "相册"};
@@ -215,10 +258,8 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         File fileUri;
         if (TYPE_CER == mUploadType) {
             fileUri = new File(localCerPath);
-        } else if (TYPE_REN == mUploadType) {
-            fileUri = new File(localRenPath);
         } else {
-            fileUri = new File(localBuildingPath);
+            fileUri = new File(localRenPath);
         }
         localPhotoUri = Uri.fromFile(fileUri);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -239,13 +280,11 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
             selectList.addAll(listCertificate);
         } else if (TYPE_REN == mUploadType) {
             selectList.addAll(listRental);
-        } else if (TYPE_BUI == mUploadType) {
-            selectList.addAll(listBuilding);
         }
         ImageSelector.builder()
                 .useCamera(false) // 设置是否使用拍照
                 .setSingle(false)  //设置是否单选
-                .setMaxSelectCount(TYPE_BUI == mUploadType ? 1 : 9)
+                .setMaxSelectCount(9)
 //                .setSelected((ArrayList<String>) selectList)
                 .canPreview(true) //是否可以预览图片，默认为true
                 .start(this, REQUEST_GALLERY); // 打开相册
@@ -262,8 +301,6 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
                 } else if (TYPE_REN == mUploadType) {
                     listRental.add(listRental.size() - 1, localRenPath);
                     rentalAdapter.notifyDataSetChanged();
-                } else if (TYPE_BUI == mUploadType) {
-                    ivBuildingIntroduce.setImageBitmap(BitmapFactory.decodeFile(localBuildingPath));
                 }
             } else if (requestCode == REQUEST_GALLERY && data != null) {//相册
                 List<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
@@ -273,10 +310,6 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
                 } else if (TYPE_REN == mUploadType) {
                     listRental.addAll(listRental.size() - 1, images);
                     rentalAdapter.notifyDataSetChanged();
-                } else if (TYPE_BUI == mUploadType) {
-                    listBuilding.clear();
-                    listBuilding.add(images.get(0));
-                    ivBuildingIntroduce.setImageBitmap(BitmapFactory.decodeFile(images.get(0)));
                 }
             }
         }
@@ -292,17 +325,17 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
                     if (FileUtils.isSDExist()) {
                         takePhoto();
                     } else {
-                        ToastUtils.toastForShort(this, getString(R.string.str_no_sd));
+                        shortTip(getString(R.string.str_no_sd));
                     }
                 } else {
-                    ToastUtils.toastForShort(this, getString(R.string.str_please_open_camera));
+                    shortTip(getString(R.string.str_please_open_camera));
                 }
                 break;
             case PermissionUtils.REQ_PERMISSIONS_STORAGE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     openGallery();
                 } else {
-                    ToastUtils.toastForShort(this, getString(R.string.str_please_open_sd));
+                    shortTip(getString(R.string.str_please_open_sd));
                 }
                 break;
             default:
@@ -331,12 +364,6 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
     public void deleteRentalAgreement(int position) {
         listRental.remove(position);
         rentalAdapter.notifyDataSetChanged();
-    }
-
-    @Click(resName = "iv_building_introduce")
-    void addBuildingIntroduceClick() {
-        mUploadType = TYPE_BUI;
-        selectedDialog();
     }
 
     private void hideView() {
@@ -378,7 +405,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (TextUtils.isEmpty(s.toString())) {
                     hideView();
-                    tvAddress.setVisibility(View.GONE);
+                    tvAddress.setText("");
                 } else {
                     rvRecommendCompany.setVisibility(View.GONE);
                     rvRecommendBuilding.setVisibility(View.VISIBLE);
@@ -453,7 +480,6 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
             CommUtils.showHtmlTextView(tvAddress, bean.getAddress());
         }
         hideView();
-        tvAddress.setVisibility(View.VISIBLE);
         rlType.setVisibility(View.VISIBLE);
         ctlIdentityRoot.setVisibility(View.VISIBLE);
         btnUpload.setVisibility(View.VISIBLE);

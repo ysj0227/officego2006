@@ -43,9 +43,9 @@ public class UpdateUserPresenter extends BasePresenter<UpdateUserContract.View>
     }
 
     @Override
-    public void UpdateUserInfo(String realName, String sex,String company, String job) {
+    public void UpdateUserInfo(String realName, String sex,String company, String job,String wx) {
         mView.showLoadingDialog();
-        OfficegoApi.getInstance().updateUserData(realName, sex, company,job,new RetrofitCallback<Object>() {
+        OfficegoApi.getInstance().updateUserData(realName, sex, company,job,wx,new RetrofitCallback<Object>() {
             @Override
             public void onSuccess(int code, String msg, Object data) {
                 if (isViewAttached()) {

@@ -80,7 +80,7 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:visibility="gone"
+            android:visibility="visible"
             android:id="@+id/rl_address"
             style="@style/marginLeftRight18"
             android:layout_width="0dp"
@@ -135,7 +135,7 @@
             style="@style/marginLeftRight18"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_56"
-            android:visibility="gone"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/rl_address">

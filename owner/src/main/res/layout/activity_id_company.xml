@@ -158,8 +158,7 @@
                     android:layout_marginTop="@dimen/dp_5"
                     android:drawablePadding="@dimen/dp_4"
                     android:textColor="@color/text_99"
-                    android:textSize="@dimen/sp_12"
-                    android:visibility="gone" />
+                    android:textSize="@dimen/sp_12" />
 
                 <View
                     android:layout_width="match_parent"
@@ -194,9 +193,16 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/dp_4"
                     android:layout_toEndOf="@id/tv_text_type"
-                    android:text="租赁房产"
+                    android:text="自有房产"
                     android:textColor="@color/text_33"
                     android:textSize="@dimen/sp_15" />
+
+                <ImageView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:background="@mipmap/ic_right_arrow_small" />
 
                 <View
                     android:layout_width="match_parent"

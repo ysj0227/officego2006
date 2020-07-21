@@ -4,7 +4,6 @@
     <string name="str_tab_message">消息</string>
     <string name="str_tab_schedule">行程</string>
     <string name="str_tab_mine">我的</string>
-    <string name="str_login">登录</string>
     <string name="str_platform_skip">跳过</string>
     <string name="str_button_check">验证</string>
     <string name="str_get_sms_code">获取验证码</string>

@@ -94,6 +94,8 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
     //编辑框
     @ViewById(resName = "cet_jointwork_name")
     ClearableEditText cetJointworkName;
+    @ViewById(resName = "tv_jointwork_address")
+    TextView tvJointworkAddress;
     @ViewById(resName = "cet_company_name")
     ClearableEditText cetCompanyName;
     @ViewById(resName = "cet_office_name")
@@ -107,6 +109,8 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
     RelativeLayout rlCompanyName;
     @ViewById(resName = "rl_office")
     RelativeLayout rlOffice;
+    @ViewById(resName = "rl_type")
+    RelativeLayout rlType;
     @ViewById(resName = "ctl_identity_root")
     ConstraintLayout ctlIdentityRoot;
     @ViewById(resName = "btn_upload")
@@ -350,6 +354,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (TextUtils.isEmpty(s.toString())) {
                     hideView();
+                    tvJointworkAddress.setText("");
                 } else {
                     rvRecommendJointwork.setVisibility(View.VISIBLE);
                     rvRecommendCompany.setVisibility(View.GONE);
@@ -396,7 +401,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (TextUtils.isEmpty(s.toString())) {
                     hideView();
-                    tvAddress.setVisibility(View.GONE);
+                    tvAddress.setText("");
                 } else {
                     rvRecommendJointwork.setVisibility(View.GONE);
                     rvRecommendCompany.setVisibility(View.GONE);
@@ -466,6 +471,9 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
         buildingAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * 网点
+     */
     @Override
     public void associateJointWork(IdentityJointWorkBean.DataBean bean, boolean isCreate) {
         if (isCreate) {
@@ -481,6 +489,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
         sb.setIdentityType(2);
         IdentitySendMsgActivity_.intent(context).sendMsgBean(sb).start();
         CommUtils.showHtmlView(cetJointworkName, bean.getBuildingName());
+        CommUtils.showHtmlTextView(tvJointworkAddress, bean.getAddress());
         hideView();
         rlCompanyName.setVisibility(View.VISIBLE);
     }
@@ -509,6 +518,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
         tvAddress.setVisibility(View.VISIBLE);
         hideView();
         ctlIdentityRoot.setVisibility(View.VISIBLE);
+        rlType.setVisibility(View.VISIBLE);
         btnUpload.setVisibility(View.VISIBLE);
     }
 

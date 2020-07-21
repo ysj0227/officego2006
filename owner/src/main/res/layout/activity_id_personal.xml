@@ -280,8 +280,7 @@
                     android:layout_marginTop="@dimen/dp_5"
                     android:drawablePadding="@dimen/dp_4"
                     android:textColor="@color/text_99"
-                    android:textSize="@dimen/sp_12"
-                    android:visibility="gone" />
+                    android:textSize="@dimen/sp_12" />
 
                 <View
                     android:layout_width="match_parent"
@@ -295,7 +294,7 @@
                 style="@style/marginLeftRight18"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dp_58"
-                android:visibility="visible"
+                android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rl_office">
@@ -316,7 +315,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/dp_4"
                     android:layout_toEndOf="@id/tv_text_type"
-                    android:text="租赁房产"
+                    android:text="自有房产"
                     android:textColor="@color/text_33"
                     android:textSize="@dimen/sp_15" />
 
@@ -335,7 +334,7 @@
             </RelativeLayout>
 
             <include
-                layout="@layout/include_id_personal"
+                layout="@layout/include_id_company"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_18"

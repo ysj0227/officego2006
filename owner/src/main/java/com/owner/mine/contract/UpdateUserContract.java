@@ -23,6 +23,6 @@ public interface UpdateUserContract {
 
         void updateAvatar(File file);
 
-        void UpdateUserInfo(String realName, String sex, String company, String job);
+        void UpdateUserInfo(String realName, String sex, String company, String job, String wx);
     }
 }

@@ -32,11 +32,10 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_property_ownership_certificate"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_12"
         android:nestedScrollingEnabled="false"
-        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_tip_property_ownership_certificate" />
 
@@ -49,6 +48,7 @@
         android:text="上传租赁协议"
         android:textColor="@color/text_99"
         android:textSize="@dimen/sp_15"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/rv_property_ownership_certificate" />
 
@@ -61,40 +61,19 @@
         android:text="上传内容务必包含承租方名称、租赁大厦名称和出租方公章"
         android:textColor="@color/text_99"
         android:textSize="@dimen/sp_12"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_text_rental_agreement" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_rental_agreement"
-        android:layout_width="0dp"
+        android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_12"
         android:nestedScrollingEnabled="false"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_tip_rental_agreement" />
-
-    <TextView
-        android:id="@+id/tv_text_building_introduce"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginTop="@dimen/dp_14"
-        android:text="上传楼盘封面图"
-        android:textColor="@color/text_99"
-        android:textSize="@dimen/sp_15"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rv_rental_agreement" />
-
-    <ImageView
-        android:id="@+id/iv_building_introduce"
-        android:layout_width="@dimen/dp_100"
-        android:layout_height="@dimen/dp_100"
-        android:layout_marginTop="@dimen/dp_12"
-        android:background="@mipmap/ic_add_img"
-        android:scaleType="centerCrop"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_text_building_introduce" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>
 

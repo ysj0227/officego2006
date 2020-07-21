@@ -254,6 +254,47 @@
             android:background="@color/common_divider" />
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/rl_wx"
+        style="@style/marginLeftRight18"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_56"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rl_job">
+
+        <TextView
+            android:id="@+id/tv_wx"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="微信"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_15" />
+
+        <com.officego.commonlib.view.ClearableEditText
+            android:id="@+id/et_wx_content"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_toEndOf="@id/tv_wx"
+            android:background="@null"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:hint="输入微信"
+            android:maxLines="1"
+            android:textColor="@color/text_33"
+            android:textColorHint="@color/text_99"
+            android:textSize="@dimen/sp_15" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"
+            android:layout_alignParentBottom="true"
+            android:background="@color/common_divider" />
+    </RelativeLayout>
+
     <Button
         android:id="@+id/btn_save"
         style="@style/BtnBigOrange"

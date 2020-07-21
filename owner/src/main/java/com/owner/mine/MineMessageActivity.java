@@ -70,6 +70,8 @@ public class MineMessageActivity extends BaseMvpActivity<UpdateUserPresenter>
     ClearableEditText etCompanyContent;
     @ViewById(resName = "et_job_content")
     ClearableEditText etJobContent;
+    @ViewById(resName = "et_wx_content")
+    ClearableEditText etWxContent;
 
     private String localAvatarPath;
     private Uri localPhotoUri;
@@ -92,6 +94,7 @@ public class MineMessageActivity extends BaseMvpActivity<UpdateUserPresenter>
             etSexContent.setText((Double) mUserInfo.getSex() == 1 ? "男" : "女");
         }
         etJobContent.setText(TextUtils.isEmpty(mUserInfo.getProprietorJob()) ? "" : mUserInfo.getProprietorJob());
+        etWxContent.setText(TextUtils.isEmpty(mUserInfo.getWxId()) ? "" : mUserInfo.getWxId());
     }
 
     @Override
@@ -122,7 +125,8 @@ public class MineMessageActivity extends BaseMvpActivity<UpdateUserPresenter>
         String sex = etSexContent.getText().toString().trim();
         String company = TextUtils.isEmpty(etCompanyContent.getText()) ? "" : etCompanyContent.getText().toString().trim();
         String job = TextUtils.isEmpty(etJobContent.getText()) ? "" : etJobContent.getText().toString().trim();
-        mPresenter.UpdateUserInfo(nikeName, TextUtils.equals("男", sex) ? "1" : "0", company, job);
+        String wx = TextUtils.isEmpty(etWxContent.getText()) ? "" : etWxContent.getText().toString().trim();
+        mPresenter.UpdateUserInfo(nikeName, TextUtils.equals("男", sex) ? "1" : "0", company, job, wx);
     }
 
     @Override

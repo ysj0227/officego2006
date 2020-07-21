@@ -37,11 +37,12 @@
             app:layout_constraintTop_toTopOf="parent">
 
             <TextView
+                android:drawableEnd="@mipmap/ic_mark"
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="写字楼名称："
+                android:text="写字楼名称"
                 android:textColor="@color/text_33"
                 android:textSize="@dimen/sp_15" />
 
@@ -77,11 +78,12 @@
             app:layout_constraintTop_toBottomOf="@id/rl_building_name">
 
             <TextView
+                android:drawableEnd="@mipmap/ic_mark"
                 android:id="@+id/tv_text_area"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="所在区域："
+                android:text="所在区域"
                 android:textColor="@color/text_33"
                 android:textSize="@dimen/sp_15" />
 
@@ -119,11 +121,12 @@
             app:layout_constraintTop_toBottomOf="@id/rl_area">
 
             <TextView
+                android:drawableEnd="@mipmap/ic_mark"
                 android:id="@+id/tv_text_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:text="详细地址："
+                android:text="详细地址"
                 android:textColor="@color/text_33"
                 android:textSize="@dimen/sp_15" />
 
@@ -142,7 +145,43 @@
                 android:textColorHint="@color/text_99"
                 android:textSize="@dimen/sp_15" />
 
+            <View
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_1"
+                android:layout_alignParentBottom="true"
+                android:background="@color/common_divider" />
         </RelativeLayout>
+
+        <TextView
+            android:drawableEnd="@mipmap/ic_mark"
+            android:id="@+id/tv_text_building_introduce"
+            style="@style/marginLeftRight18"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="@dimen/dp_14"
+            android:text="上传楼盘封面图"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_15"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/rl_address" />
+
+        <ImageView
+            android:id="@+id/iv_building_introduce"
+            style="@style/marginLeftRight18"
+            android:layout_width="@dimen/dp_100"
+            android:layout_height="@dimen/dp_100"
+            android:layout_marginTop="@dimen/dp_12"
+            android:background="@mipmap/ic_add_img"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_text_building_introduce" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_20"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/iv_building_introduce" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <LinearLayout

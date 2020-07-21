@@ -79,13 +79,14 @@ public class OfficegoApi {
      * job 	否 	string 	职位
      * token
      */
-    public void updateUserData(String realName, String sex, String company, String job, RetrofitCallback<Object> callback) {
+    public void updateUserData(String realName, String sex, String company, String job, String wx, RetrofitCallback<Object> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("realname", requestBody(realName));
         map.put("sex", requestBody(sex));
         map.put("company", requestBody(company));
         map.put("job", requestBody(job));
+        map.put("WX", requestBody(wx));
         OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
                 .updateUserData(map)
                 .enqueue(callback);

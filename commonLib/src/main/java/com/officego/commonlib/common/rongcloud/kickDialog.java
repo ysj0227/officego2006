@@ -24,13 +24,14 @@ public class kickDialog {
         Handler mainHandler = new Handler(Looper.getMainLooper());
         mainHandler.post(() -> {
             CommonDialog dialog = new CommonDialog.Builder(context)
-                    .setMessage("你的账号已在其他设备上登录，是否重连，如果不是你的操作，请尽快修改密码")
+                    .setTitle("你的账号已在其他设备上登录，是否重新登录")
+                    .setMessage("如果不是你的操作，请尽快修改密码")
                     .setCancelButton(R.string.sm_cancel, (dialog12, which) -> {
                         SpUtils.clearLoginInfo();
                         GotoActivityUtils.loginClearActivity(context);
                         dialog12.dismiss();
                     })
-                    .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
+                    .setConfirmButton(R.string.str_login, (dialog12, which) -> {
                         //重连
                         new ConnectRongCloudUtils();
                         dialog12.dismiss();

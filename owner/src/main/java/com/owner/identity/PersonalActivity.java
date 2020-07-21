@@ -30,13 +30,13 @@ import com.officego.commonlib.utils.FileHelper;
 import com.officego.commonlib.utils.FileUtils;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.PhotoUtils;
-import com.officego.commonlib.utils.ToastUtils;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.RoundImageView;
 import com.officego.commonlib.view.TitleBarView;
 import com.owner.R;
 import com.owner.adapter.IdentityBuildingAdapter;
 import com.owner.adapter.PropertyOwnershipCertificateAdapter;
+import com.owner.adapter.RentalAgreementAdapter;
 import com.owner.identity.contract.PersonalContract;
 import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.presenter.PersonalPresenter;
@@ -61,14 +61,16 @@ import java.util.List;
 public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> implements
         PersonalContract.View,
         PropertyOwnershipCertificateAdapter.CertificateListener,
+        RentalAgreementAdapter.RentalAgreementListener,
         IdentityBuildingAdapter.IdentityBuildingListener {
     private static final int REQUEST_GALLERY = 0xa0;
     private static final int REQUEST_CAMERA = 0xa1;
     private static final int TYPE_IDCARD_FRONT = 1;
     private static final int TYPE_IDCARD_BACK = 2;
     private static final int TYPE_CER = 3;
+    private static final int TYPE_REN = 4;
 
-    private String localIdCardFrontPath, localIdCardBackPath, localCerPath;
+    private String localIdCardFrontPath, localIdCardBackPath, localCerPath, localRenPath;
     private Uri localPhotoUri;
     //title
     @ViewById(resName = "title_bar")
@@ -100,14 +102,26 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
     ClearableEditText cetOfficeName;
     @ViewById(resName = "tv_address")
     TextView tvAddress;
+    @ViewById(resName = "rl_type")
+    RelativeLayout rlType;
     @ViewById(resName = "ctl_identity_root")
     ConstraintLayout ctlIdentityRoot;
-    //房产类型pe;
+    //房产类型
     @ViewById(resName = "tv_type")
     TextView tvType;
-    //图片
+    //图片list
     @ViewById(resName = "rv_property_ownership_certificate")
     RecyclerView rvPropertyOwnershipCertificate;
+    @ViewById(resName = "tv_text_property_ownership_certificate")
+    TextView tvTextPropertyOwnershipCertificate;
+    @ViewById(resName = "tv_tip_property_ownership_certificate")
+    TextView tvTipPropertyOwnershipCertificate;
+    @ViewById(resName = "rv_rental_agreement")
+    RecyclerView rvRentalAgreement;
+    @ViewById(resName = "tv_text_rental_agreement")
+    TextView tvTextRentalAgreement;
+    @ViewById(resName = "tv_tip_rental_agreement")
+    TextView tvTipRentalAgreement;
     //搜索list
     @ViewById(resName = "rv_recommend_building")
     RecyclerView rvRecommendBuilding;
@@ -116,7 +130,10 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
     Button btnUpload;
     private int mUploadType;
     private List<String> listCertificate = new ArrayList<>();
+    private List<String> listRental = new ArrayList<>();
     private PropertyOwnershipCertificateAdapter certificateAdapter;
+    private RentalAgreementAdapter rentalAdapter;
+
     private IdentityBuildingAdapter buildingAdapter;
     private List<IdentityBuildingBean.DataBean> mList = new ArrayList<>();
 
@@ -133,33 +150,72 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         localIdCardFrontPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "idcardFront.jpg";
         localIdCardBackPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "idcardBack.jpg";
         localCerPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "buildingdec.jpg";
+        localRenPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "rental.jpg";
         //搜索list
         LinearLayoutManager buildingManager = new LinearLayoutManager(context);
         rvRecommendBuilding.setLayoutManager(buildingManager);
-        //房产证
+        //图片
+        int screenWidth = CommonHelper.getScreenWidth(context) - CommonHelper.dp2px(context, 36);
+        int itemWidth = CommonHelper.dp2px(context, 100); //每个item的宽度
         GridLayoutManager layoutManager = new GridLayoutManager(context, 3);
         layoutManager.setSmoothScrollbarEnabled(true);
         layoutManager.setAutoMeasureEnabled(true);
         rvPropertyOwnershipCertificate.setLayoutManager(layoutManager);
-        rvPropertyOwnershipCertificate.setNestedScrollingEnabled(false);
-        int screenWidth = CommonHelper.getScreenWidth(context) - CommonHelper.dp2px(context, 36);
-        int itemWidth = CommonHelper.dp2px(context, 100); //每个item的宽度
         rvPropertyOwnershipCertificate.addItemDecoration(new SpaceItemDecoration((screenWidth - itemWidth * 3) / 6));
+        rvPropertyOwnershipCertificate.setNestedScrollingEnabled(false);
+        GridLayoutManager layoutManager1 = new GridLayoutManager(context, 3);
+        layoutManager1.setSmoothScrollbarEnabled(true);
+        layoutManager1.setAutoMeasureEnabled(true);
+        rvRentalAgreement.setLayoutManager(layoutManager1);
+        rvRentalAgreement.addItemDecoration(new SpaceItemDecoration((screenWidth - itemWidth * 3) / 6));
+        rvRentalAgreement.setNestedScrollingEnabled(false);
     }
 
     private void initData() {
         searchList();
         //初始化默认添加一个
         listCertificate.add("");
+        listRental.add("");
         //房产证
         certificateAdapter = new PropertyOwnershipCertificateAdapter(context, listCertificate);
         certificateAdapter.setCertificateListener(this);
         rvPropertyOwnershipCertificate.setAdapter(certificateAdapter);
+        //租赁协议
+        rentalAdapter = new RentalAgreementAdapter(context, listRental);
+        rentalAdapter.setAgreementListener(this);
+        rvRentalAgreement.setAdapter(rentalAdapter);
     }
 
     @Click(resName = "rl_type")
     void typeClick() {
         selectedBuildingType();
+    }
+
+    private void selectedBuildingType() {
+        final String[] items = {"自有房产", "租赁房产"};
+        new AlertDialog.Builder(this)
+                .setItems(items, (dialogInterface, i) -> {
+                    if (i == 0) {
+                        showCertificateView();
+                    } else {
+                        showCerAgreementView();
+                    }
+                    tvType.setText(items[i]);
+                }).create().show();
+    }
+
+    private void showCertificateView() {
+        ctlIdentityRoot.setVisibility(View.VISIBLE);
+        rvRentalAgreement.setVisibility(View.GONE);
+        tvTextRentalAgreement.setVisibility(View.GONE);
+        tvTipRentalAgreement.setVisibility(View.GONE);
+    }
+
+    private void showCerAgreementView() {
+        ctlIdentityRoot.setVisibility(View.VISIBLE);
+        rvRentalAgreement.setVisibility(View.VISIBLE);
+        tvTextRentalAgreement.setVisibility(View.VISIBLE);
+        tvTipRentalAgreement.setVisibility(View.VISIBLE);
     }
 
     @Click(resName = "rl_identity")
@@ -177,14 +233,6 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
     void idBackClick() {
         mUploadType = TYPE_IDCARD_BACK;
         idCardDialog(false);
-    }
-
-    private void selectedBuildingType() {
-        final String[] items = {"自有房产", "租赁房产"};
-        new AlertDialog.Builder(PersonalActivity.this)
-                .setItems(items, (dialogInterface, i) -> {
-                    tvType.setText(items[i]);
-                }).create().show();
     }
 
     //身份证照片
@@ -206,7 +254,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
     }
 
     //房产认证拍照，相册
-    private void selectedCertificateDialog() {
+    private void selectedDialog() {
         hideView();
         final String[] items = {"拍照", "相册"};
         new AlertDialog.Builder(PersonalActivity.this)
@@ -219,7 +267,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
                 }).create().show();
     }
 
-    //房产认证拍照
+    //拍照
     private void takePhoto() {
         if (!PermissionUtils.checkSDCardCameraPermission(this)) {
             return;
@@ -228,7 +276,12 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
             shortTip(R.string.str_no_sd);
             return;
         }
-        File fileUri = new File(localCerPath);
+        File fileUri;
+        if (TYPE_CER == mUploadType) {
+            fileUri = new File(localCerPath);
+        } else {
+            fileUri = new File(localRenPath);
+        }
         localPhotoUri = Uri.fromFile(fileUri);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             //通过FileProvider创建一个content类型的Uri
@@ -242,7 +295,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
             return;
         }
         //是否上传房产证
-        if (TYPE_CER == mUploadType) {
+        if (TYPE_CER == mUploadType || TYPE_REN == mUploadType) {
             ImageSelector.builder()
                     .useCamera(false) // 设置是否使用拍照
                     .setSingle(false)  //设置是否单选
@@ -287,6 +340,9 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
                 if (TYPE_CER == mUploadType) {
                     listCertificate.add(listCertificate.size() - 1, localCerPath);
                     certificateAdapter.notifyDataSetChanged();
+                }else if (TYPE_REN == mUploadType) {
+                    listRental.add(listRental.size() - 1, localRenPath);
+                    rentalAdapter.notifyDataSetChanged();
                 }
             } else if (requestCode == REQUEST_GALLERY && data != null) {//相册
                 List<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
@@ -299,6 +355,9 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
                 } else if (TYPE_CER == mUploadType) {//房产证相册
                     listCertificate.addAll(listCertificate.size() - 1, images);
                     certificateAdapter.notifyDataSetChanged();
+                }else if (TYPE_REN == mUploadType) {
+                    listRental.addAll(listRental.size() - 1, images);
+                    rentalAdapter.notifyDataSetChanged();
                 }
             }
         }
@@ -314,17 +373,17 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
                     if (FileUtils.isSDExist()) {
                         takePhoto();
                     } else {
-                        ToastUtils.toastForShort(this, getString(R.string.str_no_sd));
+                        shortTip(getString(R.string.str_no_sd));
                     }
                 } else {
-                    ToastUtils.toastForShort(this, getString(R.string.str_please_open_camera));
+                    shortTip(getString(R.string.str_please_open_camera));
                 }
                 break;
             case PermissionUtils.REQ_PERMISSIONS_STORAGE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
                     openGallery();
                 } else {
-                    ToastUtils.toastForShort(this, getString(R.string.str_please_open_sd));
+                    shortTip(getString(R.string.str_please_open_sd));
                 }
                 break;
             default:
@@ -346,7 +405,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (TextUtils.isEmpty(s.toString())) {
                     hideView();
-                    tvAddress.setVisibility(View.GONE);
+                    tvAddress.setText("");
                 } else {
                     rvRecommendBuilding.setVisibility(View.VISIBLE);
                     mPresenter.getBuilding(s.toString());
@@ -366,7 +425,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
             CommUtils.showHtmlTextView(tvAddress, bean.getAddress());
         }
         hideView();
-        tvAddress.setVisibility(View.VISIBLE);
+        rlType.setVisibility(View.VISIBLE);
         ctlIdentityRoot.setVisibility(View.VISIBLE);
         btnUpload.setVisibility(View.VISIBLE);
     }
@@ -374,7 +433,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
     @Override
     public void addCertificate() {
         mUploadType = TYPE_CER;
-        selectedCertificateDialog();
+        selectedDialog();
     }
 
     @Override
@@ -382,6 +441,19 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         listCertificate.remove(position);
         certificateAdapter.notifyDataSetChanged();
     }
+
+    @Override
+    public void addRentalAgreement() {
+        mUploadType = TYPE_REN;
+        selectedDialog();
+    }
+
+    @Override
+    public void deleteRentalAgreement(int position) {
+        listRental.remove(position);
+        rentalAdapter.notifyDataSetChanged();
+    }
+
 
     /**
      * @param data
