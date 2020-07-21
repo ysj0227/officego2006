@@ -1,5 +1,8 @@
 package com.owner.identity;
 
+import android.content.ComponentName;
+import android.content.Context;
+import android.content.Intent;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -9,6 +12,7 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.rongcloud.SendMessageManager;
 import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.view.CircleImage;
 import com.officego.commonlib.view.ClearableEditText;
@@ -23,6 +27,8 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
+
+import java.util.Objects;
 
 @EActivity(resName = "activity_go_send_message")
 public class IdentitySendMsgActivity extends BaseMvpActivity<SendMsgPresenter>
@@ -45,11 +51,13 @@ public class IdentitySendMsgActivity extends BaseMvpActivity<SendMsgPresenter>
 
     @Extra
     SendMsgBean sendMsgBean;
+    private ApplyLicenceBean mData;
 
     @AfterViews
     void init() {
         mPresenter = new SendMsgPresenter();
         mPresenter.attachView(this);
+        //获取信息
         mPresenter.getDetails(sendMsgBean.getIdentityType(), sendMsgBean.getId());
         counts();
         CommUtils.showHtmlTextView(tvTitleName, sendMsgBean.getName());
@@ -60,6 +68,13 @@ public class IdentitySendMsgActivity extends BaseMvpActivity<SendMsgPresenter>
             tvAddress.setVisibility(View.VISIBLE);
             tvAddress.setText(sendMsgBean.getAddress());
         }
+
+//        SendMessageManager.getInstance().sendIdApplyMessage(
+//                "4331",
+//                sendMsgBean.getId(),
+//                Objects.requireNonNull(cetSendContent.getText()).toString(),
+//                "");
+//        gotoConversationActivity(context, "4331");
     }
 
     @Click(resName = "iv_back")
@@ -67,11 +82,51 @@ public class IdentitySendMsgActivity extends BaseMvpActivity<SendMsgPresenter>
         finish();
     }
 
+    @Click(resName = "btn_send")
+    void sendClick() {
+        mPresenter.sendApply(sendMsgBean.getId());
+    }
+
     @Override
     public void messageSuccess(ApplyLicenceBean data) {
         Glide.with(context).applyDefaultRequestOptions(GlideUtils.avaOoptions()).load(data.getAvatar()).into(civAvatar);
         tvName.setText(data.getProprietorRealname());
         tvPosition.setText(data.getProprietorJob());
+    }
+
+    /**
+     * 发送申请成功
+     * 发送自定义消息
+     */
+    @Override
+    public void sendApplySuccess() {
+        if (mData != null) {
+            SendMessageManager.getInstance().sendIdApplyMessage(
+                    mData.getTargetId(),
+                    sendMsgBean.getId(),
+                    Objects.requireNonNull(cetSendContent.getText()).toString(),
+                    "");
+            gotoConversationActivity(context, mData.getTargetId());
+        }
+    }
+
+    //进入聊天页面
+    public static void gotoConversationActivity(Context context,String targetId) {
+        ComponentName comp = new ComponentName(context, "com.officego.ui.message.ConversationActivity_");
+        Intent intent = new Intent();
+        intent.putExtra("isSendApply", true);
+        intent.putExtra("targetId", targetId);
+        intent.setComponent(comp);
+        intent.setAction("android.intent.action.VIEW");
+        context.startActivity(intent);
+    }
+
+    /**
+     * 撤销申请
+     */
+    @Override
+    public void cancelApplySuccess() {
+
     }
 
     private void counts() {
@@ -105,7 +160,6 @@ public class IdentitySendMsgActivity extends BaseMvpActivity<SendMsgPresenter>
                     cetSendContent.setText(s);
                     cetSendContent.setSelection(tempSelection);//设置光标在最后
                 }
-
             }
         });
     }

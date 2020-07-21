@@ -3,6 +3,8 @@ package com.officego.commonlib.common.rongcloud;
 import com.officego.commonlib.common.message.BuildingInfo;
 import com.officego.commonlib.common.message.EcPhoneStatusInfo;
 import com.officego.commonlib.common.message.EcWeChatStatusInfo;
+import com.officego.commonlib.common.message.IdentityApplyInfo;
+import com.officego.commonlib.common.message.IdentityApplyStatusInfo;
 import com.officego.commonlib.common.message.PhoneInfo;
 import com.officego.commonlib.common.message.ViewingDateInfo;
 import com.officego.commonlib.common.message.ViewingDateStatusInfo;
@@ -125,6 +127,31 @@ public class SendMessageManager {
         RongIM.getInstance().sendMessage(message, null, null, callback);
     }
 
+
+    /**
+     * 发送自定义消息 认证申请
+     */
+    public void sendIdApplyMessage(String targetId, int id, String content, String extraMessage) {
+        IdentityApplyInfo info = new IdentityApplyInfo();
+        info.setId(id);
+        info.setContent(content);
+        info.setExtraMessage(extraMessage);
+        //targetId是接收消息方的id   Conversation.ConversationType 是消息会话的类型在这里表示的是私聊
+        Message message = Message.obtain(targetId, Conversation.ConversationType.PRIVATE, info);
+        RongIM.getInstance().sendMessage(message, null, null, callback);
+    }
+    /**
+     * 发送自定义消息 认证申请 同意拒绝
+     */
+    public void sendIdApplyStatusMessage(boolean isAgree, String targetId,String content, String extraMessage) {
+        IdentityApplyStatusInfo info = new IdentityApplyStatusInfo();
+        info.setAgree(isAgree);
+        info.setContent(content);
+        info.setExtraMessage(extraMessage);
+        //targetId是接收消息方的id   Conversation.ConversationType 是消息会话的类型在这里表示的是私聊
+        Message message = Message.obtain(targetId, Conversation.ConversationType.PRIVATE, info);
+        RongIM.getInstance().sendMessage(message, null, null, callback);
+    }
 
     /**
      * 插入自定义消息

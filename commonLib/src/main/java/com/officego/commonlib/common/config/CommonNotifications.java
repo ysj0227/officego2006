@@ -13,6 +13,9 @@ public class CommonNotifications {
 
     public static final int conversationViewHouseAgree = totalEvents++;
     public static final int conversationViewHouseReject = totalEvents++;
+
+    public static final int conversationIdApplyAgree = totalEvents++;
+    public static final int conversationIdApplyReject = totalEvents++;
     //更新用户信息成功
     public static final int updateUserInfoSuccess = totalEvents++;
     public static final int updateUserOwnerInfoSuccess = totalEvents++;

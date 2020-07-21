@@ -38,4 +38,14 @@ public class SendMsgPresenter extends BasePresenter<SendMsgContract.View>
             }
         });
     }
+
+    @Override
+    public void sendApply(int id) {
+
+    }
+
+    @Override
+    public void cancelApply(int id) {
+
+    }
 }

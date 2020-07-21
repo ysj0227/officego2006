@@ -17,10 +17,18 @@ public interface SendMsgContract {
 
         void messageSuccess(ApplyLicenceBean data);
 
+        void sendApplySuccess();
+
+        void cancelApplySuccess();
+
     }
 
     interface Presenter {
 
         void getDetails(int identityType, int id);
+
+        void sendApply(int id);
+
+        void cancelApply(int id);
     }
 }

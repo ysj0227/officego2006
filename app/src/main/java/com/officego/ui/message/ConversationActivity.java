@@ -1,11 +1,14 @@
 package com.officego.ui.message;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentManager;
 
 import com.officego.R;
@@ -25,7 +28,6 @@ import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.ToastUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.db.LitepalUtils;
 
 import org.androidannotations.annotations.AfterViews;
@@ -51,6 +53,7 @@ import io.rong.imlib.model.UserInfo;
 public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         implements ConversationContract.View, RongIM.OnSendMessageListener {
     private LinearLayout llRoot;
+    private ConstraintLayout ctlChat;
     private String targetTitle;
     private TextView tvTitleName, tvJob;
     private String getHouseChatId; //去除 targetId  的最后一位 ,产品定义
@@ -65,19 +68,33 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
     // "isChat": 0 :点击发送按钮的时候需要调用 addChat接口，1:不需要
     private boolean isFirstChat = true;//是否第一次聊天
 
+    private boolean isSendApply;//租户认证发送的申请
+
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarFullTransparent(this);
         mPresenter = new ConversationPresenter();
         mPresenter.attachView(this);
         llRoot = findViewById(R.id.ll_root);
+        ctlChat = findViewById(R.id.ctl_chat);
         tvTitleName = findViewById(R.id.tv_title_name);
         tvJob = findViewById(R.id.tv_job);
         llRoot.setPadding(0, CommonHelper.statusHeight(this), 0, 0);
-        initRongCloudIM();
-        RongIM.getInstance().setSendMessageListener(this);
-        //插入一次
-        mPresenter.getHouseDetails(buildingId, houseId, getHouseChatId);
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("targetId")) {
+            //认证申请
+            isSendApply = true;
+            targetId = intent.getStringExtra("targetId");
+            ctlChat.setVisibility(View.GONE);
+            initIM();
+        } else {
+            //租户聊天
+            isSendApply = false;
+            ctlChat.setVisibility(View.VISIBLE);
+            initRongCloudIM();
+            RongIM.getInstance().setSendMessageListener(this);
+            mPresenter.getHouseDetails(buildingId, houseId, getHouseChatId);//插入一次
+        }
     }
 
     private void initRongCloudIM() {
@@ -88,6 +105,10 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         }
         getHouseChatId = targetId.substring(0, targetId.length() - 1);
         //LogCat.e("TAG", "11111 targetId: " + targetId + "getHouseChatId: " + getHouseChatId + "  title: " + targetTitle);
+        initIM();
+    }
+
+    private void initIM() {
         FragmentManager fragmentManage = getSupportFragmentManager();
         ConversationFragment fragment = (ConversationFragment) fragmentManage.findFragmentById(R.id.conversation);
         Uri uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon()
@@ -165,10 +186,10 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
                 info.setRouteMap("步行" + workTime + "分钟到 | " + stationLine + "号线 ·" + stationName);
             }
             if (data.getBuilding().getMinSinglePrice() != null) {
-                if (data.getBuilding().getBtype()==Constants.TYPE_BUILDING){
-                    info.setMinSinglePrice("¥" + data.getBuilding().getMinSinglePrice()+"/㎡/天");
-                }else {
-                    info.setMinSinglePrice("¥" + data.getBuilding().getMinSinglePrice()+"/位/月");
+                if (data.getBuilding().getBtype() == Constants.TYPE_BUILDING) {
+                    info.setMinSinglePrice("¥" + data.getBuilding().getMinSinglePrice() + "/㎡/天");
+                } else {
+                    info.setMinSinglePrice("¥" + data.getBuilding().getMinSinglePrice() + "/位/月");
                 }
             }
             info.setFavorite(data.isIsFavorite());
@@ -285,7 +306,10 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
                 CommonNotifications.conversationViewHouseAgree,
                 CommonNotifications.conversationViewHouseReject,
                 CommonNotifications.conversationBindWeChat,
-                CommonNotifications.conversationBindPhone};
+                CommonNotifications.conversationBindPhone,
+                CommonNotifications.conversationIdApplyAgree,
+                CommonNotifications.conversationIdApplyReject
+        };
     }
 
     @Override
@@ -318,6 +342,12 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         } else if (id == CommonNotifications.conversationBindPhone) {
             //开始发送交换手机信息
             setPhoneMessage();
+        } else if (id == CommonNotifications.conversationIdApplyAgree) {
+            //同意认证申请
+            SendMessageManager.getInstance().sendIdApplyStatusMessage(true, targetId, "", "");
+        } else if (id == CommonNotifications.conversationIdApplyReject) {
+            //拒绝认证申请
+            SendMessageManager.getInstance().sendIdApplyStatusMessage(false, targetId, "", "");
         }
     }
 
@@ -332,7 +362,6 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
      */
     @Override
     public boolean onSent(Message message, RongIM.SentMessageErrorCode sentMessageErrorCode) {
-        LogCat.e("TAG", "11111 isFirstChat: " + isFirstChat);
         if (isFirstChat) {
             mPresenter.isFirstChat(buildingId, houseId, getHouseChatId);
         }
