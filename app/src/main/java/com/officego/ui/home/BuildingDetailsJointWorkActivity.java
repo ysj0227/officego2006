@@ -1,6 +1,7 @@
 package com.officego.ui.home;
 
 import android.annotation.SuppressLint;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -169,6 +170,8 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     TextView tvLocation;
     @ViewById(R.id.tv_bus_line)
     TextView tvBusLine;
+    @ViewById(R.id.tv_query_trains)
+    TextView tvQueryTrains;
     @ViewById(R.id.rl_characteristic)
     RelativeLayout rlCharacteristic;
     @ViewById(R.id.ctl_bus_line)
@@ -302,6 +305,8 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     private int pageNum = 1;
     private boolean hasMore;
     private BuildingJointWorkBean mData;
+    //初始化是否展开
+    private boolean isExpand;
 
     @AfterViews
     void init() {
@@ -889,23 +894,8 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
             tvLocation.setVisibility(View.VISIBLE);
             tvLocation.setText(data.getBuilding().getAddress());
         }
-        if (data.getBuilding().getStationline() != null && data.getBuilding().getStationline().size() > 0) {
-            List<String> stationLine = data.getBuilding().getStationline();
-            List<String> stationName = data.getBuilding().getStationNames();
-            List<String> workTime = data.getBuilding().getNearbySubwayTime();
-            StringBuffer linePlan = new StringBuffer();
-            for (int i = 0; i < stationLine.size(); i++) {
-                if (stationLine.size() == 1 || i == stationLine.size() - 1) {
-                    linePlan.append("步行").append(workTime.get(i)).append("分钟到 | ").append(stationLine.get(i)).append("号线 ·").append(stationName.get(i));
-                } else {
-                    linePlan.append("步行").append(workTime.get(i)).append("分钟到 | ").append(stationLine.get(i)).append("号线 ·").append(stationName.get(i)).append("\n");
-                }
-            }
-            ctlBusLine.setVisibility(View.VISIBLE);
-            tvBusLine.setText(linePlan);
-        } else {
-            ctlBusLine.setVisibility(View.GONE);
-        }
+        //公交
+        showBusLine();
         //楼盘信息
         tvAirConditioning.setText("常规：" + data.getIntroduction().getAirConditioning());
         if (data.getIntroduction().getCompletionTime() != null) {
@@ -938,6 +928,46 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         }
         //图标
         showServiceLogo(data);
+    }
+
+    //公交
+    private void showBusLine() {
+        if (mData.getBuilding().getStationline() != null && mData.getBuilding().getStationline().size() > 0) {
+            List<String> stationLine = mData.getBuilding().getStationline();
+            List<String> stationName = mData.getBuilding().getStationNames();
+            List<String> workTime = mData.getBuilding().getNearbySubwayTime();
+            StringBuffer linePlan = new StringBuffer();
+            if (isExpand) {
+                for (int i = 0; i < stationLine.size(); i++) {
+                    if (stationLine.size() == 1 || i == stationLine.size() - 1) {
+                        linePlan.append("步行").append(workTime.get(i)).append("分钟到 | ").append(stationLine.get(i)).append("号线 ·").append(stationName.get(i));
+                    } else {
+                        linePlan.append("步行").append(workTime.get(i)).append("分钟到 | ").append(stationLine.get(i)).append("号线 ·").append(stationName.get(i)).append("\n");
+                    }
+                }
+            } else {
+                linePlan.append("步行").append(workTime.get(0)).append("分钟到 | ").append(stationLine.get(0)).append("号线 ·").append(stationName.get(0));
+            }
+            ctlBusLine.setVisibility(View.VISIBLE);
+            tvBusLine.setText(linePlan);
+        } else {
+            ctlBusLine.setVisibility(View.GONE);
+        }
+    }
+
+    /**
+     * 全部站点是否展开
+     */
+    @Click(R.id.tv_query_trains)
+    void queryTrainsClick() {
+        if (mData == null) {
+            return;
+        }
+        Drawable down = ContextCompat.getDrawable(context, R.mipmap.ic_down_arrow_gray);
+        Drawable up = ContextCompat.getDrawable(context, R.mipmap.ic_up_arrow_gray);
+        isExpand = !isExpand;
+        tvQueryTrains.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, isExpand ? up : down, null);
+        showBusLine();
     }
 
     @Override

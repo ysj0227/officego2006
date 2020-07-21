@@ -140,7 +140,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements Home
             @Override
             public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
                 hideLoadingDialog();
-                exceptionPageHttpError(view, errorResponse);
+//                exceptionPageHttpError(view, errorResponse);
                 super.onReceivedHttpError(view, request, errorResponse);
             }
         });

@@ -158,7 +158,7 @@ public class WebViewActivity extends BaseActivity {
 
             @Override
             public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
-                exceptionPageHttpError(view, errorResponse);
+//                exceptionPageHttpError(view, errorResponse);
                 super.onReceivedHttpError(view, request, errorResponse);
             }
         });

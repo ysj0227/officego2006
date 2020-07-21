@@ -2,6 +2,7 @@ package com.officego.ui.home;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -130,6 +131,8 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
     TextView tvLocation;
     @ViewById(R.id.tv_bus_line)
     TextView tvBusLine;
+    @ViewById(R.id.tv_query_trains)
+    TextView tvQueryTrains;
     @ViewById(R.id.ctl_bus_line)
     ConstraintLayout ctlBusLine;
     //收藏取消
@@ -216,6 +219,8 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
     @Extra
     HouseIdBundleBean mChildHouseBean;
     private HouseOfficeDetailsJointWorkBean mData;
+    //初始化是否展开
+    private boolean isExpand;
 
     @AfterViews
     void init() {
@@ -321,24 +326,52 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
             } else {
                 tvLocation.setText(data.getHouse().getBusinessDistrict());
             }
-            if (data.getHouse().getStationline() != null && data.getHouse().getStationline().size() > 0) {
-                List<String> stationLine = data.getHouse().getStationline();
-                List<String> stationName = data.getHouse().getStationNames();
-                List<String> workTime = data.getHouse().getNearbySubwayTime();
-                StringBuffer linePlan = new StringBuffer();
+            //公交
+            showBusLine();
+        }
+    }
+
+    //公交
+    private void showBusLine() {
+        if (mData.getHouse().getStationline() != null && mData.getHouse().getStationline().size() > 0) {
+            List<String> stationLine = mData.getHouse().getStationline();
+            List<String> stationName = mData.getHouse().getStationNames();
+            List<String> workTime = mData.getHouse().getNearbySubwayTime();
+            StringBuffer linePlan = new StringBuffer();
+            if (isExpand) {
                 for (int i = 0; i < stationLine.size(); i++) {
                     if (stationLine.size() == 1 || i == stationLine.size() - 1) {
-                        linePlan.append("步行").append(workTime.get(i)).append("分钟到 | ").append(stationLine.get(i)).append("号线 ·").append(stationName.get(i));
+                        linePlan.append("步行").append(workTime.get(i)).append("分钟到 | ")
+                                .append(stationLine.get(i)).append("号线 ·").append(stationName.get(i));
                     } else {
-                        linePlan.append("步行").append(workTime.get(i)).append("分钟到 | ").append(stationLine.get(i)).append("号线 ·").append(stationName.get(i)).append("\n");
+                        linePlan.append("步行").append(workTime.get(i)).append("分钟到 | ")
+                                .append(stationLine.get(i)).append("号线 ·").append(stationName.get(i)).append("\n");
                     }
                 }
-                ctlBusLine.setVisibility(View.VISIBLE);
-                tvBusLine.setText(linePlan);
             } else {
-                ctlBusLine.setVisibility(View.GONE);
+                linePlan.append("步行").append(workTime.get(0)).append("分钟到 | ")
+                        .append(stationLine.get(0)).append("号线 ·").append(stationName.get(0));
             }
+            ctlBusLine.setVisibility(View.VISIBLE);
+            tvBusLine.setText(linePlan);
+        } else {
+            ctlBusLine.setVisibility(View.GONE);
         }
+    }
+
+    /**
+     * 全部站点是否展开
+     */
+    @Click(R.id.tv_query_trains)
+    void queryTrainsClick() {
+        if (mData == null) {
+            return;
+        }
+        Drawable down = ContextCompat.getDrawable(context, R.mipmap.ic_down_arrow_gray);
+        Drawable up = ContextCompat.getDrawable(context, R.mipmap.ic_up_arrow_gray);
+        isExpand = !isExpand;
+        tvQueryTrains.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, isExpand ? up : down, null);
+        showBusLine();
     }
 
     private List<String> mBannerList = new ArrayList<>();
@@ -675,6 +708,7 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
     public void onVideoSizeChanged(IMediaPlayer iMediaPlayer, int width, int height, int i2, int i3) {
         setVideoPlayerScreenRate(width, height);
     }
+
     private void setVideoPlayerScreenRate(int width, int height) {
         if (!isSetVideoRate) {
             isSetVideoRate = true;
