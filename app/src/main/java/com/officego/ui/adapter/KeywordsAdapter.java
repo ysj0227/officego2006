@@ -42,6 +42,7 @@ public class KeywordsAdapter extends CommonListAdapter<SearchListBean.DataBean> 
         showHtmlView(tvName, bean.getBuildingName());
         if (bean.getDistrict() != null && bean.getBusiness() == null) {
             showHtmlView(tvBusiness, bean.getDistrict().toString());
+
         } else if (bean.getDistrict() == null && bean.getBusiness() != null) {
             showHtmlView(tvBusiness, bean.getBusiness().toString());
         } else if (bean.getDistrict() != null && bean.getBusiness() != null) {
