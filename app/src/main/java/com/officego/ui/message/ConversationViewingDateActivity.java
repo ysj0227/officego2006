@@ -13,6 +13,7 @@ import com.officego.commonlib.common.contract.ConversationContract;
 import com.officego.commonlib.common.dialog.ViewingDateDialog;
 import com.officego.commonlib.common.model.ChatHouseBean;
 import com.officego.commonlib.common.model.FirstChatBean;
+import com.officego.commonlib.common.model.IdentitychattedMsgBean;
 import com.officego.commonlib.common.model.RenterBean;
 import com.officego.commonlib.common.presenter.ConversationPresenter;
 import com.officego.commonlib.common.rongcloud.SendMessageManager;
@@ -166,6 +167,11 @@ public class ConversationViewingDateActivity extends BaseMvpActivity<Conversatio
 
     @Override
     public void firstChatSuccess(FirstChatBean data) {
+
+    }
+
+    @Override
+    public void identityChattedMsgSuccess(IdentitychattedMsgBean data) {
 
     }
 

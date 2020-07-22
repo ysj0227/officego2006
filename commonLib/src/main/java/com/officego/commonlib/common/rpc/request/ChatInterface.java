@@ -3,6 +3,7 @@ package com.officego.commonlib.common.rpc.request;
 
 import com.officego.commonlib.common.model.ChatHouseBean;
 import com.officego.commonlib.common.model.FirstChatBean;
+import com.officego.commonlib.common.model.IdentitychattedMsgBean;
 import com.officego.commonlib.retrofit.BaseResponse;
 
 import java.util.Map;
@@ -42,5 +43,12 @@ public interface ChatInterface {
     @Multipart
     @POST(path + "user/rongYunToken")
     Call<BaseResponse<Object>> getRongCloudToken(@PartMap Map<String, RequestBody> params);
+
+    /**
+     * 认证聊天获取信息
+     */
+    @Multipart
+    @POST(path + "chat/chattedMsgApp")
+    Call<BaseResponse<IdentitychattedMsgBean>> identityChattedMsg(@PartMap Map<String, RequestBody> params);
 
 }

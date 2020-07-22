@@ -22,6 +22,7 @@ import com.officego.commonlib.common.dialog.InputContactsDialog;
 import com.officego.commonlib.common.message.BuildingInfo;
 import com.officego.commonlib.common.model.ChatHouseBean;
 import com.officego.commonlib.common.model.FirstChatBean;
+import com.officego.commonlib.common.model.IdentitychattedMsgBean;
 import com.officego.commonlib.common.presenter.ConversationPresenter;
 import com.officego.commonlib.common.rongcloud.RongCloudSetUserInfoUtils;
 import com.officego.commonlib.common.rongcloud.SendMessageManager;
@@ -86,6 +87,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             isSendApply = true;
             targetId = intent.getStringExtra("identityTargetId");
             ctlChat.setVisibility(View.GONE);
+            mPresenter.identityChattedMsg(targetId);
             initIM();
         } else {
             initRongCloudIM();
@@ -94,6 +96,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
                 //认证申请聊天列表进入,融云id最后一位是“1”
                 isSendApply = false;
                 ctlChat.setVisibility(View.GONE);
+                mPresenter.identityChattedMsg(targetId);
                 initIM();
             } else {
                 //聊天
@@ -105,7 +108,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
                 mPresenter.getHouseDetails(buildingId, houseId, getHouseChatId);
             }
         }
-}
+    }
 
 
     @Click(R.id.rl_back)
@@ -128,7 +131,6 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             targetId = Objects.requireNonNull(getIntent().getData()).getQueryParameter("targetId");
         }
         getHouseChatId = targetId.substring(0, targetId.length() - 1);
-
     }
 
     private void initIM() {
@@ -215,6 +217,16 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
     @Override
     public void firstChatSuccess(FirstChatBean data) {
         isFirstChat = data.getIsChat() == 0;//是否第一次聊天
+    }
+
+    //认证申请显示个人信息
+    @Override
+    public void identityChattedMsgSuccess(IdentitychattedMsgBean data) {
+        //刷新用户信息
+        RongCloudSetUserInfoUtils.refreshUserInfoCache(targetId, data.getNickname(), data.getAvatar());
+        RongCloudSetUserInfoUtils.refreshUserInfoCache(SpUtils.getRongChatId(), SpUtils.getNickName(), SpUtils.getHeaderImg());
+        tvTitleName.setText(data.getNickname());
+        tvJob.setText(data.getJob());
     }
 
     private String getTags(ChatHouseBean data) {
@@ -343,9 +355,11 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         } else if (id == CommonNotifications.conversationIdApplyAgree) {
             //同意认证申请
             SendMessageManager.getInstance().sendIdApplyStatusMessage(true, targetId, "", "");
+            SendMessageManager.getInstance().sendTextMessage(targetId, "我已同意你加入公司，欢迎");
         } else if (id == CommonNotifications.conversationIdApplyReject) {
             //拒绝认证申请
             SendMessageManager.getInstance().sendIdApplyStatusMessage(false, targetId, "", "");
+            SendMessageManager.getInstance().sendTextMessage(targetId, "我已拒绝你加入公司");
         }
     }
 

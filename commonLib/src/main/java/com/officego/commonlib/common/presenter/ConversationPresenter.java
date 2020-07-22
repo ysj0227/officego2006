@@ -4,6 +4,7 @@ import com.officego.commonlib.base.BasePresenter;
 import com.officego.commonlib.common.contract.ConversationContract;
 import com.officego.commonlib.common.model.ChatHouseBean;
 import com.officego.commonlib.common.model.FirstChatBean;
+import com.officego.commonlib.common.model.IdentitychattedMsgBean;
 import com.officego.commonlib.common.rpc.OfficegoApi;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.log.LogCat;
@@ -60,6 +61,25 @@ public class ConversationPresenter extends BasePresenter<ConversationContract.Vi
 
                     @Override
                     public void onFail(int code, String msg, FirstChatBean data) {
+                        if (isViewAttached()) {
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void identityChattedMsg(String targetId) {
+        OfficegoApi.getInstance().identityChattedMsg(targetId,
+                new RetrofitCallback<IdentitychattedMsgBean>() {
+                    @Override
+                    public void onSuccess(int code, String msg, IdentitychattedMsgBean data) {
+                        if (isViewAttached()) {
+                            mView.identityChattedMsgSuccess(data);
+                        }
+                    }
+
+                    @Override
+                    public void onFail(int code, String msg, IdentitychattedMsgBean data) {
                         if (isViewAttached()) {
                         }
                     }

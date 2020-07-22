@@ -18,6 +18,7 @@ import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.rongcloud.RongCloudSetUserInfoUtils;
+import com.officego.commonlib.common.rongcloud.SendMessageManager;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.update.VersionDialog;
 import com.officego.commonlib.utils.GlideUtils;

@@ -7,6 +7,7 @@ import android.widget.TextView;
 import com.officego.R;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
+import com.officego.commonlib.constant.Constants;
 import com.officego.ui.home.model.SearchListBean;
 
 import java.util.List;
@@ -47,7 +48,7 @@ public class KeywordsAdapter extends CommonListAdapter<SearchListBean.DataBean> 
             showHtmlView(tvBusiness, bean.getDistrict().toString() + " · " + bean.getBusiness().toString());
         }
         showHtmlView(tvLocation, bean.getAddress());
-        holder.setText(R.id.tv_price, "¥" + bean.getDayPrice() + "m²/天起");
+        holder.setText(R.id.tv_price, "¥" + bean.getDayPrice() + (bean.getBuildType() == Constants.TYPE_BUILDING ? "m²/天起" : "位/月起"));
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
                 listener.searchListItemOnClick(bean);
