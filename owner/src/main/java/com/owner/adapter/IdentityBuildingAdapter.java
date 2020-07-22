@@ -35,10 +35,12 @@ public class IdentityBuildingAdapter extends CommonListAdapter<IdentityBuildingB
     }
 
     private List<IdentityBuildingBean.DataBean> list;
+    private boolean isJointWork;
 
-    public IdentityBuildingAdapter(Context context, List<IdentityBuildingBean.DataBean> list) {
+    public IdentityBuildingAdapter(Context context, List<IdentityBuildingBean.DataBean> list, boolean isJointWork) {
         super(context, R.layout.item_id_building_search, list);
         this.list = list;
+        this.isJointWork = isJointWork;
     }
 
     @Override
@@ -46,7 +48,7 @@ public class IdentityBuildingAdapter extends CommonListAdapter<IdentityBuildingB
         TextView tvBuildingName = holder.getView(R.id.tv_building_name);
         TextView tvAddress = holder.getView(R.id.tv_address);
         TextView tvAdd = holder.getView(R.id.tv_add);
-        if (list != null && list.size() > 0 && holder.getAdapterPosition() == list.size() - 1) {
+        if (!isJointWork && list != null && list.size() > 0 && holder.getAdapterPosition() == list.size() - 1) {
             tvBuildingName.setVisibility(View.GONE);
             tvAdd.setText("创建写字楼");
             tvAddress.setText("写字楼不存在，去创建写字楼");

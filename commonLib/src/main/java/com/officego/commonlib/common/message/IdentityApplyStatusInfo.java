@@ -21,7 +21,7 @@ import io.rong.imlib.model.MessageContent;
  * 自定义消息的实体类
  * 认证同意或拒绝
  */
-@MessageTag(value = "og:identityapplystatus", flag = MessageTag.ISPERSISTED | MessageTag.ISCOUNTED)
+@MessageTag(value = "og:applyjoinstatus", flag = MessageTag.ISPERSISTED | MessageTag.ISCOUNTED)
 public class IdentityApplyStatusInfo extends MessageContent {
 
     private int id;

@@ -32,6 +32,8 @@ public class IdentityCompanyBean {
          * bid : 80
          */
 
+        @SerializedName("identityType")
+        private String identityType;
         @SerializedName("buildingName")
         private String buildingName;
         @SerializedName("address")
@@ -42,6 +44,14 @@ public class IdentityCompanyBean {
         private String company;
         @SerializedName("bid")
         private int bid;
+
+        public String getIdentityType() {
+            return identityType;
+        }
+
+        public void setIdentityType(String identityType) {
+            this.identityType = identityType;
+        }
 
         public String getBuildingName() {
             return buildingName;

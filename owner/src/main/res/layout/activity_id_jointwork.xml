@@ -287,8 +287,8 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rl_company_name" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_recommend_building"
+            <RelativeLayout
+                android:id="@+id/rl_recommend_building"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
@@ -296,7 +296,23 @@
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rl_office" />
+                app:layout_constraintTop_toBottomOf="@id/rl_office">
+
+                <ImageButton
+                    android:id="@+id/ibt_close_keyboard"
+                    android:layout_width="@dimen/dp_20"
+                    android:layout_height="@dimen/dp_20"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:layout_marginRight="@dimen/dp_10"
+                    android:background="@mipmap/ic_small_delete_blue" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_recommend_building"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/ibt_close_keyboard" />
+            </RelativeLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
 

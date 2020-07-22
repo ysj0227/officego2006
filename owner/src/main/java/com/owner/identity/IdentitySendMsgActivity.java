@@ -68,7 +68,6 @@ public class IdentitySendMsgActivity extends BaseMvpActivity<SendMsgPresenter>
             tvAddress.setVisibility(View.VISIBLE);
             tvAddress.setText(sendMsgBean.getAddress());
         }
-
 //        SendMessageManager.getInstance().sendIdApplyMessage(
 //                "4331",
 //                sendMsgBean.getId(),

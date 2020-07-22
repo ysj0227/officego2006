@@ -6,6 +6,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
 import com.owner.R;
@@ -34,33 +36,49 @@ public class IdentityCompanyAdapter extends CommonListAdapter<IdentityCompanyBea
     }
 
     private List<IdentityCompanyBean.DataBean> list;
+    private Context context;
+    private boolean isCompany;
 
-    public IdentityCompanyAdapter(Context context, List<IdentityCompanyBean.DataBean> list) {
+    public IdentityCompanyAdapter(Context context, List<IdentityCompanyBean.DataBean> list, boolean isCompany) {
         super(context, R.layout.item_id_company_search, list);
+        this.context = context;
         this.list = list;
+        this.isCompany = isCompany;
     }
 
     @Override
     public void convert(ViewHolder holder, final IdentityCompanyBean.DataBean bean) {
         TextView tvIdentity = holder.getView(R.id.tv_identity);
-        TextView tvCompanyName = holder.getView(R.id.tv_company_name);
-        TextView tvTip = holder.getView(R.id.tv_tip);
+        TextView tvUp = holder.getView(R.id.tv_up);
+        TextView tvDown = holder.getView(R.id.tv_down);
         TextView tvAdd = holder.getView(R.id.tv_add);
-        if (list != null && list.size() > 0 && holder.getAdapterPosition() == list.size()-1) {
-            tvIdentity.setVisibility(View.INVISIBLE);
-            tvCompanyName.setVisibility(View.GONE);
+        if (list != null && list.size() > 0 && holder.getAdapterPosition() == list.size() - 1) {
+            tvIdentity.setVisibility(View.GONE);
+            tvUp.setVisibility(View.VISIBLE);
+            tvDown.setVisibility(View.GONE);
             tvAdd.setText("创建公司");
-            tvTip.setText("公司不存在，去创建公司");
+            tvUp.setText("公司不存在，去创建公司");
             holder.itemView.setOnClickListener(v -> listener.associateCompany(bean, true));
         } else {
             tvIdentity.setVisibility(View.VISIBLE);
-            tvCompanyName.setVisibility(View.VISIBLE);
-            if (!TextUtils.isEmpty(bean.getCompany())) {
-                tvCompanyName.setText(Html.fromHtml(bean.getCompany()));
+            tvUp.setVisibility(View.VISIBLE);
+            if (isCompany && TextUtils.equals("2", bean.getIdentityType())) {
+                tvAdd.setVisibility(View.GONE);
+                tvDown.setVisibility(View.VISIBLE);
+                tvDown.setText("该公司已认证为联合办公，不可重复认证");
+            } else if (!isCompany && TextUtils.equals("1", bean.getIdentityType())) {
+                tvAdd.setVisibility(View.GONE);
+                tvDown.setVisibility(View.VISIBLE);
+                tvDown.setText("该公司已认证为标准办公，不可重复认证");
+            } else {
+                tvAdd.setText("关联公司");
+                tvAdd.setVisibility(View.VISIBLE);
+                tvDown.setVisibility(View.GONE);
+                holder.itemView.setOnClickListener(v -> listener.associateCompany(bean, false));
             }
-            tvAdd.setText("关联公司");
-            tvTip.setText("加入公司，即可共同管理公司房源");
-            holder.itemView.setOnClickListener(v -> listener.associateCompany(bean, false));
+            if (!TextUtils.isEmpty(bean.getCompany())) {
+                tvUp.setText(Html.fromHtml(bean.getCompany()));
+            }
         }
     }
 }

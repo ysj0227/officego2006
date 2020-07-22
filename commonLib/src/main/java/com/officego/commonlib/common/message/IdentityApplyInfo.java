@@ -18,9 +18,9 @@ import io.rong.imlib.MessageTag;
 import io.rong.imlib.model.MessageContent;
 
 /**
- * 自定义消息的实体类 预约看房
+ * 自定义消息的实体类 申请认证
  */
-@MessageTag(value = "og:identityapply", flag = MessageTag.ISPERSISTED | MessageTag.ISCOUNTED)
+@MessageTag(value = "og:applyjoin", flag = MessageTag.ISPERSISTED | MessageTag.ISCOUNTED)
 public class IdentityApplyInfo extends MessageContent {
     private String content;
     private String extraMessage;

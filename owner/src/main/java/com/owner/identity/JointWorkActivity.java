@@ -82,6 +82,8 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
     //搜索list
     @ViewById(resName = "rv_recommend_jointwork")
     RecyclerView rvRecommendJointwork;
+    @ViewById(resName = "rl_recommend_building")
+    RelativeLayout rlRecommendBuilding;
     @ViewById(resName = "rv_recommend_company")
     RecyclerView rvRecommendCompany;
     @ViewById(resName = "rv_recommend_building")
@@ -199,6 +201,15 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
     @Click(resName = "rl_identity")
     void identityClick() {
         SwitchRoleDialog.switchDialog(this);
+    }
+
+    @Click(resName = "ibt_close_keyboard")
+    void closeKeyboardClick() {
+        hideView();
+        tvAddress.setVisibility(View.VISIBLE);
+        ctlIdentityRoot.setVisibility(View.VISIBLE);
+        rlType.setVisibility(View.VISIBLE);
+        btnUpload.setVisibility(View.VISIBLE);
     }
 
     private void selectedDialog() {
@@ -337,9 +348,9 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
     }
 
     private void hideView() {
-        rvRecommendCompany.setVisibility(View.GONE);
-        rvRecommendBuilding.setVisibility(View.GONE);
         rvRecommendJointwork.setVisibility(View.GONE);
+        rvRecommendCompany.setVisibility(View.GONE);
+        rlRecommendBuilding.setVisibility(View.GONE);
     }
 
     //search
@@ -358,7 +369,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
                 } else {
                     rvRecommendJointwork.setVisibility(View.VISIBLE);
                     rvRecommendCompany.setVisibility(View.GONE);
-                    rvRecommendBuilding.setVisibility(View.GONE);
+                    rlRecommendBuilding.setVisibility(View.GONE);
                     mPresenter.getJointWork(s.toString());
                 }
             }
@@ -381,7 +392,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
                 } else {
                     rvRecommendJointwork.setVisibility(View.GONE);
                     rvRecommendCompany.setVisibility(View.VISIBLE);
-                    rvRecommendBuilding.setVisibility(View.GONE);
+                    rlRecommendBuilding.setVisibility(View.GONE);
                     mPresenter.getCompany(s.toString());
                 }
             }
@@ -405,7 +416,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
                 } else {
                     rvRecommendJointwork.setVisibility(View.GONE);
                     rvRecommendCompany.setVisibility(View.GONE);
-                    rvRecommendBuilding.setVisibility(View.VISIBLE);
+                    rlRecommendBuilding.setVisibility(View.VISIBLE);
                     mPresenter.getBuilding(s.toString());
                 }
             }
@@ -444,7 +455,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
         mCompanyList.addAll(data);
         mCompanyList.add(data.size(), new IdentityCompanyBean.DataBean());
         if (companyAdapter == null) {
-            companyAdapter = new IdentityCompanyAdapter(context, mCompanyList);
+            companyAdapter = new IdentityCompanyAdapter(context, mCompanyList, false);
             companyAdapter.setListener(this);
             rvRecommendCompany.setAdapter(companyAdapter);
             return;
@@ -460,9 +471,9 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
     public void searchBuildingSuccess(List<IdentityBuildingBean.DataBean> data) {
         mList.clear();
         mList.addAll(data);
-        mList.add(data.size(), new IdentityBuildingBean.DataBean());
+//        mList.add(data.size(), new IdentityBuildingBean.DataBean()); //联办没有创建楼盘
         if (buildingAdapter == null) {
-            buildingAdapter = new IdentityBuildingAdapter(context, mList);
+            buildingAdapter = new IdentityBuildingAdapter(context, mList,true);
             buildingAdapter.setListener(this);
             rvRecommendBuilding.setAdapter(buildingAdapter);
             return;
@@ -515,8 +526,8 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
             CommUtils.showHtmlView(cetOfficeName, bean.getBuildingName());
             CommUtils.showHtmlTextView(tvAddress, bean.getAddress());
         }
-        tvAddress.setVisibility(View.VISIBLE);
         hideView();
+        tvAddress.setVisibility(View.VISIBLE);
         ctlIdentityRoot.setVisibility(View.VISIBLE);
         rlType.setVisibility(View.VISIBLE);
         btnUpload.setVisibility(View.VISIBLE);

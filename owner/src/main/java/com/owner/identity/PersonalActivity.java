@@ -464,7 +464,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         mList.addAll(data);
         mList.add(data.size(), new IdentityBuildingBean.DataBean());
         if (buildingAdapter == null) {
-            buildingAdapter = new IdentityBuildingAdapter(context, mList);
+            buildingAdapter = new IdentityBuildingAdapter(context, mList,false);
             buildingAdapter.setListener(this);
             rvRecommendBuilding.setAdapter(buildingAdapter);
             return;

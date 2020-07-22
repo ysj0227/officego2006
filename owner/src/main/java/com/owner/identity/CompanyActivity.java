@@ -79,6 +79,8 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
     //搜索list
     @ViewById(resName = "rv_recommend_company")
     RecyclerView rvRecommendCompany;
+    @ViewById(resName = "rl_recommend_company")
+    RelativeLayout rlRecommendCompany;
     @ViewById(resName = "rv_recommend_building")
     RecyclerView rvRecommendBuilding;
     //图片list
@@ -367,7 +369,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
     }
 
     private void hideView() {
-        rvRecommendCompany.setVisibility(View.GONE);
+        rlRecommendCompany.setVisibility(View.GONE);
         rvRecommendBuilding.setVisibility(View.GONE);
     }
 
@@ -384,7 +386,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
                 if (TextUtils.isEmpty(s.toString())) {
                     hideView();
                 } else {
-                    rvRecommendCompany.setVisibility(View.VISIBLE);
+                    rlRecommendCompany.setVisibility(View.VISIBLE);
                     rvRecommendBuilding.setVisibility(View.GONE);
                     mPresenter.getCompany(s.toString());
                 }
@@ -407,7 +409,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
                     hideView();
                     tvAddress.setText("");
                 } else {
-                    rvRecommendCompany.setVisibility(View.GONE);
+                    rlRecommendCompany.setVisibility(View.GONE);
                     rvRecommendBuilding.setVisibility(View.VISIBLE);
                     mPresenter.getBuilding(s.toString());
                 }
@@ -420,13 +422,16 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         });
     }
 
+    /**
+     * 搜索公司列表
+     */
     @Override
     public void searchCompanySuccess(List<IdentityCompanyBean.DataBean> data) {
         mCompanyList.clear();
         mCompanyList.addAll(data);
         mCompanyList.add(data.size(), new IdentityCompanyBean.DataBean());
         if (companyAdapter == null) {
-            companyAdapter = new IdentityCompanyAdapter(context, mCompanyList);
+            companyAdapter = new IdentityCompanyAdapter(context, mCompanyList,true);
             companyAdapter.setListener(this);
             rvRecommendCompany.setAdapter(companyAdapter);
             return;
@@ -435,13 +440,16 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         companyAdapter.notifyDataSetChanged();
     }
 
+    /**
+     * 搜索楼盘列表
+     */
     @Override
     public void searchBuildingSuccess(List<IdentityBuildingBean.DataBean> data) {
         mList.clear();
         mList.addAll(data);
         mList.add(data.size(), new IdentityBuildingBean.DataBean());
         if (buildingAdapter == null) {
-            buildingAdapter = new IdentityBuildingAdapter(context, mList);
+            buildingAdapter = new IdentityBuildingAdapter(context, mList,false);
             buildingAdapter.setListener(this);
             rvRecommendBuilding.setAdapter(buildingAdapter);
             return;
