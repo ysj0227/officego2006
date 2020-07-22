@@ -949,9 +949,11 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
                 linePlan.append("步行").append(workTime.get(0)).append("分钟到 | ").append(stationLine.get(0)).append("号线 ·").append(stationName.get(0));
             }
             ctlBusLine.setVisibility(View.VISIBLE);
+            tvQueryTrains.setVisibility(View.VISIBLE);
             tvBusLine.setText(linePlan);
         } else {
             ctlBusLine.setVisibility(View.GONE);
+            tvQueryTrains.setVisibility(View.GONE);
         }
     }
 
