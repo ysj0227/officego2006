@@ -97,9 +97,15 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".identity.IdentitySendMsgActivity_"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
             android:name=".identity.CreateBuildingActivity_"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".identity.IdentityCancelActivity_"
+            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
     </application>
 

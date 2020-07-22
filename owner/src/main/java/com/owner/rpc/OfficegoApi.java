@@ -2,9 +2,9 @@ package com.owner.rpc;
 
 import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
-import com.officego.commonlib.common.VersionBean;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.log.LogCat;
+import com.owner.identity.model.ApplyJoinBean;
 import com.owner.identity.model.ApplyLicenceBean;
 import com.owner.identity.model.BusinessCircleBean;
 import com.owner.identity.model.IdentityBuildingBean;
@@ -270,6 +270,21 @@ public class OfficegoApi {
     }
 
     /**
+     * 认证公司，网点申请加入
+     */
+    public void applyLicenceProprietor(int identityType, int id, int chattedId,
+                                       RetrofitCallback<ApplyJoinBean> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("identityType", requestBody(identityType + ""));
+        map.put("id", requestBody(id + ""));
+        map.put("chattedId", requestBody(chattedId + ""));
+        OfficegoRetrofitClient.getInstance().create(IdentitySearchInterface.class)
+                .applyLicenceProprietorApp(map)
+                .enqueue(callback);
+    }
+
+    /**
      * 商圈
      *
      * @param callback
@@ -280,6 +295,18 @@ public class OfficegoApi {
         map.put("type", requestBody("1")); //1：全部，0：系统已有楼盘的地铁
         OfficegoRetrofitClient.getInstance().create(IdentitySearchInterface.class)
                 .getDistrictList(map)
+                .enqueue(callback);
+    }
+
+    /**
+     * 认证公司，网点撤销
+     */
+    public void deleteUserLicence(int id, RetrofitCallback<Object> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("id", requestBody(id + ""));
+        OfficegoRetrofitClient.getInstance().create(IdentitySearchInterface.class)
+                .deleteUserLicenceApp(map)
                 .enqueue(callback);
     }
 

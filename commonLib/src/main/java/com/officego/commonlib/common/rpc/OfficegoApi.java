@@ -5,6 +5,7 @@ import com.officego.commonlib.common.VersionBean;
 import com.officego.commonlib.common.model.ChatHouseBean;
 import com.officego.commonlib.common.model.FirstChatBean;
 import com.officego.commonlib.common.rpc.request.ChatInterface;
+import com.officego.commonlib.common.rpc.request.LicenceInterface;
 import com.officego.commonlib.common.rpc.request.MineMsgInterface;
 import com.officego.commonlib.common.rpc.request.ScheduleInterface;
 import com.officego.commonlib.retrofit.RetrofitCallback;
@@ -113,7 +114,7 @@ public class OfficegoApi {
     }
 
     /**
-     * 重新获取融云token
+     * 聊天
      *
      * @param callback
      */
@@ -125,6 +126,22 @@ public class OfficegoApi {
         map.put("houseId", requestBody(houseId == 0 ? "" : String.valueOf(houseId)));
         OfficegoRetrofitClient.getInstance().create(ChatInterface.class)
                 .isChat(map)
+                .enqueue(callback);
+    }
+
+    /**
+     * 管理员审核申请加入员工接口
+     * auditStatus 1通过2取消
+     */
+    public void updateAuditStatusIdentity(int identityType, int id, int auditStatus,
+                                     RetrofitCallback<Object> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("identityType", requestBody(identityType + ""));
+        map.put("id", requestBody(id + ""));
+        map.put("auditStatus", requestBody(auditStatus + ""));
+        OfficegoRetrofitClient.getInstance().create(LicenceInterface.class)
+                .updateAuditStatusApp(map)
                 .enqueue(callback);
     }
 

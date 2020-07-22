@@ -140,14 +140,15 @@ public class SendMessageManager {
         Message message = Message.obtain(targetId, Conversation.ConversationType.PRIVATE, info);
         RongIM.getInstance().sendMessage(message, null, null, callback);
     }
+
     /**
      * 发送自定义消息 认证申请 同意拒绝
      */
-    public void sendIdApplyStatusMessage(boolean isAgree, String targetId,String content, String extraMessage) {
+    public void sendIdApplyStatusMessage(boolean isAgree, String targetId, String content, String extraMessage) {
         IdentityApplyStatusInfo info = new IdentityApplyStatusInfo();
         info.setAgree(isAgree);
         info.setContent(content);
-        info.setExtraMessage(extraMessage);
+        info.setExtraMessage(targetId);
         //targetId是接收消息方的id   Conversation.ConversationType 是消息会话的类型在这里表示的是私聊
         Message message = Message.obtain(targetId, Conversation.ConversationType.PRIVATE, info);
         RongIM.getInstance().sendMessage(message, null, null, callback);
@@ -209,8 +210,8 @@ public class SendMessageManager {
      *
      * @param targetId targetId
      */
-    public void sendTextMessage(String targetId) {
-        TextMessage textMessage = TextMessage.obtain("我对你发布的房源有兴趣，能聊聊吗？");
+    public void sendTextMessage(String targetId, String content) {
+        TextMessage textMessage = TextMessage.obtain(content);
         RongIM.getInstance().sendMessage(Message.obtain(targetId, Conversation.ConversationType.PRIVATE,
                 textMessage),
                 null, null, new IRongCallback.ISendMessageCallback() {

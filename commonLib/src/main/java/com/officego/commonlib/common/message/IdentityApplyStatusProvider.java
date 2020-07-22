@@ -11,6 +11,7 @@ import android.text.Spannable;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.officego.commonlib.R;
@@ -32,7 +33,12 @@ public class IdentityApplyStatusProvider extends IContainerItemProvider.MessageP
         this.context = context;
         View view = LayoutInflater.from(context).inflate(R.layout.conversation_item_viewing_date_message_status, viewGroup, false);
         IdStatusInfoHolder holder = new IdStatusInfoHolder();
+        holder.rlLayout = view.findViewById(R.id.rl_layout);
         holder.tvStatus = view.findViewById(R.id.tv_status);
+        ViewGroup.LayoutParams params = holder.rlLayout.getLayoutParams();
+        params.width = 400;
+        holder.rlLayout.setLayoutParams(params);
+
         view.setTag(holder);
         return view;
     }
@@ -66,7 +72,7 @@ public class IdentityApplyStatusProvider extends IContainerItemProvider.MessageP
     }
 
     class IdStatusInfoHolder {
+        RelativeLayout rlLayout;
         TextView tvStatus;
     }
-
 }

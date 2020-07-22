@@ -1,6 +1,7 @@
 package com.owner.identity.contract;
 
 import com.officego.commonlib.base.BaseView;
+import com.owner.identity.model.ApplyJoinBean;
 import com.owner.identity.model.ApplyLicenceBean;
 import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.model.IdentityCompanyBean;
@@ -17,7 +18,7 @@ public interface SendMsgContract {
 
         void messageSuccess(ApplyLicenceBean data);
 
-        void sendApplySuccess();
+        void sendApplySuccess(ApplyJoinBean data);
 
         void cancelApplySuccess();
 
@@ -27,7 +28,7 @@ public interface SendMsgContract {
 
         void getDetails(int identityType, int id);
 
-        void sendApply(int id);
+        void sendApply(int identityType, int id,int chattedId);
 
         void cancelApply(int id);
     }

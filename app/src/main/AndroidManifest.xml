@@ -171,6 +171,7 @@
 
         <!--会话界面-->
         <activity
+            android:launchMode="singleTask"
             android:name=".ui.message.ConversationActivity_"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustPan">

@@ -7,7 +7,6 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -25,8 +24,7 @@ import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.CircleImage;
 import com.owner.h5.WebViewActivity_;
-import com.owner.h5.WebViewIdifyActivity_;
-import com.owner.identity.SelectIdActivity_;
+import com.owner.identity.IdentityCancelActivity_;
 import com.owner.mine.contract.UserContract;
 import com.owner.mine.model.UserOwnerBean;
 import com.owner.mine.presenter.UserPresenter;
@@ -36,7 +34,6 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.OnActivityResult;
-import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import static android.app.Activity.RESULT_OK;
@@ -61,8 +58,6 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
     TextView tvAccount;
     @ViewById(resName = "tv_idify")
     TextView tvIdify;
-    @ViewById(resName = "btn_identity")
-    Button btnIdentity;
     @ViewById(resName = "rl_role")
     RelativeLayout rlRole;
 
@@ -86,46 +81,31 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         if (isFastClick(1500)) {
             return;
         }
-        MineSettingActivity_.intent(mActivity).startForResult(REQUEST_CODE_LOGOUT);
+        MineSettingActivity_.intent(mActivity).start();
     }
 
-    @OnActivityResult(REQUEST_CODE_LOGOUT)
-    void onLogoutResult(int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            //noIdentityView();
-        }
-    }
-
-    /**
-     * 去认证
-     */
-    @Click(resName = "btn_identity")
-    void loginClick() {
-        if (isFastClick(1500)) {
-            return;
-        }
-        if (mUserInfo == null) {
-            mPresenter.getUserInfo();
-            return;
-        }
-        //当驳回时
-        if (mUserInfo.getAuditStatus() == 2) {
-            if (mUserInfo.getIdentityType() == 0) {//个人
-                WebViewIdifyActivity_.intent(mActivity).idifyTag(Constants.H5_OWNER_IDIFY_PERSION).start();
-            } else if (mUserInfo.getIdentityType() == 1) {//企业
-                WebViewIdifyActivity_.intent(mActivity).idifyTag(Constants.H5_OWNER_IDIFY_COMPANY).start();
-            } else if (mUserInfo.getIdentityType() == 2) { //联办
-                WebViewIdifyActivity_.intent(mActivity).idifyTag(Constants.H5_OWNER_IDIFY_JOINTWORK).start();
-            }
-        } else { //当需要认证时
-            WebViewIdifyActivity_.intent(mActivity).start();
-        }
+    @Click(resName = "tv_idify")
+    void idifyTextClick() {
+        identityMessage();
     }
 
     @Click(resName = "civ_avatar")
     void editMessageClick() {
+        identityMessage();
+    }
+
+    @Click(resName = "tv_name")
+    void nameClick() {
+        identityMessage();
+    }
+
+    private void identityMessage() {
         if (mUserInfo == null) {
             mPresenter.getUserInfo();
+            return;
+        }
+        if (mUserInfo.getAuditStatus() == 0) {
+            IdentityCancelActivity_.intent(mActivity).startForResult(REQUEST_CODE_IDENTITY);
             return;
         }
         if (isIdentity()) {
@@ -135,17 +115,11 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         MineMessageActivity_.intent(mActivity).mUserInfo(mUserInfo).startForResult(REQUEST_CODE);
     }
 
-    @Click(resName = "tv_name")
-    void nameClick() {
-        if (mUserInfo == null) {
+    @OnActivityResult(REQUEST_CODE_IDENTITY)
+    void onIdentityResult(int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
             mPresenter.getUserInfo();
-            return;
         }
-        if (isIdentity()) {
-            new UnIdifyDialog(mActivity, mUserInfo);
-            return;
-        }
-        MineMessageActivity_.intent(mActivity).mUserInfo(mUserInfo).startForResult(REQUEST_CODE);
     }
 
     @OnActivityResult(REQUEST_CODE)
@@ -200,10 +174,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
                 tvAccount.setText(data.getProprietorCompany() + "·" + (TextUtils.isEmpty(data.getProprietorJob()) ? "" : data.getProprietorJob()));
             }
             if (isIdentity()) {
-                noIdentityView();
                 new UnIdifyDialog(mActivity, mUserInfo);
-            } else {
-                hasIdentityView();
             }
             //1企业2联合 &&管理员显示员工管理  权职0普通员工1管理员 -1无
             if ((data.getIdentityType() == 1 || data.getIdentityType() == 2)
@@ -256,16 +227,6 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
     @Override
     public void userInfoFail(int code, String msg) {
 
-    }
-
-    @UiThread
-    void noIdentityView() {
-        btnIdentity.setVisibility(View.VISIBLE);
-    }
-
-    @UiThread
-    void hasIdentityView() {
-        btnIdentity.setVisibility(View.GONE);
     }
 
     @Override

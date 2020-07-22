@@ -68,7 +68,13 @@ public class MainOwnerActivity extends BaseActivity implements RadioGroup.OnChec
         fManager = getSupportFragmentManager();
         rg_tab_bar.setOnCheckedChangeListener(this);
         rb_3.setText(R.string.str_tab_schedule);
-        rb_1.setChecked(true);
+        //初始化第一个选中
+        Intent intent = getIntent();
+        if (intent != null && intent.hasExtra("isIdentifyChat")) {
+            rb_4.setChecked(true);
+        } else {
+            rb_1.setChecked(true);
+        }
         initBottomImage();
         if (!TextUtils.isEmpty(SpUtils.getSignToken())) {
             new ConnectRongCloudUtils();
@@ -76,18 +82,14 @@ public class MainOwnerActivity extends BaseActivity implements RadioGroup.OnChec
         addUnReadMessageCountChangedObserver();
     }
 
+    private FragmentTransaction fTransaction;
+
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
-        FragmentTransaction fTransaction = fManager.beginTransaction();
+        fTransaction = fManager.beginTransaction();
         hideAllFragment(fTransaction);
         switch (checkedId) {
             case R.id.tab_home:
-//                if (fg1 == null) {
-//                    fg1 = new HomeFragment_();
-//                    fTransaction.add(R.id.ly_content, fg1, "Fragment1");
-//                } else {
-//                    fTransaction.show(fg1);
-//                }
                 fg1 = new HomeFragment_();
                 fTransaction.add(R.id.ly_content, fg1, "Fragment1");
                 break;
@@ -110,12 +112,6 @@ public class MainOwnerActivity extends BaseActivity implements RadioGroup.OnChec
                 }
                 break;
             case R.id.tab_mine:
-//                if (fg4 == null) {
-//                    fg4 = new MineFragment_();
-//                    fTransaction.add(R.id.ly_content, fg4, "Fragment4");
-//                } else {
-//                    fTransaction.show(fg4);
-//                }
                 fg4 = new MineFragment_();
                 fTransaction.add(R.id.ly_content, fg4, "Fragment4");
                 break;

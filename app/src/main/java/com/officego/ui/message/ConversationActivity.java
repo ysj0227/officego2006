@@ -13,6 +13,7 @@ import androidx.fragment.app.FragmentManager;
 
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
+import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.contract.ConversationContract;
@@ -22,6 +23,7 @@ import com.officego.commonlib.common.message.BuildingInfo;
 import com.officego.commonlib.common.model.ChatHouseBean;
 import com.officego.commonlib.common.model.FirstChatBean;
 import com.officego.commonlib.common.presenter.ConversationPresenter;
+import com.officego.commonlib.common.rongcloud.RongCloudSetUserInfoUtils;
 import com.officego.commonlib.common.rongcloud.SendMessageManager;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
@@ -41,7 +43,6 @@ import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationFragment;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
-import io.rong.imlib.model.UserInfo;
 
 /**
  * Created by YangShiJie
@@ -54,7 +55,6 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         implements ConversationContract.View, RongIM.OnSendMessageListener {
     private LinearLayout llRoot;
     private ConstraintLayout ctlChat;
-    private String targetTitle;
     private TextView tvTitleName, tvJob;
     private String getHouseChatId; //去除 targetId  的最后一位 ,产品定义
     @Extra
@@ -81,31 +81,54 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         tvJob = findViewById(R.id.tv_job);
         llRoot.setPadding(0, CommonHelper.statusHeight(this), 0, 0);
         Intent intent = getIntent();
-        if (intent != null && intent.hasExtra("targetId")) {
-            //认证申请
+        if (intent != null && intent.hasExtra("identityTargetId")) {//聊天认证申请进入
+            //认证申请页面进入
             isSendApply = true;
-            targetId = intent.getStringExtra("targetId");
+            targetId = intent.getStringExtra("identityTargetId");
             ctlChat.setVisibility(View.GONE);
             initIM();
         } else {
-            //租户聊天
-            isSendApply = false;
-            ctlChat.setVisibility(View.VISIBLE);
             initRongCloudIM();
-            RongIM.getInstance().setSendMessageListener(this);
-            mPresenter.getHouseDetails(buildingId, houseId, getHouseChatId);//插入一次
+            if (TextUtils.equals(Constants.TYPE_OWNER, targetId.substring(targetId.length() - 1)) &&
+                    TextUtils.equals(Constants.TYPE_OWNER, SpUtils.getRongChatId().substring(SpUtils.getRongChatId().length() - 1))) {
+                //认证申请聊天列表进入,融云id最后一位是“1”
+                isSendApply = false;
+                ctlChat.setVisibility(View.GONE);
+                initIM();
+            } else {
+                //聊天
+                isSendApply = false;
+                ctlChat.setVisibility(View.VISIBLE);
+                initIM();
+                RongIM.getInstance().setSendMessageListener(this);
+                //插入一次
+                mPresenter.getHouseDetails(buildingId, houseId, getHouseChatId);
+            }
+        }
+}
+
+
+    @Click(R.id.rl_back)
+    void backClick() {
+        onBackPressed();
+    }
+
+    @Override
+    public void onBackPressed() {
+        if (isSendApply) {
+            //发送认证 ，返回业主个人中心
+            GotoActivityUtils.mainOwnerDefMainActivity(context);
+        } else {
+            super.onBackPressed();
         }
     }
 
     private void initRongCloudIM() {
-        //会话界面 对方id
         if (TextUtils.isEmpty(targetId)) {
             targetId = Objects.requireNonNull(getIntent().getData()).getQueryParameter("targetId");
-            targetTitle = Objects.requireNonNull(getIntent().getData().getQueryParameter("title")); //对方 昵称
         }
         getHouseChatId = targetId.substring(0, targetId.length() - 1);
-        //LogCat.e("TAG", "11111 targetId: " + targetId + "getHouseChatId: " + getHouseChatId + "  title: " + targetTitle);
-        initIM();
+
     }
 
     private void initIM() {
@@ -121,27 +144,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
     }
 
     /**
-     * 刷新融云用户信息
-     *
-     * @param id
-     * @param name
-     * @param imgUrl
-     */
-    private void refreshUserInfoCache(String id, String name, String imgUrl) {
-        if (!TextUtils.isEmpty(id)) {
-            UserInfo userInfo = new UserInfo(id, name, Uri.parse(imgUrl));
-            RongIM.getInstance().refreshUserInfoCache(userInfo);
-            //是否携带用户信息，true 携带，false 不携带。
-            RongIM.getInstance().setMessageAttachedUserInfo(true);
-            RongIM.getInstance().enableNewComingMessageIcon(true);
-            RongIM.getInstance().enableUnreadMessageIcon(true);
-        }
-    }
-
-    /**
      * 插入聊天大楼信息
-     *
-     * @param data data
      */
     @SuppressLint("SetTextI18n")
     @Override
@@ -153,8 +156,8 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         isFirstChat = data.getIsChat() == 0;//是否第一次聊天
         //刷新用户信息
         if (data.getBuilding() != null) {
-            refreshUserInfoCache(targetId, data.getChatted().getNickname(), data.getChatted().getAvatar());
-            refreshUserInfoCache(SpUtils.getRongChatId(), SpUtils.getNickName(), SpUtils.getHeaderImg());
+            RongCloudSetUserInfoUtils.refreshUserInfoCache(targetId, data.getChatted().getNickname(), data.getChatted().getAvatar());
+            RongCloudSetUserInfoUtils.refreshUserInfoCache(SpUtils.getRongChatId(), SpUtils.getNickName(), SpUtils.getHeaderImg());
             tvTitleName.setText(data.getChatted().getNickname());
             tvJob.setText(data.getChatted().getJob());
         }
@@ -198,7 +201,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             }
             //租户第一次聊天,发送默认消息
             if (isFirstChat && TextUtils.equals(Constants.TYPE_TENANT, SpUtils.getRole())) {
-                SendMessageManager.getInstance().sendTextMessage(targetId);
+                SendMessageManager.getInstance().sendTextMessage(targetId, "我对你发布的房源有兴趣，能聊聊吗？");
             }
             //插入消息
             SendMessageManager.getInstance().insertIncomingMessage(info, targetId, SpUtils.getRongChatId());
@@ -227,11 +230,6 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             key = key.replace(key.length() - 1, key.length(), "");
         }
         return key.toString();
-    }
-
-    @Click(R.id.rl_back)
-    void backClick() {
-        finish();
     }
 
     /**

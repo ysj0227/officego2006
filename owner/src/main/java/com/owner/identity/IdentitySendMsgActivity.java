@@ -17,6 +17,7 @@ import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.view.CircleImage;
 import com.officego.commonlib.view.ClearableEditText;
 import com.owner.identity.contract.SendMsgContract;
+import com.owner.identity.model.ApplyJoinBean;
 import com.owner.identity.model.ApplyLicenceBean;
 import com.owner.identity.model.SendMsgBean;
 import com.owner.identity.presenter.SendMsgPresenter;
@@ -68,12 +69,6 @@ public class IdentitySendMsgActivity extends BaseMvpActivity<SendMsgPresenter>
             tvAddress.setVisibility(View.VISIBLE);
             tvAddress.setText(sendMsgBean.getAddress());
         }
-//        SendMessageManager.getInstance().sendIdApplyMessage(
-//                "4331",
-//                sendMsgBean.getId(),
-//                Objects.requireNonNull(cetSendContent.getText()).toString(),
-//                "");
-//        gotoConversationActivity(context, "4331");
     }
 
     @Click(resName = "iv_back")
@@ -83,11 +78,14 @@ public class IdentitySendMsgActivity extends BaseMvpActivity<SendMsgPresenter>
 
     @Click(resName = "btn_send")
     void sendClick() {
-        mPresenter.sendApply(sendMsgBean.getId());
+        if (mData != null) {
+            mPresenter.sendApply(sendMsgBean.getIdentityType(), sendMsgBean.getId(), mData.getChattedId());
+        }
     }
 
     @Override
     public void messageSuccess(ApplyLicenceBean data) {
+        mData = data;
         Glide.with(context).applyDefaultRequestOptions(GlideUtils.avaOoptions()).load(data.getAvatar()).into(civAvatar);
         tvName.setText(data.getProprietorRealname());
         tvPosition.setText(data.getProprietorJob());
@@ -98,23 +96,27 @@ public class IdentitySendMsgActivity extends BaseMvpActivity<SendMsgPresenter>
      * 发送自定义消息
      */
     @Override
-    public void sendApplySuccess() {
+    public void sendApplySuccess(ApplyJoinBean data) {
         if (mData != null) {
+            //发送申请自定义消息
             SendMessageManager.getInstance().sendIdApplyMessage(
                     mData.getTargetId(),
-                    sendMsgBean.getId(),
+                    data.getId(),
                     Objects.requireNonNull(cetSendContent.getText()).toString(),
-                    "");
+                    sendMsgBean.getIdentityType() + "");
+            //发送消息提示
+            SendMessageManager.getInstance().sendTextMessage(mData.getTargetId(), "我发送了加入公司的申请，请通过");
             gotoConversationActivity(context, mData.getTargetId());
+            finish();
         }
     }
 
     //进入聊天页面
-    public static void gotoConversationActivity(Context context,String targetId) {
+    public static void gotoConversationActivity(Context context, String targetId) {
         ComponentName comp = new ComponentName(context, "com.officego.ui.message.ConversationActivity_");
         Intent intent = new Intent();
         intent.putExtra("isSendApply", true);
-        intent.putExtra("targetId", targetId);
+        intent.putExtra("identityTargetId", targetId);
         intent.setComponent(comp);
         intent.setAction("android.intent.action.VIEW");
         context.startActivity(intent);
