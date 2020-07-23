@@ -21,6 +21,7 @@ import com.donkingliang.imageselector.utils.ImageSelector;
 import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.FileHelper;
 import com.officego.commonlib.utils.FileUtils;
@@ -28,15 +29,18 @@ import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.PhotoUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.ToastUtils;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.RoundImageView;
 import com.officego.commonlib.view.TitleBarView;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
+import com.owner.rpc.OfficegoApi;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.File;
@@ -68,6 +72,10 @@ public class CreateCompanyActivity extends BaseActivity {
     TextView tvUpload;
     @ViewById(resName = "btn_save")
     Button btnSave;
+    @Extra
+    int createCompany;
+    @Extra
+    int identityType;
 
     @AfterViews
     void init() {
@@ -106,10 +114,34 @@ public class CreateCompanyActivity extends BaseActivity {
             shortTip("请输入营业执照注册号");
             return;
         }
-        Intent intent = getIntent();
-        intent.putExtra("companyName",name);
-        setResult(RESULT_OK, intent);
-        finish();
+        createCompany(createCompany, identityType, name, address, regNo, localLicensePath);
+    }
+
+    private void createCompany(int createCompany, int identityType, String company, String address,
+                               String creditNo, String mStrPath) {
+        showLoadingDialog();
+        OfficegoApi.getInstance().submitIdentityCreateCompany(createCompany, identityType,
+                company, address, creditNo, mStrPath, new RetrofitCallback<Object>() {
+                    @Override
+                    public void onSuccess(int code, String msg, Object data) {
+                        LogCat.e(TAG, "111111111111 createCompany success");
+                        shortTip("创建成功");
+                        hideLoadingDialog();
+                        Intent intent = getIntent();
+                        intent.putExtra("companyName", company);
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    }
+
+                    @Override
+                    public void onFail(int code, String msg, Object data) {
+                        LogCat.e(TAG, "111111111111 createCompany fail code=" + code + " msg=" + msg);
+                        hideLoadingDialog();
+                        if (code==Constants.DEFAULT_ERROR_CODE){
+                            shortTip(msg);
+                        }
+                    }
+                });
     }
 
     @Override
@@ -180,6 +212,7 @@ public class CreateCompanyActivity extends BaseActivity {
                 rivImage.setImageBitmap(BitmapFactory.decodeFile(localLicensePath));
             } else if (requestCode == REQUEST_GALLERY && data != null) {//相册
                 List<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
+                localLicensePath = images.get(0);
                 rivImage.setImageBitmap(BitmapFactory.decodeFile(images.get(0)));
             }
         }

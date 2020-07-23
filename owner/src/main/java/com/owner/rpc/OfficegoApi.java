@@ -5,7 +5,6 @@ import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.model.QueryApplyLicenceBean;
 import com.officego.commonlib.common.rpc.request.LicenceInterface;
 import com.officego.commonlib.retrofit.RetrofitCallback;
-import com.officego.commonlib.utils.log.LogCat;
 import com.owner.identity.model.ApplyJoinBean;
 import com.owner.identity.model.ApplyLicenceBean;
 import com.owner.identity.model.BusinessCircleBean;
@@ -211,7 +210,6 @@ public class OfficegoApi {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("roleType", requestBody(roleType));
-        LogCat.e(TAG, "1111  chat/regTokenApp  token=" + SpUtils.getSignToken() + " roleType=" + roleType);
         OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
                 .switchId(map)
                 .enqueue(callback);
@@ -350,5 +348,116 @@ public class OfficegoApi {
                 .enqueue(callback);
     }
 
+    /**
+     * 获取认证信息
+     */
+    public void getIdentityInfo(int identityType, RetrofitCallback<CheckIdentityBean> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("identityType", requestBody(identityType + ""));
+        OfficegoRetrofitClient.getInstance().create(IdentitySearchInterface.class)
+                .getLicenceProprietorInfo(map)
+                .enqueue(callback);
+    }
 
+
+    /**
+     * @param createCompany 1提交认证2企业确认3楼盘、网点确认
+     * @param identityType  身份类型0个人1企业2联合
+     * @param leaseType     租赁类型0直租1转租
+     * @param callback
+     */
+    public void submitIdentityInfo(int createCompany, int identityType, int leaseType,
+                                   List<String> mStrPath, RetrofitCallback<Object> callback) {
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        builder.addFormDataPart("token", SpUtils.getSignToken());
+        builder.addFormDataPart("createCompany", createCompany + "");
+        builder.addFormDataPart("identityType", identityType + "");
+        builder.addFormDataPart("leaseType", leaseType + "");
+
+//        builder.addFormDataPart("licenceId", "21");
+//        builder.addFormDataPart("userLicenceId", "68");
+//        builder.addFormDataPart("buildingName", "未来大楼");
+//        builder.addFormDataPart("buildingId", "4626");
+        RequestBody file;
+        for (int i = 0; i < mStrPath.size(); i++) {
+            file = RequestBody.create(MediaType.parse("image/*"), new File(mStrPath.get(i)));
+            builder.addFormDataPart("filePremisesPermit", "filePremisesPermit" + i + ".png", file);
+        }
+        OfficegoRetrofitClient.getInstance().create(IdentitySearchInterface.class)
+                .submitIdentityInfo(builder.build())
+                .enqueue(callback);
+    }
+
+
+    /**
+     * createCompany 1提交认证2企业确认3楼盘、网点确认
+     *
+     * @param identityType 身份类型0个人1企业2联合
+     * @param callback
+     */
+    public void submitIdentityCreateCompany(int createCompany, int identityType, String company, String address,
+                                            String creditNo,
+                                            String mStrPath, RetrofitCallback<Object> callback) {
+        RequestBody file = RequestBody.create(MediaType.parse("image/*"), new File(mStrPath));
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        builder.addFormDataPart("token", SpUtils.getSignToken());
+        builder.addFormDataPart("createCompany", createCompany + "");
+        builder.addFormDataPart("identityType", identityType + "");
+        builder.addFormDataPart("company", company);
+        builder.addFormDataPart("address", address);
+        builder.addFormDataPart("creditNo", creditNo);
+        builder.addFormDataPart("fileBusinessLicense", "fileBusinessLicense.png", file);
+        OfficegoRetrofitClient.getInstance().create(IdentitySearchInterface.class)
+                .submitIdentityInfo(builder.build())
+                .enqueue(callback);
+    }
+
+    /**
+     * 创建楼盘
+     * createCompany 1提交认证2企业确认3楼盘、网点确认
+     *
+     * @param identityType 身份类型0个人1企业2联合
+     * @param callback
+     */
+    public void submitIdentityCreateBuilding(int createCompany, int identityType, String buildingName, String address,
+                                             int district, int business, String mPath, RetrofitCallback<Object> callback) {
+        RequestBody file = RequestBody.create(MediaType.parse("image/*"), new File(mPath));
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        builder.addFormDataPart("token", SpUtils.getSignToken());
+        builder.addFormDataPart("createCompany", createCompany + "");
+        builder.addFormDataPart("identityType", identityType + "");
+        builder.addFormDataPart("buildingName", buildingName);
+        builder.addFormDataPart("buildingAddress", address);
+        builder.addFormDataPart("district", district + "");
+        builder.addFormDataPart("business", business + "");
+        builder.addFormDataPart("fileMainPic", "fileMainPic.png", file);
+        OfficegoRetrofitClient.getInstance().create(IdentitySearchInterface.class)
+                .submitIdentityInfo(builder.build())
+                .enqueue(callback);
+    }
+
+    /**
+     * 创建网点
+     * createCompany 1提交认证2企业确认3楼盘、网点确认
+     *
+     * @param identityType 身份类型0个人1企业2联合
+     * @param callback
+     */
+    public void submitIdentityCreateJointWork(int createCompany, int identityType, String branchesName, String address,
+                                             int district, int business, String mPath, RetrofitCallback<Object> callback) {
+        RequestBody file = RequestBody.create(MediaType.parse("image/*"), new File(mPath));
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        builder.addFormDataPart("token", SpUtils.getSignToken());
+        builder.addFormDataPart("createCompany", createCompany + "");
+        builder.addFormDataPart("identityType", identityType + "");
+        builder.addFormDataPart("branchesName", branchesName);
+//        builder.addFormDataPart("buildingAddress", address);
+        builder.addFormDataPart("district", district + "");
+        builder.addFormDataPart("business", business + "");
+        builder.addFormDataPart("fileMainPic", "fileMainPic.png", file);
+        OfficegoRetrofitClient.getInstance().create(IdentitySearchInterface.class)
+                .submitIdentityInfo(builder.build())
+                .enqueue(callback);
+    }
 }

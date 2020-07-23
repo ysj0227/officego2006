@@ -41,7 +41,7 @@ public class AreaDialog {
     public AreaSureListener listener;
 
     public interface AreaSureListener {
-        void AreaSure(String area);
+        void AreaSure(String area,int district, int business );
     }
 
     public AreaDialog(Context context) {
@@ -49,6 +49,7 @@ public class AreaDialog {
     }
 
     private TextView tvCity, tvArea;
+    private int district,  business;
 
     private void areaDialog(Context context) {
         Dialog dialog = new Dialog(context, R.style.BottomDialog);
@@ -87,7 +88,7 @@ public class AreaDialog {
                 ToastUtils.toastForShort(context, "请选择商圈");
                 return;
             }
-            listener.AreaSure("上海市" + city + area);
+            listener.AreaSure("上海市" + city + area,district,business);
             dialog.dismiss();
         });
         viewLayout.findViewById(R.id.tv_cancel).setOnClickListener(view -> dialog.dismiss());
@@ -133,6 +134,7 @@ public class AreaDialog {
                 mapBusiness.put(holder.getAdapterPosition(), true);
                 tvCity.setText(bean.getDistrict());
                 tvArea.setText("");
+                district=bean.getDistrictID();
                 if (!onBind) {
                     notifyDataSetChanged();
                 }
@@ -168,6 +170,7 @@ public class AreaDialog {
             holder.itemView.setOnClickListener(v -> {
                 mapBusiness.put(holder.getAdapterPosition(), true);
                 tvArea.setText(bean.getArea());
+                business=bean.getId();
                 if (!onBind) {
                     notifyDataSetChanged();
                 }

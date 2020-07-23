@@ -7,7 +7,6 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
-import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -20,20 +19,24 @@ import com.donkingliang.imageselector.utils.ImageSelector;
 import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.FileHelper;
 import com.officego.commonlib.utils.FileUtils;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.PhotoUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.ToastUtils;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.TitleBarView;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
+import com.owner.rpc.OfficegoApi;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.File;
@@ -65,6 +68,7 @@ public class CreateJointWorkActivity extends BaseActivity implements AreaDialog.
     ImageView ivImage;
     @ViewById(resName = "btn_save")
     Button btnSave;
+    private int district, business;
 
     @AfterViews
     void init() {
@@ -100,16 +104,42 @@ public class CreateJointWorkActivity extends BaseActivity implements AreaDialog.
             ToastUtils.toastForShort(context, "请输入详细地址");
             return;
         }
-        Intent intent = getIntent();
-        intent.putExtra("jointworkName", name);
-        intent.putExtra("jointworkAddress", address);
-        setResult(RESULT_OK, intent);
-        finish();
+        createBuilding(Constants.TYPE_CREATE_FROM_JOINT_BUILDING, Constants.TYPE_IDENTITY_JOINT_WORK,
+                name, address, district, business, localCoverImagePath);
     }
 
+    private void createBuilding(int createCompany, int identityType, String name, String address,
+                                int district, int business, String mStrPath) {
+        showLoadingDialog();
+        OfficegoApi.getInstance().submitIdentityCreateJointWork(createCompany, identityType,
+                name, address, district, business, mStrPath, new RetrofitCallback<Object>() {
+                    @Override
+                    public void onSuccess(int code, String msg, Object data) {
+                        shortTip("创建成功");
+                        hideLoadingDialog();
+                        Intent intent = getIntent();
+                        intent.putExtra("jointworkName", name);
+                        intent.putExtra("jointworkAddress", address);
+                        setResult(RESULT_OK, intent);
+                        finish();
+                    }
+                    @Override
+                    public void onFail(int code, String msg, Object data) {
+                        LogCat.e(TAG, "111111111111 submitIdentityCreateBuilding fail code=" + code + " msg=" + msg);
+                        hideLoadingDialog();
+                        if (code==Constants.DEFAULT_ERROR_CODE){
+                            shortTip(msg);
+                        }
+                    }
+                });
+    }
+
+
     @Override
-    public void AreaSure(String area) {
+    public void AreaSure(String area, int district, int business) {
         tvArea.setText(area);
+        this.district = district;
+        this.business = business;
     }
 
     @Override

@@ -425,7 +425,9 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
     @Override
     public void checkBuildingInfoSuccess() {
         //创建楼盘
-        CreateBuildingActivity_.intent(context).startForResult(REQUEST_CREATE_BUILDING);
+        CreateBuildingActivity_.intent(context)
+                .identityType(Constants.TYPE_IDENTITY_PERSONAL)
+                .startForResult(REQUEST_CREATE_BUILDING);
     }
     /**
      * 关联,创建楼盘

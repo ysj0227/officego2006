@@ -24,11 +24,13 @@ import com.donkingliang.imageselector.utils.ImageSelector;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.FileHelper;
 import com.officego.commonlib.utils.FileUtils;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.PhotoUtils;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.TitleBarView;
 import com.officego.commonlib.view.dialog.CommonDialog;
@@ -42,6 +44,8 @@ import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.model.IdentityCompanyBean;
 import com.owner.identity.model.SendMsgBean;
 import com.owner.identity.presenter.CompanyPresenter;
+import com.owner.mine.model.AvatarBean;
+import com.owner.rpc.OfficegoApi;
 import com.owner.utils.CommUtils;
 
 import org.androidannotations.annotations.AfterViews;
@@ -200,6 +204,25 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
                     //TODO
                 }).create();
         dialog.showWithOutTouchable(false);
+    }
+
+    @Click(resName = "btn_upload")
+    void uploadClick() {
+        showLoadingDialog();
+        OfficegoApi.getInstance().submitIdentityInfo(1,1,0,listCertificate, new RetrofitCallback<Object>() {
+            @Override
+            public void onSuccess(int code, String msg, Object data) {
+                LogCat.e(TAG,"111111111111 OK");
+                hideLoadingDialog();
+            }
+
+            @Override
+            public void onFail(int code, String msg, Object data) {
+                LogCat.e(TAG,"111111111111 code="+code +" msg="+msg);
+                hideLoadingDialog();
+            }
+        });
+
     }
 
     @Click(resName = "rl_type")
@@ -465,13 +488,18 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
     @Override
     public void checkCompanyInfoSuccess() {
         //创建公司
-        CreateCompanyActivity_.intent(context).startForResult(REQUEST_CREATE_COMPANY);
+        CreateCompanyActivity_.intent(context)
+                .createCompany(Constants.TYPE_CREATE_FROM_COMPANY)
+                .identityType(Constants.TYPE_IDENTITY_COMPANY)
+                .startForResult(REQUEST_CREATE_COMPANY);
     }
 
     @Override
     public void checkBuildingInfoSuccess() {
         //创建楼盘
-        CreateBuildingActivity_.intent(context).startForResult(REQUEST_CREATE_BUILDING);
+        CreateBuildingActivity_.intent(context)
+                .identityType(Constants.TYPE_IDENTITY_COMPANY)
+                .startForResult(REQUEST_CREATE_BUILDING);
     }
 
     /**

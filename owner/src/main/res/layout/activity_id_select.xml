@@ -23,8 +23,9 @@
         tools:ignore="RtlSymmetry" />
 
     <androidx.core.widget.NestedScrollView
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_title">
@@ -56,9 +57,9 @@
                 app:layout_constraintTop_toBottomOf="@id/tv_select">
 
                 <ImageView
+                    style="@style/marginLeftRight25"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                   style="@style/marginLeftRight25"
                     android:background="@mipmap/ic_id_company"
                     android:scaleType="centerCrop" />
 
@@ -87,9 +88,9 @@
                 app:layout_constraintTop_toBottomOf="@id/rl_company">
 
                 <ImageView
+                    style="@style/marginLeftRight25"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    style="@style/marginLeftRight25"
                     android:background="@mipmap/ic_id_jointwork"
                     android:scaleType="centerCrop" />
 
@@ -119,9 +120,9 @@
                 app:layout_constraintTop_toBottomOf="@id/rl_jointwork">
 
                 <ImageView
+                    style="@style/marginLeftRight25"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    style="@style/marginLeftRight25"
                     android:background="@mipmap/ic_id_personal"
                     android:scaleType="centerCrop" />
 

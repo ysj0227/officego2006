@@ -14,6 +14,7 @@ import java.util.Map;
 
 import okhttp3.RequestBody;
 import retrofit2.Call;
+import retrofit2.http.Body;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PartMap;
@@ -91,5 +92,18 @@ public interface IdentitySearchInterface {
     @Multipart
     @POST(path + "licence/selectBuildingByNameApp")
     Call<BaseResponse<CheckIdentityBean>> checkBuildingByName(@PartMap Map<String, RequestBody> params);
+
+    /**
+     * 提交认证
+     */
+    @POST(path + "licence/uploadLicenceProprietorApp")
+    Call<BaseResponse<Object>> submitIdentityInfo(@Body RequestBody body);
+
+    /**
+     * 获取认证信息
+     */
+    @Multipart
+    @POST(path + "licence/selectIdentityTypeApp ")
+    Call<BaseResponse<CheckIdentityBean>> getLicenceProprietorInfo(@PartMap Map<String, RequestBody> params);
 
 }

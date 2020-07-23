@@ -57,4 +57,16 @@ public class Constants {
     public final static int TYPE_BUILDING = 1;
     public final static int TYPE_JOINTWORK = 2;
 
+    /**
+     * 提交认证
+     */
+    //createCompany1提交认证2企业确认3楼盘、网点确认
+    public final static int TYPE_CREATE_FROM_ALL = 1;
+    public final static int TYPE_CREATE_FROM_COMPANY = 2;
+    public final static int TYPE_CREATE_FROM_JOINT_BUILDING = 3;
+    //identityType  身份类型0个人1企业2联合
+    public final static int TYPE_IDENTITY_PERSONAL = 0;
+    public final static int TYPE_IDENTITY_COMPANY = 1;
+    public final static int TYPE_IDENTITY_JOINT_WORK = 2;
+    ;
 }

@@ -491,7 +491,10 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
     @Override
     public void checkCompanyInfoSuccess() {
         //创建公司
-        CreateCompanyActivity_.intent(context).startForResult(REQUEST_CREATE_COMPANY);
+        CreateCompanyActivity_.intent(context)
+                .createCompany(Constants.TYPE_CREATE_FROM_COMPANY)
+                .identityType(Constants.TYPE_IDENTITY_JOINT_WORK)
+                .startForResult(REQUEST_CREATE_COMPANY);
     }
 
     @Override
@@ -561,16 +564,10 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
 
     @Override
     public void associateBuilding(IdentityBuildingBean.DataBean bean, boolean isCreate) {
-        if (isCreate) {
-            //创建楼盘
-            CreateBuildingActivity_.intent(context).startForResult(REQUEST_CREATE_BUILDING);
-            return;
-        }
         //关联楼盘
         CommUtils.showHtmlView(cetOfficeName, bean.getBuildingName());
         CommUtils.showHtmlTextView(tvAddress, bean.getAddress());
         buildingNextView();
-
     }
 
     //创建楼盘成功的回调
