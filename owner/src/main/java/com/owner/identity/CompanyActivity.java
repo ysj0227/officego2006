@@ -29,7 +29,6 @@ import com.officego.commonlib.utils.FileHelper;
 import com.officego.commonlib.utils.FileUtils;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.PhotoUtils;
-import com.officego.commonlib.utils.ToastUtils;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.TitleBarView;
 import com.officego.commonlib.view.dialog.CommonDialog;
@@ -48,11 +47,13 @@ import com.owner.utils.CommUtils;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by YangShiJie
@@ -68,8 +69,11 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         IdentityCompanyAdapter.IdentityCompanyListener {
     private static final int REQUEST_GALLERY = 0xa0;
     private static final int REQUEST_CAMERA = 0xa1;
+    private static final int REQUEST_CREATE_COMPANY = 0xa2;
+    private static final int REQUEST_CREATE_BUILDING = 0xa3;
     private static final int TYPE_CER = 1;
     private static final int TYPE_REN = 2;
+    private static final int IDENTITY_COMPANY = 1; //0个人1企业2联合
 
     private String localCerPath, localRenPath;
     private Uri localPhotoUri;
@@ -459,38 +463,82 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
     }
 
     @Override
+    public void checkCompanyInfoSuccess() {
+        //创建公司
+        CreateCompanyActivity_.intent(context).startForResult(REQUEST_CREATE_COMPANY);
+    }
+
+    @Override
+    public void checkBuildingInfoSuccess() {
+        //创建楼盘
+        CreateBuildingActivity_.intent(context).startForResult(REQUEST_CREATE_BUILDING);
+    }
+
+    /**
+     * 关联,创建公司
+     */
+    @Override
     public void associateCompany(IdentityCompanyBean.DataBean bean, boolean isCreate) {
         if (isCreate) {
-            //创建公司
-            CreateCompanyActivity_.intent(context).start();
-            rlOffice.setVisibility(View.VISIBLE);
-            hideView();
+            mPresenter.checkCompany(IDENTITY_COMPANY, Objects.requireNonNull(cetCompanyName.getText()).toString());
             return;
         }
-        //发送聊天 0个人1企业2联合
+        //关联公司--发送聊天 0个人1企业2联合
         SendMsgBean sb = new SendMsgBean();
         sb.setId(bean.getBid());
         sb.setName(bean.getCompany());
         sb.setAddress(bean.getAddress());
-        sb.setIdentityType(1);
+        sb.setIdentityType(IDENTITY_COMPANY);
         IdentitySendMsgActivity_.intent(context).sendMsgBean(sb).start();
         CommUtils.showHtmlView(cetCompanyName, bean.getCompany());
         hideView();
-        rlOffice.setVisibility(View.GONE);
     }
 
+    //创建公司成功的回调
+    @OnActivityResult(REQUEST_CREATE_COMPANY)
+    void onCreateCompanyResult(int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            String companyName = data.getStringExtra("companyName");
+            cetCompanyName.setText(companyName);
+            //显示下一步的view
+            rlOffice.setVisibility(View.VISIBLE);
+            hideView();
+        }
+    }
+
+    /**
+     * 关联,创建楼盘
+     */
     @Override
     public void associateBuilding(IdentityBuildingBean.DataBean bean, boolean isCreate) {
         if (isCreate) {
-            //创建楼盘
-            CreateBuildingActivity_.intent(context).start();
-        } else {
-            CommUtils.showHtmlView(cetOfficeName, bean.getBuildingName());
-            CommUtils.showHtmlTextView(tvAddress, bean.getAddress());
+            mPresenter.checkBuilding(IDENTITY_COMPANY, Objects.requireNonNull(cetOfficeName.getText()).toString());
+            return;
         }
+        //关联楼盘
+        CommUtils.showHtmlView(cetOfficeName, bean.getBuildingName());
+        CommUtils.showHtmlTextView(tvAddress, bean.getAddress());
+        buildingNextView();
+    }
+
+    //创建楼盘成功的回调
+    @OnActivityResult(REQUEST_CREATE_BUILDING)
+    void onCreateBuildingResult(int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            String buildingName = data.getStringExtra("buildingName");
+            String buildingAddress = data.getStringExtra("buildingAddress");
+            cetOfficeName.setText(buildingName);
+            tvAddress.setText(buildingAddress);
+            //显示下一步的view
+            buildingNextView();
+        }
+    }
+
+    private void buildingNextView() {
         hideView();
         rlType.setVisibility(View.VISIBLE);
         ctlIdentityRoot.setVisibility(View.VISIBLE);
         btnUpload.setVisibility(View.VISIBLE);
     }
+
 }

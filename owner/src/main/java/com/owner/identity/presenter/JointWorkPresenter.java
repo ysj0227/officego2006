@@ -1,9 +1,11 @@
 package com.owner.identity.presenter;
 
 import com.officego.commonlib.base.BasePresenter;
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.log.LogCat;
 import com.owner.identity.contract.JointWorkContract;
+import com.owner.identity.model.CheckIdentityBean;
 import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.model.IdentityCompanyBean;
 import com.owner.identity.model.IdentityJointWorkBean;
@@ -19,6 +21,58 @@ import java.util.List;
 public class JointWorkPresenter extends BasePresenter<JointWorkContract.View>
         implements JointWorkContract.Presenter {
     private final String TAG = this.getClass().getSimpleName();
+
+    @Override
+    public void checkCompany(int identityType, String name) {
+        OfficegoApi.getInstance().checkLicenceByCompany(identityType, name, new RetrofitCallback<CheckIdentityBean>() {
+            @Override
+            public void onSuccess(int code, String msg, CheckIdentityBean data) {
+                if (isViewAttached()) {
+                    //0不存在1存在
+                    if (data.getFlag() == 1) {
+                        mView.shortTip(data.getExplain());
+                    } else {
+                        mView.checkCompanyInfoSuccess();
+                    }
+                }
+            }
+
+            @Override
+            public void onFail(int code, String msg, CheckIdentityBean data) {
+                if (isViewAttached()) {
+                    if (code == Constants.DEFAULT_ERROR_CODE) {
+                        mView.shortTip(msg);
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void checkJointWork(int identityType, String name) {
+        OfficegoApi.getInstance().checkBuildingByName(identityType, name, new RetrofitCallback<CheckIdentityBean>() {
+            @Override
+            public void onSuccess(int code, String msg, CheckIdentityBean data) {
+                if (isViewAttached()) {
+                    //0不存在1存在
+                    if (data.getFlag() == 1) {
+                        mView.shortTip(data.getExplain());
+                    } else {
+                        mView.checkJointWorkInfoSuccess();
+                    }
+                }
+            }
+
+            @Override
+            public void onFail(int code, String msg, CheckIdentityBean data) {
+                if (isViewAttached()) {
+                    if (code == Constants.DEFAULT_ERROR_CODE) {
+                        mView.shortTip(msg);
+                    }
+                }
+            }
+        });
+    }
 
     @Override
     public void getJointWork(String keyword) {

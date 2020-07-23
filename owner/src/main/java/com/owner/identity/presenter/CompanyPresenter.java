@@ -1,9 +1,11 @@
 package com.owner.identity.presenter;
 
 import com.officego.commonlib.base.BasePresenter;
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.log.LogCat;
 import com.owner.identity.contract.CompanyContract;
+import com.owner.identity.model.CheckIdentityBean;
 import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.model.IdentityCompanyBean;
 import com.owner.rpc.OfficegoApi;
@@ -49,6 +51,58 @@ public class CompanyPresenter extends BasePresenter<CompanyContract.View>
             @Override
             public void onFail(int code, String msg, List<IdentityBuildingBean.DataBean> data) {
                 LogCat.e(TAG, "searchListBuild onFail code=" + code + "  msg=" + msg);
+            }
+        });
+    }
+
+    @Override
+    public void checkCompany(int identityType, String name) {
+        OfficegoApi.getInstance().checkLicenceByCompany(identityType, name, new RetrofitCallback<CheckIdentityBean>() {
+            @Override
+            public void onSuccess(int code, String msg, CheckIdentityBean data) {
+                if (isViewAttached()) {
+                    //0不存在1存在
+                    if (data.getFlag() == 1) {
+                        mView.shortTip(data.getExplain());
+                    } else {
+                        mView.checkCompanyInfoSuccess();
+                    }
+                }
+            }
+
+            @Override
+            public void onFail(int code, String msg, CheckIdentityBean data) {
+                if (isViewAttached()) {
+                    if (code == Constants.DEFAULT_ERROR_CODE) {
+                        mView.shortTip(msg);
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void checkBuilding(int identityType, String name) {
+        OfficegoApi.getInstance().checkBuildingByName(identityType, name, new RetrofitCallback<CheckIdentityBean>() {
+            @Override
+            public void onSuccess(int code, String msg, CheckIdentityBean data) {
+                if (isViewAttached()) {
+                    //0不存在1存在
+                    if (data.getFlag() == 1) {
+                        mView.shortTip(data.getExplain());
+                    } else {
+                        mView.checkBuildingInfoSuccess();
+                    }
+                }
+            }
+
+            @Override
+            public void onFail(int code, String msg, CheckIdentityBean data) {
+                if (isViewAttached()) {
+                    if (code == Constants.DEFAULT_ERROR_CODE) {
+                        mView.shortTip(msg);
+                    }
+                }
             }
         });
     }

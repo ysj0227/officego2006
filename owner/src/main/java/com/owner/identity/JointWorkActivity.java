@@ -49,11 +49,13 @@ import com.owner.utils.CommUtils;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by YangShiJie
@@ -70,9 +72,13 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
         IdentityCompanyAdapter.IdentityCompanyListener {
     private static final int REQUEST_GALLERY = 0xa0;
     private static final int REQUEST_CAMERA = 0xa1;
+    private static final int REQUEST_CREATE_COMPANY = 0xa2;
+    private static final int REQUEST_CREATE_BUILDING = 0xa3;
+    private static final int REQUEST_CREATE_JOINT_WORK = 0xa4;
     private static final int TYPE_CER = 1;
     private static final int TYPE_REN = 2;
     private static final int TYPE_BUI = 3;
+    private static final int IDENTITY_JOINT_WORK = 2; //0个人1企业2联合
 
     private String localCerPath, localRenPath, localBuildingPath;
     private Uri localPhotoUri;
@@ -473,7 +479,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
         mList.addAll(data);
 //        mList.add(data.size(), new IdentityBuildingBean.DataBean()); //联办没有创建楼盘
         if (buildingAdapter == null) {
-            buildingAdapter = new IdentityBuildingAdapter(context, mList,true);
+            buildingAdapter = new IdentityBuildingAdapter(context, mList, true);
             buildingAdapter.setListener(this);
             rvRecommendBuilding.setAdapter(buildingAdapter);
             return;
@@ -482,17 +488,28 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
         buildingAdapter.notifyDataSetChanged();
     }
 
+    @Override
+    public void checkCompanyInfoSuccess() {
+        //创建公司
+        CreateCompanyActivity_.intent(context).startForResult(REQUEST_CREATE_COMPANY);
+    }
+
+    @Override
+    public void checkJointWorkInfoSuccess() {
+        //创建网点
+        CreateJointWorkActivity_.intent(context).startForResult(REQUEST_CREATE_JOINT_WORK);
+    }
+
     /**
      * 网点
      */
     @Override
     public void associateJointWork(IdentityJointWorkBean.DataBean bean, boolean isCreate) {
         if (isCreate) {
-            //创建网点
-            CreateJointWorkActivity_.intent(context).start();
+            mPresenter.checkJointWork(IDENTITY_JOINT_WORK, Objects.requireNonNull(cetJointworkName.getText()).toString());
             return;
         }
-        //发送消息 0个人1企业2联合
+        //关联网点--发送消息 0个人1企业2联合
         SendMsgBean sb = new SendMsgBean();
         sb.setId(bean.getBid());
         sb.setName(bean.getBuildingName());
@@ -502,30 +519,74 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
         CommUtils.showHtmlView(cetJointworkName, bean.getBuildingName());
         CommUtils.showHtmlTextView(tvJointworkAddress, bean.getAddress());
         hideView();
-        rlCompanyName.setVisibility(View.VISIBLE);
+    }
+
+    //创建网点成功的回调
+    @OnActivityResult(REQUEST_CREATE_JOINT_WORK)
+    void onCreateJointWorkResult(int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            String jointworkName = data.getStringExtra("jointworkName");
+            String jointworkAddress = data.getStringExtra("jointworkAddress");
+            cetJointworkName.setText(jointworkName);
+            tvJointworkAddress.setText(jointworkAddress);
+            //显示下一步的view
+            hideView();
+            rlCompanyName.setVisibility(View.VISIBLE);
+        }
     }
 
     @Override
     public void associateCompany(IdentityCompanyBean.DataBean bean, boolean isCreate) {
         if (isCreate) {
-            //创建公司
-            CreateCompanyActivity_.intent(context).start();
+            mPresenter.checkCompany(IDENTITY_JOINT_WORK, Objects.requireNonNull(cetCompanyName.getText()).toString());
             return;
         }
+        //关联公司
         CommUtils.showHtmlView(cetCompanyName, bean.getCompany());
-        hideView();
         rlOffice.setVisibility(View.VISIBLE);
+        hideView();
+    }
+
+    //创建公司成功的回调
+    @OnActivityResult(REQUEST_CREATE_COMPANY)
+    void onCreateCompanyResult(int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            String companyName = data.getStringExtra("companyName");
+            cetCompanyName.setText(companyName);
+            //显示下一步的view
+            rlOffice.setVisibility(View.VISIBLE);
+            hideView();
+        }
     }
 
     @Override
     public void associateBuilding(IdentityBuildingBean.DataBean bean, boolean isCreate) {
         if (isCreate) {
             //创建楼盘
-            CreateBuildingActivity_.intent(context).start();
-        } else {
-            CommUtils.showHtmlView(cetOfficeName, bean.getBuildingName());
-            CommUtils.showHtmlTextView(tvAddress, bean.getAddress());
+            CreateBuildingActivity_.intent(context).startForResult(REQUEST_CREATE_BUILDING);
+            return;
         }
+        //关联楼盘
+        CommUtils.showHtmlView(cetOfficeName, bean.getBuildingName());
+        CommUtils.showHtmlTextView(tvAddress, bean.getAddress());
+        buildingNextView();
+
+    }
+
+    //创建楼盘成功的回调
+    @OnActivityResult(REQUEST_CREATE_BUILDING)
+    void onCreateBuildingResult(int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            String buildingName = data.getStringExtra("buildingName");
+            String buildingAddress = data.getStringExtra("buildingAddress");
+            cetOfficeName.setText(buildingName);
+            tvAddress.setText(buildingAddress);
+            //显示下一步的view
+            buildingNextView();
+        }
+    }
+
+    private void buildingNextView() {
         hideView();
         tvAddress.setVisibility(View.VISIBLE);
         ctlIdentityRoot.setVisibility(View.VISIBLE);

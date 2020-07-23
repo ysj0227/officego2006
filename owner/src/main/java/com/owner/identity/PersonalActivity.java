@@ -46,11 +46,13 @@ import com.wildma.idcardcamera.camera.IDCardCamera;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 /**
  * Created by YangShiJie
@@ -65,10 +67,12 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         IdentityBuildingAdapter.IdentityBuildingListener {
     private static final int REQUEST_GALLERY = 0xa0;
     private static final int REQUEST_CAMERA = 0xa1;
+    private static final int REQUEST_CREATE_BUILDING = 0xa2;
     private static final int TYPE_IDCARD_FRONT = 1;
     private static final int TYPE_IDCARD_BACK = 2;
     private static final int TYPE_CER = 3;
     private static final int TYPE_REN = 4;
+    private static final int IDENTITY_PERSONAL = 0; //0个人1企业2联合
 
     private String localIdCardFrontPath, localIdCardBackPath, localCerPath, localRenPath;
     private Uri localPhotoUri;
@@ -340,7 +344,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
                 if (TYPE_CER == mUploadType) {
                     listCertificate.add(listCertificate.size() - 1, localCerPath);
                     certificateAdapter.notifyDataSetChanged();
-                }else if (TYPE_REN == mUploadType) {
+                } else if (TYPE_REN == mUploadType) {
                     listRental.add(listRental.size() - 1, localRenPath);
                     rentalAdapter.notifyDataSetChanged();
                 }
@@ -355,7 +359,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
                 } else if (TYPE_CER == mUploadType) {//房产证相册
                     listCertificate.addAll(listCertificate.size() - 1, images);
                     certificateAdapter.notifyDataSetChanged();
-                }else if (TYPE_REN == mUploadType) {
+                } else if (TYPE_REN == mUploadType) {
                     listRental.addAll(listRental.size() - 1, images);
                     rentalAdapter.notifyDataSetChanged();
                 }
@@ -419,11 +423,39 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
     }
 
     @Override
+    public void checkBuildingInfoSuccess() {
+        //创建楼盘
+        CreateBuildingActivity_.intent(context).startForResult(REQUEST_CREATE_BUILDING);
+    }
+    /**
+     * 关联,创建楼盘
+     */
+    @Override
     public void associateBuilding(IdentityBuildingBean.DataBean bean, boolean isCreate) {
-        if (!isCreate) {
-            CommUtils.showHtmlView(cetOfficeName, bean.getBuildingName());
-            CommUtils.showHtmlTextView(tvAddress, bean.getAddress());
+        if (isCreate) {
+            mPresenter.checkBuilding(IDENTITY_PERSONAL, Objects.requireNonNull(cetOfficeName.getText()).toString());
+            return;
         }
+        //关联楼盘
+        CommUtils.showHtmlView(cetOfficeName, bean.getBuildingName());
+        CommUtils.showHtmlTextView(tvAddress, bean.getAddress());
+        buildingNextView();
+    }
+
+    //创建楼盘成功的回调
+    @OnActivityResult(REQUEST_CREATE_BUILDING)
+    void onCreateBuildingResult(int resultCode, Intent data) {
+        if (resultCode == RESULT_OK) {
+            String buildingName = data.getStringExtra("buildingName");
+            String buildingAddress = data.getStringExtra("buildingAddress");
+            cetOfficeName.setText(buildingName);
+            tvAddress.setText(buildingAddress);
+            //显示下一步的view
+            buildingNextView();
+        }
+    }
+
+    private void buildingNextView() {
         hideView();
         rlType.setVisibility(View.VISIBLE);
         ctlIdentityRoot.setVisibility(View.VISIBLE);
@@ -454,7 +486,6 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         rentalAdapter.notifyDataSetChanged();
     }
 
-
     /**
      * @param data
      */
@@ -464,7 +495,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         mList.addAll(data);
         mList.add(data.size(), new IdentityBuildingBean.DataBean());
         if (buildingAdapter == null) {
-            buildingAdapter = new IdentityBuildingAdapter(context, mList,false);
+            buildingAdapter = new IdentityBuildingAdapter(context, mList, false);
             buildingAdapter.setListener(this);
             rvRecommendBuilding.setAdapter(buildingAdapter);
             return;
@@ -472,4 +503,5 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         buildingAdapter.setData(mList);
         buildingAdapter.notifyDataSetChanged();
     }
+
 }

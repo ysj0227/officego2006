@@ -134,12 +134,13 @@ public class OfficegoApi {
      * 管理员审核申请加入员工接口
      * auditStatus 1通过2取消
      */
-    public void updateAuditStatusIdentity(int identityType, int id, int auditStatus,
+    public void updateAuditStatusIdentity(int identityType, int id,int licenceId, int auditStatus,
                                           RetrofitCallback<Object> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("identityType", requestBody(identityType + ""));
         map.put("id", requestBody(id + ""));
+        map.put("licenceId", requestBody(licenceId + ""));
         map.put("auditStatus", requestBody(auditStatus + ""));
         OfficegoRetrofitClient.getInstance().create(LicenceInterface.class)
                 .updateAuditStatusApp(map)

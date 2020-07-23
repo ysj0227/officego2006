@@ -1,6 +1,7 @@
 package com.owner.identity.contract;
 
 import com.officego.commonlib.base.BaseView;
+import com.owner.identity.model.CheckIdentityBean;
 import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.model.IdentityCompanyBean;
 
@@ -18,6 +19,9 @@ public interface CompanyContract {
 
         void searchBuildingSuccess(List<IdentityBuildingBean.DataBean> data);
 
+        void checkCompanyInfoSuccess();
+
+        void checkBuildingInfoSuccess();
     }
 
     interface Presenter {
@@ -25,5 +29,9 @@ public interface CompanyContract {
         void getCompany(String keyword);
 
         void getBuilding(String keyword);
+
+        void checkCompany(int identityType,String name);
+
+        void checkBuilding(int identityType,String name);
     }
 }

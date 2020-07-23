@@ -16,9 +16,12 @@ public interface PersonalContract {
 
         void searchBuildingSuccess(List<IdentityBuildingBean.DataBean> data);
 
+        void checkBuildingInfoSuccess();
     }
 
     interface Presenter {
         void getBuilding(String keyword);
+
+        void checkBuilding(int identityType,String name);
     }
 }

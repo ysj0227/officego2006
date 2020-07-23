@@ -6,9 +6,12 @@ import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
@@ -42,7 +45,7 @@ import java.util.List;
  * Descriptions:
  **/
 @EActivity(resName = "activity_id_jointwork_create")
-public class CreateJointWorkActivity extends BaseActivity {
+public class CreateJointWorkActivity extends BaseActivity implements AreaDialog.AreaSureListener {
     private static final int REQUEST_GALLERY = 0xa0;
     private static final int REQUEST_CAMERA = 0xa1;
 
@@ -52,6 +55,10 @@ public class CreateJointWorkActivity extends BaseActivity {
     TitleBarView titleBar;
     @ViewById(resName = "et_name_content")
     ClearableEditText etNameContent;
+    @ViewById(resName = "tv_area")
+    TextView tvArea;
+    @ViewById(resName = "rl_area")
+    RelativeLayout rlArea;
     @ViewById(resName = "et_address_content")
     ClearableEditText etAddressContent;
     @ViewById(resName = "iv_image")
@@ -71,9 +78,38 @@ public class CreateJointWorkActivity extends BaseActivity {
         selectedDialog();
     }
 
+    @Click(resName = "rl_area")
+    void areaClick() {
+        new AreaDialog(context).setListener(this);
+    }
+
     @Click(resName = "btn_save")
     void saveClick() {
+        String name = etNameContent.getText() == null ? "" : etNameContent.getText().toString();
+        String area = tvArea.getText() == null ? "" : tvArea.getText().toString();
+        String address = etAddressContent.getText() == null ? "" : etAddressContent.getText().toString();
+        if (TextUtils.isEmpty(name)) {
+            ToastUtils.toastForShort(context, "请输入网点名称");
+            return;
+        }
+        if (TextUtils.isEmpty(area)) {
+            ToastUtils.toastForShort(context, "请选择区域");
+            return;
+        }
+        if (TextUtils.isEmpty(address)) {
+            ToastUtils.toastForShort(context, "请输入详细地址");
+            return;
+        }
+        Intent intent = getIntent();
+        intent.putExtra("jointworkName", name);
+        intent.putExtra("jointworkAddress", address);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
 
+    @Override
+    public void AreaSure(String area) {
+        tvArea.setText(area);
     }
 
     @Override

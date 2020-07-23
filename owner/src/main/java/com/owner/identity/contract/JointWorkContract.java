@@ -21,9 +21,15 @@ public interface JointWorkContract {
 
         void searchBuildingSuccess(List<IdentityBuildingBean.DataBean> data);
 
+        void checkCompanyInfoSuccess();
+
+        void checkJointWorkInfoSuccess();
     }
 
     interface Presenter {
+        void checkCompany(int identityType,String name);
+
+        void checkJointWork(int identityType,String name);
 
         void getJointWork(String keyword);
 

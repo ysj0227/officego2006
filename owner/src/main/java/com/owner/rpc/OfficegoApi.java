@@ -9,6 +9,7 @@ import com.officego.commonlib.utils.log.LogCat;
 import com.owner.identity.model.ApplyJoinBean;
 import com.owner.identity.model.ApplyLicenceBean;
 import com.owner.identity.model.BusinessCircleBean;
+import com.owner.identity.model.CheckIdentityBean;
 import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.model.IdentityCompanyBean;
 import com.owner.identity.model.IdentityJointWorkBean;
@@ -315,12 +316,39 @@ public class OfficegoApi {
     /**
      * 认证查询申请信息接口
      */
-    public void queryApplyLicenceProprietor( RetrofitCallback<QueryApplyLicenceBean> callback) {
+    public void queryApplyLicenceProprietor(RetrofitCallback<QueryApplyLicenceBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         OfficegoRetrofitClient.getInstance().create(LicenceInterface.class)
                 .queryApplyLicenceProprietor(map)
                 .enqueue(callback);
     }
+
+    /**
+     * 企业名称创建校验接口
+     */
+    public void checkLicenceByCompany(int identityType, String company, RetrofitCallback<CheckIdentityBean> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("identityType", requestBody(identityType + ""));
+        map.put("company", requestBody(company));
+        OfficegoRetrofitClient.getInstance().create(IdentitySearchInterface.class)
+                .checkLicenceByCompany(map)
+                .enqueue(callback);
+    }
+
+    /**
+     * 楼盘名称创建校验接口
+     */
+    public void checkBuildingByName(int identityType, String name, RetrofitCallback<CheckIdentityBean> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("identityType", requestBody(identityType + ""));
+        map.put("name", requestBody(name));
+        OfficegoRetrofitClient.getInstance().create(IdentitySearchInterface.class)
+                .checkBuildingByName(map)
+                .enqueue(callback);
+    }
+
 
 }

@@ -131,9 +131,10 @@ public class SendMessageManager {
     /**
      * 发送自定义消息 认证申请
      */
-    public void sendIdApplyMessage(String targetId, int id, String content, String extraMessage) {
+    public void sendIdApplyMessage(String targetId, int id, int licenceId,String content, String extraMessage) {
         IdentityApplyInfo info = new IdentityApplyInfo();
         info.setId(id);
+        info.setLicenceId(licenceId);
         info.setContent(content);
         info.setExtraMessage(extraMessage);
         //targetId是接收消息方的id   Conversation.ConversationType 是消息会话的类型在这里表示的是私聊

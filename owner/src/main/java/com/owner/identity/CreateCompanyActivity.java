@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -59,6 +60,8 @@ public class CreateCompanyActivity extends BaseActivity {
     ClearableEditText etNameContent;
     @ViewById(resName = "et_address_content")
     ClearableEditText etAddressContent;
+    @ViewById(resName = "et_register_no_content")
+    ClearableEditText etRegisterNoContent;
     @ViewById(resName = "riv_image")
     RoundImageView rivImage;
     @ViewById(resName = "tv_upload")
@@ -88,7 +91,25 @@ public class CreateCompanyActivity extends BaseActivity {
 
     @Click(resName = "btn_save")
     void saveClick() {
-
+        String name = etNameContent.getText() == null ? "" : etNameContent.getText().toString();
+        if (TextUtils.isEmpty(name)) {
+            shortTip("请输入公司名称");
+            return;
+        }
+        String address = etAddressContent.getText() == null ? "" : etAddressContent.getText().toString();
+        if (TextUtils.isEmpty(address)) {
+            shortTip("请输入公司地址");
+            return;
+        }
+        String regNo = etRegisterNoContent.getText() == null ? "" : etRegisterNoContent.getText().toString();
+        if (TextUtils.isEmpty(regNo)) {
+            shortTip("请输入营业执照注册号");
+            return;
+        }
+        Intent intent = getIntent();
+        intent.putExtra("companyName",name);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     @Override

@@ -80,9 +80,9 @@ public class CreateBuildingActivity extends BaseActivity
 
     @Click(resName = "btn_save")
     void saveClick() {
-        String name = etNameContent.getText().toString();
-        String area = tvArea.getText().toString();
-        String address = etAddressContent.getText().toString();
+        String name = etNameContent.getText() == null ? "" : etNameContent.getText().toString();
+        String area = tvArea.getText() == null ? "" : tvArea.getText().toString();
+        String address = etAddressContent.getText() == null ? "" : etAddressContent.getText().toString();
         if (TextUtils.isEmpty(name)) {
             ToastUtils.toastForShort(context, "请输入写字楼名称");
             return;
@@ -95,8 +95,13 @@ public class CreateBuildingActivity extends BaseActivity
             ToastUtils.toastForShort(context, "请输入详细地址");
             return;
         }
+        Intent intent = getIntent();
+        intent.putExtra("buildingName", name);
+        intent.putExtra("buildingAddress", address);
+        setResult(RESULT_OK, intent);
         finish();
     }
+
     @Click(resName = "iv_building_introduce")
     void addBuildingIntroduceClick() {
         selectedDialog();

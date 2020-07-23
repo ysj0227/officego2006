@@ -25,11 +25,13 @@ public class IdentityApplyInfo extends MessageContent {
     private String content;
     private String extraMessage;
     private int id;
+    private int licenceId;
 
-    public static IdentityApplyInfo setIdentityApplyInfo(int id, String content,
+    public static IdentityApplyInfo setIdentityApplyInfo(int id, int licenceId,String content,
                                                        String extraMessage) {
         IdentityApplyInfo info = new IdentityApplyInfo();
         info.id = id;
+        info.id=id;
         info.content = content;
         info.extraMessage = extraMessage;
         return info;
@@ -41,6 +43,7 @@ public class IdentityApplyInfo extends MessageContent {
         object.put("content", content);
         object.put("extraMessage", extraMessage);
         object.put("id", id);
+        object.put("licenceId", licenceId);
         return object.toString().getBytes(StandardCharsets.UTF_8);
     }
 
@@ -56,6 +59,7 @@ public class IdentityApplyInfo extends MessageContent {
             setContent(object.getString("content"));
             setExtraMessage(object.getString("extraMessage"));
             setId(object.getInteger("id"));
+            setLicenceId(object.getInteger("licenceId"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -66,6 +70,7 @@ public class IdentityApplyInfo extends MessageContent {
         ParcelUtils.writeToParcel(dest, content);
         ParcelUtils.writeToParcel(dest, extraMessage);
         ParcelUtils.writeToParcel(dest, id);
+        ParcelUtils.writeToParcel(dest, licenceId);
     }
 
     public static final Creator<IdentityApplyInfo> CREATOR = new Creator<IdentityApplyInfo>() {
@@ -86,6 +91,7 @@ public class IdentityApplyInfo extends MessageContent {
         content = ParcelUtils.readFromParcel(parcel);
         extraMessage = ParcelUtils.readFromParcel(parcel);
         id = ParcelUtils.readIntFromParcel(parcel);
+        licenceId = ParcelUtils.readIntFromParcel(parcel);
     }
 
 
@@ -118,4 +124,11 @@ public class IdentityApplyInfo extends MessageContent {
         this.id = id;
     }
 
+    public int getLicenceId() {
+        return licenceId;
+    }
+
+    public void setLicenceId(int licenceId) {
+        this.licenceId = licenceId;
+    }
 }

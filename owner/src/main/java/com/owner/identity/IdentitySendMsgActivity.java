@@ -102,6 +102,7 @@ public class IdentitySendMsgActivity extends BaseMvpActivity<SendMsgPresenter>
             SendMessageManager.getInstance().sendIdApplyMessage(
                     mData.getTargetId(),
                     data.getId(),
+                    data.getLicenceId(),
                     Objects.requireNonNull(cetSendContent.getText()).toString(),
                     sendMsgBean.getIdentityType() + "");
             //发送消息提示

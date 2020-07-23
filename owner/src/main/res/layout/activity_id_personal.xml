@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:leftDefaultClickEnable="true"
         app:leftIcon="@drawable/ic_back_light"
-        app:titleText="公司业主认证"
+        app:titleText="个人业主认证"
         app:titleTextColor="@color/white" />
 
     <androidx.core.widget.NestedScrollView

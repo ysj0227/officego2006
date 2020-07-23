@@ -60,9 +60,9 @@ public class IdentityApplyProvider extends IContainerItemProvider.MessageProvide
             holder.tvContent.setText(info.getContent());
             //1通过2取消
             holder.btnAgree.setOnClickListener(v ->
-                    updateAuditStatus(true, Integer.valueOf(info.getExtraMessage()), info.getId(), 1));
+                    updateAuditStatus(true, Integer.valueOf(info.getExtraMessage()), info.getId(),info.getLicenceId(), 1));
             holder.btnReject.setOnClickListener(v ->
-                    updateAuditStatus(false, Integer.valueOf(info.getExtraMessage()), info.getId(), 2));
+                    updateAuditStatus(false, Integer.valueOf(info.getExtraMessage()), info.getId(), info.getLicenceId(), 2));
         } else {//消息方向，自己发送的
             holder.tvContent.setText("你已申请加入TA的公司等待对方同意");
             holder.rlBtn.setVisibility(View.GONE);
@@ -91,12 +91,12 @@ public class IdentityApplyProvider extends IContainerItemProvider.MessageProvide
     /**
      * 同意拒绝申请加入 认证
      */
-    private void updateAuditStatus(boolean isAgree, int identityType, int id, int auditStatus) {
+    private void updateAuditStatus(boolean isAgree, int identityType, int id,int licenceId, int auditStatus) {
         if (!NetworkUtils.isNetworkAvailable(context)) {
             ToastUtils.toastForShort(context, R.string.str_check_net);
             return;
         }
-        OfficegoApi.getInstance().updateAuditStatusIdentity(identityType, id, auditStatus,
+        OfficegoApi.getInstance().updateAuditStatusIdentity(identityType, id, licenceId,auditStatus,
                 new RetrofitCallback<Object>() {
                     @Override
                     public void onSuccess(int code, String msg, Object data) {

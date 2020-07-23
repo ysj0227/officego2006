@@ -1,10 +1,10 @@
 package com.owner.rpc.request;
 
-import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.retrofit.BaseResponse;
 import com.owner.identity.model.ApplyJoinBean;
 import com.owner.identity.model.ApplyLicenceBean;
 import com.owner.identity.model.BusinessCircleBean;
+import com.owner.identity.model.CheckIdentityBean;
 import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.model.IdentityCompanyBean;
 import com.owner.identity.model.IdentityJointWorkBean;
@@ -77,5 +77,19 @@ public interface IdentitySearchInterface {
     @Multipart
     @POST(path + "dictionary/getDistrictList")
     Call<BaseResponse<List<BusinessCircleBean.DataBean>>> getDistrictList(@PartMap Map<String, RequestBody> params);
+
+    /**
+     * 企业名称创建校验接口
+     */
+    @Multipart
+    @POST(path + "licence/selectLicenceByCompanyApp")
+    Call<BaseResponse<CheckIdentityBean>> checkLicenceByCompany(@PartMap Map<String, RequestBody> params);
+
+    /**
+     * 网点创建校验接口
+     */
+    @Multipart
+    @POST(path + "licence/selectBuildingByNameApp")
+    Call<BaseResponse<CheckIdentityBean>> checkBuildingByName(@PartMap Map<String, RequestBody> params);
 
 }
