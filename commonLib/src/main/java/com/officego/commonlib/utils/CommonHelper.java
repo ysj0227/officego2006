@@ -435,7 +435,7 @@ public class CommonHelper {
     public static String getPhoneNum(Context context) {
         TelephonyManager tm = (TelephonyManager) context.getSystemService(Context.TELEPHONY_SERVICE);
         String mobile = tm.getLine1Number();
-        if (!TextUtils.isEmpty(mobile) && mobile.contains("+86")) {
+        if (!TextUtils.isEmpty(mobile) && TextUtils.equals("+86", mobile.substring(0, 3))) {
             return mobile.replace("+86", "");
         }
         return tm.getLine1Number();

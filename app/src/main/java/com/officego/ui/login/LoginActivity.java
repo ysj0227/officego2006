@@ -93,7 +93,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         StatusBarUtils.setStatusBarColor(this);
         mPresenter = new LoginPresenter(context);
         mPresenter.attachView(this);
-        btnLoginNoPassword.setVisibility(View.VISIBLE);
+//        btnLoginNoPassword.setVisibility(View.VISIBLE);
         new MonitorEditTextUtils(btnLogin, etMobile);
         tvProtocol.setText(Html.fromHtml(getString(R.string.str_click_login_agree_service)));
         if (getIntent().getExtras() != null) {
