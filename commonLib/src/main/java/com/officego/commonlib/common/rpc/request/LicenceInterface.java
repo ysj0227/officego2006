@@ -1,5 +1,6 @@
 package com.officego.commonlib.common.rpc.request;
 
+import com.officego.commonlib.common.model.QueryApplyLicenceBean;
 import com.officego.commonlib.retrofit.BaseResponse;
 
 import java.util.Map;
@@ -19,5 +20,12 @@ public interface LicenceInterface {
     @Multipart
     @POST(path + "licence/updateAuditStatusApp")
     Call<BaseResponse<Object>> updateAuditStatusApp(@PartMap Map<String, RequestBody> params);
+
+    /**
+     * 认证查询申请信息接口
+     */
+    @Multipart
+    @POST(path + "licence/queryApplyLicenceProprietorApp")
+    Call<BaseResponse<QueryApplyLicenceBean>> queryApplyLicenceProprietor(@PartMap Map<String, RequestBody> params);
 
 }

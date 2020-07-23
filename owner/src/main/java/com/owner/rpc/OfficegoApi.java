@@ -2,6 +2,8 @@ package com.owner.rpc;
 
 import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.model.QueryApplyLicenceBean;
+import com.officego.commonlib.common.rpc.request.LicenceInterface;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.log.LogCat;
 import com.owner.identity.model.ApplyJoinBean;
@@ -307,6 +309,17 @@ public class OfficegoApi {
         map.put("id", requestBody(id + ""));
         OfficegoRetrofitClient.getInstance().create(IdentitySearchInterface.class)
                 .deleteUserLicenceApp(map)
+                .enqueue(callback);
+    }
+
+    /**
+     * 认证查询申请信息接口
+     */
+    public void queryApplyLicenceProprietor( RetrofitCallback<QueryApplyLicenceBean> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        OfficegoRetrofitClient.getInstance().create(LicenceInterface.class)
+                .queryApplyLicenceProprietor(map)
                 .enqueue(callback);
     }
 

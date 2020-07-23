@@ -1,16 +1,19 @@
 package com.owner.identity;
 
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 
+import com.bumptech.glide.Glide;
 import com.officego.commonlib.base.BaseMvpActivity;
+import com.officego.commonlib.common.model.QueryApplyLicenceBean;
+import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.view.CircleImage;
 import com.owner.identity.contract.CancelSendMsgContract;
-import com.owner.identity.model.CancelSendMsgBean;
 import com.owner.identity.presenter.CancelSendMsgPresenter;
 
 import org.androidannotations.annotations.AfterViews;
@@ -38,6 +41,7 @@ public class IdentityCancelActivity extends BaseMvpActivity<CancelSendMsgPresent
     TextView tvTip;
     @ViewById(resName = "btn_send")
     Button btnSend;
+    private QueryApplyLicenceBean mData;
 
     @AfterViews
     void init() {
@@ -46,7 +50,7 @@ public class IdentityCancelActivity extends BaseMvpActivity<CancelSendMsgPresent
         rlEdit.setVisibility(View.GONE);
         tvTip.setVisibility(View.GONE);
         btnSend.setText("撤销");
-        mPresenter.getIdentityInfo(0);
+        mPresenter.getIdentityInfo();
     }
 
     @Click(resName = "iv_back")
@@ -56,12 +60,24 @@ public class IdentityCancelActivity extends BaseMvpActivity<CancelSendMsgPresent
 
     @Click(resName = "btn_send")
     void sendClick() {
-        mPresenter.cancelApply(0);
+        if (mData != null) {
+            mPresenter.cancelApply(mData.getUserLicenceId());
+        }
     }
 
     @Override
-    public void identityInfoSuccess(CancelSendMsgBean data) {
-
+    public void identityInfoSuccess(QueryApplyLicenceBean data) {
+        mData = data;
+        tvTitleName.setText(data.getTitle());
+        if (TextUtils.isEmpty(data.getAddress())) {
+            tvAddress.setVisibility(View.GONE);
+        } else {
+            tvAddress.setVisibility(View.VISIBLE);
+            tvAddress.setText(data.getAddress());
+        }
+        Glide.with(context).applyDefaultRequestOptions(GlideUtils.avaOoptions()).load(data.getAvatar()).into(civAvatar);
+        tvName.setText(data.getProprietorRealname());
+        tvPosition.setText(data.getProprietorJob());
     }
 
     /**

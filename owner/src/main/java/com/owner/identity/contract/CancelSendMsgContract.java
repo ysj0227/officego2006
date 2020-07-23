@@ -1,7 +1,7 @@
 package com.owner.identity.contract;
 
 import com.officego.commonlib.base.BaseView;
-import com.owner.identity.model.CancelSendMsgBean;
+import com.officego.commonlib.common.model.QueryApplyLicenceBean;
 
 /**
  * Created by YangShiJie
@@ -11,7 +11,7 @@ import com.owner.identity.model.CancelSendMsgBean;
 public interface CancelSendMsgContract {
     interface View extends BaseView {
 
-        void identityInfoSuccess(CancelSendMsgBean data);
+        void identityInfoSuccess(QueryApplyLicenceBean data);
 
         void cancelApplySuccess();
 
@@ -19,7 +19,7 @@ public interface CancelSendMsgContract {
 
     interface Presenter {
 
-        void getIdentityInfo(int id);
+        void getIdentityInfo();
 
         void cancelApply(int id);
     }

@@ -63,6 +63,11 @@ public class SelectIdActivity extends BaseActivity {
 
     @Click(resName = "tv_back")
     void returnTenantClick() {
+        onBackPressed();
+    }
+
+    @Override
+    public void onBackPressed() {
         switchDialog();
     }
 

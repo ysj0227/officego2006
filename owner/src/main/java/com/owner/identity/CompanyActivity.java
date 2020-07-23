@@ -431,7 +431,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         mCompanyList.addAll(data);
         mCompanyList.add(data.size(), new IdentityCompanyBean.DataBean());
         if (companyAdapter == null) {
-            companyAdapter = new IdentityCompanyAdapter(context, mCompanyList,true);
+            companyAdapter = new IdentityCompanyAdapter(context, mCompanyList, true);
             companyAdapter.setListener(this);
             rvRecommendCompany.setAdapter(companyAdapter);
             return;
@@ -449,7 +449,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         mList.addAll(data);
         mList.add(data.size(), new IdentityBuildingBean.DataBean());
         if (buildingAdapter == null) {
-            buildingAdapter = new IdentityBuildingAdapter(context, mList,false);
+            buildingAdapter = new IdentityBuildingAdapter(context, mList, false);
             buildingAdapter.setListener(this);
             rvRecommendBuilding.setAdapter(buildingAdapter);
             return;
@@ -463,9 +463,11 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         if (isCreate) {
             //创建公司
             CreateCompanyActivity_.intent(context).start();
+            rlOffice.setVisibility(View.VISIBLE);
+            hideView();
             return;
         }
-        //发送聊天  0个人1企业2联合
+        //发送聊天 0个人1企业2联合
         SendMsgBean sb = new SendMsgBean();
         sb.setId(bean.getBid());
         sb.setName(bean.getCompany());
@@ -474,8 +476,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         IdentitySendMsgActivity_.intent(context).sendMsgBean(sb).start();
         CommUtils.showHtmlView(cetCompanyName, bean.getCompany());
         hideView();
-        rlOffice.setVisibility(View.VISIBLE);
-
+        rlOffice.setVisibility(View.GONE);
     }
 
     @Override

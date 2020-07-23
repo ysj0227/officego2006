@@ -1,6 +1,7 @@
 package com.owner.identity.presenter;
 
 import com.officego.commonlib.base.BasePresenter;
+import com.officego.commonlib.common.model.QueryApplyLicenceBean;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.owner.identity.contract.CancelSendMsgContract;
@@ -15,10 +16,28 @@ public class CancelSendMsgPresenter extends BasePresenter<CancelSendMsgContract.
         implements CancelSendMsgContract.Presenter {
     private final String TAG = this.getClass().getSimpleName();
 
-
     @Override
-    public void getIdentityInfo(int id) {
+    public void getIdentityInfo() {
+        mView.showLoadingDialog();
+        OfficegoApi.getInstance().queryApplyLicenceProprietor(new RetrofitCallback<QueryApplyLicenceBean>() {
+            @Override
+            public void onSuccess(int code, String msg, QueryApplyLicenceBean data) {
+                if (isViewAttached()) {
+                    mView.hideLoadingDialog();
+                    mView.identityInfoSuccess(data);
+                }
+            }
 
+            @Override
+            public void onFail(int code, String msg, QueryApplyLicenceBean data) {
+                if (isViewAttached()) {
+                    mView.hideLoadingDialog();
+                    if (code == Constants.DEFAULT_ERROR_CODE) {
+                        mView.shortTip(msg);
+                    }
+                }
+            }
+        });
     }
 
     @Override

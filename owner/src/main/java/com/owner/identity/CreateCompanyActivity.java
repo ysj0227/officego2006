@@ -190,5 +190,4 @@ public class CreateCompanyActivity extends BaseActivity {
             default:
         }
     }
-
 }
