@@ -119,29 +119,29 @@ public class CreateCompanyActivity extends BaseActivity {
 
     private void createCompany(int createCompany, int identityType, String company, String address,
                                String creditNo, String mStrPath) {
-        showLoadingDialog();
-        OfficegoApi.getInstance().submitIdentityCreateCompany(createCompany, identityType,
-                company, address, creditNo, mStrPath, new RetrofitCallback<Object>() {
-                    @Override
-                    public void onSuccess(int code, String msg, Object data) {
-                        LogCat.e(TAG, "111111111111 createCompany success");
-                        shortTip("创建成功");
-                        hideLoadingDialog();
-                        Intent intent = getIntent();
-                        intent.putExtra("companyName", company);
-                        setResult(RESULT_OK, intent);
-                        finish();
-                    }
-
-                    @Override
-                    public void onFail(int code, String msg, Object data) {
-                        LogCat.e(TAG, "111111111111 createCompany fail code=" + code + " msg=" + msg);
-                        hideLoadingDialog();
-                        if (code==Constants.DEFAULT_ERROR_CODE){
-                            shortTip(msg);
-                        }
-                    }
-                });
+//        showLoadingDialog();
+//        OfficegoApi.getInstance().submitIdentityCreateCompany(createCompany, identityType,
+//                company, address, creditNo, mStrPath, new RetrofitCallback<Object>() {
+//                    @Override
+//                    public void onSuccess(int code, String msg, Object data) {
+//                        LogCat.e(TAG, "111111111111 createCompany success");
+//                        shortTip("创建成功");
+//                        hideLoadingDialog();
+//                        Intent intent = getIntent();
+//                        intent.putExtra("companyName", company);
+//                        setResult(RESULT_OK, intent);
+//                        finish();
+//                    }
+//
+//                    @Override
+//                    public void onFail(int code, String msg, Object data) {
+//                        LogCat.e(TAG, "111111111111 createCompany fail code=" + code + " msg=" + msg);
+//                        hideLoadingDialog();
+//                        if (code==Constants.DEFAULT_ERROR_CODE){
+//                            shortTip(msg);
+//                        }
+//                    }
+//                });
     }
 
     @Override

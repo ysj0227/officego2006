@@ -208,21 +208,6 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
 
     @Click(resName = "btn_upload")
     void uploadClick() {
-        showLoadingDialog();
-        OfficegoApi.getInstance().submitIdentityInfo(1,1,0,listCertificate, new RetrofitCallback<Object>() {
-            @Override
-            public void onSuccess(int code, String msg, Object data) {
-                LogCat.e(TAG,"111111111111 OK");
-                hideLoadingDialog();
-            }
-
-            @Override
-            public void onFail(int code, String msg, Object data) {
-                LogCat.e(TAG,"111111111111 code="+code +" msg="+msg);
-                hideLoadingDialog();
-            }
-        });
-
     }
 
     @Click(resName = "rl_type")

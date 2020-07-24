@@ -9,6 +9,7 @@ import com.owner.identity.model.ApplyJoinBean;
 import com.owner.identity.model.ApplyLicenceBean;
 import com.owner.identity.model.BusinessCircleBean;
 import com.owner.identity.model.CheckIdentityBean;
+import com.owner.identity.model.GetIdentityInfoBean;
 import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.model.IdentityCompanyBean;
 import com.owner.identity.model.IdentityJointWorkBean;
@@ -351,7 +352,7 @@ public class OfficegoApi {
     /**
      * 获取认证信息
      */
-    public void getIdentityInfo(int identityType, RetrofitCallback<CheckIdentityBean> callback) {
+    public void getIdentityInfo(int identityType, RetrofitCallback<GetIdentityInfoBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("identityType", requestBody(identityType + ""));
@@ -362,42 +363,161 @@ public class OfficegoApi {
 
 
     /**
+     * 公司提交
+     *
      * @param createCompany 1提交认证2企业确认3楼盘、网点确认
      * @param identityType  身份类型0个人1企业2联合
      * @param leaseType     租赁类型0直租1转租
-     * @param callback
+     * @param callback      String licenceId, String userLicenceId, String buildingId, String buildingTempId,
      */
-    public void submitIdentityInfo(int createCompany, int identityType, int leaseType,
-                                   List<String> mStrPath, RetrofitCallback<Object> callback) {
+    public void submitCompanyIdentityInfo(GetIdentityInfoBean data, int createCompany, int identityType, int leaseType,
+                                          boolean isSelectedBuilding, String buildingId,
+                                          List<String> mFilePremisesPath, List<String> mFileContractPath, RetrofitCallback<Object> callback) {
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("token", SpUtils.getSignToken());
         builder.addFormDataPart("createCompany", createCompany + "");
         builder.addFormDataPart("identityType", identityType + "");
         builder.addFormDataPart("leaseType", leaseType + "");
-
-//        builder.addFormDataPart("licenceId", "21");
-//        builder.addFormDataPart("userLicenceId", "68");
-//        builder.addFormDataPart("buildingName", "未来大楼");
-//        builder.addFormDataPart("buildingId", "4626");
-        RequestBody file;
-        for (int i = 0; i < mStrPath.size(); i++) {
-            file = RequestBody.create(MediaType.parse("image/*"), new File(mStrPath.get(i)));
-            builder.addFormDataPart("filePremisesPermit", "filePremisesPermit" + i + ".png", file);
+        builder.addFormDataPart("licenceId", data.getLicenceId());//企业id
+        builder.addFormDataPart("userLicenceId", data.getUserLicenceId());//企业关系id
+        if (isSelectedBuilding) {//关联的
+            builder.addFormDataPart("buildingId", buildingId);//关联楼盘的id。- 覆盖
+        } else {
+            builder.addFormDataPart("buildingId", data.getBuildingId());//创建返回的楼盘id
+        }
+        builder.addFormDataPart("buildingTempId", data.getBuildingTempId());//关联楼id  接口给
+        //房产证
+        if (mFilePremisesPath != null && mFilePremisesPath.size() > 0) {
+            RequestBody file;
+            for (int i = 0; i < mFilePremisesPath.size(); i++) {
+                file = RequestBody.create(MediaType.parse("image/*"), new File(mFilePremisesPath.get(i)));
+                builder.addFormDataPart("filePremisesPermit", "filePremisesPermit" + i + ".png", file);
+            }
+        }
+        //租赁合同
+        if (leaseType == 1 && mFileContractPath != null && mFileContractPath.size() > 0) {
+            RequestBody file1;
+            for (int i = 0; i < mFileContractPath.size(); i++) {
+                file1 = RequestBody.create(MediaType.parse("image/*"), new File(mFileContractPath.get(i)));
+                builder.addFormDataPart("fileContract", "fileContract" + i + ".png", file1);
+            }
         }
         OfficegoRetrofitClient.getInstance().create(IdentitySearchInterface.class)
                 .submitIdentityInfo(builder.build())
                 .enqueue(callback);
     }
 
+    /**
+     * 联合办公提交
+     *
+     * @param createCompany 1提交认证2企业确认3楼盘、网点确认
+     * @param identityType  身份类型0个人1企业2联合
+     * @param leaseType     租赁类型0直租1转租
+     * @param callback
+     */
+    public void submitJointWorkIdentityInfo(GetIdentityInfoBean data, int createCompany, int identityType, int leaseType,
+                                            boolean isSelectedJointWork, String jointWorkId, String buildingName,
+                                            List<String> mFilePremisesPath, List<String> mFileContractPath, RetrofitCallback<Object> callback) {
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        builder.addFormDataPart("token", SpUtils.getSignToken());
+        builder.addFormDataPart("createCompany", createCompany + "");
+        builder.addFormDataPart("identityType", identityType + "");
+        builder.addFormDataPart("leaseType", leaseType + "");
+        builder.addFormDataPart("licenceId", data.getLicenceId());//企业id(如果是创建)//联办公司必须创建，目前无关联
+        builder.addFormDataPart("userLicenceId", data.getUserLicenceId());//企业关系id
+        if (isSelectedJointWork) {//关联的
+            builder.addFormDataPart("buildingId", jointWorkId);//关联网点的id。- 覆盖
+        } else {
+            builder.addFormDataPart("buildingId", data.getBuildingId());//创建返回的网点id
+        }
+        builder.addFormDataPart("buildingTempId", data.getBuildingTempId());//关联网点id  接口给
+        builder.addFormDataPart("buildingName", buildingName);  //底部楼盘名字
+        //房产证
+        if (mFilePremisesPath != null && mFilePremisesPath.size() > 0) {
+            RequestBody file;
+            for (int i = 0; i < mFilePremisesPath.size(); i++) {
+                file = RequestBody.create(MediaType.parse("image/*"), new File(mFilePremisesPath.get(i)));
+                builder.addFormDataPart("filePremisesPermit", "filePremisesPermit" + i + ".png", file);
+            }
+        }
+        //租赁合同
+        if (mFileContractPath != null && mFileContractPath.size() > 0) {
+            RequestBody file1;
+            for (int i = 0; i < mFileContractPath.size(); i++) {
+                file1 = RequestBody.create(MediaType.parse("image/*"), new File(mFileContractPath.get(i)));
+                builder.addFormDataPart("fileContract", "fileContract" + i + ".png", file1);
+            }
+        }
+        OfficegoRetrofitClient.getInstance().create(IdentitySearchInterface.class)
+                .submitIdentityInfo(builder.build())
+                .enqueue(callback);
+    }
 
     /**
+     * 个人提交
+     *
+     * @param createCompany 1提交认证2企业确认3楼盘、网点确认
+     * @param identityType  身份类型0个人1企业2联合
+     * @param leaseType     租赁类型0直租1转租
+     * @param callback
+     */
+    public void submitPersonalIdentityInfo(GetIdentityInfoBean data, int createCompany, int identityType, int leaseType,
+                                           boolean isSelectedBuilding, String buildingId, String userName, String idCard,
+                                           String isCardFrontPath, String isCardBackPath,
+                                           List<String> mFilePremisesPath, List<String> mFileContractPath,
+                                           RetrofitCallback<Object> callback) {
+        //身份证正面
+        RequestBody fileIdFront = RequestBody.create(MediaType.parse("image/*"), new File(isCardFrontPath));
+        //身份证背面
+        RequestBody fileIdBack = RequestBody.create(MediaType.parse("image/*"), new File(isCardBackPath));
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        builder.addFormDataPart("token", SpUtils.getSignToken());
+        builder.addFormDataPart("createCompany", createCompany + "");
+        builder.addFormDataPart("identityType", identityType + "");
+        builder.addFormDataPart("leaseType", leaseType + "");
+
+        builder.addFormDataPart("licenceId", data.getLicenceId());//企业id
+        builder.addFormDataPart("userLicenceId", data.getUserLicenceId());//企业关系id
+        if (isSelectedBuilding) {//关联的
+            builder.addFormDataPart("buildingId", buildingId);//关联楼盘的id。- 覆盖
+        } else {
+            builder.addFormDataPart("buildingId", data.getBuildingId());//创建返回的楼盘id
+        }
+        builder.addFormDataPart("buildingTempId", data.getBuildingTempId());//关联楼id  接口给
+        builder.addFormDataPart("userName", userName); //姓名
+        builder.addFormDataPart("idCard", idCard);//身份证号
+        //身份证正反面图片
+        builder.addFormDataPart("fileIdFront", "fileIdFront.png", fileIdFront);
+        builder.addFormDataPart("fileIdBack", "fileIdBack.png", fileIdBack);
+        //房产证图片
+        if (mFilePremisesPath != null && mFilePremisesPath.size() > 0) {
+            RequestBody file;
+            for (int i = 0; i < mFilePremisesPath.size(); i++) {
+                file = RequestBody.create(MediaType.parse("image/*"), new File(mFilePremisesPath.get(i)));
+                builder.addFormDataPart("filePremisesPermit", "filePremisesPermit" + i + ".png", file);
+            }
+        }
+        //租赁合同图片
+        if (leaseType == 1 && mFileContractPath != null && mFileContractPath.size() > 0) {
+            RequestBody file1;
+            for (int i = 0; i < mFileContractPath.size(); i++) {
+                file1 = RequestBody.create(MediaType.parse("image/*"), new File(mFileContractPath.get(i)));
+                builder.addFormDataPart("fileContract", "fileContract" + i + ".png", file1);
+            }
+        }
+        OfficegoRetrofitClient.getInstance().create(IdentitySearchInterface.class)
+                .submitIdentityInfo(builder.build())
+                .enqueue(callback);
+    }
+
+    /**
+     * **********************************************
      * createCompany 1提交认证2企业确认3楼盘、网点确认
      *
      * @param identityType 身份类型0个人1企业2联合
-     * @param callback
      */
-    public void submitIdentityCreateCompany(int createCompany, int identityType, String company, String address,
-                                            String creditNo,
+    public void submitIdentityCreateCompany(GetIdentityInfoBean data, int createCompany, int identityType,
+                                            String company, String address, String creditNo,
                                             String mStrPath, RetrofitCallback<Object> callback) {
         RequestBody file = RequestBody.create(MediaType.parse("image/*"), new File(mStrPath));
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
@@ -407,6 +527,12 @@ public class OfficegoApi {
         builder.addFormDataPart("company", company);
         builder.addFormDataPart("address", address);
         builder.addFormDataPart("creditNo", creditNo);
+        if (data != null) {
+            builder.addFormDataPart("licenceId", data.getLicenceId());//企业id
+            builder.addFormDataPart("userLicenceId", data.getUserLicenceId());//企业关系id
+            builder.addFormDataPart("buildingId", data.getBuildingId());//创建返回的楼盘id
+            builder.addFormDataPart("buildingTempId", data.getBuildingTempId());//关联楼id  接口给
+        }
         builder.addFormDataPart("fileBusinessLicense", "fileBusinessLicense.png", file);
         OfficegoRetrofitClient.getInstance().create(IdentitySearchInterface.class)
                 .submitIdentityInfo(builder.build())
@@ -420,7 +546,7 @@ public class OfficegoApi {
      * @param identityType 身份类型0个人1企业2联合
      * @param callback
      */
-    public void submitIdentityCreateBuilding(int createCompany, int identityType, String buildingName, String address,
+    public void submitIdentityCreateBuilding(GetIdentityInfoBean data, int createCompany, int identityType, String buildingName, String address,
                                              int district, int business, String mPath, RetrofitCallback<Object> callback) {
         RequestBody file = RequestBody.create(MediaType.parse("image/*"), new File(mPath));
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
@@ -431,6 +557,12 @@ public class OfficegoApi {
         builder.addFormDataPart("buildingAddress", address);
         builder.addFormDataPart("district", district + "");
         builder.addFormDataPart("business", business + "");
+        if (data != null) {
+            builder.addFormDataPart("licenceId", data.getLicenceId());//企业id
+            builder.addFormDataPart("userLicenceId", data.getUserLicenceId());//企业关系id
+            builder.addFormDataPart("buildingId", data.getBuildingId());//创建返回的楼盘id
+            builder.addFormDataPart("buildingTempId", data.getBuildingTempId());//关联楼id  接口给
+        }
         builder.addFormDataPart("fileMainPic", "fileMainPic.png", file);
         OfficegoRetrofitClient.getInstance().create(IdentitySearchInterface.class)
                 .submitIdentityInfo(builder.build())
@@ -444,17 +576,23 @@ public class OfficegoApi {
      * @param identityType 身份类型0个人1企业2联合
      * @param callback
      */
-    public void submitIdentityCreateJointWork(int createCompany, int identityType, String branchesName, String address,
-                                             int district, int business, String mPath, RetrofitCallback<Object> callback) {
+    public void submitIdentityCreateJointWork(GetIdentityInfoBean data, int createCompany, int identityType, String branchesName, String address,
+                                              int district, int business, String mPath, RetrofitCallback<Object> callback) {
         RequestBody file = RequestBody.create(MediaType.parse("image/*"), new File(mPath));
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("token", SpUtils.getSignToken());
         builder.addFormDataPart("createCompany", createCompany + "");
         builder.addFormDataPart("identityType", identityType + "");
         builder.addFormDataPart("branchesName", branchesName);
-//        builder.addFormDataPart("buildingAddress", address);
+        builder.addFormDataPart("buildingAddress", address);
         builder.addFormDataPart("district", district + "");
         builder.addFormDataPart("business", business + "");
+        if (data != null) {
+            builder.addFormDataPart("licenceId", data.getLicenceId());//企业id
+            builder.addFormDataPart("userLicenceId", data.getUserLicenceId());//企业关系id
+            builder.addFormDataPart("buildingId", data.getBuildingId());//创建返回的楼盘id
+            builder.addFormDataPart("buildingTempId", data.getBuildingTempId());//关联楼id  接口给
+        }
         builder.addFormDataPart("fileMainPic", "fileMainPic.png", file);
         OfficegoRetrofitClient.getInstance().create(IdentitySearchInterface.class)
                 .submitIdentityInfo(builder.build())

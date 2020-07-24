@@ -111,27 +111,27 @@ public class CreateJointWorkActivity extends BaseActivity implements AreaDialog.
     private void createBuilding(int createCompany, int identityType, String name, String address,
                                 int district, int business, String mStrPath) {
         showLoadingDialog();
-        OfficegoApi.getInstance().submitIdentityCreateJointWork(createCompany, identityType,
-                name, address, district, business, mStrPath, new RetrofitCallback<Object>() {
-                    @Override
-                    public void onSuccess(int code, String msg, Object data) {
-                        shortTip("创建成功");
-                        hideLoadingDialog();
-                        Intent intent = getIntent();
-                        intent.putExtra("jointworkName", name);
-                        intent.putExtra("jointworkAddress", address);
-                        setResult(RESULT_OK, intent);
-                        finish();
-                    }
-                    @Override
-                    public void onFail(int code, String msg, Object data) {
-                        LogCat.e(TAG, "111111111111 submitIdentityCreateBuilding fail code=" + code + " msg=" + msg);
-                        hideLoadingDialog();
-                        if (code==Constants.DEFAULT_ERROR_CODE){
-                            shortTip(msg);
-                        }
-                    }
-                });
+//        OfficegoApi.getInstance().submitIdentityCreateJointWork(createCompany, identityType,
+//                name, address, district, business, mStrPath, new RetrofitCallback<Object>() {
+//                    @Override
+//                    public void onSuccess(int code, String msg, Object data) {
+//                        shortTip("创建成功");
+//                        hideLoadingDialog();
+//                        Intent intent = getIntent();
+//                        intent.putExtra("jointworkName", name);
+//                        intent.putExtra("jointworkAddress", address);
+//                        setResult(RESULT_OK, intent);
+//                        finish();
+//                    }
+//                    @Override
+//                    public void onFail(int code, String msg, Object data) {
+//                        LogCat.e(TAG, "111111111111 submitIdentityCreateBuilding fail code=" + code + " msg=" + msg);
+//                        hideLoadingDialog();
+//                        if (code==Constants.DEFAULT_ERROR_CODE){
+//                            shortTip(msg);
+//                        }
+//                    }
+//                });
     }
 
 

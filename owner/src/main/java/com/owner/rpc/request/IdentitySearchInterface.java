@@ -5,6 +5,7 @@ import com.owner.identity.model.ApplyJoinBean;
 import com.owner.identity.model.ApplyLicenceBean;
 import com.owner.identity.model.BusinessCircleBean;
 import com.owner.identity.model.CheckIdentityBean;
+import com.owner.identity.model.GetIdentityInfoBean;
 import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.model.IdentityCompanyBean;
 import com.owner.identity.model.IdentityJointWorkBean;
@@ -94,7 +95,7 @@ public interface IdentitySearchInterface {
     Call<BaseResponse<CheckIdentityBean>> checkBuildingByName(@PartMap Map<String, RequestBody> params);
 
     /**
-     * 提交认证
+     * 提交认证   (创建公司， 网点 ，楼盘， 整体提交认证)
      */
     @POST(path + "licence/uploadLicenceProprietorApp")
     Call<BaseResponse<Object>> submitIdentityInfo(@Body RequestBody body);
@@ -104,6 +105,6 @@ public interface IdentitySearchInterface {
      */
     @Multipart
     @POST(path + "licence/selectIdentityTypeApp ")
-    Call<BaseResponse<CheckIdentityBean>> getLicenceProprietorInfo(@PartMap Map<String, RequestBody> params);
+    Call<BaseResponse<GetIdentityInfoBean>> getLicenceProprietorInfo(@PartMap Map<String, RequestBody> params);
 
 }
