@@ -14,13 +14,13 @@ public interface CreateCompanyContract {
 
         void getIdentityInfoSuccess(ApplyLicenceBean data);
 
-        void sendApplySuccess(ApplyJoinBean data);
+        void submitSuccess();
     }
 
     interface Presenter {
 
-        void getIdentityInfo(int identityType, int id);
+        void getIdentityInfo(int identityType);
 
-        void sendApply(int identityType, int id, int chattedId);
+        void submit(int identityType, int id, int chattedId);
     }
 }
