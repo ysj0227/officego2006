@@ -394,7 +394,9 @@ public class OfficegoApi {
                 builder.addFormDataPart("filePremisesPermit", "filePremisesPermit" + i + ".png", file);
             }
         }
-        //租赁合同
+//        RequestBody  file = RequestBody.create(MediaType.parse("image/*"), new File(mFilePremisesPath.get(0)));
+//        builder.addFormDataPart("filePremisesPermit", "filePremisesPermit.png", file);
+//        //租赁合同
         if (leaseType == 1 && mFileContractPath != null && mFileContractPath.size() > 0) {
             RequestBody file1;
             for (int i = 0; i < mFileContractPath.size(); i++) {

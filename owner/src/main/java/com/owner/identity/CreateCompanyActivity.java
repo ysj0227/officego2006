@@ -19,6 +19,7 @@ import androidx.core.content.FileProvider;
 
 import com.donkingliang.imageselector.utils.ImageSelector;
 import com.officego.commonlib.base.BaseActivity;
+import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
@@ -35,6 +36,9 @@ import com.officego.commonlib.view.RoundImageView;
 import com.officego.commonlib.view.TitleBarView;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
+import com.owner.identity.contract.CreateCompanyContract;
+import com.owner.identity.model.GetIdentityInfoBean;
+import com.owner.identity.presenter.CreateCompanyPresenter;
 import com.owner.rpc.OfficegoApi;
 
 import org.androidannotations.annotations.AfterViews;
@@ -52,7 +56,8 @@ import java.util.List;
  * Descriptions:
  **/
 @EActivity(resName = "activity_id_company_create")
-public class CreateCompanyActivity extends BaseActivity {
+public class CreateCompanyActivity extends BaseMvpActivity<CreateCompanyPresenter>
+        implements CreateCompanyContract.View {
     private static final int REQUEST_GALLERY = 0xa0;
     private static final int REQUEST_CAMERA = 0xa1;
 
@@ -76,9 +81,13 @@ public class CreateCompanyActivity extends BaseActivity {
     int createCompany;
     @Extra
     int identityType;
+    private String name, address, regNo;
 
     @AfterViews
     void init() {
+        mPresenter = new CreateCompanyPresenter();
+        mPresenter.attachView(this);
+
         StatusBarUtils.setStatusBarColor(this);
         titleBar.getLeftImg().setOnClickListener(view -> onBackPressed());
         setImageViewLayoutParams(context, rivImage);
@@ -99,49 +108,23 @@ public class CreateCompanyActivity extends BaseActivity {
 
     @Click(resName = "btn_save")
     void saveClick() {
-        String name = etNameContent.getText() == null ? "" : etNameContent.getText().toString();
+        name = etNameContent.getText() == null ? "" : etNameContent.getText().toString();
         if (TextUtils.isEmpty(name)) {
             shortTip("请输入公司名称");
             return;
         }
-        String address = etAddressContent.getText() == null ? "" : etAddressContent.getText().toString();
+        address = etAddressContent.getText() == null ? "" : etAddressContent.getText().toString();
         if (TextUtils.isEmpty(address)) {
             shortTip("请输入公司地址");
             return;
         }
-        String regNo = etRegisterNoContent.getText() == null ? "" : etRegisterNoContent.getText().toString();
+        regNo = etRegisterNoContent.getText() == null ? "" : etRegisterNoContent.getText().toString();
         if (TextUtils.isEmpty(regNo)) {
             shortTip("请输入营业执照注册号");
             return;
         }
-        createCompany(createCompany, identityType, name, address, regNo, localLicensePath);
-    }
+        mPresenter.getIdentityInfo(identityType);
 
-    private void createCompany(int createCompany, int identityType, String company, String address,
-                               String creditNo, String mStrPath) {
-//        showLoadingDialog();
-//        OfficegoApi.getInstance().submitIdentityCreateCompany(createCompany, identityType,
-//                company, address, creditNo, mStrPath, new RetrofitCallback<Object>() {
-//                    @Override
-//                    public void onSuccess(int code, String msg, Object data) {
-//                        LogCat.e(TAG, "111111111111 createCompany success");
-//                        shortTip("创建成功");
-//                        hideLoadingDialog();
-//                        Intent intent = getIntent();
-//                        intent.putExtra("companyName", company);
-//                        setResult(RESULT_OK, intent);
-//                        finish();
-//                    }
-//
-//                    @Override
-//                    public void onFail(int code, String msg, Object data) {
-//                        LogCat.e(TAG, "111111111111 createCompany fail code=" + code + " msg=" + msg);
-//                        hideLoadingDialog();
-//                        if (code==Constants.DEFAULT_ERROR_CODE){
-//                            shortTip(msg);
-//                        }
-//                    }
-//                });
     }
 
     @Override
@@ -243,5 +226,21 @@ public class CreateCompanyActivity extends BaseActivity {
                 break;
             default:
         }
+    }
+
+    @Override
+    public void getIdentityInfoSuccess(GetIdentityInfoBean data) {
+        //提交信息
+        mPresenter.submitCompany(data,createCompany, identityType, name, address, regNo, localLicensePath);
+    }
+
+    @Override
+    public void submitSuccess() {
+        shortTip("创建成功");
+        hideLoadingDialog();
+        Intent intent = getIntent();
+        intent.putExtra("companyName", name);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 }

@@ -2,6 +2,7 @@ package com.owner.identity.contract;
 
 import com.officego.commonlib.base.BaseView;
 import com.owner.identity.model.CheckIdentityBean;
+import com.owner.identity.model.GetIdentityInfoBean;
 import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.model.IdentityCompanyBean;
 
@@ -22,6 +23,10 @@ public interface CompanyContract {
         void checkCompanyInfoSuccess();
 
         void checkBuildingInfoSuccess();
+
+        void getIdentityInfoSuccess(GetIdentityInfoBean data);
+
+        void submitSuccess();
     }
 
     interface Presenter {
@@ -33,5 +38,11 @@ public interface CompanyContract {
         void checkCompany(int identityType,String name);
 
         void checkBuilding(int identityType,String name);
+
+        void getIdentityInfo(int identityType);
+
+        void submit(GetIdentityInfoBean data, int createCompany, int identityType, int leaseType,
+                    boolean isSelectedBuilding, String buildingId,
+                    List<String> mFilePremisesPath, List<String> mFileContractPath);
     }
 }

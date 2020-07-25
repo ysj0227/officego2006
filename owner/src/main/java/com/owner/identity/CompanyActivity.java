@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.donkingliang.imageselector.utils.ImageSelector;
 import com.officego.commonlib.base.BaseMvpActivity;
+import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
@@ -40,6 +41,7 @@ import com.owner.adapter.IdentityCompanyAdapter;
 import com.owner.adapter.PropertyOwnershipCertificateAdapter;
 import com.owner.adapter.RentalAgreementAdapter;
 import com.owner.identity.contract.CompanyContract;
+import com.owner.identity.model.GetIdentityInfoBean;
 import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.model.IdentityCompanyBean;
 import com.owner.identity.model.SendMsgBean;
@@ -137,6 +139,9 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
     private IdentityBuildingAdapter buildingAdapter;
     private List<IdentityCompanyBean.DataBean> mCompanyList = new ArrayList<>();
     private List<IdentityBuildingBean.DataBean> mList = new ArrayList<>();
+    private int mBuildingId;
+    private int mLeaseType;//租赁类型0直租1转租
+    private boolean isSelectedBuilding;//是否选择楼盘关联
 
     @AfterViews
     void init() {
@@ -208,6 +213,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
 
     @Click(resName = "btn_upload")
     void uploadClick() {
+        mPresenter.getIdentityInfo(Constants.TYPE_IDENTITY_COMPANY);
     }
 
     @Click(resName = "rl_type")
@@ -220,8 +226,10 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         new AlertDialog.Builder(CompanyActivity.this)
                 .setItems(items, (dialogInterface, i) -> {
                     if (i == 0) {
+                        mLeaseType = 0;
                         showCertificateView();
                     } else {
+                        mLeaseType = 1;
                         showCerAgreementView();
                     }
                     tvType.setText(items[i]);
@@ -487,6 +495,22 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
                 .startForResult(REQUEST_CREATE_BUILDING);
     }
 
+    @Override
+    public void getIdentityInfoSuccess(GetIdentityInfoBean data) {
+        //提交信息
+        mPresenter.submit(data, Constants.TYPE_CREATE_FROM_ALL, Constants.TYPE_IDENTITY_COMPANY, mLeaseType,
+                isSelectedBuilding, String.valueOf(mBuildingId), listCertificate, listRental);
+    }
+
+    @Override
+    public void submitSuccess() {
+        //TODO 提交成功
+        //返回业主个人中心
+        shortTip("提交成功");
+        GotoActivityUtils.mainOwnerDefMainActivity(context);
+        finish();
+    }
+
     /**
      * 关联,创建公司
      */
@@ -525,10 +549,13 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
     @Override
     public void associateBuilding(IdentityBuildingBean.DataBean bean, boolean isCreate) {
         if (isCreate) {
+            isSelectedBuilding = false;
             mPresenter.checkBuilding(IDENTITY_COMPANY, Objects.requireNonNull(cetOfficeName.getText()).toString());
             return;
         }
         //关联楼盘
+        isSelectedBuilding = true;
+        mBuildingId = bean.getBid();
         CommUtils.showHtmlView(cetOfficeName, bean.getBuildingName());
         CommUtils.showHtmlTextView(tvAddress, bean.getAddress());
         buildingNextView();

@@ -17,6 +17,7 @@ import androidx.core.content.FileProvider;
 
 import com.donkingliang.imageselector.utils.ImageSelector;
 import com.officego.commonlib.base.BaseActivity;
+import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
@@ -31,6 +32,9 @@ import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.TitleBarView;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
+import com.owner.identity.contract.CreateCompanyContract;
+import com.owner.identity.model.GetIdentityInfoBean;
+import com.owner.identity.presenter.CreateCompanyPresenter;
 import com.owner.rpc.OfficegoApi;
 
 import org.androidannotations.annotations.AfterViews;
@@ -48,7 +52,8 @@ import java.util.List;
  * Descriptions:
  **/
 @EActivity(resName = "activity_id_jointwork_create")
-public class CreateJointWorkActivity extends BaseActivity implements AreaDialog.AreaSureListener {
+public class CreateJointWorkActivity extends BaseMvpActivity<CreateCompanyPresenter>
+        implements CreateCompanyContract.View, AreaDialog.AreaSureListener {
     private static final int REQUEST_GALLERY = 0xa0;
     private static final int REQUEST_CAMERA = 0xa1;
 
@@ -69,9 +74,12 @@ public class CreateJointWorkActivity extends BaseActivity implements AreaDialog.
     @ViewById(resName = "btn_save")
     Button btnSave;
     private int district, business;
+    private String name, address;
 
     @AfterViews
     void init() {
+        mPresenter = new CreateCompanyPresenter();
+        mPresenter.attachView(this);
         StatusBarUtils.setStatusBarColor(this);
         titleBar.getLeftImg().setOnClickListener(view -> onBackPressed());
         localCoverImagePath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "cover_image.jpg";
@@ -89,9 +97,9 @@ public class CreateJointWorkActivity extends BaseActivity implements AreaDialog.
 
     @Click(resName = "btn_save")
     void saveClick() {
-        String name = etNameContent.getText() == null ? "" : etNameContent.getText().toString();
+        name = etNameContent.getText() == null ? "" : etNameContent.getText().toString();
         String area = tvArea.getText() == null ? "" : tvArea.getText().toString();
-        String address = etAddressContent.getText() == null ? "" : etAddressContent.getText().toString();
+        address = etAddressContent.getText() == null ? "" : etAddressContent.getText().toString();
         if (TextUtils.isEmpty(name)) {
             ToastUtils.toastForShort(context, "请输入网点名称");
             return;
@@ -104,34 +112,7 @@ public class CreateJointWorkActivity extends BaseActivity implements AreaDialog.
             ToastUtils.toastForShort(context, "请输入详细地址");
             return;
         }
-        createBuilding(Constants.TYPE_CREATE_FROM_JOINT_BUILDING, Constants.TYPE_IDENTITY_JOINT_WORK,
-                name, address, district, business, localCoverImagePath);
-    }
-
-    private void createBuilding(int createCompany, int identityType, String name, String address,
-                                int district, int business, String mStrPath) {
-        showLoadingDialog();
-//        OfficegoApi.getInstance().submitIdentityCreateJointWork(createCompany, identityType,
-//                name, address, district, business, mStrPath, new RetrofitCallback<Object>() {
-//                    @Override
-//                    public void onSuccess(int code, String msg, Object data) {
-//                        shortTip("创建成功");
-//                        hideLoadingDialog();
-//                        Intent intent = getIntent();
-//                        intent.putExtra("jointworkName", name);
-//                        intent.putExtra("jointworkAddress", address);
-//                        setResult(RESULT_OK, intent);
-//                        finish();
-//                    }
-//                    @Override
-//                    public void onFail(int code, String msg, Object data) {
-//                        LogCat.e(TAG, "111111111111 submitIdentityCreateBuilding fail code=" + code + " msg=" + msg);
-//                        hideLoadingDialog();
-//                        if (code==Constants.DEFAULT_ERROR_CODE){
-//                            shortTip(msg);
-//                        }
-//                    }
-//                });
+        mPresenter.getIdentityInfo(Constants.TYPE_IDENTITY_JOINT_WORK);
     }
 
 
@@ -205,6 +186,7 @@ public class CreateJointWorkActivity extends BaseActivity implements AreaDialog.
                 ivImage.setImageBitmap(BitmapFactory.decodeFile(localCoverImagePath));
             } else if (requestCode == REQUEST_GALLERY && data != null) {//相册
                 List<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
+                localCoverImagePath = images.get(0);
                 ivImage.setImageBitmap(BitmapFactory.decodeFile(images.get(0)));
             }
         }
@@ -235,5 +217,22 @@ public class CreateJointWorkActivity extends BaseActivity implements AreaDialog.
                 break;
             default:
         }
+    }
+
+    @Override
+    public void getIdentityInfoSuccess(GetIdentityInfoBean data) {
+        mPresenter.submitJointWork(data, Constants.TYPE_CREATE_FROM_JOINT_BUILDING, Constants.TYPE_IDENTITY_JOINT_WORK,
+                name, address, district, business, localCoverImagePath);
+    }
+
+    @Override
+    public void submitSuccess() {
+        shortTip("创建成功");
+        hideLoadingDialog();
+        Intent intent = getIntent();
+        intent.putExtra("jointworkName", name);
+        intent.putExtra("jointworkAddress", address);
+        setResult(RESULT_OK, intent);
+        finish();
     }
 }

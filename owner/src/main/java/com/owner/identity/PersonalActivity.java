@@ -23,6 +23,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.donkingliang.imageselector.utils.ImageSelector;
 import com.officego.commonlib.base.BaseMvpActivity;
+import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
@@ -38,6 +39,7 @@ import com.owner.adapter.IdentityBuildingAdapter;
 import com.owner.adapter.PropertyOwnershipCertificateAdapter;
 import com.owner.adapter.RentalAgreementAdapter;
 import com.owner.identity.contract.PersonalContract;
+import com.owner.identity.model.GetIdentityInfoBean;
 import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.presenter.PersonalPresenter;
 import com.owner.utils.CommUtils;
@@ -141,6 +143,11 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
     private IdentityBuildingAdapter buildingAdapter;
     private List<IdentityBuildingBean.DataBean> mList = new ArrayList<>();
 
+    private int mLeaseType;
+    private int mBuildingId;
+    private boolean isSelectedBuilding;
+    private String userName, idCard;
+
     @AfterViews
     void init() {
         mPresenter = new PersonalPresenter();
@@ -190,6 +197,21 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         rvRentalAgreement.setAdapter(rentalAdapter);
     }
 
+    @Click(resName = "btn_upload")
+    void uploadClick() {
+        userName = cetName.getText() == null ? "" : cetName.getText().toString();
+        idCard = cetPersonalId.getText() == null ? "" : cetPersonalId.getText().toString();
+        if (TextUtils.isEmpty(userName)) {
+            shortTip("请输入姓名");
+            return;
+        }
+        if (TextUtils.isEmpty(idCard)) {
+            shortTip("请输入身份证号");
+            return;
+        }
+        mPresenter.getIdentityInfo(Constants.TYPE_IDENTITY_PERSONAL);
+    }
+
     @Click(resName = "rl_type")
     void typeClick() {
         selectedBuildingType();
@@ -200,8 +222,10 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         new AlertDialog.Builder(this)
                 .setItems(items, (dialogInterface, i) -> {
                     if (i == 0) {
+                        mLeaseType = 0;
                         showCertificateView();
                     } else {
+                        mLeaseType = 1;
                         showCerAgreementView();
                     }
                     tvType.setText(items[i]);
@@ -332,9 +356,11 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
             if (!TextUtils.isEmpty(path)) {
                 if (requestCode == IDCardCamera.TYPE_IDCARD_FRONT) { //身份证正面
                     hideIdCardFrontView();
+                    localIdCardFrontPath = path;
                     rivImageFront.setImageBitmap(BitmapFactory.decodeFile(path));
                 } else if (requestCode == IDCardCamera.TYPE_IDCARD_BACK) {  //身份证反面
                     hideIdCardBackView();
+                    localIdCardBackPath = path;
                     rivImageBack.setImageBitmap(BitmapFactory.decodeFile(path));
                 }
             }
@@ -352,9 +378,11 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
                 List<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
                 if (TYPE_IDCARD_FRONT == mUploadType) {//身份证正面相册
                     hideIdCardFrontView();
+                    localIdCardFrontPath = images.get(0);
                     rivImageFront.setImageBitmap(BitmapFactory.decodeFile(images.get(0)));
                 } else if (TYPE_IDCARD_BACK == mUploadType) {//身份证反面相册
                     hideIdCardBackView();
+                    localIdCardBackPath = images.get(0);
                     rivImageBack.setImageBitmap(BitmapFactory.decodeFile(images.get(0)));
                 } else if (TYPE_CER == mUploadType) {//房产证相册
                     listCertificate.addAll(listCertificate.size() - 1, images);
@@ -429,6 +457,23 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
                 .identityType(Constants.TYPE_IDENTITY_PERSONAL)
                 .startForResult(REQUEST_CREATE_BUILDING);
     }
+
+    @Override
+    public void getIdentityInfoSuccess(GetIdentityInfoBean data) {
+        //提交信息
+        mPresenter.submit(data, Constants.TYPE_CREATE_FROM_ALL, Constants.TYPE_IDENTITY_PERSONAL, mLeaseType,
+                isSelectedBuilding, String.valueOf(mBuildingId), userName, idCard, localIdCardFrontPath, localIdCardBackPath, listCertificate, listRental);
+    }
+
+    @Override
+    public void submitSuccess() {
+        //TODO 提交成功
+        //返回业主个人中心
+        shortTip("提交成功");
+        GotoActivityUtils.mainOwnerDefMainActivity(context);
+        finish();
+    }
+
     /**
      * 关联,创建楼盘
      */
@@ -439,6 +484,8 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
             return;
         }
         //关联楼盘
+        isSelectedBuilding = true;
+        mBuildingId = bean.getBid();
         CommUtils.showHtmlView(cetOfficeName, bean.getBuildingName());
         CommUtils.showHtmlTextView(tvAddress, bean.getAddress());
         buildingNextView();
@@ -448,6 +495,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
     @OnActivityResult(REQUEST_CREATE_BUILDING)
     void onCreateBuildingResult(int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
+            isSelectedBuilding = false;
             String buildingName = data.getStringExtra("buildingName");
             String buildingAddress = data.getStringExtra("buildingAddress");
             cetOfficeName.setText(buildingName);

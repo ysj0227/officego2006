@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.donkingliang.imageselector.utils.ImageSelector;
 import com.officego.commonlib.base.BaseMvpActivity;
+import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.FileHelper;
@@ -39,6 +40,7 @@ import com.owner.adapter.IdentityJointWorkAdapter;
 import com.owner.adapter.PropertyOwnershipCertificateAdapter;
 import com.owner.adapter.RentalAgreementAdapter;
 import com.owner.identity.contract.JointWorkContract;
+import com.owner.identity.model.GetIdentityInfoBean;
 import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.model.IdentityCompanyBean;
 import com.owner.identity.model.IdentityJointWorkBean;
@@ -136,6 +138,8 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
     private List<IdentityJointWorkBean.DataBean> mJointWorkList = new ArrayList<>();
     private List<IdentityCompanyBean.DataBean> mCompanyList = new ArrayList<>();
     private List<IdentityBuildingBean.DataBean> mList = new ArrayList<>();
+    private int jointWorkId;//关联网点id
+    private boolean isSelectedJointWork;//是否选择网点关联的
 
     @AfterViews
     void init() {
@@ -207,6 +211,11 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
     @Click(resName = "rl_identity")
     void identityClick() {
         SwitchRoleDialog.switchDialog(this);
+    }
+
+    @Click(resName = "btn_upload")
+    void uploadClick() {
+        mPresenter.getIdentityInfo(Constants.TYPE_IDENTITY_JOINT_WORK);
     }
 
     @Click(resName = "ibt_close_keyboard")
@@ -503,15 +512,35 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
         CreateJointWorkActivity_.intent(context).startForResult(REQUEST_CREATE_JOINT_WORK);
     }
 
+
+    @Override
+    public void getIdentityInfoSuccess(GetIdentityInfoBean data) {
+        //提交信息
+        mPresenter.submit(data, Constants.TYPE_CREATE_FROM_ALL, Constants.TYPE_IDENTITY_JOINT_WORK, 1,
+                isSelectedJointWork, String.valueOf(jointWorkId),
+                cetOfficeName.getText().toString(), listCertificate, listRental);
+    }
+
+    @Override
+    public void submitSuccess() {
+        //TODO 提交成功
+        //返回业主个人中心
+        shortTip("提交成功");
+        GotoActivityUtils.mainOwnerDefMainActivity(context);
+        finish();
+    }
+
     /**
      * 网点
      */
     @Override
     public void associateJointWork(IdentityJointWorkBean.DataBean bean, boolean isCreate) {
         if (isCreate) {
+            isSelectedJointWork = false;
             mPresenter.checkJointWork(IDENTITY_JOINT_WORK, Objects.requireNonNull(cetJointworkName.getText()).toString());
             return;
         }
+        isSelectedJointWork = true;
         //关联网点--发送消息 0个人1企业2联合
         SendMsgBean sb = new SendMsgBean();
         sb.setId(bean.getBid());

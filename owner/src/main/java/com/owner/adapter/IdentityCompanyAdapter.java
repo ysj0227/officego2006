@@ -5,6 +5,7 @@ import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.core.content.ContextCompat;
 
@@ -74,7 +75,8 @@ public class IdentityCompanyAdapter extends CommonListAdapter<IdentityCompanyBea
                 tvAdd.setText("关联公司");
                 tvAdd.setVisibility(View.VISIBLE);
                 tvDown.setVisibility(View.GONE);
-                holder.itemView.setOnClickListener(v -> listener.associateCompany(bean, false));
+                holder.itemView.setOnClickListener(v -> Toast.makeText(context, "暂无法关联", Toast.LENGTH_SHORT).show());
+//                holder.itemView.setOnClickListener(v -> listener.associateCompany(bean, false));
             }
             if (!TextUtils.isEmpty(bean.getCompany())) {
                 tvUp.setText(Html.fromHtml(bean.getCompany()));

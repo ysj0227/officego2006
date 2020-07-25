@@ -17,6 +17,7 @@ import androidx.core.content.FileProvider;
 
 import com.donkingliang.imageselector.utils.ImageSelector;
 import com.officego.commonlib.base.BaseActivity;
+import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
@@ -31,6 +32,9 @@ import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.TitleBarView;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
+import com.owner.identity.contract.CreateCompanyContract;
+import com.owner.identity.model.GetIdentityInfoBean;
+import com.owner.identity.presenter.CreateCompanyPresenter;
 import com.owner.rpc.OfficegoApi;
 
 import org.androidannotations.annotations.AfterViews;
@@ -48,8 +52,8 @@ import java.util.List;
  * Descriptions:
  **/
 @EActivity(resName = "activity_building_create")
-public class CreateBuildingActivity extends BaseActivity
-        implements AreaDialog.AreaSureListener {
+public class CreateBuildingActivity extends BaseMvpActivity<CreateCompanyPresenter>
+        implements CreateCompanyContract.View, AreaDialog.AreaSureListener {
     private static final int REQUEST_GALLERY = 0xa0;
     private static final int REQUEST_CAMERA = 0xa1;
     @ViewById(resName = "title_bar")
@@ -72,9 +76,13 @@ public class CreateBuildingActivity extends BaseActivity
     private Uri localPhotoUri;
     @Extra
     int identityType;
+    private String name, address;
 
     @AfterViews
     void init() {
+        mPresenter = new CreateCompanyPresenter();
+        mPresenter.attachView(this);
+
         StatusBarUtils.setStatusBarColor(this);
         titleBar.getLeftImg().setOnClickListener(view -> onBackPressed());
         localBuildingPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "buildingdec.jpg";
@@ -87,9 +95,9 @@ public class CreateBuildingActivity extends BaseActivity
 
     @Click(resName = "btn_save")
     void saveClick() {
-        String name = etNameContent.getText() == null ? "" : etNameContent.getText().toString();
+        name = etNameContent.getText() == null ? "" : etNameContent.getText().toString();
         String area = tvArea.getText() == null ? "" : tvArea.getText().toString();
-        String address = etAddressContent.getText() == null ? "" : etAddressContent.getText().toString();
+        address = etAddressContent.getText() == null ? "" : etAddressContent.getText().toString();
         if (TextUtils.isEmpty(name)) {
             ToastUtils.toastForShort(context, "请输入写字楼名称");
             return;
@@ -102,37 +110,8 @@ public class CreateBuildingActivity extends BaseActivity
             ToastUtils.toastForShort(context, "请输入详细地址");
             return;
         }
-        createBuilding(Constants.TYPE_CREATE_FROM_JOINT_BUILDING, identityType,
-                name, address, district, business, localBuildingPath);
+        mPresenter.getIdentityInfo(identityType);
     }
-
-    private void createBuilding(int createCompany, int identityType, String buildingName, String address,
-                                int district, int business, String mStrPath) {
-        showLoadingDialog();
-        OfficegoApi.getInstance().submitIdentityCreateBuilding(createCompany, identityType,
-                buildingName, address, district, business, mStrPath, new RetrofitCallback<Object>() {
-                    @Override
-                    public void onSuccess(int code, String msg, Object data) {
-                        shortTip("创建成功");
-                        hideLoadingDialog();
-                        Intent intent = getIntent();
-                        intent.putExtra("buildingName", buildingName);
-                        intent.putExtra("buildingAddress", address);
-                        setResult(RESULT_OK, intent);
-                        finish();
-                    }
-
-                    @Override
-                    public void onFail(int code, String msg, Object data) {
-                        LogCat.e(TAG, "111111111111 submitIdentityCreateBuilding fail code=" + code + " msg=" + msg);
-                        hideLoadingDialog();
-                        if (code==Constants.DEFAULT_ERROR_CODE){
-                            shortTip(msg);
-                        }
-                    }
-                });
-    }
-
 
     @Override
     public void AreaSure(String area, int district, int business) {
@@ -207,6 +186,7 @@ public class CreateBuildingActivity extends BaseActivity
                 ivBuildingIntroduce.setImageBitmap(BitmapFactory.decodeFile(localBuildingPath));
             } else if (requestCode == REQUEST_GALLERY && data != null) {//相册
                 List<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
+                localBuildingPath = images.get(0);
                 ivBuildingIntroduce.setImageBitmap(BitmapFactory.decodeFile(images.get(0)));
             }
         }
@@ -239,4 +219,20 @@ public class CreateBuildingActivity extends BaseActivity
         }
     }
 
+    @Override
+    public void getIdentityInfoSuccess(GetIdentityInfoBean data) {
+        mPresenter.submitBuilding(data, Constants.TYPE_CREATE_FROM_JOINT_BUILDING, identityType,
+                name, address, district, business, localBuildingPath);
+    }
+
+    @Override
+    public void submitSuccess() {
+        shortTip("创建成功");
+        hideLoadingDialog();
+        Intent intent = getIntent();
+        intent.putExtra("buildingName", name);
+        intent.putExtra("buildingAddress", address);
+        setResult(RESULT_OK, intent);
+        finish();
+    }
 }

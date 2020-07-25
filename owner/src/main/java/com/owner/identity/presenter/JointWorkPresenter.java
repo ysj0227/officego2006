@@ -6,6 +6,7 @@ import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.log.LogCat;
 import com.owner.identity.contract.JointWorkContract;
 import com.owner.identity.model.CheckIdentityBean;
+import com.owner.identity.model.GetIdentityInfoBean;
 import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.model.IdentityCompanyBean;
 import com.owner.identity.model.IdentityJointWorkBean;
@@ -123,5 +124,54 @@ public class JointWorkPresenter extends BasePresenter<JointWorkContract.View>
                 LogCat.e(TAG, "searchListBuild onFail code=" + code + "  msg=" + msg);
             }
         });
+    }
+
+    @Override
+    public void getIdentityInfo(int identityType) {
+        OfficegoApi.getInstance().getIdentityInfo(identityType, new RetrofitCallback<GetIdentityInfoBean>() {
+            @Override
+            public void onSuccess(int code, String msg, GetIdentityInfoBean data) {
+                if (isViewAttached()) {
+                    mView.getIdentityInfoSuccess(data);
+                }
+            }
+
+            @Override
+            public void onFail(int code, String msg, GetIdentityInfoBean data) {
+                if (isViewAttached()) {
+                    if (code == Constants.DEFAULT_ERROR_CODE) {
+                        mView.shortTip(msg);
+                    }
+                }
+            }
+        });
+    }
+
+    @Override
+    public void submit(GetIdentityInfoBean data, int createCompany, int identityType, int leaseType,
+                       boolean isSelectedJointWork, String jointWorkId, String buildingName,
+                       List<String> mFilePremisesPath, List<String> mFileContractPath) {
+        mView.showLoadingDialog();
+        OfficegoApi.getInstance().submitCompanyIdentityInfo(data, createCompany, identityType, leaseType,
+                isSelectedJointWork, jointWorkId, mFilePremisesPath, mFileContractPath, new RetrofitCallback<Object>() {
+                    @Override
+                    public void onSuccess(int code, String msg, Object data) {
+                        if (isViewAttached()) {
+                            mView.submitSuccess();
+                            mView.hideLoadingDialog();
+                        }
+                    }
+
+                    @Override
+                    public void onFail(int code, String msg, Object data) {
+                        LogCat.e(TAG,"1111 submitCompanyIdentityInfo onFail code="+code+" msg="+msg);
+                        if (isViewAttached()) {
+                            mView.hideLoadingDialog();
+                            if (code == Constants.DEFAULT_ERROR_CODE||code==Constants.ERROR_CODE_5002) {
+                                mView.shortTip(msg);
+                            }
+                        }
+                    }
+                });
     }
 }

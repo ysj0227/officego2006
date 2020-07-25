@@ -64,8 +64,8 @@ public class GetIdentityInfoBean implements Serializable {
     private String creditNo;
     private String buildingTempId;
     private String buildingStatus;
-    private List<?> contract;
-    private List<?> premisesPermit;
+//    private List<?> contract;
+//    private List<?> premisesPermit;
 
     public String getBusinessLicense() {
         return businessLicense;
@@ -283,19 +283,19 @@ public class GetIdentityInfoBean implements Serializable {
         this.buildingStatus = buildingStatus;
     }
 
-    public List<?> getContract() {
-        return contract;
-    }
-
-    public void setContract(List<?> contract) {
-        this.contract = contract;
-    }
-
-    public List<?> getPremisesPermit() {
-        return premisesPermit;
-    }
-
-    public void setPremisesPermit(List<?> premisesPermit) {
-        this.premisesPermit = premisesPermit;
-    }
+//    public List<?> getContract() {
+//        return contract;
+//    }
+//
+//    public void setContract(List<?> contract) {
+//        this.contract = contract;
+//    }
+//
+//    public List<?> getPremisesPermit() {
+//        return premisesPermit;
+//    }
+//
+//    public void setPremisesPermit(List<?> premisesPermit) {
+//        this.premisesPermit = premisesPermit;
+//    }
 }
