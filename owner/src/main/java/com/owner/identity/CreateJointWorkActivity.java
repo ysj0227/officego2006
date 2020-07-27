@@ -71,6 +71,8 @@ public class CreateJointWorkActivity extends BaseMvpActivity<CreateSubmitPresent
     Button btnSave;
     private int district, business;
     private String name, address;
+    //是否从相机拍照或相册选择了图片
+    private boolean isTakePhotoOrGallery;
 
     @AfterViews
     void init() {
@@ -108,6 +110,10 @@ public class CreateJointWorkActivity extends BaseMvpActivity<CreateSubmitPresent
             ToastUtils.toastForShort(context, "请输入详细地址");
             return;
         }
+        if (!isTakePhotoOrGallery) {
+            shortTip("请上传图片");
+            return;
+        }
         mPresenter.getIdentityInfo(Constants.TYPE_IDENTITY_JOINT_WORK);
     }
 
@@ -123,12 +129,9 @@ public class CreateJointWorkActivity extends BaseMvpActivity<CreateSubmitPresent
     public void onBackPressed() {
         CommonDialog dialog = new CommonDialog.Builder(context)
                 .setTitle("确认离开吗？")
-                .setMessage("网点未创建成功，点击保存下次可继续编辑。点击离开，已编辑信息不保存")
-                .setConfirmButton(R.string.str_save, (dialog12, which) -> {
-                    //TODO
-                    shortTip("save");
-                })
-                .setCancelButton(R.string.str_go_away, (dialog12, which) -> {
+                .setMessage("网点未创建成功，点击离开，已编辑信息不保存")
+                .setConfirmButton(R.string.sm_cancel)
+                .setConfirmButton(R.string.str_go_away, (dialog12, which) -> {
                     super.onBackPressed();
                 }).create();
         dialog.showWithOutTouchable(false);
@@ -179,8 +182,10 @@ public class CreateJointWorkActivity extends BaseMvpActivity<CreateSubmitPresent
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CAMERA) {//拍照
+                isTakePhotoOrGallery = true;
                 ivImage.setImageBitmap(BitmapFactory.decodeFile(localCoverImagePath));
             } else if (requestCode == REQUEST_GALLERY && data != null) {//相册
+                isTakePhotoOrGallery = true;
                 List<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
                 localCoverImagePath = images.get(0);
                 ivImage.setImageBitmap(BitmapFactory.decodeFile(images.get(0)));

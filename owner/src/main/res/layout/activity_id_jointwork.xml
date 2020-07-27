@@ -272,6 +272,7 @@
                 android:background="@color/white"
                 android:paddingLeft="@dimen/dp_18"
                 android:visibility="gone"
+                android:nestedScrollingEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rl_jointwork_name" />
@@ -283,6 +284,7 @@
                 android:background="@color/white"
                 android:paddingLeft="@dimen/dp_18"
                 android:visibility="gone"
+                android:nestedScrollingEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rl_company_name" />
@@ -311,6 +313,7 @@
                     android:id="@+id/rv_recommend_building"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:nestedScrollingEnabled="false"
                     android:layout_below="@id/ibt_close_keyboard" />
             </RelativeLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

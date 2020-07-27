@@ -144,6 +144,11 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         mPresenter.attachView(this);
         initRecyclerView();
         initData();
+
+        //test
+        rlOffice.setVisibility(View.VISIBLE);
+        rlType.setVisibility(View.VISIBLE);
+        buildingNextView();
     }
 
     private void initRecyclerView() {
@@ -197,7 +202,18 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
 
     @Click(resName = "btn_upload")
     void uploadClick() {
-        mPresenter.getIdentityInfo(Constants.TYPE_IDENTITY_COMPANY);
+        String name = cetCompanyName.getText() == null ? "" : cetCompanyName.getText().toString();
+        if (TextUtils.isEmpty(name)) {
+            shortTip("请输入公司名称");
+            return;
+        }
+        String buildingName = cetOfficeName.getText() == null ? "" : cetOfficeName.getText().toString();
+        if (TextUtils.isEmpty(buildingName)) {
+            shortTip("请输入楼盘名称");
+            return;
+        }
+        //TODO 图片处理
+        mPresenter.getIdentityInfo(Constants.TYPE_IDENTITY_COMPANY, false);
     }
 
     @Click(resName = "rl_type")
@@ -356,6 +372,9 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
 
     @Override
     public void deleteCertificate(int position) {
+        if (isFastClick(1200)) {
+            return;
+        }
         listCertificate.remove(position);
         certificateAdapter.notifyDataSetChanged();
     }
@@ -368,6 +387,9 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
 
     @Override
     public void deleteRentalAgreement(int position) {
+        if (isFastClick(1200)) {
+            return;
+        }
         listRental.remove(position);
         rentalAdapter.notifyDataSetChanged();
     }
@@ -480,16 +502,18 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
     }
 
     @Override
-    public void getIdentityInfoSuccess(GetIdentityInfoBean data) {
+    public void getIdentityInfoSuccess(GetIdentityInfoBean data, boolean isFirstGetInfo) {
         //提交信息
+        String buildingName = cetOfficeName.getText().toString();
+        String buildingAddress = tvAddress.getText().toString();
         mPresenter.submit(data, Constants.TYPE_CREATE_FROM_ALL, Constants.TYPE_IDENTITY_COMPANY, mLeaseType,
-                isSelectedBuilding, String.valueOf(mBuildingId), listCertificate, listRental);
+                isSelectedBuilding, String.valueOf(mBuildingId), buildingName, buildingAddress, listCertificate, listRental);
     }
 
     @Override
     public void submitSuccess() {
         //返回业主个人中心
-       SwitchRoleDialog.submitIdentitySuccessDialog(this);
+        SwitchRoleDialog.submitIdentitySuccessDialog(this);
     }
 
     /**

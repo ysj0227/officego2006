@@ -6,6 +6,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
 import com.owner.R;
@@ -47,7 +49,6 @@ public class PropertyOwnershipCertificateAdapter extends CommonListAdapter<Strin
         ImageView ivItem = holder.getView(R.id.iv_item);
         ImageView ivDelete = holder.getView(R.id.iv_delete);
         ivItem.setImageBitmap(BitmapFactory.decodeFile(bean));
-
         ivDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -56,7 +57,6 @@ public class PropertyOwnershipCertificateAdapter extends CommonListAdapter<Strin
                 }
             }
         });
-
         if (list != null && list.size() > 0 && holder.getAdapterPosition() == list.size() - 1) {
             ivDelete.setVisibility(View.GONE);
             ivItem.setOnClickListener(v -> certificateListener.addCertificate());

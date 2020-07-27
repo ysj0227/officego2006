@@ -374,7 +374,7 @@ public class OfficegoApi {
      * @param callback      String licenceId, String userLicenceId, String buildingId, String buildingTempId,
      */
     public void submitCompanyIdentityInfo(GetIdentityInfoBean data, int createCompany, int identityType, int leaseType,
-                                          boolean isSelectedBuilding, String buildingId,
+                                          boolean isSelectedBuilding, String buildingId, String buildingName, String buildingAddress,
                                           List<String> mFilePremisesPath, List<String> mFileContractPath, RetrofitCallback<Object> callback) {
         if (data == null) {
             return;
@@ -388,6 +388,8 @@ public class OfficegoApi {
         builder.addFormDataPart("userLicenceId", data.getUserLicenceId());//企业关系id
         if (isSelectedBuilding) {//关联的
             builder.addFormDataPart("buildingId", buildingId);//关联楼盘的id。- 覆盖
+            builder.addFormDataPart("buildingName", buildingName);//关联楼盘名称
+            builder.addFormDataPart("buildingAddress", buildingAddress);//关联楼盘地址
         } else {
             builder.addFormDataPart("buildingId", data.getBuildingId());//创建返回的楼盘id
         }
@@ -423,25 +425,19 @@ public class OfficegoApi {
      * @param leaseType     租赁类型0直租1转租
      * @param callback
      */
-    public void submitJointWorkIdentityInfo(GetIdentityInfoBean data, int createCompany, int identityType, int leaseType,
-                                            boolean isSelectedJointWork, String jointWorkId, String buildingName,
+    public void submitJointWorkIdentityInfo(GetIdentityInfoBean data, int createCompany, int identityType, int leaseType, String buildingName,
                                             List<String> mFilePremisesPath, List<String> mFileContractPath, RetrofitCallback<Object> callback) {
-        if (data == null) {
-            return;
-        }
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("token", SpUtils.getSignToken());
         builder.addFormDataPart("createCompany", createCompany + "");
         builder.addFormDataPart("identityType", identityType + "");
         builder.addFormDataPart("leaseType", leaseType + "");
-        builder.addFormDataPart("licenceId", data.getLicenceId());//企业id(如果是创建)//联办公司必须创建，目前无关联
-        builder.addFormDataPart("userLicenceId", data.getUserLicenceId());//企业关系id
-        if (isSelectedJointWork) {//关联的
-            builder.addFormDataPart("buildingId", jointWorkId);//关联网点的id。- 覆盖
-        } else {
+        if (data != null && !checkObjAllFieldsIsNull(data)) {
+            builder.addFormDataPart("licenceId", data.getLicenceId());//企业id(如果是创建)//联办公司必须创建，目前无关联
+            builder.addFormDataPart("userLicenceId", data.getUserLicenceId());//企业关系id
             builder.addFormDataPart("buildingId", data.getBuildingId());//创建返回的网点id
+            builder.addFormDataPart("buildingTempId", data.getBuildingTempId());//关联网点id  接口给
         }
-        builder.addFormDataPart("buildingTempId", data.getBuildingTempId());//关联网点id  接口给
         builder.addFormDataPart("buildingName", buildingName);  //底部楼盘名字
         //房产证
         if (mFilePremisesPath != null && mFilePremisesPath.size() > 0) {
@@ -479,9 +475,6 @@ public class OfficegoApi {
                                            String isCardFrontPath, String isCardBackPath,
                                            List<String> mFilePremisesPath, List<String> mFileContractPath,
                                            RetrofitCallback<Object> callback) {
-        if (data == null) {
-            return;
-        }
         //身份证正面
         RequestBody fileIdFront = RequestBody.create(MediaType.parse("image/*"), new File(isCardFrontPath));
         //身份证背面
@@ -491,15 +484,16 @@ public class OfficegoApi {
         builder.addFormDataPart("createCompany", createCompany + "");
         builder.addFormDataPart("identityType", identityType + "");
         builder.addFormDataPart("leaseType", leaseType + "");
-
-        builder.addFormDataPart("licenceId", data.getLicenceId());//企业id
-        builder.addFormDataPart("userLicenceId", data.getUserLicenceId());//企业关系id
-        if (isSelectedBuilding) {//关联的
-            builder.addFormDataPart("buildingId", buildingId);//关联楼盘的id。- 覆盖
-        } else {
-            builder.addFormDataPart("buildingId", data.getBuildingId());//创建返回的楼盘id
+        if (data != null && !checkObjAllFieldsIsNull(data)) {
+            builder.addFormDataPart("licenceId", data.getLicenceId());//企业id
+            builder.addFormDataPart("userLicenceId", data.getUserLicenceId());//企业关系id
+            builder.addFormDataPart("buildingTempId", data.getBuildingTempId());//关联楼id  接口给
+            if (isSelectedBuilding) {//关联的
+                builder.addFormDataPart("buildingId", buildingId);//关联楼盘的id。- 覆盖
+            } else {
+                builder.addFormDataPart("buildingId", data.getBuildingId());//创建返回的楼盘id
+            }
         }
-        builder.addFormDataPart("buildingTempId", data.getBuildingTempId());//关联楼id  接口给
         builder.addFormDataPart("userName", userName); //姓名
         builder.addFormDataPart("idCard", idCard);//身份证号
         //身份证正反面图片

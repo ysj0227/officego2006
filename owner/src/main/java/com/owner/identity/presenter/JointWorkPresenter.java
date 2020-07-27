@@ -127,12 +127,12 @@ public class JointWorkPresenter extends BasePresenter<JointWorkContract.View>
     }
 
     @Override
-    public void getIdentityInfo(int identityType) {
+    public void getIdentityInfo(int identityType, boolean isFirstGetInfo) {
         OfficegoApi.getInstance().getIdentityInfo(identityType, new RetrofitCallback<GetIdentityInfoBean>() {
             @Override
             public void onSuccess(int code, String msg, GetIdentityInfoBean data) {
                 if (isViewAttached()) {
-                    mView.getIdentityInfoSuccess(data);
+                    mView.getIdentityInfoSuccess(data, isFirstGetInfo);
                 }
             }
 
@@ -148,12 +148,11 @@ public class JointWorkPresenter extends BasePresenter<JointWorkContract.View>
     }
 
     @Override
-    public void submit(GetIdentityInfoBean data, int createCompany, int identityType, int leaseType,
-                       boolean isSelectedJointWork, String jointWorkId, String buildingName,
+    public void submit(GetIdentityInfoBean data, int createCompany, int identityType, int leaseType, String buildingName,
                        List<String> mFilePremisesPath, List<String> mFileContractPath) {
         mView.showLoadingDialog();
-        OfficegoApi.getInstance().submitCompanyIdentityInfo(data, createCompany, identityType, leaseType,
-                isSelectedJointWork, jointWorkId, mFilePremisesPath, mFileContractPath, new RetrofitCallback<Object>() {
+        OfficegoApi.getInstance().submitJointWorkIdentityInfo(data, createCompany, identityType, leaseType,
+                buildingName, mFilePremisesPath, mFileContractPath, new RetrofitCallback<Object>() {
                     @Override
                     public void onSuccess(int code, String msg, Object data) {
                         if (isViewAttached()) {
@@ -164,10 +163,10 @@ public class JointWorkPresenter extends BasePresenter<JointWorkContract.View>
 
                     @Override
                     public void onFail(int code, String msg, Object data) {
-                        LogCat.e(TAG,"1111 submitCompanyIdentityInfo onFail code="+code+" msg="+msg);
+                        LogCat.e(TAG, "1111 submitCompanyIdentityInfo onFail code=" + code + " msg=" + msg);
                         if (isViewAttached()) {
                             mView.hideLoadingDialog();
-                            if (code == Constants.DEFAULT_ERROR_CODE||code==Constants.ERROR_CODE_5002) {
+                            if (code == Constants.DEFAULT_ERROR_CODE || code == Constants.ERROR_CODE_5002) {
                                 mView.shortTip(msg);
                             }
                         }

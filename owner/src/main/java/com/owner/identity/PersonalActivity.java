@@ -147,6 +147,8 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
     private int mBuildingId;
     private boolean isSelectedBuilding;
     private String userName, idCard;
+    //是否上传了身份证正反面
+    private boolean isUploadIdCardFront, isUploadIdCardBack;
 
     @AfterViews
     void init() {
@@ -199,10 +201,12 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         rentalAdapter.setAgreementListener(this);
         rvRentalAgreement.setAdapter(rentalAdapter);
     }
+
     @Override
     public void onBackPressed() {
         SwitchRoleDialog.identityBackDialog(this);
     }
+
     @Click(resName = "btn_upload")
     void uploadClick() {
         userName = cetName.getText() == null ? "" : cetName.getText().toString();
@@ -215,12 +219,20 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
             shortTip("请输入身份证号");
             return;
         }
+        if (!isUploadIdCardFront) {
+            shortTip("请上传身份证正面图片");
+            return;
+        }
+        if (!isUploadIdCardBack) {
+            shortTip("请上传身份证背面图片");
+            return;
+        }
         String buildingName = cetOfficeName.getText() == null ? "" : cetOfficeName.getText().toString();
         if (TextUtils.isEmpty(buildingName)) {
             shortTip("请创建或关联楼盘");
             return;
         }
-        mPresenter.getIdentityInfo(Constants.TYPE_IDENTITY_PERSONAL);
+        mPresenter.getIdentityInfo(Constants.TYPE_IDENTITY_PERSONAL, false);
     }
 
     @Click(resName = "rl_type")
@@ -367,10 +379,12 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
             if (!TextUtils.isEmpty(path)) {
                 if (requestCode == IDCardCamera.TYPE_IDCARD_FRONT) { //身份证正面
                     hideIdCardFrontView();
+                    isUploadIdCardFront = true;
                     localIdCardFrontPath = path;
                     rivImageFront.setImageBitmap(BitmapFactory.decodeFile(path));
                 } else if (requestCode == IDCardCamera.TYPE_IDCARD_BACK) {  //身份证反面
                     hideIdCardBackView();
+                    isUploadIdCardBack = true;
                     localIdCardBackPath = path;
                     rivImageBack.setImageBitmap(BitmapFactory.decodeFile(path));
                 }
@@ -389,10 +403,12 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
                 List<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
                 if (TYPE_IDCARD_FRONT == mUploadType) {//身份证正面相册
                     hideIdCardFrontView();
+                    isUploadIdCardFront = true;
                     localIdCardFrontPath = images.get(0);
                     rivImageFront.setImageBitmap(BitmapFactory.decodeFile(images.get(0)));
                 } else if (TYPE_IDCARD_BACK == mUploadType) {//身份证反面相册
                     hideIdCardBackView();
+                    isUploadIdCardBack = true;
                     localIdCardBackPath = images.get(0);
                     rivImageBack.setImageBitmap(BitmapFactory.decodeFile(images.get(0)));
                 } else if (TYPE_CER == mUploadType) {//房产证相册
@@ -470,7 +486,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
     }
 
     @Override
-    public void getIdentityInfoSuccess(GetIdentityInfoBean data) {
+    public void getIdentityInfoSuccess(GetIdentityInfoBean data, boolean isFirstGetInfo) {
         //提交信息
         mPresenter.submit(data, Constants.TYPE_CREATE_FROM_ALL, Constants.TYPE_IDENTITY_PERSONAL, mLeaseType,
                 isSelectedBuilding, String.valueOf(mBuildingId), userName, idCard, localIdCardFrontPath, localIdCardBackPath, listCertificate, listRental);
@@ -528,6 +544,9 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
 
     @Override
     public void deleteCertificate(int position) {
+        if (isFastClick(1200)) {
+            return;
+        }
         listCertificate.remove(position);
         certificateAdapter.notifyDataSetChanged();
     }
@@ -540,6 +559,9 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
 
     @Override
     public void deleteRentalAgreement(int position) {
+        if (isFastClick(1200)) {
+            return;
+        }
         listRental.remove(position);
         rentalAdapter.notifyDataSetChanged();
     }

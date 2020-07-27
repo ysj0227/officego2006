@@ -24,7 +24,7 @@ public interface CompanyContract {
 
         void checkBuildingInfoSuccess();
 
-        void getIdentityInfoSuccess(GetIdentityInfoBean data);
+        void getIdentityInfoSuccess(GetIdentityInfoBean data,boolean isFirstGetInfo);
 
         void submitSuccess();
     }
@@ -39,10 +39,10 @@ public interface CompanyContract {
 
         void checkBuilding(int identityType,String name);
 
-        void getIdentityInfo(int identityType);
+        void getIdentityInfo(int identityType,boolean isFirstGetInfo);
 
         void submit(GetIdentityInfoBean data, int createCompany, int identityType, int leaseType,
-                    boolean isSelectedBuilding, String buildingId,
+                    boolean isSelectedBuilding, String buildingId,String buildingName, String buildingAddress,
                     List<String> mFilePremisesPath, List<String> mFileContractPath);
     }
 }

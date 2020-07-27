@@ -26,15 +26,15 @@ public interface JointWorkContract {
 
         void checkJointWorkInfoSuccess();
 
-        void getIdentityInfoSuccess(GetIdentityInfoBean data);
+        void getIdentityInfoSuccess(GetIdentityInfoBean data, boolean isFirstGetInfo);
 
         void submitSuccess();
     }
 
     interface Presenter {
-        void checkCompany(int identityType,String name);
+        void checkCompany(int identityType, String name);
 
-        void checkJointWork(int identityType,String name);
+        void checkJointWork(int identityType, String name);
 
         void getJointWork(String keyword);
 
@@ -42,10 +42,9 @@ public interface JointWorkContract {
 
         void getBuilding(String keyword);
 
-        void getIdentityInfo(int identityType);
+        void getIdentityInfo(int identityType, boolean isFirstGetInfo);
 
         void submit(GetIdentityInfoBean data, int createCompany, int identityType, int leaseType,
-                    boolean isSelectedJointWork, String jointWorkId, String buildingName,
-                    List<String> mFilePremisesPath, List<String> mFileContractPath);
+                    String buildingName, List<String> mFilePremisesPath, List<String> mFileContractPath);
     }
 }

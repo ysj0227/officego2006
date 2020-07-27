@@ -83,21 +83,35 @@ public class CreateCompanyActivity extends BaseMvpActivity<CreateSubmitPresenter
     @Extra
     String relevanceCompanyAddress;
     private String name, address, regNo;
+    //是否从相机拍照或相册选择了图片
+    private boolean isTakePhotoOrGallery;
 
     @AfterViews
     void init() {
         mPresenter = new CreateSubmitPresenter();
         mPresenter.attachView(this);
-
         StatusBarUtils.setStatusBarColor(this);
         titleBar.getLeftImg().setOnClickListener(view -> onBackPressed());
         setImageViewLayoutParams(context, rivImage);
         localLicensePath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "businessLicense.jpg";
         if (!TextUtils.isEmpty(relevanceCompanyName)) {
-            etNameContent.setText(relevanceCompanyName);
+            //有html标签 恒源<strong style='color:#06d2e7'>大<\/strong>楼的
+            if (relevanceCompanyName.contains("<strong style='color:#06d2e7'>")) {
+                String name = relevanceCompanyName.replace("<strong style='color:#06d2e7'>", "");
+                String name1 = name.replace("</strong>", "");
+                etNameContent.setText(name1);
+            } else {
+                etNameContent.setText(relevanceCompanyName);
+            }
         }
         if (!TextUtils.isEmpty(relevanceCompanyAddress)) {
-            etAddressContent.setText(relevanceCompanyAddress);
+            if (relevanceCompanyAddress.contains("<strong style='color:#06d2e7'>")) {
+                String name = relevanceCompanyAddress.replace("<strong style='color:#06d2e7'>", "");
+                String name1 = name.replace("</strong>", "");
+                etAddressContent.setText(name1);
+            } else {
+                etAddressContent.setText(relevanceCompanyAddress);
+            }
         }
     }
 
@@ -130,6 +144,10 @@ public class CreateCompanyActivity extends BaseMvpActivity<CreateSubmitPresenter
             shortTip("请输入营业执照注册号");
             return;
         }
+        if (!isTakePhotoOrGallery) {
+            shortTip("请上传营业执照");
+            return;
+        }
         //获取提交公司的信息
         mPresenter.getIdentityInfo(identityType);
     }
@@ -138,12 +156,9 @@ public class CreateCompanyActivity extends BaseMvpActivity<CreateSubmitPresenter
     public void onBackPressed() {
         CommonDialog dialog = new CommonDialog.Builder(context)
                 .setTitle("确认离开吗？")
-                .setMessage("公司未创建成功，点击保存下次可继续编辑。点击离开，已编辑信息不保存")
-                .setConfirmButton(R.string.str_save, (dialog12, which) -> {
-                    //TODO
-                    shortTip("save");
-                })
-                .setCancelButton(R.string.str_go_away, (dialog12, which) -> {
+                .setMessage("公司未创建成功，点击离开，已编辑信息不保存")
+                .setConfirmButton(R.string.sm_cancel)
+                .setConfirmButton(R.string.str_go_away, (dialog12, which) -> {
                     super.onBackPressed();
                 }).create();
         dialog.showWithOutTouchable(false);
@@ -199,8 +214,10 @@ public class CreateCompanyActivity extends BaseMvpActivity<CreateSubmitPresenter
         if (resultCode == RESULT_OK) {
             hideView();
             if (requestCode == REQUEST_CAMERA) {//拍照
+                isTakePhotoOrGallery = true;
                 rivImage.setImageBitmap(BitmapFactory.decodeFile(localLicensePath));
             } else if (requestCode == REQUEST_GALLERY && data != null) {//相册
+                isTakePhotoOrGallery = true;
                 List<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
                 localLicensePath = images.get(0);
                 rivImage.setImageBitmap(BitmapFactory.decodeFile(images.get(0)));

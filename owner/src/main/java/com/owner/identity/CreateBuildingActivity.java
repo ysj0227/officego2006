@@ -74,6 +74,8 @@ public class CreateBuildingActivity extends BaseMvpActivity<CreateSubmitPresente
     @Extra
     int identityType;
     private String name, address;
+    //是否从相机拍照或相册选择了图片
+    private boolean isTakePhotoOrGallery;
 
     @AfterViews
     void init() {
@@ -105,6 +107,10 @@ public class CreateBuildingActivity extends BaseMvpActivity<CreateSubmitPresente
         }
         if (TextUtils.isEmpty(address)) {
             ToastUtils.toastForShort(context, "请输入详细地址");
+            return;
+        }
+        if (!isTakePhotoOrGallery) {
+            shortTip("请上传图片");
             return;
         }
         mPresenter.getIdentityInfo(identityType);
@@ -180,8 +186,10 @@ public class CreateBuildingActivity extends BaseMvpActivity<CreateSubmitPresente
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CAMERA) {//拍照
+                isTakePhotoOrGallery=true;
                 ivBuildingIntroduce.setImageBitmap(BitmapFactory.decodeFile(localBuildingPath));
             } else if (requestCode == REQUEST_GALLERY && data != null) {//相册
+                isTakePhotoOrGallery=true;
                 List<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
                 localBuildingPath = images.get(0);
                 ivBuildingIntroduce.setImageBitmap(BitmapFactory.decodeFile(images.get(0)));

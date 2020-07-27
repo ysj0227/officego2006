@@ -18,7 +18,6 @@ import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.rongcloud.RongCloudSetUserInfoUtils;
-import com.officego.commonlib.common.rongcloud.SendMessageManager;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.update.VersionDialog;
 import com.officego.commonlib.utils.GlideUtils;
@@ -105,7 +104,8 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
             mPresenter.getUserInfo();
             return;
         }
-        if (mUserInfo.getAuditStatus() == 0) {
+        //auditStatus 0 审核中 |authority 1可以撤销0不能撤销
+        if (mUserInfo.getAuditStatus() == 0 && mUserInfo.getAuthority() == 1) {
             IdentityCancelActivity_.intent(mActivity).startForResult(REQUEST_CODE_IDENTITY);
             return;
         }

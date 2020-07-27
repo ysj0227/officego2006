@@ -65,12 +65,12 @@ public class PersonalPresenter extends BasePresenter<PersonalContract.View>
     }
 
     @Override
-    public void getIdentityInfo(int identityType) {
+    public void getIdentityInfo(int identityType, boolean isFirstGetInfo) {
         OfficegoApi.getInstance().getIdentityInfo(identityType, new RetrofitCallback<GetIdentityInfoBean>() {
             @Override
             public void onSuccess(int code, String msg, GetIdentityInfoBean data) {
                 if (isViewAttached()) {
-                    mView.getIdentityInfoSuccess(data);
+                    mView.getIdentityInfoSuccess(data, isFirstGetInfo);
                 }
             }
 

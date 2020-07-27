@@ -78,10 +78,9 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
     private static final int REQUEST_CREATE_JOINT_WORK = 0xa4;
     private static final int TYPE_CER = 1;
     private static final int TYPE_REN = 2;
-    private static final int TYPE_BUI = 3;
     private static final int IDENTITY_JOINT_WORK = 2; //0个人1企业2联合
 
-    private String localCerPath, localRenPath, localBuildingPath;
+    private String localCerPath, localRenPath;
     private Uri localPhotoUri;
     //title
     @ViewById(resName = "title_bar")
@@ -137,8 +136,6 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
     private List<IdentityJointWorkBean.DataBean> mJointWorkList = new ArrayList<>();
     private List<IdentityCompanyBean.DataBean> mCompanyList = new ArrayList<>();
     private List<IdentityBuildingBean.DataBean> mList = new ArrayList<>();
-    private int jointWorkId;//关联网点id
-    private boolean isSelectedJointWork;//是否选择网点关联的
 
     @AfterViews
     void init() {
@@ -152,14 +149,22 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
         //房产证，租赁，封面图path
         localCerPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "certificate.jpg";
         localRenPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "rental.jpg";
-        localBuildingPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "buildingdec.jpg";
         //搜索列表
         LinearLayoutManager jointWorkManager = new LinearLayoutManager(context);
+        jointWorkManager.setSmoothScrollbarEnabled(true);
+        jointWorkManager.setAutoMeasureEnabled(true);
         rvRecommendJointwork.setLayoutManager(jointWorkManager);
+        rvRecommendJointwork.setNestedScrollingEnabled(false);
         LinearLayoutManager companyManager = new LinearLayoutManager(context);
+        companyManager.setSmoothScrollbarEnabled(true);
+        companyManager.setAutoMeasureEnabled(true);
         rvRecommendCompany.setLayoutManager(companyManager);
+        rvRecommendCompany.setNestedScrollingEnabled(false);
         LinearLayoutManager buildingManager = new LinearLayoutManager(context);
+        buildingManager.setSmoothScrollbarEnabled(true);
+        buildingManager.setAutoMeasureEnabled(true);
         rvRecommendBuilding.setLayoutManager(buildingManager);
+        rvRecommendBuilding.setNestedScrollingEnabled(false);
         //图片
         GridLayoutManager layoutManager = new GridLayoutManager(context, 3);
         layoutManager.setSmoothScrollbarEnabled(true);
@@ -203,7 +208,23 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
 
     @Click(resName = "btn_upload")
     void uploadClick() {
-        mPresenter.getIdentityInfo(Constants.TYPE_IDENTITY_JOINT_WORK);
+        String name = cetCompanyName.getText() == null ? "" : cetCompanyName.getText().toString();
+        if (TextUtils.isEmpty(name)) {
+            shortTip("请输入网点名称");
+            return;
+        }
+        String companyName = cetCompanyName.getText() == null ? "" : cetCompanyName.getText().toString();
+        if (TextUtils.isEmpty(companyName)) {
+            shortTip("请输入公司名称");
+            return;
+        }
+        String buildingName = cetOfficeName.getText() == null ? "" : cetOfficeName.getText().toString();
+        if (TextUtils.isEmpty(buildingName)) {
+            shortTip("请输入楼盘名称");
+            return;
+        }
+        //TODO 图片处理
+        mPresenter.getIdentityInfo(Constants.TYPE_IDENTITY_JOINT_WORK, false);
     }
 
     @Click(resName = "ibt_close_keyboard")
@@ -240,10 +261,8 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
         File fileUri;
         if (TYPE_CER == mUploadType) {
             fileUri = new File(localCerPath);
-        } else if (TYPE_REN == mUploadType) {
-            fileUri = new File(localRenPath);
         } else {
-            fileUri = new File(localBuildingPath);
+            fileUri = new File(localRenPath);
         }
         localPhotoUri = Uri.fromFile(fileUri);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -257,19 +276,18 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
         if (!PermissionUtils.checkStoragePermission(this)) {
             return;
         }
-        //限数量的多选(比如最多9张)
-        List<String> selectList = new ArrayList<>();
-        selectList.clear();
-        if (TYPE_CER == mUploadType) {
-            selectList.addAll(listCertificate);
-        } else if (TYPE_REN == mUploadType) {
-            selectList.addAll(listRental);
-        }
+//        //限数量的多选(比如最多9张)
+//        List<String> selectList = new ArrayList<>();
+//        selectList.clear();
+//        if (TYPE_CER == mUploadType) {
+//            selectList.addAll(listCertificate);
+//        } else if (TYPE_REN == mUploadType) {
+//            selectList.addAll(listRental);
+//        }
         ImageSelector.builder()
                 .useCamera(false) // 设置是否使用拍照
                 .setSingle(false)  //设置是否单选
-                .setMaxSelectCount(TYPE_BUI == mUploadType ? 1 : 9)
-//                .setSelected((ArrayList<String>) selectList)
+                .setMaxSelectCount(9)
                 .canPreview(true) //是否可以预览图片，默认为true
                 .start(this, REQUEST_GALLERY); // 打开相册
     }
@@ -334,6 +352,9 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
 
     @Override
     public void deleteCertificate(int position) {
+        if (isFastClick(1200)) {
+            return;
+        }
         listCertificate.remove(position);
         certificateAdapter.notifyDataSetChanged();
     }
@@ -346,6 +367,9 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
 
     @Override
     public void deleteRentalAgreement(int position) {
+        if (isFastClick(1200)) {
+            return;
+        }
         listRental.remove(position);
         rentalAdapter.notifyDataSetChanged();
     }
@@ -502,10 +526,9 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
 
 
     @Override
-    public void getIdentityInfoSuccess(GetIdentityInfoBean data) {
+    public void getIdentityInfoSuccess(GetIdentityInfoBean data, boolean isFirstGetInfo) {
         //提交信息
         mPresenter.submit(data, Constants.TYPE_CREATE_FROM_ALL, Constants.TYPE_IDENTITY_JOINT_WORK, 1,
-                isSelectedJointWork, String.valueOf(jointWorkId),
                 cetOfficeName.getText().toString(), listCertificate, listRental);
     }
 
@@ -521,11 +544,9 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
     @Override
     public void associateJointWork(IdentityJointWorkBean.DataBean bean, boolean isCreate) {
         if (isCreate) {
-            isSelectedJointWork = false;
             mPresenter.checkJointWork(IDENTITY_JOINT_WORK, Objects.requireNonNull(cetJointworkName.getText()).toString());
             return;
         }
-        isSelectedJointWork = true;
         //关联网点--发送消息 0个人1企业2联合
         SendMsgBean sb = new SendMsgBean();
         sb.setId(bean.getBid());
@@ -565,6 +586,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
                 .relevanceCompanyName(bean.getCompany())
                 .relevanceCompanyAddress(bean.getAddress())
                 .startForResult(REQUEST_CREATE_COMPANY);
+        cetCompanyName.setText("");
         rlOffice.setVisibility(View.VISIBLE);
         hideView();
     }
@@ -609,5 +631,4 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
         rlType.setVisibility(View.VISIBLE);
         btnUpload.setVisibility(View.VISIBLE);
     }
-
 }

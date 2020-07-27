@@ -19,7 +19,7 @@ public interface PersonalContract {
 
         void checkBuildingInfoSuccess();
 
-        void getIdentityInfoSuccess(GetIdentityInfoBean data);
+        void getIdentityInfoSuccess(GetIdentityInfoBean data,boolean isFirstGetInfo);
 
         void submitSuccess();
     }
@@ -29,7 +29,7 @@ public interface PersonalContract {
 
         void checkBuilding(int identityType,String name);
 
-        void getIdentityInfo(int identityType);
+        void getIdentityInfo(int identityType,boolean isFirstGetInfo);
 
         void submit(GetIdentityInfoBean data, int createCompany, int identityType, int leaseType,
                     boolean isSelectedBuilding, String buildingId, String userName, String idCard,
