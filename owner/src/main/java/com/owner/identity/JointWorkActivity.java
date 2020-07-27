@@ -22,7 +22,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.donkingliang.imageselector.utils.ImageSelector;
 import com.officego.commonlib.base.BaseMvpActivity;
-import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.FileHelper;
@@ -32,7 +31,6 @@ import com.officego.commonlib.utils.PhotoUtils;
 import com.officego.commonlib.utils.ToastUtils;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.TitleBarView;
-import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
 import com.owner.adapter.IdentityBuildingAdapter;
 import com.owner.adapter.IdentityCompanyAdapter;
@@ -40,6 +38,7 @@ import com.owner.adapter.IdentityJointWorkAdapter;
 import com.owner.adapter.PropertyOwnershipCertificateAdapter;
 import com.owner.adapter.RentalAgreementAdapter;
 import com.owner.identity.contract.JointWorkContract;
+import com.owner.identity.dialog.SwitchRoleDialog;
 import com.owner.identity.model.GetIdentityInfoBean;
 import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.model.IdentityCompanyBean;
@@ -175,6 +174,9 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
     }
 
     private void initData() {
+        //返回
+        titleBar.getLeftLayout().setOnClickListener(view -> onBackPressed());
+        //搜索
         searchList();
         //初始化默认添加一个
         listCertificate.add("");
@@ -191,21 +193,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-    }
-
-    //返回二次确认
-    private void backDialog() {
-        CommonDialog dialog = new CommonDialog.Builder(context)
-                .setTitle("确认离开吗？")
-                .setMessage("网点未创建成功，点击保存下次可继续编辑。点击离开，已编辑信息不保存")
-                .setConfirmButton(R.string.str_save, (dialog12, which) -> {
-                    //TODO
-                })
-                .setCancelButton(R.string.str_go_away, (dialog12, which) -> {
-                    //TODO
-                }).create();
-        dialog.showWithOutTouchable(false);
+        SwitchRoleDialog.identityBackDialog(this);
     }
 
     @Click(resName = "rl_identity")
@@ -523,11 +511,8 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
 
     @Override
     public void submitSuccess() {
-        //TODO 提交成功
         //返回业主个人中心
-        shortTip("提交成功");
-        GotoActivityUtils.mainOwnerDefMainActivity(context);
-        finish();
+        SwitchRoleDialog.submitIdentitySuccessDialog(this);
     }
 
     /**
@@ -573,8 +558,13 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
             mPresenter.checkCompany(IDENTITY_JOINT_WORK, Objects.requireNonNull(cetCompanyName.getText()).toString());
             return;
         }
-        //关联公司
-        CommUtils.showHtmlView(cetCompanyName, bean.getCompany());
+        //联办的关联公司进入创建
+        CreateCompanyActivity_.intent(context)
+                .createCompany(Constants.TYPE_CREATE_FROM_COMPANY)
+                .identityType(Constants.TYPE_IDENTITY_JOINT_WORK)
+                .relevanceCompanyName(bean.getCompany())
+                .relevanceCompanyAddress(bean.getAddress())
+                .startForResult(REQUEST_CREATE_COMPANY);
         rlOffice.setVisibility(View.VISIBLE);
         hideView();
     }

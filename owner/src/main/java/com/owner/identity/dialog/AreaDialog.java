@@ -1,4 +1,4 @@
-package com.owner.identity;
+package com.owner.identity.dialog;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
@@ -30,6 +30,9 @@ import java.util.List;
 import java.util.Map;
 
 public class AreaDialog {
+    private TextView tvCity, tvArea;
+    private int district, business;
+
     public AreaSureListener getListener() {
         return listener;
     }
@@ -41,15 +44,14 @@ public class AreaDialog {
     public AreaSureListener listener;
 
     public interface AreaSureListener {
-        void AreaSure(String area,int district, int business );
+        void AreaSure(String area, int district, int business);
     }
 
-    public AreaDialog(Context context) {
+    public AreaDialog(Context context, int district, int business) {
+        this.district = district;
+        this.business = business;
         areaDialog(context);
     }
-
-    private TextView tvCity, tvArea;
-    private int district,  business;
 
     private void areaDialog(Context context) {
         Dialog dialog = new Dialog(context, R.style.BottomDialog);
@@ -88,7 +90,7 @@ public class AreaDialog {
                 ToastUtils.toastForShort(context, "请选择商圈");
                 return;
             }
-            listener.AreaSure("上海市" + city + area,district,business);
+            listener.AreaSure("上海市" + city + area, district, business);
             dialog.dismiss();
         });
         viewLayout.findViewById(R.id.tv_cancel).setOnClickListener(view -> dialog.dismiss());
@@ -123,18 +125,29 @@ public class AreaDialog {
         BusinessCircleAdapter(Context context, List<BusinessCircleBean.DataBean> data, RecyclerView recyclerViewRight) {
             super(context, R.layout.item_search_area, data);
             this.recyclerViewRight = recyclerViewRight;
+            //如果此时有选择
+            for (int i = 0; i < data.size(); i++) {
+                if (district == data.get(i).getDistrictID()) {
+                    businessCircleDetailsAdapter = new BusinessCircleDetailsAdapter(mContext, data.get(i).getList());
+                    recyclerViewRight.setAdapter(businessCircleDetailsAdapter);
+                }
+            }
         }
 
         @Override
         public void convert(ViewHolder holder, BusinessCircleBean.DataBean bean) {
             TextView itemBusiness = holder.getView(R.id.tv_item_meter);
             itemBusiness.setText(bean.getDistrict());
+            if (district == bean.getDistrictID()) {
+                tvCity.setText(bean.getDistrict());
+                mapBusiness.put(holder.getAdapterPosition(), true);
+            }
             holder.itemView.setOnClickListener(v -> {
                 mapBusiness.clear();
                 mapBusiness.put(holder.getAdapterPosition(), true);
                 tvCity.setText(bean.getDistrict());
                 tvArea.setText("");
-                district=bean.getDistrictID();
+                district = bean.getDistrictID();
                 if (!onBind) {
                     notifyDataSetChanged();
                 }
@@ -159,7 +172,6 @@ public class AreaDialog {
 
         BusinessCircleDetailsAdapter(Context context, List<BusinessCircleBean.DataBean.ListBean> list) {
             super(context, R.layout.item_search_area, list);
-            mapBusiness.clear();
         }
 
         @SuppressLint("DefaultLocale")
@@ -167,10 +179,15 @@ public class AreaDialog {
         public void convert(ViewHolder holder, BusinessCircleBean.DataBean.ListBean bean) {
             TextView itemBusiness = holder.getView(R.id.tv_item_meter);
             itemBusiness.setText(bean.getArea());
+            if (business == bean.getId()) {
+                tvArea.setText(bean.getArea());
+                mapBusiness.put(holder.getAdapterPosition(), true);
+            }
             holder.itemView.setOnClickListener(v -> {
+                mapBusiness.clear();
                 mapBusiness.put(holder.getAdapterPosition(), true);
                 tvArea.setText(bean.getArea());
-                business=bean.getId();
+                business = bean.getId();
                 if (!onBind) {
                     notifyDataSetChanged();
                 }

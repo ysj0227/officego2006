@@ -22,32 +22,27 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.donkingliang.imageselector.utils.ImageSelector;
 import com.officego.commonlib.base.BaseMvpActivity;
-import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.constant.Constants;
-import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.FileHelper;
 import com.officego.commonlib.utils.FileUtils;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.PhotoUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.TitleBarView;
-import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
 import com.owner.adapter.IdentityBuildingAdapter;
 import com.owner.adapter.IdentityCompanyAdapter;
 import com.owner.adapter.PropertyOwnershipCertificateAdapter;
 import com.owner.adapter.RentalAgreementAdapter;
 import com.owner.identity.contract.CompanyContract;
+import com.owner.identity.dialog.SwitchRoleDialog;
 import com.owner.identity.model.GetIdentityInfoBean;
 import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.model.IdentityCompanyBean;
 import com.owner.identity.model.SendMsgBean;
 import com.owner.identity.presenter.CompanyPresenter;
-import com.owner.mine.model.AvatarBean;
-import com.owner.rpc.OfficegoApi;
 import com.owner.utils.CommUtils;
 
 import org.androidannotations.annotations.AfterViews;
@@ -178,6 +173,9 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
     }
 
     private void initData() {
+        //返回
+        titleBar.getLeftLayout().setOnClickListener(view -> onBackPressed());
+        //搜索
         searchCompany();
         //初始化默认添加一个
         listCertificate.add("");
@@ -194,21 +192,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
 
     @Override
     public void onBackPressed() {
-        super.onBackPressed();
-    }
-
-    //返回二次确认
-    private void backDialog() {
-        CommonDialog dialog = new CommonDialog.Builder(context)
-                .setTitle("确认离开吗？")
-                .setMessage("网点未创建成功，点击保存下次可继续编辑。点击离开，已编辑信息不保存")
-                .setConfirmButton(R.string.str_save, (dialog12, which) -> {
-                    //TODO
-                })
-                .setCancelButton(R.string.str_go_away, (dialog12, which) -> {
-                    //TODO
-                }).create();
-        dialog.showWithOutTouchable(false);
+        SwitchRoleDialog.identityBackDialog(this);
     }
 
     @Click(resName = "btn_upload")
@@ -504,11 +488,8 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
 
     @Override
     public void submitSuccess() {
-        //TODO 提交成功
         //返回业主个人中心
-        shortTip("提交成功");
-        GotoActivityUtils.mainOwnerDefMainActivity(context);
-        finish();
+       SwitchRoleDialog.submitIdentitySuccessDialog(this);
     }
 
     /**

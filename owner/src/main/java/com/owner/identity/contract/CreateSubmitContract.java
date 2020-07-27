@@ -10,7 +10,7 @@ import com.owner.identity.model.GetIdentityInfoBean;
  * Data 2020/6/8.
  * Descriptions:
  **/
-public interface CreateCompanyContract {
+public interface CreateSubmitContract {
     interface View extends BaseView {
 
         void getIdentityInfoSuccess(GetIdentityInfoBean data);
@@ -22,14 +22,15 @@ public interface CreateCompanyContract {
 
         void getIdentityInfo(int identityType);
 
+        //创建公司提交
         void submitCompany(GetIdentityInfoBean data, int createCompany, int identityType,
                     String company, String address, String creditNo,
                     String mStrPath);
-
+        //创建楼盘提交
         void submitBuilding(GetIdentityInfoBean data, int createCompany, int identityType,
                             String buildingName, String address,
                             int district, int business, String mPath);
-
+        //创建联办提交
         void submitJointWork(GetIdentityInfoBean data, int createCompany, int identityType,
                              String branchesName, String address,
                              int district, int business, String mPath);

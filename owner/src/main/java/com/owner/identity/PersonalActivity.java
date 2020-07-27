@@ -23,7 +23,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.donkingliang.imageselector.utils.ImageSelector;
 import com.officego.commonlib.base.BaseMvpActivity;
-import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
@@ -39,6 +38,7 @@ import com.owner.adapter.IdentityBuildingAdapter;
 import com.owner.adapter.PropertyOwnershipCertificateAdapter;
 import com.owner.adapter.RentalAgreementAdapter;
 import com.owner.identity.contract.PersonalContract;
+import com.owner.identity.dialog.SwitchRoleDialog;
 import com.owner.identity.model.GetIdentityInfoBean;
 import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.presenter.PersonalPresenter;
@@ -183,6 +183,9 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
     }
 
     private void initData() {
+        //返回
+        titleBar.getLeftLayout().setOnClickListener(view -> onBackPressed());
+        //搜索
         searchList();
         //初始化默认添加一个
         listCertificate.add("");
@@ -196,17 +199,25 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         rentalAdapter.setAgreementListener(this);
         rvRentalAgreement.setAdapter(rentalAdapter);
     }
-
+    @Override
+    public void onBackPressed() {
+        SwitchRoleDialog.identityBackDialog(this);
+    }
     @Click(resName = "btn_upload")
     void uploadClick() {
         userName = cetName.getText() == null ? "" : cetName.getText().toString();
-        idCard = cetPersonalId.getText() == null ? "" : cetPersonalId.getText().toString();
         if (TextUtils.isEmpty(userName)) {
             shortTip("请输入姓名");
             return;
         }
+        idCard = cetPersonalId.getText() == null ? "" : cetPersonalId.getText().toString();
         if (TextUtils.isEmpty(idCard)) {
             shortTip("请输入身份证号");
+            return;
+        }
+        String buildingName = cetOfficeName.getText() == null ? "" : cetOfficeName.getText().toString();
+        if (TextUtils.isEmpty(buildingName)) {
+            shortTip("请创建或关联楼盘");
             return;
         }
         mPresenter.getIdentityInfo(Constants.TYPE_IDENTITY_PERSONAL);
@@ -467,11 +478,8 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
 
     @Override
     public void submitSuccess() {
-        //TODO 提交成功
         //返回业主个人中心
-        shortTip("提交成功");
-        GotoActivityUtils.mainOwnerDefMainActivity(context);
-        finish();
+        SwitchRoleDialog.submitIdentitySuccessDialog(this);
     }
 
     /**

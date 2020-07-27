@@ -18,11 +18,9 @@ import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 
 import com.donkingliang.imageselector.utils.ImageSelector;
-import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.constant.Constants;
-import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.FileHelper;
 import com.officego.commonlib.utils.FileUtils;
@@ -30,16 +28,14 @@ import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.PhotoUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.ToastUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.RoundImageView;
 import com.officego.commonlib.view.TitleBarView;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
-import com.owner.identity.contract.CreateCompanyContract;
+import com.owner.identity.contract.CreateSubmitContract;
 import com.owner.identity.model.GetIdentityInfoBean;
-import com.owner.identity.presenter.CreateCompanyPresenter;
-import com.owner.rpc.OfficegoApi;
+import com.owner.identity.presenter.CreateSubmitPresenter;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -56,8 +52,8 @@ import java.util.List;
  * Descriptions:
  **/
 @EActivity(resName = "activity_id_company_create")
-public class CreateCompanyActivity extends BaseMvpActivity<CreateCompanyPresenter>
-        implements CreateCompanyContract.View {
+public class CreateCompanyActivity extends BaseMvpActivity<CreateSubmitPresenter>
+        implements CreateSubmitContract.View {
     private static final int REQUEST_GALLERY = 0xa0;
     private static final int REQUEST_CAMERA = 0xa1;
 
@@ -81,17 +77,28 @@ public class CreateCompanyActivity extends BaseMvpActivity<CreateCompanyPresente
     int createCompany;
     @Extra
     int identityType;
+    //联办创建公司--关联的名称和地址
+    @Extra
+    String relevanceCompanyName;
+    @Extra
+    String relevanceCompanyAddress;
     private String name, address, regNo;
 
     @AfterViews
     void init() {
-        mPresenter = new CreateCompanyPresenter();
+        mPresenter = new CreateSubmitPresenter();
         mPresenter.attachView(this);
 
         StatusBarUtils.setStatusBarColor(this);
         titleBar.getLeftImg().setOnClickListener(view -> onBackPressed());
         setImageViewLayoutParams(context, rivImage);
         localLicensePath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "businessLicense.jpg";
+        if (!TextUtils.isEmpty(relevanceCompanyName)) {
+            etNameContent.setText(relevanceCompanyName);
+        }
+        if (!TextUtils.isEmpty(relevanceCompanyAddress)) {
+            etAddressContent.setText(relevanceCompanyAddress);
+        }
     }
 
     public static void setImageViewLayoutParams(Context context, View view) {
@@ -123,8 +130,8 @@ public class CreateCompanyActivity extends BaseMvpActivity<CreateCompanyPresente
             shortTip("请输入营业执照注册号");
             return;
         }
+        //获取提交公司的信息
         mPresenter.getIdentityInfo(identityType);
-
     }
 
     @Override
@@ -231,7 +238,7 @@ public class CreateCompanyActivity extends BaseMvpActivity<CreateCompanyPresente
     @Override
     public void getIdentityInfoSuccess(GetIdentityInfoBean data) {
         //提交信息
-        mPresenter.submitCompany(data,createCompany, identityType, name, address, regNo, localLicensePath);
+        mPresenter.submitCompany(data, createCompany, identityType, name, address, regNo, localLicensePath);
     }
 
     @Override

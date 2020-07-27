@@ -4,23 +4,17 @@ import com.officego.commonlib.base.BasePresenter;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.log.LogCat;
-import com.owner.identity.contract.CompanyContract;
-import com.owner.identity.contract.CreateCompanyContract;
-import com.owner.identity.model.CheckIdentityBean;
+import com.owner.identity.contract.CreateSubmitContract;
 import com.owner.identity.model.GetIdentityInfoBean;
-import com.owner.identity.model.IdentityBuildingBean;
-import com.owner.identity.model.IdentityCompanyBean;
 import com.owner.rpc.OfficegoApi;
-
-import java.util.List;
 
 /**
  * Created by YangShiJie
  * Data 2020/6/6.
  * Descriptions:
  **/
-public class CreateCompanyPresenter extends BasePresenter<CreateCompanyContract.View>
-        implements CreateCompanyContract.Presenter {
+public class CreateSubmitPresenter extends BasePresenter<CreateSubmitContract.View>
+        implements CreateSubmitContract.Presenter {
     private final String TAG = this.getClass().getSimpleName();
 
     @Override
@@ -37,7 +31,6 @@ public class CreateCompanyPresenter extends BasePresenter<CreateCompanyContract.
             public void onFail(int code, String msg, GetIdentityInfoBean data) {
                 if (isViewAttached()) {
                     if (code == Constants.DEFAULT_ERROR_CODE) {
-//                        mView.hideLoadingDialog();
                         mView.shortTip(msg);
                     }
                 }

@@ -16,26 +16,23 @@ import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 
 import com.donkingliang.imageselector.utils.ImageSelector;
-import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.constant.Constants;
-import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.FileHelper;
 import com.officego.commonlib.utils.FileUtils;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.PhotoUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.ToastUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.TitleBarView;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
-import com.owner.identity.contract.CreateCompanyContract;
+import com.owner.identity.contract.CreateSubmitContract;
+import com.owner.identity.dialog.AreaDialog;
 import com.owner.identity.model.GetIdentityInfoBean;
-import com.owner.identity.presenter.CreateCompanyPresenter;
-import com.owner.rpc.OfficegoApi;
+import com.owner.identity.presenter.CreateSubmitPresenter;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -52,8 +49,8 @@ import java.util.List;
  * Descriptions:
  **/
 @EActivity(resName = "activity_building_create")
-public class CreateBuildingActivity extends BaseMvpActivity<CreateCompanyPresenter>
-        implements CreateCompanyContract.View, AreaDialog.AreaSureListener {
+public class CreateBuildingActivity extends BaseMvpActivity<CreateSubmitPresenter>
+        implements CreateSubmitContract.View, AreaDialog.AreaSureListener {
     private static final int REQUEST_GALLERY = 0xa0;
     private static final int REQUEST_CAMERA = 0xa1;
     @ViewById(resName = "title_bar")
@@ -80,7 +77,7 @@ public class CreateBuildingActivity extends BaseMvpActivity<CreateCompanyPresent
 
     @AfterViews
     void init() {
-        mPresenter = new CreateCompanyPresenter();
+        mPresenter = new CreateSubmitPresenter();
         mPresenter.attachView(this);
 
         StatusBarUtils.setStatusBarColor(this);
@@ -90,7 +87,7 @@ public class CreateBuildingActivity extends BaseMvpActivity<CreateCompanyPresent
 
     @Click(resName = "rl_area")
     void areaClick() {
-        new AreaDialog(context).setListener(this);
+        new AreaDialog(context,district,business).setListener(this);
     }
 
     @Click(resName = "btn_save")
