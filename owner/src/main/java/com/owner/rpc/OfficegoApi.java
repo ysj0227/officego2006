@@ -396,20 +396,22 @@ public class OfficegoApi {
         builder.addFormDataPart("buildingTempId", data.getBuildingTempId());//关联楼id  接口给
         //房产证
         if (mFilePremisesPath != null && mFilePremisesPath.size() > 0) {
-            mFilePremisesPath.remove(mFilePremisesPath.size() - 1);
             RequestBody file;
             for (int i = 0; i < mFilePremisesPath.size(); i++) {
-                file = RequestBody.create(MediaType.parse("image/*"), new File(mFilePremisesPath.get(i)));
-                builder.addFormDataPart("filePremisesPermit", "filePremisesPermit" + i + ".png", file);
+                if (i > 0) {
+                    file = RequestBody.create(MediaType.parse("image/*"), new File(mFilePremisesPath.get(i)));
+                    builder.addFormDataPart("filePremisesPermit", "filePremisesPermit" + i + ".png", file);
+                }
             }
         }
         //租赁合同
         if (leaseType == 1 && mFileContractPath != null && mFileContractPath.size() > 0) {
-            mFileContractPath.remove(mFileContractPath.size() - 1);
             RequestBody file1;
             for (int i = 0; i < mFileContractPath.size(); i++) {
-                file1 = RequestBody.create(MediaType.parse("image/*"), new File(mFileContractPath.get(i)));
-                builder.addFormDataPart("fileContract", "fileContract" + i + ".png", file1);
+                if (i > 0) {
+                    file1 = RequestBody.create(MediaType.parse("image/*"), new File(mFileContractPath.get(i)));
+                    builder.addFormDataPart("fileContract", "fileContract" + i + ".png", file1);
+                }
             }
         }
         OfficegoRetrofitClient.getInstance().create(IdentitySearchInterface.class)
@@ -441,11 +443,12 @@ public class OfficegoApi {
         builder.addFormDataPart("buildingName", buildingName);  //底部楼盘名字
         //房产证
         if (mFilePremisesPath != null && mFilePremisesPath.size() > 0) {
-            mFilePremisesPath.remove(mFilePremisesPath.size() - 1);
             RequestBody file;
             for (int i = 0; i < mFilePremisesPath.size(); i++) {
-                file = RequestBody.create(MediaType.parse("image/*"), new File(mFilePremisesPath.get(i)));
-                builder.addFormDataPart("filePremisesPermit", "filePremisesPermit" + i + ".png", file);
+                if (i > 0) {
+                    file = RequestBody.create(MediaType.parse("image/*"), new File(mFilePremisesPath.get(i)));
+                    builder.addFormDataPart("filePremisesPermit", "filePremisesPermit" + i + ".png", file);
+                }
             }
         }
         //租赁合同
@@ -453,8 +456,10 @@ public class OfficegoApi {
             mFileContractPath.remove(mFileContractPath.size() - 1);
             RequestBody file1;
             for (int i = 0; i < mFileContractPath.size(); i++) {
-                file1 = RequestBody.create(MediaType.parse("image/*"), new File(mFileContractPath.get(i)));
-                builder.addFormDataPart("fileContract", "fileContract" + i + ".png", file1);
+                if (i > 0) {
+                    file1 = RequestBody.create(MediaType.parse("image/*"), new File(mFileContractPath.get(i)));
+                    builder.addFormDataPart("fileContract", "fileContract" + i + ".png", file1);
+                }
             }
         }
         OfficegoRetrofitClient.getInstance().create(IdentitySearchInterface.class)
@@ -472,7 +477,7 @@ public class OfficegoApi {
      */
     public void submitPersonalIdentityInfo(GetIdentityInfoBean data, int createCompany, int identityType, int leaseType,
                                            boolean isSelectedBuilding, String buildingId, String buildingName, String buildingAddress,
-                                           String userName, String idCard,String isCardFrontPath, String isCardBackPath,
+                                           String userName, String idCard, String isCardFrontPath, String isCardBackPath,
                                            List<String> mFilePremisesPath, List<String> mFileContractPath,
                                            RetrofitCallback<Object> callback) {
         //身份证正面
@@ -503,20 +508,22 @@ public class OfficegoApi {
         builder.addFormDataPart("fileIdBack", "fileIdBack.png", fileIdBack);
         //房产证图片
         if (mFilePremisesPath != null && mFilePremisesPath.size() > 0) {
-            mFilePremisesPath.remove(mFilePremisesPath.size() - 1);
             RequestBody file;
             for (int i = 0; i < mFilePremisesPath.size(); i++) {
-                file = RequestBody.create(MediaType.parse("image/*"), new File(mFilePremisesPath.get(i)));
-                builder.addFormDataPart("filePremisesPermit", "filePremisesPermit" + i + ".png", file);
+                if (i > 0) {
+                    file = RequestBody.create(MediaType.parse("image/*"), new File(mFilePremisesPath.get(i)));
+                    builder.addFormDataPart("filePremisesPermit", "filePremisesPermit" + i + ".png", file);
+                }
             }
         }
         //租赁合同
         if (leaseType == 1 && mFileContractPath != null && mFileContractPath.size() > 0) {
-            mFileContractPath.remove(mFileContractPath.size() - 1);
             RequestBody file1;
             for (int i = 0; i < mFileContractPath.size(); i++) {
-                file1 = RequestBody.create(MediaType.parse("image/*"), new File(mFileContractPath.get(i)));
-                builder.addFormDataPart("fileContract", "fileContract" + i + ".png", file1);
+                if (i > 0) {
+                    file1 = RequestBody.create(MediaType.parse("image/*"), new File(mFileContractPath.get(i)));
+                    builder.addFormDataPart("fileContract", "fileContract" + i + ".png", file1);
+                }
             }
         }
         OfficegoRetrofitClient.getInstance().create(IdentitySearchInterface.class)
