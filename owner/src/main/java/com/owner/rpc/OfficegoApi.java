@@ -471,8 +471,8 @@ public class OfficegoApi {
      * @param callback
      */
     public void submitPersonalIdentityInfo(GetIdentityInfoBean data, int createCompany, int identityType, int leaseType,
-                                           boolean isSelectedBuilding, String buildingId, String userName, String idCard,
-                                           String isCardFrontPath, String isCardBackPath,
+                                           boolean isSelectedBuilding, String buildingId, String buildingName, String buildingAddress,
+                                           String userName, String idCard,String isCardFrontPath, String isCardBackPath,
                                            List<String> mFilePremisesPath, List<String> mFileContractPath,
                                            RetrofitCallback<Object> callback) {
         //身份证正面
@@ -490,6 +490,8 @@ public class OfficegoApi {
             builder.addFormDataPart("buildingTempId", data.getBuildingTempId());//关联楼id  接口给
             if (isSelectedBuilding) {//关联的
                 builder.addFormDataPart("buildingId", buildingId);//关联楼盘的id。- 覆盖
+                builder.addFormDataPart("buildingName", buildingName);//关联楼盘名称
+                builder.addFormDataPart("buildingAddress", buildingAddress);//关联楼盘地址
             } else {
                 builder.addFormDataPart("buildingId", data.getBuildingId());//创建返回的楼盘id
             }

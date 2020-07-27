@@ -488,8 +488,11 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
     @Override
     public void getIdentityInfoSuccess(GetIdentityInfoBean data, boolean isFirstGetInfo) {
         //提交信息
+        String buildingName = cetOfficeName.getText().toString();
+        String buildingAddress = tvAddress.getText().toString();
         mPresenter.submit(data, Constants.TYPE_CREATE_FROM_ALL, Constants.TYPE_IDENTITY_PERSONAL, mLeaseType,
-                isSelectedBuilding, String.valueOf(mBuildingId), userName, idCard, localIdCardFrontPath, localIdCardBackPath, listCertificate, listRental);
+                isSelectedBuilding, String.valueOf(mBuildingId), buildingName, buildingAddress,
+                userName, idCard, localIdCardFrontPath, localIdCardBackPath, listCertificate, listRental);
     }
 
     @Override

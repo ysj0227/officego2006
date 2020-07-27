@@ -144,11 +144,10 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         mPresenter.attachView(this);
         initRecyclerView();
         initData();
-
         //test
-        rlOffice.setVisibility(View.VISIBLE);
-        rlType.setVisibility(View.VISIBLE);
-        buildingNextView();
+//        rlOffice.setVisibility(View.VISIBLE);
+//        rlType.setVisibility(View.VISIBLE);
+//        buildingNextView();
     }
 
     private void initRecyclerView() {

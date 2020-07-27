@@ -32,8 +32,8 @@ public interface PersonalContract {
         void getIdentityInfo(int identityType,boolean isFirstGetInfo);
 
         void submit(GetIdentityInfoBean data, int createCompany, int identityType, int leaseType,
-                    boolean isSelectedBuilding, String buildingId, String userName, String idCard,
-                    String isCardFrontPath, String isCardBackPath,
+                    boolean isSelectedBuilding, String buildingId,  String buildingName, String buildingAddress,
+                    String userName, String idCard,String isCardFrontPath, String isCardBackPath,
                     List<String> mFilePremisesPath, List<String> mFileContractPath);
     }
 }

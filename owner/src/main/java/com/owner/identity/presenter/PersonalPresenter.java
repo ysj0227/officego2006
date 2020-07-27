@@ -87,12 +87,13 @@ public class PersonalPresenter extends BasePresenter<PersonalContract.View>
 
     @Override
     public void submit(GetIdentityInfoBean data, int createCompany, int identityType, int leaseType,
-                       boolean isSelectedBuilding, String buildingId, String userName, String idCard,
+                       boolean isSelectedBuilding, String buildingId, String buildingName, String buildingAddress,
+                       String userName, String idCard,
                        String isCardFrontPath, String isCardBackPath,
                        List<String> mFilePremisesPath, List<String> mFileContractPath) {
         mView.showLoadingDialog();
         OfficegoApi.getInstance().submitPersonalIdentityInfo(data, createCompany, identityType, leaseType,
-                isSelectedBuilding, buildingId, userName, idCard,
+                isSelectedBuilding, buildingId, buildingName,buildingAddress,userName, idCard,
                 isCardFrontPath, isCardBackPath,
                 mFilePremisesPath, mFileContractPath, new RetrofitCallback<Object>() {
                     @Override
