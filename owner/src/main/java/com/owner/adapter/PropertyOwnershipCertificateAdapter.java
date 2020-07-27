@@ -8,8 +8,10 @@ import android.widget.ImageView;
 
 import androidx.annotation.NonNull;
 
+import com.bumptech.glide.Glide;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
+import com.officego.commonlib.utils.GlideUtils;
 import com.owner.R;
 
 import java.util.List;
@@ -22,6 +24,7 @@ import java.util.List;
 public class PropertyOwnershipCertificateAdapter extends CommonListAdapter<String> {
 
     private List<String> list;
+    private Context context;
 
     public CertificateListener getCertificateListener() {
         return certificateListener;
@@ -36,6 +39,7 @@ public class PropertyOwnershipCertificateAdapter extends CommonListAdapter<Strin
     public PropertyOwnershipCertificateAdapter(Context context, List<String> list) {
         super(context, R.layout.item_id_company_img, list);
         this.list = list;
+        this.context = context;
     }
 
     public interface CertificateListener {
@@ -48,7 +52,11 @@ public class PropertyOwnershipCertificateAdapter extends CommonListAdapter<Strin
     public void convert(ViewHolder holder, final String bean) {
         ImageView ivItem = holder.getView(R.id.iv_item);
         ImageView ivDelete = holder.getView(R.id.iv_delete);
-        ivItem.setImageBitmap(BitmapFactory.decodeFile(bean));
+        if (bean.contains("http") || bean.contains("https")) {
+            Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(bean).into(ivItem);
+        } else {
+            ivItem.setImageBitmap(BitmapFactory.decodeFile(bean));
+        }
         ivDelete.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {

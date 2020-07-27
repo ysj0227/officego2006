@@ -5,36 +5,37 @@ import java.util.List;
 
 public class GetIdentityInfoBean implements Serializable {
 
+
     /**
-     * businessLicense : https://img.officego.com/authentication/1595505605455.png
-     * idCard : https://img.officego.com/authentication/1595505605455.png
-     * btype :
+     * businessLicense : https://img.officego.com/authentication/1595848313061.png
+     * idCard :
+     * btype : 1
      * remark :
-     * buildingManagersId :
-     * leaseType : 0
-     * licenceId : 21
+     * buildingManagersId : 166
+     * leaseType : 1
+     * licenceId : 47
      * identityType : 1
      * proprietorRealname :
      * proprietorJob :
-     * company : ysss
-     * address : 地对地导弹
-     * contract : []
-     * userLicenceId : 68
+     * company : 点点点
+     * address : 对对对
+     * contract : [{"imgUrl":"https://img.officego.com/authentication/1595848335773.png","typeId":47,"remark":null,"id":957,"imgType":2},{"imgUrl":"https://img.officego.com/authentication/1595848337563.png","typeId":47,"remark":null,"id":958,"imgType":2},{"imgUrl":"https://img.officego.com/authentication/1595848349783.png","typeId":47,"remark":null,"id":961,"imgType":2}]
+     * userLicenceId : 94
      * idFront :
-     * userId : 454
+     * userId : 415
      * idBack :
-     * buildingId :
+     * buildingId : 4626
      * licenceStatus : 1
-     * buildingName :
-     * buildingAddress :
+     * buildingName : 大来大楼
+     * buildingAddress : 广东路51、59
      * userLicenceStatus : 1
      * authority : 1
      * branchesName :
      * auditStatus : 1
-     * creditNo : 11111
-     * buildingTempId :
-     * premisesPermit : []
-     * buildingStatus :
+     * creditNo : 1222334
+     * buildingTempId : 187
+     * premisesPermit : [{"imgUrl":"https://img.officego.com/authentication/1595848324575.png","typeId":47,"remark":null,"id":955,"imgType":1},{"imgUrl":"https://img.officego.com/authentication/1595848325427.png","typeId":47,"remark":null,"id":956,"imgType":1},{"imgUrl":"https://img.officego.com/authentication/1595848343758.png","typeId":47,"remark":null,"id":959,"imgType":1},{"imgUrl":"https://img.officego.com/authentication/1595848352634.png","typeId":47,"remark":null,"id":960,"imgType":1}]
+     * buildingStatus : 1
      */
 
     private String businessLicense;
@@ -64,8 +65,8 @@ public class GetIdentityInfoBean implements Serializable {
     private String creditNo;
     private String buildingTempId;
     private String buildingStatus;
-//    private List<?> contract;
-//    private List<?> premisesPermit;
+    private List<ContractBean> contract;
+    private List<PremisesPermitBean> premisesPermit;
 
     public String getBusinessLicense() {
         return businessLicense;
@@ -283,19 +284,131 @@ public class GetIdentityInfoBean implements Serializable {
         this.buildingStatus = buildingStatus;
     }
 
-//    public List<?> getContract() {
-//        return contract;
-//    }
-//
-//    public void setContract(List<?> contract) {
-//        this.contract = contract;
-//    }
-//
-//    public List<?> getPremisesPermit() {
-//        return premisesPermit;
-//    }
-//
-//    public void setPremisesPermit(List<?> premisesPermit) {
-//        this.premisesPermit = premisesPermit;
-//    }
+    public List<ContractBean> getContract() {
+        return contract;
+    }
+
+    public void setContract(List<ContractBean> contract) {
+        this.contract = contract;
+    }
+
+    public List<PremisesPermitBean> getPremisesPermit() {
+        return premisesPermit;
+    }
+
+    public void setPremisesPermit(List<PremisesPermitBean> premisesPermit) {
+        this.premisesPermit = premisesPermit;
+    }
+
+    public static class ContractBean implements Serializable {
+        /**
+         * imgUrl : https://img.officego.com/authentication/1595848335773.png
+         * typeId : 47
+         * remark : null
+         * id : 957
+         * imgType : 2
+         */
+
+        private String imgUrl;
+        private int typeId;
+        private Object remark;
+        private int id;
+        private int imgType;
+
+        public String getImgUrl() {
+            return imgUrl;
+        }
+
+        public void setImgUrl(String imgUrl) {
+            this.imgUrl = imgUrl;
+        }
+
+        public int getTypeId() {
+            return typeId;
+        }
+
+        public void setTypeId(int typeId) {
+            this.typeId = typeId;
+        }
+
+        public Object getRemark() {
+            return remark;
+        }
+
+        public void setRemark(Object remark) {
+            this.remark = remark;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public int getImgType() {
+            return imgType;
+        }
+
+        public void setImgType(int imgType) {
+            this.imgType = imgType;
+        }
+    }
+
+    public static class PremisesPermitBean implements Serializable {
+        /**
+         * imgUrl : https://img.officego.com/authentication/1595848324575.png
+         * typeId : 47
+         * remark : null
+         * id : 955
+         * imgType : 1
+         */
+
+        private String imgUrl;
+        private int typeId;
+        private Object remark;
+        private int id;
+        private int imgType;
+
+        public String getImgUrl() {
+            return imgUrl;
+        }
+
+        public void setImgUrl(String imgUrl) {
+            this.imgUrl = imgUrl;
+        }
+
+        public int getTypeId() {
+            return typeId;
+        }
+
+        public void setTypeId(int typeId) {
+            this.typeId = typeId;
+        }
+
+        public Object getRemark() {
+            return remark;
+        }
+
+        public void setRemark(Object remark) {
+            this.remark = remark;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public int getImgType() {
+            return imgType;
+        }
+
+        public void setImgType(int imgType) {
+            this.imgType = imgType;
+        }
+    }
 }

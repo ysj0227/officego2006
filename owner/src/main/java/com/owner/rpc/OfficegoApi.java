@@ -398,7 +398,7 @@ public class OfficegoApi {
         if (mFilePremisesPath != null && mFilePremisesPath.size() > 0) {
             RequestBody file;
             for (int i = 0; i < mFilePremisesPath.size(); i++) {
-                if (i > 0) {
+                if (i < mFilePremisesPath.size() - 1) {
                     file = RequestBody.create(MediaType.parse("image/*"), new File(mFilePremisesPath.get(i)));
                     builder.addFormDataPart("filePremisesPermit", "filePremisesPermit" + i + ".png", file);
                 }
@@ -408,7 +408,7 @@ public class OfficegoApi {
         if (leaseType == 1 && mFileContractPath != null && mFileContractPath.size() > 0) {
             RequestBody file1;
             for (int i = 0; i < mFileContractPath.size(); i++) {
-                if (i > 0) {
+                if (i < mFileContractPath.size() - 1) {
                     file1 = RequestBody.create(MediaType.parse("image/*"), new File(mFileContractPath.get(i)));
                     builder.addFormDataPart("fileContract", "fileContract" + i + ".png", file1);
                 }
@@ -445,7 +445,7 @@ public class OfficegoApi {
         if (mFilePremisesPath != null && mFilePremisesPath.size() > 0) {
             RequestBody file;
             for (int i = 0; i < mFilePremisesPath.size(); i++) {
-                if (i > 0) {
+                if (i < mFilePremisesPath.size() - 1) {
                     file = RequestBody.create(MediaType.parse("image/*"), new File(mFilePremisesPath.get(i)));
                     builder.addFormDataPart("filePremisesPermit", "filePremisesPermit" + i + ".png", file);
                 }
@@ -456,7 +456,7 @@ public class OfficegoApi {
             mFileContractPath.remove(mFileContractPath.size() - 1);
             RequestBody file1;
             for (int i = 0; i < mFileContractPath.size(); i++) {
-                if (i > 0) {
+                if (i < mFileContractPath.size() - 1) {
                     file1 = RequestBody.create(MediaType.parse("image/*"), new File(mFileContractPath.get(i)));
                     builder.addFormDataPart("fileContract", "fileContract" + i + ".png", file1);
                 }
@@ -510,7 +510,7 @@ public class OfficegoApi {
         if (mFilePremisesPath != null && mFilePremisesPath.size() > 0) {
             RequestBody file;
             for (int i = 0; i < mFilePremisesPath.size(); i++) {
-                if (i > 0) {
+                if (i < mFilePremisesPath.size() - 1) {
                     file = RequestBody.create(MediaType.parse("image/*"), new File(mFilePremisesPath.get(i)));
                     builder.addFormDataPart("filePremisesPermit", "filePremisesPermit" + i + ".png", file);
                 }
@@ -520,7 +520,7 @@ public class OfficegoApi {
         if (leaseType == 1 && mFileContractPath != null && mFileContractPath.size() > 0) {
             RequestBody file1;
             for (int i = 0; i < mFileContractPath.size(); i++) {
-                if (i > 0) {
+                if (i < mFileContractPath.size() - 1) {
                     file1 = RequestBody.create(MediaType.parse("image/*"), new File(mFileContractPath.get(i)));
                     builder.addFormDataPart("fileContract", "fileContract" + i + ".png", file1);
                 }

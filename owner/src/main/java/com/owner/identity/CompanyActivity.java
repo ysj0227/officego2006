@@ -144,10 +144,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         mPresenter.attachView(this);
         initRecyclerView();
         initData();
-        //test
-        rlOffice.setVisibility(View.VISIBLE);
-        rlType.setVisibility(View.VISIBLE);
-        buildingNextView();
+        mPresenter.getIdentityInfo(Constants.TYPE_IDENTITY_COMPANY, true);
     }
 
     private void initRecyclerView() {
@@ -224,15 +221,20 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         final String[] items = {"自有房产", "租赁房产"};
         new AlertDialog.Builder(CompanyActivity.this)
                 .setItems(items, (dialogInterface, i) -> {
-                    if (i == 0) {
-                        mLeaseType = 0;
-                        showCertificateView();
-                    } else {
-                        mLeaseType = 1;
-                        showCerAgreementView();
-                    }
-                    tvType.setText(items[i]);
+                    houseType(i);
                 }).create().show();
+    }
+
+    private void houseType(int type) {
+        if (type == 0) {
+            mLeaseType = 0;
+            showCertificateView();
+            tvType.setText("自有房产");
+        } else {
+            mLeaseType = 1;
+            showCerAgreementView();
+            tvType.setText("租赁房产");
+        }
     }
 
     private void showCertificateView() {
@@ -502,11 +504,32 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
 
     @Override
     public void getIdentityInfoSuccess(GetIdentityInfoBean data, boolean isFirstGetInfo) {
-        //提交信息
-        String buildingName = cetOfficeName.getText().toString();
-        String buildingAddress = tvAddress.getText().toString();
-        mPresenter.submit(data, Constants.TYPE_CREATE_FROM_ALL, Constants.TYPE_IDENTITY_COMPANY, mLeaseType,
-                isSelectedBuilding, String.valueOf(mBuildingId), buildingName, buildingAddress, listCertificate, listRental);
+        if (isFirstGetInfo) {
+            rlOffice.setVisibility(View.VISIBLE);
+            rlType.setVisibility(View.VISIBLE);
+            buildingNextView();
+            cetCompanyName.setText(data.getCompany());
+            cetOfficeName.setText(data.getBuildingName());
+            tvAddress.setText(data.getAddress());
+            houseType(Integer.valueOf(data.getLeaseType()));
+            hideView();
+            //房产证
+            for (int i = 0; i <data.getPremisesPermit().size() ; i++) {
+                listCertificate.add(listCertificate.size() - 1, data.getPremisesPermit().get(i).getImgUrl());
+            }
+            certificateAdapter.notifyDataSetChanged();
+            //租赁合同 TODO
+            for (int i = 0; i <data.getContract().size() ; i++) {
+                listRental.add(listRental.size() - 1, data.getContract().get(i).getImgUrl());
+            }
+            rentalAdapter.notifyDataSetChanged();
+        } else {
+            //提交信息
+            String buildingName = cetOfficeName.getText().toString();
+            String buildingAddress = tvAddress.getText().toString();
+            mPresenter.submit(data, Constants.TYPE_CREATE_FROM_ALL, Constants.TYPE_IDENTITY_COMPANY, mLeaseType,
+                    isSelectedBuilding, String.valueOf(mBuildingId), buildingName, buildingAddress, listCertificate, listRental);
+        }
     }
 
     @Override
