@@ -27,6 +27,7 @@ import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.FileHelper;
 import com.officego.commonlib.utils.FileUtils;
+import com.officego.commonlib.utils.ImageUtils;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.PhotoUtils;
 import com.officego.commonlib.view.ClearableEditText;
@@ -313,9 +314,11 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CAMERA) {//拍照
                 if (TYPE_CER == mUploadType) {//房产证
+                    ImageUtils.isSaveCropImageView(localCerPath);//图片处理
                     listCertificate.add(listCertificate.size() - 1, new ImageBean(false, 0, localCerPath));
                     certificateAdapter.notifyDataSetChanged();
                 } else if (TYPE_REN == mUploadType) {//租赁合同
+                    ImageUtils.isSaveCropImageView(localCerPath);//图片处理
                     listRental.add(listRental.size() - 1, new ImageBean(false, 0, localRenPath));
                     rentalAdapter.notifyDataSetChanged();
                 }
@@ -323,11 +326,13 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
                 List<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
                 if (TYPE_CER == mUploadType) {//房产证
                     for (int i = 0; i < images.size(); i++) {
+                        ImageUtils.isSaveCropImageView(images.get(i));//图片处理
                         listCertificate.add(listCertificate.size() - 1, new ImageBean(false, 0, images.get(i)));
                     }
                     certificateAdapter.notifyDataSetChanged();
                 } else if (TYPE_REN == mUploadType) {//租赁合同
                     for (int i = 0; i < images.size(); i++) {
+                        ImageUtils.isSaveCropImageView(images.get(i));//图片处理
                         listRental.add(listRental.size() - 1, new ImageBean(false, 0, images.get(i)));
                     }
                     rentalAdapter.notifyDataSetChanged();
@@ -411,6 +416,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
 
     /**
      * 删除图片
+     *
      * @param isPremisesImage 是否房产证图片
      * @param position        pos
      */
@@ -521,6 +527,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         CreateCompanyActivity_.intent(context)
                 .createCompany(Constants.TYPE_CREATE_FROM_COMPANY)
                 .identityType(Constants.TYPE_IDENTITY_COMPANY)
+                .relevanceCompanyName(cetCompanyName.getText() == null ? "" : cetCompanyName.getText().toString())//编辑创建传入子页面
                 .startForResult(REQUEST_CREATE_COMPANY);
     }
 
@@ -529,6 +536,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         //创建楼盘
         CreateBuildingActivity_.intent(context)
                 .identityType(Constants.TYPE_IDENTITY_COMPANY)
+                .mBuildingName(cetOfficeName.getText() == null ? "" : cetOfficeName.getText().toString())//编辑创建传入子页面
                 .startForResult(REQUEST_CREATE_BUILDING);
     }
 
@@ -536,12 +544,14 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
     public void getIdentityInfoSuccess(GetIdentityInfoBean data, boolean isFirstGetInfo) {
         if (isFirstGetInfo) {
             if (data != null && !checkObjAllFieldsIsNull(data)) {
+                //auditStatus 为2 驳回  authority 如果是1(普通) 就是创建 ，如果是0(管理员)就是关联
+                cetCompanyName.setText(data.getCompany());
+                if (!IdentityRejectInfo.isCreateReject(data))  return;
+                cetOfficeName.setText(data.getBuildingName());
+                tvAddress.setText(data.getBuildingAddress());
+                houseType(Integer.valueOf(data.getLeaseType()));
                 rlOffice.setVisibility(View.VISIBLE);
                 rlType.setVisibility(View.VISIBLE);
-                cetCompanyName.setText(data.getCompany());
-                cetOfficeName.setText(data.getBuildingName());
-                tvAddress.setText(data.getAddress());
-                houseType(Integer.valueOf(data.getLeaseType()));
                 buildingNextView();
                 //房产证
                 if (listCertificate != null && listCertificate.size() > 0) {
@@ -555,9 +565,17 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
                 if (listRental != null && listRental.size() > 0) {
                     for (int i = 0; i < data.getContract().size(); i++) {
                         listRental.add(listRental.size() - 1, new ImageBean(true,
-                                data.getPremisesPermit().get(i).getId(), data.getPremisesPermit().get(i).getImgUrl()));
+                                data.getContract().get(i).getId(), data.getContract().get(i).getImgUrl()));
                     }
                     rentalAdapter.notifyDataSetChanged();
+                }
+                //赋值--驳回上传
+                mLeaseType = Integer.valueOf(data.getLeaseType());
+                if (TextUtils.isEmpty(data.getBuildingId()) || TextUtils.equals("0", data.getBuildingId())) { //创建的
+                    isSelectedBuilding = false;
+                } else {//关联的
+                    isSelectedBuilding = true;
+                    mBuildingId = Integer.valueOf(data.getBuildingId());
                 }
             }
         } else {

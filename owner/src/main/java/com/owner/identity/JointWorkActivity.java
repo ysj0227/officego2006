@@ -557,18 +557,19 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
         CreateJointWorkActivity_.intent(context).startForResult(REQUEST_CREATE_JOINT_WORK);
     }
 
-
     @Override
     public void getIdentityInfoSuccess(GetIdentityInfoBean data, boolean isFirstGetInfo) {
         if (isFirstGetInfo) {
             if (data != null && !checkObjAllFieldsIsNull(data)) {
-                rlOffice.setVisibility(View.VISIBLE);
-                rlType.setVisibility(View.VISIBLE);
                 cetJointworkName.setText(data.getBranchesName());
                 tvJointworkAddress.setText(data.getBuildingAddress());
+                //auditStatus 为2 驳回  authority 如果是1(普通) 就是创建 ，如果是0(管理员)就是关联
+                if (!IdentityRejectInfo.isCreateReject(data))  return;
                 cetCompanyName.setText(data.getCompany());
                 cetOfficeName.setText(data.getBuildingName());
                 tvAddress.setText(data.getAddress());
+                rlOffice.setVisibility(View.VISIBLE);
+                rlType.setVisibility(View.VISIBLE);
                 buildingNextView();
                 //房产证
                 if (listCertificate != null && listCertificate.size() > 0) {
@@ -582,7 +583,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
                 if (listRental != null && listRental.size() > 0) {
                     for (int i = 0; i < data.getContract().size(); i++) {
                         listRental.add(listRental.size() - 1, new ImageBean(true,
-                                data.getPremisesPermit().get(i).getId(), data.getPremisesPermit().get(i).getImgUrl()));
+                                data.getContract().get(i).getId(), data.getContract().get(i).getImgUrl()));
                     }
                     rentalAdapter.notifyDataSetChanged();
                 }

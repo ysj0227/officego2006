@@ -497,6 +497,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         //创建楼盘
         CreateBuildingActivity_.intent(context)
                 .identityType(Constants.TYPE_IDENTITY_PERSONAL)
+                .mBuildingName(cetOfficeName.getText() == null ? "" : cetOfficeName.getText().toString())//编辑创建传入子页面
                 .startForResult(REQUEST_CREATE_BUILDING);
     }
 
@@ -504,14 +505,22 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
     public void getIdentityInfoSuccess(GetIdentityInfoBean data, boolean isFirstGetInfo) {
         if (isFirstGetInfo) {
             if (data != null && !checkObjAllFieldsIsNull(data)) {
-                hideIdCardFrontView();
-                hideIdCardBackView();
-                cetName.setText(data.getIdCard());
-                cetPersonalId.setText(data.getCreditNo());
-                Glide.with(context).applyDefaultRequestOptions(GlideUtils.avaOoptions()).load(data.getIdFront()).into(rivImageFront);
-                Glide.with(context).applyDefaultRequestOptions(GlideUtils.avaOoptions()).load(data.getIdBack()).into(rivImageBack);
+                cetName.setText(data.getProprietorRealname());
+                cetPersonalId.setText(data.getIdCard());
+                if (!TextUtils.isEmpty(data.getIdFront())) {
+                    isUploadIdCardFront = true;
+                    hideIdCardFrontView();
+                    Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(data.getIdFront()).into(rivImageFront);
+                }
+                if (!TextUtils.isEmpty(data.getIdBack())) {
+                    isUploadIdCardBack = true;
+                    hideIdCardBackView();
+                    Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(data.getIdBack()).into(rivImageBack);
+                }
                 cetOfficeName.setText(data.getBuildingName());
                 tvAddress.setText(data.getBuildingAddress());
+                //auditStatus 为2 驳回  authority 如果是1(普通) 就是创建 ，如果是0(管理员)就是关联
+                if (!IdentityRejectInfo.isCreateReject(data)) return;
                 houseType(Integer.valueOf(data.getLeaseType()));
                 buildingNextView();
                 //房产证
@@ -526,20 +535,26 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
                 if (listRental != null && listRental.size() > 0) {
                     for (int i = 0; i < data.getContract().size(); i++) {
                         listRental.add(listRental.size() - 1, new ImageBean(true,
-                                data.getPremisesPermit().get(i).getId(), data.getPremisesPermit().get(i).getImgUrl()));
+                                data.getContract().get(i).getId(), data.getContract().get(i).getImgUrl()));
                     }
                     rentalAdapter.notifyDataSetChanged();
+                }
+                //赋值--驳回上传
+                mLeaseType = Integer.valueOf(data.getLeaseType());
+                if (TextUtils.isEmpty(data.getBuildingId()) || TextUtils.equals("0", data.getBuildingId())) { //创建的
+                    isSelectedBuilding = false;
+                } else {//关联的
+                    isSelectedBuilding = true;
+                    mBuildingId = Integer.valueOf(data.getBuildingId());
                 }
             }
         } else {
             //提交信息
-            String buildingName = cetOfficeName.getText().toString();
-            String buildingAddress = tvAddress.getText().toString();
             mPresenter.submit(data, Constants.TYPE_CREATE_FROM_ALL, Constants.TYPE_IDENTITY_PERSONAL, mLeaseType,
-                    isSelectedBuilding, String.valueOf(mBuildingId), buildingName, buildingAddress,
-                    userName, idCard, localIdCardFrontPath, localIdCardBackPath, listCertificate, listRental);
+                    isSelectedBuilding, String.valueOf(mBuildingId), cetOfficeName.getText().toString(), tvAddress.getText().toString(),
+                    cetName.getText().toString(), cetPersonalId.getText().toString(),
+                    localIdCardFrontPath, localIdCardBackPath, listCertificate, listRental);
         }
-
     }
 
     @Override
@@ -593,7 +608,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
     }
 
     @Override
-    public void deleteCertificate(ImageBean bean,int position) {
+    public void deleteCertificate(ImageBean bean, int position) {
         if (isFastClick(1200)) {
             return;
         }
@@ -613,7 +628,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
     }
 
     @Override
-    public void deleteRentalAgreement(ImageBean bean,int position) {
+    public void deleteRentalAgreement(ImageBean bean, int position) {
         if (isFastClick(1200)) {
             return;
         }
@@ -625,8 +640,10 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
             rentalAdapter.notifyDataSetChanged();
         }
     }
+
     /**
      * 删除图片
+     *
      * @param isPremisesImage 是否房产证图片
      * @param position        pos
      */
@@ -640,6 +657,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
             rentalAdapter.notifyDataSetChanged();
         }
     }
+
     /**
      * @param data
      */

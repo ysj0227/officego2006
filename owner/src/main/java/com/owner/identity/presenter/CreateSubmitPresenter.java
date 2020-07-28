@@ -18,12 +18,12 @@ public class CreateSubmitPresenter extends BasePresenter<CreateSubmitContract.Vi
     private final String TAG = this.getClass().getSimpleName();
 
     @Override
-    public void getIdentityInfo(int identityType) {
+    public void getIdentityInfo(int identityType,boolean isFirstGetInfo) {
         OfficegoApi.getInstance().getIdentityInfo(identityType, new RetrofitCallback<GetIdentityInfoBean>() {
             @Override
             public void onSuccess(int code, String msg, GetIdentityInfoBean data) {
                 if (isViewAttached()) {
-                    mView.getIdentityInfoSuccess(data);
+                    mView.getIdentityInfoSuccess(data,isFirstGetInfo);
                 }
             }
 

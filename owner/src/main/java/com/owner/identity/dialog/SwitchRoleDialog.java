@@ -9,7 +9,7 @@ import com.owner.R;
 public class SwitchRoleDialog {
     public static void switchDialog(Activity activity) {
         CommonDialog dialog = new CommonDialog.Builder(activity)
-                .setTitle("信息尚未提交，是否确认切换身份吗？")
+                .setTitle("信息尚未提交，是否确认切换身份？")
                 .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
                     activity.finish();
                 })

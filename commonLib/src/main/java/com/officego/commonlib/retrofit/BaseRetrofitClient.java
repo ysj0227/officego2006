@@ -27,7 +27,7 @@ import retrofit2.Retrofit;
  */
 public class BaseRetrofitClient {
     //超时时间
-    private static final int DEFAULT_TIMEOUT = 30;
+    private static final int DEFAULT_TIMEOUT = 45;
     //缓存时间
     private static final int CACHE_TIMEOUT = 10 * 1024 * 1024;
 

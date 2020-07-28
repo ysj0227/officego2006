@@ -1,9 +1,11 @@
 package com.owner.identity;
 
-import android.content.Intent;
+import android.os.Bundle;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+
+import androidx.annotation.Nullable;
 
 import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.GotoActivityUtils;
@@ -15,13 +17,13 @@ import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.dialog.CommonDialog;
-import com.owner.IDCameraActivity;
 import com.owner.R;
 import com.owner.rpc.OfficegoApi;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 /**
@@ -33,6 +35,24 @@ import org.androidannotations.annotations.ViewById;
 public class SelectIdActivity extends BaseActivity {
     @ViewById(resName = "tv_title")
     TextView tvTitle;
+    @Extra
+    boolean isReject;
+    @Extra
+    int rejectIdentityType; //驳回身份
+
+    @Override
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (isReject) {
+            if (rejectIdentityType == 0) {//个人
+                PersonalActivity_.intent(context).start();
+            } else if (rejectIdentityType == 1) {//企业
+                CompanyActivity_.intent(context).start();
+            } else if (rejectIdentityType == 2) { //联办
+                JointWorkActivity_.intent(context).start();
+            }
+        }
+    }
 
     @AfterViews
     void init() {

@@ -950,7 +950,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
                 linePlan.append("步行").append(workTime.get(0)).append("分钟到 | ").append(stationLine.get(0)).append("号线 ·").append(stationName.get(0));
             }
             ctlBusLine.setVisibility(View.VISIBLE);
-            tvQueryTrains.setVisibility(View.VISIBLE);
+            tvQueryTrains.setVisibility(mData.getBuilding().getStationline().size() > 1 ? View.VISIBLE : View.GONE);
             tvBusLine.setText(linePlan);
         } else {
             ctlBusLine.setVisibility(View.GONE);

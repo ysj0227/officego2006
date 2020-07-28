@@ -24,6 +24,7 @@ import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -301,14 +302,51 @@ public class ImageUtils {
         }
     }
 
-
-//    /**
-//     * @param base64Data base64Data
-//     * @return res
-//     */
-//    public static Bitmap base64ToBitmap(String base64Data) {
-//        byte[] bytes = Base64.decode(base64Data, Base64.DEFAULT);
-//        return BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-//    }
+    /**
+     * 图片尺寸缩放
+     *
+     * @param path 图片路径
+     */
+    public static void isSaveCropImageView(String path) {
+        BitmapFactory.Options op = new BitmapFactory.Options();
+        Bitmap bitMap = BitmapFactory.decodeFile(path);
+        int width = bitMap.getWidth();
+        int height = bitMap.getHeight();
+        int maxPx = 4096, setPx = 1800;
+        if (width < maxPx && height < maxPx) {
+            //图片小于规定尺寸
+        } else {
+            int mWidth, mHeight;
+            if (width > maxPx && height > maxPx) {
+                if (width > height) {
+                    mWidth = setPx;
+                    mHeight = (int) (mWidth / CommonHelper.digits(width, height));
+                } else {
+                    mHeight = setPx;
+                    mWidth = (int) (mHeight / CommonHelper.digits(height, width));
+                }
+            } else if (width > maxPx && height < maxPx) {
+                mWidth = setPx;
+                mHeight = (int) (mWidth / CommonHelper.digits(width, height));
+            } else if (width < maxPx && height > maxPx) {
+                mHeight = setPx;
+                mWidth = (int) (mHeight / CommonHelper.digits(height, width));
+            } else {
+                mWidth = width;
+                mHeight = height;
+            }
+            bitMap = Bitmap.createBitmap(bitMap, 0, 0, mWidth, mHeight);
+            //将新文件回写到本地
+            FileOutputStream b = null;
+            try {
+                b = new FileOutputStream(path);
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
+            if (bitMap != null) {
+                bitMap.compress(Bitmap.CompressFormat.JPEG, 100, b);
+            }
+        }
+    }
 
 }

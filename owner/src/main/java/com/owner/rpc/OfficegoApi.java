@@ -391,11 +391,11 @@ public class OfficegoApi {
         builder.addFormDataPart("userLicenceId", data.getUserLicenceId());//企业关系id
         if (isSelectedBuilding) {//关联的
             builder.addFormDataPart("buildingId", buildingId);//关联楼盘的id。- 覆盖
-            builder.addFormDataPart("buildingName", buildingName);//关联楼盘名称
-            builder.addFormDataPart("buildingAddress", buildingAddress);//关联楼盘地址
         } else {
             builder.addFormDataPart("buildingId", data.getBuildingId());//创建返回的楼盘id
         }
+        builder.addFormDataPart("buildingName", buildingName);//关联楼盘名称
+        builder.addFormDataPart("buildingAddress", buildingAddress);//关联楼盘地址
         builder.addFormDataPart("buildingTempId", data.getBuildingTempId());//关联楼id  接口给
         //房产证
         if (mFilePremisesPath != null && mFilePremisesPath.size() > 0) {
@@ -504,14 +504,15 @@ public class OfficegoApi {
             builder.addFormDataPart("licenceId", data.getLicenceId());//企业id
             builder.addFormDataPart("userLicenceId", data.getUserLicenceId());//企业关系id
             builder.addFormDataPart("buildingTempId", data.getBuildingTempId());//关联楼id  接口给
-            if (isSelectedBuilding) {//关联的
-                builder.addFormDataPart("buildingId", buildingId);//关联楼盘的id。- 覆盖
-                builder.addFormDataPart("buildingName", buildingName);//关联楼盘名称
-                builder.addFormDataPart("buildingAddress", buildingAddress);//关联楼盘地址
-            } else {
+            if (!isSelectedBuilding) {
                 builder.addFormDataPart("buildingId", data.getBuildingId());//创建返回的楼盘id
             }
         }
+        if (isSelectedBuilding) {//关联的
+            builder.addFormDataPart("buildingId", buildingId);//关联楼盘的id。- 覆盖
+        }
+        builder.addFormDataPart("buildingName", buildingName);//关联楼盘名称
+        builder.addFormDataPart("buildingAddress", buildingAddress);//关联楼盘地址
         builder.addFormDataPart("userName", userName); //姓名
         builder.addFormDataPart("idCard", idCard);//身份证号
         //身份证正反面图片
