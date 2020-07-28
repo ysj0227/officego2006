@@ -519,8 +519,6 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
                 }
                 cetOfficeName.setText(data.getBuildingName());
                 tvAddress.setText(data.getBuildingAddress());
-                //auditStatus 为2 驳回  authority 如果是1(普通) 就是创建 ，如果是0(管理员)就是关联
-                if (!IdentityRejectInfo.isCreateReject(data)) return;
                 houseType(Integer.valueOf(data.getLeaseType()));
                 buildingNextView();
                 //房产证

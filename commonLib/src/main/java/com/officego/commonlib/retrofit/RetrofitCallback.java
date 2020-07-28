@@ -8,8 +8,6 @@ import androidx.annotation.NonNull;
 import com.google.gson.Gson;
 import com.officego.commonlib.R;
 import com.officego.commonlib.base.BaseApplication;
-import com.officego.commonlib.common.GotoActivityUtils;
-import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.notification.BaseNotification;
