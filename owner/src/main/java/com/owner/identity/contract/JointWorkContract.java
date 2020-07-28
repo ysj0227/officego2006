@@ -5,6 +5,7 @@ import com.owner.identity.model.GetIdentityInfoBean;
 import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.model.IdentityCompanyBean;
 import com.owner.identity.model.IdentityJointWorkBean;
+import com.owner.identity.model.ImageBean;
 
 import java.util.List;
 
@@ -29,6 +30,8 @@ public interface JointWorkContract {
         void getIdentityInfoSuccess(GetIdentityInfoBean data, boolean isFirstGetInfo);
 
         void submitSuccess();
+
+        void deleteImageSuccess(boolean isPremisesImage,int position);
     }
 
     interface Presenter {
@@ -45,6 +48,7 @@ public interface JointWorkContract {
         void getIdentityInfo(int identityType, boolean isFirstGetInfo);
 
         void submit(GetIdentityInfoBean data, int createCompany, int identityType, int leaseType,
-                    String buildingName, List<String> mFilePremisesPath, List<String> mFileContractPath);
+                    String buildingName, List<ImageBean> mFilePremisesPath, List<ImageBean> mFileContractPath);
+        void deleteImage(boolean isPremisesImage, int id, int position);
     }
 }

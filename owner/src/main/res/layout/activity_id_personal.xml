@@ -141,6 +141,8 @@
                     android:background="@null"
                     android:maxLength="18"
                     android:maxLines="1"
+                    android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                    android:inputType="number"
                     android:textColor="@color/text_33"
                     android:textSize="@dimen/sp_15" />
 

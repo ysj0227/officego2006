@@ -104,8 +104,8 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
             mPresenter.getUserInfo();
             return;
         }
-        //auditStatus 0 审核中 |authority 1可以撤销0不能撤销
-        if (mUserInfo.getAuditStatus() == 0 && mUserInfo.getAuthority() == 1) {
+        //auditStatus 0 审核中 |authority 0可以撤销(普通员工) 1不能撤销(管理员)
+        if (mUserInfo.getAuditStatus() == 0 && mUserInfo.getAuthority() == 0) {
             IdentityCancelActivity_.intent(mActivity).startForResult(REQUEST_CODE_IDENTITY);
             return;
         }
@@ -166,7 +166,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
             //刷新融云头像用户信息
             RongCloudSetUserInfoUtils.refreshUserInfoCache(SpUtils.getRongChatId(), data.getRealname(), data.getAvatar());
             mUserInfo = data;
-            tvIdify.setText(idify(data));
+            tvIdify.setText(StringIdentity.identityInfo(data));
             Glide.with(mActivity).applyDefaultRequestOptions(GlideUtils.avaOoptions()).load(data.getAvatar()).into(civAvatar);
             tvName.setText(data.getProprietorRealname());
             if (TextUtils.isEmpty(data.getProprietorCompany())) {
@@ -187,42 +187,12 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         }
     }
 
-    // 0待审核1审核通过2审核未通过
+    // 0待审核 1审核通过 2审核未通过 3过期(和2未通过一样处理)
     private boolean isIdentity() {
         if (mUserInfo != null) {
             return mUserInfo.getAuditStatus() != 0 && mUserInfo.getAuditStatus() != 1;
         }
         return false;
-    }
-
-    /**
-     * identityType :  "identityType": 0,//身份类型0个人1企业2联合
-     * auditStatus :  0待审核1审核通过2审核未通过 -1未认证
-     */
-    private String idify(UserOwnerBean data) {
-        String id, status;
-        if (data.getIdentityType() == 0) {
-            id = "";
-        } else if (data.getIdentityType() == 1) {
-            id = "";
-        } else if (data.getIdentityType() == 2) {
-            id = "";
-        } else {
-            id = "";
-        }
-        if (data.getAuditStatus() == 0) {
-            status = "待审核";
-        } else if (data.getAuditStatus() == 1) {
-            status = "已认证";
-        } else if (data.getAuditStatus() == 2) {
-            status = "审核未通过";
-        } else {
-            status = "未认证";
-        }
-        if (TextUtils.isEmpty(id)) {
-            return status;
-        }
-        return id + status;
     }
 
     @Override

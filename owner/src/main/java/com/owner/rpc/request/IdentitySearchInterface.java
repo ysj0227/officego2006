@@ -107,4 +107,11 @@ public interface IdentitySearchInterface {
     @POST(path + "licence/selectIdentityTypeApp ")
     Call<BaseResponse<GetIdentityInfoBean>> getLicenceProprietorInfo(@PartMap Map<String, RequestBody> params);
 
+    /**
+     * 删除网络图片
+     */
+    @Multipart
+    @POST(path + "licence/deleteImgApp ")
+    Call<BaseResponse<Object>> deleteImage(@PartMap Map<String, RequestBody> params);
+
 }

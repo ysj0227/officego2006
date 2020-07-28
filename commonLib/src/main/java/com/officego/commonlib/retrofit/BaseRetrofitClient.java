@@ -27,7 +27,7 @@ import retrofit2.Retrofit;
  */
 public class BaseRetrofitClient {
     //超时时间
-    private static final int DEFAULT_TIMEOUT = 30;
+    private static final int DEFAULT_TIMEOUT = 45;
     //缓存时间
     private static final int CACHE_TIMEOUT = 10 * 1024 * 1024;
 
@@ -71,6 +71,8 @@ public class BaseRetrofitClient {
                 )
                 .connectTimeout(timeout, TimeUnit.SECONDS)
                 .writeTimeout(timeout, TimeUnit.SECONDS)
+                .readTimeout(timeout, TimeUnit.SECONDS)
+                .retryOnConnectionFailure(false)
                 .connectionPool(new ConnectionPool(8, 15, TimeUnit.SECONDS))
                 // 这里你可以根据自己的机型设置同时连接的个数和时间，我这里8个，和每个保持时间为10s
                 .build();

@@ -168,6 +168,8 @@
                 android:layout_toEndOf="@id/iv_register_no"
                 android:background="@null"
                 android:ellipsize="end"
+                android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
+                android:inputType="number"
                 android:gravity="center_vertical"
                 android:maxLines="1"
                 android:textColor="@color/text_33"

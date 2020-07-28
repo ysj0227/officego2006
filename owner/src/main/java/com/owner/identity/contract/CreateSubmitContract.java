@@ -13,14 +13,14 @@ import com.owner.identity.model.GetIdentityInfoBean;
 public interface CreateSubmitContract {
     interface View extends BaseView {
 
-        void getIdentityInfoSuccess(GetIdentityInfoBean data);
+        void getIdentityInfoSuccess(GetIdentityInfoBean data,boolean isFirstGetInfo);
 
         void submitSuccess();
     }
 
     interface Presenter {
 
-        void getIdentityInfo(int identityType);
+        void getIdentityInfo(int identityType,boolean isFirstGetInfo);
 
         //创建公司提交
         void submitCompany(GetIdentityInfoBean data, int createCompany, int identityType,

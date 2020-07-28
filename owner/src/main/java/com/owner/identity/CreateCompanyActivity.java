@@ -149,7 +149,7 @@ public class CreateCompanyActivity extends BaseMvpActivity<CreateSubmitPresenter
             return;
         }
         //获取提交公司的信息
-        mPresenter.getIdentityInfo(identityType);
+        mPresenter.getIdentityInfo(identityType,false);
     }
 
     @Override
@@ -253,7 +253,7 @@ public class CreateCompanyActivity extends BaseMvpActivity<CreateSubmitPresenter
     }
 
     @Override
-    public void getIdentityInfoSuccess(GetIdentityInfoBean data) {
+    public void getIdentityInfoSuccess(GetIdentityInfoBean data,boolean isFirstGetInfo) {
         //提交信息
         mPresenter.submitCompany(data, createCompany, identityType, name, address, regNo, localLicensePath);
     }

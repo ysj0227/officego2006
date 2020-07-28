@@ -383,7 +383,7 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
                         .append(stationLine.get(0)).append("号线 ·").append(stationName.get(0));
             }
             ctlBusLine.setVisibility(View.VISIBLE);
-            tvQueryTrains.setVisibility(View.VISIBLE);
+            tvQueryTrains.setVisibility(mData.getHouse().getStationline().size() > 1 ? View.VISIBLE : View.GONE);
             tvBusLine.setText(linePlan);
         } else {
             ctlBusLine.setVisibility(View.GONE);

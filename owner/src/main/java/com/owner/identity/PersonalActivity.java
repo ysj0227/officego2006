@@ -21,6 +21,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.donkingliang.imageselector.utils.ImageSelector;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
@@ -28,6 +29,7 @@ import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.FileHelper;
 import com.officego.commonlib.utils.FileUtils;
+import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.PhotoUtils;
 import com.officego.commonlib.view.ClearableEditText;
@@ -41,6 +43,7 @@ import com.owner.identity.contract.PersonalContract;
 import com.owner.identity.dialog.SwitchRoleDialog;
 import com.owner.identity.model.GetIdentityInfoBean;
 import com.owner.identity.model.IdentityBuildingBean;
+import com.owner.identity.model.ImageBean;
 import com.owner.identity.presenter.PersonalPresenter;
 import com.owner.utils.CommUtils;
 import com.wildma.idcardcamera.camera.IDCardCamera;
@@ -55,6 +58,8 @@ import java.io.File;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
+
+import static com.officego.commonlib.utils.CommonHelper.checkObjAllFieldsIsNull;
 
 /**
  * Created by YangShiJie
@@ -135,8 +140,8 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
     @ViewById(resName = "btn_upload")
     Button btnUpload;
     private int mUploadType;
-    private List<String> listCertificate = new ArrayList<>();
-    private List<String> listRental = new ArrayList<>();
+    private List<ImageBean> listCertificate = new ArrayList<>();
+    private List<ImageBean> listRental = new ArrayList<>();
     private PropertyOwnershipCertificateAdapter certificateAdapter;
     private RentalAgreementAdapter rentalAdapter;
 
@@ -156,6 +161,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         mPresenter.attachView(this);
         initRecyclerView();
         initData();
+        mPresenter.getIdentityInfo(Constants.TYPE_IDENTITY_PERSONAL, true);
     }
 
     private void initRecyclerView() {
@@ -190,8 +196,8 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         //搜索
         searchList();
         //初始化默认添加一个
-        listCertificate.add("");
-        listRental.add("");
+        listCertificate.add(new ImageBean(false, 0, ""));
+        listRental.add(new ImageBean(false, 0, ""));
         //房产证
         certificateAdapter = new PropertyOwnershipCertificateAdapter(context, listCertificate);
         certificateAdapter.setCertificateListener(this);
@@ -244,15 +250,20 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         final String[] items = {"自有房产", "租赁房产"};
         new AlertDialog.Builder(this)
                 .setItems(items, (dialogInterface, i) -> {
-                    if (i == 0) {
-                        mLeaseType = 0;
-                        showCertificateView();
-                    } else {
-                        mLeaseType = 1;
-                        showCerAgreementView();
-                    }
-                    tvType.setText(items[i]);
+                    houseType(i);
                 }).create().show();
+    }
+
+    private void houseType(int type) {
+        if (type == 0) {
+            mLeaseType = 0;
+            showCertificateView();
+            tvType.setText("自有房产");
+        } else {
+            mLeaseType = 1;
+            showCerAgreementView();
+            tvType.setText("租赁房产");
+        }
     }
 
     private void showCertificateView() {
@@ -392,11 +403,11 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         }
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CAMERA) {//房产证拍照
-                if (TYPE_CER == mUploadType) {
-                    listCertificate.add(listCertificate.size() - 1, localCerPath);
+                if (TYPE_CER == mUploadType) {//房产证
+                    listCertificate.add(listCertificate.size() - 1, new ImageBean(false, 0, localCerPath));
                     certificateAdapter.notifyDataSetChanged();
-                } else if (TYPE_REN == mUploadType) {
-                    listRental.add(listRental.size() - 1, localRenPath);
+                } else if (TYPE_REN == mUploadType) {//租赁合同
+                    listRental.add(listRental.size() - 1, new ImageBean(false, 0, localRenPath));
                     rentalAdapter.notifyDataSetChanged();
                 }
             } else if (requestCode == REQUEST_GALLERY && data != null) {//相册
@@ -412,10 +423,14 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
                     localIdCardBackPath = images.get(0);
                     rivImageBack.setImageBitmap(BitmapFactory.decodeFile(images.get(0)));
                 } else if (TYPE_CER == mUploadType) {//房产证相册
-                    listCertificate.addAll(listCertificate.size() - 1, images);
+                    for (int i = 0; i < images.size(); i++) {
+                        listCertificate.add(listCertificate.size() - 1, new ImageBean(false, 0, images.get(i)));
+                    }
                     certificateAdapter.notifyDataSetChanged();
                 } else if (TYPE_REN == mUploadType) {
-                    listRental.addAll(listRental.size() - 1, images);
+                    for (int i = 0; i < images.size(); i++) {
+                        listRental.add(listRental.size() - 1, new ImageBean(false, 0, images.get(i)));
+                    }
                     rentalAdapter.notifyDataSetChanged();
                 }
             }
@@ -482,17 +497,62 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         //创建楼盘
         CreateBuildingActivity_.intent(context)
                 .identityType(Constants.TYPE_IDENTITY_PERSONAL)
+                .mBuildingName(cetOfficeName.getText() == null ? "" : cetOfficeName.getText().toString())//编辑创建传入子页面
                 .startForResult(REQUEST_CREATE_BUILDING);
     }
 
     @Override
     public void getIdentityInfoSuccess(GetIdentityInfoBean data, boolean isFirstGetInfo) {
-        //提交信息
-        String buildingName = cetOfficeName.getText().toString();
-        String buildingAddress = tvAddress.getText().toString();
-        mPresenter.submit(data, Constants.TYPE_CREATE_FROM_ALL, Constants.TYPE_IDENTITY_PERSONAL, mLeaseType,
-                isSelectedBuilding, String.valueOf(mBuildingId), buildingName, buildingAddress,
-                userName, idCard, localIdCardFrontPath, localIdCardBackPath, listCertificate, listRental);
+        if (isFirstGetInfo) {
+            if (data != null && !checkObjAllFieldsIsNull(data)) {
+                cetName.setText(data.getProprietorRealname());
+                cetPersonalId.setText(data.getIdCard());
+                if (!TextUtils.isEmpty(data.getIdFront())) {
+                    isUploadIdCardFront = true;
+                    hideIdCardFrontView();
+                    Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(data.getIdFront()).into(rivImageFront);
+                }
+                if (!TextUtils.isEmpty(data.getIdBack())) {
+                    isUploadIdCardBack = true;
+                    hideIdCardBackView();
+                    Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(data.getIdBack()).into(rivImageBack);
+                }
+                cetOfficeName.setText(data.getBuildingName());
+                tvAddress.setText(data.getBuildingAddress());
+                houseType(Integer.valueOf(data.getLeaseType()));
+                buildingNextView();
+                //房产证
+                if (listCertificate != null && listCertificate.size() > 0) {
+                    for (int i = 0; i < data.getPremisesPermit().size(); i++) {
+                        listCertificate.add(listCertificate.size() - 1, new ImageBean(true,
+                                data.getPremisesPermit().get(i).getId(), data.getPremisesPermit().get(i).getImgUrl()));
+                    }
+                    certificateAdapter.notifyDataSetChanged();
+                }
+                //租赁合同
+                if (listRental != null && listRental.size() > 0) {
+                    for (int i = 0; i < data.getContract().size(); i++) {
+                        listRental.add(listRental.size() - 1, new ImageBean(true,
+                                data.getContract().get(i).getId(), data.getContract().get(i).getImgUrl()));
+                    }
+                    rentalAdapter.notifyDataSetChanged();
+                }
+                //赋值--驳回上传
+                mLeaseType = Integer.valueOf(data.getLeaseType());
+                if (TextUtils.isEmpty(data.getBuildingId()) || TextUtils.equals("0", data.getBuildingId())) { //创建的
+                    isSelectedBuilding = false;
+                } else {//关联的
+                    isSelectedBuilding = true;
+                    mBuildingId = Integer.valueOf(data.getBuildingId());
+                }
+            }
+        } else {
+            //提交信息
+            mPresenter.submit(data, Constants.TYPE_CREATE_FROM_ALL, Constants.TYPE_IDENTITY_PERSONAL, mLeaseType,
+                    isSelectedBuilding, String.valueOf(mBuildingId), cetOfficeName.getText().toString(), tvAddress.getText().toString(),
+                    cetName.getText().toString(), cetPersonalId.getText().toString(),
+                    localIdCardFrontPath, localIdCardBackPath, listCertificate, listRental);
+        }
     }
 
     @Override
@@ -546,12 +606,17 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
     }
 
     @Override
-    public void deleteCertificate(int position) {
+    public void deleteCertificate(ImageBean bean, int position) {
         if (isFastClick(1200)) {
             return;
         }
-        listCertificate.remove(position);
-        certificateAdapter.notifyDataSetChanged();
+        //网络图片
+        if (bean.isNetImage()) {
+            mPresenter.deleteImage(true, bean.getId(), position);
+        } else {
+            listCertificate.remove(position);
+            certificateAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -561,12 +626,34 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
     }
 
     @Override
-    public void deleteRentalAgreement(int position) {
+    public void deleteRentalAgreement(ImageBean bean, int position) {
         if (isFastClick(1200)) {
             return;
         }
-        listRental.remove(position);
-        rentalAdapter.notifyDataSetChanged();
+        //网络图片
+        if (bean.isNetImage()) {
+            mPresenter.deleteImage(false, bean.getId(), position);
+        } else {
+            listRental.remove(position);
+            rentalAdapter.notifyDataSetChanged();
+        }
+    }
+
+    /**
+     * 删除图片
+     *
+     * @param isPremisesImage 是否房产证图片
+     * @param position        pos
+     */
+    @Override
+    public void deleteImageSuccess(boolean isPremisesImage, int position) {
+        if (isPremisesImage) {
+            listCertificate.remove(position);
+            certificateAdapter.notifyDataSetChanged();
+        } else {
+            listRental.remove(position);
+            rentalAdapter.notifyDataSetChanged();
+        }
     }
 
     /**

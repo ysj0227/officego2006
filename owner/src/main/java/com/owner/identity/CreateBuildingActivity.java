@@ -73,6 +73,9 @@ public class CreateBuildingActivity extends BaseMvpActivity<CreateSubmitPresente
     private Uri localPhotoUri;
     @Extra
     int identityType;
+    @Extra
+    String mBuildingName;
+
     private String name, address;
     //是否从相机拍照或相册选择了图片
     private boolean isTakePhotoOrGallery;
@@ -81,15 +84,15 @@ public class CreateBuildingActivity extends BaseMvpActivity<CreateSubmitPresente
     void init() {
         mPresenter = new CreateSubmitPresenter();
         mPresenter.attachView(this);
-
         StatusBarUtils.setStatusBarColor(this);
         titleBar.getLeftImg().setOnClickListener(view -> onBackPressed());
         localBuildingPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "buildingdec.jpg";
+        etNameContent.setText(mBuildingName);
     }
 
     @Click(resName = "rl_area")
     void areaClick() {
-        new AreaDialog(context,district,business).setListener(this);
+        new AreaDialog(context, district, business).setListener(this);
     }
 
     @Click(resName = "btn_save")
@@ -113,7 +116,7 @@ public class CreateBuildingActivity extends BaseMvpActivity<CreateSubmitPresente
             shortTip("请上传图片");
             return;
         }
-        mPresenter.getIdentityInfo(identityType);
+        mPresenter.getIdentityInfo(identityType, false);
     }
 
     @Override
@@ -186,10 +189,10 @@ public class CreateBuildingActivity extends BaseMvpActivity<CreateSubmitPresente
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CAMERA) {//拍照
-                isTakePhotoOrGallery=true;
+                isTakePhotoOrGallery = true;
                 ivBuildingIntroduce.setImageBitmap(BitmapFactory.decodeFile(localBuildingPath));
             } else if (requestCode == REQUEST_GALLERY && data != null) {//相册
-                isTakePhotoOrGallery=true;
+                isTakePhotoOrGallery = true;
                 List<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
                 localBuildingPath = images.get(0);
                 ivBuildingIntroduce.setImageBitmap(BitmapFactory.decodeFile(images.get(0)));
@@ -225,7 +228,7 @@ public class CreateBuildingActivity extends BaseMvpActivity<CreateSubmitPresente
     }
 
     @Override
-    public void getIdentityInfoSuccess(GetIdentityInfoBean data) {
+    public void getIdentityInfoSuccess(GetIdentityInfoBean data, boolean isFirstGetInfo) {
         mPresenter.submitBuilding(data, Constants.TYPE_CREATE_FROM_JOINT_BUILDING, identityType,
                 name, address, district, business, localBuildingPath);
     }

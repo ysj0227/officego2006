@@ -5,6 +5,7 @@ import com.owner.identity.model.CheckIdentityBean;
 import com.owner.identity.model.GetIdentityInfoBean;
 import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.model.IdentityCompanyBean;
+import com.owner.identity.model.ImageBean;
 
 import java.util.List;
 
@@ -24,9 +25,11 @@ public interface CompanyContract {
 
         void checkBuildingInfoSuccess();
 
-        void getIdentityInfoSuccess(GetIdentityInfoBean data,boolean isFirstGetInfo);
+        void getIdentityInfoSuccess(GetIdentityInfoBean data, boolean isFirstGetInfo);
 
         void submitSuccess();
+
+        void deleteImageSuccess(boolean isPremisesImage,int position);
     }
 
     interface Presenter {
@@ -35,14 +38,16 @@ public interface CompanyContract {
 
         void getBuilding(String keyword);
 
-        void checkCompany(int identityType,String name);
+        void checkCompany(int identityType, String name);
 
-        void checkBuilding(int identityType,String name);
+        void checkBuilding(int identityType, String name);
 
-        void getIdentityInfo(int identityType,boolean isFirstGetInfo);
+        void getIdentityInfo(int identityType, boolean isFirstGetInfo);
 
         void submit(GetIdentityInfoBean data, int createCompany, int identityType, int leaseType,
-                    boolean isSelectedBuilding, String buildingId,String buildingName, String buildingAddress,
-                    List<String> mFilePremisesPath, List<String> mFileContractPath);
+                    boolean isSelectedBuilding, String buildingId, String buildingName, String buildingAddress,
+                    List<ImageBean> mFilePremisesPath, List<ImageBean> mFileContractPath);
+
+        void deleteImage(boolean isPremisesImage, int id, int position);
     }
 }

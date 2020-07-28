@@ -114,7 +114,7 @@ public class CreateJointWorkActivity extends BaseMvpActivity<CreateSubmitPresent
             shortTip("请上传图片");
             return;
         }
-        mPresenter.getIdentityInfo(Constants.TYPE_IDENTITY_JOINT_WORK);
+        mPresenter.getIdentityInfo(Constants.TYPE_IDENTITY_JOINT_WORK,false);
     }
 
 
@@ -221,7 +221,7 @@ public class CreateJointWorkActivity extends BaseMvpActivity<CreateSubmitPresent
     }
 
     @Override
-    public void getIdentityInfoSuccess(GetIdentityInfoBean data) {
+    public void getIdentityInfoSuccess(GetIdentityInfoBean data,boolean isFirstGetInfo) {
         mPresenter.submitJointWork(data, Constants.TYPE_CREATE_FROM_JOINT_BUILDING, Constants.TYPE_IDENTITY_JOINT_WORK,
                 name, address, district, business, localCoverImagePath);
     }

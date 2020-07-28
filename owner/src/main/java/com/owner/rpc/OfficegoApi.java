@@ -15,6 +15,7 @@ import com.owner.identity.model.GetIdentityInfoBean;
 import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.model.IdentityCompanyBean;
 import com.owner.identity.model.IdentityJointWorkBean;
+import com.owner.identity.model.ImageBean;
 import com.owner.mine.model.AvatarBean;
 import com.owner.mine.model.UserOwnerBean;
 import com.owner.rpc.request.IdentitySearchInterface;
@@ -32,6 +33,8 @@ import java.util.Map;
 import okhttp3.MediaType;
 import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
+
+import static com.officego.commonlib.utils.CommonHelper.checkObjAllFieldsIsNull;
 
 /**
  * Created by YangShiJie
@@ -375,7 +378,7 @@ public class OfficegoApi {
      */
     public void submitCompanyIdentityInfo(GetIdentityInfoBean data, int createCompany, int identityType, int leaseType,
                                           boolean isSelectedBuilding, String buildingId, String buildingName, String buildingAddress,
-                                          List<String> mFilePremisesPath, List<String> mFileContractPath, RetrofitCallback<Object> callback) {
+                                          List<ImageBean> mFilePremisesPath, List<ImageBean> mFileContractPath, RetrofitCallback<Object> callback) {
         if (data == null) {
             return;
         }
@@ -388,18 +391,20 @@ public class OfficegoApi {
         builder.addFormDataPart("userLicenceId", data.getUserLicenceId());//企业关系id
         if (isSelectedBuilding) {//关联的
             builder.addFormDataPart("buildingId", buildingId);//关联楼盘的id。- 覆盖
-            builder.addFormDataPart("buildingName", buildingName);//关联楼盘名称
-            builder.addFormDataPart("buildingAddress", buildingAddress);//关联楼盘地址
         } else {
             builder.addFormDataPart("buildingId", data.getBuildingId());//创建返回的楼盘id
         }
+        builder.addFormDataPart("buildingName", buildingName);//关联楼盘名称
+        builder.addFormDataPart("buildingAddress", buildingAddress);//关联楼盘地址
         builder.addFormDataPart("buildingTempId", data.getBuildingTempId());//关联楼id  接口给
         //房产证
         if (mFilePremisesPath != null && mFilePremisesPath.size() > 0) {
             RequestBody file;
+            boolean isNetImg;
             for (int i = 0; i < mFilePremisesPath.size(); i++) {
-                if (i < mFilePremisesPath.size() - 1) {
-                    file = RequestBody.create(MediaType.parse("image/*"), new File(mFilePremisesPath.get(i)));
+                isNetImg = mFilePremisesPath.get(i).isNetImage();
+                if (!isNetImg && i < mFilePremisesPath.size() - 1) {
+                    file = RequestBody.create(MediaType.parse("image/*"), new File(mFilePremisesPath.get(i).getPath()));
                     builder.addFormDataPart("filePremisesPermit", "filePremisesPermit" + i + ".png", file);
                 }
             }
@@ -407,9 +412,11 @@ public class OfficegoApi {
         //租赁合同
         if (leaseType == 1 && mFileContractPath != null && mFileContractPath.size() > 0) {
             RequestBody file1;
+            boolean isNetImg;
             for (int i = 0; i < mFileContractPath.size(); i++) {
-                if (i < mFileContractPath.size() - 1) {
-                    file1 = RequestBody.create(MediaType.parse("image/*"), new File(mFileContractPath.get(i)));
+                isNetImg = mFileContractPath.get(i).isNetImage();
+                if (!isNetImg && i < mFileContractPath.size() - 1) {
+                    file1 = RequestBody.create(MediaType.parse("image/*"), new File(mFileContractPath.get(i).getPath()));
                     builder.addFormDataPart("fileContract", "fileContract" + i + ".png", file1);
                 }
             }
@@ -428,7 +435,7 @@ public class OfficegoApi {
      * @param callback
      */
     public void submitJointWorkIdentityInfo(GetIdentityInfoBean data, int createCompany, int identityType, int leaseType, String buildingName,
-                                            List<String> mFilePremisesPath, List<String> mFileContractPath, RetrofitCallback<Object> callback) {
+                                            List<ImageBean> mFilePremisesPath, List<ImageBean> mFileContractPath, RetrofitCallback<Object> callback) {
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("token", SpUtils.getSignToken());
         builder.addFormDataPart("createCompany", createCompany + "");
@@ -444,9 +451,11 @@ public class OfficegoApi {
         //房产证
         if (mFilePremisesPath != null && mFilePremisesPath.size() > 0) {
             RequestBody file;
+            boolean isNetImg;
             for (int i = 0; i < mFilePremisesPath.size(); i++) {
-                if (i < mFilePremisesPath.size() - 1) {
-                    file = RequestBody.create(MediaType.parse("image/*"), new File(mFilePremisesPath.get(i)));
+                isNetImg = mFilePremisesPath.get(i).isNetImage();
+                if (!isNetImg && i < mFilePremisesPath.size() - 1) {
+                    file = RequestBody.create(MediaType.parse("image/*"), new File(mFilePremisesPath.get(i).getPath()));
                     builder.addFormDataPart("filePremisesPermit", "filePremisesPermit" + i + ".png", file);
                 }
             }
@@ -455,9 +464,11 @@ public class OfficegoApi {
         if (mFileContractPath != null && mFileContractPath.size() > 0) {
             mFileContractPath.remove(mFileContractPath.size() - 1);
             RequestBody file1;
+            boolean isNetImg;//是否网络图片
             for (int i = 0; i < mFileContractPath.size(); i++) {
-                if (i < mFileContractPath.size() - 1) {
-                    file1 = RequestBody.create(MediaType.parse("image/*"), new File(mFileContractPath.get(i)));
+                isNetImg = mFileContractPath.get(i).isNetImage();
+                if (!isNetImg && i < mFileContractPath.size() - 1) {
+                    file1 = RequestBody.create(MediaType.parse("image/*"), new File(mFileContractPath.get(i).getPath()));
                     builder.addFormDataPart("fileContract", "fileContract" + i + ".png", file1);
                 }
             }
@@ -478,7 +489,7 @@ public class OfficegoApi {
     public void submitPersonalIdentityInfo(GetIdentityInfoBean data, int createCompany, int identityType, int leaseType,
                                            boolean isSelectedBuilding, String buildingId, String buildingName, String buildingAddress,
                                            String userName, String idCard, String isCardFrontPath, String isCardBackPath,
-                                           List<String> mFilePremisesPath, List<String> mFileContractPath,
+                                           List<ImageBean> mFilePremisesPath, List<ImageBean> mFileContractPath,
                                            RetrofitCallback<Object> callback) {
         //身份证正面
         RequestBody fileIdFront = RequestBody.create(MediaType.parse("image/*"), new File(isCardFrontPath));
@@ -493,25 +504,28 @@ public class OfficegoApi {
             builder.addFormDataPart("licenceId", data.getLicenceId());//企业id
             builder.addFormDataPart("userLicenceId", data.getUserLicenceId());//企业关系id
             builder.addFormDataPart("buildingTempId", data.getBuildingTempId());//关联楼id  接口给
-            if (isSelectedBuilding) {//关联的
-                builder.addFormDataPart("buildingId", buildingId);//关联楼盘的id。- 覆盖
-                builder.addFormDataPart("buildingName", buildingName);//关联楼盘名称
-                builder.addFormDataPart("buildingAddress", buildingAddress);//关联楼盘地址
-            } else {
+            if (!isSelectedBuilding) {
                 builder.addFormDataPart("buildingId", data.getBuildingId());//创建返回的楼盘id
             }
         }
+        if (isSelectedBuilding) {//关联的
+            builder.addFormDataPart("buildingId", buildingId);//关联楼盘的id。- 覆盖
+        }
+        builder.addFormDataPart("buildingName", buildingName);//关联楼盘名称
+        builder.addFormDataPart("buildingAddress", buildingAddress);//关联楼盘地址
         builder.addFormDataPart("userName", userName); //姓名
         builder.addFormDataPart("idCard", idCard);//身份证号
         //身份证正反面图片
         builder.addFormDataPart("fileIdFront", "fileIdFront.png", fileIdFront);
         builder.addFormDataPart("fileIdBack", "fileIdBack.png", fileIdBack);
-        //房产证图片
+        //房产证
         if (mFilePremisesPath != null && mFilePremisesPath.size() > 0) {
             RequestBody file;
+            boolean isNetImg;
             for (int i = 0; i < mFilePremisesPath.size(); i++) {
-                if (i < mFilePremisesPath.size() - 1) {
-                    file = RequestBody.create(MediaType.parse("image/*"), new File(mFilePremisesPath.get(i)));
+                isNetImg = mFilePremisesPath.get(i).isNetImage();
+                if (!isNetImg && i < mFilePremisesPath.size() - 1) {
+                    file = RequestBody.create(MediaType.parse("image/*"), new File(mFilePremisesPath.get(i).getPath()));
                     builder.addFormDataPart("filePremisesPermit", "filePremisesPermit" + i + ".png", file);
                 }
             }
@@ -519,9 +533,11 @@ public class OfficegoApi {
         //租赁合同
         if (leaseType == 1 && mFileContractPath != null && mFileContractPath.size() > 0) {
             RequestBody file1;
+            boolean isNetImg;
             for (int i = 0; i < mFileContractPath.size(); i++) {
-                if (i < mFileContractPath.size() - 1) {
-                    file1 = RequestBody.create(MediaType.parse("image/*"), new File(mFileContractPath.get(i)));
+                isNetImg = mFileContractPath.get(i).isNetImage();
+                if (!isNetImg && i < mFileContractPath.size() - 1) {
+                    file1 = RequestBody.create(MediaType.parse("image/*"), new File(mFileContractPath.get(i).getPath()));
                     builder.addFormDataPart("fileContract", "fileContract" + i + ".png", file1);
                 }
             }
@@ -560,27 +576,6 @@ public class OfficegoApi {
                 .enqueue(callback);
     }
 
-    /**
-     * 判断对象中属性值是否全为空
-     *
-     * @param object
-     */
-    private boolean checkObjAllFieldsIsNull(Object object) {
-        if (null == object) {
-            return true;
-        }
-        try {
-            for (Field f : object.getClass().getDeclaredFields()) {
-                f.setAccessible(true);
-                if (f.get(object) != null && TextUtils.isEmpty(f.get(object).toString())) {
-                    return false;
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return true;
-    }
 
     /**
      * 创建楼盘
@@ -641,4 +636,17 @@ public class OfficegoApi {
                 .submitIdentityInfo(builder.build())
                 .enqueue(callback);
     }
+
+    /**
+     * 删除网络图片
+     */
+    public void deleteImage(int id, RetrofitCallback<Object> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("id", requestBody(id + ""));
+        OfficegoRetrofitClient.getInstance().create(IdentitySearchInterface.class)
+                .deleteImage(map)
+                .enqueue(callback);
+    }
+
 }

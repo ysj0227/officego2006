@@ -21,6 +21,7 @@ import androidx.core.content.FileProvider;
 import com.donkingliang.imageselector.utils.ImageSelector;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.FileHelper;
 import com.officego.commonlib.utils.FileUtils;
 import com.officego.commonlib.utils.PermissionUtils;
@@ -176,17 +177,37 @@ public class IDCameraActivity extends Activity {
     }
 
     private void saveCropImageView() {
-        BitmapFactory.Options op = new BitmapFactory.Options();
+//        BitmapFactory.Options op = new BitmapFactory.Options();
         Bitmap bitMap = BitmapFactory.decodeFile(localAvatarPath);
         int width = bitMap.getWidth();
         int height = bitMap.getHeight();
-        // 设置想要的大小  TODO
-        int newWidth = 400;
-        int newHeight = 400;
+//        int mWidth, mHeight;
+//        if (width > 4096 && height > 4096) {
+//            if (width > height) {
+//                mWidth = 2000;
+//                mHeight = (int) (mWidth / CommonHelper.digits(width, height));
+//            } else {
+//                mHeight = 2000;
+//                mWidth = (int) (mHeight / CommonHelper.digits(height, width));
+//            }
+//        } else if (width > 4096 && height < 4096) {
+//            mWidth = 2000;
+//            mHeight = (int) (mWidth / CommonHelper.digits(width, height));
+//        } else if (width < 4096 && height > 4096) {
+//            mHeight = 2000;
+//            mWidth = (int) (mHeight / CommonHelper.digits(height, width));
+//        }else {
+//            mWidth=width;
+//            mHeight=height;
+//        }
+//        bitMap = Bitmap.createBitmap(bitMap, 0, 0, mWidth, mHeight);
+        // 设置想要的大小
+        int newWidth = 800;
+        int newHeight = 800;
         // 计算缩放比例
         float scaleWidth = ((float) newWidth) / width;
         float scaleHeight = ((float) newHeight) / height;
-        // 取得想要缩放的matrix参数
+//         取得想要缩放的matrix参数
         Matrix matrix = new Matrix();
         matrix.postScale(scaleWidth, scaleHeight);
         // 得到新的图片
