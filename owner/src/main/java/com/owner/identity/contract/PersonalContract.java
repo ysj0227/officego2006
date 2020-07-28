@@ -4,6 +4,7 @@ import com.officego.commonlib.base.BaseView;
 import com.owner.identity.model.GetIdentityInfoBean;
 import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.model.IdentityCompanyBean;
+import com.owner.identity.model.ImageBean;
 
 import java.util.List;
 
@@ -22,6 +23,8 @@ public interface PersonalContract {
         void getIdentityInfoSuccess(GetIdentityInfoBean data,boolean isFirstGetInfo);
 
         void submitSuccess();
+
+        void deleteImageSuccess(boolean isPremisesImage,int position);
     }
 
     interface Presenter {
@@ -32,8 +35,10 @@ public interface PersonalContract {
         void getIdentityInfo(int identityType,boolean isFirstGetInfo);
 
         void submit(GetIdentityInfoBean data, int createCompany, int identityType, int leaseType,
-                    boolean isSelectedBuilding, String buildingId,  String buildingName, String buildingAddress,
-                    String userName, String idCard,String isCardFrontPath, String isCardBackPath,
-                    List<String> mFilePremisesPath, List<String> mFileContractPath);
+                    boolean isSelectedBuilding, String buildingId, String buildingName, String buildingAddress,
+                    String userName, String idCard, String isCardFrontPath, String isCardBackPath,
+                    List<ImageBean> mFilePremisesPath, List<ImageBean> mFileContractPath);
+
+        void deleteImage(boolean isPremisesImage, int id, int position);
     }
 }

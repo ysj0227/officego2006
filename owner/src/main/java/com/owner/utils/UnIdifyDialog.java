@@ -7,6 +7,9 @@ import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
 import com.owner.h5.WebViewIdifyActivity_;
+import com.owner.identity.CompanyActivity_;
+import com.owner.identity.JointWorkActivity_;
+import com.owner.identity.PersonalActivity_;
 import com.owner.identity.SelectIdActivity_;
 import com.owner.mine.model.UserOwnerBean;
 
@@ -49,11 +52,14 @@ public class UnIdifyDialog {
                         //当驳回时
                         if (data.getAuditStatus() == 2) {
                             if (data.getIdentityType() == 0) {//个人
-                                WebViewIdifyActivity_.intent(context).idifyTag(Constants.H5_OWNER_IDIFY_PERSION).start();
+                                PersonalActivity_.intent(context).start();
+//                                WebViewIdifyActivity_.intent(context).idifyTag(Constants.H5_OWNER_IDIFY_PERSION).start();
                             } else if (data.getIdentityType() == 1) {//企业
-                                WebViewIdifyActivity_.intent(context).idifyTag(Constants.H5_OWNER_IDIFY_COMPANY).start();
+                                CompanyActivity_.intent(context).start();
+//                                WebViewIdifyActivity_.intent(context).idifyTag(Constants.H5_OWNER_IDIFY_COMPANY).start();
                             } else if (data.getIdentityType() == 2) { //联办
-                                WebViewIdifyActivity_.intent(context).idifyTag(Constants.H5_OWNER_IDIFY_JOINTWORK).start();
+                                JointWorkActivity_.intent(context).start();
+//                                WebViewIdifyActivity_.intent(context).idifyTag(Constants.H5_OWNER_IDIFY_JOINTWORK).start();
                             }
                         } else { //当需要认证时
 //                            WebViewIdifyActivity_.intent(context).start();

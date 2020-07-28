@@ -9,6 +9,7 @@ import com.owner.identity.model.CheckIdentityBean;
 import com.owner.identity.model.GetIdentityInfoBean;
 import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.model.IdentityCompanyBean;
+import com.owner.identity.model.ImageBean;
 import com.owner.rpc.OfficegoApi;
 
 import java.util.List;
@@ -132,7 +133,7 @@ public class CompanyPresenter extends BasePresenter<CompanyContract.View>
     @Override
     public void submit(GetIdentityInfoBean data, int createCompany, int identityType, int leaseType,
                        boolean isSelectedBuilding, String buildingId, String buildingName, String buildingAddress,
-                       List<String> mFilePremisesPath, List<String> mFileContractPath) {
+                       List<ImageBean> mFilePremisesPath, List<ImageBean> mFileContractPath) {
         mView.showLoadingDialog();
         OfficegoApi.getInstance().submitCompanyIdentityInfo(data, createCompany, identityType, leaseType,
                 isSelectedBuilding, buildingId, buildingName, buildingAddress,
@@ -156,5 +157,29 @@ public class CompanyPresenter extends BasePresenter<CompanyContract.View>
                         }
                     }
                 });
+    }
+
+    @Override
+    public void deleteImage(boolean isPremisesImage,int id, int position) {
+        mView.showLoadingDialog();
+        OfficegoApi.getInstance().deleteImage(id, new RetrofitCallback<Object>() {
+            @Override
+            public void onSuccess(int code, String msg, Object data) {
+                if (isViewAttached()) {
+                    mView.hideLoadingDialog();
+                    mView.deleteImageSuccess(isPremisesImage,position);
+                }
+            }
+
+            @Override
+            public void onFail(int code, String msg, Object data) {
+                if (isViewAttached()) {
+                    mView.hideLoadingDialog();
+                    if (code == Constants.DEFAULT_ERROR_CODE || code == Constants.ERROR_CODE_5002) {
+                        mView.shortTip(msg);
+                    }
+                }
+            }
+        });
     }
 }
