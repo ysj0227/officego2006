@@ -22,12 +22,13 @@ import okhttp3.internal.platform.Platform;
 import retrofit2.Retrofit;
 
 /**
- * Description:
- * Created by bruce on 2019/2/28.
- */
+ * Created by YangShiJie
+ * Data 2020/5/14.
+ * Descriptions:
+ **/
 public class BaseRetrofitClient {
     //超时时间
-    private static final int DEFAULT_TIMEOUT = 45;
+    private static final int DEFAULT_TIMEOUT = 60;
     //缓存时间
     private static final int CACHE_TIMEOUT = 10 * 1024 * 1024;
 

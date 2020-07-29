@@ -280,13 +280,13 @@ public class OfficegoApi {
     /**
      * 认证公司，网点申请加入
      */
-    public void applyLicenceProprietor(int identityType, int id, int chattedId,
+    public void applyLicenceProprietor(int identityType, int id, String chattedId,
                                        RetrofitCallback<ApplyJoinBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("identityType", requestBody(identityType + ""));
         map.put("id", requestBody(id + ""));
-        map.put("chattedId", requestBody(chattedId + ""));
+        map.put("chattedId", requestBody(chattedId));
         OfficegoRetrofitClient.getInstance().create(IdentitySearchInterface.class)
                 .applyLicenceProprietorApp(map)
                 .enqueue(callback);

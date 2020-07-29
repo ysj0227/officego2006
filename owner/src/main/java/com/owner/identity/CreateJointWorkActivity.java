@@ -21,6 +21,7 @@ import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.FileHelper;
 import com.officego.commonlib.utils.FileUtils;
+import com.officego.commonlib.utils.ImageUtils;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.PhotoUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
@@ -37,6 +38,7 @@ import com.owner.identity.presenter.CreateSubmitPresenter;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.File;
@@ -69,6 +71,9 @@ public class CreateJointWorkActivity extends BaseMvpActivity<CreateSubmitPresent
     ImageView ivImage;
     @ViewById(resName = "btn_save")
     Button btnSave;
+
+    @Extra
+    String mJointWorkName;
     private int district, business;
     private String name, address;
     //是否从相机拍照或相册选择了图片
@@ -81,6 +86,7 @@ public class CreateJointWorkActivity extends BaseMvpActivity<CreateSubmitPresent
         StatusBarUtils.setStatusBarColor(this);
         titleBar.getLeftImg().setOnClickListener(view -> onBackPressed());
         localCoverImagePath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "cover_image.jpg";
+        etNameContent.setText(mJointWorkName);
     }
 
     @Click(resName = "iv_image")
@@ -114,7 +120,7 @@ public class CreateJointWorkActivity extends BaseMvpActivity<CreateSubmitPresent
             shortTip("请上传图片");
             return;
         }
-        mPresenter.getIdentityInfo(Constants.TYPE_IDENTITY_JOINT_WORK,false);
+        mPresenter.getIdentityInfo(Constants.TYPE_IDENTITY_JOINT_WORK, false);
     }
 
 
@@ -183,11 +189,13 @@ public class CreateJointWorkActivity extends BaseMvpActivity<CreateSubmitPresent
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CAMERA) {//拍照
                 isTakePhotoOrGallery = true;
+                ImageUtils.isSaveCropImageView(localCoverImagePath);//图片处理
                 ivImage.setImageBitmap(BitmapFactory.decodeFile(localCoverImagePath));
             } else if (requestCode == REQUEST_GALLERY && data != null) {//相册
                 isTakePhotoOrGallery = true;
                 List<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
                 localCoverImagePath = images.get(0);
+                ImageUtils.isSaveCropImageView(localCoverImagePath);//图片处理
                 ivImage.setImageBitmap(BitmapFactory.decodeFile(images.get(0)));
             }
         }
@@ -221,7 +229,7 @@ public class CreateJointWorkActivity extends BaseMvpActivity<CreateSubmitPresent
     }
 
     @Override
-    public void getIdentityInfoSuccess(GetIdentityInfoBean data,boolean isFirstGetInfo) {
+    public void getIdentityInfoSuccess(GetIdentityInfoBean data, boolean isFirstGetInfo) {
         mPresenter.submitJointWork(data, Constants.TYPE_CREATE_FROM_JOINT_BUILDING, Constants.TYPE_IDENTITY_JOINT_WORK,
                 name, address, district, business, localCoverImagePath);
     }

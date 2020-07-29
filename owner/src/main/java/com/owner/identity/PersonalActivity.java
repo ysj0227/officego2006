@@ -30,6 +30,7 @@ import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.FileHelper;
 import com.officego.commonlib.utils.FileUtils;
 import com.officego.commonlib.utils.GlideUtils;
+import com.officego.commonlib.utils.ImageUtils;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.PhotoUtils;
 import com.officego.commonlib.view.ClearableEditText;
@@ -238,6 +239,14 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
             shortTip("请创建或关联楼盘");
             return;
         }
+        if (listCertificate == null || listCertificate.size() <= 1) {
+            shortTip("请上传房产证");
+            return;
+        }
+        if (mLeaseType == 1 && (listRental == null || listRental.size() <= 1)) {
+            shortTip("请上传租赁合同");
+            return;
+        }
         mPresenter.getIdentityInfo(Constants.TYPE_IDENTITY_PERSONAL, false);
     }
 
@@ -331,6 +340,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
 
     //拍照
     private void takePhoto() {
+        if (isOverLimit()) return;
         if (!PermissionUtils.checkSDCardCameraPermission(this)) {
             return;
         }
@@ -352,16 +362,44 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         PhotoUtils.takePicture(this, localPhotoUri, REQUEST_CAMERA);
     }
 
+    private boolean isOverLimit() {
+        if (TYPE_CER == mUploadType) {//房产证
+            if (listCertificate.size() >= 10) {
+                shortTip(R.string.tip_image_upload_overlimit);
+                return true;
+            }
+        } else if (TYPE_REN == mUploadType) {//租赁合同
+            if (listRental.size() >= 10) {
+                shortTip(R.string.tip_image_upload_overlimit);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private int num() {
+        int num;
+        if (TYPE_CER == mUploadType) {//房产证
+            num = 10 - listCertificate.size();
+        } else if (TYPE_REN == mUploadType) {//租赁合同
+            num = 10 - listRental.size();
+        } else {
+            num = 9;
+        }
+        return num;
+    }
+
     private void openGallery() {
         if (!PermissionUtils.checkStoragePermission(this)) {
             return;
         }
         //是否上传房产证
         if (TYPE_CER == mUploadType || TYPE_REN == mUploadType) {
+            if (isOverLimit()) return;
             ImageSelector.builder()
                     .useCamera(false) // 设置是否使用拍照
                     .setSingle(false)  //设置是否单选
-                    .setMaxSelectCount(9)
+                    .setMaxSelectCount(num())
                     .canPreview(true) //是否可以预览图片，默认为true
                     .start(this, REQUEST_GALLERY); // 打开相册
         } else {
@@ -404,9 +442,11 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CAMERA) {//房产证拍照
                 if (TYPE_CER == mUploadType) {//房产证
+                    ImageUtils.isSaveCropImageView(localCerPath);//图片处理
                     listCertificate.add(listCertificate.size() - 1, new ImageBean(false, 0, localCerPath));
                     certificateAdapter.notifyDataSetChanged();
                 } else if (TYPE_REN == mUploadType) {//租赁合同
+                    ImageUtils.isSaveCropImageView(localRenPath);//图片处理
                     listRental.add(listRental.size() - 1, new ImageBean(false, 0, localRenPath));
                     rentalAdapter.notifyDataSetChanged();
                 }
@@ -424,11 +464,13 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
                     rivImageBack.setImageBitmap(BitmapFactory.decodeFile(images.get(0)));
                 } else if (TYPE_CER == mUploadType) {//房产证相册
                     for (int i = 0; i < images.size(); i++) {
+                        ImageUtils.isSaveCropImageView(images.get(i));//图片处理
                         listCertificate.add(listCertificate.size() - 1, new ImageBean(false, 0, images.get(i)));
                     }
                     certificateAdapter.notifyDataSetChanged();
                 } else if (TYPE_REN == mUploadType) {
                     for (int i = 0; i < images.size(); i++) {
+                        ImageUtils.isSaveCropImageView(images.get(i));//图片处理
                         listRental.add(listRental.size() - 1, new ImageBean(false, 0, images.get(i)));
                     }
                     rentalAdapter.notifyDataSetChanged();

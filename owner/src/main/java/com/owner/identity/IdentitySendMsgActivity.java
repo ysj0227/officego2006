@@ -98,6 +98,10 @@ public class IdentitySendMsgActivity extends BaseMvpActivity<SendMsgPresenter>
     @Override
     public void sendApplySuccess(ApplyJoinBean data) {
         if (mData != null) {
+            if (TextUtils.isEmpty(mData.getTargetId())) {
+                shortTip("获取管理员信息异常，无法发送申请");
+                return;
+            }
             //发送申请自定义消息
             SendMessageManager.getInstance().sendIdApplyMessage(
                     mData.getTargetId(),

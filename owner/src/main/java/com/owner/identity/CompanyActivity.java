@@ -141,6 +141,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
     private int mBuildingId;
     private int mLeaseType;//租赁类型0直租1转租
     private boolean isSelectedBuilding;//是否选择楼盘关联
+//    private boolean isCertificateImage, isRentalImage;//是否上传了图片
 
     @AfterViews
     void init() {
@@ -212,7 +213,14 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
             shortTip("请输入楼盘名称");
             return;
         }
-        //TODO 图片处理
+        if (listCertificate == null || listCertificate.size() <= 1) {
+            shortTip("请上传房产证");
+            return;
+        }
+        if (mLeaseType == 1 && (listRental == null || listRental.size() <= 1)) {
+            shortTip("请上传租赁合同");
+            return;
+        }
         mPresenter.getIdentityInfo(Constants.TYPE_IDENTITY_COMPANY, false);
     }
 
@@ -275,6 +283,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
 
 
     private void takePhoto() {
+        if (isOverLimit()) return;
         if (!PermissionUtils.checkSDCardCameraPermission(this)) {
             return;
         }
@@ -296,14 +305,42 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         PhotoUtils.takePicture(this, localPhotoUri, REQUEST_CAMERA);
     }
 
+    private boolean isOverLimit() {
+        if (TYPE_CER == mUploadType) {//房产证
+            if (listCertificate.size() >= 10) {
+                shortTip(R.string.tip_image_upload_overlimit);
+                return true;
+            }
+        } else if (TYPE_REN == mUploadType) {//租赁合同
+            if (listRental.size() >= 10) {
+                shortTip(R.string.tip_image_upload_overlimit);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private int num() {
+        int num;
+        if (TYPE_CER == mUploadType) {//房产证
+            num = 10 - listCertificate.size();
+        } else if (TYPE_REN == mUploadType) {//租赁合同
+            num = 10 - listRental.size();
+        } else {
+            num = 9;
+        }
+        return num;
+    }
+
     private void openGallery() {
         if (!PermissionUtils.checkStoragePermission(this)) {
             return;
         }
+        if (isOverLimit()) return;
         ImageSelector.builder()
                 .useCamera(false) // 设置是否使用拍照
                 .setSingle(false)  //设置是否单选
-                .setMaxSelectCount(9)
+                .setMaxSelectCount(num())
                 .canPreview(true) //是否可以预览图片，默认为true
                 .start(this, REQUEST_GALLERY); // 打开相册
     }
@@ -318,7 +355,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
                     listCertificate.add(listCertificate.size() - 1, new ImageBean(false, 0, localCerPath));
                     certificateAdapter.notifyDataSetChanged();
                 } else if (TYPE_REN == mUploadType) {//租赁合同
-                    ImageUtils.isSaveCropImageView(localCerPath);//图片处理
+                    ImageUtils.isSaveCropImageView(localRenPath);//图片处理
                     listRental.add(listRental.size() - 1, new ImageBean(false, 0, localRenPath));
                     rentalAdapter.notifyDataSetChanged();
                 }
@@ -546,7 +583,8 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
             if (data != null && !checkObjAllFieldsIsNull(data)) {
                 //auditStatus 为2 驳回  authority 如果是1(普通) 就是创建 ，如果是0(管理员)就是关联
                 cetCompanyName.setText(data.getCompany());
-                if (!IdentityRejectInfo.isCreateReject(data))  return;
+                hideView();
+                if (!IdentityRejectInfo.isCreateReject(data)) return;
                 cetOfficeName.setText(data.getBuildingName());
                 tvAddress.setText(data.getBuildingAddress());
                 houseType(Integer.valueOf(data.getLeaseType()));

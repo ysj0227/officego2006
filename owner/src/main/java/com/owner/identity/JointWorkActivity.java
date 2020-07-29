@@ -26,6 +26,7 @@ import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.FileHelper;
 import com.officego.commonlib.utils.FileUtils;
+import com.officego.commonlib.utils.ImageUtils;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.PhotoUtils;
 import com.officego.commonlib.utils.ToastUtils;
@@ -227,7 +228,14 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
             shortTip("请输入楼盘名称");
             return;
         }
-        //TODO 图片处理
+        if (listCertificate == null || listCertificate.size() <= 1) {
+            shortTip("请上传房产证");
+            return;
+        }
+        if (listRental == null || listRental.size() <= 1) {
+            shortTip("请上传租赁合同");
+            return;
+        }
         mPresenter.getIdentityInfo(Constants.TYPE_IDENTITY_JOINT_WORK, false);
     }
 
@@ -255,6 +263,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
 
 
     private void takePhoto() {
+        if (isOverLimit()) return;
         if (!PermissionUtils.checkSDCardCameraPermission(this)) {
             return;
         }
@@ -275,23 +284,41 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
         }
         PhotoUtils.takePicture(this, localPhotoUri, REQUEST_CAMERA);
     }
+    private boolean isOverLimit() {
+        if (TYPE_CER == mUploadType) {//房产证
+            if (listCertificate.size() >= 10) {
+                shortTip(R.string.tip_image_upload_overlimit);
+                return true;
+            }
+        } else if (TYPE_REN == mUploadType) {//租赁合同
+            if (listRental.size() >= 10) {
+                shortTip(R.string.tip_image_upload_overlimit);
+                return true;
+            }
+        }
+        return false;
+    }
 
+    private int num() {
+        int num;
+        if (TYPE_CER == mUploadType) {//房产证
+            num = 10 - listCertificate.size();
+        } else if (TYPE_REN == mUploadType) {//租赁合同
+            num = 10 - listRental.size();
+        } else {
+            num = 9;
+        }
+        return num;
+    }
     private void openGallery() {
         if (!PermissionUtils.checkStoragePermission(this)) {
             return;
         }
-//        //限数量的多选(比如最多9张)
-//        List<String> selectList = new ArrayList<>();
-//        selectList.clear();
-//        if (TYPE_CER == mUploadType) {
-//            selectList.addAll(listCertificate);
-//        } else if (TYPE_REN == mUploadType) {
-//            selectList.addAll(listRental);
-//        }
+        if (isOverLimit()) return;
         ImageSelector.builder()
                 .useCamera(false) // 设置是否使用拍照
                 .setSingle(false)  //设置是否单选
-                .setMaxSelectCount(9)
+                .setMaxSelectCount(num())
                 .canPreview(true) //是否可以预览图片，默认为true
                 .start(this, REQUEST_GALLERY); // 打开相册
     }
@@ -302,9 +329,11 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CAMERA) {//拍照
                 if (TYPE_CER == mUploadType) {//房产证
+                    ImageUtils.isSaveCropImageView(localCerPath);//图片处理
                     listCertificate.add(listCertificate.size() - 1, new ImageBean(false, 0, localCerPath));
                     certificateAdapter.notifyDataSetChanged();
                 } else if (TYPE_REN == mUploadType) {//租赁合同
+                    ImageUtils.isSaveCropImageView(localRenPath);//图片处理
                     listRental.add(listRental.size() - 1, new ImageBean(false, 0, localRenPath));
                     rentalAdapter.notifyDataSetChanged();
                 }
@@ -312,11 +341,13 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
                 List<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
                 if (TYPE_CER == mUploadType) {
                     for (int i = 0; i < images.size(); i++) {
+                        ImageUtils.isSaveCropImageView(images.get(i));//图片处理
                         listCertificate.add(listCertificate.size() - 1, new ImageBean(false, 0, images.get(i)));
                     }
                     certificateAdapter.notifyDataSetChanged();
                 } else if (TYPE_REN == mUploadType) {
                     for (int i = 0; i < images.size(); i++) {
+                        ImageUtils.isSaveCropImageView(images.get(i));//图片处理
                         listRental.add(listRental.size() - 1, new ImageBean(false, 0, images.get(i)));
                     }
                     rentalAdapter.notifyDataSetChanged();
@@ -359,7 +390,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
     }
 
     @Override
-    public void deleteCertificate(ImageBean bean,int position) {
+    public void deleteCertificate(ImageBean bean, int position) {
         if (isFastClick(1200)) {
             return;
         }
@@ -379,7 +410,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
     }
 
     @Override
-    public void deleteRentalAgreement(ImageBean bean,int position) {
+    public void deleteRentalAgreement(ImageBean bean, int position) {
         if (isFastClick(1200)) {
             return;
         }
@@ -391,8 +422,10 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
             rentalAdapter.notifyDataSetChanged();
         }
     }
+
     /**
      * 删除图片
+     *
      * @param isPremisesImage 是否房产证图片
      * @param position        pos
      */
@@ -543,28 +576,14 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
     }
 
     @Override
-    public void checkCompanyInfoSuccess() {
-        //创建公司
-        CreateCompanyActivity_.intent(context)
-                .createCompany(Constants.TYPE_CREATE_FROM_COMPANY)
-                .identityType(Constants.TYPE_IDENTITY_JOINT_WORK)
-                .startForResult(REQUEST_CREATE_COMPANY);
-    }
-
-    @Override
-    public void checkJointWorkInfoSuccess() {
-        //创建网点
-        CreateJointWorkActivity_.intent(context).startForResult(REQUEST_CREATE_JOINT_WORK);
-    }
-
-    @Override
     public void getIdentityInfoSuccess(GetIdentityInfoBean data, boolean isFirstGetInfo) {
         if (isFirstGetInfo) {
             if (data != null && !checkObjAllFieldsIsNull(data)) {
                 cetJointworkName.setText(data.getBranchesName());
                 tvJointworkAddress.setText(data.getBuildingAddress());
+                hideView();
                 //auditStatus 为2 驳回  authority 如果是1(普通) 就是创建 ，如果是0(管理员)就是关联
-                if (!IdentityRejectInfo.isCreateReject(data))  return;
+                if (!IdentityRejectInfo.isCreateReject(data)) return;
                 cetCompanyName.setText(data.getCompany());
                 cetOfficeName.setText(data.getBuildingName());
                 tvAddress.setText(data.getAddress());
@@ -599,6 +618,23 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
     public void submitSuccess() {
         //返回业主个人中心
         SwitchRoleDialog.submitIdentitySuccessDialog(this);
+    }
+
+    @Override
+    public void checkCompanyInfoSuccess() {
+        //创建公司
+        CreateCompanyActivity_.intent(context)
+                .createCompany(Constants.TYPE_CREATE_FROM_COMPANY)
+                .identityType(Constants.TYPE_IDENTITY_JOINT_WORK)
+                .startForResult(REQUEST_CREATE_COMPANY);
+    }
+
+    @Override
+    public void checkJointWorkInfoSuccess() {
+        //创建网点
+        CreateJointWorkActivity_.intent(context)
+                .mJointWorkName(cetJointworkName.getText() == null ? "" : cetJointworkName.getText().toString())
+                .startForResult(REQUEST_CREATE_JOINT_WORK);
     }
 
     /**

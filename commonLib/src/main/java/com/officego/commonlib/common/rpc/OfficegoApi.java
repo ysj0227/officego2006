@@ -10,6 +10,7 @@ import com.officego.commonlib.common.rpc.request.LicenceInterface;
 import com.officego.commonlib.common.rpc.request.MineMsgInterface;
 import com.officego.commonlib.common.rpc.request.ScheduleInterface;
 import com.officego.commonlib.retrofit.RetrofitCallback;
+import com.officego.commonlib.utils.log.LogCat;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -134,7 +135,7 @@ public class OfficegoApi {
      * 管理员审核申请加入员工接口
      * auditStatus 1通过2取消
      */
-    public void updateAuditStatusIdentity(int identityType, int id,int licenceId, int auditStatus,
+    public void updateAuditStatusIdentity(int identityType, int id, int licenceId, int auditStatus,
                                           RetrofitCallback<Object> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
@@ -151,7 +152,7 @@ public class OfficegoApi {
      * 认证聊天获取信息
      */
     public void identityChattedMsg(String targetId,
-                                          RetrofitCallback<IdentitychattedMsgBean> callback) {
+                                   RetrofitCallback<IdentitychattedMsgBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("targetId", requestBody(targetId));
@@ -159,5 +160,4 @@ public class OfficegoApi {
                 .identityChattedMsg(map)
                 .enqueue(callback);
     }
-
 }

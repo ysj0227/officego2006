@@ -28,7 +28,7 @@ public interface SendMsgContract {
 
         void getDetails(int identityType, int id);
 
-        void sendApply(int identityType, int id,int chattedId);
+        void sendApply(int identityType, int id,String chattedId);
 
         void cancelApply(int id);
     }

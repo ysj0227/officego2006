@@ -146,5 +146,6 @@
     <string name="str_title_role">员工管理</string>
     <string name="str_go_away">离开</string>
     <string name="str_submit_identity">提交认证</string>
+    <string name="tip_image_upload_overlimit">图片已上传最大限制了</string>
 
 </resources>

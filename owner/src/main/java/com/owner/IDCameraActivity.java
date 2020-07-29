@@ -181,26 +181,6 @@ public class IDCameraActivity extends Activity {
         Bitmap bitMap = BitmapFactory.decodeFile(localAvatarPath);
         int width = bitMap.getWidth();
         int height = bitMap.getHeight();
-//        int mWidth, mHeight;
-//        if (width > 4096 && height > 4096) {
-//            if (width > height) {
-//                mWidth = 2000;
-//                mHeight = (int) (mWidth / CommonHelper.digits(width, height));
-//            } else {
-//                mHeight = 2000;
-//                mWidth = (int) (mHeight / CommonHelper.digits(height, width));
-//            }
-//        } else if (width > 4096 && height < 4096) {
-//            mWidth = 2000;
-//            mHeight = (int) (mWidth / CommonHelper.digits(width, height));
-//        } else if (width < 4096 && height > 4096) {
-//            mHeight = 2000;
-//            mWidth = (int) (mHeight / CommonHelper.digits(height, width));
-//        }else {
-//            mWidth=width;
-//            mHeight=height;
-//        }
-//        bitMap = Bitmap.createBitmap(bitMap, 0, 0, mWidth, mHeight);
         // 设置想要的大小
         int newWidth = 800;
         int newHeight = 800;
