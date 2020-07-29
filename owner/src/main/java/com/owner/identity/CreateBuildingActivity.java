@@ -21,6 +21,7 @@ import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.FileHelper;
 import com.officego.commonlib.utils.FileUtils;
+import com.officego.commonlib.utils.ImageUtils;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.PhotoUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
@@ -190,11 +191,13 @@ public class CreateBuildingActivity extends BaseMvpActivity<CreateSubmitPresente
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CAMERA) {//拍照
                 isTakePhotoOrGallery = true;
+                ImageUtils.isSaveCropImageView(localBuildingPath);//图片处理
                 ivBuildingIntroduce.setImageBitmap(BitmapFactory.decodeFile(localBuildingPath));
             } else if (requestCode == REQUEST_GALLERY && data != null) {//相册
                 isTakePhotoOrGallery = true;
                 List<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
                 localBuildingPath = images.get(0);
+                ImageUtils.isSaveCropImageView(localBuildingPath);//图片处理
                 ivBuildingIntroduce.setImageBitmap(BitmapFactory.decodeFile(images.get(0)));
             }
         }

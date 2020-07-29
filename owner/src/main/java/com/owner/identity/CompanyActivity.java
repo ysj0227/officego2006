@@ -300,10 +300,26 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         if (!PermissionUtils.checkStoragePermission(this)) {
             return;
         }
+        int num;
+        if (TYPE_CER == mUploadType) {//房产证
+            if (listCertificate.size()==10){
+                shortTip("图片已上传最大限制了");
+                return;
+            }
+            num = 10 - listCertificate.size();
+        } else if (TYPE_REN == mUploadType) {//租赁合同
+            if (listRental.size()==10){
+                shortTip("图片已上传最大限制了");
+                return;
+            }
+            num = 10 - listRental.size();
+        } else {
+            num = 9;
+        }
         ImageSelector.builder()
                 .useCamera(false) // 设置是否使用拍照
                 .setSingle(false)  //设置是否单选
-                .setMaxSelectCount(9)
+                .setMaxSelectCount(num)
                 .canPreview(true) //是否可以预览图片，默认为true
                 .start(this, REQUEST_GALLERY); // 打开相册
     }
@@ -318,7 +334,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
                     listCertificate.add(listCertificate.size() - 1, new ImageBean(false, 0, localCerPath));
                     certificateAdapter.notifyDataSetChanged();
                 } else if (TYPE_REN == mUploadType) {//租赁合同
-                    ImageUtils.isSaveCropImageView(localCerPath);//图片处理
+                    ImageUtils.isSaveCropImageView(localRenPath);//图片处理
                     listRental.add(listRental.size() - 1, new ImageBean(false, 0, localRenPath));
                     rentalAdapter.notifyDataSetChanged();
                 }
@@ -546,7 +562,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
             if (data != null && !checkObjAllFieldsIsNull(data)) {
                 //auditStatus 为2 驳回  authority 如果是1(普通) 就是创建 ，如果是0(管理员)就是关联
                 cetCompanyName.setText(data.getCompany());
-                if (!IdentityRejectInfo.isCreateReject(data))  return;
+                if (!IdentityRejectInfo.isCreateReject(data)) return;
                 cetOfficeName.setText(data.getBuildingName());
                 tvAddress.setText(data.getBuildingAddress());
                 houseType(Integer.valueOf(data.getLeaseType()));

@@ -18,6 +18,7 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.bumptech.glide.signature.ObjectKey;
+import com.officego.commonlib.utils.log.LogCat;
 
 import java.io.BufferedOutputStream;
 import java.io.ByteArrayInputStream;
@@ -312,10 +313,13 @@ public class ImageUtils {
         Bitmap bitMap = BitmapFactory.decodeFile(path);
         int width = bitMap.getWidth();
         int height = bitMap.getHeight();
-        int maxPx = 4096, setPx = 1800;
+        int maxPx = 4096, setPx = 4096;
+//        int maxPx = 1000, setPx = 100;
         if (width < maxPx && height < maxPx) {
             //图片小于规定尺寸
+//            LogCat.d("TAG","1111 图片小于规定尺寸");
         } else {
+//            LogCat.d("TAG","1111 图片大于规定尺寸");
             int mWidth, mHeight;
             if (width > maxPx && height > maxPx) {
                 if (width > height) {

@@ -14,9 +14,9 @@ public class ApplyLicenceBean {
 
     private String targetId;
     private String proprietorRealname;
-    private int licenceId;
+    private String licenceId;
     private String proprietorJob;
-    private int chattedId;
+    private String chattedId;
     private String authority;
     private String avatar;
 
@@ -36,11 +36,11 @@ public class ApplyLicenceBean {
         this.proprietorRealname = proprietorRealname;
     }
 
-    public int getLicenceId() {
+    public String getLicenceId() {
         return licenceId;
     }
 
-    public void setLicenceId(int licenceId) {
+    public void setLicenceId(String licenceId) {
         this.licenceId = licenceId;
     }
 
@@ -52,11 +52,11 @@ public class ApplyLicenceBean {
         this.proprietorJob = proprietorJob;
     }
 
-    public int getChattedId() {
+    public String getChattedId() {
         return chattedId;
     }
 
-    public void setChattedId(int chattedId) {
+    public void setChattedId(String chattedId) {
         this.chattedId = chattedId;
     }
 

@@ -36,7 +36,7 @@ public class SendMsgPresenter extends BasePresenter<SendMsgContract.View>
     }
 
     @Override
-    public void sendApply(int identityType, int id,int chattedId) {
+    public void sendApply(int identityType, int id,String chattedId) {
         OfficegoApi.getInstance().applyLicenceProprietor(identityType, id,chattedId, new RetrofitCallback<ApplyJoinBean>() {
             @Override
             public void onSuccess(int code, String msg, ApplyJoinBean data) {
