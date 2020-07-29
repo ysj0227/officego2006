@@ -462,7 +462,6 @@ public class OfficegoApi {
         }
         //租赁合同
         if (mFileContractPath != null && mFileContractPath.size() > 0) {
-            mFileContractPath.remove(mFileContractPath.size() - 1);
             RequestBody file1;
             boolean isNetImg;//是否网络图片
             for (int i = 0; i < mFileContractPath.size(); i++) {
