@@ -239,6 +239,14 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
             shortTip("请创建或关联楼盘");
             return;
         }
+        if (listCertificate == null || listCertificate.size() <= 1) {
+            shortTip("请上传房产证");
+            return;
+        }
+        if (mLeaseType == 1 && (listRental == null || listRental.size() <= 1)) {
+            shortTip("请上传租赁合同");
+            return;
+        }
         mPresenter.getIdentityInfo(Constants.TYPE_IDENTITY_PERSONAL, false);
     }
 
@@ -332,6 +340,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
 
     //拍照
     private void takePhoto() {
+        if (isOverLimit()) return;
         if (!PermissionUtils.checkSDCardCameraPermission(this)) {
             return;
         }
@@ -353,30 +362,44 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         PhotoUtils.takePicture(this, localPhotoUri, REQUEST_CAMERA);
     }
 
+    private boolean isOverLimit() {
+        if (TYPE_CER == mUploadType) {//房产证
+            if (listCertificate.size() >= 10) {
+                shortTip(R.string.tip_image_upload_overlimit);
+                return true;
+            }
+        } else if (TYPE_REN == mUploadType) {//租赁合同
+            if (listRental.size() >= 10) {
+                shortTip(R.string.tip_image_upload_overlimit);
+                return true;
+            }
+        }
+        return false;
+    }
+
+    private int num() {
+        int num;
+        if (TYPE_CER == mUploadType) {//房产证
+            num = 10 - listCertificate.size();
+        } else if (TYPE_REN == mUploadType) {//租赁合同
+            num = 10 - listRental.size();
+        } else {
+            num = 9;
+        }
+        return num;
+    }
+
     private void openGallery() {
         if (!PermissionUtils.checkStoragePermission(this)) {
             return;
         }
         //是否上传房产证
         if (TYPE_CER == mUploadType || TYPE_REN == mUploadType) {
-            int num;
-            if (TYPE_CER == mUploadType) {//房产证
-                if (listCertificate.size()>=10){
-                    shortTip("图片已上传最大限制了");
-                    return;
-                }
-                num = 10 - listCertificate.size();
-            } else {//租赁合同
-                if (listRental.size()==10){
-                    shortTip("图片已上传最大限制了");
-                    return;
-                }
-                num = 10 - listRental.size();
-            }
+            if (isOverLimit()) return;
             ImageSelector.builder()
                     .useCamera(false) // 设置是否使用拍照
                     .setSingle(false)  //设置是否单选
-                    .setMaxSelectCount(num)
+                    .setMaxSelectCount(num())
                     .canPreview(true) //是否可以预览图片，默认为true
                     .start(this, REQUEST_GALLERY); // 打开相册
         } else {
