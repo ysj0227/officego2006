@@ -563,6 +563,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
             if (data != null && !checkObjAllFieldsIsNull(data)) {
                 cetJointworkName.setText(data.getBranchesName());
                 tvJointworkAddress.setText(data.getBuildingAddress());
+                hideView();
                 //auditStatus 为2 驳回  authority 如果是1(普通) 就是创建 ，如果是0(管理员)就是关联
                 if (!IdentityRejectInfo.isCreateReject(data)) return;
                 cetCompanyName.setText(data.getCompany());

@@ -314,7 +314,7 @@ public class ImageUtils {
         int width = bitMap.getWidth();
         int height = bitMap.getHeight();
         int maxPx = 4096, setPx = 4096;
-//        int maxPx = 1000, setPx = 100;
+//        int maxPx = 1000, setPx = 3000;
         if (width < maxPx && height < maxPx) {
             //图片小于规定尺寸
 //            LogCat.d("TAG","1111 图片小于规定尺寸");
@@ -339,7 +339,14 @@ public class ImageUtils {
                 mWidth = width;
                 mHeight = height;
             }
-            bitMap = Bitmap.createBitmap(bitMap, 0, 0, mWidth, mHeight);
+            // 计算缩放比例
+            float scaleWidth = ((float) mWidth) / width;
+            float scaleHeight = ((float) mHeight) / height;
+            //取得想要缩放的matrix参数
+            Matrix matrix = new Matrix();
+            matrix.postScale(scaleWidth, scaleHeight);
+            // 得到新的图片
+            bitMap = Bitmap.createBitmap(bitMap, 0, 0, width, height, matrix, true);
             //将新文件回写到本地
             FileOutputStream b = null;
             try {

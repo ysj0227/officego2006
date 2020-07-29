@@ -562,6 +562,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
             if (data != null && !checkObjAllFieldsIsNull(data)) {
                 //auditStatus 为2 驳回  authority 如果是1(普通) 就是创建 ，如果是0(管理员)就是关联
                 cetCompanyName.setText(data.getCompany());
+                hideView();
                 if (!IdentityRejectInfo.isCreateReject(data)) return;
                 cetOfficeName.setText(data.getBuildingName());
                 tvAddress.setText(data.getBuildingAddress());
