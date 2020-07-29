@@ -102,6 +102,7 @@
                     android:layout_toEndOf="@id/tv_text_company_name"
                     android:background="@null"
                     android:maxLines="1"
+                    android:singleLine="true"
                     android:textColor="@color/text_33"
                     android:textSize="@dimen/sp_15" />
 
@@ -145,6 +146,7 @@
                     android:background="@null"
                     android:ellipsize="end"
                     android:maxLines="1"
+                    android:singleLine="true"
                     android:textColor="@color/text_33"
                     android:textSize="@dimen/sp_15" />
 
@@ -277,7 +279,7 @@
         android:text="@string/str_submit_identity"
         android:textColor="@color/white"
         android:textSize="@dimen/sp_15"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

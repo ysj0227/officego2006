@@ -361,19 +361,17 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         if (TYPE_CER == mUploadType || TYPE_REN == mUploadType) {
             int num;
             if (TYPE_CER == mUploadType) {//房产证
-                if (listCertificate.size()==10){
+                if (listCertificate.size()>=10){
                     shortTip("图片已上传最大限制了");
                     return;
                 }
                 num = 10 - listCertificate.size();
-            } else if (TYPE_REN == mUploadType) {//租赁合同
+            } else {//租赁合同
                 if (listRental.size()==10){
                     shortTip("图片已上传最大限制了");
                     return;
                 }
                 num = 10 - listRental.size();
-            } else {
-                num = 9;
             }
             ImageSelector.builder()
                     .useCamera(false) // 设置是否使用拍照

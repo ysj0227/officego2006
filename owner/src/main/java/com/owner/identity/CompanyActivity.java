@@ -302,13 +302,13 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         }
         int num;
         if (TYPE_CER == mUploadType) {//房产证
-            if (listCertificate.size()==10){
+            if (listCertificate.size()>=10){
                 shortTip("图片已上传最大限制了");
                 return;
             }
             num = 10 - listCertificate.size();
         } else if (TYPE_REN == mUploadType) {//租赁合同
-            if (listRental.size()==10){
+            if (listRental.size()>=10){
                 shortTip("图片已上传最大限制了");
                 return;
             }
