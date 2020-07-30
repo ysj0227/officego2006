@@ -273,7 +273,7 @@
                 android:id="@+id/rv_recommend_jointwork"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
+                android:background="@color/text_e5"
                 android:nestedScrollingEnabled="false"
                 android:paddingLeft="@dimen/dp_18"
                 android:visibility="gone"
@@ -285,7 +285,7 @@
                 android:id="@+id/rv_recommend_company"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
+                android:background="@color/text_e5"
                 android:nestedScrollingEnabled="false"
                 android:paddingLeft="@dimen/dp_18"
                 android:visibility="gone"
@@ -296,10 +296,11 @@
             <RelativeLayout
                 android:id="@+id/rl_recommend_building"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:background="@color/white"
+                android:layout_height="@dimen/dp_500"
+                android:background="@color/text_e5"
                 android:paddingLeft="@dimen/dp_18"
                 android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rl_office">
@@ -315,13 +316,14 @@
                     android:drawableStart="@mipmap/ic_small_delete_blue"
                     android:drawablePadding="@dimen/dp_3"
                     android:text="@string/str_close"
-                    android:textSize="@dimen/sp_12" />
+                    android:textSize="@dimen/sp_13" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_recommend_building"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/ibt_close_keyboard"
+                    android:background="@color/text_e5"
                     android:nestedScrollingEnabled="false" />
             </RelativeLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>

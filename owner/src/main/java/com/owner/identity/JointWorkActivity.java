@@ -259,7 +259,6 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
                 }).create().show();
     }
 
-
     private void takePhoto() {
         if (isOverLimit()) return;
         if (!PermissionUtils.checkSDCardCameraPermission(this)) {

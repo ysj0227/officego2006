@@ -56,8 +56,10 @@ public class IdentityBuildingAdapter extends CommonListAdapter<IdentityBuildingB
         } else {
             if (isJointWork){
                 tvAddress.setVisibility(View.GONE);
+                tvAdd.setVisibility(View.GONE);
             }else {
                 tvAddress.setVisibility(View.VISIBLE);
+                tvAdd.setVisibility(View.VISIBLE);
             }
             tvBuildingName.setVisibility(View.VISIBLE);
             if (!TextUtils.isEmpty(bean.getBuildingName())) {

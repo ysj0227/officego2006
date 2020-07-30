@@ -101,8 +101,8 @@
                     android:layout_marginStart="@dimen/dp_4"
                     android:layout_toEndOf="@id/tv_text_company_name"
                     android:background="@null"
-                    android:maxLines="1"
                     android:maxLength="20"
+                    android:maxLines="1"
                     android:singleLine="true"
                     android:textColor="@color/text_33"
                     android:textSize="@dimen/sp_15" />
@@ -146,8 +146,8 @@
                     android:layout_toEndOf="@id/tv_text_office"
                     android:background="@null"
                     android:ellipsize="end"
-                    android:maxLines="1"
                     android:maxLength="20"
+                    android:maxLines="1"
                     android:singleLine="true"
                     android:textColor="@color/text_33"
                     android:textSize="@dimen/sp_15" />
@@ -229,7 +229,7 @@
                 android:id="@+id/rl_recommend_company"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
+                android:background="@color/text_e5"
                 android:paddingLeft="@dimen/dp_18"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -249,20 +249,19 @@
                     android:id="@+id/rv_recommend_company"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"
                     android:layout_below="@id/tv_add_company"
-                    android:layout_marginTop="@dimen/dp_10" />
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:nestedScrollingEnabled="false" />
             </RelativeLayout>
-
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_recommend_building"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:background="@color/white"
+                android:background="@color/text_e5"
+                android:nestedScrollingEnabled="false"
                 android:paddingLeft="@dimen/dp_18"
                 android:visibility="gone"
-                android:nestedScrollingEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rl_office" />
