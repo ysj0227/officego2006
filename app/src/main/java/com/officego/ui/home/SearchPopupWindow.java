@@ -309,7 +309,14 @@ public class SearchPopupWindow extends PopupWindow implements
         getSearchSubwayList(tvMeterText, tvBusinessCircleText, recyclerViewCenter, tvMeterNum, recyclerViewRight);
         //初始化显示商圈
         getSearchDistrictList(tvBusinessCircleText, tvMeterText, recyclerViewCenter, tvBusinessCircleNum, recyclerViewRight);
-
+        if (mHashSetLine != null && mHashSetLine.size() > 0) {
+            tvMeterNum.setVisibility(View.VISIBLE);
+            tvMeterNum.setText(String.format("%d", mHashSetLine.size()));
+        }
+        if (mHashSetBusiness != null && mHashSetBusiness.size() > 0) {
+            tvBusinessCircleNum.setVisibility(View.VISIBLE);
+            tvBusinessCircleNum.setText(String.format("%d", mHashSetBusiness.size()));
+        }
         //点击监听
         View.OnClickListener clickListener = v -> {
             switch (v.getId()) {
@@ -402,7 +409,6 @@ public class SearchPopupWindow extends PopupWindow implements
         OfficegoApi.getInstance().getSubwayList(new RetrofitCallback<List<MeterBean.DataBean>>() {
             @Override
             public void onSuccess(int code, String msg, List<MeterBean.DataBean> data) {
-                LogCat.e("TAG", "getSubwayList onSuccess =" + data);
                 meterList.clear();
                 meterList = data;
                 if (!TextUtils.isEmpty(nearbySubway)) {
@@ -416,7 +422,6 @@ public class SearchPopupWindow extends PopupWindow implements
 
             @Override
             public void onFail(int code, String msg, List<MeterBean.DataBean> data) {
-                LogCat.e("TAG", "getSubwayList onFail code=" + code + "  msg=" + msg);
             }
         });
     }
@@ -717,7 +722,6 @@ public class SearchPopupWindow extends PopupWindow implements
         OfficegoApi.getInstance().getDecoratedType(new RetrofitCallback<List<DirectoryBean.DataBean>>() {
             @Override
             public void onSuccess(int code, String msg, List<DirectoryBean.DataBean> data) {
-                LogCat.e("TAG", "getDecoratedType onSuccess =" + data);
                 DecorationTypeAdapter adapter = new DecorationTypeAdapter(mContext, data);
                 rvDecorationType.setAdapter(adapter);
             }
@@ -733,14 +737,12 @@ public class SearchPopupWindow extends PopupWindow implements
         OfficegoApi.getInstance().getHouseUnique(new RetrofitCallback<List<DirectoryBean.DataBean>>() {
             @Override
             public void onSuccess(int code, String msg, List<DirectoryBean.DataBean> data) {
-                LogCat.e("TAG", "getHouseUnique onSuccess =" + data);
                 HouseUniqueAdapter adapter = new HouseUniqueAdapter(mContext, data);
                 rvHouseUnique.setAdapter(adapter);
             }
 
             @Override
             public void onFail(int code, String msg, List<DirectoryBean.DataBean> data) {
-                LogCat.e("TAG", "getHouseUnique onFail code=" + code + "  msg=" + msg);
             }
         });
     }
@@ -765,8 +767,8 @@ public class SearchPopupWindow extends PopupWindow implements
             this.recyclerViewRight = recyclerViewRight;
             this.tvNum = tvNum;
             if (!TextUtils.isEmpty(line)) {
-                for (int i = 0; i <list.size() ; i++) {
-                    if (TextUtils.equals(line,String.valueOf(list.get(i).getLid()))){
+                for (int i = 0; i < list.size(); i++) {
+                    if (TextUtils.equals(line, String.valueOf(list.get(i).getLid()))) {
                         stationAdapter = new StationAdapter(mContext, tvNum, list.get(i).getList());
                         recyclerViewRight.setAdapter(stationAdapter);
                     }
@@ -780,7 +782,7 @@ public class SearchPopupWindow extends PopupWindow implements
             itemMeter.setText(meterBean.getLine());
             //选择筛选条件的
             if (!TextUtils.isEmpty(line)) {
-                if (TextUtils.equals(line,String.valueOf(meterBean.getLid()))){
+                if (TextUtils.equals(line, String.valueOf(meterBean.getLid()))) {
                     mapMeter.put(holder.getAdapterPosition(), true);//选择筛选条件的
                 }
             }
@@ -887,8 +889,8 @@ public class SearchPopupWindow extends PopupWindow implements
             this.recyclerViewRight = recyclerViewRight;
             this.tvNum = tvNum;
             if (!TextUtils.isEmpty(district)) {
-                for (int i = 0; i <list.size() ; i++) {
-                    if (TextUtils.equals(district,String.valueOf(list.get(i).getDistrictID()))){
+                for (int i = 0; i < list.size(); i++) {
+                    if (TextUtils.equals(district, String.valueOf(list.get(i).getDistrictID()))) {
                         businessCircleDetailsAdapter = new BusinessCircleDetailsAdapter(mContext, tvNum, list.get(i).getList());
                         recyclerViewRight.setAdapter(businessCircleDetailsAdapter);
                     }
@@ -901,7 +903,7 @@ public class SearchPopupWindow extends PopupWindow implements
             TextView itemBusiness = holder.getView(R.id.tv_item_meter);
             itemBusiness.setText(bean.getDistrict());
             if (!TextUtils.isEmpty(district)) {
-                if (TextUtils.equals(district,String.valueOf(bean.getDistrictID()))){
+                if (TextUtils.equals(district, String.valueOf(bean.getDistrictID()))) {
                     mapBusiness.put(holder.getAdapterPosition(), true);//选择筛选条件的
                 }
             }
