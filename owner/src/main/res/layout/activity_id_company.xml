@@ -197,7 +197,6 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/dp_4"
                     android:layout_toEndOf="@id/tv_text_type"
-                    android:text="自有房产"
                     android:textColor="@color/text_33"
                     android:textSize="@dimen/sp_15" />
 

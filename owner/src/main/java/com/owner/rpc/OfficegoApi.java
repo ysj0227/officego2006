@@ -422,7 +422,7 @@ public class OfficegoApi {
                 }
             }
         }
-        OfficegoRetrofitClient.getInstance().create(IdentitySearchInterface.class)
+        OfficegoRetrofitClient1.getInstance().create(IdentitySearchInterface.class)
                 .submitIdentityInfo(builder.build())
                 .enqueue(callback);
     }
@@ -473,7 +473,7 @@ public class OfficegoApi {
                 }
             }
         }
-        OfficegoRetrofitClient.getInstance().create(IdentitySearchInterface.class)
+        OfficegoRetrofitClient1.getInstance().create(IdentitySearchInterface.class)
                 .submitIdentityInfo(builder.build())
                 .enqueue(callback);
     }
@@ -542,7 +542,7 @@ public class OfficegoApi {
                 }
             }
         }
-        OfficegoRetrofitClient.getInstance().create(IdentitySearchInterface.class)
+        OfficegoRetrofitClient1.getInstance().create(IdentitySearchInterface.class)
                 .submitIdentityInfo(builder.build())
                 .enqueue(callback);
     }
@@ -571,7 +571,7 @@ public class OfficegoApi {
             builder.addFormDataPart("buildingTempId", data.getBuildingTempId());//关联楼id  接口给
         }
         builder.addFormDataPart("fileBusinessLicense", "fileBusinessLicense.png", file);
-        OfficegoRetrofitClient.getInstance().create(IdentitySearchInterface.class)
+        OfficegoRetrofitClient1.getInstance().create(IdentitySearchInterface.class)
                 .submitIdentityInfo(builder.build())
                 .enqueue(callback);
     }
@@ -602,7 +602,7 @@ public class OfficegoApi {
             builder.addFormDataPart("buildingTempId", data.getBuildingTempId());//关联楼id  接口给
         }
         builder.addFormDataPart("fileMainPic", "fileMainPic.png", file);
-        OfficegoRetrofitClient.getInstance().create(IdentitySearchInterface.class)
+        OfficegoRetrofitClient1.getInstance().create(IdentitySearchInterface.class)
                 .submitIdentityInfo(builder.build())
                 .enqueue(callback);
     }
@@ -632,7 +632,7 @@ public class OfficegoApi {
             builder.addFormDataPart("buildingTempId", data.getBuildingTempId());//关联楼id  接口给
         }
         builder.addFormDataPart("fileMainPic", "fileMainPic.png", file);
-        OfficegoRetrofitClient.getInstance().create(IdentitySearchInterface.class)
+        OfficegoRetrofitClient1.getInstance().create(IdentitySearchInterface.class)
                 .submitIdentityInfo(builder.build())
                 .enqueue(callback);
     }

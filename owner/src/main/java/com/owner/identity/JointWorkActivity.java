@@ -30,7 +30,6 @@ import com.officego.commonlib.utils.ImageUtils;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.PhotoUtils;
 import com.officego.commonlib.utils.ToastUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.TitleBarView;
 import com.owner.R;
@@ -242,14 +241,14 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
 
     @Click(resName = "ibt_close_keyboard")
     void closeKeyboardClick() {
-        hideView();
+        hideSearchView();
         ctlIdentityRoot.setVisibility(View.VISIBLE);
         rlType.setVisibility(View.VISIBLE);
         btnUpload.setVisibility(View.VISIBLE);
     }
 
     private void selectedDialog() {
-        hideView();
+        hideSearchView();
         final String[] items = {"拍照", "从相册选择"};
         new AlertDialog.Builder(JointWorkActivity.this)
                 .setItems(items, (dialogInterface, i) -> {
@@ -442,12 +441,6 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
         }
     }
 
-    private void hideView() {
-        rvRecommendJointwork.setVisibility(View.GONE);
-        rvRecommendCompany.setVisibility(View.GONE);
-        rlRecommendBuilding.setVisibility(View.GONE);
-    }
-
     //search
     private void searchList() {
         cetJointworkName.addTextChangedListener(new TextWatcher() {
@@ -459,7 +452,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (TextUtils.isEmpty(s.toString())) {
-                    hideView();
+                    hideSearchView();
                     tvJointworkAddress.setText("");
                 } else {
                     rvRecommendJointwork.setVisibility(View.VISIBLE);
@@ -483,7 +476,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (TextUtils.isEmpty(s.toString())) {
-                    hideView();
+                    hideSearchView();
                 } else {
                     rvRecommendJointwork.setVisibility(View.GONE);
                     rvRecommendCompany.setVisibility(View.VISIBLE);
@@ -506,7 +499,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (TextUtils.isEmpty(s.toString())) {
-                    hideView();
+                    hideSearchView();
 //                    tvAddress.setText("");
                 } else {
                     rvRecommendJointwork.setVisibility(View.GONE);
@@ -583,15 +576,30 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
             if (data != null && !checkObjAllFieldsIsNull(data)) {
                 cetJointworkName.setText(data.getBranchesName());
                 tvJointworkAddress.setText(data.getBuildingAddress());
-                hideView();
-                //auditStatus 为2 驳回  authority 如果是1(普通) 就是创建 ，如果是0(管理员)就是关联
-                if (IdentityRejectInfo.isCreateReject(data)) return;
-                cetCompanyName.setText(data.getCompany());
-                cetOfficeName.setText(data.getBuildingName());
-                rlCompanyName.setVisibility(View.VISIBLE);
-                rlOffice.setVisibility(View.VISIBLE);
-                rlType.setVisibility(View.VISIBLE);
-                buildingNextView();
+                hideSearchView();
+                if (TextUtils.isEmpty(data.getBranchesName())) {
+                    //网点null
+                    hideCompanyView();
+                    hideBuildingView();
+                    hideImageHouseTypeView();
+                } else {
+                    cetCompanyName.setText(data.getCompany());
+                    showCompanyView();
+                    if (TextUtils.isEmpty(data.getCompany())) {
+                        //公司null
+                        hideBuildingView();
+                        hideImageHouseTypeView();
+                    } else {
+                        showBuildingView();
+                        cetOfficeName.setText(data.getBuildingName());
+                        if (TextUtils.isEmpty(data.getBuildingName())) {
+                            //楼盘null
+                            hideImageHouseTypeView();
+                        } else {
+                            showImageHouseTypeView();
+                        }
+                    }
+                }
                 //房产证
                 if (listCertificate != null && listCertificate.size() > 0) {
                     for (int i = 0; i < data.getPremisesPermit().size(); i++) {
@@ -610,7 +618,6 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
                 }
             }
         } else {
-            LogCat.e(TAG, "111111111111 listRental=" + listRental.size());
             //提交信息 租赁房产 leaseType==1
             mPresenter.submit(data, Constants.TYPE_CREATE_FROM_ALL, Constants.TYPE_IDENTITY_JOINT_WORK, 1,
                     cetOfficeName.getText().toString(), listCertificate, listRental);
@@ -659,7 +666,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
         IdentitySendMsgActivity_.intent(context).sendMsgBean(sb).start();
         CommUtils.showHtmlView(cetJointworkName, bean.getBuildingName());
         CommUtils.showHtmlTextView(tvJointworkAddress, bean.getAddress());
-        hideView();
+        hideSearchView();
     }
 
     //创建网点成功的回调
@@ -671,8 +678,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
             cetJointworkName.setText(jointworkName);
             tvJointworkAddress.setText(jointworkAddress);
             //显示下一步的view
-            hideView();
-            rlCompanyName.setVisibility(View.VISIBLE);
+            showCompanyView();
         }
     }
 
@@ -690,8 +696,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
                 .relevanceCompanyAddress(bean.getAddress())
                 .startForResult(REQUEST_CREATE_COMPANY);
         cetCompanyName.setText("");
-        rlOffice.setVisibility(View.VISIBLE);
-        hideView();
+        showBuildingView();
     }
 
     //创建公司成功的回调
@@ -701,8 +706,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
             String companyName = data.getStringExtra("companyName");
             cetCompanyName.setText(companyName);
             //显示下一步的view
-            rlOffice.setVisibility(View.VISIBLE);
-            hideView();
+            showBuildingView();
         }
     }
 
@@ -710,7 +714,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
     public void associateBuilding(IdentityBuildingBean.DataBean bean, boolean isCreate) {
         //关联楼盘
         CommUtils.showHtmlView(cetOfficeName, bean.getBuildingName());
-        buildingNextView();
+        showImageHouseTypeView();
     }
 
     //创建楼盘成功的回调
@@ -721,14 +725,49 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
             String buildingAddress = data.getStringExtra("buildingAddress");
             cetOfficeName.setText(buildingName);
             //显示下一步的view
-            buildingNextView();
+            showImageHouseTypeView();
         }
     }
 
-    private void buildingNextView() {
-        hideView();
-        ctlIdentityRoot.setVisibility(View.VISIBLE);
+    //显示房产类型,上传图片
+    private void showImageHouseTypeView() {
         rlType.setVisibility(View.VISIBLE);
-        btnUpload.setVisibility(View.VISIBLE);
+        ctlIdentityRoot.setVisibility(View.VISIBLE);
+        hideSearchView();
+    }
+
+    //隐藏房产类型和上传图片
+    private void hideImageHouseTypeView() {
+        rlType.setVisibility(View.GONE);
+        ctlIdentityRoot.setVisibility(View.GONE);
+        hideSearchView();
+    }
+
+    //显示公司view
+    private void showCompanyView() {
+        rlCompanyName.setVisibility(View.VISIBLE);
+        hideSearchView();
+    }
+
+    //显示楼盘view
+    private void showBuildingView() {
+        rlOffice.setVisibility(View.VISIBLE);
+        hideSearchView();
+    }
+
+    //隐藏公司view
+    private void hideCompanyView() {
+        rlCompanyName.setVisibility(View.GONE);
+    }
+
+    //隐藏楼盘view
+    private void hideBuildingView() {
+        rlOffice.setVisibility(View.GONE);
+    }
+
+    private void hideSearchView() {
+        rvRecommendJointwork.setVisibility(View.GONE);
+        rvRecommendCompany.setVisibility(View.GONE);
+        rlRecommendBuilding.setVisibility(View.GONE);
     }
 }

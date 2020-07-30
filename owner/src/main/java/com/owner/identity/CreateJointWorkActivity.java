@@ -117,7 +117,7 @@ public class CreateJointWorkActivity extends BaseMvpActivity<CreateSubmitPresent
             return;
         }
         if (!isTakePhotoOrGallery) {
-            shortTip("请上传图片");
+            shortTip("请上传网点封面图");
             return;
         }
         mPresenter.getIdentityInfo(Constants.TYPE_IDENTITY_JOINT_WORK, false);

@@ -114,7 +114,7 @@ public class CreateBuildingActivity extends BaseMvpActivity<CreateSubmitPresente
             return;
         }
         if (!isTakePhotoOrGallery) {
-            shortTip("请上传图片");
+            shortTip("请上传楼盘封面图");
             return;
         }
         mPresenter.getIdentityInfo(identityType, false);

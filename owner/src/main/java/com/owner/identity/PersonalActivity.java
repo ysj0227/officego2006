@@ -239,7 +239,8 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
             shortTip("请创建或关联楼盘");
             return;
         }
-        String type = tvType.getText() == null ? "" : tvType.getText().toString().trim();;
+        String type = tvType.getText() == null ? "" : tvType.getText().toString().trim();
+        ;
         if (TextUtils.isEmpty(type)) {
             shortTip("请选择房产类型");
             return;
@@ -313,7 +314,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
 
     //身份证照片
     private void idCardDialog(boolean isFront) {
-        hideView();
+        hideSearchView();
         final String[] items = {"拍照", "从相册选择"};
         new AlertDialog.Builder(PersonalActivity.this)
                 .setItems(items, (dialogInterface, i) -> {
@@ -331,7 +332,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
 
     //房产认证拍照，相册
     private void selectedDialog() {
-        hideView();
+        hideSearchView();
         final String[] items = {"拍照", "从相册选择"};
         new AlertDialog.Builder(PersonalActivity.this)
                 .setItems(items, (dialogInterface, i) -> {
@@ -511,10 +512,6 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         }
     }
 
-    private void hideView() {
-        rvRecommendBuilding.setVisibility(View.GONE);
-    }
-
     //search
     private void searchList() {
         cetOfficeName.addTextChangedListener(new TextWatcher() {
@@ -525,7 +522,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (TextUtils.isEmpty(s.toString())) {
-                    hideView();
+                    hideSearchView();
                     tvAddress.setText("");
                 } else {
                     rvRecommendBuilding.setVisibility(View.VISIBLE);
@@ -566,8 +563,27 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
                 }
                 cetOfficeName.setText(data.getBuildingName());
                 tvAddress.setText(data.getBuildingAddress());
-                selectHouseType(Integer.valueOf(data.getLeaseType()));
-                buildingNextView();
+                showBuildingView();
+                //当楼盘null
+                if (TextUtils.isEmpty(data.getBuildingName())) {
+                    hideImageHouseTypeView();
+                } else {
+                    if (TextUtils.isEmpty(data.getLeaseType())) {
+                        //初始化类型是null
+                        showHouseTypeView();
+                        hideImageView();
+                    } else {
+                        if (data.getPremisesPermit() == null || data.getPremisesPermit().size() == 0) {
+                            //房产证是null
+                            showHouseTypeView();
+                            hideImageView();
+                        } else {
+                            //有类型有图片时
+                            showImageHouseTypeView();
+                            selectHouseType(Integer.valueOf(data.getLeaseType()));
+                        }
+                    }
+                }
                 //房产证
                 if (listCertificate != null && listCertificate.size() > 0) {
                     for (int i = 0; i < data.getPremisesPermit().size(); i++) {
@@ -622,7 +638,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         mBuildingId = bean.getBid();
         CommUtils.showHtmlView(cetOfficeName, bean.getBuildingName());
         CommUtils.showHtmlTextView(tvAddress, bean.getAddress());
-        buildingNextView();
+        showHouseTypeView();
     }
 
     //创建楼盘成功的回调
@@ -634,16 +650,8 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
             String buildingAddress = data.getStringExtra("buildingAddress");
             cetOfficeName.setText(buildingName);
             tvAddress.setText(buildingAddress);
-            //显示下一步的view
-            buildingNextView();
+            showHouseTypeView();
         }
-    }
-
-    private void buildingNextView() {
-        hideView();
-        rlType.setVisibility(View.VISIBLE);
-        ctlIdentityRoot.setVisibility(View.VISIBLE);
-        btnUpload.setVisibility(View.VISIBLE);
     }
 
     @Override
@@ -719,6 +727,41 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         }
         buildingAdapter.setData(mList);
         buildingAdapter.notifyDataSetChanged();
+    }
+
+    //显示上传图片
+    private void showImageHouseTypeView() {
+        hideSearchView();
+        rlType.setVisibility(View.VISIBLE);
+        ctlIdentityRoot.setVisibility(View.VISIBLE);
+    }
+
+    //隐藏房产类型和上传图片
+    private void hideImageHouseTypeView() {
+        rlType.setVisibility(View.GONE);
+        ctlIdentityRoot.setVisibility(View.GONE);
+        hideSearchView();
+    }
+
+    //显示楼盘
+    private void showBuildingView() {
+        rlOffice.setVisibility(View.VISIBLE);
+    }
+
+    //显示房产类型
+    private void showHouseTypeView() {
+        rlType.setVisibility(View.VISIBLE);
+        rvRecommendBuilding.setVisibility(View.GONE);
+    }
+
+    //隐藏底部上传图片
+    private void hideImageView() {
+        ctlIdentityRoot.setVisibility(View.GONE);
+    }
+
+    //隐藏搜索list View
+    private void hideSearchView() {
+        rvRecommendBuilding.setVisibility(View.GONE);
     }
 
 }
