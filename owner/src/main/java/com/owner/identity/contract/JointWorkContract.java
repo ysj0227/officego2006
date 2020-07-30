@@ -30,6 +30,7 @@ public interface JointWorkContract {
         void getIdentityInfoSuccess(GetIdentityInfoBean data, boolean isFirstGetInfo);
 
         void submitSuccess();
+        void submitTimeout();
 
         void deleteImageSuccess(boolean isPremisesImage,int position);
     }

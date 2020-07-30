@@ -24,6 +24,8 @@ public interface PersonalContract {
 
         void submitSuccess();
 
+        void submitTimeout();
+
         void deleteImageSuccess(boolean isPremisesImage,int position);
     }
 

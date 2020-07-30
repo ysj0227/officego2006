@@ -3,6 +3,7 @@ package com.owner.identity.presenter;
 import com.officego.commonlib.base.BasePresenter;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
+import com.officego.commonlib.retrofit.RpcErrorCode;
 import com.officego.commonlib.utils.log.LogCat;
 import com.owner.identity.contract.PersonalContract;
 import com.owner.identity.model.CheckIdentityBean;
@@ -112,6 +113,8 @@ public class PersonalPresenter extends BasePresenter<PersonalContract.View>
                             mView.hideLoadingDialog();
                             if (code == Constants.DEFAULT_ERROR_CODE || code == Constants.ERROR_CODE_5002) {
                                 mView.shortTip(msg);
+                            } else if (code == RpcErrorCode.RPC_COMMON_ERROR || code == 0) {
+                                mView.submitTimeout();
                             }
                         }
                     }

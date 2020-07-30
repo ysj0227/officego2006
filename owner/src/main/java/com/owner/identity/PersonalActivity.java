@@ -46,6 +46,7 @@ import com.owner.identity.model.GetIdentityInfoBean;
 import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.model.ImageBean;
 import com.owner.identity.presenter.PersonalPresenter;
+import com.owner.utils.ButtonUtils;
 import com.owner.utils.CommUtils;
 import com.wildma.idcardcamera.camera.IDCardCamera;
 
@@ -163,6 +164,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         initRecyclerView();
         initData();
         mPresenter.getIdentityInfo(Constants.TYPE_IDENTITY_PERSONAL, true);
+        ButtonUtils.clickButton(btnUpload, false);
     }
 
     private void initRecyclerView() {
@@ -624,6 +626,12 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         SwitchRoleDialog.submitIdentitySuccessDialog(this);
     }
 
+    @Override
+    public void submitTimeout() {
+        //返回业主个人中心
+        SwitchRoleDialog.submitIdentityTimeoutDialog(this);
+    }
+
     /**
      * 关联,创建楼盘
      */
@@ -752,6 +760,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
     private void showHouseTypeView() {
         rlType.setVisibility(View.VISIBLE);
         rvRecommendBuilding.setVisibility(View.GONE);
+        ButtonUtils.clickButton(btnUpload, true);
     }
 
     //隐藏底部上传图片

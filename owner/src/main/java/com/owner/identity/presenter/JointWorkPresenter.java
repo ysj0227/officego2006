@@ -3,6 +3,7 @@ package com.owner.identity.presenter;
 import com.officego.commonlib.base.BasePresenter;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
+import com.officego.commonlib.retrofit.RpcErrorCode;
 import com.officego.commonlib.utils.log.LogCat;
 import com.owner.identity.contract.JointWorkContract;
 import com.owner.identity.model.CheckIdentityBean;
@@ -169,20 +170,23 @@ public class JointWorkPresenter extends BasePresenter<JointWorkContract.View>
                             mView.hideLoadingDialog();
                             if (code == Constants.DEFAULT_ERROR_CODE || code == Constants.ERROR_CODE_5002) {
                                 mView.shortTip(msg);
+                            } else if (code == RpcErrorCode.RPC_COMMON_ERROR || code == 0) {
+                                mView.submitTimeout();
                             }
                         }
                     }
                 });
     }
+
     @Override
-    public void deleteImage(boolean isPremisesImage,int id, int position) {
+    public void deleteImage(boolean isPremisesImage, int id, int position) {
         mView.showLoadingDialog();
         OfficegoApi.getInstance().deleteImage(id, new RetrofitCallback<Object>() {
             @Override
             public void onSuccess(int code, String msg, Object data) {
                 if (isViewAttached()) {
                     mView.hideLoadingDialog();
-                    mView.deleteImageSuccess(isPremisesImage,position);
+                    mView.deleteImageSuccess(isPremisesImage, position);
                 }
             }
 

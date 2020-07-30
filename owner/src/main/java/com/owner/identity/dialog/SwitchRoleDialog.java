@@ -55,4 +55,18 @@ public class SwitchRoleDialog {
         dialog.showWithOutTouchable(false);
         dialog.setCancelable(false);
     }
+    /**
+     * 认证提交成功
+     */
+    public static void submitIdentityTimeoutDialog(Activity activity) {
+        CommonDialog dialog = new CommonDialog.Builder(activity)
+                .setTitle("服务器响应超时，稍后再试")
+                .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
+                    //跳转业主个人中心
+                    GotoActivityUtils.mainOwnerDefMainActivity(activity);
+                    activity.finish();
+                }).create();
+        dialog.showWithOutTouchable(false);
+        dialog.setCancelable(false);
+    }
 }

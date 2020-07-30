@@ -45,6 +45,7 @@ import com.owner.identity.model.IdentityCompanyBean;
 import com.owner.identity.model.ImageBean;
 import com.owner.identity.model.SendMsgBean;
 import com.owner.identity.presenter.CompanyPresenter;
+import com.owner.utils.ButtonUtils;
 import com.owner.utils.CommUtils;
 
 import org.androidannotations.annotations.AfterViews;
@@ -148,6 +149,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         mPresenter.attachView(this);
         initRecyclerView();
         initData();
+        ButtonUtils.clickButton(btnUpload,false);
         mPresenter.getIdentityInfo(Constants.TYPE_IDENTITY_COMPANY, true);
     }
 
@@ -653,6 +655,12 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         SwitchRoleDialog.submitIdentitySuccessDialog(this);
     }
 
+    @Override
+    public void submitTimeout() {
+        //返回业主个人中心
+        SwitchRoleDialog.submitIdentityTimeoutDialog(this);
+    }
+
     /**
      * 关联,创建公司
      */
@@ -722,6 +730,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         rlType.setVisibility(View.VISIBLE);
         ctlIdentityRoot.setVisibility(View.VISIBLE);
         hideSearchView();
+        ButtonUtils.clickButton(btnUpload,true);
     }
 
     //隐藏房产类型和上传图片

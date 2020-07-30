@@ -4,10 +4,8 @@ import android.content.Context;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
-
-import androidx.core.content.ContextCompat;
 
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
@@ -49,6 +47,7 @@ public class IdentityCompanyAdapter extends CommonListAdapter<IdentityCompanyBea
 
     @Override
     public void convert(ViewHolder holder, final IdentityCompanyBean.DataBean bean) {
+        RelativeLayout rlRoot = holder.getView(R.id.rl_root);
         TextView tvIdentity = holder.getView(R.id.tv_identity);
         TextView tvUp = holder.getView(R.id.tv_up);
         TextView tvDown = holder.getView(R.id.tv_down);
@@ -57,6 +56,7 @@ public class IdentityCompanyAdapter extends CommonListAdapter<IdentityCompanyBea
             tvIdentity.setVisibility(View.GONE);
             tvUp.setVisibility(View.VISIBLE);
             tvDown.setVisibility(View.GONE);
+            tvAdd.setVisibility(View.VISIBLE);
             tvAdd.setText("创建公司");
             tvUp.setText("公司不存在，去创建公司");
             holder.itemView.setOnClickListener(v -> listener.associateCompany(bean, true));

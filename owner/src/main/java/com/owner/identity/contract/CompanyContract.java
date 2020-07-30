@@ -29,6 +29,8 @@ public interface CompanyContract {
 
         void submitSuccess();
 
+        void submitTimeout();
+
         void deleteImageSuccess(boolean isPremisesImage,int position);
     }
 

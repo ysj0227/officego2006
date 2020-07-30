@@ -47,6 +47,7 @@ import com.owner.identity.model.IdentityJointWorkBean;
 import com.owner.identity.model.ImageBean;
 import com.owner.identity.model.SendMsgBean;
 import com.owner.identity.presenter.JointWorkPresenter;
+import com.owner.utils.ButtonUtils;
 import com.owner.utils.CommUtils;
 
 import org.androidannotations.annotations.AfterViews;
@@ -147,6 +148,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
         mPresenter.attachView(this);
         initRecyclerView();
         initData();
+        ButtonUtils.clickButton(btnUpload, false);
         mPresenter.getIdentityInfo(Constants.TYPE_IDENTITY_JOINT_WORK, true);
     }
 
@@ -213,14 +215,14 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
 
     @Click(resName = "btn_upload")
     void uploadClick() {
-        String name = cetCompanyName.getText() == null ? "" : cetCompanyName.getText().toString().trim();
+        String name = cetJointworkName.getText() == null ? "" : cetJointworkName.getText().toString().trim();
         if (TextUtils.isEmpty(name)) {
-            shortTip("请输入网点名称");
+            shortTip("请输入或创建网点");
             return;
         }
         String companyName = cetCompanyName.getText() == null ? "" : cetCompanyName.getText().toString().trim();
         if (TextUtils.isEmpty(companyName)) {
-            shortTip("请输入公司名称");
+            shortTip("请输入或创建公司");
             return;
         }
         String buildingName = cetOfficeName.getText() == null ? "" : cetOfficeName.getText().toString().trim();
@@ -241,10 +243,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
 
     @Click(resName = "ibt_close_keyboard")
     void closeKeyboardClick() {
-        hideSearchView();
-        ctlIdentityRoot.setVisibility(View.VISIBLE);
-        rlType.setVisibility(View.VISIBLE);
-        btnUpload.setVisibility(View.VISIBLE);
+        showImageHouseTypeView();
     }
 
     private void selectedDialog() {
@@ -631,6 +630,12 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
     }
 
     @Override
+    public void submitTimeout() {
+        //返回业主个人中心
+        SwitchRoleDialog.submitIdentityTimeoutDialog(this);
+    }
+
+    @Override
     public void checkCompanyInfoSuccess() {
         //创建公司
         CreateCompanyActivity_.intent(context)
@@ -734,6 +739,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
         rlType.setVisibility(View.VISIBLE);
         ctlIdentityRoot.setVisibility(View.VISIBLE);
         hideSearchView();
+        ButtonUtils.clickButton(btnUpload, true);
     }
 
     //隐藏房产类型和上传图片
