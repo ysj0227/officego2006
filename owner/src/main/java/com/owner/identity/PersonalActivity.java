@@ -603,7 +603,9 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
                     rentalAdapter.notifyDataSetChanged();
                 }
                 //赋值--驳回上传
-                mLeaseType = Integer.valueOf(data.getLeaseType());
+                if (!TextUtils.isEmpty(data.getLeaseType())){
+                    mLeaseType = Integer.valueOf(data.getLeaseType());
+                }
                 if (TextUtils.isEmpty(data.getBuildingId()) || TextUtils.equals("0", data.getBuildingId())) { //创建的
                     isSelectedBuilding = false;
                 } else {//关联的
