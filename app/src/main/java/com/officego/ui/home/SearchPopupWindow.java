@@ -779,13 +779,10 @@ public class SearchPopupWindow extends PopupWindow implements
             TextView itemMeter = holder.getView(R.id.tv_item_meter);
             itemMeter.setText(meterBean.getLine());
             //选择筛选条件的
-            if (TextUtils.isEmpty(line)) {
-                //如果没有选择条件，默认选择第一个
-//                if (checkedPosition == 0) {
-//                    map.put(0, true);
-//                }
-            } else {
-                mapMeter.put(Integer.valueOf(line) - 1, true);
+            if (!TextUtils.isEmpty(line)) {
+                if (TextUtils.equals(line,String.valueOf(meterBean.getLid()))){
+                    mapMeter.put(holder.getAdapterPosition(), true);//选择筛选条件的
+                }
             }
             holder.itemView.setOnClickListener(v -> {
                 mapMeter.clear();
@@ -903,12 +900,7 @@ public class SearchPopupWindow extends PopupWindow implements
         public void convert(ViewHolder holder, BusinessCircleBean.DataBean bean) {
             TextView itemBusiness = holder.getView(R.id.tv_item_meter);
             itemBusiness.setText(bean.getDistrict());
-            if (TextUtils.isEmpty(district)) {
-                //如果没有选择条件，默认选择第一个
-//                if (checkedPosition == 0) {
-//                    map.put(0, true);
-//                }
-            } else {
+            if (!TextUtils.isEmpty(district)) {
                 if (TextUtils.equals(district,String.valueOf(bean.getDistrictID()))){
                     mapBusiness.put(holder.getAdapterPosition(), true);//选择筛选条件的
                 }
@@ -924,7 +916,6 @@ public class SearchPopupWindow extends PopupWindow implements
                 clearBusinessHashSet(tvNum);
                 //赋值
                 district = String.valueOf(bean.getDistrictID());
-                LogCat.e("TAG", "111111111 district=" + district);
                 businessCircleDetailsAdapter = new BusinessCircleDetailsAdapter(mContext, tvNum, bean.getList());
                 recyclerViewRight.setAdapter(businessCircleDetailsAdapter);
             });
