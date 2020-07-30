@@ -649,7 +649,6 @@ public class SearchPopupWindow extends PopupWindow implements
         mSimple = rbOffice.isChecked() ? simple : simple2;
         mArea = rbOffice.isChecked() ? constructionArea : "";
         onSureClickListener.onConditionPopUpWindow(mSearchType, btype, mArea, mRentPrice, mSimple, decoration, houseTags);
-
     }
 
     private void showConditionOfficeLayout(boolean isOffice, RecyclerView rvDecorationType, TextView tvDecorationType,
@@ -765,12 +764,13 @@ public class SearchPopupWindow extends PopupWindow implements
             super(context, R.layout.item_search_meter, list);
             this.recyclerViewRight = recyclerViewRight;
             this.tvNum = tvNum;
-            if (TextUtils.isEmpty(line)) {
-                //如果没有选择条件，默认选择第一个
-//                recyclerViewRight.setAdapter(new StationAdapter(mContext, tvNum, list.get(0).getList()));
-            } else {
-                stationAdapter = new StationAdapter(mContext, tvNum, list.get(Integer.valueOf(line) - 1).getList());
-                recyclerViewRight.setAdapter(stationAdapter);
+            if (!TextUtils.isEmpty(line)) {
+                for (int i = 0; i <list.size() ; i++) {
+                    if (TextUtils.equals(line,String.valueOf(list.get(i).getLid()))){
+                        stationAdapter = new StationAdapter(mContext, tvNum, list.get(i).getList());
+                        recyclerViewRight.setAdapter(stationAdapter);
+                    }
+                }
             }
         }
 
