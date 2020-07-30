@@ -239,6 +239,11 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
             shortTip("请创建或关联楼盘");
             return;
         }
+        String type = tvType.getText() == null ? "" : tvType.getText().toString().trim();;
+        if (TextUtils.isEmpty(type)) {
+            shortTip("请选择房产类型");
+            return;
+        }
         if (listCertificate == null || listCertificate.size() <= 1) {
             shortTip("请上传房产证");
             return;
@@ -259,11 +264,11 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         final String[] items = {"自有房产", "租赁房产"};
         new AlertDialog.Builder(this)
                 .setItems(items, (dialogInterface, i) -> {
-                    houseType(i);
+                    selectHouseType(i);
                 }).create().show();
     }
 
-    private void houseType(int type) {
+    private void selectHouseType(int type) {
         if (type == 0) {
             mLeaseType = 0;
             showCertificateView();
@@ -309,7 +314,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
     //身份证照片
     private void idCardDialog(boolean isFront) {
         hideView();
-        final String[] items = {isFront ? "身份证正面" : "身份证背面", "相册"};
+        final String[] items = {"拍照", "从相册选择"};
         new AlertDialog.Builder(PersonalActivity.this)
                 .setItems(items, (dialogInterface, i) -> {
                     if (i == 0) {
@@ -327,7 +332,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
     //房产认证拍照，相册
     private void selectedDialog() {
         hideView();
-        final String[] items = {"拍照", "相册"};
+        final String[] items = {"拍照", "从相册选择"};
         new AlertDialog.Builder(PersonalActivity.this)
                 .setItems(items, (dialogInterface, i) -> {
                     if (i == 0) {
@@ -561,7 +566,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
                 }
                 cetOfficeName.setText(data.getBuildingName());
                 tvAddress.setText(data.getBuildingAddress());
-                houseType(Integer.valueOf(data.getLeaseType()));
+                selectHouseType(Integer.valueOf(data.getLeaseType()));
                 buildingNextView();
                 //房产证
                 if (listCertificate != null && listCertificate.size() > 0) {

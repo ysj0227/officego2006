@@ -130,17 +130,17 @@ public class CreateCompanyActivity extends BaseMvpActivity<CreateSubmitPresenter
 
     @Click(resName = "btn_save")
     void saveClick() {
-        name = etNameContent.getText() == null ? "" : etNameContent.getText().toString();
+        name = etNameContent.getText() == null ? "" : etNameContent.getText().toString().trim();
         if (TextUtils.isEmpty(name)) {
             shortTip("请输入公司名称");
             return;
         }
-        address = etAddressContent.getText() == null ? "" : etAddressContent.getText().toString();
+        address = etAddressContent.getText() == null ? "" : etAddressContent.getText().toString().trim();
         if (TextUtils.isEmpty(address)) {
             shortTip("请输入公司地址");
             return;
         }
-        regNo = etRegisterNoContent.getText() == null ? "" : etRegisterNoContent.getText().toString();
+        regNo = etRegisterNoContent.getText() == null ? "" : etRegisterNoContent.getText().toString().trim();
         if (TextUtils.isEmpty(regNo)) {
             shortTip("请输入营业执照注册号");
             return;

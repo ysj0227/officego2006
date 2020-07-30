@@ -214,17 +214,17 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
 
     @Click(resName = "btn_upload")
     void uploadClick() {
-        String name = cetCompanyName.getText() == null ? "" : cetCompanyName.getText().toString();
+        String name = cetCompanyName.getText() == null ? "" : cetCompanyName.getText().toString().trim();
         if (TextUtils.isEmpty(name)) {
             shortTip("请输入网点名称");
             return;
         }
-        String companyName = cetCompanyName.getText() == null ? "" : cetCompanyName.getText().toString();
+        String companyName = cetCompanyName.getText() == null ? "" : cetCompanyName.getText().toString().trim();
         if (TextUtils.isEmpty(companyName)) {
             shortTip("请输入公司名称");
             return;
         }
-        String buildingName = cetOfficeName.getText() == null ? "" : cetOfficeName.getText().toString();
+        String buildingName = cetOfficeName.getText() == null ? "" : cetOfficeName.getText().toString().trim();
         if (TextUtils.isEmpty(buildingName)) {
             shortTip("请输入楼盘名称");
             return;
@@ -250,7 +250,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
 
     private void selectedDialog() {
         hideView();
-        final String[] items = {"拍照", "相册"};
+        final String[] items = {"拍照", "从相册选择"};
         new AlertDialog.Builder(JointWorkActivity.this)
                 .setItems(items, (dialogInterface, i) -> {
                     if (i == 0) {
@@ -585,7 +585,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
                 tvJointworkAddress.setText(data.getBuildingAddress());
                 hideView();
                 //auditStatus 为2 驳回  authority 如果是1(普通) 就是创建 ，如果是0(管理员)就是关联
-                if (!IdentityRejectInfo.isCreateReject(data)) return;
+                if (IdentityRejectInfo.isCreateReject(data)) return;
                 cetCompanyName.setText(data.getCompany());
                 cetOfficeName.setText(data.getBuildingName());
                 rlCompanyName.setVisibility(View.VISIBLE);

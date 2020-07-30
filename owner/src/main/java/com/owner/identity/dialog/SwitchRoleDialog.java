@@ -21,7 +21,7 @@ public class SwitchRoleDialog {
     public static void identityBackDialog(Activity activity) {
         CommonDialog dialog = new CommonDialog.Builder(activity)
                 .setTitle("确认离开吗？")
-                .setMessage("信息尚未提交。点击离开，已编辑信息不保存")
+                .setMessage("信息尚未提交,是否确认离开？")
                 .setConfirmButton(R.string.str_go_away, (dialog12, which) -> {
                     //二次确认是否返回
                     secondBackDialog(activity);
@@ -32,8 +32,8 @@ public class SwitchRoleDialog {
 
     private static void secondBackDialog(Activity activity) {
         CommonDialog dialog = new CommonDialog.Builder(activity)
-                .setMessage("请再次确认是否返回？")
-                .setConfirmButton(R.string.str_go_away, (dialog12, which) -> {
+                .setMessage("请再次确认是否离开？")
+                .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
                     activity.finish();
                 })
                 .setCancelButton(R.string.sm_cancel, (dialog1, which) -> dialog1.dismiss()).create();

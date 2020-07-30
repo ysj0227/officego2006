@@ -141,7 +141,6 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
     private int mBuildingId;
     private int mLeaseType;//租赁类型0直租1转租
     private boolean isSelectedBuilding;//是否选择楼盘关联
-//    private boolean isCertificateImage, isRentalImage;//是否上传了图片
 
     @AfterViews
     void init() {
@@ -203,14 +202,19 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
 
     @Click(resName = "btn_upload")
     void uploadClick() {
-        String name = cetCompanyName.getText() == null ? "" : cetCompanyName.getText().toString();
+        String name = cetCompanyName.getText() == null ? "" : cetCompanyName.getText().toString().trim();
         if (TextUtils.isEmpty(name)) {
             shortTip("请输入公司名称");
             return;
         }
-        String buildingName = cetOfficeName.getText() == null ? "" : cetOfficeName.getText().toString();
+        String buildingName = cetOfficeName.getText() == null ? "" : cetOfficeName.getText().toString().trim();
         if (TextUtils.isEmpty(buildingName)) {
             shortTip("请输入楼盘名称");
+            return;
+        }
+        String type = tvType.getText() == null ? "" : tvType.getText().toString().trim();;
+        if (TextUtils.isEmpty(type)) {
+            shortTip("请选择房产类型");
             return;
         }
         if (listCertificate == null || listCertificate.size() <= 1) {
@@ -233,11 +237,11 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         final String[] items = {"自有房产", "租赁房产"};
         new AlertDialog.Builder(CompanyActivity.this)
                 .setItems(items, (dialogInterface, i) -> {
-                    houseType(i);
+                    selectHouseType(i);
                 }).create().show();
     }
 
-    private void houseType(int type) {
+    private void selectHouseType(int type) {
         if (type == 0) {
             mLeaseType = 0;
             showCertificateView();
@@ -270,7 +274,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
 
     private void selectedDialog() {
         hideView();
-        final String[] items = {"拍照", "相册"};
+        final String[] items = {"拍照", "从相册选择"};
         new AlertDialog.Builder(CompanyActivity.this)
                 .setItems(items, (dialogInterface, i) -> {
                     if (i == 0) {
@@ -584,13 +588,14 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
                 //auditStatus 为2 驳回  authority 如果是1(普通) 就是创建 ，如果是0(管理员)就是关联
                 cetCompanyName.setText(data.getCompany());
                 hideView();
-                if (!IdentityRejectInfo.isCreateReject(data)) return;
+                if (IdentityRejectInfo.isCreateReject(data)) return;
                 cetOfficeName.setText(data.getBuildingName());
                 tvAddress.setText(data.getBuildingAddress());
-                houseType(Integer.valueOf(data.getLeaseType()));
+                selectHouseType(Integer.valueOf(data.getLeaseType()));
                 rlOffice.setVisibility(View.VISIBLE);
                 rlType.setVisibility(View.VISIBLE);
                 buildingNextView();
+
                 //房产证
                 if (listCertificate != null && listCertificate.size() > 0) {
                     for (int i = 0; i < data.getPremisesPermit().size(); i++) {

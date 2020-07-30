@@ -298,6 +298,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
             ClearableEditText cetInfact = viewLayout.findViewById(R.id.cet_infact);
             ClearableEditText cetUrl = viewLayout.findViewById(R.id.cet_url);
             ClearableEditText cetTest = viewLayout.findViewById(R.id.cet_test);
+            ClearableEditText cetCode = viewLayout.findViewById(R.id.cet_code);
 
             Button btnGo = viewLayout.findViewById(R.id.btn_go);
             btnGo.setOnClickListener(v -> {
@@ -307,7 +308,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
                 if (!TextUtils.isEmpty(cetUrl.getText().toString().trim())) {
                     AppConfig.APP_URL_MAIN = cetUrl.getText().toString().trim() + "/";
                 }
-                mPresenter.login(cetTest.getText().toString().trim(), "123465");
+                mPresenter.login(cetTest.getText().toString().trim(), cetCode.getText().toString().trim());
                 dialog.dismiss();
             });
             dialog.setCancelable(true);

@@ -101,9 +101,9 @@ public class CreateJointWorkActivity extends BaseMvpActivity<CreateSubmitPresent
 
     @Click(resName = "btn_save")
     void saveClick() {
-        name = etNameContent.getText() == null ? "" : etNameContent.getText().toString();
-        String area = tvArea.getText() == null ? "" : tvArea.getText().toString();
-        address = etAddressContent.getText() == null ? "" : etAddressContent.getText().toString();
+        name = etNameContent.getText() == null ? "" : etNameContent.getText().toString().trim();
+        String area = tvArea.getText() == null ? "" : tvArea.getText().toString().trim();
+        address = etAddressContent.getText() == null ? "" : etAddressContent.getText().toString().trim();
         if (TextUtils.isEmpty(name)) {
             ToastUtils.toastForShort(context, "请输入网点名称");
             return;

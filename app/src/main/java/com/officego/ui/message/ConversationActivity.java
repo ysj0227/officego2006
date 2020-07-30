@@ -360,6 +360,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
      */
     @Override
     public boolean onSent(Message message, RongIM.SentMessageErrorCode sentMessageErrorCode) {
+        //消息发送成功的回调
         if (isFirstChat) {
             mPresenter.isFirstChat(buildingId, houseId, getHouseChatId);
         }
