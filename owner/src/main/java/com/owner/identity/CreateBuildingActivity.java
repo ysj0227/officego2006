@@ -137,8 +137,8 @@ public class CreateBuildingActivity extends BaseMvpActivity<CreateSubmitPresente
         CommonDialog dialog = new CommonDialog.Builder(context)
                 .setTitle("确认离开吗？")
                 .setMessage("办公室未创建成功，点击离开，已编辑信息不保存")
-                .setConfirmButton(R.string.sm_cancel)
-                .setCancelButton(R.string.str_go_away, (dialog12, which) -> {
+                .setCancelButton(R.string.sm_cancel)
+                .setConfirmButton(R.string.str_go_away, (dialog12, which) -> {
                     super.onBackPressed();
                 }).create();
         dialog.showWithOutTouchable(false);

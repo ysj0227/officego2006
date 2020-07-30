@@ -172,7 +172,7 @@
                 android:id="@+id/rl_office"
                 style="@style/marginLeftRight18"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/dp_80"
+                android:layout_height="@dimen/dp_64"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
@@ -180,7 +180,7 @@
 
                 <TextView
                     android:id="@+id/tv_text_office"
-                    android:layout_width="@dimen/dp_80"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:text="所在楼盘："
@@ -211,7 +211,8 @@
                     android:layout_marginTop="@dimen/dp_5"
                     android:drawablePadding="@dimen/dp_4"
                     android:textColor="@color/text_99"
-                    android:textSize="@dimen/sp_12" />
+                    android:textSize="@dimen/sp_12"
+                    android:visibility="gone" />
 
                 <View
                     android:layout_width="match_parent"
@@ -273,9 +274,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
+                android:nestedScrollingEnabled="false"
                 android:paddingLeft="@dimen/dp_18"
                 android:visibility="gone"
-                android:nestedScrollingEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rl_jointwork_name" />
@@ -285,9 +286,9 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:background="@color/white"
+                android:nestedScrollingEnabled="false"
                 android:paddingLeft="@dimen/dp_18"
                 android:visibility="gone"
-                android:nestedScrollingEnabled="false"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rl_company_name" />
@@ -303,21 +304,25 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rl_office">
 
-                <ImageButton
+                <TextView
                     android:id="@+id/ibt_close_keyboard"
-                    android:layout_width="@dimen/dp_20"
-                    android:layout_height="@dimen/dp_20"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentEnd="true"
-                    android:layout_marginTop="@dimen/dp_8"
-                    android:layout_marginRight="@dimen/dp_10"
-                    android:background="@mipmap/ic_small_delete_blue" />
+                    android:layout_marginTop="@dimen/dp_12"
+                    android:layout_marginEnd="@dimen/dp_10"
+                    android:layout_marginBottom="@dimen/dp_12"
+                    android:drawableStart="@mipmap/ic_small_delete_blue"
+                    android:drawablePadding="@dimen/dp_3"
+                    android:text="@string/str_close"
+                    android:textSize="@dimen/sp_12" />
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/rv_recommend_building"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:nestedScrollingEnabled="false"
-                    android:layout_below="@id/ibt_close_keyboard" />
+                    android:layout_below="@id/ibt_close_keyboard"
+                    android:nestedScrollingEnabled="false" />
             </RelativeLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

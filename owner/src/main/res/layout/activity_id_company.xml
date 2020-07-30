@@ -102,6 +102,7 @@
                     android:layout_toEndOf="@id/tv_text_company_name"
                     android:background="@null"
                     android:maxLines="1"
+                    android:maxLength="20"
                     android:singleLine="true"
                     android:textColor="@color/text_33"
                     android:textSize="@dimen/sp_15" />
@@ -146,6 +147,7 @@
                     android:background="@null"
                     android:ellipsize="end"
                     android:maxLines="1"
+                    android:maxLength="20"
                     android:singleLine="true"
                     android:textColor="@color/text_33"
                     android:textSize="@dimen/sp_15" />

@@ -101,8 +101,9 @@
                     android:layout_marginStart="@dimen/dp_4"
                     android:layout_toEndOf="@id/tv_text_name"
                     android:background="@null"
-                    android:maxLength="15"
+                    android:maxLength="10"
                     android:maxLines="1"
+                    android:singleLine="true"
                     android:textColor="@color/text_33"
                     android:textSize="@dimen/sp_15" />
 
@@ -139,10 +140,10 @@
                     android:layout_marginStart="@dimen/dp_4"
                     android:layout_toEndOf="@id/tv_text_personal_id"
                     android:background="@null"
-                    android:maxLength="18"
-                    android:maxLines="1"
                     android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                     android:inputType="number"
+                    android:maxLength="18"
+                    android:maxLines="1"
                     android:textColor="@color/text_33"
                     android:textSize="@dimen/sp_15" />
 
@@ -268,6 +269,7 @@
                     android:layout_toEndOf="@id/tv_text_office"
                     android:background="@null"
                     android:ellipsize="end"
+                    android:maxLength="20"
                     android:maxLines="1"
                     android:singleLine="true"
                     android:textColor="@color/text_33"

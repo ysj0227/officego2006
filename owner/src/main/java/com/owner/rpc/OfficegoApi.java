@@ -7,6 +7,7 @@ import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.model.QueryApplyLicenceBean;
 import com.officego.commonlib.common.rpc.request.LicenceInterface;
 import com.officego.commonlib.retrofit.RetrofitCallback;
+import com.officego.commonlib.utils.log.LogCat;
 import com.owner.identity.model.ApplyJoinBean;
 import com.owner.identity.model.ApplyLicenceBean;
 import com.owner.identity.model.BusinessCircleBean;

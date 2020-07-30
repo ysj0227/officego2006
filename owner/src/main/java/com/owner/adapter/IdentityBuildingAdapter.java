@@ -54,6 +54,11 @@ public class IdentityBuildingAdapter extends CommonListAdapter<IdentityBuildingB
             tvAddress.setText("写字楼不存在，去创建写字楼");
             holder.itemView.setOnClickListener(v -> listener.associateBuilding(bean, true));
         } else {
+            if (isJointWork){
+                tvAddress.setVisibility(View.GONE);
+            }else {
+                tvAddress.setVisibility(View.VISIBLE);
+            }
             tvBuildingName.setVisibility(View.VISIBLE);
             if (!TextUtils.isEmpty(bean.getBuildingName())) {
                 tvBuildingName.setText(Html.fromHtml(bean.getBuildingName()));

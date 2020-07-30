@@ -68,6 +68,8 @@
                 android:ellipsize="end"
                 android:gravity="center_vertical"
                 android:maxLines="1"
+                android:maxLength="20"
+                android:singleLine="true"
                 android:textColor="@color/text_33"
                 android:textColorHint="@color/text_99"
                 android:textSize="@dimen/sp_15" />
@@ -161,6 +163,8 @@
                 android:ellipsize="end"
                 android:gravity="center_vertical"
                 android:maxLines="1"
+                android:singleLine="true"
+                android:maxLength="30"
                 android:textColor="@color/text_33"
                 android:textColorHint="@color/text_99"
                 android:textSize="@dimen/sp_15" />

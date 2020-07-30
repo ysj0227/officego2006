@@ -68,6 +68,8 @@
                 android:ellipsize="end"
                 android:gravity="center_vertical"
                 android:maxLines="1"
+                android:maxLength="20"
+                android:singleLine="true"
                 android:textColor="@color/text_33"
                 android:textColorHint="@color/text_99"
                 android:textSize="@dimen/sp_15" />
@@ -119,6 +121,8 @@
                 android:ellipsize="end"
                 android:gravity="center_vertical"
                 android:maxLines="1"
+                android:maxLength="30"
+                android:singleLine="true"
                 android:textColor="@color/text_33"
                 android:textColorHint="@color/text_99"
                 android:textSize="@dimen/sp_15" />
@@ -131,6 +135,7 @@
         </RelativeLayout>
 
         <RelativeLayout
+
             android:id="@+id/rl_register_no"
             style="@style/marginLeftRight18"
             android:layout_width="0dp"
@@ -172,6 +177,7 @@
                 android:inputType="number"
                 android:gravity="center_vertical"
                 android:maxLines="1"
+                android:maxLength="20"
                 android:textColor="@color/text_33"
                 android:textColorHint="@color/text_99"
                 android:textSize="@dimen/sp_15" />

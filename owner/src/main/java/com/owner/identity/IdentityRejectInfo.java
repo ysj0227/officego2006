@@ -9,9 +9,10 @@ import com.owner.identity.model.GetIdentityInfoBean;
  */
 public class IdentityRejectInfo {
 
-    //auditStatus 为2 驳回  authority 如果是1(普通) 就是创建 ，如果是0(管理员)就是关联
+    //auditStatus 为2 驳回  authority 如果是1(普通) 就是创建 ，如果是0(管理员)就是关联      4待完善
     public static boolean isCreateReject(GetIdentityInfoBean data) {
-        return TextUtils.equals("2", data.getAuditStatus()) && TextUtils.equals("1", data.getAuthority());
+        return (TextUtils.equals("2", data.getAuditStatus()) ||TextUtils.equals("4", data.getAuditStatus()))
+                && TextUtils.equals("1", data.getAuthority());
     }
 
 }

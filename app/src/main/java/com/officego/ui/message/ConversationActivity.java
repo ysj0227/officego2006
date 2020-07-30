@@ -90,7 +90,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             mPresenter.identityChattedMsg(targetId);
             initIM();
         } else {
-            initRongCloudIM();
+            initIMInfo();
             if (TextUtils.equals(Constants.TYPE_OWNER, targetId.substring(targetId.length() - 1)) &&
                     TextUtils.equals(Constants.TYPE_OWNER, SpUtils.getRongChatId().substring(SpUtils.getRongChatId().length() - 1))) {
                 //认证申请聊天列表进入,融云id最后一位是“1”
@@ -126,10 +126,11 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         }
     }
 
-    private void initRongCloudIM() {
+    private void initIMInfo() {
         if (TextUtils.isEmpty(targetId)) {
             targetId = Objects.requireNonNull(getIntent().getData()).getQueryParameter("targetId");
         }
+        assert targetId != null;
         getHouseChatId = targetId.substring(0, targetId.length() - 1);
     }
 
@@ -156,67 +157,76 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         }
         mData = data;
         isFirstChat = data.getIsChat() == 0;//是否第一次聊天
+        if (data.getBuilding() == null) {
+            return;
+        }
         //刷新用户信息
-        if (data.getBuilding() != null) {
-            RongCloudSetUserInfoUtils.refreshUserInfoCache(targetId, data.getChatted().getNickname(), data.getChatted().getAvatar());
-            RongCloudSetUserInfoUtils.refreshUserInfoCache(SpUtils.getRongChatId(), SpUtils.getNickName(), SpUtils.getHeaderImg());
-            tvTitleName.setText(data.getChatted().getNickname());
-            tvJob.setText(data.getChatted().getJob());
+        refreshChatUserInfo(data);
+        //是否插入消息
+        String mValue = SpUtils.getUserId() + data.getBuilding().getBuildingId() +
+                (data.getBuilding().getHouseId() == null ? "" : data.getBuilding().getHouseId()) + targetId;
+        if (LitepalUtils.getBuildingInfo(mValue) != null &&
+                TextUtils.equals(mValue, LitepalUtils.getBuildingInfo(mValue).getBuildingValue())) {
+            return;
         }
+        //租户第一次聊天,发送默认消息
+        if (isFirstChat && TextUtils.equals(Constants.TYPE_TENANT, SpUtils.getRole())) {
+            SendMessageManager.getInstance().sendTextMessage(targetId, "我对你发布的房源有兴趣，能聊聊吗？");
+        }
+        //插入消息
+        SendMessageManager.getInstance().insertIncomingMessage(info(data), targetId, SpUtils.getRongChatId());
+        //保存第一次插入状态
+        String value = SpUtils.getUserId() + data.getBuilding().getBuildingId() +
+                (data.getBuilding().getHouseId() == null ? "" : String.valueOf(data.getBuilding().getHouseId())) + targetId;
+        LitepalUtils.saveBuilding(value);
+    }
 
-        if (data.getBuilding() != null) {
-            //是否插入消息
-            String mValue = SpUtils.getUserId() + data.getBuilding().getBuildingId() +
-                    (data.getBuilding().getHouseId() == null ? "" : data.getBuilding().getHouseId()) + targetId;
-            if (LitepalUtils.getBuildingInfo(mValue) != null &&
-                    TextUtils.equals(mValue, LitepalUtils.getBuildingInfo(mValue).getBuildingValue())) {
-                return;
-            }
-            BuildingInfo info = new BuildingInfo();
-            info.setbuildingName(data.getBuilding().getBuildingName());
-            info.setImgUrl(data.getBuilding().getMainPic());
-            String showUser = TextUtils.equals(SpUtils.getUserId(), data.getCreateUser()) ? "你" : "对方";
-            String mDate;
-            if (data.getCreateTime() == 0) {
-                mDate = DateTimeUtils.getStringDateTimeByStringPattern(DateTimeUtils.DateTimePattern.LONG_DATETIME_2);
-            } else {
-                mDate = DateTimeUtils.secondToDate(data.getCreateTime(), "yyyy-MM-dd HH:mm");
-            }
-            info.setCreateTime(mDate + " 由" + showUser + "发起沟通");
-            info.setDistrict(data.getBuilding().getAddress());
-            if (data.getBuilding().getStationline().size() > 0) {
-                String workTime = data.getBuilding().getNearbySubwayTime().get(0);
-                String stationLine = data.getBuilding().getStationline().get(0);
-                String stationName = data.getBuilding().getStationNames().get(0);
-                info.setRouteMap("步行" + workTime + "分钟到 | " + stationLine + "号线 ·" + stationName);
-            }
-            if (data.getBuilding().getMinSinglePrice() != null) {
-                if (data.getBuilding().getBtype() == Constants.TYPE_BUILDING) {
-                    info.setMinSinglePrice("¥" + data.getBuilding().getMinSinglePrice() + "/㎡/天");
-                } else {
-                    info.setMinSinglePrice("¥" + data.getBuilding().getMinSinglePrice() + "/位/月");
-                }
-            }
-            info.setFavorite(data.isIsFavorite());
-            if (data.getBuilding().getTags() != null && data.getBuilding().getTags().size() > 0) {
-                info.setTags(getTags(data));
-            }
-            //租户第一次聊天,发送默认消息
-            if (isFirstChat && TextUtils.equals(Constants.TYPE_TENANT, SpUtils.getRole())) {
-                SendMessageManager.getInstance().sendTextMessage(targetId, "我对你发布的房源有兴趣，能聊聊吗？");
-            }
-            //插入消息
-            SendMessageManager.getInstance().insertIncomingMessage(info, targetId, SpUtils.getRongChatId());
-            //保存第一次插入状态
-            String value = SpUtils.getUserId() + data.getBuilding().getBuildingId() +
-                    (data.getBuilding().getHouseId() == null ? "" : String.valueOf(data.getBuilding().getHouseId())) + targetId;
-            LitepalUtils.saveBuilding(value);
+    //刷新用户信息
+    private void refreshChatUserInfo(ChatHouseBean data) {
+        RongCloudSetUserInfoUtils.refreshUserInfoCache(targetId, data.getChatted().getNickname(), data.getChatted().getAvatar());
+        RongCloudSetUserInfoUtils.refreshUserInfoCache(SpUtils.getRongChatId(), SpUtils.getNickName(), SpUtils.getHeaderImg());
+        tvTitleName.setText(data.getChatted().getNickname());
+        tvJob.setText(data.getChatted().getJob());
+    }
+
+    //插入楼盘信息
+    private BuildingInfo info(ChatHouseBean data) {
+        BuildingInfo info = new BuildingInfo();
+        info.setbuildingName(data.getBuilding().getBuildingName());
+        info.setImgUrl(data.getBuilding().getMainPic());
+        String showUser = TextUtils.equals(SpUtils.getUserId(), data.getCreateUser()) ? "你" : "对方";
+        String mDate;
+        if (data.getCreateTime() == 0) {
+            mDate = DateTimeUtils.getStringDateTimeByStringPattern(DateTimeUtils.DateTimePattern.LONG_DATETIME_2);
+        } else {
+            mDate = DateTimeUtils.secondToDate(data.getCreateTime(), "yyyy-MM-dd HH:mm");
         }
+        info.setCreateTime(mDate + " 由" + showUser + "发起沟通");
+        info.setDistrict(data.getBuilding().getAddress());
+        if (data.getBuilding().getStationline().size() > 0) {
+            String workTime = data.getBuilding().getNearbySubwayTime().get(0);
+            String stationLine = data.getBuilding().getStationline().get(0);
+            String stationName = data.getBuilding().getStationNames().get(0);
+            info.setRouteMap("步行" + workTime + "分钟到 | " + stationLine + "号线 ·" + stationName);
+        }
+        if (data.getBuilding().getMinSinglePrice() != null) {
+            if (data.getBuilding().getBtype() == Constants.TYPE_BUILDING) {
+                info.setMinSinglePrice("¥" + data.getBuilding().getMinSinglePrice() + "/㎡/天");
+            } else {
+                info.setMinSinglePrice("¥" + data.getBuilding().getMinSinglePrice() + "/位/月");
+            }
+        }
+        info.setFavorite(data.isIsFavorite());
+        if (data.getBuilding().getTags() != null && data.getBuilding().getTags().size() > 0) {
+            info.setTags(HouseTags.getTags(data));
+        }
+        return info;
     }
 
     @Override
     public void firstChatSuccess(FirstChatBean data) {
-        isFirstChat = data.getIsChat() == 0;//是否第一次聊天
+        //是否第一次聊天
+        isFirstChat = data.getIsChat() == 0;
     }
 
     //认证申请显示个人信息
@@ -227,21 +237,6 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         RongCloudSetUserInfoUtils.refreshUserInfoCache(SpUtils.getRongChatId(), SpUtils.getNickName(), SpUtils.getHeaderImg());
         tvTitleName.setText(data.getNickname());
         tvJob.setText(data.getJob());
-    }
-
-    private String getTags(ChatHouseBean data) {
-        StringBuilder key = new StringBuilder();
-        for (int i = 0; i < data.getBuilding().getTags().size(); i++) {
-            if (data.getBuilding().getTags().size() == 1) {
-                key.append(data.getBuilding().getTags().get(i).getDictCname());
-            } else {
-                key.append(data.getBuilding().getTags().get(i).getDictCname()).append(",");
-            }
-        }
-        if (data.getBuilding().getTags().size() > 1) {
-            key = key.replace(key.length() - 1, key.length(), "");
-        }
-        return key.toString();
     }
 
     /**
@@ -297,15 +292,6 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         ToastUtils.toastForShort(context, "暂未开放");
     }
 
-    //本人发出要约，发出自己手机号
-    private void setPhoneMessage() {
-        SendMessageManager.getInstance().sendPhoneMessage(targetId, "我想和您交换手机号", SpUtils.getPhoneNum(), "");
-    }
-
-    //本人发出要约， 填写自己微信
-    private void setWechatMessage(String wechat) {
-        SendMessageManager.getInstance().sendWeChatMessage(targetId, "我想和您交换微信号", wechat, "");
-    }
 
     @Override
     public int[] getStickNotificationId() {
@@ -347,11 +333,11 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         } else if (id == CommonNotifications.conversationViewHouseReject) {
             SendMessageManager.getInstance().sendViewingDateStatusMessage(false, targetId, "拒绝预约看房", "");
         } else if (id == CommonNotifications.conversationBindWeChat) {
-            //开始发送交换微信信息
-            setWechatMessage(dataMes);
+            //开始发送交换微信信息 dataMes微信号  本人发出要约， 填写自己微信
+            SendMessageManager.getInstance().sendWeChatMessage(targetId, "我想和您交换微信号", dataMes, "");
         } else if (id == CommonNotifications.conversationBindPhone) {
-            //开始发送交换手机信息
-            setPhoneMessage();
+            //开始发送交换手机信息   本人发出要约，发出自己手机号
+            SendMessageManager.getInstance().sendPhoneMessage(targetId, "我想和您交换手机号", SpUtils.getPhoneNum(), "");
         } else if (id == CommonNotifications.conversationIdApplyAgree) {
             //同意认证申请
             SendMessageManager.getInstance().sendIdApplyStatusMessage(true, targetId, "", "");

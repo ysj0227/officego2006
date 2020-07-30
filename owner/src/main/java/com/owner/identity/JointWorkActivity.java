@@ -30,6 +30,7 @@ import com.officego.commonlib.utils.ImageUtils;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.PhotoUtils;
 import com.officego.commonlib.utils.ToastUtils;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.TitleBarView;
 import com.owner.R;
@@ -112,8 +113,8 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
     ClearableEditText cetCompanyName;
     @ViewById(resName = "cet_office_name")
     ClearableEditText cetOfficeName;
-    @ViewById(resName = "tv_address")
-    TextView tvAddress;
+    //    @ViewById(resName = "tv_address")
+//    TextView tvAddress;
     //布局
     @ViewById(resName = "v_gray_spaces")
     View vGraySpaces;
@@ -233,7 +234,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
             return;
         }
         if (listRental == null || listRental.size() <= 1) {
-            shortTip("请上传租赁合同");
+            shortTip("请上传租赁协议");
             return;
         }
         mPresenter.getIdentityInfo(Constants.TYPE_IDENTITY_JOINT_WORK, false);
@@ -242,7 +243,6 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
     @Click(resName = "ibt_close_keyboard")
     void closeKeyboardClick() {
         hideView();
-        tvAddress.setVisibility(View.VISIBLE);
         ctlIdentityRoot.setVisibility(View.VISIBLE);
         rlType.setVisibility(View.VISIBLE);
         btnUpload.setVisibility(View.VISIBLE);
@@ -284,6 +284,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
         }
         PhotoUtils.takePicture(this, localPhotoUri, REQUEST_CAMERA);
     }
+
     private boolean isOverLimit() {
         if (TYPE_CER == mUploadType) {//房产证
             if (listCertificate.size() >= 10) {
@@ -310,6 +311,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
         }
         return num;
     }
+
     private void openGallery() {
         if (!PermissionUtils.checkStoragePermission(this)) {
             return;
@@ -505,7 +507,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (TextUtils.isEmpty(s.toString())) {
                     hideView();
-                    tvAddress.setText("");
+//                    tvAddress.setText("");
                 } else {
                     rvRecommendJointwork.setVisibility(View.GONE);
                     rvRecommendCompany.setVisibility(View.GONE);
@@ -586,7 +588,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
                 if (!IdentityRejectInfo.isCreateReject(data)) return;
                 cetCompanyName.setText(data.getCompany());
                 cetOfficeName.setText(data.getBuildingName());
-                tvAddress.setText(data.getAddress());
+                rlCompanyName.setVisibility(View.VISIBLE);
                 rlOffice.setVisibility(View.VISIBLE);
                 rlType.setVisibility(View.VISIBLE);
                 buildingNextView();
@@ -608,6 +610,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
                 }
             }
         } else {
+            LogCat.e(TAG, "111111111111 listRental=" + listRental.size());
             //提交信息 租赁房产 leaseType==1
             mPresenter.submit(data, Constants.TYPE_CREATE_FROM_ALL, Constants.TYPE_IDENTITY_JOINT_WORK, 1,
                     cetOfficeName.getText().toString(), listCertificate, listRental);
@@ -626,6 +629,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
         CreateCompanyActivity_.intent(context)
                 .createCompany(Constants.TYPE_CREATE_FROM_COMPANY)
                 .identityType(Constants.TYPE_IDENTITY_JOINT_WORK)
+                .relevanceCompanyName(cetCompanyName.getText() == null ? "" : cetCompanyName.getText().toString())
                 .startForResult(REQUEST_CREATE_COMPANY);
     }
 
@@ -706,7 +710,6 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
     public void associateBuilding(IdentityBuildingBean.DataBean bean, boolean isCreate) {
         //关联楼盘
         CommUtils.showHtmlView(cetOfficeName, bean.getBuildingName());
-        CommUtils.showHtmlTextView(tvAddress, bean.getAddress());
         buildingNextView();
     }
 
@@ -717,7 +720,6 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
             String buildingName = data.getStringExtra("buildingName");
             String buildingAddress = data.getStringExtra("buildingAddress");
             cetOfficeName.setText(buildingName);
-            tvAddress.setText(buildingAddress);
             //显示下一步的view
             buildingNextView();
         }
@@ -725,7 +727,6 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
 
     private void buildingNextView() {
         hideView();
-        tvAddress.setVisibility(View.VISIBLE);
         ctlIdentityRoot.setVisibility(View.VISIBLE);
         rlType.setVisibility(View.VISIBLE);
         btnUpload.setVisibility(View.VISIBLE);

@@ -218,7 +218,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
             return;
         }
         if (mLeaseType == 1 && (listRental == null || listRental.size() <= 1)) {
-            shortTip("请上传租赁合同");
+            shortTip("请上传租赁协议");
             return;
         }
         mPresenter.getIdentityInfo(Constants.TYPE_IDENTITY_COMPANY, false);

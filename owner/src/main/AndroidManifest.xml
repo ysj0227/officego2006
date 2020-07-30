@@ -93,6 +93,7 @@
             android:name=".identity.CreateJointWorkActivity_"
             android:screenOrientation="portrait" />
         <activity
+            android:windowSoftInputMode="stateHidden|adjustPan"
             android:name=".identity.PersonalActivity_"
             android:screenOrientation="portrait" />
         <activity
