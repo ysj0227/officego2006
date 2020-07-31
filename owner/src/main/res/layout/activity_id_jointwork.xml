@@ -75,89 +75,26 @@
                     android:background="@color/common_divider" />
             </RelativeLayout>
 
-            <RelativeLayout
-                android:id="@+id/rl_jointwork_name"
-                style="@style/marginLeftRight18"
+
+            <include
+                layout="@layout/include_id_jointwork_edit"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dp_80"
+                android:layout_marginStart="@dimen/dp_18"
+                android:layout_marginEnd="@dimen/dp_6"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rl_identity">
+                app:layout_constraintTop_toBottomOf="@id/rl_identity" />
 
-                <TextView
-                    android:id="@+id/tv_text_jointwork_name"
-                    android:layout_width="@dimen/dp_80"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="网点名称："
-                    android:textColor="@color/text_99"
-                    android:textSize="@dimen/sp_15" />
-
-                <com.officego.commonlib.view.ClearableEditText
-                    android:id="@+id/cet_jointwork_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/dp_4"
-                    android:layout_toEndOf="@id/tv_text_jointwork_name"
-                    android:background="@null"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:textColor="@color/text_33"
-                    android:textSize="@dimen/sp_15" />
-
-                <TextView
-                    android:id="@+id/tv_jointwork_address"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_text_jointwork_name"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/dp_84"
-                    android:layout_marginTop="@dimen/dp_5"
-                    android:drawablePadding="@dimen/dp_4"
-                    android:textColor="@color/text_99"
-                    android:textSize="@dimen/sp_12" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_1"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/common_divider" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/rl_company_name"
-                style="@style/marginLeftRight18"
+            <include
+                layout="@layout/include_id_company_edit"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dp_58"
-                android:visibility="gone"
+                android:layout_marginStart="@dimen/dp_18"
+                android:layout_marginEnd="@dimen/dp_6"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rl_jointwork_name">
-
-                <TextView
-                    android:id="@+id/tv_text_company_name"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="所属公司："
-                    android:textColor="@color/text_99"
-                    android:textSize="@dimen/sp_15" />
-
-                <com.officego.commonlib.view.ClearableEditText
-                    android:id="@+id/cet_company_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/dp_4"
-                    android:layout_toEndOf="@id/tv_text_company_name"
-                    android:background="@null"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:textColor="@color/text_33"
-                    android:textSize="@dimen/sp_15" />
-
-            </RelativeLayout>
+                app:layout_constraintTop_toBottomOf="@id/rl_jointwork_name" />
 
             <View
                 android:id="@+id/v_gray_spaces"

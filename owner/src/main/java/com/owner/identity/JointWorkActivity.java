@@ -146,6 +146,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
     void init() {
         mPresenter = new JointWorkPresenter();
         mPresenter.attachView(this);
+        rlCompanyName.setVisibility(View.GONE);
         initRecyclerView();
         initData();
         ButtonUtils.clickButton(btnUpload, false);

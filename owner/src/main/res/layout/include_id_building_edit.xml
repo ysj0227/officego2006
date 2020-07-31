@@ -1,0 +1,87 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_office"
+    style="@style/marginLeftRight18"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_86"
+    android:visibility="gone">
+
+    <TextView
+        android:id="@+id/tv_text_office"
+        android:layout_width="@dimen/dp_94"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:text="写字楼名称："
+        android:textColor="@color/text_99"
+        android:textSize="@dimen/sp_15" />
+
+    <com.officego.commonlib.view.ClearableEditText
+        android:id="@+id/cet_office_name"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/dp_4"
+        android:layout_toEndOf="@id/tv_text_office"
+        android:background="@null"
+        android:ellipsize="end"
+        android:maxLength="20"
+        android:maxLines="1"
+        android:singleLine="true"
+        android:textColor="@color/text_33"
+        android:textSize="@dimen/sp_15" />
+
+    <TextView
+        android:id="@+id/tv_address"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_text_office"
+        android:layout_centerVertical="true"
+        android:layout_marginLeft="@dimen/dp_98"
+        android:layout_marginTop="@dimen/dp_5"
+        android:drawablePadding="@dimen/dp_4"
+        android:textColor="@color/text_99"
+        android:textSize="@dimen/sp_12" />
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true">
+
+        <TextView
+            android:id="@+id/tv_building_edit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="@dimen/dp_10"
+            android:background="@drawable/button_corners_solid_main"
+            android:gravity="center"
+            android:padding="@dimen/dp_4"
+            android:text="@string/button_edit"
+            android:textColor="@color/white"
+            android:textSize="9sp"
+            android:visibility="gone" />
+
+        <TextView
+            android:id="@+id/tv_building_clear"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@id/tv_building_edit"
+            android:background="@drawable/button_corners_solid_main"
+            android:gravity="center"
+            android:padding="@dimen/dp_4"
+            android:text="@string/button_clear"
+            android:textColor="@color/white"
+            android:textSize="9sp"
+            android:visibility="visible" />
+
+    </RelativeLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_1"
+        android:layout_alignParentBottom="true"
+        android:background="@color/common_divider" />
+</RelativeLayout>
+
+

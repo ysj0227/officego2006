@@ -241,58 +241,16 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/ll_upload_id_image" />
 
-            <RelativeLayout
-                android:id="@+id/rl_office"
-                style="@style/marginLeftRight18"
+            <include
+                layout="@layout/include_id_building_edit"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dp_86"
+                android:layout_marginStart="@dimen/dp_18"
+                android:layout_marginEnd="@dimen/dp_6"
                 android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/v_gray_spaces">
-
-                <TextView
-                    android:id="@+id/tv_text_office"
-                    android:layout_width="@dimen/dp_94"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:text="写字楼名称："
-                    android:textColor="@color/text_99"
-                    android:textSize="@dimen/sp_15" />
-
-                <com.officego.commonlib.view.ClearableEditText
-                    android:id="@+id/cet_office_name"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/dp_4"
-                    android:layout_toEndOf="@id/tv_text_office"
-                    android:background="@null"
-                    android:ellipsize="end"
-                    android:maxLength="20"
-                    android:maxLines="1"
-                    android:singleLine="true"
-                    android:textColor="@color/text_33"
-                    android:textSize="@dimen/sp_15" />
-
-                <TextView
-                    android:id="@+id/tv_address"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_text_office"
-                    android:layout_centerVertical="true"
-                    android:layout_marginLeft="@dimen/dp_98"
-                    android:layout_marginTop="@dimen/dp_5"
-                    android:drawablePadding="@dimen/dp_4"
-                    android:textColor="@color/text_99"
-                    android:textSize="@dimen/sp_12" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_1"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/common_divider" />
-            </RelativeLayout>
+                app:layout_constraintTop_toBottomOf="@id/v_gray_spaces" />
 
             <RelativeLayout
                 android:id="@+id/rl_type"
