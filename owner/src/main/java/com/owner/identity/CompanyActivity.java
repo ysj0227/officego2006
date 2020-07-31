@@ -109,6 +109,11 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
     //编辑框
     @ViewById(resName = "cet_company_name")
     ClearableEditText cetCompanyName;
+    //公司搜索编辑清除
+    @ViewById(resName = "tv_company_edit")
+    TextView tvCompanyEdit;
+    @ViewById(resName = "tv_company_clear")
+    TextView tvCompanyClear;
     @ViewById(resName = "cet_office_name")
     ClearableEditText cetOfficeName;
     @ViewById(resName = "tv_address")
@@ -275,6 +280,13 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
     @Click(resName = "rl_identity")
     void identityClick() {
         SwitchRoleDialog.switchDialog(this);
+    }
+
+    @Click(resName = "tv_company_clear")
+    void clearCompanyClick() {
+        cetCompanyName.setText("");
+        cetCompanyName.setEnabled(true);
+        tvCompanyEdit.setVisibility(View.GONE);
     }
 
     private void selectedDialog() {
@@ -587,7 +599,14 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
             if (data != null && !checkObjAllFieldsIsNull(data)) {
                 cetCompanyName.setText(data.getCompany());
                 hideSearchView();
-//                if (IdentityRejectInfo.isCreateReject(data)) return;
+                //TODO
+                if (IdentityRejectInfo.isCreateCompanyInfo(data)){
+                    cetCompanyName.setEnabled(false);
+                    tvCompanyEdit.setVisibility(View.VISIBLE);
+                }
+
+
+
                 cetOfficeName.setText(data.getBuildingName());
                 tvAddress.setText(data.getBuildingAddress());
                 if (TextUtils.isEmpty(data.getCompany())) {
@@ -634,7 +653,9 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
                     rentalAdapter.notifyDataSetChanged();
                 }
                 //赋值--驳回上传
-                mLeaseType = Integer.valueOf(data.getLeaseType());
+                if (!TextUtils.isEmpty(data.getLeaseType())){
+                    mLeaseType = Integer.valueOf(data.getLeaseType());
+                }
                 if (TextUtils.isEmpty(data.getBuildingId()) || TextUtils.equals("0", data.getBuildingId())) { //创建的
                     isSelectedBuilding = false;
                 } else {//关联的

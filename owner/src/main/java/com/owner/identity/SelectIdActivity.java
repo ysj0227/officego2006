@@ -51,6 +51,7 @@ public class SelectIdActivity extends BaseActivity {
             } else if (rejectIdentityType == 2) { //联办
                 JointWorkActivity_.intent(context).start();
             }
+            finish();
         }
     }
 

@@ -15,9 +15,20 @@ public class IdentityRejectInfo {
                 && TextUtils.equals("1", data.getAuthority());
     }
 
-    //信息尚未完成
-    public static boolean isCompleteInfo(GetIdentityInfoBean data) {
-        return TextUtils.equals("4", data.getAuditStatus());
+    //auditStatus 为2 驳回  authority 如果是1(普通) 就是创建 ，如果是0(管理员)就是关联      4待完善
+    //*******************************************************
+    //*******************************************************
+    //是否创建公司
+    public static boolean isCreateCompanyInfo(GetIdentityInfoBean data) {
+        return TextUtils.equals("1", data.getAuthority());
     }
+
+    //是否创建楼盘
+    public static boolean isCreateBuildingInfo(GetIdentityInfoBean data) {
+        //创建的
+        return TextUtils.isEmpty(data.getBuildingId()) ||
+                TextUtils.equals("0", data.getBuildingId());
+    }
+
 
 }

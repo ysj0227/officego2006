@@ -313,13 +313,14 @@ public class ImageUtils {
         Bitmap bitMap = BitmapFactory.decodeFile(path);
         int width = bitMap.getWidth();
         int height = bitMap.getHeight();
+        LogCat.d("TAG","1111 width="+width+"  height="+height);
         int maxPx = 4096, setPx = 4096;
-//        int maxPx = 1000, setPx = 3000;
+//        int maxPx = 500, setPx = 600;
         if (width < maxPx && height < maxPx) {
             //图片小于规定尺寸
-//            LogCat.d("TAG","1111 图片小于规定尺寸");
+            LogCat.d("TAG","1111 图片小于规定尺寸");
         } else {
-//            LogCat.d("TAG","1111 图片大于规定尺寸");
+            LogCat.d("TAG","1111 图片大于规定尺寸");
             int mWidth, mHeight;
             if (width > maxPx && height > maxPx) {
                 if (width > height) {
@@ -342,6 +343,8 @@ public class ImageUtils {
             // 计算缩放比例
             float scaleWidth = ((float) mWidth) / width;
             float scaleHeight = ((float) mHeight) / height;
+//            LogCat.d("TAG","1111 mWidth="+mWidth+"  mHeight="+mHeight);
+//            LogCat.e("TAG","111111111 缩放比例 scaleWidth="+scaleWidth+" scaleHeight="+scaleHeight);
             //取得想要缩放的matrix参数
             Matrix matrix = new Matrix();
             matrix.postScale(scaleWidth, scaleHeight);
