@@ -114,4 +114,6 @@ dependencies {
     //身份证
     api 'com.github.wildma:IDCardCamera:1.1.1'
     api 'com.github.donkingliang:ImageSelector:2.2.0'
+    //bugly
+    api 'com.tencent.bugly:crashreport:3.1.0'
 }

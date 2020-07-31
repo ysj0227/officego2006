@@ -28,6 +28,8 @@ public class AppConfig extends BaseConfig {
 
     public static String RC_APPKEY = "";//融云key
     public static String RC_APPSECRET = "";
+    //bugly
+    public static String BUGLY_ID = "";
 
     @Override
     protected void initTest(Context context, String env) {
@@ -55,7 +57,10 @@ public class AppConfig extends BaseConfig {
         //融云IM test
         RC_APPKEY = "kj7swf8oknm02";
         RC_APPSECRET = "OF78PpILjjRk4";
+        //bugly
+        BUGLY_ID = "dc2ca7a8a6";
     }
+
 
     @Override
     protected void initRelease(Context context, String env) {
@@ -81,5 +86,7 @@ public class AppConfig extends BaseConfig {
         //融云IM release
         RC_APPKEY = "qf3d5gbjq94mh";
         RC_APPSECRET = "xtDkNCjJse";
+        //bugly
+        BUGLY_ID = "208a77af82";
     }
 }

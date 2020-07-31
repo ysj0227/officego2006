@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.utils.FileHelper;
 import com.officego.commonlib.utils.HttpsUtils;
 import com.officego.commonlib.utils.Utils;
@@ -11,6 +12,7 @@ import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.constant.AppConfig;
 import com.officego.config.DbConfig;
 import com.officego.commonlib.common.rongcloud.IMManager;
+import com.tencent.bugly.crashreport.CrashReport;
 
 import java.security.SecureRandom;
 import java.security.cert.X509Certificate;
@@ -41,9 +43,14 @@ public class RootLoader {
         DbConfig.init(context);
         //log 开关
         LogCat.init(!TextUtils.equals(env, AppConfig.ENV_RELEASE));
+        //IM
         IMManager.getInstance().init(context);
+        //bugly
+        CrashReport.initCrashReport(context, AppConfig.BUGLY_ID, true);
+        if (!TextUtils.isEmpty(SpUtils.getUserId())) {
+            CrashReport.setUserId(SpUtils.getUserId());
+        }
     }
-
 
     /**
      * Glide加载https部分失败，设置信任证书

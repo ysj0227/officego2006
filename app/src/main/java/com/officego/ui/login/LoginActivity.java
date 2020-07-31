@@ -101,6 +101,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
             isReOwnerLogin = getIntent().getExtras().getBoolean("isReOwnerLogin");
             rlBack.setVisibility(isOwnerLogin ? View.GONE : View.VISIBLE);
         }
+        //多渠道channel
         //String channel = WalleChannelReader.getChannel(this.getApplicationContext());
     }
 
