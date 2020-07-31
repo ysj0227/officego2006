@@ -284,12 +284,12 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
 
     private boolean isOverLimit() {
         if (TYPE_CER == mUploadType) {//房产证
-            if (listCertificate.size() >= 10) {
+            if (listCertificate.size() >= 5) {
                 shortTip(R.string.tip_image_upload_overlimit);
                 return true;
             }
         } else if (TYPE_REN == mUploadType) {//租赁合同
-            if (listRental.size() >= 10) {
+            if (listRental.size() >= 6) {
                 shortTip(R.string.tip_image_upload_overlimit);
                 return true;
             }
@@ -300,11 +300,11 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
     private int num() {
         int num;
         if (TYPE_CER == mUploadType) {//房产证
-            num = 10 - listCertificate.size();
+            num = 5 - listCertificate.size();
         } else if (TYPE_REN == mUploadType) {//租赁合同
-            num = 10 - listRental.size();
+            num = 6 - listRental.size();
         } else {
-            num = 9;
+            num = 6;
         }
         return num;
     }
@@ -359,6 +359,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+
         switch (requestCode) {
             case PermissionUtils.REQ_PERMISSIONS_CAMERA_STORAGE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {

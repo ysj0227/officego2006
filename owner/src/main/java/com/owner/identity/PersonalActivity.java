@@ -288,6 +288,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         rvRentalAgreement.setVisibility(View.GONE);
         tvTextRentalAgreement.setVisibility(View.GONE);
         tvTipRentalAgreement.setVisibility(View.GONE);
+        ButtonUtils.clickButton(btnUpload, true);
     }
 
     private void showCerAgreementView() {
@@ -295,6 +296,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         rvRentalAgreement.setVisibility(View.VISIBLE);
         tvTextRentalAgreement.setVisibility(View.VISIBLE);
         tvTipRentalAgreement.setVisibility(View.VISIBLE);
+        ButtonUtils.clickButton(btnUpload, true);
     }
 
     @Click(resName = "rl_identity")
@@ -372,12 +374,12 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
 
     private boolean isOverLimit() {
         if (TYPE_CER == mUploadType) {//房产证
-            if (listCertificate.size() >= 10) {
+            if (listCertificate.size() >= 5) {
                 shortTip(R.string.tip_image_upload_overlimit);
                 return true;
             }
         } else if (TYPE_REN == mUploadType) {//租赁合同
-            if (listRental.size() >= 10) {
+            if (listRental.size() >= 6) {
                 shortTip(R.string.tip_image_upload_overlimit);
                 return true;
             }
@@ -388,15 +390,14 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
     private int num() {
         int num;
         if (TYPE_CER == mUploadType) {//房产证
-            num = 10 - listCertificate.size();
+            num = 5 - listCertificate.size();
         } else if (TYPE_REN == mUploadType) {//租赁合同
-            num = 10 - listRental.size();
+            num = 6 - listRental.size();
         } else {
-            num = 9;
+            num = 6;
         }
         return num;
     }
-
     private void openGallery() {
         if (!PermissionUtils.checkStoragePermission(this)) {
             return;
@@ -751,6 +752,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         rlType.setVisibility(View.GONE);
         ctlIdentityRoot.setVisibility(View.GONE);
         hideSearchView();
+        ButtonUtils.clickButton(btnUpload, true);
     }
 
     //显示楼盘
@@ -762,7 +764,6 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
     private void showHouseTypeView() {
         rlType.setVisibility(View.VISIBLE);
         rvRecommendBuilding.setVisibility(View.GONE);
-        ButtonUtils.clickButton(btnUpload, true);
     }
 
     //隐藏底部上传图片

@@ -261,6 +261,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         rvRentalAgreement.setVisibility(View.GONE);
         tvTextRentalAgreement.setVisibility(View.GONE);
         tvTipRentalAgreement.setVisibility(View.GONE);
+        ButtonUtils.clickButton(btnUpload, true);
     }
 
     private void showCerAgreementView() {
@@ -268,6 +269,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         rvRentalAgreement.setVisibility(View.VISIBLE);
         tvTextRentalAgreement.setVisibility(View.VISIBLE);
         tvTipRentalAgreement.setVisibility(View.VISIBLE);
+        ButtonUtils.clickButton(btnUpload, true);
     }
 
     @Click(resName = "rl_identity")
@@ -314,12 +316,12 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
 
     private boolean isOverLimit() {
         if (TYPE_CER == mUploadType) {//房产证
-            if (listCertificate.size() >= 10) {
+            if (listCertificate.size() >= 5) {
                 shortTip(R.string.tip_image_upload_overlimit);
                 return true;
             }
         } else if (TYPE_REN == mUploadType) {//租赁合同
-            if (listRental.size() >= 10) {
+            if (listRental.size() >= 6) {
                 shortTip(R.string.tip_image_upload_overlimit);
                 return true;
             }
@@ -330,11 +332,11 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
     private int num() {
         int num;
         if (TYPE_CER == mUploadType) {//房产证
-            num = 10 - listCertificate.size();
+            num = 5 - listCertificate.size();
         } else if (TYPE_REN == mUploadType) {//租赁合同
-            num = 10 - listRental.size();
+            num = 6 - listRental.size();
         } else {
-            num = 9;
+            num = 6;
         }
         return num;
     }
