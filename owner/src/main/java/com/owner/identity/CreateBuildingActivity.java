@@ -15,12 +15,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 
+import com.bumptech.glide.Glide;
 import com.donkingliang.imageselector.utils.ImageSelector;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.FileHelper;
 import com.officego.commonlib.utils.FileUtils;
+import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.utils.ImageUtils;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.PhotoUtils;
@@ -76,6 +78,8 @@ public class CreateBuildingActivity extends BaseMvpActivity<CreateSubmitPresente
     int identityType;
     @Extra
     String mBuildingName;
+    @Extra
+    boolean isEdit;
 
     private String name, address;
     //是否从相机拍照或相册选择了图片
@@ -89,6 +93,9 @@ public class CreateBuildingActivity extends BaseMvpActivity<CreateSubmitPresente
         titleBar.getLeftImg().setOnClickListener(view -> onBackPressed());
         localBuildingPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "buildingdec.jpg";
         etNameContent.setText(mBuildingName);
+        if (isEdit){
+            mPresenter.getIdentityInfo(identityType, true);
+        }
     }
 
     @Click(resName = "rl_area")
@@ -232,6 +239,14 @@ public class CreateBuildingActivity extends BaseMvpActivity<CreateSubmitPresente
 
     @Override
     public void getIdentityInfoSuccess(GetIdentityInfoBean data, boolean isFirstGetInfo) {
+        if (isEdit && isFirstGetInfo) {
+            //todo
+            isTakePhotoOrGallery = true;
+            etNameContent.setText(data.getBuildingName());
+            etAddressContent.setText(data.getBuildingAddress());
+//            Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(data.get).into(ivBuildingIntroduce);
+            return;
+        }
         mPresenter.submitBuilding(data, Constants.TYPE_CREATE_FROM_JOINT_BUILDING, identityType,
                 name, address, district, business, localBuildingPath);
     }

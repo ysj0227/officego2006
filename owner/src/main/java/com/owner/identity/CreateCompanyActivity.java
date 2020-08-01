@@ -17,6 +17,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 
+import com.bumptech.glide.Glide;
 import com.donkingliang.imageselector.utils.ImageSelector;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
@@ -24,6 +25,7 @@ import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.FileHelper;
 import com.officego.commonlib.utils.FileUtils;
+import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.utils.ImageUtils;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.PhotoUtils;
@@ -83,6 +85,8 @@ public class CreateCompanyActivity extends BaseMvpActivity<CreateSubmitPresenter
     String relevanceCompanyName;
     @Extra
     String relevanceCompanyAddress;
+    @Extra
+    boolean isEdit;
     private String name, address, regNo;
     //是否从相机拍照或相册选择了图片
     private boolean isTakePhotoOrGallery;
@@ -113,6 +117,10 @@ public class CreateCompanyActivity extends BaseMvpActivity<CreateSubmitPresenter
             } else {
                 etAddressContent.setText(relevanceCompanyAddress);
             }
+        }
+        //初始化
+        if (isEdit) {
+            mPresenter.getIdentityInfo(identityType, true);
         }
     }
 
@@ -150,7 +158,7 @@ public class CreateCompanyActivity extends BaseMvpActivity<CreateSubmitPresenter
             return;
         }
         //获取提交公司的信息
-        mPresenter.getIdentityInfo(identityType,false);
+        mPresenter.getIdentityInfo(identityType, false);
     }
 
     @Override
@@ -256,7 +264,15 @@ public class CreateCompanyActivity extends BaseMvpActivity<CreateSubmitPresenter
     }
 
     @Override
-    public void getIdentityInfoSuccess(GetIdentityInfoBean data,boolean isFirstGetInfo) {
+    public void getIdentityInfoSuccess(GetIdentityInfoBean data, boolean isFirstGetInfo) {
+        if (isEdit && isFirstGetInfo) {
+            isTakePhotoOrGallery = true;
+            etNameContent.setText(data.getCompany());
+            etAddressContent.setText(data.getAddress());
+            etRegisterNoContent.setText(data.getCreditNo());
+            Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(data.getBusinessLicense()).into(rivImage);
+            return;
+        }
         //提交信息
         mPresenter.submitCompany(data, createCompany, identityType, name, address, regNo, localLicensePath);
     }

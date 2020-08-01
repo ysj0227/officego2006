@@ -556,7 +556,6 @@ public class OfficegoApi {
     public void submitIdentityCreateCompany(GetIdentityInfoBean data, int createCompany, int identityType,
                                             String company, String address, String creditNo,
                                             String mStrPath, RetrofitCallback<Object> callback) {
-        RequestBody file = RequestBody.create(MediaType.parse("image/*"), new File(mStrPath));
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("token", SpUtils.getSignToken());
         builder.addFormDataPart("createCompany", createCompany + "");
@@ -570,7 +569,10 @@ public class OfficegoApi {
             builder.addFormDataPart("buildingId", data.getBuildingId());//创建返回的楼盘id
             builder.addFormDataPart("buildingTempId", data.getBuildingTempId());//关联楼id  接口给
         }
-        builder.addFormDataPart("fileBusinessLicense", "fileBusinessLicense.png", file);
+        if (!TextUtils.isEmpty(mStrPath)){
+            RequestBody file = RequestBody.create(MediaType.parse("image/*"), new File(mStrPath));
+            builder.addFormDataPart("fileBusinessLicense", "fileBusinessLicense.png", file);
+        }
         OfficegoRetrofitClient1.getInstance().create(IdentitySearchInterface.class)
                 .submitIdentityInfo(builder.build())
                 .enqueue(callback);
@@ -586,7 +588,7 @@ public class OfficegoApi {
      */
     public void submitIdentityCreateBuilding(GetIdentityInfoBean data, int createCompany, int identityType, String buildingName, String address,
                                              int district, int business, String mPath, RetrofitCallback<Object> callback) {
-        RequestBody file = RequestBody.create(MediaType.parse("image/*"), new File(mPath));
+
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("token", SpUtils.getSignToken());
         builder.addFormDataPart("createCompany", createCompany + "");
@@ -601,7 +603,10 @@ public class OfficegoApi {
             builder.addFormDataPart("buildingId", data.getBuildingId());//创建返回的楼盘id
             builder.addFormDataPart("buildingTempId", data.getBuildingTempId());//关联楼id  接口给
         }
-        builder.addFormDataPart("fileMainPic", "fileMainPic.png", file);
+        if (!TextUtils.isEmpty(mPath)){
+            RequestBody file = RequestBody.create(MediaType.parse("image/*"), new File(mPath));
+            builder.addFormDataPart("fileMainPic", "fileMainPic.png", file);
+        }
         OfficegoRetrofitClient1.getInstance().create(IdentitySearchInterface.class)
                 .submitIdentityInfo(builder.build())
                 .enqueue(callback);
@@ -616,7 +621,7 @@ public class OfficegoApi {
      */
     public void submitIdentityCreateJointWork(GetIdentityInfoBean data, int createCompany, int identityType, String branchesName, String address,
                                               int district, int business, String mPath, RetrofitCallback<Object> callback) {
-        RequestBody file = RequestBody.create(MediaType.parse("image/*"), new File(mPath));
+
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("token", SpUtils.getSignToken());
         builder.addFormDataPart("createCompany", createCompany + "");
@@ -631,7 +636,10 @@ public class OfficegoApi {
             builder.addFormDataPart("buildingId", data.getBuildingId());//创建返回的楼盘id
             builder.addFormDataPart("buildingTempId", data.getBuildingTempId());//关联楼id  接口给
         }
-        builder.addFormDataPart("fileMainPic", "fileMainPic.png", file);
+        if (!TextUtils.isEmpty(mPath)){
+            RequestBody file = RequestBody.create(MediaType.parse("image/*"), new File(mPath));
+            builder.addFormDataPart("fileMainPic", "fileMainPic.png", file);
+        }
         OfficegoRetrofitClient1.getInstance().create(IdentitySearchInterface.class)
                 .submitIdentityInfo(builder.build())
                 .enqueue(callback);

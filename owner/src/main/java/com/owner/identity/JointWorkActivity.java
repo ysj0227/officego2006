@@ -113,8 +113,14 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
     ClearableEditText cetCompanyName;
     @ViewById(resName = "cet_office_name")
     ClearableEditText cetOfficeName;
-    //    @ViewById(resName = "tv_address")
-//    TextView tvAddress;
+    @ViewById(resName = "tv_company_edit")
+    TextView tvCompanyEdit;
+    @ViewById(resName = "tv_company_clear")
+    TextView tvCompanyClear;
+    @ViewById(resName = "tv_jointwork_edit")
+    TextView tvJointworkEdit;
+    @ViewById(resName = "tv_jointwork_clear")
+    TextView tvJointworkClear;
     //布局
     @ViewById(resName = "v_gray_spaces")
     View vGraySpaces;
@@ -245,6 +251,40 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
     @Click(resName = "ibt_close_keyboard")
     void closeKeyboardClick() {
         showImageHouseTypeView();
+    }
+
+    @Click(resName = "tv_jointwork_clear")
+    void clearJointWorkClick() {
+        cetJointworkName.setText("");
+        tvJointworkAddress.setText("");
+        cetJointworkName.setEnabled(true);
+        tvJointworkEdit.setVisibility(View.GONE);
+    }
+
+    @Click(resName = "tv_company_clear")
+    void clearCompanyClick() {
+        cetCompanyName.setText("");
+        cetCompanyName.setEnabled(true);
+        tvCompanyEdit.setVisibility(View.GONE);
+    }
+
+    @Click(resName = "tv_jointwork_edit")
+    void editJointWorkClick() {
+        //编辑网点
+        CreateJointWorkActivity_.intent(context)
+                .isEdit(true)
+                .startForResult(REQUEST_CREATE_JOINT_WORK);
+
+    }
+
+    @Click(resName = "tv_company_edit")
+    void editCompanyClick() {
+        //编辑公司
+        CreateCompanyActivity_.intent(context)
+                .createCompany(Constants.TYPE_CREATE_FROM_COMPANY)
+                .identityType(Constants.TYPE_IDENTITY_JOINT_WORK)
+                .isEdit(true)
+                .startForResult(REQUEST_CREATE_COMPANY);
     }
 
     private void selectedDialog() {
@@ -570,6 +610,36 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
         buildingAdapter.notifyDataSetChanged();
     }
 
+    private void setEditView(GetIdentityInfoBean data) {
+        //楼盘0 空  无定义     1创建  2关联
+        if (TextUtils.equals("1", IdentityInfo.strCreateBranch(data))) {
+            //创建
+            cetJointworkName.setEnabled(false);
+            tvJointworkEdit.setVisibility(View.VISIBLE);
+        } else if (TextUtils.equals("2", IdentityInfo.strCreateBranch(data))) {
+            //关联
+            cetJointworkName.setEnabled(true);
+            tvJointworkEdit.setVisibility(View.GONE);
+        } else {
+            //无定义
+            cetJointworkName.setEnabled(true);
+            tvJointworkEdit.setVisibility(View.GONE);
+        }
+        if (TextUtils.equals("1", IdentityInfo.strCreateCompany(data))) {
+            //创建
+            cetCompanyName.setEnabled(false);
+            tvCompanyEdit.setVisibility(View.VISIBLE);
+        } else if (TextUtils.equals("2", IdentityInfo.strCreateCompany(data))) {
+            //关联
+            cetCompanyName.setEnabled(true);
+            tvCompanyEdit.setVisibility(View.GONE);
+        } else {
+            //无定义
+            cetCompanyName.setEnabled(true);
+            tvCompanyEdit.setVisibility(View.GONE);
+        }
+    }
+
     @Override
     public void getIdentityInfoSuccess(GetIdentityInfoBean data, boolean isFirstGetInfo) {
         if (isFirstGetInfo) {
@@ -577,6 +647,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
                 cetJointworkName.setText(data.getBranchesName());
                 tvJointworkAddress.setText(data.getBuildingAddress());
                 hideSearchView();
+                setEditView(data);
                 if (TextUtils.isEmpty(data.getBranchesName())) {
                     //网点null
                     hideCompanyView();
@@ -673,6 +744,9 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
         CommUtils.showHtmlView(cetJointworkName, bean.getBuildingName());
         CommUtils.showHtmlTextView(tvJointworkAddress, bean.getAddress());
         hideSearchView();
+        //关联
+        cetJointworkName.setEnabled(true);
+        tvJointworkEdit.setVisibility(View.GONE);
     }
 
     //创建网点成功的回调
@@ -685,6 +759,9 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
             tvJointworkAddress.setText(jointworkAddress);
             //显示下一步的view
             showCompanyView();
+            //创建
+            cetJointworkName.setEnabled(false);
+            tvJointworkEdit.setVisibility(View.VISIBLE);
         }
     }
 
@@ -713,6 +790,9 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
             cetCompanyName.setText(companyName);
             //显示下一步的view
             showBuildingView();
+            //创建
+            cetCompanyName.setEnabled(false);
+            tvCompanyEdit.setVisibility(View.VISIBLE);
         }
     }
 

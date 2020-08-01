@@ -27,6 +27,7 @@
         android:maxLength="20"
         android:maxLines="1"
         android:singleLine="true"
+        android:layout_marginEnd="@dimen/dp_80"
         android:textColor="@color/text_33"
         android:textSize="@dimen/sp_15" />
 

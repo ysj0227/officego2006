@@ -118,6 +118,10 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
     ClearableEditText cetOfficeName;
     @ViewById(resName = "tv_address")
     TextView tvAddress;
+    @ViewById(resName = "tv_building_edit")
+    TextView tvBuildingEdit;
+    @ViewById(resName = "tv_building_clear")
+    TextView tvBuildingClear;
     //房产类型
     @ViewById(resName = "tv_type")
     TextView tvType;
@@ -154,7 +158,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         mPresenter.attachView(this);
         initRecyclerView();
         initData();
-        ButtonUtils.clickButton(btnUpload,false);
+        ButtonUtils.clickButton(btnUpload, false);
         mPresenter.getIdentityInfo(Constants.TYPE_IDENTITY_COMPANY, true);
     }
 
@@ -287,6 +291,32 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         cetCompanyName.setText("");
         cetCompanyName.setEnabled(true);
         tvCompanyEdit.setVisibility(View.GONE);
+    }
+
+    @Click(resName = "tv_building_clear")
+    void clearBuildingClick() {
+        cetOfficeName.setText("");
+        tvAddress.setText("");
+        cetOfficeName.setEnabled(true);
+        tvBuildingEdit.setVisibility(View.GONE);
+    }
+
+    @Click(resName = "tv_company_edit")
+    void editCompanyClick() {
+        //编辑公司
+        CreateCompanyActivity_.intent(context)
+                .createCompany(Constants.TYPE_CREATE_FROM_COMPANY)
+                .identityType(Constants.TYPE_IDENTITY_COMPANY)
+                .isEdit(true)
+                .startForResult(REQUEST_CREATE_COMPANY);
+    }
+
+    @Click(resName = "tv_building_edit")
+    void editBuildingClick() {
+        CreateBuildingActivity_.intent(context)
+                .identityType(Constants.TYPE_IDENTITY_COMPANY)
+                .isEdit(true)
+                .startForResult(REQUEST_CREATE_BUILDING);
     }
 
     private void selectedDialog() {
@@ -593,20 +623,44 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
                 .startForResult(REQUEST_CREATE_BUILDING);
     }
 
+    private void setEditView(GetIdentityInfoBean data) {
+        //公司0 空  无定义     1创建  2关联
+        if (TextUtils.equals("1", IdentityInfo.strCreateCompany(data))) {
+            //创建
+            cetCompanyName.setEnabled(false);
+            tvCompanyEdit.setVisibility(View.VISIBLE);
+        } else if (TextUtils.equals("2", IdentityInfo.strCreateCompany(data))) {
+            //关联
+            cetCompanyName.setEnabled(true);
+            tvCompanyEdit.setVisibility(View.GONE);
+        } else {
+            //无定义
+            cetCompanyName.setEnabled(true);
+            tvCompanyEdit.setVisibility(View.GONE);
+        }
+        //楼盘0 空  无定义     1创建  2关联
+        if (TextUtils.equals("1", IdentityInfo.strCreateBuilding(data))) {
+            //创建
+            cetOfficeName.setEnabled(false);
+            tvBuildingEdit.setVisibility(View.VISIBLE);
+        } else if (TextUtils.equals("2", IdentityInfo.strCreateBuilding(data))) {
+            //关联
+            cetOfficeName.setEnabled(true);
+            tvBuildingEdit.setVisibility(View.GONE);
+        } else {
+            //无定义
+            cetOfficeName.setEnabled(true);
+            tvBuildingEdit.setVisibility(View.GONE);
+        }
+    }
+
     @Override
     public void getIdentityInfoSuccess(GetIdentityInfoBean data, boolean isFirstGetInfo) {
         if (isFirstGetInfo) {
             if (data != null && !checkObjAllFieldsIsNull(data)) {
                 cetCompanyName.setText(data.getCompany());
                 hideSearchView();
-                //TODO
-                if (IdentityRejectInfo.isCreateCompanyInfo(data)){
-                    cetCompanyName.setEnabled(false);
-                    tvCompanyEdit.setVisibility(View.VISIBLE);
-                }
-
-
-
+                setEditView(data);
                 cetOfficeName.setText(data.getBuildingName());
                 tvAddress.setText(data.getBuildingAddress());
                 if (TextUtils.isEmpty(data.getCompany())) {
@@ -653,7 +707,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
                     rentalAdapter.notifyDataSetChanged();
                 }
                 //赋值--驳回上传
-                if (!TextUtils.isEmpty(data.getLeaseType())){
+                if (!TextUtils.isEmpty(data.getLeaseType())) {
                     mLeaseType = Integer.valueOf(data.getLeaseType());
                 }
                 if (TextUtils.isEmpty(data.getBuildingId()) || TextUtils.equals("0", data.getBuildingId())) { //创建的
@@ -702,6 +756,9 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         IdentitySendMsgActivity_.intent(context).sendMsgBean(sb).start();
         CommUtils.showHtmlView(cetCompanyName, bean.getCompany());
         hideSearchView();
+        //关联
+        cetCompanyName.setEnabled(true);
+        tvCompanyEdit.setVisibility(View.GONE);
     }
 
     //创建公司成功的回调
@@ -713,6 +770,9 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
             //显示下一步的view
             showBuildingView();
             hideSearchView();
+            //创建公司成功
+            cetCompanyName.setEnabled(false);
+            tvCompanyEdit.setVisibility(View.VISIBLE);
         }
     }
 
@@ -733,6 +793,9 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         CommUtils.showHtmlTextView(tvAddress, bean.getAddress());
         //显示下一步的view
         showHouseTypeView();
+        //关联
+        cetOfficeName.setEnabled(true);
+        tvBuildingEdit.setVisibility(View.GONE);
     }
 
     //创建楼盘成功的回调
@@ -745,6 +808,9 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
             tvAddress.setText(buildingAddress);
             //显示下一步的view
             showHouseTypeView();
+            //创建
+            cetOfficeName.setEnabled(false);
+            tvBuildingEdit.setVisibility(View.VISIBLE);
         }
     }
 
@@ -753,7 +819,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         rlType.setVisibility(View.VISIBLE);
         ctlIdentityRoot.setVisibility(View.VISIBLE);
         hideSearchView();
-        ButtonUtils.clickButton(btnUpload,true);
+        ButtonUtils.clickButton(btnUpload, true);
     }
 
     //隐藏房产类型和上传图片

@@ -115,6 +115,10 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
     ClearableEditText cetOfficeName;
     @ViewById(resName = "tv_address")
     TextView tvAddress;
+    @ViewById(resName = "tv_building_edit")
+    TextView tvBuildingEdit;
+    @ViewById(resName = "tv_building_clear")
+    TextView tvBuildingClear;
     @ViewById(resName = "rl_type")
     RelativeLayout rlType;
     @ViewById(resName = "ctl_identity_root")
@@ -316,6 +320,23 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         idCardDialog(false);
     }
 
+    @Click(resName = "tv_building_clear")
+    void clearBuildingClick() {
+        cetOfficeName.setText("");
+        tvAddress.setText("");
+        cetOfficeName.setEnabled(true);
+        tvBuildingEdit.setVisibility(View.GONE);
+    }
+
+    @Click(resName = "tv_building_edit")
+    void editBuildingClick() {
+        CreateBuildingActivity_.intent(context)
+                .identityType(Constants.TYPE_IDENTITY_PERSONAL)
+                .isEdit(true)
+                .startForResult(REQUEST_CREATE_BUILDING);
+    }
+
+
     //身份证照片
     private void idCardDialog(boolean isFront) {
         hideSearchView();
@@ -398,6 +419,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         }
         return num;
     }
+
     private void openGallery() {
         if (!PermissionUtils.checkStoragePermission(this)) {
             return;
@@ -547,13 +569,29 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
                 .mBuildingName(cetOfficeName.getText() == null ? "" : cetOfficeName.getText().toString())//编辑创建传入子页面
                 .startForResult(REQUEST_CREATE_BUILDING);
     }
-
+    private void setEditView(GetIdentityInfoBean data) {
+        //公司0 空  无定义     1创建  2关联
+        if (TextUtils.equals("1", IdentityInfo.strCreateBuilding(data))) {
+            //创建
+            cetOfficeName.setEnabled(false);
+            tvBuildingEdit.setVisibility(View.VISIBLE);
+        } else if (TextUtils.equals("2", IdentityInfo.strCreateBuilding(data))) {
+            //关联
+            cetOfficeName.setEnabled(true);
+            tvBuildingEdit.setVisibility(View.GONE);
+        } else {
+            //无定义
+            cetOfficeName.setEnabled(true);
+            tvBuildingEdit.setVisibility(View.GONE);
+        }
+    }
     @Override
     public void getIdentityInfoSuccess(GetIdentityInfoBean data, boolean isFirstGetInfo) {
         if (isFirstGetInfo) {
             if (data != null && !checkObjAllFieldsIsNull(data)) {
                 cetName.setText(data.getProprietorRealname());
                 cetPersonalId.setText(data.getIdCard());
+                setEditView(data);
                 if (!TextUtils.isEmpty(data.getIdFront())) {
                     isUploadIdCardFront = true;
                     hideIdCardFrontView();
@@ -604,7 +642,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
                     rentalAdapter.notifyDataSetChanged();
                 }
                 //赋值--驳回上传
-                if (!TextUtils.isEmpty(data.getLeaseType())){
+                if (!TextUtils.isEmpty(data.getLeaseType())) {
                     mLeaseType = Integer.valueOf(data.getLeaseType());
                 }
                 if (TextUtils.isEmpty(data.getBuildingId()) || TextUtils.equals("0", data.getBuildingId())) { //创建的
@@ -650,6 +688,9 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         CommUtils.showHtmlView(cetOfficeName, bean.getBuildingName());
         CommUtils.showHtmlTextView(tvAddress, bean.getAddress());
         showHouseTypeView();
+        //关联
+        cetOfficeName.setEnabled(true);
+        tvBuildingEdit.setVisibility(View.GONE);
     }
 
     //创建楼盘成功的回调
@@ -662,6 +703,9 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
             cetOfficeName.setText(buildingName);
             tvAddress.setText(buildingAddress);
             showHouseTypeView();
+            //创建
+            cetOfficeName.setEnabled(false);
+            tvBuildingEdit.setVisibility(View.VISIBLE);
         }
     }
 

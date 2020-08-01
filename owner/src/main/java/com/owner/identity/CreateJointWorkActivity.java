@@ -74,6 +74,8 @@ public class CreateJointWorkActivity extends BaseMvpActivity<CreateSubmitPresent
 
     @Extra
     String mJointWorkName;
+    @Extra
+    boolean isEdit;
     private int district, business;
     private String name, address;
     //是否从相机拍照或相册选择了图片
@@ -87,6 +89,9 @@ public class CreateJointWorkActivity extends BaseMvpActivity<CreateSubmitPresent
         titleBar.getLeftImg().setOnClickListener(view -> onBackPressed());
         localCoverImagePath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "cover_image.jpg";
         etNameContent.setText(mJointWorkName);
+        if (isEdit){
+            mPresenter.getIdentityInfo(Constants.TYPE_IDENTITY_JOINT_WORK, true);
+        }
     }
 
     @Click(resName = "iv_image")
@@ -230,6 +235,14 @@ public class CreateJointWorkActivity extends BaseMvpActivity<CreateSubmitPresent
 
     @Override
     public void getIdentityInfoSuccess(GetIdentityInfoBean data, boolean isFirstGetInfo) {
+        if (isEdit && isFirstGetInfo) {
+            //todo
+            isTakePhotoOrGallery = true;
+            etNameContent.setText(data.getBranchesName());
+            etAddressContent.setText(data.getBuildingAddress());
+//            Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(data.get).into(ivImage);
+            return;
+        }
         mPresenter.submitJointWork(data, Constants.TYPE_CREATE_FROM_JOINT_BUILDING, Constants.TYPE_IDENTITY_JOINT_WORK,
                 name, address, district, business, localCoverImagePath);
     }
