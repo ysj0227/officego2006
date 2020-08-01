@@ -136,13 +136,14 @@ public class IDCameraActivity extends Activity {
         }
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CAMERA) {//拍照
+                saveCropImageView(localAvatarPath);
                 imageview.setImageBitmap(BitmapFactory.decodeFile(localAvatarPath));
-                saveCropImageView();
 
             } else if (requestCode == REQUEST_GALLERY && data != null) {//相册
                 ArrayList<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
                 for (int i = 0; i < images.size(); i++) {
                     LogCat.e("TAG", "11111111111 images=" + images.get(i));
+                    saveCropImageView(images.get(0));
                     imageview.setImageBitmap(BitmapFactory.decodeFile(images.get(0)));
                 }
             }
@@ -176,27 +177,32 @@ public class IDCameraActivity extends Activity {
         }
     }
 
-    private void saveCropImageView() {
-//        BitmapFactory.Options op = new BitmapFactory.Options();
-        Bitmap bitMap = BitmapFactory.decodeFile(localAvatarPath);
+    private void saveCropImageView(String path) {
+        Bitmap bitMap = BitmapFactory.decodeFile(path);
         int width = bitMap.getWidth();
         int height = bitMap.getHeight();
         // 设置想要的大小
-        int newWidth = 800;
-        int newHeight = 800;
-        // 计算缩放比例
-        float scaleWidth = ((float) newWidth) / width;
-        float scaleHeight = ((float) newHeight) / height;
-//         取得想要缩放的matrix参数
+        int setNewMax = 1500;
+        float scaleScale;
+        if (width >= height && width > setNewMax) {
+            scaleScale = ((float) setNewMax) / width;
+        } else if (width < height && height > setNewMax) {
+            scaleScale = ((float) setNewMax) / height;
+        } else {
+            return;
+        }
+        LogCat.d("TAG", "1111 width=" + width + "  height=" + height);
+        LogCat.d("TAG", "1111 scaleWidth=" + scaleScale + "  scaleHeight=" + scaleScale);
+        //  取得想要缩放的matrix参数
         Matrix matrix = new Matrix();
-        matrix.postScale(scaleWidth, scaleHeight);
+        matrix.postScale(scaleScale, scaleScale);
         // 得到新的图片
         bitMap = Bitmap.createBitmap(bitMap, 0, 0, width, height, matrix, true);
         imageview.setImageBitmap(bitMap);
         //将新文件回写到本地
         FileOutputStream b = null;
         try {
-            b = new FileOutputStream(localAvatarPath);
+            b = new FileOutputStream(path);
         } catch (FileNotFoundException e) {
             e.printStackTrace();
         }
@@ -204,4 +210,34 @@ public class IDCameraActivity extends Activity {
             bitMap.compress(Bitmap.CompressFormat.JPEG, 100, b);
         }
     }
+
+//        private void saveCropImageView(String path) {
+////        BitmapFactory.Options op = new BitmapFactory.Options();
+//            Bitmap bitMap = BitmapFactory.decodeFile(path);
+//            int width = bitMap.getWidth();
+//            int height = bitMap.getHeight();
+//            LogCat.d("TAG", "1111 width=" + width + "  height=" + height);
+//            // 设置想要的大小
+//            int newWidth = 1500;
+//            int newHeight = 600;
+//            // 计算缩放比例
+//            float scaleWidth = ((float) newWidth) / width;
+//            float scaleHeight = ((float) newHeight) / height;
+//            LogCat.d("TAG", "1111 scaleWidth=" + scaleWidth + "  scaleHeight=" + scaleHeight);
+////         取得想要缩放的matrix参数
+//            Matrix matrix = new Matrix();
+//            matrix.postScale(scaleWidth, scaleHeight);
+//            // 得到新的图片
+//            bitMap = Bitmap.createBitmap(bitMap, 0, 0, width, height, matrix, true);
+//            imageview.setImageBitmap(bitMap);
+//        //将新文件回写到本地
+//        FileOutputStream b = null;
+//        try {
+//            b = new FileOutputStream(path);
+//        } catch (FileNotFoundException e) {
+//            e.printStackTrace();
+//        }
+//        if (bitMap != null) {
+//            bitMap.compress(Bitmap.CompressFormat.JPEG, 100, b);
+//        }
 }

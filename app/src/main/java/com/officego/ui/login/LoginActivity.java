@@ -35,6 +35,7 @@ import com.officego.h5.WebViewActivity_;
 import com.officego.ui.login.contract.LoginContract;
 import com.officego.ui.login.presenter.LoginPresenter;
 import com.officego.utils.MonitorEditTextUtils;
+import com.owner.IDCameraActivity;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -156,7 +157,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
     @Click(R.id.btn_test)
     void testClick() {
         testDialog(context);
-//        mPresenter.login("15981968967", "123465");
+        //startActivity(new Intent(this, IDCameraActivity.class));
     }
 
     @Click(R.id.tv_get_code)

@@ -303,63 +303,101 @@ public class ImageUtils {
         }
     }
 
+//    /**
+//     * 图片尺寸缩放
+//     *
+//     * @param path 图片路径
+//     */
+//    public static void isSaveCropImageView(String path) {
+//        BitmapFactory.Options op = new BitmapFactory.Options();
+//        Bitmap bitMap = BitmapFactory.decodeFile(path);
+//        int width = bitMap.getWidth();
+//        int height = bitMap.getHeight();
+//        LogCat.d("TAG","1111 width="+width+"  height="+height);
+//        int maxPx = 4096, setPx = 4096;
+////        int maxPx = 500, setPx = 600;
+//        if (width < maxPx && height < maxPx) {
+//            //图片小于规定尺寸
+//            LogCat.d("TAG","1111 图片小于规定尺寸");
+//        } else {
+//            LogCat.d("TAG","1111 图片大于规定尺寸");
+//            int mWidth, mHeight;
+//            if (width > maxPx && height > maxPx) {
+//                if (width > height) {
+//                    mWidth = setPx;
+//                    mHeight = (int) (mWidth / CommonHelper.digits(width, height));
+//                } else {
+//                    mHeight = setPx;
+//                    mWidth = (int) (mHeight / CommonHelper.digits(height, width));
+//                }
+//            } else if (width > maxPx && height < maxPx) {
+//                mWidth = setPx;
+//                mHeight = (int) (mWidth / CommonHelper.digits(width, height));
+//            } else if (width < maxPx && height > maxPx) {
+//                mHeight = setPx;
+//                mWidth = (int) (mHeight / CommonHelper.digits(height, width));
+//            } else {
+//                mWidth = width;
+//                mHeight = height;
+//            }
+//            // 计算缩放比例
+//            float scaleWidth = ((float) mWidth) / width;
+//            float scaleHeight = ((float) mHeight) / height;
+////            LogCat.d("TAG","1111 mWidth="+mWidth+"  mHeight="+mHeight);
+////            LogCat.e("TAG","111111111 缩放比例 scaleWidth="+scaleWidth+" scaleHeight="+scaleHeight);
+//            //取得想要缩放的matrix参数
+//            Matrix matrix = new Matrix();
+//            matrix.postScale(scaleWidth, scaleHeight);
+//            // 得到新的图片
+//            bitMap = Bitmap.createBitmap(bitMap, 0, 0, width, height, matrix, true);
+//            //将新文件回写到本地
+//            FileOutputStream b = null;
+//            try {
+//                b = new FileOutputStream(path);
+//            } catch (FileNotFoundException e) {
+//                e.printStackTrace();
+//            }
+//            if (bitMap != null) {
+//                bitMap.compress(Bitmap.CompressFormat.JPEG, 100, b);
+//            }
+//        }
+//    }
+
     /**
      * 图片尺寸缩放
      *
      * @param path 图片路径
      */
     public static void isSaveCropImageView(String path) {
-        BitmapFactory.Options op = new BitmapFactory.Options();
         Bitmap bitMap = BitmapFactory.decodeFile(path);
         int width = bitMap.getWidth();
         int height = bitMap.getHeight();
-        LogCat.d("TAG","1111 width="+width+"  height="+height);
-        int maxPx = 4096, setPx = 4096;
-//        int maxPx = 500, setPx = 600;
-        if (width < maxPx && height < maxPx) {
-            //图片小于规定尺寸
-            LogCat.d("TAG","1111 图片小于规定尺寸");
+        // 设置想要的大小
+        int setNewMax = 1500;
+        float scaleScale;
+        if (width >= height && width > setNewMax) {
+            scaleScale = ((float) setNewMax) / width;
+        } else if (width < height && height > setNewMax) {
+            scaleScale = ((float) setNewMax) / height;
         } else {
-            LogCat.d("TAG","1111 图片大于规定尺寸");
-            int mWidth, mHeight;
-            if (width > maxPx && height > maxPx) {
-                if (width > height) {
-                    mWidth = setPx;
-                    mHeight = (int) (mWidth / CommonHelper.digits(width, height));
-                } else {
-                    mHeight = setPx;
-                    mWidth = (int) (mHeight / CommonHelper.digits(height, width));
-                }
-            } else if (width > maxPx && height < maxPx) {
-                mWidth = setPx;
-                mHeight = (int) (mWidth / CommonHelper.digits(width, height));
-            } else if (width < maxPx && height > maxPx) {
-                mHeight = setPx;
-                mWidth = (int) (mHeight / CommonHelper.digits(height, width));
-            } else {
-                mWidth = width;
-                mHeight = height;
-            }
-            // 计算缩放比例
-            float scaleWidth = ((float) mWidth) / width;
-            float scaleHeight = ((float) mHeight) / height;
-//            LogCat.d("TAG","1111 mWidth="+mWidth+"  mHeight="+mHeight);
-//            LogCat.e("TAG","111111111 缩放比例 scaleWidth="+scaleWidth+" scaleHeight="+scaleHeight);
-            //取得想要缩放的matrix参数
-            Matrix matrix = new Matrix();
-            matrix.postScale(scaleWidth, scaleHeight);
-            // 得到新的图片
-            bitMap = Bitmap.createBitmap(bitMap, 0, 0, width, height, matrix, true);
-            //将新文件回写到本地
-            FileOutputStream b = null;
-            try {
-                b = new FileOutputStream(path);
-            } catch (FileNotFoundException e) {
-                e.printStackTrace();
-            }
-            if (bitMap != null) {
-                bitMap.compress(Bitmap.CompressFormat.JPEG, 100, b);
-            }
+            return;
+        }
+//        LogCat.d("TAG", "1111 width=" + width + "  height=" + height);
+//        LogCat.d("TAG", "1111 scaleWidth=" + scaleScale + "  scaleHeight=" + scaleScale);
+        //  取得想要缩放的matrix参数
+        Matrix matrix = new Matrix();
+        matrix.postScale(scaleScale, scaleScale);
+        // 得到新的图片
+        bitMap = Bitmap.createBitmap(bitMap, 0, 0, width, height, matrix, true);
+        //将新文件回写到本地
+        FileOutputStream b = null;
+        try {
+            b = new FileOutputStream(path);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }
+        if (bitMap != null) {
+            bitMap.compress(Bitmap.CompressFormat.JPEG, 100, b);
         }
     }
 
