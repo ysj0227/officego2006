@@ -625,6 +625,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
             cetJointworkName.setEnabled(true);
             tvJointworkEdit.setVisibility(View.GONE);
         }
+        //公司
         if (TextUtils.equals("1", IdentityInfo.strCreateCompany(data))) {
             //创建
             cetCompanyName.setEnabled(false);

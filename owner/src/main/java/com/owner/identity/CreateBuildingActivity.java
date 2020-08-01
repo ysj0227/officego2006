@@ -53,7 +53,8 @@ import java.util.List;
  **/
 @EActivity(resName = "activity_building_create")
 public class CreateBuildingActivity extends BaseMvpActivity<CreateSubmitPresenter>
-        implements CreateSubmitContract.View, AreaDialog.AreaSureListener {
+        implements CreateSubmitContract.View, AreaDialog.AreaSureListener,
+        RequestPermissionsResult.PermissionsListener {
     private static final int REQUEST_GALLERY = 0xa0;
     private static final int REQUEST_CAMERA = 0xa1;
     @ViewById(resName = "title_bar")
@@ -214,27 +215,7 @@ public class CreateBuildingActivity extends BaseMvpActivity<CreateSubmitPresente
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case PermissionUtils.REQ_PERMISSIONS_CAMERA_STORAGE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (FileUtils.isSDExist()) {
-                        takePhoto();
-                    } else {
-                        shortTip(getString(R.string.str_no_sd));
-                    }
-                } else {
-                    shortTip(getString(R.string.str_please_open_camera));
-                }
-                break;
-            case PermissionUtils.REQ_PERMISSIONS_STORAGE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    openGallery();
-                } else {
-                    shortTip(getString(R.string.str_please_open_sd));
-                }
-                break;
-            default:
-        }
+        new RequestPermissionsResult(context, requestCode, permissions, grantResults).setListener(this);
     }
 
     @Override
@@ -253,12 +234,20 @@ public class CreateBuildingActivity extends BaseMvpActivity<CreateSubmitPresente
 
     @Override
     public void submitSuccess() {
-        shortTip("创建成功");
-        hideLoadingDialog();
+        shortTip(R.string.tip_create_success);
         Intent intent = getIntent();
         intent.putExtra("buildingName", name);
         intent.putExtra("buildingAddress", address);
         setResult(RESULT_OK, intent);
         finish();
+    }
+    @Override
+    public void gotoTakePhoto() {
+        takePhoto();
+    }
+
+    @Override
+    public void gotoOpenGallery() {
+        openGallery();
     }
 }

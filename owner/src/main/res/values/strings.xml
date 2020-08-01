@@ -149,5 +149,6 @@
     <string name="str_go_away">离开</string>
     <string name="str_submit_identity">提交认证</string>
     <string name="tip_image_upload_overlimit">图片已上传最大限制了</string>
+    <string name="tip_create_success">创建成功</string>
 
 </resources>

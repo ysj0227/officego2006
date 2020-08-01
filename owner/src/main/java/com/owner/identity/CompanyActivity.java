@@ -710,7 +710,8 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
                 if (!TextUtils.isEmpty(data.getLeaseType())) {
                     mLeaseType = Integer.valueOf(data.getLeaseType());
                 }
-                if (TextUtils.isEmpty(data.getBuildingId()) || TextUtils.equals("0", data.getBuildingId())) { //创建的
+                if (TextUtils.isEmpty(data.getBuildingId()) ||
+                        TextUtils.equals("0", data.getBuildingId())) { //创建的
                     isSelectedBuilding = false;
                 } else {//关联的
                     isSelectedBuilding = true;

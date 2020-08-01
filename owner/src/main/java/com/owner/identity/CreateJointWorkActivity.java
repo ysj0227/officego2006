@@ -51,7 +51,8 @@ import java.util.List;
  **/
 @EActivity(resName = "activity_id_jointwork_create")
 public class CreateJointWorkActivity extends BaseMvpActivity<CreateSubmitPresenter>
-        implements CreateSubmitContract.View, AreaDialog.AreaSureListener {
+        implements CreateSubmitContract.View, AreaDialog.AreaSureListener,
+        RequestPermissionsResult.PermissionsListener {
     private static final int REQUEST_GALLERY = 0xa0;
     private static final int REQUEST_CAMERA = 0xa1;
 
@@ -210,27 +211,7 @@ public class CreateJointWorkActivity extends BaseMvpActivity<CreateSubmitPresent
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        switch (requestCode) {
-            case PermissionUtils.REQ_PERMISSIONS_CAMERA_STORAGE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    if (FileUtils.isSDExist()) {
-                        takePhoto();
-                    } else {
-                        ToastUtils.toastForShort(this, getString(R.string.str_no_sd));
-                    }
-                } else {
-                    ToastUtils.toastForShort(this, getString(R.string.str_please_open_camera));
-                }
-                break;
-            case PermissionUtils.REQ_PERMISSIONS_STORAGE:
-                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-                    openGallery();
-                } else {
-                    ToastUtils.toastForShort(this, getString(R.string.str_please_open_sd));
-                }
-                break;
-            default:
-        }
+        new RequestPermissionsResult(context, requestCode, permissions, grantResults).setListener(this);
     }
 
     @Override
@@ -249,12 +230,21 @@ public class CreateJointWorkActivity extends BaseMvpActivity<CreateSubmitPresent
 
     @Override
     public void submitSuccess() {
-        shortTip("创建成功");
-        hideLoadingDialog();
+        shortTip(R.string.tip_create_success);
         Intent intent = getIntent();
         intent.putExtra("jointworkName", name);
         intent.putExtra("jointworkAddress", address);
         setResult(RESULT_OK, intent);
         finish();
+    }
+
+    @Override
+    public void gotoTakePhoto() {
+        takePhoto();
+    }
+
+    @Override
+    public void gotoOpenGallery() {
+        openGallery();
     }
 }
