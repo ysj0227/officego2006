@@ -163,7 +163,6 @@
                 android:src="@mipmap/ic_mark"
                 tools:ignore="ContentDescription" />
 
-
             <com.officego.commonlib.view.ClearableEditText
                 android:id="@+id/et_register_no_content"
                 android:layout_width="match_parent"
@@ -218,7 +217,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:background="@color/common_blue_normal"
-                android:scaleType="fitCenter" />
+                android:scaleType="centerCrop" />
 
             <TextView
                 android:id="@+id/tv_upload"

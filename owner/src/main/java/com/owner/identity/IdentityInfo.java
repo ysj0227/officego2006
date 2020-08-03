@@ -35,17 +35,17 @@ public class IdentityInfo {
 
     //是否创建公司
     public static String strCreateCompany(GetIdentityInfoBean data) {
-        return "1";
+        return data.getIsCreateCompany();
     }
 
     //是否创建楼盘
     public static String strCreateBuilding(GetIdentityInfoBean data) {
-        return "1";
+        return data.getIsCreateBuilding();
     }
 
     //是否创建网点
     public static String strCreateBranch(GetIdentityInfoBean data) {
-        return "1";
+        return data.getIsCreateBranch();
     }
 
 }

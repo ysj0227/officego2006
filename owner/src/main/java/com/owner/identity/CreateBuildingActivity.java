@@ -2,7 +2,6 @@ package com.owner.identity;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
@@ -94,7 +93,7 @@ public class CreateBuildingActivity extends BaseMvpActivity<CreateSubmitPresente
         titleBar.getLeftImg().setOnClickListener(view -> onBackPressed());
         localBuildingPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "buildingdec.jpg";
         etNameContent.setText(mBuildingName);
-        if (isEdit){
+        if (isEdit) {
             mPresenter.getIdentityInfo(identityType, true);
         }
     }
@@ -221,15 +220,28 @@ public class CreateBuildingActivity extends BaseMvpActivity<CreateSubmitPresente
     @Override
     public void getIdentityInfoSuccess(GetIdentityInfoBean data, boolean isFirstGetInfo) {
         if (isEdit && isFirstGetInfo) {
-            //todo
-            isTakePhotoOrGallery = true;
             etNameContent.setText(data.getBuildingName());
             etAddressContent.setText(data.getBuildingAddress());
-//            Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(data.get).into(ivBuildingIntroduce);
+            if (!TextUtils.isEmpty(data.getDistrict())) {
+                district = Integer.valueOf(data.getDistrict());
+            }
+            if (!TextUtils.isEmpty(data.getBusiness())) {
+                business = Integer.valueOf(data.getBusiness());
+            }
+            if (!TextUtils.isEmpty(data.getMainPic())) {
+                isTakePhotoOrGallery = true;
+                Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(data.getMainPic()).into(ivBuildingIntroduce);
+            }
+            mPresenter.getDistrictList(data.getDistrict(), data.getBusiness());
             return;
         }
         mPresenter.submitBuilding(data, Constants.TYPE_CREATE_FROM_JOINT_BUILDING, identityType,
                 name, address, district, business, localBuildingPath);
+    }
+
+    @Override
+    public void districtListSuccess(String str) {
+        tvArea.setText(str);
     }
 
     @Override
@@ -241,6 +253,7 @@ public class CreateBuildingActivity extends BaseMvpActivity<CreateSubmitPresente
         setResult(RESULT_OK, intent);
         finish();
     }
+
     @Override
     public void gotoTakePhoto() {
         takePhoto();

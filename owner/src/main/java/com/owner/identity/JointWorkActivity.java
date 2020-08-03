@@ -311,8 +311,10 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
         }
         File fileUri;
         if (TYPE_CER == mUploadType) {
+            localCerPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + System.currentTimeMillis() + "certificate.jpg";
             fileUri = new File(localCerPath);
         } else {
+            localRenPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + System.currentTimeMillis() + "rental.jpg";
             fileUri = new File(localRenPath);
         }
         localPhotoUri = Uri.fromFile(fileUri);

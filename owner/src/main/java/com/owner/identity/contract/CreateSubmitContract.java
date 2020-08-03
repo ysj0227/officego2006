@@ -15,12 +15,16 @@ public interface CreateSubmitContract {
 
         void getIdentityInfoSuccess(GetIdentityInfoBean data,boolean isFirstGetInfo);
 
+        void districtListSuccess(String str);
+
         void submitSuccess();
     }
 
     interface Presenter {
 
         void getIdentityInfo(int identityType,boolean isFirstGetInfo);
+
+        void getDistrictList(String district,String business);
 
         //创建公司提交
         void submitCompany(GetIdentityInfoBean data, int createCompany, int identityType,

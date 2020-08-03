@@ -259,6 +259,11 @@ public class CreateCompanyActivity extends BaseMvpActivity<CreateSubmitPresenter
     }
 
     @Override
+    public void districtListSuccess(String str) {
+
+    }
+
+    @Override
     public void submitSuccess() {
         shortTip(R.string.tip_create_success);
         Intent intent = getIntent();

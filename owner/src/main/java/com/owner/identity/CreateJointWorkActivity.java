@@ -2,7 +2,6 @@ package com.owner.identity;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
@@ -15,12 +14,14 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.content.FileProvider;
 
+import com.bumptech.glide.Glide;
 import com.donkingliang.imageselector.utils.ImageSelector;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.FileHelper;
 import com.officego.commonlib.utils.FileUtils;
+import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.utils.ImageUtils;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.PhotoUtils;
@@ -90,7 +91,7 @@ public class CreateJointWorkActivity extends BaseMvpActivity<CreateSubmitPresent
         titleBar.getLeftImg().setOnClickListener(view -> onBackPressed());
         localCoverImagePath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "cover_image.jpg";
         etNameContent.setText(mJointWorkName);
-        if (isEdit){
+        if (isEdit) {
             mPresenter.getIdentityInfo(Constants.TYPE_IDENTITY_JOINT_WORK, true);
         }
     }
@@ -217,15 +218,28 @@ public class CreateJointWorkActivity extends BaseMvpActivity<CreateSubmitPresent
     @Override
     public void getIdentityInfoSuccess(GetIdentityInfoBean data, boolean isFirstGetInfo) {
         if (isEdit && isFirstGetInfo) {
-            //todo
-            isTakePhotoOrGallery = true;
             etNameContent.setText(data.getBranchesName());
             etAddressContent.setText(data.getBuildingAddress());
-//            Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(data.get).into(ivImage);
+            if (!TextUtils.isEmpty(data.getDistrict())) {
+                district = Integer.valueOf(data.getDistrict());
+            }
+            if (!TextUtils.isEmpty(data.getBusiness())) {
+                business = Integer.valueOf(data.getBusiness());
+            }
+            if (!TextUtils.isEmpty(data.getMainPic())) {
+                isTakePhotoOrGallery = true;
+                Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(data.getMainPic()).into(ivImage);
+            }
+            mPresenter.getDistrictList(data.getDistrict(), data.getBusiness());
             return;
         }
         mPresenter.submitJointWork(data, Constants.TYPE_CREATE_FROM_JOINT_BUILDING, Constants.TYPE_IDENTITY_JOINT_WORK,
                 name, address, district, business, localCoverImagePath);
+    }
+
+    @Override
+    public void districtListSuccess(String str) {
+        tvArea.setText(str);
     }
 
     @Override

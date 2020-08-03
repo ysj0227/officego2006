@@ -38,6 +38,12 @@ public class GetIdentityInfoBean implements Serializable {
      * buildingStatus : 1
      */
 
+    private String mainPic;
+    private String isCreateCompany;
+    private String isCreateBranch;
+    private String isCreateBuilding;
+    private String district;
+    private String business;
     private String businessLicense;
     private String idCard;
     private String btype;
@@ -67,6 +73,54 @@ public class GetIdentityInfoBean implements Serializable {
     private String buildingStatus;
     private List<ContractBean> contract;
     private List<PremisesPermitBean> premisesPermit;
+
+    public String getMainPic() {
+        return mainPic;
+    }
+
+    public void setMainPic(String mainPic) {
+        this.mainPic = mainPic;
+    }
+
+    public String getIsCreateCompany() {
+        return isCreateCompany;
+    }
+
+    public void setIsCreateCompany(String isCreateCompany) {
+        this.isCreateCompany = isCreateCompany;
+    }
+
+    public String getIsCreateBranch() {
+        return isCreateBranch;
+    }
+
+    public void setIsCreateBranch(String isCreateBranch) {
+        this.isCreateBranch = isCreateBranch;
+    }
+
+    public String getIsCreateBuilding() {
+        return isCreateBuilding;
+    }
+
+    public void setIsCreateBuilding(String isCreateBuilding) {
+        this.isCreateBuilding = isCreateBuilding;
+    }
+
+    public String getDistrict() {
+        return district;
+    }
+
+    public void setDistrict(String district) {
+        this.district = district;
+    }
+
+    public String getBusiness() {
+        return business;
+    }
+
+    public void setBusiness(String business) {
+        this.business = business;
+    }
 
     public String getBusinessLicense() {
         return businessLicense;

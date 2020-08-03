@@ -175,7 +175,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         //房产证
         localIdCardFrontPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "idcardFront.jpg";
         localIdCardBackPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "idcardBack.jpg";
-        localCerPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "buildingdec.jpg";
+        localCerPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "certificate.jpg";
         localRenPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "rental.jpg";
         //搜索list
         LinearLayoutManager buildingManager = new LinearLayoutManager(context);
@@ -381,8 +381,10 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         }
         File fileUri;
         if (TYPE_CER == mUploadType) {
+            localCerPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + System.currentTimeMillis() + "certificate.jpg";
             fileUri = new File(localCerPath);
         } else {
+            localRenPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + System.currentTimeMillis() + "rental.jpg";
             fileUri = new File(localRenPath);
         }
         localPhotoUri = Uri.fromFile(fileUri);
