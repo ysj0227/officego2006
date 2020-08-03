@@ -537,8 +537,8 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
                 } else {
                     rlRecommendCompany.setVisibility(View.VISIBLE);
                     rvRecommendBuilding.setVisibility(View.GONE);
-                    mPresenter.getCompany(s.toString());
                     ButtonUtils.clickButton(btnUpload, false);
+                    mPresenter.getCompany(s.toString());
                 }
             }
 
@@ -780,6 +780,11 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
             //创建公司成功
             cetCompanyName.setEnabled(false);
             tvCompanyEdit.setVisibility(View.VISIBLE);
+            if (!TextUtils.isEmpty(tvType.getText().toString())){
+                ButtonUtils.clickButton(btnUpload, true);
+            }else {
+                ButtonUtils.clickButton(btnUpload, false);
+            }
         }
     }
 
@@ -818,6 +823,11 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
             //创建
             cetOfficeName.setEnabled(false);
             tvBuildingEdit.setVisibility(View.VISIBLE);
+            if (!TextUtils.isEmpty(tvType.getText().toString())){
+                ButtonUtils.clickButton(btnUpload, true);
+            }else {
+                ButtonUtils.clickButton(btnUpload, false);
+            }
         }
     }
 

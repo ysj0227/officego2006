@@ -546,7 +546,6 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (TextUtils.isEmpty(s.toString())) {
                     hideSearchView();
-//                    tvAddress.setText("");
                 } else {
                     rvRecommendJointwork.setVisibility(View.GONE);
                     rvRecommendCompany.setVisibility(View.GONE);
@@ -769,6 +768,12 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
             //创建
             cetJointworkName.setEnabled(false);
             tvJointworkEdit.setVisibility(View.VISIBLE);
+            if (rlType.getVisibility()==View.VISIBLE){
+                ButtonUtils.clickButton(btnUpload, true);
+            }else {
+                ButtonUtils.clickButton(btnUpload, false);
+            }
+
         }
     }
 
@@ -800,6 +805,11 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
             //创建
             cetCompanyName.setEnabled(false);
             tvCompanyEdit.setVisibility(View.VISIBLE);
+            if (rlType.getVisibility()==View.VISIBLE){
+                ButtonUtils.clickButton(btnUpload, true);
+            }else {
+                ButtonUtils.clickButton(btnUpload, false);
+            }
         }
     }
 

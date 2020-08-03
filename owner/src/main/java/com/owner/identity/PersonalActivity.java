@@ -814,6 +814,11 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
     private void showHouseTypeView() {
         rlType.setVisibility(View.VISIBLE);
         rvRecommendBuilding.setVisibility(View.GONE);
+        if (TextUtils.isEmpty(tvType.getText().toString())){
+            ButtonUtils.clickButton(btnUpload, false);
+        }else {
+            ButtonUtils.clickButton(btnUpload, true);
+        }
     }
 
     //隐藏底部上传图片
