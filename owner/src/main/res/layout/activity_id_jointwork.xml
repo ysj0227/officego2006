@@ -209,11 +209,12 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_recommend_jointwork"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/dp_600"
                 android:background="@color/text_e5"
                 android:nestedScrollingEnabled="false"
                 android:paddingLeft="@dimen/dp_18"
                 android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rl_jointwork_name" />
@@ -221,11 +222,13 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_recommend_company"
                 android:layout_width="0dp"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/dp_600"
                 android:background="@color/text_e5"
                 android:nestedScrollingEnabled="false"
                 android:paddingLeft="@dimen/dp_18"
+                android:paddingBottom="@dimen/dp_50"
                 android:visibility="gone"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rl_company_name" />
@@ -261,7 +264,8 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/ibt_close_keyboard"
                     android:background="@color/text_e5"
-                    android:nestedScrollingEnabled="false" />
+                    android:nestedScrollingEnabled="false"
+                    android:paddingBottom="@dimen/dp_50" />
             </RelativeLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>

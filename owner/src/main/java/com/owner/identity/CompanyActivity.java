@@ -533,10 +533,12 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (TextUtils.isEmpty(s.toString())) {
                     hideSearchView();
+                    ButtonUtils.clickButton(btnUpload, true);
                 } else {
                     rlRecommendCompany.setVisibility(View.VISIBLE);
                     rvRecommendBuilding.setVisibility(View.GONE);
                     mPresenter.getCompany(s.toString());
+                    ButtonUtils.clickButton(btnUpload, false);
                 }
             }
 
@@ -556,10 +558,12 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
                 if (TextUtils.isEmpty(s.toString())) {
                     hideSearchView();
                     tvAddress.setText("");
+                    ButtonUtils.clickButton(btnUpload, true);
                 } else {
                     rlRecommendCompany.setVisibility(View.GONE);
                     rvRecommendBuilding.setVisibility(View.VISIBLE);
                     mPresenter.getBuilding(s.toString());
+                    ButtonUtils.clickButton(btnUpload, false);
                 }
             }
 

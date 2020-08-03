@@ -548,8 +548,10 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
                 if (TextUtils.isEmpty(s.toString())) {
                     hideSearchView();
                     tvAddress.setText("");
+                    ButtonUtils.clickButton(btnUpload, true);
                 } else {
                     rvRecommendBuilding.setVisibility(View.VISIBLE);
+                    ButtonUtils.clickButton(btnUpload, false);
                     mPresenter.getBuilding(s.toString());
                 }
             }

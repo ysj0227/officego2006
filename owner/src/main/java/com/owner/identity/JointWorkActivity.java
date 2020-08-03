@@ -496,11 +496,13 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
                 if (TextUtils.isEmpty(s.toString())) {
                     hideSearchView();
                     tvJointworkAddress.setText("");
+                    ButtonUtils.clickButton(btnUpload, true);
                 } else {
                     rvRecommendJointwork.setVisibility(View.VISIBLE);
                     rvRecommendCompany.setVisibility(View.GONE);
                     rlRecommendBuilding.setVisibility(View.GONE);
                     mPresenter.getJointWork(s.toString());
+                    ButtonUtils.clickButton(btnUpload, false);
                 }
             }
 
@@ -519,11 +521,13 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (TextUtils.isEmpty(s.toString())) {
                     hideSearchView();
+                    ButtonUtils.clickButton(btnUpload, true);
                 } else {
                     rvRecommendJointwork.setVisibility(View.GONE);
                     rvRecommendCompany.setVisibility(View.VISIBLE);
                     rlRecommendBuilding.setVisibility(View.GONE);
                     mPresenter.getCompany(s.toString());
+                    ButtonUtils.clickButton(btnUpload, false);
                 }
             }
 
