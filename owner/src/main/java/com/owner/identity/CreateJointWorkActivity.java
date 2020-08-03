@@ -89,7 +89,6 @@ public class CreateJointWorkActivity extends BaseMvpActivity<CreateSubmitPresent
         mPresenter.attachView(this);
         StatusBarUtils.setStatusBarColor(this);
         titleBar.getLeftImg().setOnClickListener(view -> onBackPressed());
-        localCoverImagePath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "cover_image.jpg";
         etNameContent.setText(mJointWorkName);
         if (isEdit) {
             mPresenter.getIdentityInfo(Constants.TYPE_IDENTITY_JOINT_WORK, true);
@@ -170,6 +169,7 @@ public class CreateJointWorkActivity extends BaseMvpActivity<CreateSubmitPresent
             shortTip(R.string.str_no_sd);
             return;
         }
+        localCoverImagePath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "cover_image.jpg";
         File fileUri = new File(localCoverImagePath);
         localPhotoUri = Uri.fromFile(fileUri);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

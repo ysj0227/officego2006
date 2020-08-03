@@ -173,8 +173,8 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
 
     private void initRecyclerView() {
         //房产证
-        localIdCardFrontPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "idcardFront.jpg";
-        localIdCardBackPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "idcardBack.jpg";
+//        localIdCardFrontPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "idcardFront.jpg";
+//        localIdCardBackPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "idcardBack.jpg";
         localCerPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "certificate.jpg";
         localRenPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "rental.jpg";
         //搜索list
@@ -246,7 +246,6 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
             return;
         }
         String type = tvType.getText() == null ? "" : tvType.getText().toString().trim();
-        ;
         if (TextUtils.isEmpty(type)) {
             shortTip("请选择房产类型");
             return;
@@ -270,9 +269,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
     private void selectedBuildingType() {
         final String[] items = {"自有房产", "租赁房产"};
         new AlertDialog.Builder(this)
-                .setItems(items, (dialogInterface, i) -> {
-                    selectHouseType(i);
-                }).create().show();
+                .setItems(items, (dialogInterface, i) -> selectHouseType(i)).create().show();
     }
 
     private void selectHouseType(int type) {
@@ -571,6 +568,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
                 .mBuildingName(cetOfficeName.getText() == null ? "" : cetOfficeName.getText().toString())//编辑创建传入子页面
                 .startForResult(REQUEST_CREATE_BUILDING);
     }
+
     private void setEditView(GetIdentityInfoBean data) {
         //公司0 空  无定义     1创建  2关联
         if (TextUtils.equals("1", IdentityInfo.strCreateBuilding(data))) {
@@ -587,6 +585,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
             tvBuildingEdit.setVisibility(View.GONE);
         }
     }
+
     @Override
     public void getIdentityInfoSuccess(GetIdentityInfoBean data, boolean isFirstGetInfo) {
         if (isFirstGetInfo) {
@@ -656,11 +655,13 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
                 }
             }
         } else {
+            String mBuildingName = cetOfficeName.getText() == null ? "" : cetOfficeName.getText().toString();
+            String mUserName = cetName.getText() == null ? "" : cetName.getText().toString();
+            String mPersonalId = cetPersonalId.getText() == null ? "" : cetPersonalId.getText().toString();
             //提交信息
             mPresenter.submit(data, Constants.TYPE_CREATE_FROM_ALL, Constants.TYPE_IDENTITY_PERSONAL, mLeaseType,
-                    isSelectedBuilding, String.valueOf(mBuildingId), cetOfficeName.getText().toString(), tvAddress.getText().toString(),
-                    cetName.getText().toString(), cetPersonalId.getText().toString(),
-                    localIdCardFrontPath, localIdCardBackPath, listCertificate, listRental);
+                    isSelectedBuilding, String.valueOf(mBuildingId), mBuildingName, tvAddress.getText().toString(),
+                    mUserName, mPersonalId, localIdCardFrontPath, localIdCardBackPath, listCertificate, listRental);
         }
     }
 
@@ -770,7 +771,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
     }
 
     /**
-     * @param data
+     * @param data data
      */
     @Override
     public void searchBuildingSuccess(List<IdentityBuildingBean.DataBean> data) {
@@ -799,7 +800,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         rlType.setVisibility(View.GONE);
         ctlIdentityRoot.setVisibility(View.GONE);
         hideSearchView();
-        ButtonUtils.clickButton(btnUpload, true);
+        ButtonUtils.clickButton(btnUpload, false);
     }
 
     //显示楼盘
@@ -822,5 +823,4 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
     private void hideSearchView() {
         rvRecommendBuilding.setVisibility(View.GONE);
     }
-
 }

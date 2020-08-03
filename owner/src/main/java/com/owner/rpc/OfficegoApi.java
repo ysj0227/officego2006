@@ -7,7 +7,6 @@ import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.model.QueryApplyLicenceBean;
 import com.officego.commonlib.common.rpc.request.LicenceInterface;
 import com.officego.commonlib.retrofit.RetrofitCallback;
-import com.officego.commonlib.utils.log.LogCat;
 import com.owner.identity.model.ApplyJoinBean;
 import com.owner.identity.model.ApplyLicenceBean;
 import com.owner.identity.model.BusinessCircleBean;
@@ -26,7 +25,6 @@ import com.owner.rpc.request.ScheduleInterface;
 import com.owner.schedule.model.ViewingDateBean;
 
 import java.io.File;
-import java.lang.reflect.Field;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -491,10 +489,6 @@ public class OfficegoApi {
                                            String userName, String idCard, String isCardFrontPath, String isCardBackPath,
                                            List<ImageBean> mFilePremisesPath, List<ImageBean> mFileContractPath,
                                            RetrofitCallback<Object> callback) {
-        //身份证正面
-        RequestBody fileIdFront = RequestBody.create(MediaType.parse("image/*"), new File(isCardFrontPath));
-        //身份证背面
-        RequestBody fileIdBack = RequestBody.create(MediaType.parse("image/*"), new File(isCardBackPath));
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("token", SpUtils.getSignToken());
         builder.addFormDataPart("createCompany", createCompany + "");
@@ -515,9 +509,16 @@ public class OfficegoApi {
         builder.addFormDataPart("buildingAddress", buildingAddress);//关联楼盘地址
         builder.addFormDataPart("userName", userName); //姓名
         builder.addFormDataPart("idCard", idCard);//身份证号
-        //身份证正反面图片
-        builder.addFormDataPart("fileIdFront", "fileIdFront.png", fileIdFront);
-        builder.addFormDataPart("fileIdBack", "fileIdBack.png", fileIdBack);
+        //身份证正面
+        if (!TextUtils.isEmpty(isCardFrontPath)) {
+            RequestBody fileIdFront = RequestBody.create(MediaType.parse("image/*"), new File(isCardFrontPath));
+            builder.addFormDataPart("fileIdFront", "fileIdFront.png", fileIdFront);
+        }
+        //身份证背面
+        if (!TextUtils.isEmpty(isCardBackPath)) {
+            RequestBody fileIdBack = RequestBody.create(MediaType.parse("image/*"), new File(isCardBackPath));
+            builder.addFormDataPart("fileIdBack", "fileIdBack.png", fileIdBack);
+        }
         //房产证
         if (mFilePremisesPath != null && mFilePremisesPath.size() > 0) {
             RequestBody file;
@@ -569,7 +570,7 @@ public class OfficegoApi {
             builder.addFormDataPart("buildingId", data.getBuildingId());//创建返回的楼盘id
             builder.addFormDataPart("buildingTempId", data.getBuildingTempId());//关联楼id  接口给
         }
-        if (!TextUtils.isEmpty(mStrPath)){
+        if (!TextUtils.isEmpty(mStrPath)) {
             RequestBody file = RequestBody.create(MediaType.parse("image/*"), new File(mStrPath));
             builder.addFormDataPart("fileBusinessLicense", "fileBusinessLicense.png", file);
         }
@@ -603,7 +604,7 @@ public class OfficegoApi {
             builder.addFormDataPart("buildingId", data.getBuildingId());//创建返回的楼盘id
             builder.addFormDataPart("buildingTempId", data.getBuildingTempId());//关联楼id  接口给
         }
-        if (!TextUtils.isEmpty(mPath)){
+        if (!TextUtils.isEmpty(mPath)) {
             RequestBody file = RequestBody.create(MediaType.parse("image/*"), new File(mPath));
             builder.addFormDataPart("fileMainPic", "fileMainPic.png", file);
         }
@@ -636,7 +637,7 @@ public class OfficegoApi {
             builder.addFormDataPart("buildingId", data.getBuildingId());//创建返回的楼盘id
             builder.addFormDataPart("buildingTempId", data.getBuildingTempId());//关联楼id  接口给
         }
-        if (!TextUtils.isEmpty(mPath)){
+        if (!TextUtils.isEmpty(mPath)) {
             RequestBody file = RequestBody.create(MediaType.parse("image/*"), new File(mPath));
             builder.addFormDataPart("fileMainPic", "fileMainPic.png", file);
         }

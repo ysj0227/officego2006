@@ -99,7 +99,6 @@ public class CreateCompanyActivity extends BaseMvpActivity<CreateSubmitPresenter
         StatusBarUtils.setStatusBarColor(this);
         titleBar.getLeftImg().setOnClickListener(view -> onBackPressed());
         setImageViewLayoutParams(context, rivImage);
-        localLicensePath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "businessLicense.jpg";
         if (!TextUtils.isEmpty(relevanceCompanyName)) {
             //有html标签 恒源<strong style='color:#06d2e7'>大<\/strong>楼的
             if (relevanceCompanyName.contains("<strong style='color:#06d2e7'>")) {
@@ -194,6 +193,7 @@ public class CreateCompanyActivity extends BaseMvpActivity<CreateSubmitPresenter
             shortTip(R.string.str_no_sd);
             return;
         }
+        localLicensePath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "businessLicense.jpg";
         File fileUri = new File(localLicensePath);
         localPhotoUri = Uri.fromFile(fileUri);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

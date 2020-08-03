@@ -108,7 +108,7 @@ public class PersonalPresenter extends BasePresenter<PersonalContract.View>
 
                     @Override
                     public void onFail(int code, String msg, Object data) {
-                        LogCat.e(TAG, "1111 submitCompanyIdentityInfo onFail code=" + code + " msg=" + msg);
+                        LogCat.e(TAG, "1111 submitPersonalIdentityInfo onFail code=" + code + " msg=" + msg);
                         if (isViewAttached()) {
                             mView.hideLoadingDialog();
                             if (code == Constants.DEFAULT_ERROR_CODE || code == Constants.ERROR_CODE_5002) {

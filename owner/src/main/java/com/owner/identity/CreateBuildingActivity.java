@@ -91,7 +91,6 @@ public class CreateBuildingActivity extends BaseMvpActivity<CreateSubmitPresente
         mPresenter.attachView(this);
         StatusBarUtils.setStatusBarColor(this);
         titleBar.getLeftImg().setOnClickListener(view -> onBackPressed());
-        localBuildingPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "buildingdec.jpg";
         etNameContent.setText(mBuildingName);
         if (isEdit) {
             mPresenter.getIdentityInfo(identityType, true);
@@ -172,6 +171,7 @@ public class CreateBuildingActivity extends BaseMvpActivity<CreateSubmitPresente
             shortTip(R.string.str_no_sd);
             return;
         }
+        localBuildingPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "buildingdec.jpg";
         File fileUri = new File(localBuildingPath);
         localPhotoUri = Uri.fromFile(fileUri);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {

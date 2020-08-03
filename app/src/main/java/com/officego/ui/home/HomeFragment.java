@@ -49,7 +49,7 @@ import java.util.List;
  * Data 2020/5/11.
  * Descriptions:
  **/
-@EFragment(R.layout.home_fragment3)
+@EFragment(R.layout.home_fragment)
 public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         HomeContract.View, OnBannerListener,
         SearchPopupWindow.onSureClickListener,
