@@ -165,6 +165,7 @@ public class IMManager {
                         callback.onFail(errorCode.getValue());
                     } else {
                         // do nothing
+                        connectIM(token, getTokenOnIncorrect, callback);
                     }
                 }
 
