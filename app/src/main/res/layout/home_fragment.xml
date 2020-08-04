@@ -100,13 +100,7 @@
 
                 </com.google.android.material.appbar.CollapsingToolbarLayout>
 
-<!--                <androidx.appcompat.widget.Toolbar-->
-<!--                    android:visibility="gone"-->
-<!--                    android:id="@+id/toolbar"-->
-<!--                    android:background="@color/rc_main_theme"-->
-<!--                    android:layout_width="match_parent"-->
-<!--                    android:layout_height="?attr/actionBarSize"-->
-<!--                    app:layout_collapseMode="pin" />-->
+                <include layout="@layout/include_home_condition1" />
             </com.google.android.material.appbar.AppBarLayout>
 
             <TextView
@@ -132,7 +126,6 @@
                 android:visibility="gone"
                 app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
-
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_house"
                 style="@style/marginLeftRight18"
@@ -146,7 +139,12 @@
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
+    <include layout="@layout/include_home_search" />
+
     <include
-        layout="@layout/include_home_search" />
+        layout="@layout/include_home_condition"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40"
+        android:layout_below="@+id/rl_home_title" />
 
 </RelativeLayout>

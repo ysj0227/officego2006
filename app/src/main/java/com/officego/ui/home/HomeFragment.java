@@ -87,6 +87,35 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     TextView tvSearchOrder;
     @ViewById(R.id.tv_search_condition)
     TextView tvSearchCondition;
+    //选项的条件
+    @ViewById(R.id.rl_label_construction)
+    RelativeLayout rl_label_construction;
+    @ViewById(R.id.rl_construction)
+    RelativeLayout rlConstruction;
+    @ViewById(R.id.tv_construction)
+    TextView tvConstruction;
+    @ViewById(R.id.rl_office_type)
+    RelativeLayout rlOfficeType;
+    @ViewById(R.id.tv_office_type)
+    TextView tvOfficeType;
+    @ViewById(R.id.rl_sel_condition)
+    RelativeLayout rlSelCondition;
+    @ViewById(R.id.tv_sel_condition)
+    TextView tvSelCondition;
+    @ViewById(R.id.rl_label_construction1)
+    RelativeLayout rl_label_construction1;
+    @ViewById(R.id.rl_construction1)
+    RelativeLayout rlConstruction1;
+    @ViewById(R.id.tv_construction1)
+    TextView tvConstruction1;
+    @ViewById(R.id.rl_office_type1)
+    RelativeLayout rlOfficeType1;
+    @ViewById(R.id.tv_office_type1)
+    TextView tvOfficeType1;
+    @ViewById(R.id.rl_sel_condition1)
+    RelativeLayout rlSelCondition1;
+    @ViewById(R.id.tv_sel_condition1)
+    TextView tvSelCondition1;
     //搜索筛选
     private SearchPopupWindow popupWindow;
     //adapter
@@ -103,7 +132,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     private SparseBooleanArray checkStates; //记录选中的位置
     private String district = "", business = "", line = "", nearbySubway = "",
             area = "", dayPrice = "", seats = "", decoration = "", houseTags = "", sort = "0";
-    private int currentScrollPosition;
 
     private float alphaPercent;//渐变色百分比
 
@@ -117,7 +145,8 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rvHouse.setLayoutManager(layoutManager);
         appBarLayout.addOnOffsetChangedListener(appBarStateChangeListener);
-        alphaPercent = (float) 1 / CommonHelper.dp2px(mActivity, 180);
+//        alphaPercent = (float) 1 / CommonHelper.dp2px(mActivity, 180);
+        alphaPercent = (float) 1 / CommonHelper.dp2px(mActivity, 200);
         initBarLayoutBg();
         initRefresh();
         if (!NetworkUtils.isNetworkAvailable(mActivity)) {
@@ -306,6 +335,17 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         super.onResume();
     }
 
+    //标签筛选条件
+    private void labelConstruction(int abs) {
+        if (abs * alphaPercent <= 1) {
+            rl_label_construction.setAlpha(0);
+            rl_label_construction1.setAlpha(1);
+        } else {
+            rl_label_construction.setAlpha(1);
+            rl_label_construction1.setAlpha(0);
+        }
+    }
+
     /**
      * 滑动位置
      */
@@ -329,6 +369,8 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
                 tvSearchOrder.setEnabled(true);
                 tvSearchCondition.setEnabled(true);
             }
+            //标签筛选
+            labelConstruction(abs);
             //是否可以下拉刷新
             if (abs * alphaPercent < 0.2) {
                 mSwipeRefreshLayout.setEnabled(true);
@@ -555,4 +597,8 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         rlException.setVisibility(View.VISIBLE);
         rvHouse.setVisibility(View.GONE);
     }
+    /**
+     * 筛选条件***************************************************************
+     */
+
 }

@@ -59,9 +59,10 @@ public class IdentityCompanyAdapter extends CommonListAdapter<IdentityCompanyBea
             tvAdd.setVisibility(View.VISIBLE);
             tvAdd.setText("创建公司");
             tvUp.setText("公司不存在，去创建公司");
+            holder.itemView.setEnabled(true);
             holder.itemView.setOnClickListener(v -> listener.associateCompany(bean, true));
         } else {
-            tvIdentity.setVisibility(View.VISIBLE);
+            tvIdentity.setVisibility(isCompany ? View.VISIBLE : View.GONE);
             tvUp.setVisibility(View.VISIBLE);
             if (!TextUtils.isEmpty(bean.getCompany())) {
                 tvUp.setText(Html.fromHtml(bean.getCompany()));
@@ -77,7 +78,7 @@ public class IdentityCompanyAdapter extends CommonListAdapter<IdentityCompanyBea
                 tvDown.setText("该公司已认证为标准办公，不可重复认证");
                 holder.itemView.setEnabled(false);
             } else {
-                tvAdd.setText("申请加入");
+                tvAdd.setText(isCompany ? "申请加入" : "关联公司");
                 tvAdd.setVisibility(View.VISIBLE);
                 tvDown.setVisibility(View.GONE);
                 holder.itemView.setEnabled(true);

@@ -8,7 +8,7 @@
     <color name="common_blue_main_20a">#3346C3C2</color><!--主色调20%透明-->
     <color name="common_blue_main_60a">#9946C3C2</color><!--主色调60%透明-->
     <color name="common_blue_main_80a">#CC46C3C2</color><!--主色调60%透明-->
-
+    <color name="common_blue_light">#ECF9F8</color>    <!--主色调次-->
     <color name="common_grey_66">#666666</color>
     <color name="common_97">#979797</color>
 

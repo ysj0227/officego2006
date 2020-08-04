@@ -761,8 +761,8 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         sb.setAddress(bean.getAddress());
         sb.setIdentityType(IDENTITY_COMPANY);
         IdentitySendMsgActivity_.intent(context).sendMsgBean(sb).start();
-        cetCompanyName.setText("");
-        hideSearchView();
+//        hideSearchView();
+        rvRecommendBuilding.setVisibility(View.GONE);
         //关联
         cetCompanyName.setEnabled(true);
         tvCompanyEdit.setVisibility(View.GONE);

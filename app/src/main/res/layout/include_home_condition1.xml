@@ -1,0 +1,115 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_label_construction1"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_40"
+    android:background="@color/white">
+
+    <RelativeLayout
+        android:layout_centerVertical="true"
+        android:layout_alignParentBottom="true"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_32"
+        android:background="@drawable/button_corners12_solid_light">
+
+        <RelativeLayout
+            android:id="@+id/rl_construction1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dp_10"
+            android:background="@drawable/button_corners25_solid_main">
+
+            <TextView
+                android:id="@+id/tv_construction1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dp_3"
+                android:paddingStart="@dimen/dp_8"
+                android:paddingTop="@dimen/dp_3"
+                android:paddingBottom="@dimen/dp_3"
+                android:text="地铁（5）"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_12"
+                tools:ignore="RtlSymmetry" />
+
+            <ImageButton
+                android:id="@+id/ibt_delete_construction1"
+                android:layout_width="@dimen/dp_14"
+                android:layout_height="@dimen/dp_14"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/dp_8"
+                android:layout_toEndOf="@+id/tv_construction1"
+                android:background="@mipmap/ic_delete_white"
+                tools:ignore="ContentDescription" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_office_type1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_toEndOf="@+id/rl_construction1"
+            android:background="@drawable/button_corners25_solid_main">
+
+            <TextView
+                android:id="@+id/tv_office_type1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dp_3"
+                android:paddingStart="@dimen/dp_8"
+                android:paddingTop="@dimen/dp_3"
+                android:paddingBottom="@dimen/dp_3"
+                android:text="联合办公"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_12"
+                tools:ignore="RtlSymmetry" />
+
+            <ImageButton
+                android:id="@+id/ibt_delete_office_type1"
+                android:layout_width="@dimen/dp_14"
+                android:layout_height="@dimen/dp_14"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/dp_8"
+                android:layout_toEndOf="@+id/tv_office_type1"
+                android:background="@mipmap/ic_delete_white"
+                tools:ignore="ContentDescription" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_sel_condition1"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_toEndOf="@+id/rl_office_type1"
+            android:background="@drawable/button_corners25_solid_main">
+
+            <TextView
+                android:id="@+id/tv_sel_condition1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginEnd="@dimen/dp_3"
+                android:paddingStart="@dimen/dp_8"
+                android:paddingTop="@dimen/dp_3"
+                android:paddingBottom="@dimen/dp_3"
+                android:text="100-200"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_12"
+                tools:ignore="RtlSymmetry" />
+
+            <ImageButton
+                android:id="@+id/ibt_delete_sel_condition1"
+                android:layout_width="@dimen/dp_14"
+                android:layout_height="@dimen/dp_14"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/dp_8"
+                android:layout_toEndOf="@+id/tv_sel_condition1"
+                android:background="@mipmap/ic_delete_white"
+                tools:ignore="ContentDescription" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+</RelativeLayout>

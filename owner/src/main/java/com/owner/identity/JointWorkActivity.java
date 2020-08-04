@@ -747,7 +747,9 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
         IdentitySendMsgActivity_.intent(context).sendMsgBean(sb).start();
         CommUtils.showHtmlView(cetJointworkName, bean.getBuildingName());
         CommUtils.showHtmlTextView(tvJointworkAddress, bean.getAddress());
-        hideSearchView();
+//        hideSearchView();
+        rvRecommendCompany.setVisibility(View.GONE);
+        rlRecommendBuilding.setVisibility(View.GONE);
         //关联
         cetJointworkName.setEnabled(true);
         tvJointworkEdit.setVisibility(View.GONE);
@@ -783,8 +785,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
                 .relevanceCompanyName(bean.getCompany())
                 .relevanceCompanyAddress(bean.getAddress())
                 .startForResult(REQUEST_CREATE_COMPANY);
-        cetCompanyName.setText("");
-        showBuildingView();
+        showRelevanceView();
     }
 
     //创建公司成功的回调
@@ -846,6 +847,13 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
     private void showBuildingView() {
         rlOffice.setVisibility(View.VISIBLE);
         hideSearchView();
+    }
+
+    //关联公司view
+    private void showRelevanceView() {
+        rlOffice.setVisibility(View.VISIBLE);
+        rlRecommendJointwork.setVisibility(View.GONE);
+        rlRecommendBuilding.setVisibility(View.GONE);
     }
 
     //隐藏公司view
