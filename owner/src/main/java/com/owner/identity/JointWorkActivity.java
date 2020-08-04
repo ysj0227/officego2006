@@ -91,6 +91,8 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
     @ViewById(resName = "title_bar")
     TitleBarView titleBar;
     //搜索list
+    @ViewById(resName = "rl_recommend_jointwork")
+    RelativeLayout rlRecommendJointwork;
     @ViewById(resName = "rv_recommend_jointwork")
     RecyclerView rvRecommendJointwork;
     @ViewById(resName = "rl_recommend_building")
@@ -496,9 +498,9 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
                 if (TextUtils.isEmpty(s.toString())) {
                     hideSearchView();
                     tvJointworkAddress.setText("");
-                    ButtonUtils.clickButton(btnUpload, true);
+                    enableUploadButton();
                 } else {
-                    rvRecommendJointwork.setVisibility(View.VISIBLE);
+                    rlRecommendJointwork.setVisibility(View.VISIBLE);
                     rvRecommendCompany.setVisibility(View.GONE);
                     rlRecommendBuilding.setVisibility(View.GONE);
                     mPresenter.getJointWork(s.toString());
@@ -521,9 +523,9 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (TextUtils.isEmpty(s.toString())) {
                     hideSearchView();
-                    ButtonUtils.clickButton(btnUpload, true);
+                    enableUploadButton();
                 } else {
-                    rvRecommendJointwork.setVisibility(View.GONE);
+                    rlRecommendJointwork.setVisibility(View.GONE);
                     rvRecommendCompany.setVisibility(View.VISIBLE);
                     rlRecommendBuilding.setVisibility(View.GONE);
                     mPresenter.getCompany(s.toString());
@@ -547,7 +549,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
                 if (TextUtils.isEmpty(s.toString())) {
                     hideSearchView();
                 } else {
-                    rvRecommendJointwork.setVisibility(View.GONE);
+                    rlRecommendJointwork.setVisibility(View.GONE);
                     rvRecommendCompany.setVisibility(View.GONE);
                     rlRecommendBuilding.setVisibility(View.VISIBLE);
                     mPresenter.getBuilding(s.toString());
@@ -630,19 +632,15 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
             cetJointworkName.setEnabled(true);
             tvJointworkEdit.setVisibility(View.GONE);
         }
-        //公司
-        if (TextUtils.equals("1", IdentityInfo.strCreateCompany(data))) {
-            //创建
-            cetCompanyName.setEnabled(false);
-            tvCompanyEdit.setVisibility(View.VISIBLE);
-        } else if (TextUtils.equals("2", IdentityInfo.strCreateCompany(data))) {
-            //关联
-            cetCompanyName.setEnabled(true);
-            tvCompanyEdit.setVisibility(View.GONE);
-        } else {
+        //联办--公司只能创建
+        if (TextUtils.isEmpty(data.getCompany())) {
             //无定义
             cetCompanyName.setEnabled(true);
             tvCompanyEdit.setVisibility(View.GONE);
+        } else {
+            //创建
+            cetCompanyName.setEnabled(false);
+            tvCompanyEdit.setVisibility(View.VISIBLE);
         }
     }
 
@@ -768,12 +766,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
             //创建
             cetJointworkName.setEnabled(false);
             tvJointworkEdit.setVisibility(View.VISIBLE);
-            if (rlType.getVisibility()==View.VISIBLE){
-                ButtonUtils.clickButton(btnUpload, true);
-            }else {
-                ButtonUtils.clickButton(btnUpload, false);
-            }
-
+            enableUploadButton();
         }
     }
 
@@ -805,11 +798,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
             //创建
             cetCompanyName.setEnabled(false);
             tvCompanyEdit.setVisibility(View.VISIBLE);
-            if (rlType.getVisibility()==View.VISIBLE){
-                ButtonUtils.clickButton(btnUpload, true);
-            }else {
-                ButtonUtils.clickButton(btnUpload, false);
-            }
+            enableUploadButton();
         }
     }
 
@@ -870,8 +859,17 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
     }
 
     private void hideSearchView() {
-        rvRecommendJointwork.setVisibility(View.GONE);
+        rlRecommendJointwork.setVisibility(View.GONE);
         rvRecommendCompany.setVisibility(View.GONE);
         rlRecommendBuilding.setVisibility(View.GONE);
+    }
+
+    //按钮是否可点击
+    private void enableUploadButton() {
+        if (rlType.getVisibility() == View.VISIBLE) {
+            ButtonUtils.clickButton(btnUpload, true);
+        } else {
+            ButtonUtils.clickButton(btnUpload, false);
+        }
     }
 }

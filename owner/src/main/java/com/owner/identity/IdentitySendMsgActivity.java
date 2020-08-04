@@ -1,5 +1,6 @@
 package com.owner.identity;
 
+import android.annotation.SuppressLint;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -83,11 +84,12 @@ public class IdentitySendMsgActivity extends BaseMvpActivity<SendMsgPresenter>
         }
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void messageSuccess(ApplyLicenceBean data) {
         mData = data;
         Glide.with(context).applyDefaultRequestOptions(GlideUtils.avaOoptions()).load(data.getAvatar()).into(civAvatar);
-        tvName.setText(data.getProprietorRealname());
+        tvName.setText((TextUtils.isEmpty(data.getAuthority()) ? "" : data.getAuthority() + ":") + data.getProprietorRealname());
         tvPosition.setText(data.getProprietorJob());
     }
 

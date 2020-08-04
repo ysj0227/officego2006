@@ -206,18 +206,35 @@
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rl_type" />
 
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/rv_recommend_jointwork"
+            <RelativeLayout
+                android:id="@+id/rl_recommend_jointwork"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/dp_600"
+                android:layout_height="800dp"
                 android:background="@color/text_e5"
-                android:nestedScrollingEnabled="false"
                 android:paddingLeft="@dimen/dp_18"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/rl_jointwork_name" />
+                app:layout_constraintTop_toBottomOf="@id/rl_jointwork_name">
+
+                <TextView
+                    android:id="@+id/tv_add_jointwork"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:text="加入网点，即可共同管理网点房源"
+                    android:textColor="@color/text_33"
+                    android:textSize="@dimen/sp_14" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_recommend_jointwork"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_add_jointwork"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:nestedScrollingEnabled="false" />
+            </RelativeLayout>
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_recommend_company"

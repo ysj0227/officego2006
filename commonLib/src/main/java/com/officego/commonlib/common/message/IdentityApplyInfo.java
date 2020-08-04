@@ -31,7 +31,7 @@ public class IdentityApplyInfo extends MessageContent {
                                                        String extraMessage) {
         IdentityApplyInfo info = new IdentityApplyInfo();
         info.id = id;
-        info.id=id;
+        info.licenceId=licenceId;
         info.content = content;
         info.extraMessage = extraMessage;
         return info;

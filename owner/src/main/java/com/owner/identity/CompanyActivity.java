@@ -533,7 +533,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (TextUtils.isEmpty(s.toString())) {
                     hideSearchView();
-                    ButtonUtils.clickButton(btnUpload, true);
+                    enableUploadButton();
                 } else {
                     rlRecommendCompany.setVisibility(View.VISIBLE);
                     rvRecommendBuilding.setVisibility(View.GONE);
@@ -558,7 +558,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
                 if (TextUtils.isEmpty(s.toString())) {
                     hideSearchView();
                     tvAddress.setText("");
-                    ButtonUtils.clickButton(btnUpload, true);
+                    enableUploadButton();
                 } else {
                     rlRecommendCompany.setVisibility(View.GONE);
                     rvRecommendBuilding.setVisibility(View.VISIBLE);
@@ -761,7 +761,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         sb.setAddress(bean.getAddress());
         sb.setIdentityType(IDENTITY_COMPANY);
         IdentitySendMsgActivity_.intent(context).sendMsgBean(sb).start();
-        CommUtils.showHtmlView(cetCompanyName, bean.getCompany());
+        cetCompanyName.setText("");
         hideSearchView();
         //关联
         cetCompanyName.setEnabled(true);
@@ -780,11 +780,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
             //创建公司成功
             cetCompanyName.setEnabled(false);
             tvCompanyEdit.setVisibility(View.VISIBLE);
-            if (!TextUtils.isEmpty(tvType.getText().toString())){
-                ButtonUtils.clickButton(btnUpload, true);
-            }else {
-                ButtonUtils.clickButton(btnUpload, false);
-            }
+            enableUploadButton();
         }
     }
 
@@ -823,11 +819,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
             //创建
             cetOfficeName.setEnabled(false);
             tvBuildingEdit.setVisibility(View.VISIBLE);
-            if (!TextUtils.isEmpty(tvType.getText().toString())){
-                ButtonUtils.clickButton(btnUpload, true);
-            }else {
-                ButtonUtils.clickButton(btnUpload, false);
-            }
+            enableUploadButton();
         }
     }
 
@@ -871,5 +863,14 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
     private void hideSearchView() {
         rlRecommendCompany.setVisibility(View.GONE);
         rvRecommendBuilding.setVisibility(View.GONE);
+    }
+
+    //按钮是否可点击
+    private void enableUploadButton() {
+        if (TextUtils.isEmpty(tvType.getText().toString())) {
+            ButtonUtils.clickButton(btnUpload, false);
+        } else {
+            ButtonUtils.clickButton(btnUpload, true);
+        }
     }
 }

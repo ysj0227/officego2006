@@ -6,10 +6,11 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
 import com.owner.R;
-import com.owner.identity.model.IdentityJointWorkBean;
 import com.owner.identity.model.IdentityJointWorkBean;
 
 import java.util.List;
@@ -35,10 +36,12 @@ public class IdentityJointWorkAdapter extends CommonListAdapter<IdentityJointWor
         void associateJointWork(IdentityJointWorkBean.DataBean bean, boolean isCreate);
     }
 
+    private Context context;
     private List<IdentityJointWorkBean.DataBean> list;
 
     public IdentityJointWorkAdapter(Context context, List<IdentityJointWorkBean.DataBean> list) {
         super(context, R.layout.item_id_building_search, list);
+        this.context=context;
         this.list = list;
     }
 
@@ -48,11 +51,13 @@ public class IdentityJointWorkAdapter extends CommonListAdapter<IdentityJointWor
         TextView tvAddress = holder.getView(R.id.tv_address);
         TextView tvAdd = holder.getView(R.id.tv_add);
         if (list != null && list.size() > 0 && holder.getAdapterPosition() == list.size() - 1) {
+            tvAddress.setTextColor(ContextCompat.getColor(context, R.color.text_33));
             tvBuildingName.setVisibility(View.GONE);
             tvAdd.setText("创建网点");
             tvAddress.setText("网点不存在，去创建网点");
             holder.itemView.setOnClickListener(v -> listener.associateJointWork(bean, true));
         } else {
+            tvAddress.setTextColor(ContextCompat.getColor(context, R.color.text_66_p50));
             tvBuildingName.setVisibility(View.VISIBLE);
             tvAddress.setText("加入网点，即可共同管理网点房源");
             if (!TextUtils.isEmpty(bean.getBuildingName())) {

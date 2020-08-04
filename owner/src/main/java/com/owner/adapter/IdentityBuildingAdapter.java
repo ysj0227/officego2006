@@ -6,6 +6,8 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
 import com.owner.R;
@@ -34,11 +36,13 @@ public class IdentityBuildingAdapter extends CommonListAdapter<IdentityBuildingB
         void associateBuilding(IdentityBuildingBean.DataBean bean, boolean isCreate);
     }
 
+    private Context context;
     private List<IdentityBuildingBean.DataBean> list;
     private boolean isJointWork;
 
     public IdentityBuildingAdapter(Context context, List<IdentityBuildingBean.DataBean> list, boolean isJointWork) {
         super(context, R.layout.item_id_building_search, list);
+        this.context = context;
         this.list = list;
         this.isJointWork = isJointWork;
     }
@@ -52,12 +56,14 @@ public class IdentityBuildingAdapter extends CommonListAdapter<IdentityBuildingB
             tvBuildingName.setVisibility(View.GONE);
             tvAdd.setText("创建写字楼");
             tvAddress.setText("写字楼不存在，去创建写字楼");
+            tvAddress.setTextColor(ContextCompat.getColor(context, R.color.text_33));
             holder.itemView.setOnClickListener(v -> listener.associateBuilding(bean, true));
         } else {
-            if (isJointWork){
+            tvAddress.setTextColor(ContextCompat.getColor(context, R.color.text_66_p50));
+            if (isJointWork) {
                 tvAddress.setVisibility(View.GONE);
                 tvAdd.setVisibility(View.GONE);
-            }else {
+            } else {
                 tvAddress.setVisibility(View.VISIBLE);
                 tvAdd.setVisibility(View.VISIBLE);
             }

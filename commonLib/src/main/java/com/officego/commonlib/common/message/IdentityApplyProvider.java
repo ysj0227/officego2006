@@ -8,6 +8,7 @@ package com.officego.commonlib.common.message;
 
 import android.content.Context;
 import android.text.Spannable;
+import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -16,9 +17,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.officego.commonlib.R;
-import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
-import com.officego.commonlib.common.rongcloud.SendMessageManager;
 import com.officego.commonlib.common.rpc.OfficegoApi;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.notification.BaseNotification;
@@ -60,9 +59,9 @@ public class IdentityApplyProvider extends IContainerItemProvider.MessageProvide
             holder.tvContent.setText(info.getContent());
             //1通过2取消
             holder.btnAgree.setOnClickListener(v ->
-                    updateAuditStatus(true, Integer.valueOf(info.getExtraMessage()), info.getId(),info.getLicenceId(), 1));
+                    updateAuditStatus(true, info.getExtraMessage(), info.getId(), info.getLicenceId(), 1));
             holder.btnReject.setOnClickListener(v ->
-                    updateAuditStatus(false, Integer.valueOf(info.getExtraMessage()), info.getId(), info.getLicenceId(), 2));
+                    updateAuditStatus(false, info.getExtraMessage(), info.getId(), info.getLicenceId(), 2));
         } else {//消息方向，自己发送的
             holder.tvContent.setText("你已申请加入TA的公司等待对方同意");
             holder.rlBtn.setVisibility(View.GONE);
@@ -91,12 +90,15 @@ public class IdentityApplyProvider extends IContainerItemProvider.MessageProvide
     /**
      * 同意拒绝申请加入 认证
      */
-    private void updateAuditStatus(boolean isAgree, int identityType, int id,int licenceId, int auditStatus) {
+    private void updateAuditStatus(boolean isAgree, String identityType, int id, int licenceId, int auditStatus) {
         if (!NetworkUtils.isNetworkAvailable(context)) {
             ToastUtils.toastForShort(context, R.string.str_check_net);
             return;
         }
-        OfficegoApi.getInstance().updateAuditStatusIdentity(identityType, id, licenceId,auditStatus,
+        if (TextUtils.isEmpty(identityType)) {
+            return;
+        }
+        OfficegoApi.getInstance().updateAuditStatusIdentity(Integer.valueOf(identityType), id, licenceId, auditStatus,
                 new RetrofitCallback<Object>() {
                     @Override
                     public void onSuccess(int code, String msg, Object data) {

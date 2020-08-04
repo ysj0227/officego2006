@@ -63,22 +63,25 @@ public class IdentityCompanyAdapter extends CommonListAdapter<IdentityCompanyBea
         } else {
             tvIdentity.setVisibility(View.VISIBLE);
             tvUp.setVisibility(View.VISIBLE);
+            if (!TextUtils.isEmpty(bean.getCompany())) {
+                tvUp.setText(Html.fromHtml(bean.getCompany()));
+            }
             if (isCompany && TextUtils.equals("2", bean.getIdentityType())) {
                 tvAdd.setVisibility(View.GONE);
                 tvDown.setVisibility(View.VISIBLE);
                 tvDown.setText("该公司已认证为联合办公，不可重复认证");
+                holder.itemView.setEnabled(false);
             } else if (!isCompany && TextUtils.equals("1", bean.getIdentityType())) {
                 tvAdd.setVisibility(View.GONE);
                 tvDown.setVisibility(View.VISIBLE);
                 tvDown.setText("该公司已认证为标准办公，不可重复认证");
+                holder.itemView.setEnabled(false);
             } else {
-                tvAdd.setText("关联公司");
+                tvAdd.setText("申请加入");
                 tvAdd.setVisibility(View.VISIBLE);
                 tvDown.setVisibility(View.GONE);
+                holder.itemView.setEnabled(true);
                 holder.itemView.setOnClickListener(v -> listener.associateCompany(bean, false));
-            }
-            if (!TextUtils.isEmpty(bean.getCompany())) {
-                tvUp.setText(Html.fromHtml(bean.getCompany()));
             }
         }
     }
