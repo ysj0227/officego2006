@@ -79,7 +79,6 @@ public class CreateJointWorkActivity extends BaseMvpActivity<CreateSubmitPresent
     @Extra
     boolean isEdit;
     private int district, business;
-    private String districtName, businessName;
     private String name, address;
     //是否从相机拍照或相册选择了图片
     private boolean isTakePhotoOrGallery;
@@ -103,7 +102,7 @@ public class CreateJointWorkActivity extends BaseMvpActivity<CreateSubmitPresent
 
     @Click(resName = "rl_area")
     void areaClick() {
-        new AreaDialog(context, district, business,districtName,businessName).setListener(this);
+        new AreaDialog(context, district, business).setListener(this);
     }
 
     @Click(resName = "btn_save")
@@ -241,8 +240,6 @@ public class CreateJointWorkActivity extends BaseMvpActivity<CreateSubmitPresent
     @Override
     public void districtListSuccess(String str, String districtName, String businessName) {
         tvArea.setText(str);
-        this.districtName=districtName;
-        this.businessName=businessName;
     }
 
     @Override

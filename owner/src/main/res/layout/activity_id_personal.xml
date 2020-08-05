@@ -308,12 +308,11 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_recommend_building"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/dp_400"
+                android:layout_height="@dimen/dp_640"
                 android:background="@color/white"
                 android:paddingLeft="@dimen/dp_18"
                 android:visibility="gone"
                 app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rl_office" />
         </androidx.constraintlayout.widget.ConstraintLayout>

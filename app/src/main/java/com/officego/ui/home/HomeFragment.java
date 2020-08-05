@@ -21,8 +21,6 @@ import com.officego.commonlib.update.VersionDialog;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
-import com.officego.config.ConditionConfig;
 import com.officego.ui.adapter.HouseAdapter;
 import com.officego.ui.home.contract.HomeContract;
 import com.officego.ui.home.model.BuildingBean;
@@ -43,6 +41,8 @@ import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+
+import static com.officego.config.ConditionConfig.mConditionBean;
 
 /**
  * Created by YangShiJie
@@ -89,7 +89,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     TextView tvSearchCondition;
     //选项的条件
     @ViewById(R.id.rl_label_construction)
-    RelativeLayout rl_label_construction;
+    RelativeLayout rlLabelConstruction;
     @ViewById(R.id.rl_construction)
     RelativeLayout rlConstruction;
     @ViewById(R.id.tv_construction)
@@ -103,7 +103,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     @ViewById(R.id.tv_sel_condition)
     TextView tvSelCondition;
     @ViewById(R.id.rl_label_construction1)
-    RelativeLayout rl_label_construction1;
+    RelativeLayout rlLabelConstruction1;
     @ViewById(R.id.rl_construction1)
     RelativeLayout rlConstruction1;
     @ViewById(R.id.tv_construction1)
@@ -145,8 +145,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rvHouse.setLayoutManager(layoutManager);
         appBarLayout.addOnOffsetChangedListener(appBarStateChangeListener);
-        alphaPercent = (float) 1 / CommonHelper.dp2px(mActivity, 180);
-//        alphaPercent = (float) 1 / CommonHelper.dp2px(mActivity, 200);
+        alphaPercent = (float) 1 / CommonHelper.dp2px(mActivity, 200);
         initBarLayoutBg();
         initRefresh();
         if (!NetworkUtils.isNetworkAvailable(mActivity)) {
@@ -161,6 +160,8 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         houseAdapter = null;
         buildingList.clear();
         getBuildingList();
+        //筛选条件
+        labelsConditionView();
     }
 
     @Override
@@ -338,11 +339,11 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     //标签筛选条件
     private void labelConstruction(int abs) {
         if (abs * alphaPercent <= 1) {
-            rl_label_construction.setAlpha(0);
-            rl_label_construction1.setAlpha(1);
+            rlLabelConstruction.setAlpha(0);
+            rlLabelConstruction1.setAlpha(1);
         } else {
-            rl_label_construction.setAlpha(1);
-            rl_label_construction1.setAlpha(0);
+            rlLabelConstruction.setAlpha(1);
+            rlLabelConstruction1.setAlpha(0);
         }
     }
 
@@ -370,7 +371,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
                 tvSearchCondition.setEnabled(true);
             }
             //标签筛选
-//            labelConstruction(abs);
+            labelConstruction(abs);
             //是否可以下拉刷新
             if (abs * alphaPercent < 0.2) {
                 mSwipeRefreshLayout.setEnabled(true);
@@ -449,7 +450,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     @Override
     public void onSurePopUpWindow(boolean isLine, HashSet<Integer> hashSet,
                                   SparseBooleanArray checkStates, String data1, String data2) {
-        LogCat.e("TAG", "onSurePopUpWindow  isLine=" + isLine + " data1=" + data1 + " data2=" + data2);
+        // LogCat.e("TAG", "onSurePopUpWindow  isLine=" + isLine + " data1=" + data1 + " data2=" + data2);
         if (TextUtils.isEmpty(data1) && TextUtils.isEmpty(data2)) {
             tvSearchArea.setText("区域");
             tvSearchArea.setTextColor(ContextCompat.getColor(mActivity, R.color.text_66));
@@ -471,11 +472,10 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
             line = "";
             nearbySubway = "";
         }
+        //筛选标签
+        labelsConditionView();
         //查询列表
-        pageNum = 1;
-        buildingList.clear();
-        houseAdapter = null;
-        getBuildingList();
+        getList();
     }
 
     //全部，写字楼，联合办公
@@ -489,11 +489,10 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         dayPrice = "";
         decoration = "";
         houseTags = "";
+        //筛选标签
+        labelsConditionView();
         //查询列表
-        pageNum = 1;
-        buildingList.clear();
-        houseAdapter = null;
-        getBuildingList();
+        getList();
     }
 
     //排序
@@ -501,24 +500,21 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     public void onOfficeOrderPopUpWindow(int searchType, String order) {
         sort = order;
         //查询列表
-        pageNum = 1;
-        buildingList.clear();
-        houseAdapter = null;
-        getBuildingList();
+        getList();
     }
 
     @Override
     public void onConditionPopUpWindow(int searchType, int btype, String constructionArea,
                                        String rentPrice, String simple, String decoration, String tags) {
-        LogCat.e("TAG", "onConditionPopUpWindow btype= " + btype + " constructionArea=" + constructionArea +
-                " rentPrice=" + rentPrice + " simple=" + simple + " decoration=" + decoration + " tags=" + tags);
+//        LogCat.e("TAG", "onConditionPopUpWindow btype= " + btype + " constructionArea=" + constructionArea +
+//                " rentPrice=" + rentPrice + " simple=" + simple + " decoration=" + decoration + " tags=" + tags);
         this.btype = btype;
         this.area = constructionArea;
         this.dayPrice = rentPrice;
         this.seats = simple;
         this.decoration = decoration;
         this.houseTags = tags;
-        ConditionConfig.mConditionBean = setConditionBean();
+        mConditionBean = setConditionBean();
         if (btype == 0) {
             tvSearchOffice.setText(R.string.str_house_all);
         } else if (btype == 1) {
@@ -526,7 +522,13 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         } else if (btype == 2) {
             tvSearchOffice.setText(R.string.str_house_tenant);
         }
+        //筛选标签
+        labelsConditionView();
         //查询列表
+        getList();
+    }
+
+    private void getList() {
         pageNum = 1;
         buildingList.clear();
         houseAdapter = null;
@@ -597,8 +599,128 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         rlException.setVisibility(View.VISIBLE);
         rvHouse.setVisibility(View.GONE);
     }
+
     /**
      * 筛选条件***************************************************************
      */
+    @SuppressLint("SetTextI18n")
+    private void labelsConditionView() {
+        //交通
+        if (TextUtils.isEmpty(line) && TextUtils.isEmpty(district)) {
+            rlConstruction.setVisibility(View.GONE);
+            rlConstruction1.setVisibility(View.GONE);
+        } else {
+            rlConstruction.setVisibility(View.VISIBLE);
+            rlConstruction1.setVisibility(View.VISIBLE);
+            if (checkStates == null) {
+                tvConstruction.setText(!TextUtils.isEmpty(line) ? "地铁" : "商圈 ");
+                tvConstruction1.setText(!TextUtils.isEmpty(line) ? "地铁" : "商圈");
+            } else {
+                tvConstruction.setText((!TextUtils.isEmpty(line) ? "地铁" : "商圈") + "（" + checkStates.size() + "）");
+                tvConstruction1.setText((!TextUtils.isEmpty(line) ? "地铁" : "商圈") + "（" + checkStates.size() + "）");
+            }
+        }
+        //楼盘类型
+        if (btype == 1 || btype == 2) {
+            rlOfficeType.setVisibility(View.VISIBLE);
+            rlOfficeType1.setVisibility(View.VISIBLE);
+            tvOfficeType.setText(btype == 1 ? R.string.str_house_office : R.string.str_house_tenant);
+            tvOfficeType1.setText(btype == 1 ? R.string.str_house_office : R.string.str_house_tenant);
+        } else {
+            rlOfficeType.setVisibility(View.GONE);
+            rlOfficeType1.setVisibility(View.GONE);
+        }
+        //面积-工位
+        if (mConditionBean != null && (!TextUtils.isEmpty(area) || !TextUtils.isEmpty(seats))) {
+            rlSelCondition.setVisibility(View.VISIBLE);
+            rlSelCondition1.setVisibility(View.VISIBLE);
+            if (!TextUtils.isEmpty(mConditionBean.getArea())) {
+                tvSelCondition.setText(mConditionBean.getAreaValue());
+                tvSelCondition1.setText(mConditionBean.getAreaValue());
+            }
+            if (!TextUtils.isEmpty(mConditionBean.getSeats())) {
+                tvSelCondition.setText(mConditionBean.getSeatsValue());
+                tvSelCondition1.setText(mConditionBean.getSeatsValue());
+            }
+        } else {
+            rlSelCondition.setVisibility(View.GONE);
+            rlSelCondition1.setVisibility(View.GONE);
+        }
+        //是否隐藏筛选条件
+        if (rlConstruction.getVisibility() == View.GONE &&
+                rlOfficeType.getVisibility() == View.GONE &&
+                rlSelCondition.getVisibility() == View.GONE) {
+            rlLabelConstruction.setVisibility(View.GONE);
+            rlLabelConstruction1.setVisibility(View.GONE);
+        } else {
+            rlLabelConstruction.setVisibility(View.VISIBLE);
+            rlLabelConstruction1.setVisibility(View.VISIBLE);
+        }
+    }
 
+    //删除交通
+    @Click({R.id.ibt_delete_construction, R.id.ibt_delete_construction1})
+    void deleteConstructionClick() {
+        if (rlOfficeType.getVisibility() == View.GONE && rlSelCondition.getVisibility() == View.GONE) {
+            rlLabelConstruction.setVisibility(View.GONE);
+            rlLabelConstruction1.setVisibility(View.GONE);
+        }
+        rlConstruction.setVisibility(View.GONE);
+        rlConstruction1.setVisibility(View.GONE);
+        //清除条件
+        if (hashSet!=null){
+            hashSet.clear();
+        }
+        if (checkStates!=null){
+            checkStates.clear();
+        }
+        line = "";
+        nearbySubway = "";
+        district = "";
+        business = "";
+        tvSearchArea.setText("区域");
+        tvSearchArea.setTextColor(ContextCompat.getColor(mActivity, R.color.text_66));
+        //搜索
+        getList();
+    }
+
+    //删除类型
+    @Click({R.id.ibt_delete_office_type, R.id.ibt_delete_office_type1})
+    void deleteTypeClick() {
+        if (rlConstruction.getVisibility() == View.GONE && rlSelCondition.getVisibility() == View.GONE) {
+            rlLabelConstruction.setVisibility(View.GONE);
+            rlLabelConstruction1.setVisibility(View.GONE);
+        }
+        rlOfficeType.setVisibility(View.GONE);
+        rlOfficeType1.setVisibility(View.GONE);
+        //清除 初始化选择的写字楼或联合办公
+        area = "";
+        seats = "";
+        dayPrice = "";
+        decoration = "";
+        houseTags = "";
+        btype=0;
+        tvSearchOffice.setText(R.string.str_house_all);
+        //搜索
+        getList();
+    }
+
+    //删除工位面积
+    @Click({R.id.ibt_delete_sel_condition, R.id.ibt_delete_sel_condition1})
+    void deleteSelConditionClick() {
+        if (rlConstruction.getVisibility() == View.GONE && rlOfficeType.getVisibility() == View.GONE) {
+            rlLabelConstruction.setVisibility(View.GONE);
+            rlLabelConstruction1.setVisibility(View.GONE);
+        }
+        rlSelCondition.setVisibility(View.GONE);
+        rlSelCondition1.setVisibility(View.GONE);
+        //清除 初始化选择的写字楼或联合办公
+        area = "";
+        seats = "";
+        dayPrice = "";
+        decoration = "";
+        houseTags = "";
+        //搜索
+        getList();
+    }
 }

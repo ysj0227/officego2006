@@ -142,10 +142,10 @@
     <include layout="@layout/include_home_search" />
 
     <include
-        android:visibility="gone"
         layout="@layout/include_home_condition"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_40"
-        android:layout_below="@+id/rl_home_title" />
+        android:layout_below="@+id/rl_home_title"
+        android:visibility="visible" />
 
 </RelativeLayout>

@@ -24,6 +24,7 @@ import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.ToastUtils;
+import com.officego.commonlib.utils.log.LogCat;
 
 import io.rong.imkit.model.ProviderTag;
 import io.rong.imkit.model.UIMessage;
@@ -102,6 +103,7 @@ public class IdentityApplyProvider extends IContainerItemProvider.MessageProvide
                 new RetrofitCallback<Object>() {
                     @Override
                     public void onSuccess(int code, String msg, Object data) {
+                        LogCat.e("TAG", "11111 updateAuditStatusIdentity onSuccess");
                         if (isAgree) {
                             BaseNotification.newInstance().postNotificationName(
                                     CommonNotifications.conversationIdApplyAgree, "conversationIdApplyAgree");
@@ -113,6 +115,7 @@ public class IdentityApplyProvider extends IContainerItemProvider.MessageProvide
 
                     @Override
                     public void onFail(int code, String msg, Object data) {
+                        LogCat.e("TAG", "11111 updateAuditStatusIdentity code code=" + code);
                         if (code == Constants.DEFAULT_ERROR_CODE || code == Constants.ERROR_CODE_5002) {
                             ToastUtils.toastForShort(context, msg);
                         }

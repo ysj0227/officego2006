@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -50,6 +51,10 @@ public class SearchRecommendActivity extends BaseMvpActivity<SearchKeywordsPrese
     RelativeLayout rlTitle;
     @ViewById(R.id.et_search)
     ClearableEditText etSearch;
+    @ViewById(R.id.tv_history)
+    TextView tvHistory;
+    @ViewById(R.id.iv_clear_history)
+    ImageView ivClearHistory;
     @ViewById(R.id.label_history)
     LabelsView labelHistory;
     @ViewById(R.id.label_find)
@@ -69,7 +74,14 @@ public class SearchRecommendActivity extends BaseMvpActivity<SearchKeywordsPrese
         rvSearchList.setLayoutManager(new LinearLayoutManager(context));
         etSearch.setOnEditorActionListener(this);
         etSearch.addTextChangedListener(this);
-        if (!TextUtils.isEmpty(SpUtils.getSignToken())) {
+        if (TextUtils.isEmpty(SpUtils.getSignToken())) {
+            tvHistory.setVisibility(View.GONE);
+            ivClearHistory.setVisibility(View.GONE);
+            labelHistory.setVisibility(View.GONE);
+        } else {
+            tvHistory.setVisibility(View.VISIBLE);
+            ivClearHistory.setVisibility(View.VISIBLE);
+            labelHistory.setVisibility(View.VISIBLE);
             mPresenter.getHistory();
         }
         mPresenter.getHot();

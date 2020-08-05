@@ -79,7 +79,6 @@ public class CreateBuildingActivity extends BaseMvpActivity<CreateSubmitPresente
     boolean isEdit;
 
     private int district, business;
-    private String districtName, businessName;
     private String localBuildingPath;
     private Uri localPhotoUri;
     private String name, address;
@@ -100,7 +99,7 @@ public class CreateBuildingActivity extends BaseMvpActivity<CreateSubmitPresente
 
     @Click(resName = "rl_area")
     void areaClick() {
-        new AreaDialog(context, district, business,districtName,businessName).setListener(this);
+        new AreaDialog(context, district, business).setListener(this);
     }
 
     @Click(resName = "btn_save")
@@ -243,8 +242,6 @@ public class CreateBuildingActivity extends BaseMvpActivity<CreateSubmitPresente
     @Override
     public void districtListSuccess(String str, String districtName, String businessName) {
         tvArea.setText(str);
-        this.districtName=districtName;
-        this.businessName=businessName;
     }
 
     @Override

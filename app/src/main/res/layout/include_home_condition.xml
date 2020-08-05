@@ -14,11 +14,12 @@
         android:background="@drawable/button_corners12_solid_light">
 
         <RelativeLayout
+            android:visibility="gone"
             android:id="@+id/rl_construction"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginStart="@dimen/dp_14"
             android:background="@drawable/button_corners25_solid_main">
 
             <TextView
@@ -29,7 +30,6 @@
                 android:paddingStart="@dimen/dp_8"
                 android:paddingTop="@dimen/dp_3"
                 android:paddingBottom="@dimen/dp_3"
-                android:text="地铁（5）"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp_12"
                 tools:ignore="RtlSymmetry" />
@@ -46,11 +46,12 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:visibility="gone"
             android:id="@+id/rl_office_type"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginStart="@dimen/dp_14"
             android:layout_toEndOf="@+id/rl_construction"
             android:background="@drawable/button_corners25_solid_main">
 
@@ -62,7 +63,6 @@
                 android:paddingStart="@dimen/dp_8"
                 android:paddingTop="@dimen/dp_3"
                 android:paddingBottom="@dimen/dp_3"
-                android:text="联合办公"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp_12"
                 tools:ignore="RtlSymmetry" />
@@ -79,11 +79,12 @@
         </RelativeLayout>
 
         <RelativeLayout
+            android:visibility="gone"
             android:id="@+id/rl_sel_condition"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginStart="@dimen/dp_14"
             android:layout_toEndOf="@+id/rl_office_type"
             android:background="@drawable/button_corners25_solid_main">
 
@@ -95,7 +96,6 @@
                 android:paddingStart="@dimen/dp_8"
                 android:paddingTop="@dimen/dp_3"
                 android:paddingBottom="@dimen/dp_3"
-                android:text="100-200"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp_12"
                 tools:ignore="RtlSymmetry" />

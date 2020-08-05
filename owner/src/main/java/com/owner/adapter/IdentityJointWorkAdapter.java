@@ -65,7 +65,7 @@ public class IdentityJointWorkAdapter extends CommonListAdapter<IdentityJointWor
             if (!TextUtils.isEmpty(bean.getAddress())) {
                 tvAddress.setText(Html.fromHtml(bean.getAddress()));
             }
-            tvAdd.setText("关联网点");
+            tvAdd.setText("申请加入");
             holder.itemView.setOnClickListener(v -> listener.associateJointWork(bean, false));
         }
     }

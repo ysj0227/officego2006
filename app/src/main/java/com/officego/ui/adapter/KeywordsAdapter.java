@@ -1,7 +1,6 @@
 package com.officego.ui.adapter;
 
 import android.content.Context;
-import android.text.Html;
 import android.widget.TextView;
 
 import com.officego.R;
@@ -11,6 +10,8 @@ import com.officego.commonlib.constant.Constants;
 import com.officego.ui.home.model.SearchListBean;
 
 import java.util.List;
+
+import static com.owner.utils.CommUtils.searchHtmlTextView;
 
 /**
  * Created by YangShiJie
@@ -39,31 +40,21 @@ public class KeywordsAdapter extends CommonListAdapter<SearchListBean.DataBean> 
         TextView tvName = holder.getView(R.id.tv_building_name);
         TextView tvBusiness = holder.getView(R.id.tv_business);
         TextView tvLocation = holder.getView(R.id.tv_location);
-        showHtmlView(tvName, bean.getBuildingName());
+        searchHtmlTextView(tvName, bean.getBuildingName());
         if (bean.getDistrict() != null && bean.getBusiness() == null) {
-            showHtmlView(tvBusiness, bean.getDistrict().toString());
+            searchHtmlTextView(tvBusiness, bean.getDistrict().toString());
 
         } else if (bean.getDistrict() == null && bean.getBusiness() != null) {
-            showHtmlView(tvBusiness, bean.getBusiness().toString());
+            searchHtmlTextView(tvBusiness, bean.getBusiness().toString());
         } else if (bean.getDistrict() != null && bean.getBusiness() != null) {
-            showHtmlView(tvBusiness, bean.getDistrict().toString() + " · " + bean.getBusiness().toString());
+            searchHtmlTextView(tvBusiness, bean.getDistrict().toString() + " · " + bean.getBusiness().toString());
         }
-        showHtmlView(tvLocation, bean.getAddress());
+        searchHtmlTextView(tvLocation, bean.getAddress());
         holder.setText(R.id.tv_price, "¥" + bean.getDayPrice() + (bean.getBuildType() == Constants.TYPE_BUILDING ? "m²/天起" : "位/月起"));
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
                 listener.searchListItemOnClick(bean);
             }
         });
-    }
-
-    private void showHtmlView(TextView textView, String info) {
-        if (info.contains("strong style='color:")) {
-            String pre = info.replace("strong style='color:#46C3C2'", "font color=#07B2B0");
-            String next = pre.replace("</strong>", "</font>");
-            textView.setText(Html.fromHtml(next));
-        } else {
-            textView.setText(Html.fromHtml(info));
-        }
     }
 }

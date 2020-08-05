@@ -288,10 +288,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
             nearbySubway = "";
         }
         //查询列表
-        pageNum = 1;
-        buildingList.clear();
-        houseAdapter = null;
-        getBuildingList();
+        getList();
     }
 
     //全部，写字楼，联合办公
@@ -307,10 +304,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
         decoration = "";
         houseTags = "";
         //查询列表
-        pageNum = 1;
-        buildingList.clear();
-        houseAdapter = null;
-        getBuildingList();
+        getList();
     }
 
     //排序
@@ -319,10 +313,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
         LogCat.e("TAG", "onOfficeOrderPopUpWindow data= " + order);
         sort = order;
         //查询列表
-        pageNum = 1;
-        buildingList.clear();
-        houseAdapter = null;
-        getBuildingList();
+        getList();
     }
 
     @Override
@@ -345,6 +336,10 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
             tvSearchOffice.setText(R.string.str_house_tenant);
         }
         //查询列表
+        getList();
+    }
+
+    private void getList() {
         pageNum = 1;
         buildingList.clear();
         houseAdapter = null;

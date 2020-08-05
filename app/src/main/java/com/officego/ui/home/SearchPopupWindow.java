@@ -45,6 +45,8 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
+import static com.officego.config.ConditionConfig.mConditionBean;
+
 /**
  * Created by YangShiJie
  * Data 2020/5/11.

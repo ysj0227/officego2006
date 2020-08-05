@@ -1,9 +1,11 @@
 package com.officego.ui.home.presenter;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.officego.R;
 import com.officego.commonlib.base.BasePresenter;
+import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.log.LogCat;
 import com.officego.rpc.OfficegoApi;
@@ -98,21 +100,17 @@ public class SearchKeywordsPresenter extends BasePresenter<SearchContract.View>
 
     @Override
     public void addSearchKeywords(String keywords) {
-        OfficegoApi.getInstance().addSearchKeywords(keywords, new RetrofitCallback<Object>() {
-            @Override
-            public void onSuccess(int code, String msg, Object data) {
-                LogCat.e(TAG, "getHotKeywords onSuccess =" + data);
-                if (isViewAttached()) {
+        if(!TextUtils.isEmpty(SpUtils.getSignToken())){
+            OfficegoApi.getInstance().addSearchKeywords(keywords, new RetrofitCallback<Object>() {
+                @Override
+                public void onSuccess(int code, String msg, Object data) {
                 }
-            }
 
-            @Override
-            public void onFail(int code, String msg, Object data) {
-                LogCat.e(TAG, "getHotKeywords onFail code=" + code + "  msg=" + msg);
-                if (isViewAttached()) {
+                @Override
+                public void onFail(int code, String msg, Object data) {
                 }
-            }
-        });
+            });
+        }
     }
 
     @Override

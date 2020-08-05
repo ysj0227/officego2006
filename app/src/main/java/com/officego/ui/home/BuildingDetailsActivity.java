@@ -290,10 +290,10 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     private List<BuildingDetailsChildBean.ListBean> childList = new ArrayList<>();
     private IndependentAllChildAdapter childAdapter;
     //当前页码
-    private String currentAreaValue = "";
     private int pageNum = 1;
     private boolean hasMore;
     private BuildingDetailsBean mData;
+    private String currentAreaValue = "";
     //初始化是否展开
     private boolean isExpand;
 

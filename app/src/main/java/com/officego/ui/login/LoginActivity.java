@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Html;
 import android.text.TextUtils;
@@ -17,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 
 import com.officego.MainActivity_;
 import com.officego.MainOwnerActivity_;
@@ -35,7 +37,6 @@ import com.officego.h5.WebViewActivity_;
 import com.officego.ui.login.contract.LoginContract;
 import com.officego.ui.login.presenter.LoginPresenter;
 import com.officego.utils.MonitorEditTextUtils;
-import com.owner.IDCameraActivity;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -102,8 +103,10 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
             isReOwnerLogin = getIntent().getExtras().getBoolean("isReOwnerLogin");
             rlBack.setVisibility(isOwnerLogin ? View.GONE : View.VISIBLE);
         }
-        //多渠道channel
-        //String channel = WalleChannelReader.getChannel(this.getApplicationContext());
+        //默认登陆
+//        if (!TextUtils.isEmpty(SpUtils.getSignToken()) && !TextUtils.isEmpty(SpUtils.getPhoneNum())) {
+//            mPresenter.loginOnlyPhone(SpUtils.getPhoneNum());
+//        }
     }
 
     @Click(R.id.btn_login)

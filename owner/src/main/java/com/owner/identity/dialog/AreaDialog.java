@@ -32,7 +32,6 @@ import java.util.Map;
 public class AreaDialog {
     private TextView tvCity, tvArea;
     private int district, business;
-    private String districtName, businessName;
 
     public AreaSureListener getListener() {
         return listener;
@@ -48,11 +47,9 @@ public class AreaDialog {
         void AreaSure(String area, int district, int business);
     }
 
-    public AreaDialog(Context context, int district, int business,String districtName, String businessName) {
+    public AreaDialog(Context context, int district, int business) {
         this.district = district;
         this.business = business;
-        this.districtName = districtName;
-        this.businessName = businessName;
         areaDialog(context);
     }
 
@@ -80,8 +77,6 @@ public class AreaDialog {
         recyclerViewRight.setLayoutManager(new LinearLayoutManager(context));
         tvCity = viewLayout.findViewById(R.id.tv_city);
         tvArea = viewLayout.findViewById(R.id.tv_area);
-        tvCity.setText(districtName);
-        tvArea.setText(businessName);
         getSearchDistrictList(context, recyclerViewCenter, recyclerViewRight);
 
         viewLayout.findViewById(R.id.tv_sure).setOnClickListener(view -> {
@@ -112,6 +107,7 @@ public class AreaDialog {
         OfficegoApi.getInstance().getDistrictList(new RetrofitCallback<List<BusinessCircleBean.DataBean>>() {
             @Override
             public void onSuccess(int code, String msg, List<BusinessCircleBean.DataBean> data) {
+                showCity(data);
                 businessCircleAdapter = new BusinessCircleAdapter(context, data, recyclerViewRight);
                 recyclerViewCenter.setAdapter(businessCircleAdapter);
             }
@@ -205,6 +201,21 @@ public class AreaDialog {
                 itemBusiness.setTextColor(ContextCompat.getColor(mContext, R.color.text_33));
             }
             onBind = false;
+        }
+    }
+
+    private void showCity(List<BusinessCircleBean.DataBean> data) {
+        //区域
+        for (int i = 0; i < data.size(); i++) {
+            if (district == data.get(i).getDistrictID()) {
+                tvCity.setText(data.get(i).getDistrict());
+                //商圈
+                for (int j = 0; j < data.get(i).getList().size(); j++) {
+                    if (business == data.get(i).getList().get(j).getId()) {
+                        tvArea.setText(data.get(i).getList().get(j).getArea());
+                    }
+                }
+            }
         }
     }
 

@@ -239,11 +239,10 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_recommend_company"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/dp_600"
+                android:layout_height="800dp"
                 android:background="@color/white"
                 android:nestedScrollingEnabled="false"
                 android:paddingLeft="@dimen/dp_18"
-                android:paddingBottom="@dimen/dp_50"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
@@ -253,7 +252,7 @@
             <RelativeLayout
                 android:id="@+id/rl_recommend_building"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/dp_500"
+                android:layout_height="700dp"
                 android:background="@color/white"
                 android:paddingLeft="@dimen/dp_18"
                 android:visibility="gone"
@@ -294,8 +293,7 @@
                     android:layout_height="wrap_content"
                     android:layout_below="@id/ibt_close_keyboard"
                     android:layout_marginTop="@dimen/dp_5"
-                    android:nestedScrollingEnabled="false"
-                    android:paddingBottom="@dimen/dp_50" />
+                    android:nestedScrollingEnabled="false" />
             </RelativeLayout>
         </androidx.constraintlayout.widget.ConstraintLayout>
     </androidx.core.widget.NestedScrollView>
