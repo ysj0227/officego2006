@@ -78,7 +78,7 @@ public class IdentityCompanyAdapter extends CommonListAdapter<IdentityCompanyBea
                 tvDown.setText("该公司已认证为标准办公，不可重复认证");
                 holder.itemView.setEnabled(false);
             } else {
-                tvAdd.setText(isCompany ? "申请加入" : "关联公司");
+                tvAdd.setText(isCompany ? "申请加入" : "加入公司");
                 tvAdd.setVisibility(View.VISIBLE);
                 tvDown.setVisibility(View.GONE);
                 holder.itemView.setEnabled(true);

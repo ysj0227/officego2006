@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/text_f7">
@@ -43,32 +42,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:drawableEnd="@mipmap/ic_mark"
                 android:text="公司名称"
+                android:layout_marginEnd="@dimen/dp_10"
                 android:textColor="@color/text_33"
                 android:textSize="@dimen/sp_15" />
-
-            <ImageView
-                android:id="@+id/iv_mark_name"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@id/tv_name"
-                android:src="@mipmap/ic_mark"
-                tools:ignore="ContentDescription" />
-
 
             <com.officego.commonlib.view.ClearableEditText
                 android:id="@+id/et_name_content"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/dp_10"
-                android:layout_toEndOf="@id/iv_mark_name"
+                android:layout_toEndOf="@id/tv_name"
                 android:background="@null"
                 android:ellipsize="end"
                 android:gravity="center_vertical"
-                android:maxLines="1"
                 android:maxLength="20"
+                android:maxLines="1"
                 android:singleLine="true"
                 android:textColor="@color/text_33"
                 android:textColorHint="@color/text_99"
@@ -82,11 +72,11 @@
         </RelativeLayout>
 
         <RelativeLayout
-            android:visibility="visible"
             android:id="@+id/rl_address"
             style="@style/marginLeftRight18"
             android:layout_width="0dp"
             android:layout_height="@dimen/dp_56"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/rl_name">
@@ -96,32 +86,23 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:drawableEnd="@mipmap/ic_mark"
                 android:text="公司地址"
+                android:layout_marginEnd="@dimen/dp_10"
                 android:textColor="@color/text_33"
                 android:textSize="@dimen/sp_15" />
-
-            <ImageView
-                android:id="@+id/iv_address"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@id/tv_address"
-                android:src="@mipmap/ic_mark"
-                tools:ignore="ContentDescription" />
-
 
             <com.officego.commonlib.view.ClearableEditText
                 android:id="@+id/et_address_content"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/dp_10"
-                android:layout_toEndOf="@id/iv_address"
+                android:layout_toEndOf="@id/tv_address"
                 android:background="@null"
                 android:ellipsize="end"
                 android:gravity="center_vertical"
-                android:maxLines="1"
                 android:maxLength="30"
+                android:maxLines="1"
                 android:singleLine="true"
                 android:textColor="@color/text_33"
                 android:textColorHint="@color/text_99"
@@ -135,7 +116,6 @@
         </RelativeLayout>
 
         <RelativeLayout
-
             android:id="@+id/rl_register_no"
             style="@style/marginLeftRight18"
             android:layout_width="0dp"
@@ -150,33 +130,25 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:drawableEnd="@mipmap/ic_mark"
                 android:text="营业执照注册号"
+                android:layout_marginEnd="@dimen/dp_10"
                 android:textColor="@color/text_33"
                 android:textSize="@dimen/sp_15" />
-
-            <ImageView
-                android:id="@+id/iv_register_no"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_toEndOf="@id/tv_register_no"
-                android:src="@mipmap/ic_mark"
-                tools:ignore="ContentDescription" />
 
             <com.officego.commonlib.view.ClearableEditText
                 android:id="@+id/et_register_no_content"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/dp_10"
-                android:layout_toEndOf="@id/iv_register_no"
+                android:layout_toEndOf="@id/tv_register_no"
                 android:background="@null"
-                android:ellipsize="end"
                 android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
-                android:inputType="number"
+                android:ellipsize="end"
                 android:gravity="center_vertical"
-                android:maxLines="1"
+                android:inputType="number"
                 android:maxLength="20"
+                android:maxLines="1"
                 android:textColor="@color/text_33"
                 android:textColorHint="@color/text_99"
                 android:textSize="@dimen/sp_15" />
@@ -202,6 +174,18 @@
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/rl_register_no" />
 
+        <TextView
+            android:id="@+id/tv_register_text"
+            style="@style/marginLeftRight18"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_3"
+            android:text="请确保上传的营业执照与公司信息一致"
+            android:textColor="@color/text_66_p50"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_upload_text" />
+
         <RelativeLayout
             android:id="@+id/rl_license"
             style="@style/marginLeftRight18"
@@ -210,7 +194,7 @@
             android:layout_marginTop="@dimen/dp_16"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_upload_text">
+            app:layout_constraintTop_toBottomOf="@+id/tv_register_text">
 
             <com.officego.commonlib.view.RoundImageView
                 android:id="@+id/riv_image"
@@ -226,9 +210,9 @@
                 android:layout_centerInParent="true"
                 android:drawableTop="@mipmap/ic_upload_registe_no"
                 android:drawablePadding="@dimen/dp_6"
-                android:text="点击上传"
+                android:text="@string/text_click_upload"
                 android:textColor="@color/common_blue_main"
-                android:textSize="@dimen/sp_13" />
+                android:textSize="@dimen/sp_14" />
         </RelativeLayout>
     </androidx.constraintlayout.widget.ConstraintLayout>
 
@@ -247,7 +231,7 @@
             android:layout_height="@dimen/dp_40"
             android:layout_marginTop="@dimen/dp_10"
             android:layout_marginBottom="@dimen/dp_20"
-            android:text="确认创建" />
+            android:text="@string/button_text_sure_create" />
     </LinearLayout>
 
 

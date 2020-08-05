@@ -64,12 +64,14 @@ public class CreateSubmitPresenter extends BasePresenter<CreateSubmitContract.Vi
                                     for (int j = 0; j < data.get(i).getList().size(); j++) {
                                         if (Integer.valueOf(business) == data.get(i).getList().get(j).getId()) {
                                             stringBuffer.append(data.get(i).getList().get(j).getArea());
-                                            mView.districtListSuccess(stringBuffer.toString());
+                                            mView.districtListSuccess(stringBuffer.toString(),
+                                                    data.get(i).getDistrict(),
+                                                    data.get(i).getList().get(j).getArea());
                                             return;
                                         }
                                     }
-                                }else {
-                                    mView.districtListSuccess(stringBuffer.toString());
+                                } else {
+                                    mView.districtListSuccess(stringBuffer.toString(), data.get(i).getDistrict(), "");
                                     return;
                                 }
                             }

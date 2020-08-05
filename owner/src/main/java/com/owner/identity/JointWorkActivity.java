@@ -781,12 +781,14 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
             mPresenter.checkCompany(IDENTITY_JOINT_WORK, Objects.requireNonNull(cetCompanyName.getText()).toString());
             return;
         }
-        //联办的关联公司进入创建
+        //联办--关联公司进入创建
         CreateCompanyActivity_.intent(context)
                 .createCompany(Constants.TYPE_CREATE_FROM_COMPANY)
                 .identityType(Constants.TYPE_IDENTITY_JOINT_WORK)
+                .isJointWorkRelevanceCreate(true)
                 .relevanceCompanyName(bean.getCompany())
                 .relevanceCompanyAddress(bean.getAddress())
+                .relevanceCreditNo(bean.getCreditNo())
                 .startForResult(REQUEST_CREATE_COMPANY);
         showRelevanceView();
     }
@@ -797,7 +799,6 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
         if (resultCode == RESULT_OK) {
             String companyName = data.getStringExtra("companyName");
             cetCompanyName.setText(companyName);
-            //显示下一步的view
             showBuildingView();
             //创建
             cetCompanyName.setEnabled(false);

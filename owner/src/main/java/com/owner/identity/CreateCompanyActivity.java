@@ -3,7 +3,6 @@ package com.owner.identity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageManager;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
@@ -30,7 +29,6 @@ import com.officego.commonlib.utils.ImageUtils;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.PhotoUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.ToastUtils;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.RoundImageView;
 import com.officego.commonlib.view.TitleBarView;
@@ -65,12 +63,22 @@ public class CreateCompanyActivity extends BaseMvpActivity<CreateSubmitPresenter
     private Uri localPhotoUri;
     @ViewById(resName = "title_bar")
     TitleBarView titleBar;
+    @ViewById(resName = "tv_name")
+    TextView tvName;
+    @ViewById(resName = "tv_address")
+    TextView tvAddress;
+    @ViewById(resName = "tv_register_no")
+    TextView tvRegisterNo;
     @ViewById(resName = "et_name_content")
     ClearableEditText etNameContent;
     @ViewById(resName = "et_address_content")
     ClearableEditText etAddressContent;
     @ViewById(resName = "et_register_no_content")
     ClearableEditText etRegisterNoContent;
+    @ViewById(resName = "rl_address")
+    RelativeLayout rlAddress;
+    @ViewById(resName = "rl_register_no")
+    RelativeLayout rlRegisterNo;
     @ViewById(resName = "riv_image")
     RoundImageView rivImage;
     @ViewById(resName = "tv_upload")
@@ -87,7 +95,12 @@ public class CreateCompanyActivity extends BaseMvpActivity<CreateSubmitPresenter
     @Extra
     String relevanceCompanyAddress;
     @Extra
+    String relevanceCreditNo;
+    @Extra
     boolean isEdit;
+    //联办关联去创建的
+    @Extra
+    boolean isJointWorkRelevanceCreate;
     private String name, address, regNo;
     //是否从相机拍照或相册选择了图片
     private boolean isTakePhotoOrGallery;
@@ -99,8 +112,24 @@ public class CreateCompanyActivity extends BaseMvpActivity<CreateSubmitPresenter
         StatusBarUtils.setStatusBarColor(this);
         titleBar.getLeftImg().setOnClickListener(view -> onBackPressed());
         setImageViewLayoutParams(context, rivImage);
+        initShowView();
+        if (isEdit) {
+            mPresenter.getIdentityInfo(identityType, true);
+        }
+    }
+
+    private void initShowView() {
+        titleBar.setAppTitle(isJointWorkRelevanceCreate ? "加入公司" : "创建公司");
+        btnSave.setText(isJointWorkRelevanceCreate ? "确认加入" : "确认创建");
+        //关联创建不可编辑
+        tvName.setVisibility(isJointWorkRelevanceCreate ? View.GONE : View.VISIBLE);
+        tvAddress.setVisibility(isJointWorkRelevanceCreate ? View.GONE : View.VISIBLE);
+        tvRegisterNo.setVisibility(isJointWorkRelevanceCreate ? View.GONE : View.VISIBLE);
+        etNameContent.setEnabled(!isJointWorkRelevanceCreate);
+        etAddressContent.setEnabled(!isJointWorkRelevanceCreate);
+        etRegisterNoContent.setEnabled(!isJointWorkRelevanceCreate);
+        //公司名称
         if (!TextUtils.isEmpty(relevanceCompanyName)) {
-            //有html标签 恒源<strong style='color:#06d2e7'>大<\/strong>楼的
             if (relevanceCompanyName.contains("<strong style='color:#06d2e7'>")) {
                 String name = relevanceCompanyName.replace("<strong style='color:#06d2e7'>", "");
                 String name1 = name.replace("</strong>", "");
@@ -109,18 +138,25 @@ public class CreateCompanyActivity extends BaseMvpActivity<CreateSubmitPresenter
                 etNameContent.setText(relevanceCompanyName);
             }
         }
-        if (!TextUtils.isEmpty(relevanceCompanyAddress)) {
-            if (relevanceCompanyAddress.contains("<strong style='color:#06d2e7'>")) {
-                String name = relevanceCompanyAddress.replace("<strong style='color:#06d2e7'>", "");
-                String name1 = name.replace("</strong>", "");
-                etAddressContent.setText(name1);
+        if (isJointWorkRelevanceCreate) {
+            //公司地址
+            if (!TextUtils.isEmpty(relevanceCompanyAddress)) {
+                if (relevanceCompanyAddress.contains("<strong style='color:#06d2e7'>")) {
+                    String name = relevanceCompanyAddress.replace("<strong style='color:#06d2e7'>", "");
+                    String name1 = name.replace("</strong>", "");
+                    etAddressContent.setText(name1);
+                } else {
+                    etAddressContent.setText(relevanceCompanyAddress);
+                }
             } else {
-                etAddressContent.setText(relevanceCompanyAddress);
+                rlAddress.setVisibility(View.GONE);
             }
-        }
-        //初始化
-        if (isEdit) {
-            mPresenter.getIdentityInfo(identityType, true);
+            //营业执照注册号
+            if (TextUtils.isEmpty(relevanceCreditNo)) {
+                rlRegisterNo.setVisibility(View.GONE);
+            } else {
+                etRegisterNoContent.setText(relevanceCreditNo);
+            }
         }
     }
 
@@ -139,19 +175,21 @@ public class CreateCompanyActivity extends BaseMvpActivity<CreateSubmitPresenter
     @Click(resName = "btn_save")
     void saveClick() {
         name = etNameContent.getText() == null ? "" : etNameContent.getText().toString().trim();
-        if (TextUtils.isEmpty(name)) {
-            shortTip("请输入公司名称");
-            return;
-        }
         address = etAddressContent.getText() == null ? "" : etAddressContent.getText().toString().trim();
-        if (TextUtils.isEmpty(address)) {
-            shortTip("请输入公司地址");
-            return;
-        }
         regNo = etRegisterNoContent.getText() == null ? "" : etRegisterNoContent.getText().toString().trim();
-        if (TextUtils.isEmpty(regNo)) {
-            shortTip("请输入营业执照注册号");
-            return;
+        if (!isJointWorkRelevanceCreate) {
+            if (TextUtils.isEmpty(name)) {
+                shortTip("请输入公司名称");
+                return;
+            }
+            if (TextUtils.isEmpty(address)) {
+                shortTip("请输入公司地址");
+                return;
+            }
+            if (TextUtils.isEmpty(regNo)) {
+                shortTip("请输入营业执照注册号");
+                return;
+            }
         }
         if (!isTakePhotoOrGallery) {
             shortTip("请上传营业执照");
@@ -259,7 +297,7 @@ public class CreateCompanyActivity extends BaseMvpActivity<CreateSubmitPresenter
     }
 
     @Override
-    public void districtListSuccess(String str) {
+    public void districtListSuccess(String str, String districtName, String businessName) {
 
     }
 

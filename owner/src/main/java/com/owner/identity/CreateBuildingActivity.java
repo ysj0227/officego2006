@@ -71,9 +71,6 @@ public class CreateBuildingActivity extends BaseMvpActivity<CreateSubmitPresente
     @ViewById(resName = "btn_save")
     Button btnSave;
 
-    private int district, business;
-    private String localBuildingPath;
-    private Uri localPhotoUri;
     @Extra
     int identityType;
     @Extra
@@ -81,6 +78,10 @@ public class CreateBuildingActivity extends BaseMvpActivity<CreateSubmitPresente
     @Extra
     boolean isEdit;
 
+    private int district, business;
+    private String districtName, businessName;
+    private String localBuildingPath;
+    private Uri localPhotoUri;
     private String name, address;
     //是否从相机拍照或相册选择了图片
     private boolean isTakePhotoOrGallery;
@@ -99,7 +100,7 @@ public class CreateBuildingActivity extends BaseMvpActivity<CreateSubmitPresente
 
     @Click(resName = "rl_area")
     void areaClick() {
-        new AreaDialog(context, district, business).setListener(this);
+        new AreaDialog(context, district, business,districtName,businessName).setListener(this);
     }
 
     @Click(resName = "btn_save")
@@ -240,8 +241,10 @@ public class CreateBuildingActivity extends BaseMvpActivity<CreateSubmitPresente
     }
 
     @Override
-    public void districtListSuccess(String str) {
+    public void districtListSuccess(String str, String districtName, String businessName) {
         tvArea.setText(str);
+        this.districtName=districtName;
+        this.businessName=businessName;
     }
 
     @Override

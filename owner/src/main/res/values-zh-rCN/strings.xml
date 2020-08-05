@@ -148,5 +148,7 @@
     <string name="str_submit_identity">提交认证</string>
     <string name="tip_image_upload_overlimit">图片已上传最大限制了</string>
     <string name="tip_create_success">创建成功</string>
+    <string name="button_text_sure_create">确认创建</string>
+    <string name="text_click_upload">点击上传</string>
 
 </resources>

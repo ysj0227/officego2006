@@ -145,8 +145,8 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rvHouse.setLayoutManager(layoutManager);
         appBarLayout.addOnOffsetChangedListener(appBarStateChangeListener);
-//        alphaPercent = (float) 1 / CommonHelper.dp2px(mActivity, 180);
-        alphaPercent = (float) 1 / CommonHelper.dp2px(mActivity, 200);
+        alphaPercent = (float) 1 / CommonHelper.dp2px(mActivity, 180);
+//        alphaPercent = (float) 1 / CommonHelper.dp2px(mActivity, 200);
         initBarLayoutBg();
         initRefresh();
         if (!NetworkUtils.isNetworkAvailable(mActivity)) {
@@ -370,7 +370,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
                 tvSearchCondition.setEnabled(true);
             }
             //标签筛选
-            labelConstruction(abs);
+//            labelConstruction(abs);
             //是否可以下拉刷新
             if (abs * alphaPercent < 0.2) {
                 mSwipeRefreshLayout.setEnabled(true);

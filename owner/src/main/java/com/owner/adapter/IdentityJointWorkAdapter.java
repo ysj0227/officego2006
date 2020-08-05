@@ -41,7 +41,7 @@ public class IdentityJointWorkAdapter extends CommonListAdapter<IdentityJointWor
 
     public IdentityJointWorkAdapter(Context context, List<IdentityJointWorkBean.DataBean> list) {
         super(context, R.layout.item_id_building_search, list);
-        this.context=context;
+        this.context = context;
         this.list = list;
     }
 
@@ -59,9 +59,11 @@ public class IdentityJointWorkAdapter extends CommonListAdapter<IdentityJointWor
         } else {
             tvAddress.setTextColor(ContextCompat.getColor(context, R.color.text_66_p50));
             tvBuildingName.setVisibility(View.VISIBLE);
-            tvAddress.setText("加入网点，即可共同管理网点房源");
             if (!TextUtils.isEmpty(bean.getBuildingName())) {
                 tvBuildingName.setText(Html.fromHtml(bean.getBuildingName()));
+            }
+            if (!TextUtils.isEmpty(bean.getAddress())) {
+                tvAddress.setText(Html.fromHtml(bean.getAddress()));
             }
             tvAdd.setText("关联网点");
             holder.itemView.setOnClickListener(v -> listener.associateJointWork(bean, false));

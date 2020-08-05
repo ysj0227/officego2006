@@ -15,7 +15,7 @@ public interface CreateSubmitContract {
 
         void getIdentityInfoSuccess(GetIdentityInfoBean data,boolean isFirstGetInfo);
 
-        void districtListSuccess(String str);
+        void districtListSuccess(String str,String districtName,String businessName );
 
         void submitSuccess();
     }

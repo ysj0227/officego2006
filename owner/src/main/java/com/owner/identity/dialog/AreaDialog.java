@@ -32,6 +32,7 @@ import java.util.Map;
 public class AreaDialog {
     private TextView tvCity, tvArea;
     private int district, business;
+    private String districtName, businessName;
 
     public AreaSureListener getListener() {
         return listener;
@@ -47,9 +48,11 @@ public class AreaDialog {
         void AreaSure(String area, int district, int business);
     }
 
-    public AreaDialog(Context context, int district, int business) {
+    public AreaDialog(Context context, int district, int business,String districtName, String businessName) {
         this.district = district;
         this.business = business;
+        this.districtName = districtName;
+        this.businessName = businessName;
         areaDialog(context);
     }
 
@@ -77,6 +80,8 @@ public class AreaDialog {
         recyclerViewRight.setLayoutManager(new LinearLayoutManager(context));
         tvCity = viewLayout.findViewById(R.id.tv_city);
         tvArea = viewLayout.findViewById(R.id.tv_area);
+        tvCity.setText(districtName);
+        tvArea.setText(businessName);
         getSearchDistrictList(context, recyclerViewCenter, recyclerViewRight);
 
         viewLayout.findViewById(R.id.tv_sure).setOnClickListener(view -> {

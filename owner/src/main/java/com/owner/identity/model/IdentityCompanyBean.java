@@ -44,6 +44,8 @@ public class IdentityCompanyBean {
         private String company;
         @SerializedName("bid")
         private int bid;
+        @SerializedName("creditNo")
+        private String creditNo;
 
         public String getIdentityType() {
             return identityType;
@@ -91,6 +93,14 @@ public class IdentityCompanyBean {
 
         public void setBid(int bid) {
             this.bid = bid;
+        }
+
+        public String getCreditNo() {
+            return creditNo;
+        }
+
+        public void setCreditNo(String creditNo) {
+            this.creditNo = creditNo;
         }
     }
 }
