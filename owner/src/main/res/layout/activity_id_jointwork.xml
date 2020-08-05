@@ -210,7 +210,7 @@
                 android:id="@+id/rl_recommend_jointwork"
                 android:layout_width="0dp"
                 android:layout_height="800dp"
-                android:background="@color/text_e5"
+                android:background="@color/white"
                 android:paddingLeft="@dimen/dp_18"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
@@ -240,7 +240,7 @@
                 android:id="@+id/rv_recommend_company"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dp_600"
-                android:background="@color/text_e5"
+                android:background="@color/white"
                 android:nestedScrollingEnabled="false"
                 android:paddingLeft="@dimen/dp_18"
                 android:paddingBottom="@dimen/dp_50"
@@ -254,13 +254,26 @@
                 android:id="@+id/rl_recommend_building"
                 android:layout_width="0dp"
                 android:layout_height="@dimen/dp_500"
-                android:background="@color/text_e5"
+                android:background="@color/white"
                 android:paddingLeft="@dimen/dp_18"
                 android:visibility="gone"
                 app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rl_office">
+
+                <TextView
+                    android:id="@+id/tv_no_building"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentStart="true"
+                    android:layout_marginTop="@dimen/dp_12"
+                    android:layout_marginEnd="@dimen/dp_10"
+                    android:layout_marginBottom="@dimen/dp_12"
+                    android:drawablePadding="@dimen/dp_3"
+                    android:text="楼盘不存在"
+                    android:textColor="@color/text_33"
+                    android:textSize="@dimen/sp_13" />
 
                 <TextView
                     android:id="@+id/ibt_close_keyboard"
@@ -270,9 +283,9 @@
                     android:layout_marginTop="@dimen/dp_12"
                     android:layout_marginEnd="@dimen/dp_10"
                     android:layout_marginBottom="@dimen/dp_12"
-                    android:drawableStart="@mipmap/ic_small_delete_blue"
                     android:drawablePadding="@dimen/dp_3"
-                    android:text="@string/str_close"
+                    android:text="创建楼盘"
+                    android:textColor="@color/common_blue_main"
                     android:textSize="@dimen/sp_13" />
 
                 <androidx.recyclerview.widget.RecyclerView
@@ -280,7 +293,7 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@id/ibt_close_keyboard"
-                    android:background="@color/text_e5"
+                    android:layout_marginTop="@dimen/dp_5"
                     android:nestedScrollingEnabled="false"
                     android:paddingBottom="@dimen/dp_50" />
             </RelativeLayout>

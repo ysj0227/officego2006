@@ -111,6 +111,8 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
     ClearableEditText cetJointworkName;
     @ViewById(resName = "tv_jointwork_address")
     TextView tvJointworkAddress;
+    @ViewById(resName = "tv_text_company_name")
+    TextView tvTextCompanyName;
     @ViewById(resName = "cet_company_name")
     ClearableEditText cetCompanyName;
     @ViewById(resName = "cet_office_name")
@@ -195,6 +197,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
     }
 
     private void initData() {
+        tvTextCompanyName.setText("所属公司：");
         //返回
         titleBar.getLeftLayout().setOnClickListener(view -> onBackPressed());
         //搜索

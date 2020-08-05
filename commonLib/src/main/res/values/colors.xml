@@ -32,6 +32,7 @@
     <color name="common_bg">#FAFAFA</color>          <!--背景-->
     <color name="common_fill">#F5F7FA</color>        <!--填充-->
     <color name="common_divider">#EEEEEE</color>     <!--分割线-->
+    <color name="common_search_bg">#EEEEEE</color>     <!--分割线-->
 
     <color name="assist_primary">#3065F5</color>     <!--辅助色-->
     <color name="caution_primary">#FF3838</color>    <!--警示-->

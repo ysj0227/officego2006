@@ -110,6 +110,8 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
     @ViewById(resName = "cet_company_name")
     ClearableEditText cetCompanyName;
     //公司搜索编辑清除
+    @ViewById(resName = "tv_text_company_name")
+    TextView tvTextCompanyName;
     @ViewById(resName = "tv_company_edit")
     TextView tvCompanyEdit;
     @ViewById(resName = "tv_company_clear")
@@ -189,6 +191,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
     }
 
     private void initData() {
+        tvTextCompanyName.setText("公司名称：");
         //返回
         titleBar.getLeftLayout().setOnClickListener(view -> onBackPressed());
         //搜索
