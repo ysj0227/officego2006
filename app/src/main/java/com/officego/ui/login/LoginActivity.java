@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.os.Bundle;
 import android.os.CountDownTimer;
 import android.text.Html;
 import android.text.TextUtils;
@@ -18,7 +17,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 
 import com.officego.MainActivity_;
 import com.officego.MainOwnerActivity_;

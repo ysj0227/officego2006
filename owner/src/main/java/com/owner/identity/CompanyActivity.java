@@ -640,7 +640,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
             tvCompanyEdit.setVisibility(View.VISIBLE);
         } else if (TextUtils.equals("2", IdentityInfo.strCreateCompany(data))) {
             //关联
-            cetCompanyName.setEnabled(true);
+            cetCompanyName.setEnabled(false);
             tvCompanyEdit.setVisibility(View.GONE);
         } else {
             //无定义
@@ -654,7 +654,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
             tvBuildingEdit.setVisibility(View.VISIBLE);
         } else if (TextUtils.equals("2", IdentityInfo.strCreateBuilding(data))) {
             //关联
-            cetOfficeName.setEnabled(true);
+            cetOfficeName.setEnabled(false);
             tvBuildingEdit.setVisibility(View.GONE);
         } else {
             //无定义
@@ -764,10 +764,9 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         sb.setAddress(bean.getAddress());
         sb.setIdentityType(IDENTITY_COMPANY);
         IdentitySendMsgActivity_.intent(context).sendMsgBean(sb).start();
-//        hideSearchView();
         rvRecommendBuilding.setVisibility(View.GONE);
         //关联
-        cetCompanyName.setEnabled(true);
+        cetCompanyName.setEnabled(false);
         tvCompanyEdit.setVisibility(View.GONE);
     }
 
@@ -805,7 +804,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
         //显示下一步的view
         showHouseTypeView();
         //关联
-        cetOfficeName.setEnabled(true);
+        cetOfficeName.setEnabled(false);
         tvBuildingEdit.setVisibility(View.GONE);
     }
 

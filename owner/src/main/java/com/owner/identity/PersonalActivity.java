@@ -173,8 +173,6 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
 
     private void initRecyclerView() {
         //房产证
-//        localIdCardFrontPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "idcardFront.jpg";
-//        localIdCardBackPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "idcardBack.jpg";
         localCerPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "certificate.jpg";
         localRenPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "rental.jpg";
         //搜索list
@@ -579,7 +577,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
             tvBuildingEdit.setVisibility(View.VISIBLE);
         } else if (TextUtils.equals("2", IdentityInfo.strCreateBuilding(data))) {
             //关联
-            cetOfficeName.setEnabled(true);
+            cetOfficeName.setEnabled(false);
             tvBuildingEdit.setVisibility(View.GONE);
         } else {
             //无定义
@@ -695,7 +693,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         CommUtils.showHtmlTextView(tvAddress, bean.getAddress());
         showHouseTypeView();
         //关联
-        cetOfficeName.setEnabled(true);
+        cetOfficeName.setEnabled(false);
         tvBuildingEdit.setVisibility(View.GONE);
     }
 

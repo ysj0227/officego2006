@@ -68,7 +68,7 @@ public class IdentitySendMsgActivity extends BaseMvpActivity<SendMsgPresenter>
             tvAddress.setVisibility(View.GONE);
         } else {
             tvAddress.setVisibility(View.VISIBLE);
-            tvAddress.setText(sendMsgBean.getAddress());
+            CommUtils.showHtmlTextView(tvAddress, sendMsgBean.getAddress());
         }
     }
 

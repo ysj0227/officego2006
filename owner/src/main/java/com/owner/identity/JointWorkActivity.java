@@ -629,7 +629,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
             tvJointworkEdit.setVisibility(View.VISIBLE);
         } else if (TextUtils.equals("2", IdentityInfo.strCreateBranch(data))) {
             //关联
-            cetJointworkName.setEnabled(true);
+            cetJointworkName.setEnabled(false);
             tvJointworkEdit.setVisibility(View.GONE);
         } else {
             //无定义
@@ -749,13 +749,10 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
         sb.setAddress(bean.getAddress());
         sb.setIdentityType(2);
         IdentitySendMsgActivity_.intent(context).sendMsgBean(sb).start();
-        CommUtils.showHtmlView(cetJointworkName, bean.getBuildingName());
-        CommUtils.showHtmlTextView(tvJointworkAddress, bean.getAddress());
-//        hideSearchView();
         rvRecommendCompany.setVisibility(View.GONE);
         rlRecommendBuilding.setVisibility(View.GONE);
         //关联
-        cetJointworkName.setEnabled(true);
+        cetJointworkName.setEnabled(false);
         tvJointworkEdit.setVisibility(View.GONE);
     }
 
