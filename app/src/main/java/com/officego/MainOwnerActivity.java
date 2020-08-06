@@ -3,11 +3,13 @@ package com.officego;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.content.Intent;
+import android.graphics.Color;
 import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -21,6 +23,7 @@ import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.rongcloud.ConnectRongCloudUtils;
 import com.officego.commonlib.common.rongcloud.kickDialog;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.owner.home.HomeFragment_;
 import com.owner.message.MessageFragment_;
@@ -33,6 +36,7 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.List;
 
+import cn.bingoogolapple.badgeview.BGABadgeTextView;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.manager.IUnReadMessageObserver;
 import io.rong.imlib.model.Conversation;
@@ -43,7 +47,7 @@ import io.rong.imlib.model.Conversation;
  * Descriptions: 业主
  **/
 @SuppressLint("Registered")
-@EActivity(R.layout.activity_main_test)
+@EActivity(R.layout.activity_main_new)
 public class MainOwnerActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener {
     @ViewById(R.id.rg_tab_bar)
     RadioGroup rg_tab_bar;
@@ -55,12 +59,16 @@ public class MainOwnerActivity extends BaseActivity implements RadioGroup.OnChec
     RadioButton rb_3;
     @ViewById(R.id.tab_mine)
     RadioButton rb_4;
+    @ViewById(R.id.tab_unread_message)
+    BGABadgeTextView unreadMessage;
+
     private HomeFragment_ fg1;
     private MessageFragment_ fg2;
     private ScheduleFragment_ fg3;
     private MineFragment_ fg4;
     private FragmentManager fManager;
     private long mExitTime;
+    private FragmentTransaction fTransaction;
 
     @AfterViews
     void init() {
@@ -80,9 +88,13 @@ public class MainOwnerActivity extends BaseActivity implements RadioGroup.OnChec
             new ConnectRongCloudUtils();
         }
         addUnReadMessageCountChangedObserver();
+        //设置未读消息位置
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) unreadMessage.getLayoutParams();
+        params.width=CommonHelper.getScreenWidth(context) / 4;
+        params.leftMargin = CommonHelper.getScreenWidth(context) / 4 ;
+        unreadMessage.setLayoutParams(params);
     }
 
-    private FragmentTransaction fTransaction;
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -100,8 +112,6 @@ public class MainOwnerActivity extends BaseActivity implements RadioGroup.OnChec
                 } else {
                     fTransaction.show(fg2);
                 }
-//                fg2 = new MessageFragment_();
-//                fTransaction.add(R.id.ly_content, fg2, "Fragment2");
                 break;
             case R.id.tab_collect:
                 if (fg3 == null) {
@@ -168,21 +178,21 @@ public class MainOwnerActivity extends BaseActivity implements RadioGroup.OnChec
     IUnReadMessageObserver observer = this::showMessageCount;
 
     private void showMessageCount(int i) {
-//        mMessageTitle.showCirclePointBadge();
-//        mMessageTitle.getBadgeViewHelper().setBadgeTextSizeSp(10);
-//        mMessageTitle.getBadgeViewHelper().setBadgeTextColorInt(Color.WHITE);
-//        mMessageTitle.getBadgeViewHelper().setBadgeBgColorInt(Color.RED);
-//        mMessageTitle.getBadgeViewHelper().setDraggable(true);
-//        mMessageTitle.getBadgeViewHelper().setBadgePaddingDp(5);
-//        mMessageTitle.getBadgeViewHelper().setBadgeBorderWidthDp(1);
-//        mMessageTitle.getBadgeViewHelper().setBadgeBorderColorInt(Color.WHITE);
-//        if (i < 1) {
-//            mMessageTitle.hiddenBadge();
-//        } else if (i < 100) {
-//            mMessageTitle.showTextBadge(String.valueOf(i));
-//        } else {
-//            mMessageTitle.showTextBadge("99+");
-//        }
+        unreadMessage.showCirclePointBadge();
+        unreadMessage.getBadgeViewHelper().setBadgeTextSizeSp(10);
+        unreadMessage.getBadgeViewHelper().setBadgeTextColorInt(Color.WHITE);
+        unreadMessage.getBadgeViewHelper().setBadgeBgColorInt(Color.RED);
+        unreadMessage.getBadgeViewHelper().setDraggable(true);
+        unreadMessage.getBadgeViewHelper().setBadgePaddingDp(5);
+        unreadMessage.getBadgeViewHelper().setBadgeBorderWidthDp(1);
+        unreadMessage.getBadgeViewHelper().setBadgeBorderColorInt(Color.WHITE);
+        if (i < 1) {
+            unreadMessage.hiddenBadge();
+        } else if (i < 100) {
+            unreadMessage.showTextBadge(String.valueOf(i));
+        } else {
+            unreadMessage.showTextBadge("99+");
+        }
     }
 
     /**
