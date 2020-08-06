@@ -229,12 +229,12 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
     void uploadClick() {
         String name = cetJointworkName.getText() == null ? "" : cetJointworkName.getText().toString().trim();
         if (TextUtils.isEmpty(name)) {
-            shortTip("请输入或创建网点");
+            shortTip("请输入网点名称");
             return;
         }
         String companyName = cetCompanyName.getText() == null ? "" : cetCompanyName.getText().toString().trim();
         if (TextUtils.isEmpty(companyName)) {
-            shortTip("请输入或创建公司");
+            shortTip("请输入所属公司");
             return;
         }
         String buildingName = cetOfficeName.getText() == null ? "" : cetOfficeName.getText().toString().trim();
