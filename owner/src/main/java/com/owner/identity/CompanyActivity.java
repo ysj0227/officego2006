@@ -642,6 +642,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
             //关联
             cetCompanyName.setEnabled(false);
             tvCompanyEdit.setVisibility(View.GONE);
+            hideBuildingView();
         } else {
             //无定义
             cetCompanyName.setEnabled(true);
@@ -669,7 +670,6 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
             if (data != null && !checkObjAllFieldsIsNull(data)) {
                 cetCompanyName.setText(data.getCompany());
                 hideSearchView();
-                setEditView(data);
                 cetOfficeName.setText(data.getBuildingName());
                 tvAddress.setText(data.getBuildingAddress());
                 if (TextUtils.isEmpty(data.getCompany())) {
@@ -699,6 +699,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
                         }
                     }
                 }
+                setEditView(data);
                 //房产证
                 if (listCertificate != null && listCertificate.size() > 0) {
                     for (int i = 0; i < data.getPremisesPermit().size(); i++) {
@@ -853,7 +854,7 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
 
     //隐藏楼盘View
     private void hideBuildingView() {
-        rlOffice.setVisibility(View.VISIBLE);
+        rlOffice.setVisibility(View.GONE);
     }
 
     //隐藏底部上传图片

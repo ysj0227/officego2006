@@ -622,14 +622,14 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
     }
 
     private void setEditView(GetIdentityInfoBean data) {
-        //楼盘0 空  无定义     1创建  2关联
+        //网点0 空  无定义     1创建  2关联
         if (TextUtils.equals("1", IdentityInfo.strCreateBranch(data))) {
             //创建
             cetJointworkName.setEnabled(false);
             tvJointworkEdit.setVisibility(View.VISIBLE);
         } else if (TextUtils.equals("2", IdentityInfo.strCreateBranch(data))) {
             //关联
-            cetJointworkName.setEnabled(false);
+            cetJointworkName.setEnabled(TextUtils.isEmpty(data.getBranchesName()));
             tvJointworkEdit.setVisibility(View.GONE);
         } else {
             //无定义
@@ -656,7 +656,8 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
                 tvJointworkAddress.setText(data.getBuildingAddress());
                 hideSearchView();
                 setEditView(data);
-                if (TextUtils.isEmpty(data.getBranchesName())) {
+                if (TextUtils.isEmpty(data.getBranchesName()) ||
+                        TextUtils.equals("2", IdentityInfo.strCreateBranch(data))) {
                     //网点null
                     hideCompanyView();
                     hideBuildingView();

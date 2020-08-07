@@ -80,6 +80,10 @@ public class IdentitySendMsgActivity extends BaseMvpActivity<SendMsgPresenter>
     @Click(resName = "btn_send")
     void sendClick() {
         if (mData != null) {
+            if (TextUtils.isEmpty(mData.getChattedId()) || TextUtils.isEmpty(mData.getTargetId())) {
+                shortTip("管理员信息异常，无法发送申请");
+                return;
+            }
             mPresenter.sendApply(sendMsgBean.getIdentityType(), sendMsgBean.getId(), mData.getChattedId());
         }
     }
@@ -127,14 +131,6 @@ public class IdentitySendMsgActivity extends BaseMvpActivity<SendMsgPresenter>
         intent.setComponent(comp);
         intent.setAction("android.intent.action.VIEW");
         context.startActivity(intent);
-    }
-
-    /**
-     * 撤销申请
-     */
-    @Override
-    public void cancelApplySuccess() {
-
     }
 
     private void counts() {

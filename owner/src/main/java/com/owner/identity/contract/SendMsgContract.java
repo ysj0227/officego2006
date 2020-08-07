@@ -20,8 +20,6 @@ public interface SendMsgContract {
 
         void sendApplySuccess(ApplyJoinBean data);
 
-        void cancelApplySuccess();
-
     }
 
     interface Presenter {
@@ -29,7 +27,5 @@ public interface SendMsgContract {
         void getDetails(int identityType, int id);
 
         void sendApply(int identityType, int id,String chattedId);
-
-        void cancelApply(int id);
     }
 }

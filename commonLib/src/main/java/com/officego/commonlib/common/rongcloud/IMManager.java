@@ -100,16 +100,17 @@ public class IMManager {
 ////        cacheConnectIM();
     }
 
-    //融云推送
-    private void initRongPush() {
-        PushConfig config = new PushConfig.Builder()
-                .build();
-        RongPushClient.setPushConfig(config);
-    }
-
     //融云初始化
     private void initRongIM(Context context) {
         RongIM.init(context, AppConfig.RC_APPKEY, true);
+    }
+
+    //融云推送
+    private void initRongPush() {
+        PushConfig config = new PushConfig.Builder()
+                .enableMiPush("2882303761518466472", "5901846688472")
+                .build();
+        RongPushClient.setPushConfig(config);
     }
 
     private void initMessageType() {

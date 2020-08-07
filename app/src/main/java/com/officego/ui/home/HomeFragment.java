@@ -157,9 +157,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         //轮播图
         mPresenter.getBannerList();
         //列表
-        houseAdapter = null;
-        buildingList.clear();
-        getBuildingList();
+        getList();
         //筛选条件
         labelsConditionView();
     }

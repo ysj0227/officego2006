@@ -117,13 +117,11 @@ dependencies {
 
     implementation project(':commonLib')//公共库
     implementation project(':owner')
+//    implementation project(':pushpermission')
 
 //    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
 
     api "org.androidannotations:androidannotations-api:${AAVersion}"
     annotationProcessor "org.androidannotations:androidannotations:${AAVersion}"
-
-//    日历周月切换
-//    implementation 'com.github.MagicMashRoom:SuperCalendar:1.6'
 }
