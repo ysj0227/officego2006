@@ -21,9 +21,8 @@ public class OfficeGoPushMessageReceiver extends PushMessageReceiver {
      */
     @Override
     public boolean onNotificationMessageArrived(Context context, PushType pushType, PushNotificationMessage notificationMessage) {
-
         LogCat.e(TAG, "11111111111 Arrived  pushType=" + pushType.getName());
-        return true;
+        return false;
     }
 
     /**
