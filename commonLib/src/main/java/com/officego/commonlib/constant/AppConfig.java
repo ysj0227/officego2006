@@ -30,6 +30,9 @@ public class AppConfig extends BaseConfig {
     public static String RC_APPSECRET = "";
     //bugly
     public static String BUGLY_ID = "";
+    //小米推送
+    public static final String MI_APP_ID = "2882303761518466472";
+    public static final String MI_APP_KEY = "5901846688472";
 
     @Override
     protected void initTest(Context context, String env) {

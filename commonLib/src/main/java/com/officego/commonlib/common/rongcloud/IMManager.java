@@ -75,10 +75,10 @@ public class IMManager {
     }
 
     public void init(Context context) {
-        // 调用 RongIM 初始化
-        initRongIM(context);
         //push
         initRongPush();
+        // 调用 RongIM 初始化
+        initRongIM(context);
         // 初始化已读回执类型
         initReadReceiptConversation();
         //初始化自定义消息
@@ -100,17 +100,16 @@ public class IMManager {
 ////        cacheConnectIM();
     }
 
-    //融云初始化
-    private void initRongIM(Context context) {
-        RongIM.init(context, AppConfig.RC_APPKEY, true);
-    }
-
     //融云推送
     private void initRongPush() {
         PushConfig config = new PushConfig.Builder()
-                .enableMiPush("2882303761518466472", "5901846688472")
+                .enableMiPush(AppConfig.MI_APP_ID, AppConfig.MI_APP_KEY)
                 .build();
         RongPushClient.setPushConfig(config);
+    }
+    //融云初始化
+    private void initRongIM(Context context) {
+        RongIM.init(context, AppConfig.RC_APPKEY, true);
     }
 
     private void initMessageType() {
