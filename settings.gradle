@@ -1,2 +1,2 @@
-include ':app', ':commonLib' , ':owner'
-rootProject.name='officego'
+include ':app', ':commonLib', ':owner', ':pushpermission'
+rootProject.name = 'officego'

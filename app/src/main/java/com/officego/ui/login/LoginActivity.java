@@ -27,9 +27,11 @@ import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.constant.AppConfig;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
+import com.officego.commonlib.utils.NotificationUtil;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.RegexUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.h5.WebViewActivity_;
 import com.officego.ui.login.contract.LoginContract;
@@ -45,6 +47,9 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.Locale;
 import java.util.Objects;
+
+import io.rong.pushperm.ResultCallback;
+import io.rong.pushperm.RongPushPremissionsCheckHelper;
 
 /**
  * Created by YangShiJie
@@ -101,10 +106,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
             isReOwnerLogin = getIntent().getExtras().getBoolean("isReOwnerLogin");
             rlBack.setVisibility(isOwnerLogin ? View.GONE : View.VISIBLE);
         }
-        //默认登陆
-//        if (!TextUtils.isEmpty(SpUtils.getSignToken()) && !TextUtils.isEmpty(SpUtils.getPhoneNum())) {
-//            mPresenter.loginOnlyPhone(SpUtils.getPhoneNum());
-//        }
+        NotificationUtil.showSettingDialog(context);
     }
 
     @Click(R.id.btn_login)
@@ -285,6 +287,32 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         super.onDestroy();
         stopDownTimer();
     }
+
+//    //融云消息推送的手机权限设置
+//    private void rongPermissionSetting() {
+//        RongPushPremissionsCheckHelper.checkPermissionsAndShowDialog(this, new ResultCallback() {
+//            @Override
+//            public void onAreadlyOpened(String value) {
+//                LogCat.e(TAG, "11111 onAreadlyOpened  value=" + value);
+//            }
+//
+//            @Override
+//            public boolean onBeforeShowDialog(String value) {
+//                LogCat.e(TAG, "11111 onBeforeShowDialog value=" + value);
+//                return false;
+//            }
+//
+//            @Override
+//            public void onGoToSetting(String value) {
+//                LogCat.e(TAG, "11111 onGoToSetting value=" + value);
+//            }
+//
+//            @Override
+//            public void onFailed(String value, FailedType type) {
+//                LogCat.e(TAG, "11111 onFailed value=" + value);
+//            }
+//        });
+//    }
 
     /**
      * 测试登录

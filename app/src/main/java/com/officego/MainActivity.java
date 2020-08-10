@@ -81,8 +81,8 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         addUnReadMessageCountChangedObserver();
         //设置未读消息位置
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) unreadMessage.getLayoutParams();
-        params.width= CommonHelper.getScreenWidth(context) / 4;
-        params.leftMargin = CommonHelper.getScreenWidth(context) / 4 ;
+        params.width = CommonHelper.getScreenWidth(context) / 4;
+        params.leftMargin = CommonHelper.getScreenWidth(context) / 4;
         unreadMessage.setLayoutParams(params);
     }
 
@@ -189,7 +189,9 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
      * 未读消息监听
      */
     public void addUnReadMessageCountChangedObserver() {
-        RongIM.getInstance().addUnReadMessageCountChangedObserver(observer, Conversation.ConversationType.PRIVATE);
+        RongIM.getInstance().addUnReadMessageCountChangedObserver(observer,
+                Conversation.ConversationType.PRIVATE,
+                Conversation.ConversationType.SYSTEM);
     }
 
     /**

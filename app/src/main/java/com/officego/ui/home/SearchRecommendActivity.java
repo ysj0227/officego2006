@@ -34,6 +34,7 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -138,14 +139,19 @@ public class SearchRecommendActivity extends BaseMvpActivity<SearchKeywordsPrese
 
 
     private KeywordsAdapter keywordsAdapter;
+    private List<SearchListBean.DataBean> keyList = new ArrayList<>();
 
     @Override
     public void searchListSuccess(List<SearchListBean.DataBean> list) {
+        keyList.clear();
+        keyList.addAll(list);
         if (keywordsAdapter == null) {
             keywordsAdapter = new KeywordsAdapter(context, list);
             keywordsAdapter.setListener(this);
             rvSearchList.setAdapter(keywordsAdapter);
+            return;
         }
+        keywordsAdapter.setData(list);
         keywordsAdapter.notifyDataSetChanged();
     }
 

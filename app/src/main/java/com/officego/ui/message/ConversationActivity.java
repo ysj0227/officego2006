@@ -82,15 +82,22 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         tvJob = findViewById(R.id.tv_job);
         llRoot.setPadding(0, CommonHelper.statusHeight(this), 0, 0);
         Intent intent = getIntent();
-        if (intent != null && intent.hasExtra("identityTargetId")) {//聊天认证申请进入
+        if (intent != null && intent.hasExtra("chatTargetId")) {//聊天认证申请进入
             //认证申请页面进入
-            isSendApply = true;
-            targetId = intent.getStringExtra("identityTargetId");
+            isSendApply = intent.hasExtra("isSendApply");
+            targetId = intent.getStringExtra("chatTargetId");
             ctlChat.setVisibility(View.GONE);
             mPresenter.identityChattedMsg(targetId);
             initIM();
+        } else if (intent != null && intent.hasExtra("systemPushTargetId")) {
+            //系统消息
+            targetId = intent.getStringExtra("chatTargetId");
+            ctlChat.setVisibility(View.GONE);
+//            mPresenter.identityChattedMsg(targetId);
+            initIM();
         } else {
             initIMInfo();
+            //认证申请聊天列表进入
             if (TextUtils.equals(Constants.TYPE_OWNER, targetId.substring(targetId.length() - 1)) &&
                     TextUtils.equals(Constants.TYPE_OWNER, SpUtils.getRongChatId().substring(SpUtils.getRongChatId().length() - 1))) {
                 //认证申请聊天列表进入,融云id最后一位是“1”
@@ -98,13 +105,17 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
                 ctlChat.setVisibility(View.GONE);
                 mPresenter.identityChattedMsg(targetId);
                 initIM();
+            } else if (TextUtils.equals(Constants.TYPE_SYSTEM, targetId.substring(targetId.length() - 1))) {
+                //系统消息聊天列表进入
+                ctlChat.setVisibility(View.GONE);
+//                mPresenter.identityChattedMsg(targetId);
+                initIM();
             } else {
-                //聊天
+                //租户-业主聊天
                 isSendApply = false;
                 ctlChat.setVisibility(View.VISIBLE);
                 initIM();
                 RongIM.getInstance().setSendMessageListener(this);
-                //插入一次
                 mPresenter.getHouseDetails(buildingId, houseId, getHouseChatId);
             }
         }
@@ -137,10 +148,21 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
     private void initIM() {
         FragmentManager fragmentManage = getSupportFragmentManager();
         ConversationFragment fragment = (ConversationFragment) fragmentManage.findFragmentById(R.id.conversation);
-        Uri uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon()
-                .appendPath("conversation")
-                .appendPath(Conversation.ConversationType.PRIVATE.getName().toLowerCase())
-                .appendQueryParameter("targetId", targetId).build();
+        Uri uri;
+        if (!TextUtils.isEmpty(targetId) &&
+                TextUtils.equals(Constants.TYPE_SYSTEM, targetId.substring(targetId.length() - 1))) {
+            //系统消息
+            uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon()
+                    .appendPath("conversation")
+                    .appendPath(Conversation.ConversationType.SYSTEM.getName().toLowerCase())
+                    .appendQueryParameter("targetId", targetId).build();
+        } else {
+            //聊天消息
+            uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon()
+                    .appendPath("conversation")
+                    .appendPath(Conversation.ConversationType.PRIVATE.getName().toLowerCase())
+                    .appendQueryParameter("targetId", targetId).build();
+        }
         if (fragment != null) {
             fragment.setUri(uri);
         }

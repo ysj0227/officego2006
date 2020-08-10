@@ -1,9 +1,6 @@
 package com.owner.identity;
 
 import android.annotation.SuppressLint;
-import android.content.ComponentName;
-import android.content.Context;
-import android.content.Intent;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -31,6 +28,8 @@ import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.Objects;
+
+import static com.officego.commonlib.common.GotoActivityUtils.gotoConversationActivity;
 
 @EActivity(resName = "activity_go_send_message")
 public class IdentitySendMsgActivity extends BaseMvpActivity<SendMsgPresenter>
@@ -120,17 +119,6 @@ public class IdentitySendMsgActivity extends BaseMvpActivity<SendMsgPresenter>
             gotoConversationActivity(context, mData.getTargetId());
             finish();
         }
-    }
-
-    //进入聊天页面
-    public static void gotoConversationActivity(Context context, String targetId) {
-        ComponentName comp = new ComponentName(context, "com.officego.ui.message.ConversationActivity_");
-        Intent intent = new Intent();
-        intent.putExtra("isSendApply", true);
-        intent.putExtra("identityTargetId", targetId);
-        intent.setComponent(comp);
-        intent.setAction("android.intent.action.VIEW");
-        context.startActivity(intent);
     }
 
     private void counts() {

@@ -1,5 +1,6 @@
 package com.officego.ui.message;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
@@ -16,6 +17,7 @@ import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.ui.login.LoginActivity_;
 
 import org.androidannotations.annotations.AfterViews;
@@ -25,7 +27,9 @@ import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
+import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationListFragment;
+import io.rong.imkit.model.UIConversation;
 import io.rong.imlib.model.Conversation;
 
 import static android.app.Activity.RESULT_OK;
@@ -91,12 +95,44 @@ public class MessageFragment extends BaseFragment {
                 .appendPath("conversationlist")
                 .appendQueryParameter(Conversation.ConversationType.PRIVATE.getName(), "false") //设置私聊会话，该会话聚合显示
                 .appendQueryParameter(Conversation.ConversationType.GROUP.getName(), "false")//设置群组会话，该会话非聚合显示
+                .appendQueryParameter(Conversation.ConversationType.SYSTEM.getName(), "false")//设置群组会话，该会话非聚合显示
                 .build();
-        fragment.setUri(uri);  //设置 ConverssationListFragment 的显示属性
+        fragment.setUri(uri);
 
         FragmentTransaction transaction = mActivity.getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.conversationlist, fragment);
         transaction.commit();
+
+        conversationClick();
+    }
+
+    /**
+     * 设置会话操作的监听器。
+     */
+    private void conversationClick(){
+
+        RongIM. setConversationListBehaviorListener(new RongIM.ConversationListBehaviorListener() {
+            @Override
+            public boolean onConversationPortraitClick(Context context, Conversation.ConversationType conversationType, String targetId) {
+                return false;
+            }
+
+            @Override
+            public boolean onConversationPortraitLongClick(Context context, Conversation.ConversationType conversationType, String targetId) {
+                return false;
+            }
+
+            @Override
+            public boolean onConversationLongClick(Context context, View view, UIConversation conversation) {
+                return false;
+            }
+
+            @Override
+            public boolean onConversationClick(Context context, View view, UIConversation conversation) {
+                LogCat.e(TAG,"1111111111  onConversationClick");
+                return false;
+            }
+        });
     }
 
     @Override

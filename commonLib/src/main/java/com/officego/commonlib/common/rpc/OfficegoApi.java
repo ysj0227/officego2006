@@ -5,6 +5,7 @@ import com.officego.commonlib.common.VersionBean;
 import com.officego.commonlib.common.model.ChatHouseBean;
 import com.officego.commonlib.common.model.FirstChatBean;
 import com.officego.commonlib.common.model.IdentitychattedMsgBean;
+import com.officego.commonlib.common.model.RongUserInfoBean;
 import com.officego.commonlib.common.rpc.request.ChatInterface;
 import com.officego.commonlib.common.rpc.request.LicenceInterface;
 import com.officego.commonlib.common.rpc.request.MineMsgInterface;
@@ -158,6 +159,17 @@ public class OfficegoApi {
         map.put("targetId", requestBody(targetId));
         OfficegoRetrofitClient.getInstance().create(ChatInterface.class)
                 .identityChattedMsg(map)
+                .enqueue(callback);
+    }
+
+    /**
+     *获取消息信息
+     */
+    public void getRongUserInfo(String targetId,RetrofitCallback<RongUserInfoBean> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("targetId", requestBody(targetId));
+        OfficegoRetrofitClient.getInstance().create(ChatInterface.class)
+                .getRongUserInfo(map)
                 .enqueue(callback);
     }
 }

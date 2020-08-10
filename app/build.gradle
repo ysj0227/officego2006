@@ -117,7 +117,7 @@ dependencies {
 
     implementation project(':commonLib')//公共库
     implementation project(':owner')
-//    implementation project(':pushpermission')
+    implementation project(':pushpermission')//推送手机设置权限
 
 //    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
     implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'

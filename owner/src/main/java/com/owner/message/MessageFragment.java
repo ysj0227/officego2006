@@ -10,7 +10,6 @@ import androidx.fragment.app.FragmentTransaction;
 import com.officego.commonlib.base.BaseFragment;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.owner.R;
 
 import org.androidannotations.annotations.AfterViews;
@@ -27,7 +26,6 @@ import io.rong.imlib.model.Conversation;
  **/
 @EFragment(resName = "conversationlist")
 public class MessageFragment extends BaseFragment {
-    private static final int REQUEST_CODE = 1001;
     @ViewById(resName = "ll_root_message")
     LinearLayout llRootMessage;
     @ViewById(resName = "rl_input_text")
@@ -53,15 +51,15 @@ public class MessageFragment extends BaseFragment {
      * 初始化聊天列表
      */
     private void initIm() {
-        LogCat.e("TAG", "11111 owner MessageFragment packageName= " + mActivity.getApplicationInfo().packageName);
         conversationList.setVisibility(View.VISIBLE);
         ConversationListFragment fragment = new ConversationListFragment();
         Uri uri = Uri.parse("rong://" + mActivity.getApplicationInfo().packageName).buildUpon()
                 .appendPath("conversationlist")
                 .appendQueryParameter(Conversation.ConversationType.PRIVATE.getName(), "false") //设置私聊会话，该会话聚合显示
                 .appendQueryParameter(Conversation.ConversationType.GROUP.getName(), "false")//设置群组会话，该会话非聚合显示
+                .appendQueryParameter(Conversation.ConversationType.SYSTEM.getName(), "false")//设置群组会话，该会话非聚合显示
                 .build();
-        fragment.setUri(uri);  //设置 ConverssationListFragment 的显示属性
+        fragment.setUri(uri);
 
         FragmentTransaction transaction = mActivity.getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.conversationlist, fragment);

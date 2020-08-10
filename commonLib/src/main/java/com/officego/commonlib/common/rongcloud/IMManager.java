@@ -1,10 +1,8 @@
 package com.officego.commonlib.common.rongcloud;
 
 import android.content.Context;
-import android.os.Handler;
-import android.os.Looper;
+import android.text.TextUtils;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
@@ -26,6 +24,8 @@ import com.officego.commonlib.common.message.ViewingDateStatusInfo;
 import com.officego.commonlib.common.message.ViewingDateStatusProvider;
 import com.officego.commonlib.common.message.WeChatInfo;
 import com.officego.commonlib.common.message.WeChatProvider;
+import com.officego.commonlib.common.model.RongUserInfoBean;
+import com.officego.commonlib.common.rpc.OfficegoApi;
 import com.officego.commonlib.constant.AppConfig;
 import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.retrofit.RetrofitCallback;
@@ -107,6 +107,7 @@ public class IMManager {
                 .build();
         RongPushClient.setPushConfig(config);
     }
+
     //融云初始化
     private void initRongIM(Context context) {
         RongIM.init(context, AppConfig.RC_APPKEY, true);
@@ -272,7 +273,8 @@ public class IMManager {
         Conversation.ConversationType[] types = new Conversation.ConversationType[]{
                 Conversation.ConversationType.PRIVATE,
                 Conversation.ConversationType.GROUP,
-                Conversation.ConversationType.ENCRYPTED
+                Conversation.ConversationType.ENCRYPTED,
+                Conversation.ConversationType.SYSTEM,
         };
         RongIM.getInstance().setReadReceiptConversationTypeList(types);
     }
@@ -313,12 +315,6 @@ public class IMManager {
             public void onFail(int code, String msg, Object data) {
             }
         });
-    }
-
-    private void toast(Context context) {
-        Handler mainHandler = new Handler(Looper.getMainLooper());
-        mainHandler.post(() -> Toast.makeText(context, "账号已在其他设备登录", Toast.LENGTH_LONG).show());
-
     }
 
     private void initSendReceiveMessageListener() {
@@ -402,9 +398,30 @@ public class IMManager {
              */
             @Override
             public boolean onReceived(final Message message, final int left, boolean hasPackage, boolean offline) {
+                getRongUserInfo(message.getTargetId());
                 return false;
             }
         });
+    }
+
+    private void getRongUserInfo(String targetId) {
+        LogCat.e(TAG, "1111111111  onReceived targetId=" + targetId);
+        if (!TextUtils.isEmpty(targetId)) {
+            OfficegoApi.getInstance().getRongUserInfo(targetId,
+                    new RetrofitCallback<RongUserInfoBean>() {
+                        @Override
+                        public void onSuccess(int code, String msg, RongUserInfoBean data) {
+                            LogCat.e(TAG, "1111111111  getRongUserInfo onSuccess");
+                            RongCloudSetUserInfoUtils.refreshUserInfoCache(data.getId(),
+                                    data.getName(), data.getAvatar());
+                        }
+
+                        @Override
+                        public void onFail(int code, String msg, RongUserInfoBean data) {
+                            LogCat.e(TAG, "1111111111  getRongUserInfo onFail code=" + code + " msg=" + msg);
+                        }
+                    });
+        }
     }
 
 }

@@ -33,6 +33,9 @@ public class Constants {
     public final static String TYPE_TENANT = "0";
     // 业主
     public final static String TYPE_OWNER = "1";
+    // 系统消息
+    public final static String TYPE_SYSTEM = "3";
+
     //broadcast action
     public static final String BROADCAST_ACTION = "com.officego";
     public static final String BROADCAST_STATUS = "1000";

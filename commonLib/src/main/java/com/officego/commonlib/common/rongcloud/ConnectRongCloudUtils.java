@@ -43,7 +43,6 @@ public class ConnectRongCloudUtils {
     private void setCurrentInfo(String userRongChatId) {
         SpUtils.saveRongChatId(userRongChatId);
         UserInfo userInfo = new UserInfo(userRongChatId, SpUtils.getNickName(), Uri.parse(SpUtils.getHeaderImg()));
-
         RongIM.getInstance().setCurrentUserInfo(userInfo);
         //是否携带用户信息，true 携带，false 不携带。
         RongIM.getInstance().setMessageAttachedUserInfo(true);
