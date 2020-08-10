@@ -160,7 +160,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
                     .appendQueryParameter("targetId", targetId).build();
         } else {
             //聊天消息
-            findViewById(R.id.rc_extension).setVisibility(View.VISIBLE);
+            findViewById(R.id.rc_extension).setVisibility(View. VISIBLE);
             uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon()
                     .appendPath("conversation")
                     .appendPath(Conversation.ConversationType.PRIVATE.getName().toLowerCase())
