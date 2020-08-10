@@ -148,16 +148,19 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
     private void initIM() {
         FragmentManager fragmentManage = getSupportFragmentManager();
         ConversationFragment fragment = (ConversationFragment) fragmentManage.findFragmentById(R.id.conversation);
+
         Uri uri;
         if (!TextUtils.isEmpty(targetId) &&
                 TextUtils.equals(Constants.TYPE_SYSTEM, targetId.substring(targetId.length() - 1))) {
             //系统消息
+            findViewById(R.id.rc_extension).setVisibility(View.INVISIBLE);
             uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon()
                     .appendPath("conversation")
                     .appendPath(Conversation.ConversationType.SYSTEM.getName().toLowerCase())
                     .appendQueryParameter("targetId", targetId).build();
         } else {
             //聊天消息
+            findViewById(R.id.rc_extension).setVisibility(View.VISIBLE);
             uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon()
                     .appendPath("conversation")
                     .appendPath(Conversation.ConversationType.PRIVATE.getName().toLowerCase())
