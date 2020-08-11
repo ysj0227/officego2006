@@ -1,6 +1,7 @@
 package com.officego.commonlib.utils;
 
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
@@ -159,10 +160,10 @@ public class DesktopCornerUtil {
     /**
      * @param packageNameParameter      @desc 应用包名
      * @param mainActivityNameParameter @desc MainActivity
-     * @param notication                通知
+     * @param nc                        通知
      * @param contextParameter          @desc BaseApplication context
      */
-    public static void init(String packageNameParameter, String mainActivityNameParameter, Notification notication, Context contextParameter) {
+    public static void init(String packageNameParameter, String mainActivityNameParameter, Notification nc, Context contextParameter) {
         packageName = packageNameParameter;
         context = contextParameter;
         mainActivityName = mainActivityNameParameter;
@@ -302,35 +303,20 @@ public class DesktopCornerUtil {
      * @param badgeNumber @desc 数量
      */
     private static void setBadgeNumberMiui(int badgeNumber) {
+//        NotificationManager mNotificationManager = (NotificationManager) context
+//                .getSystemService(Context.NOTIFICATION_SERVICE);
+//        Notification.Builder builder = new Notification.Builder(context)
+//                .setContentTitle("title").setContentText("text").setSmallIcon(R.mipmap.ic_logo);
+//        notification = builder.build();
 //        try {
-//            if (notification == null) {
-//                return;
-//            } else {
-//                Field field = notification.getClass().getDeclaredField("extraNotification");
-//                Object extraNotification = field.get(notification);
-//                Method method = extraNotification.getClass().getDeclaredMethod("setMessageCount", int.class);
-//                method.invoke(extraNotification, badgeNumber);
-//            }
+//            Field field = notification.getClass().getDeclaredField("extraNotification");
+//            Object extraNotification = field.get(notification);
+//            Method method = extraNotification.getClass().getDeclaredMethod("setMessageCount", int.class);
+//            method.invoke(extraNotification, badgeNumber);
 //        } catch (Exception e) {
 //            e.printStackTrace();
 //        }
-        try {
-//            Class miuiNotificationClass = Class.forName("android.app.MiuiNotification");
-//            Object miuiNotification = miuiNotificationClass.newInstance();
-//            Field field = miuiNotification.getClass().getDeclaredField("messageCount");
-//            field.setAccessible(true);
-//            field.set(miuiNotification, String.valueOf(badgeNumber == 0 ? "" : badgeNumber));
-
-            Class miuiNotificationClass = Class.forName("android.app.MiuiNotification");
-            Object miuiNotification = miuiNotificationClass.newInstance();
-            Field field = miuiNotification.getClass().getDeclaredField("extraNotification");
-            Object extraNotification = field.get(miuiNotification);
-            Method method = extraNotification.getClass().getDeclaredMethod("setMessageCount", int.class);
-            method.invoke(extraNotification, badgeNumber);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+//        mNotificationManager.notify(0, notification);
     }
 
     /**

@@ -167,7 +167,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
      * 否则会造成内存泄漏。
      */
     IUnReadMessageObserver observer = this::showMessageCount;
-    private int unreadNum=0;
+    private int unreadNum = 0;
 
     private void showMessageCount(int i) {
         unreadMessage.showCirclePointBadge();
@@ -182,13 +182,53 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
             unreadMessage.hiddenBadge();
         } else if (i < 100) {
             unreadMessage.showTextBadge(String.valueOf(i));
-            unreadNum=i;
+            unreadNum = i;
         } else {
             unreadMessage.showTextBadge("99+");
-            unreadNum=99;
+            unreadNum = 99;
         }
         DesktopCornerUtil.setBadgeNumber(unreadNum);
     }
+
+//    public void setNotificationBadge(Context context, int count) {
+//        NotificationManager notificationManager = (NotificationManager) context.getSystemService
+//                (Context.NOTIFICATION_SERVICE);
+//        if (notificationManager == null) {
+//            return;
+//        }
+//        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+//            // 8.0之后添加角标需要NotificationChannel
+//            NotificationChannel channel = new NotificationChannel("badge", "badge",
+//                    NotificationManager.IMPORTANCE_DEFAULT);
+//            channel.setShowBadge(true);
+//            notificationManager.createNotificationChannel(channel);
+//        }
+//
+//        Intent intent = new Intent(context, MainActivity.class);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+//        Notification notification = new NotificationCompat.Builder(context, "badge")
+////                .setContentTitle("OfficeGo")
+//                .setContentText("你有" + count + "条未读消息")
+//                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_logo))
+//                .setSmallIcon(R.mipmap.ic_logo)
+//                .setAutoCancel(true)
+//                .setContentIntent(pendingIntent)
+//                .setChannelId("badge")
+//                .setNumber(count-1)
+//                .setBadgeIconType(NotificationCompat.BADGE_ICON_SMALL).build();
+//        // 小米
+//        try {
+//            Field field = notification.getClass().getDeclaredField("extraNotification");
+//            Object extraNotification = field.get(notification);
+//            Method method = extraNotification.getClass().getDeclaredMethod("setMessageCount", int
+//                    .class);
+//            method.invoke(extraNotification, count-1);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        notificationManager.notify(0, notification);
+//    }
+
 
     /**
      * 未读消息监听
