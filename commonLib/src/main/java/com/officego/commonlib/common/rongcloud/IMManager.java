@@ -79,6 +79,8 @@ public class IMManager {
         initRongPush();
         // 调用 RongIM 初始化
         initRongIM(context);
+        //接收新用户信息，并设置用户信息提供者
+        receiveUserInfoProvider();
         // 初始化已读回执类型
         initReadReceiptConversation();
         //初始化自定义消息
@@ -89,15 +91,14 @@ public class IMManager {
         initSendReceiveMessageListener();
         //初始化接收消息监听
         initReceiveMessageWrapperListener();
-
 //        // 初始化会话界面相关内容
 //        initConversation();
 //        // 初始化会话列表界面相关内容
 //        initConversationList();
 //        // 初始化消息监听
 //        initOnReceiveMessage(context);
-////        // 缓存连接
-////        cacheConnectIM();
+//        // 缓存连接
+//        cacheConnectIM();
     }
 
     //融云推送
@@ -398,10 +399,17 @@ public class IMManager {
              */
             @Override
             public boolean onReceived(final Message message, final int left, boolean hasPackage, boolean offline) {
-                getRongUserInfo(message.getTargetId());
                 return false;
             }
         });
+    }
+
+    //接收新用户信息，并设置用户信息提供者
+    private void receiveUserInfoProvider() {
+        RongIM.setUserInfoProvider(userId -> {
+            getRongUserInfo(userId);
+            return null;
+        }, true);
     }
 
     private void getRongUserInfo(String targetId) {
@@ -423,5 +431,4 @@ public class IMManager {
                     });
         }
     }
-
 }

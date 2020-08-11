@@ -34,7 +34,6 @@ public class ConnectRongCloudUtils {
 
             @Override
             public void onFail(int errorCode) {
-                //LogCat.d(TAG, "111111111 connectIM errorCode=" + errorCode);
             }
         });
     }

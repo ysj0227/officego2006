@@ -23,10 +23,13 @@ import com.officego.commonlib.common.message.BuildingInfo;
 import com.officego.commonlib.common.model.ChatHouseBean;
 import com.officego.commonlib.common.model.FirstChatBean;
 import com.officego.commonlib.common.model.IdentitychattedMsgBean;
+import com.officego.commonlib.common.model.RongUserInfoBean;
 import com.officego.commonlib.common.presenter.ConversationPresenter;
 import com.officego.commonlib.common.rongcloud.RongCloudSetUserInfoUtils;
 import com.officego.commonlib.common.rongcloud.SendMessageManager;
+import com.officego.commonlib.common.rpc.OfficegoApi;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
@@ -91,9 +94,10 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             initIM();
         } else if (intent != null && intent.hasExtra("systemPushTargetId")) {
             //系统消息
-            targetId = intent.getStringExtra("chatTargetId");
+            targetId = intent.getStringExtra("systemPushTargetId");
             ctlChat.setVisibility(View.GONE);
-//            mPresenter.identityChattedMsg(targetId);
+            tvTitleName.setText("系统消息");
+            tvTitleName.setPadding(0, 28, 0, 0);
             initIM();
         } else {
             initIMInfo();
@@ -108,7 +112,8 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             } else if (TextUtils.equals(Constants.TYPE_SYSTEM, targetId.substring(targetId.length() - 1))) {
                 //系统消息聊天列表进入
                 ctlChat.setVisibility(View.GONE);
-//                mPresenter.identityChattedMsg(targetId);
+                tvTitleName.setText("系统消息");
+                tvTitleName.setPadding(0, 28, 0, 0);
                 initIM();
             } else {
                 //租户-业主聊天
@@ -120,7 +125,6 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             }
         }
     }
-
 
     @Click(R.id.rl_back)
     void backClick() {
@@ -160,7 +164,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
                     .appendQueryParameter("targetId", targetId).build();
         } else {
             //聊天消息
-            findViewById(R.id.rc_extension).setVisibility(View. VISIBLE);
+            findViewById(R.id.rc_extension).setVisibility(View.VISIBLE);
             uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon()
                     .appendPath("conversation")
                     .appendPath(Conversation.ConversationType.PRIVATE.getName().toLowerCase())
@@ -178,6 +182,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
     @Override
     public void houseSuccess(ChatHouseBean data) {
         if (data == null) {
+            getRongTargetInfo(targetId); //推送点击获取Target用户信息
             return;
         }
         mData = data;
@@ -391,4 +396,22 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         }
         return false;
     }
+
+    private void getRongTargetInfo(String targetId) {
+        if (!TextUtils.isEmpty(targetId)) {
+            OfficegoApi.getInstance().getRongUserInfo(targetId,
+                    new RetrofitCallback<RongUserInfoBean>() {
+                        @Override
+                        public void onSuccess(int code, String msg, RongUserInfoBean data) {
+                            tvTitleName.setText(data.getName());
+                            tvTitleName.setPadding(0, 28, 0, 0);
+                        }
+
+                        @Override
+                        public void onFail(int code, String msg, RongUserInfoBean data) {
+                        }
+                    });
+        }
+    }
+
 }

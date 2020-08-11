@@ -1,5 +1,6 @@
 package com.owner.message;
 
+import android.content.Context;
 import android.net.Uri;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -10,13 +11,16 @@ import androidx.fragment.app.FragmentTransaction;
 import com.officego.commonlib.base.BaseFragment;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.utils.log.LogCat;
 import com.owner.R;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
+import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationListFragment;
+import io.rong.imkit.model.UIConversation;
 import io.rong.imlib.model.Conversation;
 
 /**
@@ -64,5 +68,34 @@ public class MessageFragment extends BaseFragment {
         FragmentTransaction transaction = mActivity.getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.conversationlist, fragment);
         transaction.commit();
+    }
+
+    /**
+     * 设置会话操作的监听器。
+     */
+    private void conversationClick(){
+
+        RongIM. setConversationListBehaviorListener(new RongIM.ConversationListBehaviorListener() {
+            @Override
+            public boolean onConversationPortraitClick(Context context, Conversation.ConversationType conversationType, String targetId) {
+                return false;
+            }
+
+            @Override
+            public boolean onConversationPortraitLongClick(Context context, Conversation.ConversationType conversationType, String targetId) {
+                return false;
+            }
+
+            @Override
+            public boolean onConversationLongClick(Context context, View view, UIConversation conversation) {
+                return false;
+            }
+
+            @Override
+            public boolean onConversationClick(Context context, View view, UIConversation conversation) {
+                LogCat.e(TAG,"1111111111  onConversationClick");
+                return false;
+            }
+        });
     }
 }

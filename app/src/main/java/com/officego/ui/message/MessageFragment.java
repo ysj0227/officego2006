@@ -103,7 +103,7 @@ public class MessageFragment extends BaseFragment {
         transaction.add(R.id.conversationlist, fragment);
         transaction.commit();
 
-        conversationClick();
+//        conversationClick();
     }
 
     /**

@@ -36,10 +36,10 @@ public class OfficeGoPushMessageReceiver extends PushMessageReceiver {
     public boolean onNotificationMessageClicked(Context context, PushType pushType, PushNotificationMessage message) {
         // true. 代表不触发 SDK 默认实现，您自定义处理通知点击跳转事件。  false 融云内置跳转
         String targetId = message.getTargetId();
-        LogCat.e(TAG, "pushType=" + pushType.getName()+"PushType.RONG getTargetId=" + targetId);
+        //LogCat.e(TAG, "pushType=" + pushType.getName() + "getTargetId=" + targetId);
         if (pushType == PushType.RONG) {
-            if (!TextUtils.isEmpty(targetId) &&
-                    TextUtils.equals(Constants.TYPE_SYSTEM, targetId.substring(targetId.length() - 1))) {
+            //跳转系统消息
+            if (!TextUtils.isEmpty(targetId) && TextUtils.equals(Constants.TYPE_SYSTEM, targetId.substring(targetId.length() - 1))) {
                 gotoSystemPushConversationActivity(context, targetId);
                 return true;
             }
