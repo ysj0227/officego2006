@@ -7,6 +7,7 @@ import android.text.TextWatcher;
 import android.view.KeyEvent;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -33,6 +34,7 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
@@ -50,6 +52,10 @@ public class SearchRecommendActivity extends BaseMvpActivity<SearchKeywordsPrese
     RelativeLayout rlTitle;
     @ViewById(R.id.et_search)
     ClearableEditText etSearch;
+    @ViewById(R.id.tv_history)
+    TextView tvHistory;
+    @ViewById(R.id.iv_clear_history)
+    ImageView ivClearHistory;
     @ViewById(R.id.label_history)
     LabelsView labelHistory;
     @ViewById(R.id.label_find)
@@ -69,7 +75,14 @@ public class SearchRecommendActivity extends BaseMvpActivity<SearchKeywordsPrese
         rvSearchList.setLayoutManager(new LinearLayoutManager(context));
         etSearch.setOnEditorActionListener(this);
         etSearch.addTextChangedListener(this);
-        if (!TextUtils.isEmpty(SpUtils.getSignToken())) {
+        if (TextUtils.isEmpty(SpUtils.getSignToken())) {
+            tvHistory.setVisibility(View.GONE);
+            ivClearHistory.setVisibility(View.GONE);
+            labelHistory.setVisibility(View.GONE);
+        } else {
+            tvHistory.setVisibility(View.VISIBLE);
+            ivClearHistory.setVisibility(View.VISIBLE);
+            labelHistory.setVisibility(View.VISIBLE);
             mPresenter.getHistory();
         }
         mPresenter.getHot();
@@ -126,14 +139,19 @@ public class SearchRecommendActivity extends BaseMvpActivity<SearchKeywordsPrese
 
 
     private KeywordsAdapter keywordsAdapter;
+    private List<SearchListBean.DataBean> keyList = new ArrayList<>();
 
     @Override
     public void searchListSuccess(List<SearchListBean.DataBean> list) {
+        keyList.clear();
+        keyList.addAll(list);
         if (keywordsAdapter == null) {
             keywordsAdapter = new KeywordsAdapter(context, list);
             keywordsAdapter.setListener(this);
             rvSearchList.setAdapter(keywordsAdapter);
+            return;
         }
+        keywordsAdapter.setData(list);
         keywordsAdapter.notifyDataSetChanged();
     }
 
