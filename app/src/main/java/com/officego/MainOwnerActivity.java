@@ -24,6 +24,7 @@ import com.officego.commonlib.common.rongcloud.ConnectRongCloudUtils;
 import com.officego.commonlib.common.rongcloud.kickDialog;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
+import com.officego.commonlib.utils.DesktopCornerUtil;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.owner.home.HomeFragment_;
 import com.owner.message.MessageFragment_;
@@ -180,6 +181,7 @@ public class MainOwnerActivity extends BaseActivity implements RadioGroup.OnChec
      * 否则会造成内存泄漏。
      */
     IUnReadMessageObserver observer = this::showMessageCount;
+    private int unreadNum=0;
 
     private void showMessageCount(int i) {
         unreadMessage.showCirclePointBadge();
@@ -194,9 +196,12 @@ public class MainOwnerActivity extends BaseActivity implements RadioGroup.OnChec
             unreadMessage.hiddenBadge();
         } else if (i < 100) {
             unreadMessage.showTextBadge(String.valueOf(i));
+            unreadNum=i;
         } else {
             unreadMessage.showTextBadge("99+");
+            unreadNum=99;
         }
+        DesktopCornerUtil.setBadgeNumber(unreadNum);
     }
 
     /**

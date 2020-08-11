@@ -1,12 +1,15 @@
 package com.officego.application;
 
 import android.app.Activity;
+import android.app.Notification;
+import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Bundle;
 
 import com.officego.MainActivity;
 import com.officego.commonlib.base.BaseApplication;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.utils.DesktopCornerUtil;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
 
@@ -32,6 +35,8 @@ public class MyApplication extends BaseApplication {
         bootLoader.init();
         createWXAPI();
         observeAppInBackground();
+        //App图标未读数量
+        DesktopCornerUtil.init(this.getPackageName(),"com.officego.LaunchActivity",this);
     }
 
     //初始化微信分享

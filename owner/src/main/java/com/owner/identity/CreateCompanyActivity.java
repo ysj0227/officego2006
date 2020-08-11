@@ -10,6 +10,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -75,10 +76,20 @@ public class CreateCompanyActivity extends BaseMvpActivity<CreateSubmitPresenter
     ClearableEditText etAddressContent;
     @ViewById(resName = "et_register_no_content")
     ClearableEditText etRegisterNoContent;
+    @ViewById(resName = "rl_name")
+    RelativeLayout rlName;
     @ViewById(resName = "rl_address")
     RelativeLayout rlAddress;
     @ViewById(resName = "rl_register_no")
     RelativeLayout rlRegisterNo;
+    @ViewById(resName = "ll_show_msg")
+    LinearLayout llShowMsg;
+    @ViewById(resName = "tv_name1")
+    TextView tvName1;
+    @ViewById(resName = "tv_address1")
+    TextView tvAddress1;
+    @ViewById(resName = "tv_register_no1")
+    TextView tvRegisterNo1;
     @ViewById(resName = "riv_image")
     RoundImageView rivImage;
     @ViewById(resName = "tv_upload")
@@ -111,6 +122,8 @@ public class CreateCompanyActivity extends BaseMvpActivity<CreateSubmitPresenter
         mPresenter.attachView(this);
         StatusBarUtils.setStatusBarColor(this);
         titleBar.getLeftImg().setOnClickListener(view -> onBackPressed());
+        titleBar.setAppTitle(isJointWorkRelevanceCreate ? "加入公司" : "创建公司");
+        btnSave.setText(isJointWorkRelevanceCreate ? "确认加入" : "确认创建");
         setImageViewLayoutParams(context, rivImage);
         initShowView();
         if (isEdit) {
@@ -119,23 +132,26 @@ public class CreateCompanyActivity extends BaseMvpActivity<CreateSubmitPresenter
     }
 
     private void initShowView() {
-        titleBar.setAppTitle(isJointWorkRelevanceCreate ? "加入公司" : "创建公司");
-        btnSave.setText(isJointWorkRelevanceCreate ? "确认加入" : "确认创建");
-        //关联创建不可编辑
-        tvName.setVisibility(isJointWorkRelevanceCreate ? View.GONE : View.VISIBLE);
-        tvAddress.setVisibility(isJointWorkRelevanceCreate ? View.GONE : View.VISIBLE);
-        tvRegisterNo.setVisibility(isJointWorkRelevanceCreate ? View.GONE : View.VISIBLE);
-        etNameContent.setEnabled(!isJointWorkRelevanceCreate);
-        etAddressContent.setEnabled(!isJointWorkRelevanceCreate);
-        etRegisterNoContent.setEnabled(!isJointWorkRelevanceCreate);
+        rlName.setVisibility(isJointWorkRelevanceCreate ? View.GONE : View.VISIBLE);
+        rlAddress.setVisibility(isJointWorkRelevanceCreate ? View.GONE : View.VISIBLE);
+        rlRegisterNo.setVisibility(isJointWorkRelevanceCreate ? View.GONE : View.VISIBLE);
+        llShowMsg.setVisibility(isJointWorkRelevanceCreate ? View.VISIBLE : View.GONE);
         //公司名称
         if (!TextUtils.isEmpty(relevanceCompanyName)) {
             if (relevanceCompanyName.contains("<strong style='color:#06d2e7'>")) {
                 String name = relevanceCompanyName.replace("<strong style='color:#06d2e7'>", "");
                 String name1 = name.replace("</strong>", "");
-                etNameContent.setText(name1);
+                if (isJointWorkRelevanceCreate) {
+                    tvName1.setText(name1);
+                } else {
+                    etNameContent.setText(name1);
+                }
             } else {
-                etNameContent.setText(relevanceCompanyName);
+                if (isJointWorkRelevanceCreate) {
+                    tvName1.setText(relevanceCompanyName);
+                } else {
+                    etNameContent.setText(relevanceCompanyName);
+                }
             }
         }
         if (isJointWorkRelevanceCreate) {
@@ -144,18 +160,18 @@ public class CreateCompanyActivity extends BaseMvpActivity<CreateSubmitPresenter
                 if (relevanceCompanyAddress.contains("<strong style='color:#06d2e7'>")) {
                     String name = relevanceCompanyAddress.replace("<strong style='color:#06d2e7'>", "");
                     String name1 = name.replace("</strong>", "");
-                    etAddressContent.setText(name1);
+                    tvAddress1.setText(name1);
                 } else {
-                    etAddressContent.setText(relevanceCompanyAddress);
+                    tvAddress1.setText(relevanceCompanyAddress);
                 }
             } else {
-                rlAddress.setVisibility(View.GONE);
+                tvAddress1.setVisibility(View.GONE);
             }
             //营业执照注册号
             if (TextUtils.isEmpty(relevanceCreditNo)) {
-                rlRegisterNo.setVisibility(View.GONE);
+                tvRegisterNo1.setVisibility(View.GONE);
             } else {
-                etRegisterNoContent.setText(relevanceCreditNo);
+                tvRegisterNo1.setText("统一社会信用代码：" + relevanceCreditNo);
             }
         }
     }
@@ -174,10 +190,14 @@ public class CreateCompanyActivity extends BaseMvpActivity<CreateSubmitPresenter
 
     @Click(resName = "btn_save")
     void saveClick() {
-        name = etNameContent.getText() == null ? "" : etNameContent.getText().toString().trim();
-        address = etAddressContent.getText() == null ? "" : etAddressContent.getText().toString().trim();
-        regNo = etRegisterNoContent.getText() == null ? "" : etRegisterNoContent.getText().toString().trim();
-        if (!isJointWorkRelevanceCreate) {
+        if (isJointWorkRelevanceCreate) {
+            name = tvName1.getText() == null ? "" : tvName1.getText().toString().trim();
+            address = tvAddress1.getText() == null ? "" : tvAddress1.getText().toString().trim();
+            regNo = tvRegisterNo1.getText() == null ? "" : tvRegisterNo1.getText().toString().trim();
+        }else {
+            name = etNameContent.getText() == null ? "" : etNameContent.getText().toString().trim();
+            address = etAddressContent.getText() == null ? "" : etAddressContent.getText().toString().trim();
+            regNo = etRegisterNoContent.getText() == null ? "" : etRegisterNoContent.getText().toString().trim();
             if (TextUtils.isEmpty(name)) {
                 shortTip("请输入公司名称");
                 return;
@@ -187,7 +207,7 @@ public class CreateCompanyActivity extends BaseMvpActivity<CreateSubmitPresenter
                 return;
             }
             if (TextUtils.isEmpty(regNo)) {
-                shortTip("请输入营业执照注册号");
+                shortTip("请输入统一社会信用代码或营业执照编号");
                 return;
             }
         }

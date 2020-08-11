@@ -541,30 +541,24 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
 
             }
         });
-//        cetOfficeName.addTextChangedListener(new TextWatcher() {
-//            @Override
-//            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-//
-//            }
-//
-//            @Override
-//            public void onTextChanged(CharSequence s, int start, int before, int count) {
-//                if (TextUtils.isEmpty(s.toString())) {
-//                    hideSearchView();
-//                } else {
-//                    rlRecommendJointwork.setVisibility(View.GONE);
-//                    rvRecommendCompany.setVisibility(View.GONE);
-//                    rlRecommendBuilding.setVisibility(View.VISIBLE);
-//                    mPresenter.getBuilding(s.toString());
-//                    ButtonUtils.clickButton(btnUpload, false);
-//                }
-//            }
-//
-//            @Override
-//            public void afterTextChanged(Editable s) {
-//
-//            }
-//        });
+        cetOfficeName.addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (!TextUtils.isEmpty(s.toString())) {
+                    showImageHouseTypeView();
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
     }
 
     /**

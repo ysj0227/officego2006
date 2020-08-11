@@ -19,10 +19,11 @@
         app:titleText="创建公司"
         app:titleTextColor="@color/text_33" />
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:layout_width="0dp"
+    <LinearLayout
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/white"
+        android:orientation="vertical"
         android:paddingBottom="@dimen/dp_20"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -31,20 +32,17 @@
         <RelativeLayout
             android:id="@+id/rl_name"
             style="@style/marginLeftRight18"
-            android:layout_width="0dp"
-            android:layout_height="@dimen/dp_56"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent">
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_56">
 
             <TextView
                 android:id="@+id/tv_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/dp_10"
                 android:drawableEnd="@mipmap/ic_mark"
                 android:text="公司名称"
-                android:layout_marginEnd="@dimen/dp_10"
                 android:textColor="@color/text_33"
                 android:textSize="@dimen/sp_15" />
 
@@ -57,6 +55,7 @@
                 android:background="@null"
                 android:ellipsize="end"
                 android:gravity="center_vertical"
+                android:hint="请输入公司名称"
                 android:maxLength="20"
                 android:maxLines="1"
                 android:singleLine="true"
@@ -74,21 +73,18 @@
         <RelativeLayout
             android:id="@+id/rl_address"
             style="@style/marginLeftRight18"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/dp_56"
-            android:visibility="visible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rl_name">
+            android:visibility="visible">
 
             <TextView
                 android:id="@+id/tv_address"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/dp_10"
                 android:drawableEnd="@mipmap/ic_mark"
                 android:text="公司地址"
-                android:layout_marginEnd="@dimen/dp_10"
                 android:textColor="@color/text_33"
                 android:textSize="@dimen/sp_15" />
 
@@ -101,6 +97,7 @@
                 android:background="@null"
                 android:ellipsize="end"
                 android:gravity="center_vertical"
+                android:hint="请输入公司地址"
                 android:maxLength="30"
                 android:maxLines="1"
                 android:singleLine="true"
@@ -118,21 +115,18 @@
         <RelativeLayout
             android:id="@+id/rl_register_no"
             style="@style/marginLeftRight18"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="@dimen/dp_56"
-            android:visibility="visible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/rl_address">
+            android:visibility="visible">
 
             <TextView
                 android:id="@+id/tv_register_no"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
-                android:drawableEnd="@mipmap/ic_mark"
-                android:text="营业执照注册号"
                 android:layout_marginEnd="@dimen/dp_10"
+                android:drawableEnd="@mipmap/ic_mark"
+                android:text="统一社会信用代码"
                 android:textColor="@color/text_33"
                 android:textSize="@dimen/sp_15" />
 
@@ -146,9 +140,10 @@
                 android:digits="0123456789abcdefghigklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ"
                 android:ellipsize="end"
                 android:gravity="center_vertical"
+                android:hint="请输入统一社会信用代码或营业执照编号"
                 android:inputType="number"
                 android:maxLength="20"
-                android:maxLines="1"
+                android:maxLines="2"
                 android:textColor="@color/text_33"
                 android:textColorHint="@color/text_99"
                 android:textSize="@dimen/sp_15" />
@@ -159,6 +154,52 @@
                 android:layout_alignParentBottom="true"
                 android:background="@color/common_divider" />
         </RelativeLayout>
+
+        <LinearLayout
+            android:id="@+id/ll_show_msg"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                android:id="@+id/tv_name1"
+                style="@style/marginLeftRight18"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_58"
+                android:gravity="center_vertical"
+                android:text="统一社会信用代码"
+                android:textStyle="bold"
+                android:textColor="@color/text_33"
+                android:textSize="@dimen/sp_15" />
+
+            <TextView
+                android:id="@+id/tv_address1"
+                style="@style/marginLeftRight18"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_40"
+                android:drawableLeft="@mipmap/ic_small_location"
+                android:gravity="center_vertical"
+                android:text="统一社会信用代码"
+                android:textColor="@color/text_66"
+                android:textSize="@dimen/sp_13" />
+
+            <TextView
+                android:id="@+id/tv_register_no1"
+                style="@style/marginLeftRight18"
+                android:layout_width="wrap_content"
+                android:layout_height="@dimen/dp_40"
+                android:gravity="center_vertical"
+                android:text="统一社会信用代码"
+                android:textColor="@color/text_66"
+                android:textSize="@dimen/sp_13" />
+
+            <View
+                style="@style/marginLeftRight18"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/dp_1"
+                android:layout_marginTop="@dimen/dp_20"
+                android:background="@color/common_divider" />
+        </LinearLayout>
 
         <TextView
             android:id="@+id/tv_upload_text"
@@ -189,12 +230,9 @@
         <RelativeLayout
             android:id="@+id/rl_license"
             style="@style/marginLeftRight18"
-            android:layout_width="0dp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_16"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_register_text">
+            android:layout_marginTop="@dimen/dp_16">
 
             <com.officego.commonlib.view.RoundImageView
                 android:id="@+id/riv_image"
@@ -214,7 +252,7 @@
                 android:textColor="@color/common_blue_main"
                 android:textSize="@dimen/sp_14" />
         </RelativeLayout>
-    </androidx.constraintlayout.widget.ConstraintLayout>
+    </LinearLayout>
 
     <LinearLayout
         android:layout_width="@dimen/dp_0"
