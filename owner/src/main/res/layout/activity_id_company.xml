@@ -191,12 +191,11 @@
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/rv_recommend_building"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/dp_600"
+                android:layout_height="800dp"
                 android:background="@color/white"
                 android:nestedScrollingEnabled="false"
                 android:paddingLeft="@dimen/dp_18"
                 android:visibility="gone"
-                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rl_office" />
