@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.Window;
 import android.widget.Toast;
 
@@ -59,7 +58,6 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     @Override
     protected void onResume() {
         super.onResume();
-        Log.d(TAG, "11111 onResume" + isFirstOpen + ", isGoBaseResp=" + isGoBaseResp);
         if (isFirstOpen) {
             finish();
         }
@@ -86,21 +84,17 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     @Override
     public void onResp(BaseResp resp) {
         int result = 0;
-        Log.d(TAG, "11111 onResp");
         isGoBaseResp = true;
         switch (resp.errCode) {
             case BaseResp.ErrCode.ERR_OK:
-                Log.d(TAG, "11111 onResp share");
 //                result = R.string.errcode_success;
 //                Toast.makeText(WXEntryActivity.this, result, Toast.LENGTH_LONG).show();
                 this.finish();
                 break;
             case BaseResp.ErrCode.ERR_USER_CANCEL:
-                Log.d(TAG, "11111 onResp cancel");
                 this.finish();
                 break;
             case BaseResp.ErrCode.ERR_UNSUPPORT:
-                Log.d(TAG, "11111 onResp err_unsupport");
                 result = R.string.errcode_unsupported;
                 Toast.makeText(WXEntryActivity.this, result, Toast.LENGTH_LONG).show();
                 this.finish();
@@ -117,7 +111,6 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 
     private void shareWX(int mTargetScene, ShareBean bean) {
         if (bean == null) {
-            //Log.d(TAG, "1111111 onResp isEmpty data=" + bean);
             this.finish();
             return;
         }
@@ -126,17 +119,17 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
 //        楼盘下的房源分享回调链接：https://m.officego.com/lessee/detail.html?buildingId=7154&houseId=9519
 //        网点分享回调链接：https://m.officego.com/lessee/housesDetail2.html?buildingId=7154
 //        网点下的房源分享回调链接：https://m.officego.com/lessee/detail2.html?buildingId=7154&houseId=9519
-        if (bean.getbType()==Constants.TYPE_BUILDING){
+        if (bean.getbType() == Constants.TYPE_BUILDING) {
             if (!bean.isHouseChild()) {
-                webpageUrl = AppConfig.APP_URL_MAIN + "lessee/housesDetail.html?" + bean.getId();
+                webpageUrl = AppConfig.APP_URL_MAIN + "lessee/housesDetail.html?" + bean.getId() + "&isShare=0";
             } else {
-                webpageUrl = AppConfig.APP_URL_MAIN + "lessee/detail.html?" + bean.getId();
+                webpageUrl = AppConfig.APP_URL_MAIN + "lessee/detail.html?" + bean.getId() + "&isShare=0";
             }
-        }else {
+        } else {
             if (!bean.isHouseChild()) {
-                webpageUrl = AppConfig.APP_URL_MAIN + "lessee/housesDetail2.html?" + bean.getId();
+                webpageUrl = AppConfig.APP_URL_MAIN + "lessee/housesDetail2.html?" + bean.getId() + "&isShare=0";
             } else {
-                webpageUrl = AppConfig.APP_URL_MAIN + "lessee/detail2.html?" + bean.getId();
+                webpageUrl = AppConfig.APP_URL_MAIN + "lessee/detail2.html?" + bean.getId() + "&isShare=0";
             }
         }
         int THUMB_SIZE = 150;
@@ -150,7 +143,6 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
         Glide.with(this).asBitmap().load(bean.getImgUrl()).into(new SimpleTarget<Bitmap>() {
             @Override
             public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {
-                Log.d(TAG, "1111111 11 onResourceReady");
                 Bitmap thumbBmp = Bitmap.createScaledBitmap(resource, THUMB_SIZE, THUMB_SIZE, true);
                 msg.thumbData = Util.bmpToByteArray(thumbBmp, true);
                 SendMessageToWX.Req req = new SendMessageToWX.Req();

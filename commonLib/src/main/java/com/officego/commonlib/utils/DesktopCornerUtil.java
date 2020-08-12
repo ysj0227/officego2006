@@ -1,6 +1,7 @@
 package com.officego.commonlib.utils;
 
 import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.content.Context;
 import android.content.Intent;
@@ -414,5 +415,49 @@ public class DesktopCornerUtil {
         }
     }
 
-
+    /**
+     * 小米设置角标---TODO 有问题
+     * @param context context
+     * @param count count
+     */
+    public void notificationBadgeMiui(Context context, int count) {
+        NotificationManager notificationManager = (NotificationManager) context.getSystemService
+                (Context.NOTIFICATION_SERVICE);
+        if (notificationManager == null) {
+            return;
+        }
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // 8.0之后添加角标需要NotificationChannel
+            NotificationChannel channel = new NotificationChannel("badge", "badge",
+                    NotificationManager.IMPORTANCE_DEFAULT);
+            channel.setShowBadge(true);
+            notificationManager.createNotificationChannel(channel);
+        }
+//        Intent intent = new Intent(context, MainActivity.class);
+//        PendingIntent pendingIntent = PendingIntent.getActivity(context, 0, intent, 0);
+//        Notification notification = new NotificationCompat.Builder(context, "badge")
+//                .setContentTitle("OfficeGo")
+//                .setContentText("你有" + count + "条未读消息")
+//                .setLargeIcon(BitmapFactory.decodeResource(context.getResources(), R.mipmap.ic_logo))
+//                .setSmallIcon(R.mipmap.ic_logo)
+//                .setAutoCancel(true)
+//                .setContentIntent(pendingIntent)
+//                .setChannelId("badge")
+//                .setNumber(count)
+//                .setBadgeIconType(NotificationCompat.BADGE_ICON_SMALL).build();
+        Notification.Builder builder = new Notification.Builder(context)
+                .setContentTitle("OfficeGo").setContentText("").setSmallIcon(R.mipmap.ic_logo);
+        Notification notification = builder.build();
+        // 小米
+        try {
+            Field field = notification.getClass().getDeclaredField("extraNotification");
+            Object extraNotification = field.get(notification);
+            Method method = extraNotification.getClass().getDeclaredMethod("setMessageCount", int
+                    .class);
+            method.invoke(extraNotification, count);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+        notificationManager.notify(0, notification);
+    }
 }

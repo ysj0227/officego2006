@@ -194,6 +194,7 @@ public class MainOwnerActivity extends BaseActivity implements RadioGroup.OnChec
         unreadMessage.getBadgeViewHelper().setBadgeBorderColorInt(Color.WHITE);
         if (i < 1) {
             unreadMessage.hiddenBadge();
+            unreadNum = 0;
         } else if (i < 100) {
             unreadMessage.showTextBadge(String.valueOf(i));
             unreadNum=i;

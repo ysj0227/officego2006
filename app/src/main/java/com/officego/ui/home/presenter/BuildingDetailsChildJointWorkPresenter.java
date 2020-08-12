@@ -94,6 +94,9 @@ public class BuildingDetailsChildJointWorkPresenter extends BasePresenter<Buildi
                 if (isViewAttached()) {
                     mView.hideLoadingDialog();
                     mView.chatFail();
+                    if (code==Constants.ERROR_CODE_5002||code==Constants.DEFAULT_ERROR_CODE){
+                        mView.shortTip(msg);
+                    }
                 }
             }
         });
