@@ -124,7 +124,6 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
                 mPresenter.getHouseDetails(buildingId, houseId, getHouseChatId);
             }
         }
-        Constants.COMMON_TARGET_ID = targetId;
     }
 
     @Click(R.id.rl_back)

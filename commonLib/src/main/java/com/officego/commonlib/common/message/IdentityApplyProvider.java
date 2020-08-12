@@ -8,6 +8,7 @@ package com.officego.commonlib.common.message;
 
 import android.content.Context;
 import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -37,6 +38,7 @@ import io.rong.imlib.model.Message;
 @ProviderTag(messageContent = IdentityApplyInfo.class, showPortrait = true, centerInHorizontal = true)
 public class IdentityApplyProvider extends IContainerItemProvider.MessageProvider<IdentityApplyInfo> {
     private Context context;
+    private String mMessage = "";
 
     @Override
     public View newView(Context context, ViewGroup viewGroup) {
@@ -68,11 +70,12 @@ public class IdentityApplyProvider extends IContainerItemProvider.MessageProvide
             holder.rlBtn.setVisibility(View.GONE);
             holder.vLine.setVisibility(View.GONE);
         }
+        mMessage = holder.tvContent.getText().toString();
     }
 
     @Override //这里意思是你的这个自定义消息显示的内容
     public Spannable getContentSummary(IdentityApplyInfo phoneInfo) {
-        return null;
+        return new SpannableString(mMessage);
     }
 
     @Override  //点击你的自定义消息执行的操作

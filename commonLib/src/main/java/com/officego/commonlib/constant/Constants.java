@@ -71,7 +71,4 @@ public class Constants {
     public final static int TYPE_IDENTITY_PERSONAL = 0;
     public final static int TYPE_IDENTITY_COMPANY = 1;
     public final static int TYPE_IDENTITY_JOINT_WORK = 2;
-
-    //聊天页面的targetId
-    public static String COMMON_TARGET_ID = "";
 }
