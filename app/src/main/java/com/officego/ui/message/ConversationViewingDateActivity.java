@@ -189,7 +189,7 @@ public class ConversationViewingDateActivity extends BaseMvpActivity<Conversatio
                                 time + "000",//毫秒
                                 mData == null || mData.getBuilding() == null ? "" : mData.getBuilding().getBuildingName(),
                                 mData == null || mData.getBuilding() == null ? "" : mData.getBuilding().getAddress(),
-                                "",
+                                "你发起的看房邀约，等待对方接受",
                                 "");
                         finish();
                     }

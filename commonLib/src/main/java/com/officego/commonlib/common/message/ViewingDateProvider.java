@@ -24,7 +24,6 @@ import androidx.core.content.ContextCompat;
 import com.officego.commonlib.R;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
-import com.officego.commonlib.common.rongcloud.SendMessageManager;
 import com.officego.commonlib.common.rpc.OfficegoApi;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.notification.BaseNotification;
@@ -32,7 +31,6 @@ import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.ToastUtils;
-import com.officego.commonlib.utils.log.LogCat;
 
 import io.rong.imkit.model.ProviderTag;
 import io.rong.imkit.model.UIMessage;

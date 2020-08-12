@@ -52,10 +52,6 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".h5.WebViewIdifyActivity_"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".identity.SelectIdActivity_"
             android:screenOrientation="portrait" />
         <activity

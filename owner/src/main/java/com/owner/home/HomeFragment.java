@@ -73,7 +73,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements Home
         }
         //版本更新
         new VersionDialog(mActivity);
-//        mPresenter.getUserInfo();
+        mPresenter.getUserInfo();
     }
 
     /**
@@ -87,12 +87,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements Home
                 exceptionPageReceivedTitle(view, title);
             }
         });
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-        mPresenter.getUserInfo();//获取是否认证
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -309,7 +303,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements Home
     @Override
     public int[] getStickNotificationId() {
         return new int[]{
-                CommonNotifications.ownerIdentityComplete};
+                CommonNotifications.ownerIdentityHandle};
     }
 
     @Override
@@ -318,7 +312,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements Home
         if (args == null) {
             return;
         }
-        if (id == CommonNotifications.ownerIdentityComplete) {
+        if (id == CommonNotifications.ownerIdentityHandle) {
             mPresenter.getUserInfo();
         }
     }

@@ -370,11 +370,11 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             SendMessageManager.getInstance().sendPhoneMessage(targetId, "我想和您交换手机号", SpUtils.getPhoneNum(), "");
         } else if (id == CommonNotifications.conversationIdApplyAgree) {
             //同意认证申请
-            SendMessageManager.getInstance().sendIdApplyStatusMessage(true, targetId, "", "");
+            SendMessageManager.getInstance().sendIdApplyStatusMessage(true, targetId, "我已同意你加入公司，欢迎", "");
             SendMessageManager.getInstance().sendTextMessage(targetId, "我已同意你加入公司，欢迎");
         } else if (id == CommonNotifications.conversationIdApplyReject) {
             //拒绝认证申请
-            SendMessageManager.getInstance().sendIdApplyStatusMessage(false, targetId, "", "");
+            SendMessageManager.getInstance().sendIdApplyStatusMessage(false, targetId, "我已拒绝你加入公司", "");
             SendMessageManager.getInstance().sendTextMessage(targetId, "我已拒绝你加入公司");
         }
     }

@@ -3,6 +3,8 @@ package com.owner.identity.dialog;
 import android.app.Activity;
 
 import com.officego.commonlib.common.GotoActivityUtils;
+import com.officego.commonlib.common.config.CommonNotifications;
+import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
 import com.owner.identity.SelectIdActivity_;
@@ -37,6 +39,7 @@ public class SwitchRoleDialog {
                 .setMessage("请再次确认是否离开？")
                 .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
                     activity.finish();
+                    BaseNotification.newInstance().postNotificationName(CommonNotifications.ownerIdentityHandle, "ownerIdentityHandle");
                 })
                 .setCancelButton(R.string.sm_cancel, (dialog1, which) -> dialog1.dismiss()).create();
         dialog.showWithOutTouchable(false);
@@ -52,6 +55,7 @@ public class SwitchRoleDialog {
                 .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
                     //跳转业主个人中心
                     GotoActivityUtils.mainOwnerDefMainActivity(activity);
+                    BaseNotification.newInstance().postNotificationName(CommonNotifications.ownerIdentityHandle, "ownerIdentityHandle");
                     activity.finish();
                 }).create();
         dialog.showWithOutTouchable(false);

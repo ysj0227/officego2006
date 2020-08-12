@@ -24,8 +24,8 @@ public class CommonNotifications {
     //绑定微信
     public static final int conversationBindWeChat = totalEvents++;
     public static final int conversationBindPhone = totalEvents++;
-    //业主认证成功
-    public static final int ownerIdentityComplete = totalEvents++;
+    //业主认证
+    public static final int ownerIdentityHandle = totalEvents++;
     //融云其他设备登录踢出
     public static final int rongCloudkickDialog = totalEvents++;
     //身份发送变化重新登录
