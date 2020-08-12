@@ -8,6 +8,7 @@ package com.officego.commonlib.common.message;
 
 import android.content.Context;
 import android.text.Spannable;
+import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -27,6 +28,7 @@ import io.rong.imlib.model.Message;
 @ProviderTag(messageContent = IdentityApplyStatusInfo.class, showPortrait = false, centerInHorizontal = true)
 public class IdentityApplyStatusProvider extends IContainerItemProvider.MessageProvider<IdentityApplyStatusInfo> {
     private Context context;
+    private String mMessage = "";
 
     @Override
     public View newView(Context context, ViewGroup viewGroup) {
@@ -59,11 +61,12 @@ public class IdentityApplyStatusProvider extends IContainerItemProvider.MessageP
                 holder.tvStatus.setText("已拒绝");
             }
         }
+        mMessage = holder.tvStatus.getText().toString();
     }
 
     @Override //这里意思是你的这个自定义消息显示的内容
     public Spannable getContentSummary(IdentityApplyStatusInfo info) {
-        return null;
+        return new SpannableString(mMessage);
     }
 
     @Override  //点击你的自定义消息执行的操作

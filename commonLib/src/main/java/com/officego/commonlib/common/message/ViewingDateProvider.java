@@ -9,6 +9,7 @@ package com.officego.commonlib.common.message;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -21,7 +22,9 @@ import android.widget.TextView;
 import androidx.core.content.ContextCompat;
 
 import com.officego.commonlib.R;
+import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
+import com.officego.commonlib.common.rongcloud.SendMessageManager;
 import com.officego.commonlib.common.rpc.OfficegoApi;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.notification.BaseNotification;
@@ -42,6 +45,7 @@ import io.rong.imlib.model.Message;
 @ProviderTag(messageContent = ViewingDateInfo.class, showPortrait = true, centerInHorizontal = false)
 public class ViewingDateProvider extends IContainerItemProvider.MessageProvider<ViewingDateInfo> {
     private Context context;
+    private String mMessage = "";
 
     @Override
     public View newView(Context context, ViewGroup viewGroup) {
@@ -66,9 +70,13 @@ public class ViewingDateProvider extends IContainerItemProvider.MessageProvider<
     @Override
     public void bindView(View view, int i, ViewingDateInfo info, UIMessage uiMessage) {
         ViewingDateInfoHolder holder = (ViewingDateInfoHolder) view.getTag();
-        LogCat.d("TAG", "1111 msg=" + info.getContent() + " exc= " + info.getExtraMessage() + " id=" + info.getId());
+        //LogCat.d("TAG", "1111 msg=" + info.getContent() + " exc= " + info.getExtraMessage() + " id=" + info.getId());
         if (uiMessage.getMessageDirection() == Message.MessageDirection.RECEIVE) {//接收显示同意拒绝
-            holder.tvContent.setText("我想到现场看房，是否同意？");
+            if (TextUtils.equals(Constants.TYPE_TENANT, SpUtils.getRole())) {
+                holder.tvContent.setText("我想邀请你到现场看房，是否同意？");
+            } else if (TextUtils.equals(Constants.TYPE_OWNER, SpUtils.getRole())) {
+                holder.tvContent.setText("我想到现场看房，是否同意？");
+            }
             holder.rlBtn.setVisibility(View.VISIBLE);
             holder.ivIcon.setVisibility(View.VISIBLE);
             holder.vLine.setVisibility(View.VISIBLE);
@@ -87,11 +95,12 @@ public class ViewingDateProvider extends IContainerItemProvider.MessageProvider<
         if (!TextUtils.isEmpty(info.getTime())) {
             holder.tvTime.setText("约看时间：" + DateTimeUtils.StampToDate(info.getTime(), "yyyy-MM-dd HH:mm"));
         }
+        mMessage = holder.tvContent.getText().toString();
     }
 
     @Override //这里意思是你的这个自定义消息显示的内容
     public Spannable getContentSummary(ViewingDateInfo info) {
-        return null;
+        return new SpannableString(mMessage);
     }
 
     @Override  //点击你的自定义消息执行的操作
@@ -124,7 +133,7 @@ public class ViewingDateProvider extends IContainerItemProvider.MessageProvider<
                 new RetrofitCallback<Object>() {
                     @Override
                     public void onSuccess(int code, String msg, Object data) {
-                        LogCat.e("TAG", "1111 updateAuditStatus onSuccess");
+//                        LogCat.e("TAG", "1111 updateAuditStatus onSuccess");
                         //1预约成功(同意)2预约失败(拒绝)
                         if (auditStatus == 1) {
                             holder.btnAgree.setText("已同意");
@@ -146,7 +155,7 @@ public class ViewingDateProvider extends IContainerItemProvider.MessageProvider<
 
                     @Override
                     public void onFail(int code, String msg, Object data) {
-                        LogCat.e("TAG", "1111 updateAuditStatus onFail code=" + code + "  msg=" + msg);
+//                        LogCat.e("TAG", "1111 updateAuditStatus onFail code=" + code + "  msg=" + msg);
                         if (code == Constants.DEFAULT_ERROR_CODE) {
                             ToastUtils.toastForShort(context, msg);
                         }

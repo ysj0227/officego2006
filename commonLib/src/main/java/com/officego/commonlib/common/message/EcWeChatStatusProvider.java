@@ -8,6 +8,7 @@ package com.officego.commonlib.common.message;
 
 import android.content.Context;
 import android.text.Spannable;
+import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -95,7 +96,7 @@ public class EcWeChatStatusProvider extends IContainerItemProvider.MessageProvid
 
     @Override //这里意思是你的这个自定义消息显示的内容
     public Spannable getContentSummary(EcWeChatStatusInfo info) {
-        return null;
+        return new SpannableString(info.getContent());
     }
 
     @Override  //点击你的自定义消息执行的操作

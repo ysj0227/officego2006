@@ -1,5 +1,7 @@
 package com.officego.commonlib.common.rongcloud;
 
+import android.text.TextUtils;
+
 import com.officego.commonlib.common.message.BuildingInfo;
 import com.officego.commonlib.common.message.EcPhoneStatusInfo;
 import com.officego.commonlib.common.message.EcWeChatStatusInfo;
@@ -131,7 +133,7 @@ public class SendMessageManager {
     /**
      * 发送自定义消息 认证申请
      */
-    public void sendIdApplyMessage(String targetId, int id, int licenceId,String content, String extraMessage) {
+    public void sendIdApplyMessage(String targetId, int id, int licenceId, String content, String extraMessage) {
         IdentityApplyInfo info = new IdentityApplyInfo();
         info.setId(id);
         info.setLicenceId(licenceId);
@@ -212,6 +214,9 @@ public class SendMessageManager {
      * @param targetId targetId
      */
     public void sendTextMessage(String targetId, String content) {
+        if (TextUtils.isEmpty(targetId)) {
+            return;
+        }
         TextMessage textMessage = TextMessage.obtain(content);
         RongIM.getInstance().sendMessage(Message.obtain(targetId, Conversation.ConversationType.PRIVATE,
                 textMessage),

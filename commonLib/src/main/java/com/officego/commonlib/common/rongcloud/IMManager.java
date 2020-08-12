@@ -104,7 +104,7 @@ public class IMManager {
     //融云推送
     private void initRongPush() {
         PushConfig config = new PushConfig.Builder()
-//                .enableMiPush(AppConfig.MI_APP_ID, AppConfig.MI_APP_KEY)
+                .enableMiPush(AppConfig.MI_APP_ID, AppConfig.MI_APP_KEY)
                 .build();
         RongPushClient.setPushConfig(config);
     }

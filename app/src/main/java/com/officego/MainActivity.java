@@ -24,6 +24,7 @@ import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.DesktopCornerUtil;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.ui.collect.CollectFragment_;
 import com.officego.ui.home.HomeFragment_;
 import com.officego.ui.message.MessageFragment_;

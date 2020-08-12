@@ -5,6 +5,7 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.text.Spannable;
+import android.text.SpannableString;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
+
 import com.officego.commonlib.R;
 import com.officego.commonlib.view.CopyTextUtils;
 
@@ -113,7 +115,7 @@ public class EcPhoneStatusProvider extends IContainerItemProvider.MessageProvide
 
     @Override //这里意思是你的这个自定义消息显示的内容
     public Spannable getContentSummary(EcPhoneStatusInfo info) {
-        return null;
+        return new SpannableString(info.getContent());
     }
 
     @Override  //点击你的自定义消息执行的操作

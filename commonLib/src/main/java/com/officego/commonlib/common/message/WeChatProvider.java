@@ -9,6 +9,7 @@ package com.officego.commonlib.common.message;
 import android.app.Dialog;
 import android.content.Context;
 import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -134,7 +135,7 @@ public class WeChatProvider extends IContainerItemProvider.MessageProvider<WeCha
 
     @Override //这里意思是你的这个自定义消息显示的内容
     public Spannable getContentSummary(WeChatInfo info) {
-        return null;
+        return new SpannableString(info.getContent());
     }
 
     @Override  //点击你的自定义消息执行的操作
