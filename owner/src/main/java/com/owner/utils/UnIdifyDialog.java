@@ -2,6 +2,7 @@ package com.owner.utils;
 
 import android.content.Context;
 
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
 import com.owner.identity.SelectIdActivity_;
@@ -28,6 +29,7 @@ public class UnIdifyDialog {
         if (dialog != null && !dialog.isShowing()) {
             dialog = null;
         }
+        dialog = null;
         if (dialog == null) {   //auditStatus为3，按照2驳回处理
             String title, message, butText;
             if (data.getAuditStatus() == 2 || data.getAuditStatus() == 3) {

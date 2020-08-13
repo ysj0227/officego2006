@@ -223,7 +223,7 @@ public class DesktopCornerUtil {
                     setBadgeNumberHuawei(badgeNumber);
                     break;
                 case MIUI_LAUNCHERNAME:
-                    setBadgeNumberMiui(badgeNumber);
+//                    setBadgeNumberMiui(badgeNumber);
                     break;
                 case MOTOANDHTC_LAUNCHERNAME:
                     setBadgeNumberhtc(badgeNumber);
@@ -304,20 +304,20 @@ public class DesktopCornerUtil {
      * @param badgeNumber @desc 数量
      */
     private static void setBadgeNumberMiui(int badgeNumber) {
-        NotificationManager mNotificationManager = (NotificationManager) context
-                .getSystemService(Context.NOTIFICATION_SERVICE);
-        Notification.Builder builder = new Notification.Builder(context)
-                .setContentTitle("title").setContentText("text").setSmallIcon(R.mipmap.ic_logo);
-        notification = builder.build();
-        try {
-            Field field = notification.getClass().getDeclaredField("extraNotification");
-            Object extraNotification = field.get(notification);
-            Method method = extraNotification.getClass().getDeclaredMethod("setMessageCount", int.class);
-            method.invoke(extraNotification, badgeNumber);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        mNotificationManager.notify(0, notification);
+//        NotificationManager mNotificationManager = (NotificationManager) context
+//                .getSystemService(Context.NOTIFICATION_SERVICE);
+//        Notification.Builder builder = new Notification.Builder(context)
+//                .setContentTitle("title").setContentText("text").setSmallIcon(R.mipmap.ic_logo);
+//        Notification notification = builder.build();
+//        try {
+//            Field field = notification.getClass().getDeclaredField("extraNotification");
+//            Object extraNotification = field.get(notification);
+//            Method method = extraNotification.getClass().getDeclaredMethod("setMessageCount", int.class);
+//            method.invoke(extraNotification, badgeNumber);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        mNotificationManager.notify(0, notification);
     }
 
     /**

@@ -48,16 +48,18 @@ public class CollectOfficeBuildingAdapter extends CommonListAdapter<CollectBuild
         Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getMainPic()).into(ivHouse);
         holder.setText(R.id.tv_house_name, bean.getName());
         holder.setText(R.id.tv_location, bean.getBusinessDistrict());
+        TextView tvBus = holder.getView(R.id.tv_bus);
         String line;
         if (bean.getBuildingMap() != null && bean.getBuildingMap().getStationline().size() > 0) {
             String workTime = bean.getBuildingMap().getNearbySubwayTime().get(0);
             String stationLine = bean.getBuildingMap().getStationline().get(0);
             String stationName = bean.getBuildingMap().getStationNames().get(0);
             line = "步行" + workTime + "分钟到 | " + stationLine + "号线 ·" + stationName;
+            tvBus.setText(line);
+            tvBus.setVisibility(View.VISIBLE);
         } else {
-            line = "";
+            tvBus.setVisibility(View.GONE);
         }
-        holder.setText(R.id.tv_bus, line);
         holder.setText(R.id.tv_km, bean.getDistance());
         TextView price = holder.getView(R.id.tv_price);
         TextView unit = holder.getView(R.id.tv_unit);

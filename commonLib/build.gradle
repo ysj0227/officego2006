@@ -28,9 +28,10 @@ android {
     }
 
     buildTypes {
+        pretest{}
         debug {
             manifestPlaceholders = [
-                    GAO_MAP_KEY : "c80ca3ce3b15895e2f018f8f2cd99c84",
+                    GAO_MAP_KEY        : "c80ca3ce3b15895e2f018f8f2cd99c84",
                     RONGCLOUD_APPKEY   : "kj7swf8oknm02",
                     RONGCLOUD_APPSECRET: "OF78PpILjjRk4"
             ]
@@ -38,7 +39,7 @@ android {
         }
         release {
             manifestPlaceholders = [
-                    GAO_MAP_KEY : "443a7ffc55db3d44dba621365618e3ee",
+                    GAO_MAP_KEY        : "443a7ffc55db3d44dba621365618e3ee",
                     RONGCLOUD_APPKEY   : "qf3d5gbjq94mh",
                     RONGCLOUD_APPSECRET: "xtDkNCjJse"
             ]
