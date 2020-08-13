@@ -107,11 +107,12 @@ public class IMManager {
                 .enableMiPush(AppConfig.MI_APP_ID, AppConfig.MI_APP_KEY)
                 .build();
         RongPushClient.setPushConfig(config);
+
     }
 
     //融云初始化
     private void initRongIM(Context context) {
-        RongIM.init(context, AppConfig.RC_APPKEY, true);
+        RongIM.init(context, AppConfig.RC_APPKEY);
     }
 
     private void initMessageType() {

@@ -240,7 +240,7 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
         }
         String buildingName = cetOfficeName.getText() == null ? "" : cetOfficeName.getText().toString();
         if (TextUtils.isEmpty(buildingName)) {
-            shortTip("请创建或关联楼盘");
+            shortTip("请输入写字楼");
             return;
         }
         String type = tvType.getText() == null ? "" : tvType.getText().toString().trim();

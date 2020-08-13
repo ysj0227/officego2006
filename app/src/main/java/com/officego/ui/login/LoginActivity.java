@@ -288,31 +288,31 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         stopDownTimer();
     }
 
-//    //融云消息推送的手机权限设置
-//    private void rongPermissionSetting() {
-//        RongPushPremissionsCheckHelper.checkPermissionsAndShowDialog(this, new ResultCallback() {
-//            @Override
-//            public void onAreadlyOpened(String value) {
-//                LogCat.e(TAG, "11111 onAreadlyOpened  value=" + value);
-//            }
-//
-//            @Override
-//            public boolean onBeforeShowDialog(String value) {
-//                LogCat.e(TAG, "11111 onBeforeShowDialog value=" + value);
-//                return false;
-//            }
-//
-//            @Override
-//            public void onGoToSetting(String value) {
-//                LogCat.e(TAG, "11111 onGoToSetting value=" + value);
-//            }
-//
-//            @Override
-//            public void onFailed(String value, FailedType type) {
-//                LogCat.e(TAG, "11111 onFailed value=" + value);
-//            }
-//        });
-//    }
+    //融云消息推送的手机权限设置
+    private void rongPermissionSetting() {
+        RongPushPremissionsCheckHelper.checkPermissionsAndShowDialog(this, new ResultCallback() {
+            @Override
+            public void onAreadlyOpened(String value) {
+                LogCat.e(TAG, "11111 onAreadlyOpened  value=" + value);
+            }
+
+            @Override
+            public boolean onBeforeShowDialog(String value) {
+                LogCat.e(TAG, "11111 onBeforeShowDialog value=" + value);
+                return false;
+            }
+
+            @Override
+            public void onGoToSetting(String value) {
+                LogCat.e(TAG, "11111 onGoToSetting value=" + value);
+            }
+
+            @Override
+            public void onFailed(String value, FailedType type) {
+                LogCat.e(TAG, "11111 onFailed value=" + value);
+            }
+        });
+    }
 
     /**
      * 测试登录
