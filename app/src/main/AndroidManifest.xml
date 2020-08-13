@@ -182,21 +182,6 @@
                     android:scheme="rong" />
             </intent-filter>
         </activity>
-        <!--会话界面-->
-        <activity
-            android:name=".ui.message.ConversationSystemActivity_"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustResize">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data
-                    android:host="com.officego"
-                    android:pathPrefix="/conversationSystem/"
-                    android:scheme="rong" />
-            </intent-filter>
-        </activity>
         <activity
             android:name=".h5.WebViewActivity_"
             android:launchMode="singleTop"
@@ -256,14 +241,14 @@
             android:name=".commonlib.common.rongcloud.push.OfficeGoPushMessageReceiver"
             android:exported="true">
             <intent-filter>
-                <action android:name="io.rong.push.intent.MI_MESSAGE_ARRIVED"/>
-                <action android:name="io.rong.push.intent.MI_MESSAGE_CLICKED"/>
+                <action android:name="io.rong.push.intent.MI_MESSAGE_ARRIVED" />
+                <action android:name="io.rong.push.intent.MI_MESSAGE_CLICKED" />
                 <action android:name="io.rong.push.intent.MESSAGE_ARRIVED" />
                 <action android:name="io.rong.push.intent.MESSAGE_CLICKED" />
                 <action android:name="io.rong.push.intent.THIRD_PARTY_PUSH_STATE" />
             </intent-filter>
         </receiver>
-
+        <!--        ************************************************************-->
         <!-- 小米 配置开始 < -->
         <service
             android:name="com.xiaomi.push.service.XMPushService"

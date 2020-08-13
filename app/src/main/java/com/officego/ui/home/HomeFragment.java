@@ -583,7 +583,13 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     private void noData() {
         tvNoData.setVisibility(View.VISIBLE);
         rlException.setVisibility(View.GONE);
-//        rvHouse.setVisibility(View.GONE);
+        //刷新列表
+        buildingList.clear();
+        if (houseAdapter == null) {
+            houseAdapter = new HouseAdapter(mActivity, buildingList, setConditionBean());
+            rvHouse.setAdapter(houseAdapter);
+        }
+        houseAdapter.notifyDataSetChanged();
     }
 
     private void hasData() {
@@ -666,10 +672,10 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         rlConstruction.setVisibility(View.GONE);
         rlConstruction1.setVisibility(View.GONE);
         //清除条件
-        if (hashSet!=null){
+        if (hashSet != null) {
             hashSet.clear();
         }
-        if (checkStates!=null){
+        if (checkStates != null) {
             checkStates.clear();
         }
         line = "";
@@ -697,7 +703,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         dayPrice = "";
         decoration = "";
         houseTags = "";
-        btype=0;
+        btype = 0;
         tvSearchOffice.setText(R.string.str_house_all);
         //搜索
         getList();

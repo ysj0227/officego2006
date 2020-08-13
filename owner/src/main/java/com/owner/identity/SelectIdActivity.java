@@ -1,6 +1,7 @@
 package com.owner.identity;
 
 import android.os.Bundle;
+import android.text.TextUtils;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.TextView;
@@ -11,7 +12,10 @@ import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.config.CommonNotifications;
+import com.officego.commonlib.common.rongcloud.ConnectRongCloudUtils;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
@@ -108,19 +112,21 @@ public class SelectIdActivity extends BaseActivity {
         OfficegoApi.getInstance().switchId(role, new RetrofitCallback<LoginBean>() {
             @Override
             public void onSuccess(int code, String msg, LoginBean data) {
-                LogCat.e(TAG, "switchId onSuccess code");
                 hideLoadingDialog();
                 SpUtils.saveLoginInfo(data, SpUtils.getPhoneNum());
-                SpUtils.saveRole(role);
-                //跳转租户首页
-                GotoActivityUtils.mainActivity(context);
+                SpUtils.saveRole(String.valueOf(data.getRid()));
+                new ConnectRongCloudUtils();//连接融云
+                if (TextUtils.equals(Constants.TYPE_TENANT, String.valueOf(data.getRid()))) {
+                    GotoActivityUtils.mainActivity(context); //跳转租户首页
+                } else if (TextUtils.equals(Constants.TYPE_OWNER, String.valueOf(data.getRid()))) {
+                    GotoActivityUtils.mainOwnerActivity(context); //租户切换业主
+                }
             }
 
             @Override
             public void onFail(int code, String msg, LoginBean data) {
-                LogCat.e(TAG, "switchId owner onFail code=" + code + "  msg=" + msg);
                 hideLoadingDialog();
-                if (code == Constants.DEFAULT_ERROR_CODE || code == Constants.ERROR_CODE_5009) {
+                if (code == Constants.ERROR_CODE_5009) {
                     shortTip(msg);
                     SpUtils.clearLoginInfo();
                     GotoActivityUtils.loginClearActivity(context, true);

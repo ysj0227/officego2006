@@ -107,7 +107,6 @@ public class IMManager {
                 .enableMiPush(AppConfig.MI_APP_ID, AppConfig.MI_APP_KEY)
                 .build();
         RongPushClient.setPushConfig(config);
-
     }
 
     //融云初始化
