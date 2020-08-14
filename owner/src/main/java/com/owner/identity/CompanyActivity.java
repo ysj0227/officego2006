@@ -640,7 +640,8 @@ public class CompanyActivity extends BaseMvpActivity<CompanyPresenter> implement
             tvCompanyEdit.setVisibility(View.VISIBLE);
         } else if (TextUtils.equals("2", IdentityInfo.strCreateCompany(data))) {
             //关联
-            cetCompanyName.setEnabled(false);
+            cetCompanyName.setEnabled(true);
+            cetCompanyName.setText("");
             tvCompanyEdit.setVisibility(View.GONE);
             hideBuildingView();
         } else {

@@ -623,7 +623,9 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
             tvJointworkEdit.setVisibility(View.VISIBLE);
         } else if (TextUtils.equals("2", IdentityInfo.strCreateBranch(data))) {
             //关联
-            cetJointworkName.setEnabled(TextUtils.isEmpty(data.getBranchesName()));
+//            cetJointworkName.setEnabled(TextUtils.isEmpty(data.getBranchesName()));
+            cetJointworkName.setText("");
+            cetJointworkName.setEnabled(true);
             tvJointworkEdit.setVisibility(View.GONE);
         } else {
             //无定义

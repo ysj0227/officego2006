@@ -50,7 +50,6 @@ public class IdentityCancelActivity extends BaseMvpActivity<CancelSendMsgPresent
     void init() {
         mPresenter = new CancelSendMsgPresenter();
         mPresenter.attachView(this);
-        tvIdentity.setVisibility(mData.getIdentityType() == 1 ? View.VISIBLE : View.GONE);
         rlEdit.setVisibility(View.GONE);
         tvTip.setVisibility(View.GONE);
         btnSend.setText("撤销申请");
@@ -80,6 +79,7 @@ public class IdentityCancelActivity extends BaseMvpActivity<CancelSendMsgPresent
             tvAddress.setVisibility(View.VISIBLE);
             tvAddress.setText(data.getAddress());
         }
+        tvIdentity.setVisibility(mData.getIdentityType() == 1 ? View.VISIBLE : View.GONE);
         Glide.with(context).applyDefaultRequestOptions(GlideUtils.avaOoptions()).load(data.getAvatar()).into(civAvatar);
         tvName.setText((TextUtils.isEmpty(data.getAuthority()) ? "" : data.getAuthority() + ":") + data.getProprietorRealname());
         tvPosition.setText(data.getProprietorJob());

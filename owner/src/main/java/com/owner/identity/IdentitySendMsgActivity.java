@@ -119,7 +119,8 @@ public class IdentitySendMsgActivity extends BaseMvpActivity<SendMsgPresenter>
                     Objects.requireNonNull(cetSendContent.getText()).toString(),
                     sendMsgBean.getIdentityType() + "");
             //发送消息提示
-            SendMessageManager.getInstance().sendTextMessage(mData.getTargetId(), "我发送了加入公司的申请，请通过");
+            SendMessageManager.getInstance().sendTextMessage(mData.getTargetId(),
+                    sendMsgBean.getIdentityType() == 1 ? "我发送了加入公司的申请，请通过" : "我发送了加入网点的申请，请通过");
             gotoConversationActivity(context, mData.getTargetId());
             finish();
         }
