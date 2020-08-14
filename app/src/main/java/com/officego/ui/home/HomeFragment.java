@@ -281,7 +281,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     }
 
     //搜索
-    @Click(R.id.rl_ibtn_search)
+    @Click({R.id.rl_ibtn_search, R.id.ctl_inside_bar})
     void btnSearchClick() {
         gotoSearchActivity();
     }
@@ -620,8 +620,8 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
                 tvConstruction.setText(!TextUtils.isEmpty(line) ? "地铁" : "商圈 ");
                 tvConstruction1.setText(!TextUtils.isEmpty(line) ? "地铁" : "商圈");
             } else {
-                tvConstruction.setText((!TextUtils.isEmpty(line) ? "地铁" : "商圈") + "（" + checkStates.size() + "）");
-                tvConstruction1.setText((!TextUtils.isEmpty(line) ? "地铁" : "商圈") + "（" + checkStates.size() + "）");
+                tvConstruction.setText((!TextUtils.isEmpty(line) ? "地铁" : "商圈") + "(" + checkStates.size() + ")");
+                tvConstruction1.setText((!TextUtils.isEmpty(line) ? "地铁" : "商圈") + "(" + checkStates.size() + ")");
             }
         }
         //楼盘类型
