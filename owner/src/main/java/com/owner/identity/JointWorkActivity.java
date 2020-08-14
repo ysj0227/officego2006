@@ -742,7 +742,7 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
         sb.setId(bean.getBid());
         sb.setName(bean.getBuildingName());
         sb.setAddress(bean.getAddress());
-        sb.setIdentityType(2);
+        sb.setIdentityType(IDENTITY_JOINT_WORK);
         IdentitySendMsgActivity_.intent(context).sendMsgBean(sb).start();
         rvRecommendCompany.setVisibility(View.GONE);
         rlRecommendBuilding.setVisibility(View.GONE);

@@ -35,6 +35,8 @@ import static com.officego.commonlib.common.GotoActivityUtils.gotoConversationAc
 public class IdentitySendMsgActivity extends BaseMvpActivity<SendMsgPresenter>
         implements SendMsgContract.View {
 
+    @ViewById(resName = "tv_identity")
+    TextView tvIdentity;
     @ViewById(resName = "tv_title_name")
     TextView tvTitleName;
     @ViewById(resName = "tv_address")
@@ -54,6 +56,7 @@ public class IdentitySendMsgActivity extends BaseMvpActivity<SendMsgPresenter>
     SendMsgBean sendMsgBean;
     private ApplyLicenceBean mData;
 
+    @SuppressLint("SetTextI18n")
     @AfterViews
     void init() {
         mPresenter = new SendMsgPresenter();
@@ -69,6 +72,7 @@ public class IdentitySendMsgActivity extends BaseMvpActivity<SendMsgPresenter>
             tvAddress.setVisibility(View.VISIBLE);
             CommUtils.showHtmlTextView(tvAddress, sendMsgBean.getAddress());
         }
+        tvIdentity.setVisibility(sendMsgBean.getIdentityType() == 1 ? View.VISIBLE : View.GONE);
     }
 
     @Click(resName = "iv_back")

@@ -66,7 +66,7 @@ public class IdentityApplyProvider extends IContainerItemProvider.MessageProvide
             holder.btnReject.setOnClickListener(v ->
                     updateAuditStatus(false, info.getExtraMessage(), info.getId(), info.getLicenceId(), 2));
         } else {//消息方向，自己发送的
-            holder.tvContent.setText("你已申请加入TA的公司等待对方同意");
+            holder.tvContent.setText(TextUtils.equals("1", info.getExtraMessage()) ? "你已申请加入TA的公司等待对方同意" : "你已申请加入TA的网点等待对方同意");
             holder.rlBtn.setVisibility(View.GONE);
             holder.vLine.setVisibility(View.GONE);
         }

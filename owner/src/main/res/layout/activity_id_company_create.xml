@@ -177,9 +177,9 @@
                 style="@style/marginLeftRight18"
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_40"
+                android:drawablePadding="@dimen/dp_4"
                 android:drawableLeft="@mipmap/ic_small_location"
                 android:gravity="center_vertical"
-                android:text="统一社会信用代码"
                 android:textColor="@color/text_66"
                 android:textSize="@dimen/sp_13" />
 
@@ -189,7 +189,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="@dimen/dp_40"
                 android:gravity="center_vertical"
-                android:text="统一社会信用代码"
+                android:text=""
                 android:textColor="@color/text_66"
                 android:textSize="@dimen/sp_13" />
 
@@ -234,7 +234,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_16">
 
-            <com.officego.commonlib.view.RoundImageView
+            <ImageView
                 android:id="@+id/riv_image"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"

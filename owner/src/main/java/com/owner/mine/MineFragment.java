@@ -106,7 +106,8 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         }
         //auditStatus 0 审核中 |authority 0可以撤销(普通员工) 1不能撤销(管理员)
         if (mUserInfo.getAuditStatus() == 0 && mUserInfo.getAuthority() == 0) {
-            IdentityCancelActivity_.intent(mActivity).startForResult(REQUEST_CODE_IDENTITY);
+            IdentityCancelActivity_.intent(mActivity)
+                    .startForResult(REQUEST_CODE_IDENTITY);
             return;
         }
         if (isIdentity()) {

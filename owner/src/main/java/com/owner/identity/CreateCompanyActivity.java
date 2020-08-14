@@ -1,5 +1,6 @@
 package com.owner.identity;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.Intent;
@@ -10,6 +11,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -31,7 +33,6 @@ import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.PhotoUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.ClearableEditText;
-import com.officego.commonlib.view.RoundImageView;
 import com.officego.commonlib.view.TitleBarView;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
@@ -91,7 +92,7 @@ public class CreateCompanyActivity extends BaseMvpActivity<CreateSubmitPresenter
     @ViewById(resName = "tv_register_no1")
     TextView tvRegisterNo1;
     @ViewById(resName = "riv_image")
-    RoundImageView rivImage;
+    ImageView rivImage;
     @ViewById(resName = "tv_upload")
     TextView tvUpload;
     @ViewById(resName = "btn_save")
@@ -131,6 +132,7 @@ public class CreateCompanyActivity extends BaseMvpActivity<CreateSubmitPresenter
         }
     }
 
+    @SuppressLint("SetTextI18n")
     private void initShowView() {
         rlName.setVisibility(isJointWorkRelevanceCreate ? View.GONE : View.VISIBLE);
         rlAddress.setVisibility(isJointWorkRelevanceCreate ? View.GONE : View.VISIBLE);
@@ -176,11 +178,12 @@ public class CreateCompanyActivity extends BaseMvpActivity<CreateSubmitPresenter
         }
     }
 
-    public static void setImageViewLayoutParams(Context context, View view) {
+    private void setImageViewLayoutParams(Context context, View view) {
         ViewGroup.LayoutParams params = view.getLayoutParams();
         params.width = RelativeLayout.LayoutParams.MATCH_PARENT;
         params.height = CommonHelper.getScreenWidth(context) * 3 / 4;
         view.setLayoutParams(params);
+        rivImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
     }
 
     @Click(resName = "rl_license")
@@ -194,7 +197,10 @@ public class CreateCompanyActivity extends BaseMvpActivity<CreateSubmitPresenter
             name = tvName1.getText() == null ? "" : tvName1.getText().toString().trim();
             address = tvAddress1.getText() == null ? "" : tvAddress1.getText().toString().trim();
             regNo = tvRegisterNo1.getText() == null ? "" : tvRegisterNo1.getText().toString().trim();
-        }else {
+            if (regNo.contains("统一社会信用代码：")) {
+                regNo = regNo.replace("统一社会信用代码：", "");
+            }
+        } else {
             name = etNameContent.getText() == null ? "" : etNameContent.getText().toString().trim();
             address = etAddressContent.getText() == null ? "" : etAddressContent.getText().toString().trim();
             regNo = etRegisterNoContent.getText() == null ? "" : etRegisterNoContent.getText().toString().trim();

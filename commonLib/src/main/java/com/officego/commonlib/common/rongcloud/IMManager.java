@@ -41,6 +41,7 @@ import io.rong.message.RichContentMessage;
 import io.rong.message.TextMessage;
 import io.rong.message.VoiceMessage;
 import io.rong.push.RongPushClient;
+import io.rong.push.common.PushCacheHelper;
 import io.rong.push.pushconfig.PushConfig;
 
 /**
@@ -111,7 +112,10 @@ public class IMManager {
 
     //融云初始化
     private void initRongIM(Context context) {
+        //初始化
         RongIM.init(context, AppConfig.RC_APPKEY);
+        //系统消息是否显示详情
+        PushCacheHelper.getInstance().setPushContentShowStatus(context, true);
     }
 
     private void initMessageType() {

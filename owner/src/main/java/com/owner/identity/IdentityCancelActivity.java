@@ -26,6 +26,8 @@ import org.androidannotations.annotations.ViewById;
 public class IdentityCancelActivity extends BaseMvpActivity<CancelSendMsgPresenter>
         implements CancelSendMsgContract.View {
 
+    @ViewById(resName = "tv_identity")
+    TextView tvIdentity;
     @ViewById(resName = "tv_title_name")
     TextView tvTitleName;
     @ViewById(resName = "tv_address")
@@ -48,6 +50,7 @@ public class IdentityCancelActivity extends BaseMvpActivity<CancelSendMsgPresent
     void init() {
         mPresenter = new CancelSendMsgPresenter();
         mPresenter.attachView(this);
+        tvIdentity.setVisibility(mData.getIdentityType() == 1 ? View.VISIBLE : View.GONE);
         rlEdit.setVisibility(View.GONE);
         tvTip.setVisibility(View.GONE);
         btnSend.setText("撤销申请");
