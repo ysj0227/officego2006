@@ -8,6 +8,7 @@ package com.officego.commonlib.common.message;
 
 import android.content.Context;
 import android.text.Spannable;
+import android.text.SpannableString;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -79,7 +80,7 @@ public class BuildingProvider extends IContainerItemProvider.MessageProvider<Bui
 
     @Override //这里意思是你的这个自定义消息显示的内容
     public Spannable getContentSummary(BuildingInfo info) {
-        return null;
+        return new SpannableString("消息");
     }
 
     @Override  //点击你的自定义消息执行的操作

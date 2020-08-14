@@ -92,7 +92,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_12"
             android:layout_marginTop="@dimen/dp_9"
-            android:maxLength="8"
+            android:maxLength="10"
             android:textColor="@color/text_33"
             android:textSize="@dimen/sp_12"
             app:layout_constraintBottom_toBottomOf="@id/civ_avatar"

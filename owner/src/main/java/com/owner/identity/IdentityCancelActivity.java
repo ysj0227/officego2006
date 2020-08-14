@@ -1,5 +1,6 @@
 package com.owner.identity;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
@@ -49,7 +50,7 @@ public class IdentityCancelActivity extends BaseMvpActivity<CancelSendMsgPresent
         mPresenter.attachView(this);
         rlEdit.setVisibility(View.GONE);
         tvTip.setVisibility(View.GONE);
-        btnSend.setText("撤销");
+        btnSend.setText("撤销申请");
         mPresenter.getIdentityInfo();
     }
 
@@ -65,6 +66,7 @@ public class IdentityCancelActivity extends BaseMvpActivity<CancelSendMsgPresent
         }
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void identityInfoSuccess(QueryApplyLicenceBean data) {
         mData = data;
@@ -76,7 +78,7 @@ public class IdentityCancelActivity extends BaseMvpActivity<CancelSendMsgPresent
             tvAddress.setText(data.getAddress());
         }
         Glide.with(context).applyDefaultRequestOptions(GlideUtils.avaOoptions()).load(data.getAvatar()).into(civAvatar);
-        tvName.setText(data.getProprietorRealname());
+        tvName.setText((TextUtils.isEmpty(data.getAuthority()) ? "" : data.getAuthority() + ":") + data.getProprietorRealname());
         tvPosition.setText(data.getProprietorJob());
     }
 
