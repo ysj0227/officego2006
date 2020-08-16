@@ -220,7 +220,7 @@ public class SendMessageManager {
         TextMessage textMessage = TextMessage.obtain(content);
         RongIM.getInstance().sendMessage(Message.obtain(targetId, Conversation.ConversationType.PRIVATE,
                 textMessage),
-                null, null, new IRongCallback.ISendMessageCallback() {
+                content, null, new IRongCallback.ISendMessageCallback() {
                     @Override
                     public void onAttached(Message message) {
                     }

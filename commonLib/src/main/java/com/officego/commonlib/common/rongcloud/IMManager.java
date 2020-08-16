@@ -37,11 +37,13 @@ import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
 import io.rong.imlib.model.MessageContent;
 import io.rong.message.ImageMessage;
+import io.rong.message.NotificationMessage;
 import io.rong.message.RichContentMessage;
 import io.rong.message.TextMessage;
 import io.rong.message.VoiceMessage;
 import io.rong.push.RongPushClient;
 import io.rong.push.common.PushCacheHelper;
+import io.rong.push.notification.RongNotificationInterface;
 import io.rong.push.pushconfig.PushConfig;
 
 /**
@@ -105,7 +107,7 @@ public class IMManager {
     //融云推送
     private void initRongPush() {
         PushConfig config = new PushConfig.Builder()
-                .enableMiPush(AppConfig.MI_APP_ID, AppConfig.MI_APP_KEY)
+//                .enableMiPush(AppConfig.MI_APP_ID, AppConfig.MI_APP_KEY)
                 .build();
         RongPushClient.setPushConfig(config);
     }
@@ -422,10 +424,10 @@ public class IMManager {
                     new RetrofitCallback<RongUserInfoBean>() {
                         @Override
                         public void onSuccess(int code, String msg, RongUserInfoBean data) {
-                            LogCat.e(TAG, "1111111111  getRongUserInfo onSuccess");
-                            RongCloudSetUserInfoUtils.refreshUserInfoCache(data.getId(),
+                            LogCat.e(TAG, "1111111111  getRongUserInfo onSuccess" + data.getId());
+                            RongCloudSetUserInfoUtils.refreshUserInfoCache(targetId,
                                     data.getName(), data.getAvatar());
-                        }
+                          }
 
                         @Override
                         public void onFail(int code, String msg, RongUserInfoBean data) {

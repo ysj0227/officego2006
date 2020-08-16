@@ -36,12 +36,12 @@ public class AppConfig extends BaseConfig {
 
     //开发
     @Override
-    protected void initDev(Context context, String env) {
+    protected void initDev(Context context,  String env) {
         //URL
-//        APP_URL = "http://debug.officego.com.cn/";
-//        APP_URL_MAIN = "http://test1.officego.com.cn/";
-        APP_URL = "http://admin.officego.com.cn/";
-        APP_URL_MAIN = "http://test.officego.com.cn/";
+        APP_URL = "http://debug.officego.com.cn/";
+        APP_URL_MAIN = "http://test1.officego.com.cn/";
+//        APP_URL = "http://admin.officego.com.cn/";
+//        APP_URL_MAIN = "http://test.officego.com.cn/";
         //个人中心
         H5_ABOUT_US = APP_URL_MAIN + "lessee/aboutUs.html";
         H5_HELP_FEEDBACK = APP_URL_MAIN + "lessee/opinion.html";
