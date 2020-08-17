@@ -90,6 +90,7 @@ public class MineSettingActivity extends BaseActivity {
                 .setConfirmButton(R.string.str_update, (dialog12, which) -> AppUpdate.versionUpdate(context, url))
                 .setCancelButton(R.string.sm_cancel, (dialog1, which) -> dialog1.dismiss()).create();
         dialog.showWithOutTouchable(false);
+        dialog.setCancelable(false);
     }
 
     private void updateVersion(String versionName) {

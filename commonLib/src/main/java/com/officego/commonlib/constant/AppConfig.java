@@ -34,43 +34,14 @@ public class AppConfig extends BaseConfig {
     public static final String MI_APP_ID = "2882303761518466472";
     public static final String MI_APP_KEY = "5901846688472";
 
-    //开发
+    //测试
     @Override
-    protected void initDev(Context context,  String env) {
+    protected void initTest(Context context, String env) {
         //URL
         APP_URL = "http://debug.officego.com.cn/";
         APP_URL_MAIN = "http://test1.officego.com.cn/";
 //        APP_URL = "http://admin.officego.com.cn/";
 //        APP_URL_MAIN = "http://test.officego.com.cn/";
-        //个人中心
-        H5_ABOUT_US = APP_URL_MAIN + "lessee/aboutUs.html";
-        H5_HELP_FEEDBACK = APP_URL_MAIN + "lessee/opinion.html";
-        H5_HELP_FEEDBACK_OWNER = APP_URL_MAIN + "owner/opinion.html";
-        H5_PRIVACY = APP_URL_MAIN + "lessee/privacy.html";
-        H5_REGISTER = APP_URL_MAIN + "lessee/registerProtocol.html";
-        H5_QA = APP_URL_MAIN + "lessee/issueList.html";
-        //楼盘网点管理
-        H5_OWNER_BUILDINGlIST = APP_URL_MAIN + "owner/houseList.html";
-        H5_OWNER_HOUSElIST = APP_URL_MAIN + "owner/branchList.html";
-        //认证
-        H5_OWNER_IDIFY = APP_URL_MAIN + "owner/myHome.html";
-        H5_OWNER_IDIFY_PERSION = APP_URL_MAIN + "owner/attestationPersonage.html";
-        H5_OWNER_IDIFY_COMPANY = APP_URL_MAIN + "owner/company.html";
-        H5_OWNER_IDIFY_JOINTWORK = APP_URL_MAIN + "owner/company2.html";
-        H5_STAFF_LIST = APP_URL_MAIN + "owner/staffList.html";  //员工管理
-        //融云IM test
-        RC_APPKEY = "kj7swf8oknm02";
-        RC_APPSECRET = "OF78PpILjjRk4";
-        //bugly
-        BUGLY_ID = "dc2ca7a8a6";
-    }
-
-    //测试
-    @Override
-    protected void initTest(Context context, String env) {
-        //URL
-        APP_URL = "http://admin.officego.com.cn/";
-        APP_URL_MAIN = "http://test.officego.com.cn/";
         //个人中心
         H5_ABOUT_US = APP_URL_MAIN + "lessee/aboutUs.html";
         H5_HELP_FEEDBACK = APP_URL_MAIN + "lessee/opinion.html";

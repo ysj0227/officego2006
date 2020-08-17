@@ -106,7 +106,15 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
             isReOwnerLogin = getIntent().getExtras().getBoolean("isReOwnerLogin");
             rlBack.setVisibility(isOwnerLogin ? View.GONE : View.VISIBLE);
         }
-        NotificationUtil.showSettingDialog(context);
+        if (!TextUtils.isEmpty(SpUtils.getSignToken())) {
+            if (TextUtils.equals(Constants.TYPE_OWNER, String.valueOf(SpUtils.getRole()))) {
+                MainOwnerActivity_.intent(context).start();
+            } else {
+                MainActivity_.intent(context).start();
+            }
+        } else {
+            NotificationUtil.showSettingDialog(context);
+        }
     }
 
     @Click(R.id.btn_login)

@@ -3,6 +3,8 @@ package com.officego.commonlib.common.rongcloud;
 import android.net.Uri;
 import android.text.TextUtils;
 
+import com.officego.commonlib.common.SpUtils;
+
 import io.rong.imkit.RongIM;
 import io.rong.imlib.model.UserInfo;
 
@@ -12,6 +14,21 @@ import io.rong.imlib.model.UserInfo;
  * Descriptions:
  **/
 public class RongCloudSetUserInfoUtils {
+
+    /**
+     * 融云连接成功
+     * 保存,设置当前用户信息
+     * @param userRongChatId targetId
+     */
+    public static void setCurrentInfo(String userRongChatId) {
+        SpUtils.saveRongChatId(userRongChatId);
+        UserInfo userInfo = new UserInfo(userRongChatId, SpUtils.getNickName(), Uri.parse(SpUtils.getHeaderImg()));
+        RongIM.getInstance().setCurrentUserInfo(userInfo);
+        //是否携带用户信息，true 携带，false 不携带。
+        RongIM.getInstance().setMessageAttachedUserInfo(true);
+        RongIM.getInstance().enableNewComingMessageIcon(true);
+        RongIM.getInstance().enableUnreadMessageIcon(true);
+    }
 
     /**
      * 刷新融云用户信息

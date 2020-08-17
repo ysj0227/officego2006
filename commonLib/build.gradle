@@ -28,7 +28,6 @@ android {
     }
 
     buildTypes {
-        pretest{}
         debug {
             manifestPlaceholders = [
                     GAO_MAP_KEY        : "c80ca3ce3b15895e2f018f8f2cd99c84",

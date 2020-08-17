@@ -27,9 +27,12 @@ import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.List;
+
 import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationListFragment;
 import io.rong.imkit.model.UIConversation;
+import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 
 import static android.app.Activity.RESULT_OK;
@@ -104,12 +107,29 @@ public class MessageFragment extends BaseFragment {
         transaction.commit();
     }
 
+//    private void getList() {
+//        RongIMClient.getInstance().getConversationList(new RongIMClient.ResultCallback<List<Conversation>>() {
+//            @Override
+//            public void onSuccess(List<Conversation> conversations) {
+////                for (int i = 0; i <conversations.size() ; i++) {
+////                    LogCat.e(TAG, "111111  conversations list=" + conversations.size()+
+////                            " content="+conversations.get(i));
+////
+////                }
+//            }
+//
+//            @Override
+//            public void onError(RongIMClient.ErrorCode errorCode) {
+//            }
+//        });
+//    }
+
     /**
      * 设置会话操作的监听器。
      */
-    private void conversationClick(){
+    private void conversationClick() {
 
-        RongIM. setConversationListBehaviorListener(new RongIM.ConversationListBehaviorListener() {
+        RongIM.setConversationListBehaviorListener(new RongIM.ConversationListBehaviorListener() {
             @Override
             public boolean onConversationPortraitClick(Context context, Conversation.ConversationType conversationType, String targetId) {
                 return false;
@@ -127,7 +147,7 @@ public class MessageFragment extends BaseFragment {
 
             @Override
             public boolean onConversationClick(Context context, View view, UIConversation conversation) {
-                LogCat.e(TAG,"1111111111  onConversationClick");
+                LogCat.e(TAG, "1111111111  onConversationClick");
                 return false;
             }
         });
