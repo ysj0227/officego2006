@@ -19,6 +19,9 @@ android {
             }
         }
         multiDexEnabled true
+        packagingOptions {
+            exclude 'io.rong.common.fwlog.CrashLogWriter'
+        }
     }
 
     sourceSets {
@@ -105,8 +108,8 @@ dependencies {
     // ExoPlayer as IMediaPlayer: optional, experimental
     api 'tv.danmaku.ijk.media:ijkplayer-exo:0.8.8'
     //rongcloud
-    api 'cn.rongcloud.sdk:im_lib:2.10.5'
-    api 'cn.rongcloud.sdk:im_kit:2.10.5'
+    api 'cn.rongcloud.sdk:im_lib:2.10.6'
+    api 'cn.rongcloud.sdk:im_kit:2.10.6'
     //fastjson
     api 'com.alibaba:fastjson:1.2.46'
 //    日历周月切换
@@ -116,4 +119,8 @@ dependencies {
     api 'com.github.donkingliang:ImageSelector:2.2.0'
     //bugly
     api 'com.tencent.bugly:crashreport:3.1.0'
+    //华为push
+    api 'com.huawei.android.hms:base:2.6.1.301'
+    api 'com.huawei.android.hms:push:2.6.1.301'
+    //oppo
 }

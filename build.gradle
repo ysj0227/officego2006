@@ -24,6 +24,7 @@ allprojects {
         mavenCentral()
         maven { url 'https://jitpack.io' }//一些库的引入需要加入
         maven {url  "https://dl.bintray.com/rongcloud/maven"}
+        maven {url 'http://developer.huawei.com/repo/'}//华为推送
     }
 }
 
