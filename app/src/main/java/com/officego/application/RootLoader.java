@@ -12,6 +12,9 @@ import com.officego.commonlib.utils.HttpsUtils;
 import com.officego.commonlib.utils.Utils;
 import com.officego.commonlib.utils.log.LogCat;
 import com.officego.config.DbConfig;
+import com.sensorsdata.analytics.android.sdk.SAConfigOptions;
+import com.sensorsdata.analytics.android.sdk.SensorsAnalyticsAutoTrackEventType;
+import com.sensorsdata.analytics.android.sdk.SensorsDataAPI;
 import com.tencent.bugly.crashreport.CrashReport;
 
 import java.security.SecureRandom;
@@ -46,7 +49,7 @@ public class RootLoader {
         //IM
         IMManager.getInstance().init(context);
         //SensorsData
-//        initSensorsData();
+        initSensorsData();
         //bugly
         CrashReport.initCrashReport(context, AppConfig.BUGLY_ID, true);
         if (!TextUtils.isEmpty(SpUtils.getUserId())) {
@@ -54,23 +57,22 @@ public class RootLoader {
         }
     }
 
-//    //神策初始化
-//    private void initSensorsData() {
-//        // 初始化配置
-//        SAConfigOptions saConfigOptions = new SAConfigOptions(AppConfig.SA_SERVER_URL);
-//        // 开启全埋点
-//        saConfigOptions.setAutoTrackEventType(SensorsAnalyticsAutoTrackEventType.APP_CLICK |
-//                SensorsAnalyticsAutoTrackEventType.APP_START |
-//                SensorsAnalyticsAutoTrackEventType.APP_END |
-//                SensorsAnalyticsAutoTrackEventType.APP_VIEW_SCREEN)
-//                //开启 Log
-//                .enableLog(true);
-///**
-// * 其他配置，如开启可视化全埋点
-// */
-//    // 需要在主线程初始化神策 SDK
-//        SensorsDataAPI.startWithConfigOptions(context, saConfigOptions);
-//    }
+    //神策初始化
+    private void initSensorsData() {
+        // 初始化配置
+        SAConfigOptions saConfigOptions = new SAConfigOptions(AppConfig.SA_SERVER_URL);
+        // 开启全埋点
+        saConfigOptions.setAutoTrackEventType(SensorsAnalyticsAutoTrackEventType.APP_CLICK |
+                SensorsAnalyticsAutoTrackEventType.APP_START |
+                SensorsAnalyticsAutoTrackEventType.APP_END |
+                SensorsAnalyticsAutoTrackEventType.APP_VIEW_SCREEN)
+                //开启 Log
+                .enableLog(true);
+        // 开启可视化全埋点
+        saConfigOptions.enableVisualizedAutoTrack(true);
+        // 需要在主线程初始化神策 SDK
+        SensorsDataAPI.startWithConfigOptions(context, saConfigOptions);
+    }
 
     /**
      * Glide加载https部分失败，设置信任证书

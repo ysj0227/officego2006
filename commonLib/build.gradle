@@ -120,10 +120,10 @@ dependencies {
     //bugly
     api 'com.tencent.bugly:crashreport:3.1.0'
 //    //华为push
-//    api 'com.huawei.android.hms:base:2.6.1.301'
-//    api 'com.huawei.android.hms:push:2.6.1.301'
+    api 'com.huawei.android.hms:base:2.6.1.301'
+    api 'com.huawei.android.hms:push:2.6.1.301'
     //oppo
 
     // 神策Sensors Analytics SDK 依赖
-//    api 'com.sensorsdata.analytics.android:SensorsAnalyticsSDK:4.2.3'
+    api 'com.sensorsdata.analytics.android:SensorsAnalyticsSDK:4.2.3'
 }
