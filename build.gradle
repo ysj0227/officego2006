@@ -11,6 +11,8 @@ buildscript {
 //        classpath 'com.android.tools.build:gradle:3.5.3'
         classpath 'com.android.tools.build:gradle:3.2.1'
         classpath 'com.meituan.android.walle:plugin:1.1.6'
+//        //添加神策分析 android-gradle-plugin2 依赖
+//        classpath 'com.sensorsdata.analytics.android:android-gradle-plugin2:3.2.9'
 
         // NOTE: Do not place your application dependencies here; they belong
         // in the individual module build.gradle files
@@ -24,7 +26,7 @@ allprojects {
         mavenCentral()
         maven { url 'https://jitpack.io' }//一些库的引入需要加入
         maven {url  "https://dl.bintray.com/rongcloud/maven"}
-        maven {url 'http://developer.huawei.com/repo/'}//华为推送
+//        maven {url 'http://developer.huawei.com/repo/'}//华为推送
     }
 }
 

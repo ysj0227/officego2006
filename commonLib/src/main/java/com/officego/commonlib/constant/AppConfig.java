@@ -34,12 +34,16 @@ public class AppConfig extends BaseConfig {
     public static final String MI_APP_ID = "2882303761518466472";
     public static final String MI_APP_KEY = "5901846688472";
 
+    //神策数据
+    public static  String SA_SERVER_URL = "";
+
     //测试
     @Override
     protected void initTest(Context context, String env) {
         //URL
         APP_URL = "http://debug.officego.com.cn/";
         APP_URL_MAIN = "http://test1.officego.com.cn/";
+        SA_SERVER_URL="https://officego.datasink.sensorsdata.cn/sa?project=default&token=d0db7a742f154aac";
 //        APP_URL = "http://admin.officego.com.cn/";
 //        APP_URL_MAIN = "http://test.officego.com.cn/";
         //个人中心
@@ -71,6 +75,7 @@ public class AppConfig extends BaseConfig {
         //URL
         APP_URL = "https://api.officego.com/";
         APP_URL_MAIN = "https://m.officego.com/";
+        SA_SERVER_URL="https://officego.datasink.sensorsdata.cn/sa?project=production&token=d0db7a742f154aac";
         //个人中心
         H5_ABOUT_US = APP_URL_MAIN + "lessee/aboutUs.html";
         H5_HELP_FEEDBACK = APP_URL_MAIN + "lessee/opinion.html";
