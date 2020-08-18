@@ -17,6 +17,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.appbar.AppBarLayout;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpFragment;
+import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.update.VersionDialog;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
@@ -53,7 +54,8 @@ import static com.officego.config.ConditionConfig.mConditionBean;
 public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         HomeContract.View, OnBannerListener,
         SearchPopupWindow.onSureClickListener,
-        SwipeRefreshLayout.OnRefreshListener {
+        SwipeRefreshLayout.OnRefreshListener,
+         HouseAdapter.ClickItemListener{
     @ViewById(R.id.cdl_root)
     CoordinatorLayout cdlRoot;
     @ViewById(R.id.bga_refresh)
@@ -277,12 +279,14 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     //搜索
     @Click(R.id.tv_search)
     void searchClick() {
+        SensorsTrack.searchButtonIndex();
         gotoSearchActivity();
     }
 
     //搜索
     @Click({R.id.rl_ibtn_search, R.id.ctl_inside_bar})
     void btnSearchClick() {
+        SensorsTrack.searchButtonIndex();
         gotoSearchActivity();
     }
 
@@ -440,6 +444,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
             houseAdapter = new HouseAdapter(mActivity, buildingList, setConditionBean());
             rvHouse.setAdapter(houseAdapter);
         }
+        houseAdapter.setItemListener(this);
     }
 
     /**
@@ -726,5 +731,11 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         houseTags = "";
         //搜索
         getList();
+    }
+
+    @Override
+    public void listItemClick(int position, int buildingId, int btype) {
+        //神策
+        SensorsTrack.visitBuildingDataPage(position, buildingId);
     }
 }

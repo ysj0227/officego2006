@@ -17,6 +17,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
+import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.log.LogCat;
@@ -47,7 +48,7 @@ import java.util.List;
 @EActivity(R.layout.home_activity_search_house_list)
 public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> implements
         HomeContract.View, SearchPopupWindow.onSureClickListener,
-        SwipeRefreshLayout.OnRefreshListener {
+        SwipeRefreshLayout.OnRefreshListener, HouseAdapter.ClickItemListener {
     @ViewById(R.id.btn_back)
     LinearLayout btnBack;
     @ViewById(R.id.et_search)
@@ -258,6 +259,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
             houseAdapter = new HouseAdapter(context, buildingList, setConditionBean());
             rvHouse.setAdapter(houseAdapter);
         }
+        houseAdapter.setItemListener(this);
     }
 
     /**
@@ -442,5 +444,12 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
         tvNoData.setVisibility(View.GONE);
         rlException.setVisibility(View.VISIBLE);
         mSwipeRefreshLayout.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void listItemClick(int position, int buildingId, int btype) {
+        //神策
+        SensorsTrack.clickSearchResultsPage(searchKeywords, btype, position, buildingId);
+        SensorsTrack.visitBuildingDataPage(position, buildingId);
     }
 }

@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.LabelsView;
@@ -66,6 +67,7 @@ public class SearchRecommendActivity extends BaseMvpActivity<SearchKeywordsPrese
     RecyclerView rvSearchList;
     @ViewById(R.id.nsv_view)
     NestedScrollView nsvView;
+    private int sensorsClickType;//神策点击
 
     @AfterViews
     void init() {
@@ -86,6 +88,8 @@ public class SearchRecommendActivity extends BaseMvpActivity<SearchKeywordsPrese
             mPresenter.getHistory();
         }
         mPresenter.getHot();
+        //神策
+        SensorsTrack.visitSearchPage();
     }
 
     @Click(R.id.btn_cancel)
@@ -113,6 +117,7 @@ public class SearchRecommendActivity extends BaseMvpActivity<SearchKeywordsPrese
             String input = Objects.requireNonNull(etSearch.getText()).toString().trim();
             if (!TextUtils.isEmpty(input)) {
                 mPresenter.addSearchKeywords(input);
+                sensorsClickType = 2;
                 gotoSearchList(input);
             }
             return true;
@@ -123,13 +128,19 @@ public class SearchRecommendActivity extends BaseMvpActivity<SearchKeywordsPrese
     @Override
     public void historySuccess(List<QueryHistoryKeywordsBean.DataBean> list) {
         labelHistory.setLabels(list, (label, position, data) -> data.getKeywords());
-        labelHistory.setOnLabelClickListener((label, data, position) -> gotoSearchList(list.get(position).getKeywords()));
+        labelHistory.setOnLabelClickListener((label, data, position) -> {
+            sensorsClickType = 1;
+            gotoSearchList(list.get(position).getKeywords());
+        });
     }
 
     @Override
     public void hotSuccess(List<DirectoryBean.DataBean> list) {
         labelFind.setLabels(list, (label, position, data) -> data.getDictCname());
-        labelFind.setOnLabelClickListener((label, data, position) -> gotoSearchList(list.get(position).getDictCname()));
+        labelFind.setOnLabelClickListener((label, data, position) -> {
+            sensorsClickType = 0;
+            gotoSearchList(list.get(position).getDictCname());
+        });
     }
 
     @Override
@@ -156,6 +167,9 @@ public class SearchRecommendActivity extends BaseMvpActivity<SearchKeywordsPrese
     }
 
     private void gotoSearchList(String text) {
+        //神策
+        SensorsTrack.visitSearchResultsPage(sensorsClickType, text);
+        //list结果
         SearchHouseListActivity_.intent(context)
                 .searchKeywords(text)
                 .start();

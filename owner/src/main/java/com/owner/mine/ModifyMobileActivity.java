@@ -7,6 +7,7 @@ import android.widget.TextView;
 
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.RegexUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
@@ -59,13 +60,21 @@ public class ModifyMobileActivity extends BaseMvpActivity<ModifyMobilePresenter>
             String phoneNumber = mobile.substring(0, 3) + "****" + mobile.substring(7);
             tvMobile.setText("当前手机号：" + phoneNumber);
         }
+        smsEditText();
     }
-
+    //点击验证码输入框
+    private void smsEditText(){
+        etCode.setOnFocusChangeListener((view, b) -> {
+            SensorsTrack.codeInput();//神策
+        });
+    }
     @Click(resName = "tv_send_code")
     void getCodeClick() {
         if (isFastClick(1200)) {
             return;
         }
+        //神策
+        SensorsTrack.smsCode();
         //发送验证码
         mobile = RegexUtils.handleIllegalCharacter(etMobile.getText().toString().trim());
         if (TextUtils.isEmpty(mobile)) {

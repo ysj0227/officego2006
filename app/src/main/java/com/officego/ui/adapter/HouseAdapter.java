@@ -35,6 +35,20 @@ public class HouseAdapter extends CommonListAdapter<BuildingBean.ListBean> {
     private Context context;
     private ConditionBean conditionBean; //传入的筛选条件
 
+    private ClickItemListener itemListener;
+
+    public ClickItemListener getItemListener() {
+        return itemListener;
+    }
+
+    public void setItemListener(ClickItemListener itemListener) {
+        this.itemListener = itemListener;
+    }
+
+    public interface ClickItemListener {
+        void listItemClick(int position, int buildingId,int btype);
+    }
+
     public HouseAdapter(Context context, List<BuildingBean.ListBean> list, ConditionBean bean) {
         super(context, R.layout.item_house_message, list);
         this.context = context;
@@ -147,6 +161,7 @@ public class HouseAdapter extends CommonListAdapter<BuildingBean.ListBean> {
      */
     private void gotoDetails(ViewHolder holder, BuildingBean.ListBean bean) {
         holder.itemView.setOnClickListener(v -> {
+            itemListener.listItemClick(holder.getAdapterPosition(),bean.getId(), bean.getBtype());
             if (bean.getBtype() == 1) {
                 BuildingDetailsActivity_.intent(context).mConditionBean(conditionBean)
                         .mBuildingBean(BundleUtils.BuildingMessage(1, bean.getId())).start();

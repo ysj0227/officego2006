@@ -9,6 +9,7 @@ import androidx.annotation.Nullable;
 
 import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.ui.IdSelectActivity_;
@@ -31,6 +32,8 @@ public class LaunchActivity extends BaseActivity
         } else {
             new Handler().postDelayed(this::gotoMainActivity, 500);
         }
+        //神策
+        SensorsTrack.sensorsLogin(SpUtils.getUserId());
     }
 
     private void gotoMainActivity() {

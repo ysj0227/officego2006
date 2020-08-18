@@ -5,6 +5,7 @@ import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.os.Build;
 import android.os.CountDownTimer;
 import android.text.Html;
 import android.text.TextUtils;
@@ -17,6 +18,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.app.ActivityCompat;
 
 import com.officego.MainActivity_;
 import com.officego.MainOwnerActivity_;
@@ -24,6 +26,7 @@ import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.constant.AppConfig;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
@@ -96,6 +99,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
     @AfterViews
     void init() {
         PermissionUtils.checkPermissionActivity(this);
+        channelTrack();
         StatusBarUtils.setStatusBarColor(this);
         mPresenter = new LoginPresenter(context);
         mPresenter.attachView(this);
@@ -115,6 +119,13 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         } else {
             NotificationUtil.showSettingDialog(context);
         }
+        smsEditText();
+    }
+    //点击验证码输入框
+    private void smsEditText(){
+        etCode.setOnFocusChangeListener((view, b) -> {
+            SensorsTrack.codeInput();//神策
+        });
     }
 
     @Click(R.id.btn_login)
@@ -122,6 +133,8 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         if (isFastClick(1500)) {
             return;
         }
+        //神策
+        SensorsTrack.login();
         mobile = RegexUtils.handleIllegalCharacter(etMobile.getText().toString().trim());
         if (rlCode.isShown()) {
             String code = Objects.requireNonNull(etCode.getText()).toString().trim();
@@ -151,6 +164,8 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         if (isFastClick(1500)) {
             return;
         }
+        //神策
+        SensorsTrack.login();
         //检查手机的权限设置
         if (PermissionUtils.checkPhonePermission(this)) {
             loginOnlyPhone();
@@ -168,7 +183,6 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
     @Click(R.id.btn_test)
     void testClick() {
         testDialog(context);
-        //startActivity(new Intent(this, IDCameraActivity.class));
     }
 
     @Click(R.id.tv_get_code)
@@ -176,6 +190,8 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         if (isFastClick(1200)) {
             return;
         }
+        //神策
+        SensorsTrack.smsCode();
         //发送验证码
         mobile = RegexUtils.handleIllegalCharacter(etMobile.getText().toString().trim());
         startDownTimer(mobile);
@@ -202,6 +218,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+            SensorsTrack.trackInstallation(context);
             btnLoginNoPassword.setVisibility(TextUtils.isEmpty(CommonHelper.getPhoneNum(context)) ? View.GONE : View.VISIBLE);
         }
         if (grantResults.length <= 0) {
@@ -219,6 +236,8 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
 
     @Override
     public void loginSuccess(LoginBean data) {
+        //神策
+        SensorsTrack.sensorsLogin(data.getUid());
         //当身份变化
         if (!TextUtils.equals(SpUtils.getRole(), String.valueOf(data.getRid()))) {
             SpUtils.saveRole(String.valueOf(data.getRid()));//保存角色
@@ -294,6 +313,18 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
     protected void onDestroy() {
         super.onDestroy();
         stopDownTimer();
+    }
+
+    //渠道追踪
+    private void channelTrack() {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            if (ActivityCompat.checkSelfPermission(this,
+                    "android.permission.READ_PHONE_STATE") == PackageManager.PERMISSION_GRANTED) {
+                SensorsTrack.trackInstallation(context);
+            }
+        } else {
+            SensorsTrack.trackInstallation(context);
+        }
     }
 
     //融云消息推送的手机权限设置
