@@ -43,7 +43,6 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 
 import java.util.Date;
-import java.util.Objects;
 
 import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationFragment;
@@ -107,14 +106,19 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         } else {
             initIMInfo();
             //认证申请聊天列表进入
-            if (TextUtils.equals(Constants.TYPE_OWNER, targetId.substring(targetId.length() - 1)) &&
+            if (TextUtils.isEmpty(targetId)) {
+                shortTip("获取信息异常，请稍后再聊");
+                return;
+            }
+            if (targetId.length() > 1 && TextUtils.equals(Constants.TYPE_OWNER, targetId.substring(targetId.length() - 1)) &&
                     TextUtils.equals(Constants.TYPE_OWNER, SpUtils.getRongChatId().substring(SpUtils.getRongChatId().length() - 1))) {
                 //认证申请聊天列表进入,融云id最后一位是“1”
                 isSendApply = false;
                 ctlChat.setVisibility(View.GONE);
                 mPresenter.identityChattedMsg(targetId);
                 initIM();
-            } else if (TextUtils.equals(Constants.TYPE_SYSTEM, targetId.substring(targetId.length() - 1))) {
+            } else if (TextUtils.equals("3", targetId) ||
+                    (targetId.length() > 1 && TextUtils.equals(Constants.TYPE_SYSTEM, targetId.substring(targetId.length() - 1)))) {
                 //系统消息聊天列表进入
                 ctlChat.setVisibility(View.GONE);
                 tvTitleName.setText("系统消息");
@@ -148,35 +152,42 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
 
     private void initIMInfo() {
         if (TextUtils.isEmpty(targetId)) {
-            targetId = Objects.requireNonNull(getIntent().getData()).getQueryParameter("targetId");
+            if (getIntent().getData() != null) {
+                targetId = getIntent().getData().getQueryParameter("targetId");
+            }
         }
-        assert targetId != null;
-        getHouseChatId = targetId.substring(0, targetId.length() - 1);
+        if (!TextUtils.isEmpty(targetId) && targetId.length() > 1) {
+            getHouseChatId = targetId.substring(0, targetId.length() - 1);
+        }
     }
 
     private void initIM() {
-        FragmentManager fragmentManage = getSupportFragmentManager();
-        ConversationFragment fragment = (ConversationFragment) fragmentManage.findFragmentById(R.id.conversation);
-        Uri uri;
-        if (!TextUtils.isEmpty(targetId) &&
-                !TextUtils.equals(Constants.TYPE_TENANT, targetId.substring(targetId.length() - 1)) &&
-                !TextUtils.equals(Constants.TYPE_OWNER, targetId.substring(targetId.length() - 1))) {
-            //系统消息
-            findViewById(R.id.rc_extension).setVisibility(View.INVISIBLE);
-            uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon()
-                    .appendPath("conversation")
-                    .appendPath(Conversation.ConversationType.SYSTEM.getName().toLowerCase())
-                    .appendQueryParameter("targetId", targetId).build();
-        } else {
-            //聊天消息
-            findViewById(R.id.rc_extension).setVisibility(View.VISIBLE);
-            uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon()
-                    .appendPath("conversation")
-                    .appendPath(Conversation.ConversationType.PRIVATE.getName().toLowerCase())
-                    .appendQueryParameter("targetId", targetId).build();
-        }
-        if (fragment != null) {
-            fragment.setUri(uri);
+        try {
+            FragmentManager fragmentManage = getSupportFragmentManager();
+            ConversationFragment fragment = (ConversationFragment) fragmentManage.findFragmentById(R.id.conversation);
+            Uri uri;
+            if (!TextUtils.isEmpty(targetId) &&
+                    !TextUtils.equals(Constants.TYPE_TENANT, targetId.substring(targetId.length() - 1)) &&
+                    !TextUtils.equals(Constants.TYPE_OWNER, targetId.substring(targetId.length() - 1))) {
+                //系统消息
+                findViewById(R.id.rc_extension).setVisibility(View.INVISIBLE);
+                uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon()
+                        .appendPath("conversation")
+                        .appendPath(Conversation.ConversationType.SYSTEM.getName().toLowerCase())
+                        .appendQueryParameter("targetId", targetId).build();
+            } else {
+                //聊天消息
+                findViewById(R.id.rc_extension).setVisibility(View.VISIBLE);
+                uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon()
+                        .appendPath("conversation")
+                        .appendPath(Conversation.ConversationType.PRIVATE.getName().toLowerCase())
+                        .appendQueryParameter("targetId", targetId).build();
+            }
+            if (fragment != null) {
+                fragment.setUri(uri);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 
