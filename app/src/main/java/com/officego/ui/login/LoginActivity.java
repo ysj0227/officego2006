@@ -87,9 +87,9 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
     //判断是否从收藏或者个人中心未登录的时候进入
     @Extra
     boolean isGotoLogin;
-    //业主model修改密码重新登录
+    //房东model修改密码重新登录
     private boolean isOwnerLogin;
-    //业主model修改密码重新登录,不清除栈顶
+    //房东model修改密码重新登录,不清除栈顶
     private boolean isReOwnerLogin;
     /**
      * 倒计时对象,总共的时间,每隔多少秒更新一次时间
@@ -250,13 +250,13 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         //当身份未变化
         if (TextUtils.equals(Constants.TYPE_OWNER, SpUtils.getRole())) {
             if (isReOwnerLogin) {
-                //业主退出登录后的，重新登录
+                //房东退出登录后的，重新登录
                 Intent intent = getIntent();
                 setResult(RESULT_OK, intent);
             } else if (isOwnerLogin) {
                 MainOwnerActivity_.intent(context).start();
             } else {
-                //业主首次登录跳转首页
+                //房东首次登录跳转首页
                 MainOwnerActivity_.intent(context).start();
             }
         }

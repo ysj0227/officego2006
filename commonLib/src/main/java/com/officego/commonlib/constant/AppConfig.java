@@ -13,7 +13,7 @@ public class AppConfig extends BaseConfig {
 
     public static String H5_ABOUT_US = "";//关于我们
     public static String H5_HELP_FEEDBACK = "";//帮助反馈
-    public static String H5_HELP_FEEDBACK_OWNER = "";//业主帮助反馈
+    public static String H5_HELP_FEEDBACK_OWNER = "";//房东帮助反馈
     public static String H5_PRIVACY = "";//隐私协议
     public static String H5_REGISTER = "";//注册协议
     public static String H5_QA = "";//常见问题

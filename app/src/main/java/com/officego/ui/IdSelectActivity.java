@@ -57,7 +57,7 @@ public class IdSelectActivity extends BaseActivity {
         }
         ibTenant.setBackgroundResource(R.mipmap.ic_tenant);
         ibOwner.setBackgroundResource(R.mipmap.ic_owner_check);
-        //业主端必须先登录
+        //房东端必须先登录
         SpUtils.saveRole(Constants.TYPE_OWNER);
         LoginActivity_.intent(context).start();
     }

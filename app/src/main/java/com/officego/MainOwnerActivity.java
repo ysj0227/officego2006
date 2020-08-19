@@ -45,7 +45,7 @@ import io.rong.imlib.model.Conversation;
 /**
  * Created by YangShiJie
  * Data 2020/7/3.
- * Descriptions: 业主
+ * Descriptions: 房东
  **/
 @SuppressLint("Registered")
 @EActivity(R.layout.activity_main_new)

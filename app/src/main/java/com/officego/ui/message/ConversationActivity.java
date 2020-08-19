@@ -28,6 +28,7 @@ import com.officego.commonlib.common.presenter.ConversationPresenter;
 import com.officego.commonlib.common.rongcloud.RongCloudSetUserInfoUtils;
 import com.officego.commonlib.common.rongcloud.SendMessageManager;
 import com.officego.commonlib.common.rpc.OfficegoApi;
+import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.CommonHelper;
@@ -41,12 +42,15 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 
+import java.util.Date;
 import java.util.Objects;
 
 import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationFragment;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
+
+import static com.officego.commonlib.constant.Constants.SENSORS_DATE;
 
 /**
  * Created by YangShiJie
@@ -73,6 +77,8 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
     private boolean isFirstChat = true;//是否第一次聊天
 
     private boolean isSendApply;//租户认证发送的申请
+    private String mNikeName;
+    private String sensorEventDate;
 
     @AfterViews
     void init() {
@@ -116,7 +122,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
                 tvTitleName.setPadding(0, 28, 0, 0);
                 initIM();
             } else {
-                //租户-业主聊天
+                //租户-房东聊天
                 isSendApply = false;
                 ctlChat.setVisibility(View.VISIBLE);
                 initIM();
@@ -134,7 +140,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
     @Override
     public void onBackPressed() {
         if (isSendApply) {
-            //发送认证 ，返回业主个人中心
+            //发送认证 ，返回房东个人中心
             GotoActivityUtils.mainOwnerDefMainActivity(context);
         } else {
             super.onBackPressed();
@@ -213,6 +219,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
 
     //刷新用户信息
     private void refreshChatUserInfo(ChatHouseBean data) {
+        mNikeName = data.getChatted().getNickname();
         RongCloudSetUserInfoUtils.refreshUserInfoCache(targetId, data.getChatted().getNickname(), data.getChatted().getAvatar());
         RongCloudSetUserInfoUtils.refreshUserInfoCache(SpUtils.getRongChatId(), SpUtils.getNickName(), SpUtils.getHeaderImg());
         tvTitleName.setText(data.getChatted().getNickname());
@@ -263,10 +270,17 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
     @Override
     public void identityChattedMsgSuccess(IdentitychattedMsgBean data) {
         //刷新用户信息
+        mNikeName = data.getNickname();
         RongCloudSetUserInfoUtils.refreshUserInfoCache(targetId, data.getNickname(), data.getAvatar());
         RongCloudSetUserInfoUtils.refreshUserInfoCache(SpUtils.getRongChatId(), SpUtils.getNickName(), SpUtils.getHeaderImg());
         tvTitleName.setText(data.getNickname());
         tvJob.setText(data.getJob());
+    }
+
+    //神策埋点时间
+    private void sensorsDate() {
+        sensorEventDate = DateTimeUtils.formatDate("yyyy-MM-dd HH:mm:ss", new Date());
+        SENSORS_DATE = sensorEventDate;
     }
 
     /**
@@ -281,6 +295,9 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             new ConfirmDialog(context, true, getString(
                     R.string.dialog_title_exchange_phone_contacts), "");
         }
+        //神策
+        sensorsDate();
+        SensorsTrack.clickPhoneExchangeButton(buildingId, houseId, sensorEventDate, sensorEventDate);
     }
 
     /**
@@ -297,6 +314,9 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             new ConfirmDialog(context, false, getString(
                     R.string.dialog_title_exchange_wechat_contacts), SpUtils.getWechat());
         }
+        //神策
+        sensorsDate();
+        SensorsTrack.clickWechatExchangeButton(buildingId, houseId, sensorEventDate, sensorEventDate);
     }
 
     /**
@@ -307,11 +327,20 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         if (isFastClick(1500)) {
             return;
         }
+        //神策
+        String sensorEventDate = DateTimeUtils.formatDate("yyyy-MM-dd HH:mm:ss", new Date());
+        SensorsTrack.clickImOrderSeeHouseButton(String.valueOf(buildingId), String.valueOf(houseId),
+                targetId, mNikeName, sensorEventDate);
         if (mData == null) {
             shortTip("暂无楼盘信息，无法预约");
             return;
         }
-        ConversationViewingDateActivity_.intent(this).buildingId(buildingId).houseId(houseId).targetId(targetId).start();
+        ConversationViewingDateActivity_.intent(this)
+                .buildingId(buildingId)
+                .houseId(houseId)
+                .targetId(targetId)
+                .sensorEventDate(sensorEventDate)
+                .start();
     }
 
     /**

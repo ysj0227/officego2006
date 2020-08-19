@@ -12,7 +12,7 @@ import com.owner.mine.model.UserOwnerBean;
 /**
  * Created by YangShiJie
  * Data 2020/6/28.
- * 业主未认证
+ * 房东未认证
  **/
 public class UnIdifyDialog {
     public static CommonDialog dialog;

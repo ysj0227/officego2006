@@ -76,7 +76,7 @@ public class GotoActivityUtils {
         context.startActivity(intent);
     }
 
-    //业主
+    //房东
     public static void mainOwnerActivity(Context context) {
         ComponentName comp = new ComponentName(context, "com.officego.MainOwnerActivity_");
         Intent intent = new Intent();
@@ -88,7 +88,7 @@ public class GotoActivityUtils {
         context.startActivity(intent);
     }
 
-    //业主-认证聊天默认返回个人中心
+    //房东-认证聊天默认返回个人中心
     public static void mainOwnerDefMainActivity(Context context) {
         ComponentName comp = new ComponentName(context, "com.officego.MainOwnerActivity_");
         Intent intent = new Intent();

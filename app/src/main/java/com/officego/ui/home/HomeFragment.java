@@ -55,7 +55,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         HomeContract.View, OnBannerListener,
         SearchPopupWindow.onSureClickListener,
         SwipeRefreshLayout.OnRefreshListener,
-         HouseAdapter.ClickItemListener{
+        HouseAdapter.ClickItemListener {
     @ViewById(R.id.cdl_root)
     CoordinatorLayout cdlRoot;
     @ViewById(R.id.bga_refresh)
@@ -737,5 +737,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     public void listItemClick(int position, int buildingId, int btype) {
         //神策
         SensorsTrack.visitBuildingDataPage(position, buildingId);
+        //点击卡片
+        SensorsTrack.clickCardShow(buildingId, String.valueOf(position), false);
     }
 }

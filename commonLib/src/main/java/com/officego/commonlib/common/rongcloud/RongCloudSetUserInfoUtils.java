@@ -55,7 +55,7 @@ public class RongCloudSetUserInfoUtils {
     }
 
     /**
-     * 获取业主融云id
+     * 获取房东融云id
      */
     public static String getRongOwnerId(String id) {
         return id + "1";

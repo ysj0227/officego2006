@@ -11,7 +11,7 @@ public class LoginBean {
 
     /**
      * rongyuntoken : 1Rdv88w2vkhWoGBApvh/8ADG03ybxIih9fMM5XnpfOM=@7mb1.cn.rongnav.com;7mb1.cn.rongcfg.com
-     * rid : 0  //角色id，-1：未选择角色，0：租户，1：业主
+     * rid : 0  //角色id，-1：未选择角色，0：租户，1：房东
      * token : NTlfc3Vud2VsbF8xNTkwNTY4ODYxXzA=
      */
 

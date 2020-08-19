@@ -702,13 +702,13 @@ public class JointWorkActivity extends BaseMvpActivity<JointWorkPresenter> imple
 
     @Override
     public void submitSuccess() {
-        //返回业主个人中心
+        //返回房东个人中心
         SwitchRoleDialog.submitIdentitySuccessDialog(this);
     }
 
     @Override
     public void submitTimeout() {
-        //返回业主个人中心
+        //返回房东个人中心
         SwitchRoleDialog.submitIdentityTimeoutDialog(this);
     }
 

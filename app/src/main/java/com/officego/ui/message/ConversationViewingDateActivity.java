@@ -17,6 +17,7 @@ import com.officego.commonlib.common.model.IdentitychattedMsgBean;
 import com.officego.commonlib.common.model.RenterBean;
 import com.officego.commonlib.common.presenter.ConversationPresenter;
 import com.officego.commonlib.common.rongcloud.SendMessageManager;
+import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.DateTimeUtils;
@@ -30,6 +31,8 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
+
+import java.util.Date;
 
 /**
  * Created by YangShiJie
@@ -72,6 +75,8 @@ public class ConversationViewingDateActivity extends BaseMvpActivity<Conversatio
     int buildingId;//楼盘详情传入
     @Extra
     int houseId;//房源详情传入
+    @Extra
+    String sensorEventDate;//神策点击时间
     private ChatHouseBean mData;
 
     @AfterExtras
@@ -92,6 +97,10 @@ public class ConversationViewingDateActivity extends BaseMvpActivity<Conversatio
     @Click(R.id.tv_select_time)
     void selectTimeClick() {
         showDialog();
+        //神策
+        SensorsTrack.orderSeeHouseTime(mData == null ? 0 : mData.getIsBuildOrHouse(),
+                mData == null ? 0 : mData.getBuilding().getBtype(),
+                buildingId, sensorEventDate);
     }
 
     @Click(R.id.iv_arrow_right)
@@ -115,6 +124,13 @@ public class ConversationViewingDateActivity extends BaseMvpActivity<Conversatio
         } else {
             shortTip("预约失败");
         }
+        //神策
+        SensorsTrack.submitBookingSeeHouse(mData == null ? 0 : mData.getIsBuildOrHouse(),
+                mData == null ? 0 : mData.getBuilding().getBtype(),
+                buildingId, sensorEventDate, time + ":00",
+                mData == null ? "" : mData.getChatted().getTargetId(),
+                mData == null ? "" : mData.getChatted().getNickname(),
+                DateTimeUtils.formatDate("yyyy-MM-dd HH:mm:ss", new Date()));
     }
 
     private void enableButton() {
@@ -126,6 +142,10 @@ public class ConversationViewingDateActivity extends BaseMvpActivity<Conversatio
     public void selectedDate(String date) {
         tvSelectTime.setText(date);
         enableButton();
+        //神策
+        SensorsTrack.confirmSeeHouseTime(mData == null ? 0 : mData.getIsBuildOrHouse(),
+                mData == null ? 0 : mData.getBuilding().getBtype(),
+                buildingId, sensorEventDate, date + ":00");
     }
 
     @SuppressLint("SetTextI18n")
@@ -140,9 +160,9 @@ public class ConversationViewingDateActivity extends BaseMvpActivity<Conversatio
         if (data.getBuilding() != null) {
             Glide.with(context).load(data.getBuilding().getMainPic()).into(ivHouseImg);
             tvHouseName.setText(data.getBuilding().getBuildingName());
-            if (TextUtils.isEmpty(data.getBuilding().getDistrict())){
+            if (TextUtils.isEmpty(data.getBuilding().getDistrict())) {
                 tvLocation.setVisibility(View.GONE);
-            }else {
+            } else {
                 tvLocation.setVisibility(View.VISIBLE);
                 tvLocation.setText(data.getBuilding().getDistrict());
             }
@@ -152,14 +172,14 @@ public class ConversationViewingDateActivity extends BaseMvpActivity<Conversatio
                 String stationLine = data.getBuilding().getStationline().get(0);
                 String stationName = data.getBuilding().getStationNames().get(0);
                 tvRouteMap.setText("步行" + workTime + "分钟到 | " + stationLine + "号线 ·" + stationName);
-            }else {
+            } else {
                 tvRouteMap.setVisibility(View.GONE);
             }
             if (data.getBuilding().getMinSinglePrice() != null) {
-                if (data.getBuilding().getBtype()== Constants.TYPE_BUILDING){
-                    tvPrice.setText("¥" + data.getBuilding().getMinSinglePrice()+"/㎡/天");
-                }else {
-                    tvPrice.setText("¥" + data.getBuilding().getMinSinglePrice()+"/位/月");
+                if (data.getBuilding().getBtype() == Constants.TYPE_BUILDING) {
+                    tvPrice.setText("¥" + data.getBuilding().getMinSinglePrice() + "/㎡/天");
+                } else {
+                    tvPrice.setText("¥" + data.getBuilding().getMinSinglePrice() + "/位/月");
                 }
             }
         }

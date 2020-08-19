@@ -31,7 +31,7 @@ public class Constants {
 
     //租户
     public final static String TYPE_TENANT = "0";
-    // 业主
+    // 房东
     public final static String TYPE_OWNER = "1";
     // 系统消息
     public final static String TYPE_SYSTEM = "3";
@@ -71,4 +71,8 @@ public class Constants {
     public final static int TYPE_IDENTITY_PERSONAL = 0;
     public final static int TYPE_IDENTITY_COMPANY = 1;
     public final static int TYPE_IDENTITY_JOINT_WORK = 2;
+
+    //神策埋点，添加时间记录
+    public static String SENSORS_DATE = "";
+    public static String SENSORS_BUILDORHOUSE= "";
 }

@@ -52,7 +52,7 @@ public class SwitchRoleDialog {
                 .setTitle("提交成功")
                 .setMessage("我们会在1-2个工作日完成审核")
                 .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
-                    //跳转业主个人中心
+                    //跳转房东个人中心
                     GotoActivityUtils.mainOwnerDefMainActivity(activity);
                     BaseNotification.newInstance().postNotificationName(CommonNotifications.ownerIdentityHandle, "ownerIdentityHandle");
                     activity.finish();
@@ -67,7 +67,7 @@ public class SwitchRoleDialog {
         CommonDialog dialog = new CommonDialog.Builder(activity)
                 .setTitle("服务器响应超时，稍后再试")
                 .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
-                    //跳转业主个人中心
+                    //跳转房东个人中心
                     GotoActivityUtils.mainOwnerDefMainActivity(activity);
                     activity.finish();
                 }).create();

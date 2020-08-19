@@ -222,8 +222,10 @@ public class SensorsTrack {
     public static void visitBuildingDataPage(int buildLocation, int buildingId) {
         try {
             JSONObject properties = new JSONObject();
-            properties.put("buildLocation", buildLocation+"");
-            properties.put("buildingId", buildingId+"");
+            properties.put("buildLocation", buildLocation + "");
+            if (buildingId != 0) {
+                properties.put("buildingId", buildingId + "");
+            }
             SensorsDataAPI.sharedInstance().track("visit_building_data_page", properties);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -237,10 +239,12 @@ public class SensorsTrack {
      * @param buildingId
      * @param isRead     是否阅读完成
      */
-    public static void visitBuildingDataPageComplete(String buildingId, boolean isRead) {
+    public static void visitBuildingDataPageComplete(int buildingId, boolean isRead) {
         try {
             JSONObject properties = new JSONObject();
-            properties.put("buildingId", buildingId);
+            if (buildingId != 0) {
+                properties.put("buildingId", buildingId + "");
+            }
             properties.put("isRead", isRead);
             SensorsDataAPI.sharedInstance().track("visit_building_data_page_complete", properties);
         } catch (JSONException e) {
@@ -249,17 +253,38 @@ public class SensorsTrack {
     }
 
     /**
-     * 点击收藏按钮
+     * 点击收藏按钮 楼盘网点详情
      *
      * @param buildingId buildingId
      * @param isCollect  是否收藏成功
      */
-    public static void clickFavoritesButton(String buildingId, boolean isCollect) {
+    public static void clickFavoritesButton(int buildingId, boolean isCollect) {
         try {
             JSONObject properties = new JSONObject();
-            properties.put("buildingId", buildingId);
+            if (buildingId != 0) {
+                properties.put("buildingId", buildingId + "");
+            }
             properties.put("isCollect", isCollect);
             SensorsDataAPI.sharedInstance().track("click_favorites_button", properties);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 点击收藏按钮 楼盘网点下的房源
+     *
+     * @param houseId   buildingId
+     * @param isCollect 是否收藏成功
+     */
+    public static void clickFavoritesButtonChild(String houseId, boolean isCollect) {
+        try {
+            JSONObject properties = new JSONObject();
+            if (!TextUtils.isEmpty(houseId) && !TextUtils.equals("0", houseId)) {
+                properties.put("houseId", houseId);
+            }
+            properties.put("isCollect", isCollect);
+            SensorsDataAPI.sharedInstance().track("building_data_page_screen", properties);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -271,10 +296,10 @@ public class SensorsTrack {
      * @param buildingId buildingId
      * @param houseCnt   房源套数
      */
-    public static void buildingDataPageScreen(String buildingId, String houseCnt) {
+    public static void buildingDataPageScreen(int buildingId, String houseCnt) {
         try {
             JSONObject properties = new JSONObject();
-            properties.put("buildingId", buildingId);
+            properties.put("buildingId", buildingId + "");
             properties.put("houseCnt", houseCnt);
             SensorsDataAPI.sharedInstance().track("building_data_page_screen", properties);
         } catch (JSONException e) {
@@ -289,12 +314,16 @@ public class SensorsTrack {
      * @param area       面积
      * @param simple     工位
      */
-    public static void clickBuildingDataPageScreenButton(String buildingId, String area, String simple) {
+    public static void clickBuildingDataPageScreenButton(int buildingId, String area, String simple) {
         try {
             JSONObject properties = new JSONObject();
-            properties.put("buildingId", buildingId);
-            properties.put("area", area);
-            properties.put("simple", simple);
+            properties.put("buildingId", buildingId + "");
+            if (!TextUtils.isEmpty(area)) {
+                properties.put("area", area);
+            }
+            if (!TextUtils.isEmpty(simple)) {
+                properties.put("simple", simple);
+            }
             SensorsDataAPI.sharedInstance().track("click_building_data_page_screen_button", properties);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -309,7 +338,9 @@ public class SensorsTrack {
     public static void visitHouseDataPage(String houseId) {
         try {
             JSONObject properties = new JSONObject();
-            properties.put("houseId", houseId);
+            if (!TextUtils.isEmpty(houseId) && !TextUtils.equals("0", houseId)) {
+                properties.put("houseId", houseId);
+            }
             SensorsDataAPI.sharedInstance().track("visit_house_data_page", properties);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -323,10 +354,18 @@ public class SensorsTrack {
                                                   String chatedId, String chatedName, String timestamp) {
         try {
             JSONObject properties = new JSONObject();
-            properties.put("buildingId", buildingId);
-            properties.put("houseId", houseId);
-            properties.put("chatedId", chatedId);
-            properties.put("chatedName", chatedName);
+            if (!TextUtils.isEmpty(buildingId) && !TextUtils.equals("0", buildingId)) {
+                properties.put("buildingId", buildingId);
+            }
+            if (!TextUtils.isEmpty(houseId) && !TextUtils.equals("0", houseId)) {
+                properties.put("houseId", houseId);
+            }
+            if (!TextUtils.isEmpty(chatedId) && !TextUtils.equals("0", chatedId)) {
+                properties.put("chatedId", chatedId);
+            }
+            if (!TextUtils.isEmpty(chatedName)) {
+                properties.put("chatedName", chatedName);
+            }
             properties.put("timestamp", timestamp);
             SensorsDataAPI.sharedInstance().track("click_im_order_see_house_button", properties);
         } catch (JSONException e) {
@@ -337,16 +376,25 @@ public class SensorsTrack {
     /**
      * 点击看房时间选择按钮
      *
-     * @param type       "楼盘" : "网点"
-     * @param buildingId buildingId
-     * @param timestamp  日期
+     * @param buildOrHouse 1:从楼盘进入返回building对象,2:从房源进入返回house对象
+     * @param bType        "楼盘" : "网点"
+     * @param buildingId   buildingId
+     * @param timestamp    日期
      */
-    public static void orderSeeHouseTime(int type, String buildingId, String timestamp) {
+    public static void orderSeeHouseTime(int buildOrHouse, int bType, int buildingId, String timestamp) {
+        String mText;
+        if (buildOrHouse == 2) {
+            mText = "房源";
+        } else {
+            mText = (bType == Constants.TYPE_BUILDING ? "楼盘" : "网点");
+        }
         try {
             JSONObject properties = new JSONObject();
-            properties.put("buildingId", buildingId);
+            if (buildingId != 0) {
+                properties.put("buildingId", buildingId + "");
+            }
             properties.put("timestamp", timestamp);
-            properties.put("buildOrHouse", type == Constants.TYPE_BUILDING ? "楼盘" : "网点");
+            properties.put("buildOrHouse", mText);
             SensorsDataAPI.sharedInstance().track("order_see_house_time", properties);
         } catch (JSONException e) {
             e.printStackTrace();
@@ -356,16 +404,25 @@ public class SensorsTrack {
     /**
      * 预约看房时间确定
      *
-     * @param type       "楼盘" : "网点"
-     * @param buildingId buildingId
-     * @param timestamp  点击时间
-     * @param seeTime    预约时间
+     * @param buildOrHouse 1:从楼盘进入返回building对象,2:从房源进入返回house对象
+     * @param bType        "楼盘" : "网点"
+     * @param buildingId   buildingId
+     * @param timestamp    点击时间
+     * @param seeTime      预约时间
      */
-    public static void confirmSeeHouseTime(int type, String buildingId, String timestamp, String seeTime) {
+    public static void confirmSeeHouseTime(int buildOrHouse, int bType, int buildingId, String timestamp, String seeTime) {
+        String mText;
+        if (buildOrHouse == 2) {
+            mText = "房源";
+        } else {
+            mText = (bType == Constants.TYPE_BUILDING ? "楼盘" : "网点");
+        }
         try {
             JSONObject properties = new JSONObject();
-            properties.put("buildingId", buildingId);
-            properties.put("buildOrHouse", type == Constants.TYPE_BUILDING ? "楼盘" : "网点");
+            if (buildingId != 0) {
+                properties.put("buildingId", buildingId + "");
+            }
+            properties.put("buildOrHouse", mText);
             properties.put("timestamp", timestamp);
             properties.put("seeTime", seeTime);
             SensorsDataAPI.sharedInstance().track("confirm_see_house_time", properties);
@@ -381,22 +438,34 @@ public class SensorsTrack {
      * buildingId	楼盘ID	STRING
      * timestamp	行程预约ID	DATETIME
      * status	行程状态	STRING
-     * chatedId	业主ID	STRING
-     * chatedName	业主名称	STRING
+     * chatedId	房东ID	STRING
+     * chatedName	房东名称	STRING
      * createTime	时间	"DATETIME   按钮提交时间
      * 2020-09-03"
      */
-    public static void submitBookingSeeHouse(int type, String buildingId, String timestamp, String seeTime,
+    public static void submitBookingSeeHouse(int buildOrHouse, int bType, int buildingId, String timestamp, String seeTime,
                                              String chatedId, String chatedName, String createTime) {
+        String mText;
+        if (buildOrHouse == 2) {
+            mText = "房源";
+        } else {
+            mText = (bType == Constants.TYPE_BUILDING ? "楼盘" : "网点");
+        }
         try {
             JSONObject properties = new JSONObject();
-            properties.put("buildingId", buildingId);
-            properties.put("buildOrHouse", type == Constants.TYPE_BUILDING ? "楼盘" : "网点");
+            if (buildingId != 0) {
+                properties.put("buildingId", buildingId + "");
+            }
+            properties.put("buildOrHouse", mText);
             properties.put("timestamp", timestamp);
             properties.put("seeTime", seeTime);
-            properties.put("status", "预约等待业主审核");
-            properties.put("chatedId", chatedId);
-            properties.put("chatedName", chatedName);
+            properties.put("status", "预约等待房东审核");
+            if (!TextUtils.isEmpty(chatedId) && !TextUtils.equals("0", chatedId)) {
+                properties.put("chatedId", chatedId);
+            }
+            if (!TextUtils.isEmpty(chatedName)) {
+                properties.put("chatedName", chatedName);
+            }
             properties.put("createTime", createTime);
             SensorsDataAPI.sharedInstance().track("confirm_see_house_time", properties);
         } catch (JSONException e) {
@@ -413,15 +482,20 @@ public class SensorsTrack {
      * timestamp	行程预约ID	STRING
      * statusPhone	电话交换状态	STRING
      * createTime	时间	DATETIME
+     * 发送交换此时 createTime 和timestamp相同
      */
-    public static void clickPhoneExchangeButton(String buildingId, String houseId, String timestamp, String createTime) {
+    public static void clickPhoneExchangeButton(int buildingId, int houseId, String timestamp, String createTime) {
         try {
             JSONObject properties = new JSONObject();
-            properties.put("buildingId", buildingId);
-            properties.put("houseId", houseId);
+            if (buildingId != 0) {
+                properties.put("buildingId", buildingId + "");
+            }
+            if (houseId != 0) {
+                properties.put("houseId", houseId + "");
+            }
             properties.put("rid", TextUtils.equals(Constants.TYPE_TENANT, SpUtils.getRole()) ? "租户" : "房东");
-            properties.put("timestamp", timestamp);
             properties.put("statusPhone", "申请中");
+            properties.put("timestamp", timestamp);
             properties.put("createTime", createTime);
             SensorsDataAPI.sharedInstance().track("click_phone_exchange_button", properties);
         } catch (JSONException e) {
@@ -439,12 +513,22 @@ public class SensorsTrack {
      * statusPhone	电话交换状态	STRING
      * isSuccess	是否成功	BOOL
      */
-    public static void confirmPhoneExchangeState(int type, String buildingId, String houseId, boolean isSuccess) {
+    public static void confirmPhoneExchangeState(int buildOrHouse, int bType, int buildingId, int houseId, boolean isSuccess) {
         try {
             JSONObject properties = new JSONObject();
-            properties.put("buildingId", buildingId);
-            properties.put("houseId", houseId);
-            properties.put("buildOrHouse", type == Constants.TYPE_BUILDING ? "楼盘" : "网点");
+            String mText;
+            if (buildOrHouse == 2) {
+                mText = "房源";
+            } else {
+                mText = (bType == Constants.TYPE_BUILDING ? "楼盘" : "网点");
+            }
+            if (buildingId != 0) {
+                properties.put("buildingId", buildingId + "");
+            }
+            if (houseId != 0) {
+                properties.put("houseId", houseId + "");
+            }
+            properties.put("buildOrHouse", mText);
             properties.put("rid", TextUtils.equals(Constants.TYPE_TENANT, SpUtils.getRole()) ? "租户" : "房东");
             properties.put("statusPhone", isSuccess ? "通过" : "拒绝");
             properties.put("isSuccess", isSuccess);
@@ -464,14 +548,18 @@ public class SensorsTrack {
      * statusWechat	微信交换状态	STRING
      * createTime	时间	DATETIME
      */
-    public static void clickWechatExchangeButton(String buildingId, String houseId, String timestamp, String createTime) {
+    public static void clickWechatExchangeButton(int buildingId, int houseId, String timestamp, String createTime) {
         try {
             JSONObject properties = new JSONObject();
-            properties.put("buildingId", buildingId);
-            properties.put("houseId", houseId);
+            if (buildingId != 0) {
+                properties.put("buildingId", buildingId + "");
+            }
+            if (houseId != 0) {
+                properties.put("houseId", houseId + "");
+            }
             properties.put("rid", TextUtils.equals(Constants.TYPE_TENANT, SpUtils.getRole()) ? "租户" : "房东");
-            properties.put("timestamp", timestamp);
             properties.put("statusWechat", "申请中");
+            properties.put("timestamp", timestamp);
             properties.put("createTime", createTime);
             SensorsDataAPI.sharedInstance().track("click_wechat_exchange_button", properties);
         } catch (JSONException e) {
@@ -489,12 +577,22 @@ public class SensorsTrack {
      * statusPhone	电话交换状态	STRING
      * isSuccess	是否成功	BOOL
      */
-    public static void confirmWechatExchangeState(int type, String buildingId, String houseId, boolean isSuccess) {
+    public static void confirmWechatExchangeState(int buildOrHouse, int bType, int buildingId, int houseId, boolean isSuccess) {
         try {
             JSONObject properties = new JSONObject();
-            properties.put("buildingId", buildingId);
-            properties.put("houseId", houseId);
-            properties.put("buildOrHouse", type == Constants.TYPE_BUILDING ? "楼盘" : "网点");
+            String mText;
+            if (buildOrHouse == 2) {
+                mText = "房源";
+            } else {
+                mText = (bType == Constants.TYPE_BUILDING ? "楼盘" : "网点");
+            }
+            if (buildingId != 0) {
+                properties.put("buildingId", buildingId + "");
+            }
+            if (houseId != 0) {
+                properties.put("houseId", houseId + "");
+            }
+            properties.put("buildOrHouse", mText);
             properties.put("rid", TextUtils.equals(Constants.TYPE_TENANT, SpUtils.getRole()) ? "租户" : "房东");
             properties.put("statusWechat", isSuccess ? "通过" : "拒绝");
             properties.put("isSuccess", isSuccess);
@@ -505,14 +603,14 @@ public class SensorsTrack {
     }
 
     /**
-     * 租户切换成业主
+     * 租户切换成房东
      */
     public static void tenantToOwner() {
         SensorsDataAPI.sharedInstance().track("tenant_to_owner", new JSONObject());
     }
 
     /**
-     * 业主切换成租户
+     * 房东切换成租户
      */
     public static void ownerToTenant() {
         SensorsDataAPI.sharedInstance().track("owne_to_tenant", new JSONObject());
@@ -524,10 +622,12 @@ public class SensorsTrack {
      * buildLocation	楼盘列表位置	NUMBER
      * isVr	是否VR	BOOL
      */
-    public static void clickCardShow(String buildingId, String buildLocation, boolean isVr) {
+    public static void clickCardShow(int buildingId, String buildLocation, boolean isVr) {
         try {
             JSONObject properties = new JSONObject();
-            properties.put("buildingId", buildingId);
+            if (buildingId != 0) {
+                properties.put("buildingId", buildingId + "");
+            }
             properties.put("buildLocation", buildLocation);
             properties.put("isVr", isVr);
             SensorsDataAPI.sharedInstance().track("confirm_wechat_exchange_state", properties);

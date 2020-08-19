@@ -57,7 +57,7 @@ public interface ScheduleInterface {
     Call<BaseResponse<RenterBean>> addRenter(@PartMap Map<String, RequestBody> params);
 
     /**
-     * 业主
+     * 房东
      */
     @Multipart
     @POST(path + "schedule/addProprietorApp")

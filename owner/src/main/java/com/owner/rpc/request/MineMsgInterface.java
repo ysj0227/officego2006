@@ -47,7 +47,7 @@ public interface MineMsgInterface {
     Call<BaseResponse<Object>> updateUserData(@PartMap Map<String, RequestBody> params);
 
     /**
-     * 获取业主个人信息
+     * 获取房东个人信息
      */
     @Multipart
     @POST(path + "user/userMsgApp")

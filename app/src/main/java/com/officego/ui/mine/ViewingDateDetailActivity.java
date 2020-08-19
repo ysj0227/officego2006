@@ -59,7 +59,7 @@ public class ViewingDateDetailActivity extends BaseMvpActivity<ViewingDateDetail
         StatusBarUtils.setStatusBarFullTransparent(this);
         mPresenter = new ViewingDateDetailsPresenter();
         mPresenter.attachView(this);
-        if (getIntent().getExtras() != null) {//业主行程详情
+        if (getIntent().getExtras() != null) {//房东行程详情
             scheduleId = getIntent().getExtras().getInt("scheduleId");
         }
         mPresenter.getViewingDateDetails(scheduleId);

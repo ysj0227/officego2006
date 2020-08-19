@@ -29,11 +29,11 @@ import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.config.CommonNotifications;
+import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.IVideoPlayer;
 import com.officego.commonlib.view.LabelsView;
 import com.officego.commonlib.view.RoundImageView;
@@ -242,6 +242,8 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     TextView tvPromoteSlogan;
     @ViewById(R.id.tv_favorite)
     TextView tvFavorite;
+    //神策是否已读
+    private boolean isRead;
 
     /**
      * 同步进度
@@ -342,6 +344,10 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
 
     @Click(R.id.btn_back)
     void backClick() {
+        //神策
+        if (mBuildingBean != null) {
+            SensorsTrack.visitBuildingDataPageComplete(mBuildingBean.getBuildingId(), isRead);
+        }
         finish();
     }
 
@@ -461,17 +467,22 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         if (isFastClick(1200)) {
             return;
         }
-        mPresenter.favorite(mBuildingBean.getBuildingId() + "", isFavorite ? 1 : 0);
+        if (mBuildingBean != null) {
+            //神策
+            SensorsTrack.clickFavoritesButton(mBuildingBean.getBuildingId(), !isFavorite);
+            //收藏
+            mPresenter.favorite(mBuildingBean.getBuildingId() + "", isFavorite ? 1 : 0);
+        }
     }
 
     @Override
     public void chatSuccess(ChatsBean data) {
-        //0:单业主,1:多业主  判断是否单业主
+        //0:单房东,1:多房东  判断是否单房东
         if (data.getMultiOwner() == 0) {
             ConversationActivity_.intent(context).buildingId(mData.getBuilding().getBuildingId()).targetId(data.getTargetId() + "").start();
         } else {
             CommonDialog dialog = new CommonDialog.Builder(context)
-                    .setTitle("请先选择房源，再和业主聊")
+                    .setTitle("请先选择房源，再和房东聊")
                     .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
                         dialog12.dismiss();
                         scrollViewY();
@@ -486,7 +497,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         if (isFastClick(1200)) {
             return;
         }
-        //判断是否单业主
+        //判断是否单房东
         mPresenter.gotoChat(mData.getBuilding().getBuildingId() + "");
     }
 
@@ -528,11 +539,13 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         }
         if (id == CommonNotifications.independentAll) {
             currentSeatsValue = (String) args[0]; //传递的面积区间值
-            LogCat.e(TAG, "1111: seats=" + currentSeatsValue);
+            //LogCat.e(TAG, "1111: seats=" + currentSeatsValue);
             //请求当前楼盘下的列表 初始化list 和pageNum
             childList.clear();
             pageNum = 1;
             getChildBuildingList();
+            //神策
+            SensorsTrack.clickBuildingDataPageScreenButton(mBuildingBean.getBuildingId(), "", currentSeatsValue);
         }
     }
 
@@ -1061,6 +1074,8 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
                 tvMinMonth.setText(data.getBuilding().getOpenStationMap().getMinimumLease() + "个月起租");
                 tvOpenWorkModelPrice.setText(Html.fromHtml("<font color='#46C3C2'>¥" + data.getBuilding().getOpenStationMap().getDayPrice() + "</font>/位/月"));
                 Glide.with(context).load(data.getBuilding().getOpenStationMap().getMainPic()).into(ivOpenWorkImg);
+                //神策
+                SensorsTrack.buildingDataPageScreen(data.getBuilding().getBuildingId(), data.getBuilding().getOpenStationMap().getSeats() + "");
             } else {
                 ctlOpenWork.setVisibility(View.GONE);
                 rlOpenWorkModel.setVisibility(View.GONE);
@@ -1150,6 +1165,8 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
                 llTitle.setVisibility(View.VISIBLE);
                 rlRootHouseTitle.setBackgroundColor(ContextCompat.getColor(context, R.color.common_blue_main));
             }
+            //神策
+            isRead = scrollY > CommonHelper.getScreenHeight(context) - getResources().getDimensionPixelSize(R.dimen.dp_100);
         } else if (scrollY < oldScrollY || scrollY == 0) {//向上滚动 scrollY == 0 滚动到顶
             if (scrollY < getResources().getDimensionPixelSize(R.dimen.dp_230)) {
                 llTitle.setVisibility(View.GONE);

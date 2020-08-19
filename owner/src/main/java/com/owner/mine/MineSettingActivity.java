@@ -12,6 +12,7 @@ import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.VersionBean;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.rongcloud.ConnectRongCloudUtils;
+import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.retrofit.RetrofitCallback;
@@ -70,7 +71,7 @@ public class MineSettingActivity extends BaseActivity {
 
     @Click(resName = "rl_switch_id")
     void switchIdClick() {
-        //业主切换租户
+        //房东切换租户
         switchDialog();
     }
 
@@ -79,6 +80,8 @@ public class MineSettingActivity extends BaseActivity {
                 .setTitle(R.string.are_you_sure_switch_tenant)
                 .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
                     switchId(Constants.TYPE_TENANT);
+                    //神策
+                    SensorsTrack.ownerToTenant();
                 })
                 .setCancelButton(R.string.sm_cancel, (dialog1, which) -> dialog1.dismiss()).create();
         dialog.showWithOutTouchable(false);
@@ -127,7 +130,7 @@ public class MineSettingActivity extends BaseActivity {
         });
     }
 
-    //业主端--- 用户身份标：0租户，1户主
+    //房东端--- 用户身份标：0租户，1户主
     private void switchId(String role) {
         showLoadingDialog();
         OfficegoApi.getInstance().switchId(role, new RetrofitCallback<LoginBean>() {
@@ -140,7 +143,7 @@ public class MineSettingActivity extends BaseActivity {
                 if (TextUtils.equals(Constants.TYPE_TENANT, String.valueOf(data.getRid()))) {
                     GotoActivityUtils.mainActivity(context); //跳转租户首页
                 } else if (TextUtils.equals(Constants.TYPE_OWNER, String.valueOf(data.getRid()))) {
-                    GotoActivityUtils.mainOwnerActivity(context); //租户切换业主
+                    GotoActivityUtils.mainOwnerActivity(context); //租户切换房东
                 }
             }
 

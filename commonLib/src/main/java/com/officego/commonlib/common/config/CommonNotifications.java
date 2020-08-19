@@ -24,7 +24,7 @@ public class CommonNotifications {
     //绑定微信
     public static final int conversationBindWeChat = totalEvents++;
     public static final int conversationBindPhone = totalEvents++;
-    //业主认证
+    //房东认证
     public static final int ownerIdentityHandle = totalEvents++;
     //融云其他设备登录踢出
     public static final int rongCloudkickDialog = totalEvents++;
@@ -35,6 +35,6 @@ public class CommonNotifications {
     public static final int loginIn = totalEvents++;
     public static final int loginOut = totalEvents++;
 
-    //业主个人中心
+    //房东个人中心
     public static final int ownerMainTab = totalEvents++;
 }

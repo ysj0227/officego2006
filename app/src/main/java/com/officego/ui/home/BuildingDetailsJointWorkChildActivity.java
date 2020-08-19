@@ -26,6 +26,7 @@ import androidx.core.widget.NestedScrollView;
 import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
+import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.utils.NetworkUtils;
@@ -235,6 +236,8 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         tvIndependentOffice.setVisibility(View.GONE);//独立办公室title
         rlCharacteristic.setVisibility(View.GONE);//网点无特色
         mPresenter.getDetails(String.valueOf(mChildHouseBean.getBtype()), String.valueOf(mChildHouseBean.getHouseId()));
+        //神策
+        SensorsTrack.visitHouseDataPage(String.valueOf(mChildHouseBean.getHouseId()));
     }
 
     public static void setImageViewLayoutParams(Context context, View view) {
@@ -429,6 +432,8 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         if (isFastClick(1200)) {
             return;
         }
+        //神策
+        SensorsTrack.clickFavoritesButtonChild(houseId, !isFavorite);
         mPresenter.favoriteChild(houseId, isFavorite ? 1 : 0);
     }
 

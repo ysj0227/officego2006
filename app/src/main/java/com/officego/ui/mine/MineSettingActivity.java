@@ -15,6 +15,7 @@ import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.VersionBean;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.rongcloud.ConnectRongCloudUtils;
+import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.retrofit.RetrofitCallback;
@@ -62,6 +63,8 @@ public class MineSettingActivity extends BaseActivity {
                 .setTitle(R.string.are_you_sure_switch_owner)
                 .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
                     switchId(Constants.TYPE_OWNER);
+                    //神策
+                    SensorsTrack.tenantToOwner();
                 })
                 .setCancelButton(R.string.sm_cancel, (dialog1, which) -> dialog1.dismiss()).create();
         dialog.showWithOutTouchable(false);
@@ -126,7 +129,7 @@ public class MineSettingActivity extends BaseActivity {
                 if (TextUtils.equals(Constants.TYPE_TENANT, String.valueOf(data.getRid()))) {
                     GotoActivityUtils.mainActivity(context); //跳转租户首页
                 } else if (TextUtils.equals(Constants.TYPE_OWNER, String.valueOf(data.getRid()))) {
-                    MainOwnerActivity_.intent(context).start(); //租户切换业主
+                    MainOwnerActivity_.intent(context).start(); //租户切换房东
                 }
             }
 

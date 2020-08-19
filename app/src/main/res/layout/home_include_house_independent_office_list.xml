@@ -9,7 +9,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_20"
-        android:text="ss"
         android:textColor="@color/text_33"
         android:textSize="@dimen/sp_16" />
 
@@ -32,7 +31,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:text="100-300㎡"
                 android:textColor="@color/common_blue_main"
                 android:textSize="@dimen/sp_13" />
 
@@ -43,7 +41,6 @@
                 android:layout_below="@+id/tv_item_list_top"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/dp_2"
-                android:text="300套"
                 android:textColor="@color/common_blue_main"
                 android:textSize="@dimen/sp_12" />
         </RelativeLayout>

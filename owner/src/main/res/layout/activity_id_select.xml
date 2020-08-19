@@ -13,7 +13,7 @@
         android:gravity="center_vertical"
         android:paddingStart="@dimen/dp_18"
         android:paddingTop="@dimen/dp_18"
-        android:text="业主认证"
+        android:text="房东认证"
         android:textColor="@color/white"
         android:textSize="@dimen/sp_16"
         android:textStyle="bold"
@@ -71,7 +71,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/sp_20"
                     android:layout_marginBottom="@dimen/dp_20"
-                    android:text="我是公司业主"
+                    android:text="我是公司房东"
                     android:textColor="@color/text_33"
                     android:textSize="@dimen/sp_14"
                     android:visibility="gone" />
@@ -103,7 +103,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/sp_20"
                     android:layout_marginBottom="@dimen/dp_20"
-                    android:text="我是联合办公业主"
+                    android:text="我是联合办公房东"
                     android:textColor="@color/text_33"
                     android:textSize="@dimen/sp_14"
                     android:visibility="gone" />
@@ -134,7 +134,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/sp_20"
                     android:layout_marginBottom="@dimen/dp_20"
-                    android:text="我是个人业主"
+                    android:text="我是个人房东"
                     android:textColor="@color/text_33"
                     android:textSize="@dimen/sp_14"
                     android:visibility="gone" />
