@@ -28,9 +28,9 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.officego.R;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.CommonHelper;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.rpc.OfficegoApi;
 import com.officego.ui.find.model.DirectoryBean;
 import com.officego.ui.home.model.BusinessCircleBean;
@@ -44,8 +44,6 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
-
-import static com.officego.config.ConditionConfig.mConditionBean;
 
 /**
  * Created by YangShiJie
@@ -625,6 +623,8 @@ public class SearchPopupWindow extends PopupWindow implements
             this.simple2 = "";
             this.decoration = "";
             this.houseTags = "";
+            Constants.SENSORS_AREA_CONTENT = "";
+            Constants.SENSORS_DECORATION = "";
             //请求list
             getDecorationTypeList(rvDecorationType);
             getHouseUniqueList(rvHouseUnique);
@@ -802,6 +802,8 @@ public class SearchPopupWindow extends PopupWindow implements
                 //地铁列表详情列表
                 stationAdapter = new StationAdapter(mContext, tvNum, meterBean.getList());
                 recyclerViewRight.setAdapter(stationAdapter);
+                //神策(如果只选地铁线(商圈)则传地铁线，如果选择地铁站(商圈区域)则传地铁站逗号分隔
+                Constants.SENSORS_AREA_CONTENT = meterBean.getLine();
             });
             //显示选中的文本
             onBind = true;
@@ -831,6 +833,7 @@ public class SearchPopupWindow extends PopupWindow implements
     private class StationAdapter extends CommonListAdapter<MeterBean.DataBean.ListBean> {
         private SparseBooleanArray checkStates = new SparseBooleanArray();
         private HashSet<Integer> hashSet; //当前选中的数据列表
+        private Map<Integer, String> map = new HashMap<>();//记录神策文本
         private TextView tvNum;
 
         StationAdapter(Context context, final TextView tvNum, List<MeterBean.DataBean.ListBean> list) {
@@ -856,9 +859,11 @@ public class SearchPopupWindow extends PopupWindow implements
                 if (isChecked) {
                     checkStates.put(pos, true);
                     hashSet.add(bean.getId());
+                    map.put(bean.getId(), bean.getStationName());
                 } else {
                     checkStates.delete(pos);
                     hashSet.remove(bean.getId());
+                    map.remove(bean.getId());
                 }
                 if (checkStates.size() > 0) {
                     tvNum.setVisibility(View.VISIBLE);
@@ -870,6 +875,8 @@ public class SearchPopupWindow extends PopupWindow implements
                 nearbySubway = getHashSetKey(hashSet);
                 mHashSetLine = hashSet;
                 mCheckStatesLine = checkStates;
+                //神策埋点
+                sensorsLineOrBuisnessEvent(map);
             });
             cbStation.setChecked(checkStates.get(holder.getAdapterPosition(), false));
         }
@@ -884,7 +891,6 @@ public class SearchPopupWindow extends PopupWindow implements
         private RecyclerView recyclerViewRight;
         private TextView tvNum;
         private boolean onBind;
-        private int checkedPosition = 0;//默认选中第一个
 
         BusinessCircleAdapter(Context context, TextView tvNum, List<BusinessCircleBean.DataBean> list, RecyclerView recyclerViewRight) {
             super(context, R.layout.item_search_meter, list);
@@ -911,7 +917,6 @@ public class SearchPopupWindow extends PopupWindow implements
             }
             holder.itemView.setOnClickListener(v -> {
                 mapBusiness.clear();
-                checkedPosition = holder.getAdapterPosition();
                 mapBusiness.put(holder.getAdapterPosition(), true);
                 if (!onBind) {
                     notifyDataSetChanged();
@@ -922,6 +927,8 @@ public class SearchPopupWindow extends PopupWindow implements
                 district = String.valueOf(bean.getDistrictID());
                 businessCircleDetailsAdapter = new BusinessCircleDetailsAdapter(mContext, tvNum, bean.getList());
                 recyclerViewRight.setAdapter(businessCircleDetailsAdapter);
+                //神策(如果只选地铁线(商圈)则传地铁线，如果选择地铁站(商圈区域)则传地铁站逗号分隔
+                Constants.SENSORS_AREA_CONTENT = bean.getDistrict();
             });
             //显示选中的文本
             onBind = true;
@@ -951,6 +958,7 @@ public class SearchPopupWindow extends PopupWindow implements
     private class BusinessCircleDetailsAdapter extends CommonListAdapter<BusinessCircleBean.DataBean.ListBean> {
         private SparseBooleanArray checkStates = new SparseBooleanArray();
         private HashSet<Integer> hashSet; //当前选中的数据列表
+        private Map<Integer, String> map = new HashMap<>(); //神策埋点文本
         private TextView tvNum;
 
         BusinessCircleDetailsAdapter(Context context, final TextView tvNum, List<BusinessCircleBean.DataBean.ListBean> list) {
@@ -977,9 +985,11 @@ public class SearchPopupWindow extends PopupWindow implements
                 if (isChecked) {
                     checkStates.put(pos, true);
                     hashSet.add(bean.getId());
+                    map.put(bean.getId(), bean.getArea());
                 } else {
                     checkStates.delete(pos);
                     hashSet.remove(bean.getId());
+                    map.remove(bean.getId());
                 }
                 if (checkStates.size() > 0) {
                     tvNum.setVisibility(View.VISIBLE);
@@ -991,16 +1001,20 @@ public class SearchPopupWindow extends PopupWindow implements
                 business = getHashSetKey(hashSet);
                 mHashSetBusiness = hashSet;
                 mCheckStatesBusiness = checkStates;
+                //神策埋点
+                sensorsLineOrBuisnessEvent(map);
             });
             cbStation.setChecked(checkStates.get(holder.getAdapterPosition(), false));
         }
     }
 
+    //房源特色
     private class HouseUniqueAdapter extends CommonListAdapter<DirectoryBean.DataBean> {
 
         //当前选中的数据列表
         private Map<Integer, String> map;
 
+        @SuppressLint("UseSparseArrays")
         public HouseUniqueAdapter(Context context, List<DirectoryBean.DataBean> list) {
             super(context, R.layout.item_house_type, list);
             map = new HashMap<>();
@@ -1021,6 +1035,7 @@ public class SearchPopupWindow extends PopupWindow implements
         }
     }
 
+    //装修类型
     private class DecorationTypeAdapter extends CommonListAdapter<DirectoryBean.DataBean> {
         //当前选中的数据列表
         private Map<Integer, String> map;
@@ -1042,6 +1057,7 @@ public class SearchPopupWindow extends PopupWindow implements
                     map.remove(bean.getDictValue());
                 }
                 decoration = getKey(map);
+                sensorsDecorationEvent(map);
             });
         }
     }
@@ -1060,7 +1076,6 @@ public class SearchPopupWindow extends PopupWindow implements
         if (mSet.size() > 1) {
             key = key.replace(key.length() - 1, key.length(), "");
         }
-        //LogCat.e("TAG", "getHashSetKey key = " + key);
         return key.toString();
     }
 
@@ -1076,7 +1091,38 @@ public class SearchPopupWindow extends PopupWindow implements
         if (map.size() > 1) {
             key = key.replace(key.length() - 1, key.length(), "");
         }
-        //LogCat.e("TAG", "key = " + key);
         return key.toString();
+    }
+
+    //神策埋点装修类型
+    private void sensorsDecorationEvent(Map<Integer, String> map) {
+        StringBuilder keyName = new StringBuilder();
+        for (Map.Entry<Integer, String> entry : map.entrySet()) {
+            if (map.size() == 1) {
+                keyName.append(map.get(entry.getKey()));
+            } else {
+                keyName.append(map.get(entry.getKey())).append(",");
+            }
+        }
+        if (map.size() > 1) {
+            keyName = keyName.replace(keyName.length() - 1, keyName.length(), "");
+        }
+        Constants.SENSORS_DECORATION = keyName.toString();
+    }
+
+    //神策埋点地铁或商圈类型
+    private void sensorsLineOrBuisnessEvent(Map<Integer, String> map) {
+        StringBuilder keyName = new StringBuilder();
+        for (Map.Entry<Integer, String> entry : map.entrySet()) {
+            if (map.size() == 1) {
+                keyName.append(map.get(entry.getKey()));
+            } else {
+                keyName.append(map.get(entry.getKey())).append(",");
+            }
+        }
+        if (map.size() > 1) {
+            keyName = keyName.replace(keyName.length() - 1, keyName.length(), "");
+        }
+        Constants.SENSORS_AREA_CONTENT = keyName.toString();
     }
 }

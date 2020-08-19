@@ -18,6 +18,7 @@ import com.google.android.material.appbar.AppBarLayout;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpFragment;
 import com.officego.commonlib.common.sensors.SensorsTrack;
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.update.VersionDialog;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
@@ -221,6 +222,17 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         mPresenter.getBuildingList(pageNum, String.valueOf(btype), district, business,
                 line, nearbySubway, mArea, mDayPrice, mSeats,
                 decoration, houseTags, sort, "");
+        //神策
+        String areaType = tvSearchArea.getText().toString();
+        boolean isSelect;
+        isSelect = !TextUtils.equals("区域", areaType) || btype != 0 ||
+                !TextUtils.equals("0", sort) ||
+                !TextUtils.isEmpty(decoration) ||
+                !TextUtils.isEmpty(mArea) ||
+                !TextUtils.isEmpty(mDayPrice) ||
+                !TextUtils.isEmpty(mSeats);
+        SensorsTrack.visitBuildingNetworkList("上海市", areaType, Constants.SENSORS_AREA_CONTENT, btype,
+                Integer.valueOf(sort), mArea, mDayPrice, mSeats, Constants.SENSORS_DECORATION, false, isSelect);
     }
 
     private void initRefresh() {
@@ -689,6 +701,9 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         business = "";
         tvSearchArea.setText("区域");
         tvSearchArea.setTextColor(ContextCompat.getColor(mActivity, R.color.text_66));
+        //清除神策选择文本
+        Constants.SENSORS_AREA_CONTENT = "";
+        Constants.SENSORS_DECORATION = "";
         //搜索
         getList();
     }

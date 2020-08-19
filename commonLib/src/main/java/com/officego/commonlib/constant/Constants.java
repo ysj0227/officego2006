@@ -72,7 +72,7 @@ public class Constants {
     public final static int TYPE_IDENTITY_COMPANY = 1;
     public final static int TYPE_IDENTITY_JOINT_WORK = 2;
 
-    //神策埋点，添加时间记录
-    public static String SENSORS_DATE = "";
-    public static String SENSORS_BUILDORHOUSE= "";
+    //神策埋点筛选区域文本,装修类型文本
+    public static String SENSORS_AREA_CONTENT = "";
+    public static String SENSORS_DECORATION = "";
 }

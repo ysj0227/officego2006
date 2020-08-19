@@ -50,7 +50,6 @@ import io.rong.imkit.fragment.ConversationFragment;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
 
-import static com.officego.commonlib.constant.Constants.SENSORS_DATE;
 
 /**
  * Created by YangShiJie
@@ -277,12 +276,6 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         tvJob.setText(data.getJob());
     }
 
-    //神策埋点时间
-    private void sensorsDate() {
-        sensorEventDate = DateTimeUtils.formatDate("yyyy-MM-dd HH:mm:ss", new Date());
-        SENSORS_DATE = sensorEventDate;
-    }
-
     /**
      * 交换手机
      */
@@ -296,7 +289,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
                     R.string.dialog_title_exchange_phone_contacts), "");
         }
         //神策
-        sensorsDate();
+        sensorEventDate = DateTimeUtils.formatDate("yyyy-MM-dd HH:mm:ss", new Date());
         SensorsTrack.clickPhoneExchangeButton(buildingId, houseId, sensorEventDate, sensorEventDate);
     }
 
@@ -315,7 +308,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
                     R.string.dialog_title_exchange_wechat_contacts), SpUtils.getWechat());
         }
         //神策
-        sensorsDate();
+        sensorEventDate = DateTimeUtils.formatDate("yyyy-MM-dd HH:mm:ss", new Date());
         SensorsTrack.clickWechatExchangeButton(buildingId, houseId, sensorEventDate, sensorEventDate);
     }
 
@@ -378,14 +371,22 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             //同意交换手机
             String mineMes = (String) args[1];//自己手机
             SendMessageManager.getInstance().sendEcPhoneStatusMessage(true, targetId, "我同意和您交换手机号", dataMes, mineMes, "");
+            //神策
+            sensorsPhoneExStatus(true);
         } else if (id == CommonNotifications.conversationPhoneReject) {
             SendMessageManager.getInstance().sendEcPhoneStatusMessage(false, targetId, "已拒绝和您交换手机号", "", "", "");
+            //神策
+            sensorsPhoneExStatus(false);
         } else if (id == CommonNotifications.conversationWeChatAgree) {
             //同意交换微信
             String mineMes = (String) args[1];//自己微信
             SendMessageManager.getInstance().sendEcWeChatStatusMessage(true, targetId, "我同意和您交换微信号", dataMes, mineMes, "");
+            //神策
+            sensorsWxExStatus(true);
         } else if (id == CommonNotifications.conversationWeChatReject) {
             SendMessageManager.getInstance().sendEcWeChatStatusMessage(false, targetId, "已拒绝和您交换微信号", "", "", "");
+            //神策
+            sensorsWxExStatus(false);
         } else if (id == CommonNotifications.conversationViewHouseAgree) {
             //同意预约看房
             SendMessageManager.getInstance().sendViewingDateStatusMessage(true, targetId, "同意预约看房", "");
@@ -406,6 +407,16 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             SendMessageManager.getInstance().sendIdApplyStatusMessage(false, targetId, "我已拒绝你加入公司", "");
             SendMessageManager.getInstance().sendTextMessage(targetId, "我已拒绝你加入公司");
         }
+    }
+
+    //神策手机交换状态
+    private void sensorsPhoneExStatus(boolean isAgree) {
+        SensorsTrack.confirmPhoneExchangeState(mData == null ? 0 : mData.getIsBuildOrHouse(), mData == null ? 0 : mData.getBuilding().getBtype(), buildingId, houseId, isAgree);
+    }
+
+    //神策微信交换状态
+    private void sensorsWxExStatus(boolean isAgree) {
+        SensorsTrack.confirmWechatExchangeState(mData == null ? 0 : mData.getIsBuildOrHouse(), mData == null ? 0 : mData.getBuilding().getBtype(), buildingId, houseId, isAgree);
     }
 
     @Override
