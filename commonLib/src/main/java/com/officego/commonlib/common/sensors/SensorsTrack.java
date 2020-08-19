@@ -201,18 +201,20 @@ public class SensorsTrack {
             if (!TextUtils.isEmpty(areaContent)) {
                 properties.put("areaContent", areaContent);
             }
-            properties.put("officeType", strOfficeType);
-            properties.put("oderType", strOrder);
             if (!TextUtils.isEmpty(area)) {
                 properties.put("area", area);
             }
-            properties.put("dayPrice", dayPrice);
+            if (!TextUtils.isEmpty(dayPrice)) {
+                properties.put("dayPrice", dayPrice);
+            }
             if (!TextUtils.isEmpty(simple)) {
                 properties.put("simple", simple);
             }
             if (!TextUtils.isEmpty(decorationName)) {
                 properties.put("decoration", decorationName);
             }
+            properties.put("officeType", strOfficeType);
+            properties.put("oderType", strOrder);
             properties.put("isVr", isVr);
             properties.put("isSelect", isSelect);
             SensorsDataAPI.sharedInstance().track("visit_building_network_list", properties);

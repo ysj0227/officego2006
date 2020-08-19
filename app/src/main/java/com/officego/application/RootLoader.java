@@ -49,7 +49,7 @@ public class RootLoader {
         //IM
         IMManager.getInstance().init(context);
         //SensorsData
-        initSensorsData();
+        initSensorsData(env);
         //bugly
         CrashReport.initCrashReport(context, AppConfig.BUGLY_ID, true);
         if (!TextUtils.isEmpty(SpUtils.getUserId())) {
@@ -58,7 +58,8 @@ public class RootLoader {
     }
 
     //神策初始化
-    private void initSensorsData() {
+    private void initSensorsData(String env) {
+        boolean isOpenLog = !TextUtils.equals(env, AppConfig.ENV_RELEASE);
         // 初始化配置
         SAConfigOptions saConfigOptions = new SAConfigOptions(AppConfig.SA_SERVER_URL);
         // 开启全埋点
@@ -67,7 +68,7 @@ public class RootLoader {
                 SensorsAnalyticsAutoTrackEventType.APP_END |
                 SensorsAnalyticsAutoTrackEventType.APP_VIEW_SCREEN)
                 //开启 Log
-                .enableLog(true);
+                .enableLog(isOpenLog);
         // 开启可视化全埋点
         saConfigOptions.enableVisualizedAutoTrack(true);
         // 需要在主线程初始化神策 SDK
