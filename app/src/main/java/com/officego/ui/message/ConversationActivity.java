@@ -300,8 +300,9 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
                     R.string.dialog_title_exchange_phone_contacts), "");
         }
         //神策
-        sensorEventDate = DateTimeUtils.formatDate("yyyy-MM-dd HH:mm:ss", new Date());
-        SensorsTrack.clickPhoneExchangeButton(buildingId, houseId, sensorEventDate, sensorEventDate);
+        sensorEventDate = String.valueOf(DateTimeUtils.currentTimeSecond());
+        String createTime = DateTimeUtils.formatDate("yyyy-MM-dd HH:mm:ss", new Date());
+        SensorsTrack.clickPhoneExchangeButton(buildingId, houseId, sensorEventDate, createTime);
     }
 
     /**
@@ -319,8 +320,9 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
                     R.string.dialog_title_exchange_wechat_contacts), SpUtils.getWechat());
         }
         //神策
-        sensorEventDate = DateTimeUtils.formatDate("yyyy-MM-dd HH:mm:ss", new Date());
-        SensorsTrack.clickWechatExchangeButton(buildingId, houseId, sensorEventDate, sensorEventDate);
+        sensorEventDate = String.valueOf(DateTimeUtils.currentTimeSecond());
+        String createTime = DateTimeUtils.formatDate("yyyy-MM-dd HH:mm:ss", new Date());
+        SensorsTrack.clickWechatExchangeButton(buildingId, houseId, sensorEventDate, createTime);
     }
 
     /**
@@ -332,7 +334,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             return;
         }
         //神策
-        String sensorEventDate = DateTimeUtils.formatDate("yyyy-MM-dd HH:mm:ss", new Date());
+        String sensorEventDate = String.valueOf(DateTimeUtils.currentTimeSecond());
         SensorsTrack.clickImOrderSeeHouseButton(String.valueOf(buildingId), String.valueOf(houseId),
                 targetId, mNikeName, sensorEventDate);
         if (mData == null) {
@@ -422,12 +424,14 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
 
     //神策手机交换状态
     private void sensorsPhoneExStatus(boolean isAgree) {
-        SensorsTrack.confirmPhoneExchangeState(mData == null ? 0 : mData.getIsBuildOrHouse(), mData == null ? 0 : mData.getBuilding().getBtype(), buildingId, houseId, isAgree);
+        SensorsTrack.confirmPhoneExchangeState(mData == null ? 0 : mData.getIsBuildOrHouse(), mData == null ? 0 : mData.getBuilding().getBtype(),
+                buildingId, houseId, sensorEventDate, isAgree);
     }
 
     //神策微信交换状态
     private void sensorsWxExStatus(boolean isAgree) {
-        SensorsTrack.confirmWechatExchangeState(mData == null ? 0 : mData.getIsBuildOrHouse(), mData == null ? 0 : mData.getBuilding().getBtype(), buildingId, houseId, isAgree);
+        SensorsTrack.confirmWechatExchangeState(mData == null ? 0 : mData.getIsBuildOrHouse(), mData == null ? 0 : mData.getBuilding().getBtype(),
+                buildingId, houseId, sensorEventDate, isAgree);
     }
 
     @Override

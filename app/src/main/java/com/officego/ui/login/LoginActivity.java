@@ -321,9 +321,11 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
             if (ActivityCompat.checkSelfPermission(this,
                     "android.permission.READ_PHONE_STATE") == PackageManager.PERMISSION_GRANTED) {
                 SensorsTrack.trackInstallation(context);
+                btnLoginNoPassword.setVisibility(TextUtils.isEmpty(CommonHelper.getPhoneNum(context)) ? View.GONE : View.VISIBLE);
             }
         } else {
             SensorsTrack.trackInstallation(context);
+            btnLoginNoPassword.setVisibility(TextUtils.isEmpty(CommonHelper.getPhoneNum(context)) ? View.GONE : View.VISIBLE);
         }
     }
 

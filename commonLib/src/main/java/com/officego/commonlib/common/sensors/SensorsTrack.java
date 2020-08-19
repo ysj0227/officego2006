@@ -524,7 +524,7 @@ public class SensorsTrack {
      * statusPhone	电话交换状态	STRING
      * isSuccess	是否成功	BOOL
      */
-    public static void confirmPhoneExchangeState(int buildOrHouse, int bType, int buildingId, int houseId, boolean isAgree) {
+    public static void confirmPhoneExchangeState(int buildOrHouse, int bType, int buildingId, int houseId,String timestamp, boolean isAgree) {
         try {
             JSONObject properties = new JSONObject();
             String mText;
@@ -544,6 +544,7 @@ public class SensorsTrack {
             if (!TextUtils.isEmpty(mText)) {
                 properties.put("buildOrHouse", mText);
             }
+            properties.put("timestamp", timestamp);
             properties.put("rid", TextUtils.equals(Constants.TYPE_TENANT, SpUtils.getRole()) ? "租户" : "房东");
             properties.put("statusPhone", isAgree ? "通过" : "拒绝");
             properties.put("isSuccess", isAgree);
@@ -592,7 +593,7 @@ public class SensorsTrack {
      * statusPhone	电话交换状态	STRING
      * isSuccess	是否成功	BOOL
      */
-    public static void confirmWechatExchangeState(int buildOrHouse, int bType, int buildingId, int houseId, boolean isAgree) {
+    public static void confirmWechatExchangeState(int buildOrHouse, int bType, int buildingId, int houseId, String timestamp,boolean isAgree) {
         try {
             JSONObject properties = new JSONObject();
             String mText;
@@ -612,6 +613,7 @@ public class SensorsTrack {
             if (!TextUtils.isEmpty(mText)) {
                 properties.put("buildOrHouse", mText);
             }
+            properties.put("timestamp", timestamp);
             properties.put("rid", TextUtils.equals(Constants.TYPE_TENANT, SpUtils.getRole()) ? "租户" : "房东");
             properties.put("statusWechat", isAgree ? "通过" : "拒绝");
             properties.put("isSuccess", isAgree);
