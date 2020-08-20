@@ -45,17 +45,19 @@ android {
     buildTypes {
         debug {
 //            applicationIdSuffix ".test"
-            manifestPlaceholders = [ENV_VALUE : "ENV_TEST",
-                                    APP_NAME  : "@string/app_name",
-                                    WX_APP_ID : "wx70ee9e90c1d62d83"]
+            manifestPlaceholders = [ENV_VALUE     : "ENV_TEST",
+                                    APP_NAME      : "@string/app_name",
+                                    WX_APP_ID     : "wx70ee9e90c1d62d83",
+                                    SENSORS_SCHEME: "sacc267397"]
             zipAlignEnabled false
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
         release {
-            manifestPlaceholders = [ENV_VALUE : "ENV_RELEASE",
-                                    APP_NAME  : "@string/app_name",
-                                    WX_APP_ID : "wx70ee9e90c1d62d83"]
+            manifestPlaceholders = [ENV_VALUE     : "ENV_RELEASE",
+                                    APP_NAME      : "@string/app_name",
+                                    WX_APP_ID     : "wx70ee9e90c1d62d83",
+                                    SENSORS_SCHEME: "saa39f5229"]
             minifyEnabled false
             zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
@@ -101,7 +103,7 @@ walle {
     //指定渠道包的输出路径
     apkOutputFolder = new File("${project.buildDir}/outputs/channels")
     //定制渠道包的APK的文件名称 例如app-xiaomi.apk
-    apkFileNameFormat = '${channel}'+VERSION_NAME+'.apk'
+    apkFileNameFormat = '${channel}' + VERSION_NAME + '.apk'
     //渠道配置文件
     channelFile = new File("${project.getProjectDir()}/channel")
 }

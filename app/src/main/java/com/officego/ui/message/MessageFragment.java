@@ -1,6 +1,5 @@
 package com.officego.ui.message;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
@@ -29,9 +28,7 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.List;
 
-import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationListFragment;
-import io.rong.imkit.model.UIConversation;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 
@@ -105,52 +102,21 @@ public class MessageFragment extends BaseFragment {
         FragmentTransaction transaction = mActivity.getSupportFragmentManager().beginTransaction();
         transaction.add(R.id.conversationlist, fragment);
         transaction.commit();
+//        getList();
     }
 
-//    private void getList() {
-//        RongIMClient.getInstance().getConversationList(new RongIMClient.ResultCallback<List<Conversation>>() {
-//            @Override
-//            public void onSuccess(List<Conversation> conversations) {
-////                for (int i = 0; i <conversations.size() ; i++) {
-////                    LogCat.e(TAG, "111111  conversations list=" + conversations.size()+
-////                            " content="+conversations.get(i));
-////
-////                }
-//            }
-//
-//            @Override
-//            public void onError(RongIMClient.ErrorCode errorCode) {
-//            }
-//        });
-//    }
-
-    /**
-     * 设置会话操作的监听器。
-     */
-    private void conversationClick() {
-
-        RongIM.setConversationListBehaviorListener(new RongIM.ConversationListBehaviorListener() {
+    private void getList() {
+        RongIMClient.getInstance().getConversationListByPage(new RongIMClient.ResultCallback<List<Conversation>>() {
             @Override
-            public boolean onConversationPortraitClick(Context context, Conversation.ConversationType conversationType, String targetId) {
-                return false;
+            public void onSuccess(List<Conversation> conversations) {
+                LogCat.e(TAG, "1111111111111  getConversationListByPage=" + (conversations == null ? 0 : conversations.size()));
             }
 
             @Override
-            public boolean onConversationPortraitLongClick(Context context, Conversation.ConversationType conversationType, String targetId) {
-                return false;
+            public void onError(RongIMClient.ErrorCode errorCode) {
+                LogCat.e(TAG, "1111111111111  getConversationListByPage error getMessage=" + errorCode.getMessage() + " getValue=" + errorCode.getValue());
             }
-
-            @Override
-            public boolean onConversationLongClick(Context context, View view, UIConversation conversation) {
-                return false;
-            }
-
-            @Override
-            public boolean onConversationClick(Context context, View view, UIConversation conversation) {
-                LogCat.e(TAG, "1111111111  onConversationClick");
-                return false;
-            }
-        });
+        }, System.currentTimeMillis() / 1000, 10, Conversation.ConversationType.PRIVATE);
     }
 
     @Override

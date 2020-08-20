@@ -43,8 +43,8 @@
     <!--在SDCard中创建与删除文件权限-->
     <uses-permission android:name="android.permission.MOUNT_UNMOUNT_FILESYSTEMS" />
     <!-- OPPPO 权限配置-->
-    <uses-permission android:name="com.coloros.mcs.permission.RECIEVE_MCS_MESSAGE"/>
-    <uses-permission android:name="com.heytap.mcs.permission.RECIEVE_MCS_MESSAGE"/>
+    <uses-permission android:name="com.coloros.mcs.permission.RECIEVE_MCS_MESSAGE" />
+    <uses-permission android:name="com.heytap.mcs.permission.RECIEVE_MCS_MESSAGE" />
     <uses-permission android:name="com.coloros.mcs.permission.SEND_MCS_MESSAGE" />
     <!-- OPPO 配置结束-->
     <!--    三星发布权限-->
@@ -90,7 +90,15 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".MainActivity_"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <category android:name="android.intent.category.DEFAULT" />
+
+                <data android:scheme="${SENSORS_SCHEME}" />
+            </intent-filter>
+        </activity>
         <activity
             android:name=".ui.login.LoginActivity_"
             android:exported="true"
@@ -313,7 +321,7 @@
             android:excludeFromRecents="true"
             android:exported="false"
             android:hardwareAccelerated="true"
-            android:theme="@android:style/Theme.Translucent" >
+            android:theme="@android:style/Theme.Translucent">
             <meta-data
                 android:name="hwc-theme"
                 android:value="androidhwext:style/Theme.Emui.Translucent" />
@@ -326,7 +334,7 @@
             android:excludeFromRecents="true"
             android:exported="false"
             android:hardwareAccelerated="true"
-            android:theme="@android:style/Theme.Translucent" >
+            android:theme="@android:style/Theme.Translucent">
             <meta-data
                 android:name="hwc-theme"
                 android:value="androidhwext:style/Theme.Emui.Translucent" />
@@ -336,10 +344,9 @@
             android:name="com.huawei.hms.update.provider.UpdateProvider"
             android:authorities="com.officego.hms.update.provider"
             android:exported="false"
-            android:grantUriPermissions="true">
-        </provider>
+            android:grantUriPermissions="true"></provider>
         <!-- 第三方相关 :接收Push消息（注册、Push消息、Push连接状态）广播 -->
-        <receiver android:name="io.rong.push.platform.hms.HMSReceiver" >
+        <receiver android:name="io.rong.push.platform.hms.HMSReceiver">
             <intent-filter>
                 <!-- 必须,用于接收token -->
                 <action android:name="com.huawei.android.push.intent.REGISTRATION" />
@@ -351,7 +358,7 @@
                 <action android:name="com.huawei.intent.action.PUSH_STATE" />
             </intent-filter>
         </receiver>
-        <receiver android:name="com.huawei.hms.support.api.push.PushEventReceiver" >
+        <receiver android:name="com.huawei.hms.support.api.push.PushEventReceiver">
             <intent-filter>
                 <!-- 接收通道发来的通知栏消息，兼容老版本Push -->
                 <action android:name="com.huawei.intent.action.PUSH" />
@@ -359,23 +366,23 @@
         </receiver>
         <!-- 华为 配置结束 < -->
 
-<!--        &lt;!&ndash; oppo 配置开始 < &ndash;&gt;-->
-<!--        <service-->
-<!--            android:name="com.heytap.mcssdk.PushService"-->
-<!--            android:permission="com.coloros.mcs.permission.SEND_MCS_MESSAGE">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="com.coloros.mcs.action.RECEIVE_MCS_MESSAGE"/>-->
-<!--            </intent-filter>-->
-<!--        </service>-->
+        <!--        &lt;!&ndash; oppo 配置开始 < &ndash;&gt;-->
+        <!--        <service-->
+        <!--            android:name="com.heytap.mcssdk.PushService"-->
+        <!--            android:permission="com.coloros.mcs.permission.SEND_MCS_MESSAGE">-->
+        <!--            <intent-filter>-->
+        <!--                <action android:name="com.coloros.mcs.action.RECEIVE_MCS_MESSAGE"/>-->
+        <!--            </intent-filter>-->
+        <!--        </service>-->
 
-<!--        <service-->
-<!--            android:name="com.heytap.mcssdk.AppPushService"-->
-<!--            android:permission="com.heytap.mcs.permission.SEND_MCS_MESSAGE">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="com.heytap.mcs.action.RECEIVE_MCS_MESSAGE"/>-->
-<!--            </intent-filter>-->
-<!--        </service>-->
-<!--        &lt;!&ndash; oppo 配置结束 < &ndash;&gt;-->
+        <!--        <service-->
+        <!--            android:name="com.heytap.mcssdk.AppPushService"-->
+        <!--            android:permission="com.heytap.mcs.permission.SEND_MCS_MESSAGE">-->
+        <!--            <intent-filter>-->
+        <!--                <action android:name="com.heytap.mcs.action.RECEIVE_MCS_MESSAGE"/>-->
+        <!--            </intent-filter>-->
+        <!--        </service>-->
+        <!--        &lt;!&ndash; oppo 配置结束 < &ndash;&gt;-->
 
     </application>
 

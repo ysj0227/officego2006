@@ -5,12 +5,12 @@ import android.text.TextUtils;
 
 import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
-import com.officego.commonlib.common.VersionBean;
 import com.officego.commonlib.common.model.ChatHouseBean;
 import com.officego.commonlib.common.model.RenterBean;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.CommonHelper;
+import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.commonlib.utils.log.LogCat;
 import com.officego.rpc.request.BannerInterface;
 import com.officego.rpc.request.ChatInterface;
@@ -723,14 +723,15 @@ public class OfficegoApi {
         map.put("buildingId", requestBody(buildingId + ""));
 //        map.put("houseIds", requestBody(houseIds + ""));
         map.put("time", requestBody(time));
+        map.put("times", requestBody(String.valueOf(DateTimeUtils.currentTimeSecond())));//时间戳
         map.put("chatUserId", requestBody(targetId));//聊天界面对方用户id
         if (TextUtils.equals(Constants.TYPE_OWNER, SpUtils.getRole())) {
-            LogCat.e(TAG, "11111111111 Owner");
+           // LogCat.e(TAG, "11111111111 Owner");
             OfficegoRetrofitClient.getInstance().create(ScheduleInterface.class)
                     .addProprietorApp(map)
                     .enqueue(callback);
         } else {
-            LogCat.e(TAG, "11111111111 tentet");
+           // LogCat.e(TAG, "11111111111 tentet");
             OfficegoRetrofitClient.getInstance().create(ScheduleInterface.class)
                     .addRenter(map)
                     .enqueue(callback);
