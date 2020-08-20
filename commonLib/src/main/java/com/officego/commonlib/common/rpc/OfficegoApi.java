@@ -11,7 +11,6 @@ import com.officego.commonlib.common.rpc.request.LicenceInterface;
 import com.officego.commonlib.common.rpc.request.MineMsgInterface;
 import com.officego.commonlib.common.rpc.request.ScheduleInterface;
 import com.officego.commonlib.retrofit.RetrofitCallback;
-import com.officego.commonlib.utils.log.LogCat;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -163,9 +162,9 @@ public class OfficegoApi {
     }
 
     /**
-     *获取消息信息
+     * 获取消息信息
      */
-    public void getRongUserInfo(String targetId,RetrofitCallback<RongUserInfoBean> callback) {
+    public void getRongUserInfo(String targetId, RetrofitCallback<RongUserInfoBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("targetId", requestBody(targetId));
         OfficegoRetrofitClient.getInstance().create(ChatInterface.class)

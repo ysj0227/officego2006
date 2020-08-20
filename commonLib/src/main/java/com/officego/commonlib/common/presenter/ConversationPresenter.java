@@ -1,7 +1,8 @@
 package com.officego.commonlib.common.presenter;
 
+import android.text.TextUtils;
+
 import com.officego.commonlib.base.BasePresenter;
-import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.contract.ConversationContract;
 import com.officego.commonlib.common.model.ChatHouseBean;
 import com.officego.commonlib.common.model.FirstChatBean;
@@ -24,27 +25,28 @@ public class ConversationPresenter extends BasePresenter<ConversationContract.Vi
      */
     @Override
     public void getHouseDetails(int buildingId, int houseId, String targetId) {
-//        LogCat.e(TAG, "getDetails buildingId=" + buildingId+"   houseId="+houseId+"  targetId="+targetId +" token="+ SpUtils.getSignToken());
-        mView.showLoadingDialog();
-        OfficegoApi.getInstance().getChatHouseDetails(buildingId, houseId, targetId,
-                new RetrofitCallback<ChatHouseBean>() {
-                    @Override
-                    public void onSuccess(int code, String msg, ChatHouseBean data) {
-                        LogCat.e(TAG, "getDetails onSuccess =" + data);
-                        if (isViewAttached()) {
-                            mView.hideLoadingDialog();
-                            mView.houseSuccess(data);
+        if (!TextUtils.isEmpty(targetId)) {
+            mView.showLoadingDialog();
+            OfficegoApi.getInstance().getChatHouseDetails(buildingId, houseId, targetId,
+                    new RetrofitCallback<ChatHouseBean>() {
+                        @Override
+                        public void onSuccess(int code, String msg, ChatHouseBean data) {
+                            LogCat.e(TAG, "getDetails onSuccess =" + data);
+                            if (isViewAttached()) {
+                                mView.hideLoadingDialog();
+                                mView.houseSuccess(data);
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onFail(int code, String msg, ChatHouseBean data) {
-                        LogCat.e(TAG, "getDetails onFail code=" + code + "  msg=" + msg);
-                        if (isViewAttached()) {
-                            mView.hideLoadingDialog();
+                        @Override
+                        public void onFail(int code, String msg, ChatHouseBean data) {
+                            LogCat.e(TAG, "getDetails onFail code=" + code + "  msg=" + msg);
+                            if (isViewAttached()) {
+                                mView.hideLoadingDialog();
+                            }
                         }
-                    }
-                });
+                    });
+        }
     }
 
     /**

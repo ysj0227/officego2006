@@ -58,7 +58,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
     private LinearLayout llRoot;
     private ConstraintLayout ctlChat;
     private TextView tvTitleName, tvJob;
-    private String getHouseChatId; //去除 targetId  的最后一位 ,产品定义
+    private String getHouseChatId = ""; //去除 targetId  的最后一位 ,产品定义
     @Extra
     String targetId;//融云的id
     @Extra
@@ -122,6 +122,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
                 RongIM.getInstance().setSendMessageListener(this);
                 mPresenter.getHouseDetails(buildingId, houseId, getHouseChatId);
             }
+            findViewById(R.id.rc_extension).setVisibility(TextUtils.isEmpty(targetId) ? View.INVISIBLE : View.VISIBLE);
         }
     }
 
@@ -147,7 +148,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             }
         }
         if (TextUtils.isEmpty(targetId)) {
-            shortTip("获取信息异常，请稍后再聊");
+            shortTip("获取对方信息异常，请稍后再试");
             return;
         }
         if (!TextUtils.isEmpty(targetId) && targetId.length() > 1) {

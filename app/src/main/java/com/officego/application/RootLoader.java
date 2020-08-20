@@ -45,32 +45,12 @@ public class RootLoader {
         LogCat.init(!TextUtils.equals(env, AppConfig.ENV_RELEASE));
         //IM
         IMManager.getInstance().init(context);
-        //SensorsData
-//        initSensorsData();
         //bugly
         CrashReport.initCrashReport(context, AppConfig.BUGLY_ID, true);
         if (!TextUtils.isEmpty(SpUtils.getUserId())) {
             CrashReport.setUserId(SpUtils.getUserId());
         }
     }
-
-//    //神策初始化
-//    private void initSensorsData() {
-//        // 初始化配置
-//        SAConfigOptions saConfigOptions = new SAConfigOptions(AppConfig.SA_SERVER_URL);
-//        // 开启全埋点
-//        saConfigOptions.setAutoTrackEventType(SensorsAnalyticsAutoTrackEventType.APP_CLICK |
-//                SensorsAnalyticsAutoTrackEventType.APP_START |
-//                SensorsAnalyticsAutoTrackEventType.APP_END |
-//                SensorsAnalyticsAutoTrackEventType.APP_VIEW_SCREEN)
-//                //开启 Log
-//                .enableLog(true);
-///**
-// * 其他配置，如开启可视化全埋点
-// */
-//    // 需要在主线程初始化神策 SDK
-//        SensorsDataAPI.startWithConfigOptions(context, saConfigOptions);
-//    }
 
     /**
      * Glide加载https部分失败，设置信任证书
