@@ -122,7 +122,6 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
                 RongIM.getInstance().setSendMessageListener(this);
                 mPresenter.getHouseDetails(buildingId, houseId, getHouseChatId);
             }
-            findViewById(R.id.rc_extension).setVisibility(TextUtils.isEmpty(targetId) ? View.INVISIBLE : View.VISIBLE);
         }
     }
 
@@ -172,7 +171,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
                     .appendQueryParameter("targetId", targetId).build();
         } else {
             //聊天消息
-            findViewById(R.id.rc_extension).setVisibility(View.VISIBLE);
+            findViewById(R.id.rc_extension).setVisibility(TextUtils.isEmpty(targetId) ? View.INVISIBLE : View.VISIBLE);
             uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon()
                     .appendPath("conversation")
                     .appendPath(Conversation.ConversationType.PRIVATE.getName().toLowerCase())

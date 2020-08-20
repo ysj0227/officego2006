@@ -903,7 +903,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             tvTotalFloor.setText(TextUtils.isEmpty(data.getIntroduction().getTotalFloor()) ?
                     getResources().getString(R.string.str_text_line) : data.getIntroduction().getTotalFloor() + "层");
             tvStoreyHeight.setText(TextUtils.isEmpty(data.getIntroduction().getStoreyHeight()) ?
-                    getResources().getString(R.string.str_text_line) : data.getIntroduction().getStoreyHeight() + "米");
+                    getResources().getString(R.string.str_text_line) : data.getIntroduction().getStoreyHeight());
             tvLift.setText(data.getIntroduction().getPassengerLift() + "客梯" + data.getIntroduction().getCargoLift() + "货梯");
             tvParkingSpace.setText(TextUtils.isEmpty(data.getIntroduction().getParkingSpace()) ?
                     getResources().getString(R.string.str_text_line) : data.getIntroduction().getParkingSpace() + "个");
