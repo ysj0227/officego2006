@@ -159,9 +159,10 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         FragmentManager fragmentManage = getSupportFragmentManager();
         ConversationFragment fragment = (ConversationFragment) fragmentManage.findFragmentById(R.id.conversation);
         Uri uri;
-        if (!TextUtils.isEmpty(targetId) &&
+        if (!TextUtils.isEmpty(targetId) && (targetId.length() > 1 &&
                 !TextUtils.equals(Constants.TYPE_TENANT, targetId.substring(targetId.length() - 1)) &&
-                !TextUtils.equals(Constants.TYPE_OWNER, targetId.substring(targetId.length() - 1))) {
+                !TextUtils.equals(Constants.TYPE_OWNER, targetId.substring(targetId.length() - 1)))
+                || TextUtils.equals(Constants.TYPE_SYSTEM, targetId)) {
             //系统消息
             findViewById(R.id.rc_extension).setVisibility(View.INVISIBLE);
             uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon()
