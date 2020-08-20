@@ -125,6 +125,6 @@ dependencies {
     //oppo
 
     // 神策Sensors Analytics SDK 依赖
-    api 'com.sensorsdata.analytics.android:SensorsAnalyticsSDK:4.2.3'
+    api 'com.sensorsdata.analytics.android:SensorsAnalyticsSDK:4.2.4'
 
 }

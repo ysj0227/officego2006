@@ -269,12 +269,14 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         if (data.getHouse() != null) {
             tvIndependentOfficeAreaText.setText(data.getHouse().getSeats() + "个工位");
             if (data.getHouse().getArea() != null) {
-                tvIndependentOfficeArea.setText(Html.fromHtml("<font color='#46C3C2'>" + data.getHouse().getArea() + "</font>㎡"));
+                tvIndependentOfficeArea.setText(Html.fromHtml("<font color='#46C3C2'>" +
+                        CommonHelper.bigDecimal(data.getHouse().getArea(),true) + "</font>㎡"));
             } else {
                 tvIndependentOfficeArea.setText(R.string.str_text_line);
             }
             if (data.getHouse().getDayPrice() != null) {
-                tvIndependentOfficePrice.setText(Html.fromHtml("<font color='#46C3C2'>¥" + data.getHouse().getDayPrice() + "</font>/位/天起"));
+                tvIndependentOfficePrice.setText(Html.fromHtml("<font color='#46C3C2'>¥" +
+                        CommonHelper.bigDecimal(data.getHouse().getDayPrice(),false) + "</font>/位/天起"));
             } else {
                 tvIndependentOfficePrice.setText(R.string.str_text_line);
             }

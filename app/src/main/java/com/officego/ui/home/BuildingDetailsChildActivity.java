@@ -281,17 +281,17 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
             }
             //详情
             if (data.getHouse().getArea() != null) {
-                tvIndependentOfficeArea.setText(Html.fromHtml("<font color='#46C3C2'>" + data.getHouse().getArea() + "</font>㎡"));
+                tvIndependentOfficeArea.setText(Html.fromHtml("<font color='#46C3C2'>" + CommonHelper.bigDecimal(data.getHouse().getArea(),true) + "</font>㎡"));
             } else {
                 tvIndependentOfficeArea.setText(R.string.str_text_line);
             }
             if (data.getHouse().getDayPrice() != null) {
-                tvIndependentOfficePrice.setText(Html.fromHtml("<font color='#46C3C2'>¥" + data.getHouse().getDayPrice() + "</font>/㎡/天起"));
+                tvIndependentOfficePrice.setText(Html.fromHtml("<font color='#46C3C2'>¥" + CommonHelper.bigDecimal(data.getHouse().getDayPrice(),false) + "</font>/㎡/天起"));
             } else {
                 tvIndependentOfficePrice.setText(R.string.str_text_line);
             }
             if (data.getHouse().getMonthPrice() != null) {
-                tvIndependentOfficePriceText.setText("¥" + data.getHouse().getMonthPrice() + "/月");
+                tvIndependentOfficePriceText.setText("¥" + CommonHelper.bigDecimal(data.getHouse().getMonthPrice(),false) + "/月");
             } else {
                 tvIndependentOfficePriceText.setText(R.string.str_text_line);
             }

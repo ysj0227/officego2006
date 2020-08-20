@@ -46,7 +46,7 @@ public class HouseAdapter extends CommonListAdapter<BuildingBean.ListBean> {
     }
 
     public interface ClickItemListener {
-        void listItemClick(int position, int buildingId,int btype);
+        void listItemClick(int position, int buildingId, int btype);
     }
 
     public HouseAdapter(Context context, List<BuildingBean.ListBean> list, ConditionBean bean) {
@@ -111,7 +111,7 @@ public class HouseAdapter extends CommonListAdapter<BuildingBean.ListBean> {
             } else {
                 labelsView.setVisibility(View.GONE);
             }
-            labelsView.setLabels(areaMap, (label, position, data) -> data == null ? "0m²" : data.toString() + "m²");
+            labelsView.setLabels(areaMap, (label, position, data) -> data == null ? "0m²" : CommonHelper.bigDecimal(data.toString(), true) + "m²");
         } else {//2:网点 联合办公
             labelsView.setLabelTextSize(CommonHelper.sp2px(context, 12));
             labelsView.setWordMargin(40);
@@ -161,7 +161,7 @@ public class HouseAdapter extends CommonListAdapter<BuildingBean.ListBean> {
      */
     private void gotoDetails(ViewHolder holder, BuildingBean.ListBean bean) {
         holder.itemView.setOnClickListener(v -> {
-            itemListener.listItemClick(holder.getAdapterPosition(),bean.getId(), bean.getBtype());
+            itemListener.listItemClick(holder.getAdapterPosition(), bean.getId(), bean.getBtype());
             if (bean.getBtype() == 1) {
                 BuildingDetailsActivity_.intent(context).mConditionBean(conditionBean)
                         .mBuildingBean(BundleUtils.BuildingMessage(1, bean.getId())).start();

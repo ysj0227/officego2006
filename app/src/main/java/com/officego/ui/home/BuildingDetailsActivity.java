@@ -37,7 +37,6 @@ import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.IVideoPlayer;
 import com.officego.commonlib.view.LabelsView;
 import com.officego.commonlib.view.dialog.CommonDialog;
@@ -882,16 +881,16 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             String mArea = "0㎡";
             if (data.getBuilding().getMinArea() != null && data.getBuilding().getMaxArea() != null) {
                 if (TextUtils.equals(data.getBuilding().getMinArea().toString(), data.getBuilding().getMaxArea().toString())) {
-                    mArea = data.getBuilding().getMaxArea() + "㎡";
+                    mArea = CommonHelper.bigDecimal(data.getBuilding().getMaxArea(),true) + "㎡";
                 } else {
-                    mArea = data.getBuilding().getMinArea() + "~" + data.getBuilding().getMaxArea() + "㎡";
+                    mArea = CommonHelper.bigDecimal(data.getBuilding().getMinArea(),true) + "~" + CommonHelper.bigDecimal(data.getBuilding().getMaxArea(),true) + "㎡";
                 }
             }
             reSizeTextView(tvIndependentOfficeArea, mArea);
             tvIndependentOfficeArea.setTextColor(ContextCompat.getColor(context, R.color.common_blue_main));
             String mPrice;
             if (data.getBuilding().getMinDayPrice() != null) {
-                mPrice = "¥" + data.getBuilding().getMinDayPrice() + "/㎡/天起";
+                mPrice = "¥" + CommonHelper.bigDecimal(data.getBuilding().getMinDayPrice(),false) + "/㎡/天起";
             } else {
                 mPrice = "¥0.0/㎡/天起";
             }

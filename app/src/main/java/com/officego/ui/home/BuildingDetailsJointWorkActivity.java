@@ -1072,7 +1072,8 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
                 tvOpenWorkModelText.setText(R.string.str_work_num);
                 tvOpenWorkModelNum.setText(data.getBuilding().getOpenStationMap().getSeats() + "工位");
                 tvMinMonth.setText(data.getBuilding().getOpenStationMap().getMinimumLease() + "个月起租");
-                tvOpenWorkModelPrice.setText(Html.fromHtml("<font color='#46C3C2'>¥" + data.getBuilding().getOpenStationMap().getDayPrice() + "</font>/位/月"));
+                tvOpenWorkModelPrice.setText(Html.fromHtml("<font color='#46C3C2'>¥" +
+                        CommonHelper.bigDecimal(data.getBuilding().getOpenStationMap().getDayPrice(), false) + "</font>/位/月"));
                 Glide.with(context).load(data.getBuilding().getOpenStationMap().getMainPic()).into(ivOpenWorkImg);
                 //神策
                 SensorsTrack.buildingDataPageScreen(data.getBuilding().getBuildingId(), data.getBuilding().getOpenStationMap().getSeats() + "");
@@ -1094,11 +1095,13 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
             tvIndependentOfficePriceText.setText("均价");
             tvIndependentOfficeNumText.setText("工位数");
             if (TextUtils.equals(data.getBuilding().getMinAreaIndependentOffice().toString(), data.getBuilding().getMaxAreaIndependentOffice().toString())) {
-                tvIndependentOfficeArea.setText(Html.fromHtml("<font color='#46C3C2'>" + data.getBuilding().getMaxAreaIndependentOffice() + "</font>㎡"));
+                tvIndependentOfficeArea.setText(Html.fromHtml("<font color='#46C3C2'>" + CommonHelper.bigDecimal(data.getBuilding().getMaxAreaIndependentOffice(), true) + "</font>㎡"));
             } else {
-                tvIndependentOfficeArea.setText(Html.fromHtml("<font color='#46C3C2'>" + data.getBuilding().getMinAreaIndependentOffice() + "-" + data.getBuilding().getMaxAreaIndependentOffice() + "</font>㎡"));
+                tvIndependentOfficeArea.setText(Html.fromHtml("<font color='#46C3C2'>" +
+                        CommonHelper.bigDecimal(data.getBuilding().getMinAreaIndependentOffice(), true) +  "~" +
+                        CommonHelper.bigDecimal(data.getBuilding().getMaxAreaIndependentOffice(), true) + "</font>㎡"));
             }
-            tvIndependentOfficePrice.setText(Html.fromHtml("<font color='#46C3C2'>¥" + data.getBuilding().getAvgDayPriceIndependentOffice() + "</font>/位/月"));
+            tvIndependentOfficePrice.setText(Html.fromHtml("<font color='#46C3C2'>¥" + CommonHelper.bigDecimal(data.getBuilding().getAvgDayPriceIndependentOffice(), false) + "</font>/位/月"));
             if (data.getBuilding().getMinSeatsIndependentOffice() == data.getBuilding().getMaxSeatsIndependentOffice()) {
                 tvIndependentOfficeNum.setText(Html.fromHtml("<font color='#46C3C2'>" + data.getBuilding().getMaxSeatsIndependentOffice() + "</font>位"));
             } else {
@@ -1107,7 +1110,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
             tvOpenOfficeNumText.setText("工位数");
             tvOpenOfficePriceText.setText("均价");
             tvOpenOfficeNum.setText(Html.fromHtml("<font color='#46C3C2'>" + data.getBuilding().getMinSeatsOpenStation() + "</font>位"));
-            tvOpenOfficePrice.setText(Html.fromHtml("<font color='#46C3C2'>¥" + data.getBuilding().getAvgDayPriceOpenStation() + "</font>/位/月"));
+            tvOpenOfficePrice.setText(Html.fromHtml("<font color='#46C3C2'>¥" + CommonHelper.bigDecimal(data.getBuilding().getAvgDayPriceOpenStation(),false) + "</font>/位/月"));
         }
     }
 
