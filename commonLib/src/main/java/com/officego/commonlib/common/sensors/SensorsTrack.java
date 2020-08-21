@@ -7,7 +7,6 @@ import com.meituan.android.walle.WalleChannelReader;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.constant.Constants;
 import com.sensorsdata.analytics.android.sdk.SensorsDataAPI;
-import com.sensorsdata.analytics.android.sdk.SensorsDataDynamicSuperProperties;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -17,7 +16,7 @@ import org.json.JSONObject;
  */
 public class SensorsTrack {
 
-    public static void superProperties(){
+    public static void superProperties() {
         // 将应用名称作为事件公共属性，后续所有 track() 追踪的事件都会自动带上 "AppName" 属性
         try {
             JSONObject properties = new JSONObject();
