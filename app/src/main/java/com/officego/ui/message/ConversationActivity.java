@@ -100,15 +100,18 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         } else {
             initIMInfo();
             //认证申请聊天列表进入
-            if (targetId.length() > 1 && TextUtils.equals(Constants.TYPE_OWNER, targetId.substring(targetId.length() - 1)) &&
+            if (!TextUtils.isEmpty(targetId) &&
+                    targetId.length() > 1 &&
+                    TextUtils.equals(Constants.TYPE_OWNER, targetId.substring(targetId.length() - 1)) &&
                     TextUtils.equals(Constants.TYPE_OWNER, SpUtils.getRongChatId().substring(SpUtils.getRongChatId().length() - 1))) {
                 //认证申请聊天列表进入,融云id最后一位是“1”
                 isSendApply = false;
                 ctlChat.setVisibility(View.GONE);
                 mPresenter.identityChattedMsg(targetId);
                 initIM();
-            } else if (TextUtils.equals("3", targetId) ||
-                    (targetId.length() > 1 && TextUtils.equals(Constants.TYPE_SYSTEM, targetId.substring(targetId.length() - 1)))) {
+            } else if (!TextUtils.isEmpty(targetId) &&
+                    (TextUtils.equals(Constants.TYPE_SYSTEM, targetId) ||
+                            (targetId.length() > 1 && TextUtils.equals(Constants.TYPE_SYSTEM, targetId.substring(targetId.length() - 1))))) {
                 //系统消息聊天列表进入
                 ctlChat.setVisibility(View.GONE);
                 tvTitleName.setText("系统消息");
@@ -148,7 +151,6 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         }
         if (TextUtils.isEmpty(targetId)) {
             shortTip("获取对方信息异常，请稍后再试");
-            return;
         }
         if (!TextUtils.isEmpty(targetId) && targetId.length() > 1) {
             getHouseChatId = targetId.substring(0, targetId.length() - 1);
