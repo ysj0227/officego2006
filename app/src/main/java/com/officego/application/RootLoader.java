@@ -75,6 +75,8 @@ public class RootLoader {
         saConfigOptions.enableVisualizedAutoTrack(true);
         // 需要在主线程初始化神策 SDK
         SensorsDataAPI.startWithConfigOptions(context, saConfigOptions);
+        // 开启 App 打通  H5支持API level 16 上版本
+        saConfigOptions.enableJavaScriptBridge(false);
         //初始化公共属性
         SensorsTrack.superProperties();
         //初始化动态公共属性
