@@ -61,7 +61,9 @@ public class SensorsTrack {
             String channel = WalleChannelReader.getChannel(context);
             JSONObject properties = new JSONObject();
             //这里的 DownloadChannel 负责记录下载商店的渠道，值应传入具体应用商店包的标记。如果没有为不同商店打多渠道包，则可以忽略该属性的代码示例。
-            properties.put("DownloadChannel", channel);
+            if (!TextUtils.isEmpty(channel)) {
+                properties.put("register_channel", channel);
+            }
             // 触发激活事件
             SensorsDataAPI.sharedInstance().trackInstallation("AppInstall", properties);
         } catch (Exception e) {
@@ -677,7 +679,7 @@ public class SensorsTrack {
             }
             properties.put("buildLocation", buildLocation);
             properties.put("isVr", isVr);
-            SensorsDataAPI.sharedInstance().track("confirm_wechat_exchange_state", properties);
+            SensorsDataAPI.sharedInstance().track("clickShow", properties);
         } catch (JSONException e) {
             e.printStackTrace();
         }

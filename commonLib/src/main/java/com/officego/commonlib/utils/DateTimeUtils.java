@@ -80,13 +80,6 @@ public class DateTimeUtils {
         }
     }
 
-    public static String secondToPeriod(long second, Context context) {
-        long days = second / (3600 * 24);
-        long hours = second % (3600 * 24) / 3600;
-        return context.getString(R.string.str_period, days, hours);
-    }
-
-
     public enum DateTimePattern {
         /**
          * yyyy-MM-dd HH:mm:ss
