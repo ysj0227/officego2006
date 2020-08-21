@@ -133,10 +133,10 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         if (isFastClick(1500)) {
             return;
         }
-        //神策
-        SensorsTrack.login();
         mobile = RegexUtils.handleIllegalCharacter(etMobile.getText().toString().trim());
         if (rlCode.isShown()) {
+            //神策
+            SensorsTrack.login();
             String code = Objects.requireNonNull(etCode.getText()).toString().trim();
             if (TextUtils.isEmpty(code)) {
                 shortTip(R.string.str_please_input_sms_code);
@@ -145,6 +145,8 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
             //登录
             mPresenter.login(mobile, code);
         } else {
+            //神策
+            SensorsTrack.smsCode();
             if (!RegexUtils.isChinaPhone(mobile)) {
                 shortTip(R.string.tip_input_correct_phone);
                 return;

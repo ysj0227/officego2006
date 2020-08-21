@@ -17,6 +17,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpFragment;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
@@ -138,6 +139,8 @@ public class CollectFragment extends BaseMvpFragment<CollectedPresenter>
         if (isFastClick(1500)) {
             return;
         }
+        //神策
+        SensorsTrack.login();
         LoginActivity_.intent(mActivity).isGotoLogin(true).startForResult(REQUEST_CODE);
     }
 

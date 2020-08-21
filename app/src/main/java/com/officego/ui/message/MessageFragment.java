@@ -14,6 +14,7 @@ import com.officego.R;
 import com.officego.commonlib.base.BaseFragment;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
+import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.log.LogCat;
@@ -76,6 +77,8 @@ public class MessageFragment extends BaseFragment {
         if (isFastClick(1500)) {
             return;
         }
+        //神策
+        SensorsTrack.login();
         LoginActivity_.intent(mActivity).isGotoLogin(true).startForResult(REQUEST_CODE);
     }
 

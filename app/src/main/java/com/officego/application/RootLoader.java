@@ -63,10 +63,11 @@ public class RootLoader {
         // 初始化配置
         SAConfigOptions saConfigOptions = new SAConfigOptions(AppConfig.SA_SERVER_URL);
         // 开启全埋点
-        saConfigOptions.setAutoTrackEventType(SensorsAnalyticsAutoTrackEventType.APP_CLICK |
-                SensorsAnalyticsAutoTrackEventType.APP_START |
-                SensorsAnalyticsAutoTrackEventType.APP_END |
-                SensorsAnalyticsAutoTrackEventType.APP_VIEW_SCREEN)
+        saConfigOptions
+                .setAutoTrackEventType(SensorsAnalyticsAutoTrackEventType.APP_CLICK |
+                        SensorsAnalyticsAutoTrackEventType.APP_START |
+                        SensorsAnalyticsAutoTrackEventType.APP_END |
+                        SensorsAnalyticsAutoTrackEventType.APP_VIEW_SCREEN)
                 //开启 Log
                 .enableLog(isOpenLog);
         // 开启可视化全埋点

@@ -15,6 +15,7 @@ import com.officego.commonlib.base.BaseMvpFragment;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.rongcloud.RongCloudSetUserInfoUtils;
+import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.update.VersionDialog;
 import com.officego.commonlib.utils.GlideUtils;
@@ -85,6 +86,8 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         if (isFastClick(1500)) {
             return;
         }
+        //神策
+        SensorsTrack.login();
         LoginActivity_.intent(mActivity).isGotoLogin(true).startForResult(REQUEST_CODE_LOGIN);
     }
 
