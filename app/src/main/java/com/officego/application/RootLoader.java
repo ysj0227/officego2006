@@ -6,6 +6,7 @@ import android.text.TextUtils;
 
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.rongcloud.IMManager;
+import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.constant.AppConfig;
 import com.officego.commonlib.utils.FileHelper;
 import com.officego.commonlib.utils.HttpsUtils;
@@ -74,6 +75,10 @@ public class RootLoader {
         saConfigOptions.enableVisualizedAutoTrack(true);
         // 需要在主线程初始化神策 SDK
         SensorsDataAPI.startWithConfigOptions(context, saConfigOptions);
+        //初始化公共属性
+        SensorsTrack.superProperties();
+        //初始化动态公共属性
+        SensorsTrack.dynamicSuperProperties();
     }
 
     /**

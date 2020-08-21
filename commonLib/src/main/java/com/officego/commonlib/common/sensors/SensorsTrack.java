@@ -7,6 +7,7 @@ import com.meituan.android.walle.WalleChannelReader;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.constant.Constants;
 import com.sensorsdata.analytics.android.sdk.SensorsDataAPI;
+import com.sensorsdata.analytics.android.sdk.SensorsDataDynamicSuperProperties;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -15,6 +16,32 @@ import org.json.JSONObject;
  * 神策数据分析
  */
 public class SensorsTrack {
+
+    public static void superProperties(){
+        // 将应用名称作为事件公共属性，后续所有 track() 追踪的事件都会自动带上 "AppName" 属性
+        try {
+            JSONObject properties = new JSONObject();
+            properties.put("platform_type", "Android");
+            properties.put("app_name", "OfficeGo");
+            SensorsDataAPI.sharedInstance().registerSuperProperties(properties);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    // 初始化 SDK 后，设置动态公共属性
+    public static void dynamicSuperProperties() {
+        SensorsDataAPI.sharedInstance().registerDynamicSuperProperties(() -> {
+            try {
+                // 比如 isLogin() 是用于获取用户当前的登录状态，SDK 会自动获取 getDynamicSuperProperties 中的属性添加到触发的事件中。
+                boolean bool = !TextUtils.isEmpty(SpUtils.getSignToken());
+                return new JSONObject().put("is_login", bool);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+            return null;
+        });
+    }
 
     /**
      * 用户在注册成功时
@@ -295,7 +322,7 @@ public class SensorsTrack {
                 properties.put("houseId", houseId);
             }
             properties.put("isCollect", isCollect);
-            SensorsDataAPI.sharedInstance().track("building_data_page_screen", properties);
+            SensorsDataAPI.sharedInstance().track("click_favorites_button", properties);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -478,7 +505,7 @@ public class SensorsTrack {
                 properties.put("chatedName", chatedName);
             }
             properties.put("createTime", createTime);
-            SensorsDataAPI.sharedInstance().track("confirm_see_house_time", properties);
+            SensorsDataAPI.sharedInstance().track("submit_booking_see_house", properties);
         } catch (JSONException e) {
             e.printStackTrace();
         }
@@ -524,7 +551,7 @@ public class SensorsTrack {
      * statusPhone	电话交换状态	STRING
      * isSuccess	是否成功	BOOL
      */
-    public static void confirmPhoneExchangeState(int buildOrHouse, int bType, int buildingId, int houseId,String timestamp, boolean isAgree) {
+    public static void confirmPhoneExchangeState(int buildOrHouse, int bType, int buildingId, int houseId, String timestamp, boolean isAgree) {
         try {
             JSONObject properties = new JSONObject();
             String mText;
@@ -593,7 +620,7 @@ public class SensorsTrack {
      * statusPhone	电话交换状态	STRING
      * isSuccess	是否成功	BOOL
      */
-    public static void confirmWechatExchangeState(int buildOrHouse, int bType, int buildingId, int houseId, String timestamp,boolean isAgree) {
+    public static void confirmWechatExchangeState(int buildOrHouse, int bType, int buildingId, int houseId, String timestamp, boolean isAgree) {
         try {
             JSONObject properties = new JSONObject();
             String mText;
