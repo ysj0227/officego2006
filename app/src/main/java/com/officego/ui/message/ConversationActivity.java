@@ -100,10 +100,11 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         } else {
             initIMInfo();
             //认证申请聊天列表进入
-            if (!TextUtils.isEmpty(targetId) &&
-                    targetId.length() > 1 &&
+            String mineId = SpUtils.getRongChatId();
+            if (!TextUtils.isEmpty(targetId) && targetId.length() > 1 &&
                     TextUtils.equals(Constants.TYPE_OWNER, targetId.substring(targetId.length() - 1)) &&
-                    TextUtils.equals(Constants.TYPE_OWNER, SpUtils.getRongChatId().substring(SpUtils.getRongChatId().length() - 1))) {
+                    (!TextUtils.isEmpty(mineId) && mineId.length() > 1 &&
+                            TextUtils.equals(Constants.TYPE_OWNER, mineId.substring(mineId.length() - 1)))) {
                 //认证申请聊天列表进入,融云id最后一位是“1”
                 isSendApply = false;
                 ctlChat.setVisibility(View.GONE);
