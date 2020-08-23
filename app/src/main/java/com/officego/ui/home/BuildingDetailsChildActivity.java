@@ -237,7 +237,9 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         nsvView.setOnScrollChangeListener(this);
         rlRootHouseTitle.setPadding(0, CommonHelper.statusHeight(this), 0, 0);
         tvIndependentOffice.setVisibility(View.GONE);
-        mPresenter.getDetails(String.valueOf(mChildHouseBean.getBtype()), String.valueOf(mChildHouseBean.getHouseId()));
+        if (mChildHouseBean != null) {
+            mPresenter.getDetails(String.valueOf(mChildHouseBean.getBtype()), String.valueOf(mChildHouseBean.getHouseId()));
+        }
     }
 
     public static void setImageViewLayoutParams(Context context, View view) {

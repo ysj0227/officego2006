@@ -48,6 +48,7 @@ import static com.officego.commonlib.utils.PermissionUtils.REQ_PERMISSIONS_CAMER
  * Data 2020/5/11.
  * Descriptions:
  **/
+@SuppressLint("NewApi")
 @EFragment(resName = "home_owner_fragment")
 public class HomeFragment extends BaseMvpFragment<HomePresenter> implements HomeContract.View {
 

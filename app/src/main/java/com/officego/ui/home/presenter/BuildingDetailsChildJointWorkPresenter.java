@@ -1,6 +1,7 @@
 package com.officego.ui.home.presenter;
 
 import android.content.Context;
+import android.text.TextUtils;
 
 import com.officego.commonlib.base.BasePresenter;
 import com.officego.commonlib.constant.Constants;
@@ -28,26 +29,28 @@ public class BuildingDetailsChildJointWorkPresenter extends BasePresenter<Buildi
 
     @Override
     public void getDetails(String btype, String houseId) {
-        mView.showLoadingDialog();
-        OfficegoApi.getInstance().selectHousebyJointWorkHouseId(btype, houseId,
-                new RetrofitCallback<HouseOfficeDetailsJointWorkBean>() {
-                    @Override
-                    public void onSuccess(int code, String msg, HouseOfficeDetailsJointWorkBean data) {
-                        LogCat.e(TAG, "getDetails onSuccess =" + data);
-                        if (isViewAttached()) {
-                            mView.hideLoadingDialog();
-                            mView.detailsSuccess(data);
+        if (!TextUtils.isEmpty(btype)) {
+            mView.showLoadingDialog();
+            OfficegoApi.getInstance().selectHousebyJointWorkHouseId(btype, houseId,
+                    new RetrofitCallback<HouseOfficeDetailsJointWorkBean>() {
+                        @Override
+                        public void onSuccess(int code, String msg, HouseOfficeDetailsJointWorkBean data) {
+                            LogCat.e(TAG, "getDetails onSuccess =" + data);
+                            if (isViewAttached()) {
+                                mView.hideLoadingDialog();
+                                mView.detailsSuccess(data);
+                            }
                         }
-                    }
 
-                    @Override
-                    public void onFail(int code, String msg, HouseOfficeDetailsJointWorkBean data) {
-                        LogCat.e(TAG, "getDetails onFail code=" + code + "  msg=" + msg);
-                        if (isViewAttached()) {
-                            mView.hideLoadingDialog();
+                        @Override
+                        public void onFail(int code, String msg, HouseOfficeDetailsJointWorkBean data) {
+                            LogCat.e(TAG, "getDetails onFail code=" + code + "  msg=" + msg);
+                            if (isViewAttached()) {
+                                mView.hideLoadingDialog();
+                            }
                         }
-                    }
-                });
+                    });
+        }
     }
 
     @Override
@@ -94,7 +97,7 @@ public class BuildingDetailsChildJointWorkPresenter extends BasePresenter<Buildi
                 if (isViewAttached()) {
                     mView.hideLoadingDialog();
                     mView.chatFail();
-                    if (code==Constants.ERROR_CODE_5002||code==Constants.DEFAULT_ERROR_CODE){
+                    if (code == Constants.ERROR_CODE_5002 || code == Constants.DEFAULT_ERROR_CODE) {
                         mView.shortTip(msg);
                     }
                 }

@@ -39,6 +39,7 @@ import static android.app.Activity.RESULT_OK;
  * Data 2020/5/11.
  * Descriptions:
  **/
+@SuppressLint("NewApi")
 @EFragment(R.layout.mine_fragment)
 public class MineFragment extends BaseMvpFragment<UserPresenter>
         implements UserContract.View {
@@ -174,7 +175,9 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         if (data != null) {
             RongCloudSetUserInfoUtils.refreshUserInfoCache(RongCloudSetUserInfoUtils.getRongTenantId(data.getUserId() + ""), data.getRealname(), data.getAvatar());
             SpUtils.saveWechat(mUserInfo.getWxId() == null || TextUtils.isEmpty((String) mUserInfo.getWxId()) ? "" : (String) mUserInfo.getWxId());
-            Glide.with(mActivity).applyDefaultRequestOptions(GlideUtils.avaOoptions()).load(data.getAvatar()).into(civAvatar);
+            if (!TextUtils.isEmpty(data.getAvatar())) {
+                Glide.with(mActivity).applyDefaultRequestOptions(GlideUtils.avaOoptions()).load(data.getAvatar()).into(civAvatar);
+            }
             tvName.setText(data.getRealname());
             if (TextUtils.isEmpty((String) data.getCompany())) {
                 tvAccount.setText(TextUtils.isEmpty((String) data.getJob()) ? "" : (String) data.getJob());

@@ -87,14 +87,18 @@ public class MineMessageActivity extends BaseMvpActivity<UpdateUserPresenter>
         mPresenter.attachView(this);
         titleBar.getLeftImg().setOnClickListener(this);
         localAvatarPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "_avatar.jpg";
-        Glide.with(context).load(mUserInfo.getAvatar()).into(civAvatar);
-        etNameContent.setText(mUserInfo.getProprietorRealname());
-        etCompanyContent.setText(mUserInfo.getProprietorCompany());
-        if (mUserInfo.getSex() != null) {
-            etSexContent.setText((Double) mUserInfo.getSex() == 1 ? "男" : "女");
+        if (mUserInfo != null) {
+            if (!TextUtils.isEmpty(mUserInfo.getAvatar())) {
+                Glide.with(context).load(mUserInfo.getAvatar()).into(civAvatar);
+            }
+            etNameContent.setText(mUserInfo.getProprietorRealname());
+            etCompanyContent.setText(mUserInfo.getProprietorCompany());
+            if (mUserInfo.getSex() != null) {
+                etSexContent.setText((Double) mUserInfo.getSex() == 1 ? "男" : "女");
+            }
+            etJobContent.setText(TextUtils.isEmpty(mUserInfo.getProprietorJob()) ? "" : mUserInfo.getProprietorJob());
+            etWxContent.setText(TextUtils.isEmpty(mUserInfo.getWxId()) ? "" : mUserInfo.getWxId());
         }
-        etJobContent.setText(TextUtils.isEmpty(mUserInfo.getProprietorJob()) ? "" : mUserInfo.getProprietorJob());
-        etWxContent.setText(TextUtils.isEmpty(mUserInfo.getWxId()) ? "" : mUserInfo.getWxId());
     }
 
     @Override

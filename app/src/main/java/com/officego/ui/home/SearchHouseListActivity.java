@@ -266,7 +266,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
     @Override
     public void onSurePopUpWindow(boolean isLine, HashSet<Integer> hashSet,
                                   SparseBooleanArray checkStates, String data1, String data2) {
-        LogCat.e("TAG", "onSurePopUpWindow  isLine=" + isLine + " data1=" + data1 + " data2=" + data2);
+//        LogCat.e("TAG", "onSurePopUpWindow  isLine=" + isLine + " data1=" + data1 + " data2=" + data2);
         if (TextUtils.isEmpty(data1) && TextUtils.isEmpty(data2)) {
             tvSearchArea.setText("区域");
             tvSearchArea.setTextColor(ContextCompat.getColor(context, R.color.text_66));

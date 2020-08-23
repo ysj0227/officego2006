@@ -1,5 +1,6 @@
 package com.officego.ui.collect;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Typeface;
 import android.text.TextUtils;
@@ -45,6 +46,7 @@ import static android.app.Activity.RESULT_OK;
  * Data 2020/5/11.
  * Descriptions:
  **/
+@SuppressLint("NewApi")
 @EFragment(R.layout.collect_fragment)
 public class CollectFragment extends BaseMvpFragment<CollectedPresenter>
         implements CollectedContract.View, SwipeRefreshLayout.OnRefreshListener {

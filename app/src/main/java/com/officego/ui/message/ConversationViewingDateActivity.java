@@ -80,8 +80,10 @@ public class ConversationViewingDateActivity extends BaseMvpActivity<Conversatio
         mPresenter = new ConversationPresenter();
         mPresenter.attachView(this);
         //去除 targetId  的最后一位 ,产品定义
-        String getHouseChatId = targetId.substring(0, targetId.length() - 1);
-        mPresenter.getHouseDetails(buildingId, houseId, getHouseChatId);
+        if (!TextUtils.isEmpty(targetId) && targetId.length() > 1) {
+            String getHouseChatId = targetId.substring(0, targetId.length() - 1);
+            mPresenter.getHouseDetails(buildingId, houseId, getHouseChatId);
+        }
     }
 
     @Click(R.id.rl_back)
@@ -140,9 +142,9 @@ public class ConversationViewingDateActivity extends BaseMvpActivity<Conversatio
         if (data.getBuilding() != null) {
             Glide.with(context).load(data.getBuilding().getMainPic()).into(ivHouseImg);
             tvHouseName.setText(data.getBuilding().getBuildingName());
-            if (TextUtils.isEmpty(data.getBuilding().getDistrict())){
+            if (TextUtils.isEmpty(data.getBuilding().getDistrict())) {
                 tvLocation.setVisibility(View.GONE);
-            }else {
+            } else {
                 tvLocation.setVisibility(View.VISIBLE);
                 tvLocation.setText(data.getBuilding().getDistrict());
             }
@@ -152,14 +154,14 @@ public class ConversationViewingDateActivity extends BaseMvpActivity<Conversatio
                 String stationLine = data.getBuilding().getStationline().get(0);
                 String stationName = data.getBuilding().getStationNames().get(0);
                 tvRouteMap.setText("步行" + workTime + "分钟到 | " + stationLine + "号线 ·" + stationName);
-            }else {
+            } else {
                 tvRouteMap.setVisibility(View.GONE);
             }
             if (data.getBuilding().getMinSinglePrice() != null) {
-                if (data.getBuilding().getBtype()== Constants.TYPE_BUILDING){
-                    tvPrice.setText("¥" + data.getBuilding().getMinSinglePrice()+"/㎡/天");
-                }else {
-                    tvPrice.setText("¥" + data.getBuilding().getMinSinglePrice()+"/位/月");
+                if (data.getBuilding().getBtype() == Constants.TYPE_BUILDING) {
+                    tvPrice.setText("¥" + data.getBuilding().getMinSinglePrice() + "/㎡/天");
+                } else {
+                    tvPrice.setText("¥" + data.getBuilding().getMinSinglePrice() + "/位/月");
                 }
             }
         }

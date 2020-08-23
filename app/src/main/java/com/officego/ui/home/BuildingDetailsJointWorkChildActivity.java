@@ -234,7 +234,9 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         rlRootHouseTitle.setPadding(0, CommonHelper.statusHeight(this), 0, 0);
         tvIndependentOffice.setVisibility(View.GONE);//独立办公室title
         rlCharacteristic.setVisibility(View.GONE);//网点无特色
-        mPresenter.getDetails(String.valueOf(mChildHouseBean.getBtype()), String.valueOf(mChildHouseBean.getHouseId()));
+        if (mChildHouseBean != null) {
+            mPresenter.getDetails(String.valueOf(mChildHouseBean.getBtype()), String.valueOf(mChildHouseBean.getHouseId()));
+        }
     }
 
     public static void setImageViewLayoutParams(Context context, View view) {

@@ -49,6 +49,7 @@ import static com.officego.config.ConditionConfig.mConditionBean;
  * Data 2020/5/11.
  * Descriptions:
  **/
+@SuppressLint("NewApi")
 @EFragment(R.layout.home_fragment)
 public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         HomeContract.View, OnBannerListener,
@@ -135,7 +136,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
 
     private float alphaPercent;//渐变色百分比
 
-    @SuppressLint("NewApi")
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarMainColor(mActivity, ContextCompat.getColor(mActivity, R.color.common_blue_main));

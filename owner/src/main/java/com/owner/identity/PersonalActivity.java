@@ -593,12 +593,12 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
                 cetName.setText(data.getProprietorRealname());
                 cetPersonalId.setText(data.getIdCard());
                 setEditView(data);
-                if (!TextUtils.isEmpty(data.getIdFront())) {
+                if (!TextUtils.isEmpty(data.getIdFront()) && data.getIdFront().contains("http")) {
                     isUploadIdCardFront = true;
                     hideIdCardFrontView();
                     Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(data.getIdFront()).into(rivImageFront);
                 }
-                if (!TextUtils.isEmpty(data.getIdBack())) {
+                if (!TextUtils.isEmpty(data.getIdBack()) && data.getIdFront().contains("http")) {
                     isUploadIdCardBack = true;
                     hideIdCardBackView();
                     Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(data.getIdBack()).into(rivImageBack);
@@ -812,9 +812,9 @@ public class PersonalActivity extends BaseMvpActivity<PersonalPresenter> impleme
     private void showHouseTypeView() {
         rlType.setVisibility(View.VISIBLE);
         rvRecommendBuilding.setVisibility(View.GONE);
-        if (TextUtils.isEmpty(tvType.getText().toString())){
+        if (TextUtils.isEmpty(tvType.getText().toString())) {
             ButtonUtils.clickButton(btnUpload, false);
-        }else {
+        } else {
             ButtonUtils.clickButton(btnUpload, true);
         }
     }
