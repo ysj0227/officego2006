@@ -18,6 +18,8 @@ import androidx.core.content.FileProvider;
 import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
+import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.utils.FileHelper;
@@ -28,12 +30,10 @@ import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.CircleImage;
 import com.officego.commonlib.view.ClearableEditText;
-import com.officego.commonlib.common.config.CommonNotifications;
+import com.officego.commonlib.view.TitleBarView;
 import com.officego.ui.mine.contract.UpdateUserContract;
 import com.officego.ui.mine.model.UserBean;
 import com.officego.ui.mine.presenter.UpdateUserPresenter;
-import com.officego.commonlib.common.SpUtils;
-import com.officego.commonlib.view.TitleBarView;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -77,6 +77,7 @@ public class MineMessageActivity extends BaseMvpActivity<UpdateUserPresenter>
     private String avatarUrl;
     @Extra
     UserBean mUserInfo;
+
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarColor(this);
@@ -84,14 +85,18 @@ public class MineMessageActivity extends BaseMvpActivity<UpdateUserPresenter>
         mPresenter.attachView(this);
         titleBar.getLeftImg().setOnClickListener(this);
         localAvatarPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "_avatar.jpg";
-        Glide.with(context).load(mUserInfo.getAvatar()).into(civAvatar);
-        etNameContent.setText(mUserInfo.getRealname());
-        etMobileContent.setText(mUserInfo.getPhone());
-        if (mUserInfo.getSex() != null ){
-            etSexContent.setText((Double) mUserInfo.getSex() == 1 ? "男" : "女");
+        if (mUserInfo!=null) {
+            if (!TextUtils.isEmpty(mUserInfo.getAvatar())) {
+                Glide.with(context).load(mUserInfo.getAvatar()).into(civAvatar);
+            }
+            etNameContent.setText(mUserInfo.getRealname());
+            etMobileContent.setText(mUserInfo.getPhone());
+            if (mUserInfo.getSex() != null) {
+                etSexContent.setText((Double) mUserInfo.getSex() == 1 ? "男" : "女");
+            }
+            SpUtils.saveWechat(mUserInfo.getWxId() == null || TextUtils.isEmpty((String) mUserInfo.getWxId()) ? "" : (String) mUserInfo.getWxId());
+            etWxContent.setText(mUserInfo.getWxId() == null || TextUtils.isEmpty((String) mUserInfo.getWxId()) ? "" : (String) mUserInfo.getWxId());
         }
-        SpUtils.saveWechat(mUserInfo.getWxId() == null || TextUtils.isEmpty((String) mUserInfo.getWxId()) ? "" : (String) mUserInfo.getWxId());
-        etWxContent.setText(mUserInfo.getWxId() == null || TextUtils.isEmpty((String) mUserInfo.getWxId()) ? "" : (String) mUserInfo.getWxId());
     }
 
     @Override
@@ -267,7 +272,7 @@ public class MineMessageActivity extends BaseMvpActivity<UpdateUserPresenter>
 
     @Override
     public void UpdateUserFail(int code, String msg) {
-        LogCat.e(TAG,"1111 code="+code);
+        LogCat.e(TAG, "1111 code=" + code);
         shortTip(R.string.tip_save_fail);
     }
 }

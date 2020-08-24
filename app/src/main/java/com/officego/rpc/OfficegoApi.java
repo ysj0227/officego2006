@@ -265,7 +265,9 @@ public class OfficegoApi {
         map.put("houseTags", requestBody(houseTags));
         map.put("sort", requestBody(sort));
         map.put("seats", requestBody(seats));
-        map.put("keyWord", requestBody(keyWord));
+        if (!TextUtils.isEmpty(keyWord)) {
+            map.put("keyWord", requestBody(keyWord));
+        }
         map.put("pageNo", requestBody(pageNo + ""));
         map.put("pageSize", requestBody("10"));
         OfficegoRetrofitClient.getInstance().create(HomeInterface.class)

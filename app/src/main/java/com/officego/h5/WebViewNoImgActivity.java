@@ -103,7 +103,7 @@ public class WebViewNoImgActivity extends BaseActivity {
         webSetting.setBuiltInZoomControls(true);
         webSetting.setUseWideViewPort(true);
         webSetting.setLoadsImagesAutomatically(true);
-        webSetting.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+//        webSetting.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         webSetting.setAllowFileAccess(true);// 设置允许访问文件数据
         webSetting.setLoadWithOverviewMode(true);
         webSetting.setBlockNetworkImage(false);//解决图片不显示

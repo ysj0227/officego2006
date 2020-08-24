@@ -238,7 +238,9 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         nsvView.setOnScrollChangeListener(this);
         rlRootHouseTitle.setPadding(0, CommonHelper.statusHeight(this), 0, 0);
         tvIndependentOffice.setVisibility(View.GONE);
-        mPresenter.getDetails(String.valueOf(mChildHouseBean.getBtype()), String.valueOf(mChildHouseBean.getHouseId()));
+        if (mChildHouseBean != null) {
+            mPresenter.getDetails(String.valueOf(mChildHouseBean.getBtype()), String.valueOf(mChildHouseBean.getHouseId()));
+        }
         //神策
         SensorsTrack.visitHouseDataPage(String.valueOf(mChildHouseBean.getHouseId()));
     }
@@ -281,17 +283,17 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
             }
             //详情
             if (data.getHouse().getArea() != null) {
-                tvIndependentOfficeArea.setText(Html.fromHtml("<font color='#46C3C2'>" + CommonHelper.bigDecimal(data.getHouse().getArea(),true) + "</font>㎡"));
+                tvIndependentOfficeArea.setText(Html.fromHtml("<font color='#46C3C2'>" + CommonHelper.bigDecimal(data.getHouse().getArea(), true) + "</font>㎡"));
             } else {
                 tvIndependentOfficeArea.setText(R.string.str_text_line);
             }
             if (data.getHouse().getDayPrice() != null) {
-                tvIndependentOfficePrice.setText(Html.fromHtml("<font color='#46C3C2'>¥" + CommonHelper.bigDecimal(data.getHouse().getDayPrice(),false) + "</font>/㎡/天起"));
+                tvIndependentOfficePrice.setText(Html.fromHtml("<font color='#46C3C2'>¥" + CommonHelper.bigDecimal(data.getHouse().getDayPrice(), false) + "</font>/㎡/天起"));
             } else {
                 tvIndependentOfficePrice.setText(R.string.str_text_line);
             }
             if (data.getHouse().getMonthPrice() != null) {
-                tvIndependentOfficePriceText.setText("¥" + CommonHelper.bigDecimal(data.getHouse().getMonthPrice(),false) + "/月");
+                tvIndependentOfficePriceText.setText("¥" + CommonHelper.bigDecimal(data.getHouse().getMonthPrice(), false) + "/月");
             } else {
                 tvIndependentOfficePriceText.setText(R.string.str_text_line);
             }
