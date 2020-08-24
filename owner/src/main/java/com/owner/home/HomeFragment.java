@@ -79,8 +79,12 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements Home
         mPresenter.getUserInfo();
     }
 
+    //扫一扫
     @Click(resName = "tv_scan")
     void scanClick() {
+        if (!fragmentCheckSDCardCameraPermission()) {
+            return;
+        }
         startActivity(new Intent(getActivity(), QRScanActivity.class));
     }
 
