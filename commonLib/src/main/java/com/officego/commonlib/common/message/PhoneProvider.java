@@ -17,8 +17,6 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.core.content.ContextCompat;
-
 import com.officego.commonlib.R;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
@@ -56,6 +54,7 @@ public class PhoneProvider extends IContainerItemProvider.MessageProvider<PhoneI
     @Override
     public void bindView(View view, int i, PhoneInfo info, UIMessage uiMessage) {
         PhoneHolder holder = (PhoneHolder) view.getTag();
+//        LogCat.e("TAG","getMessageId="+uiMessage.getMessageId());
         if (uiMessage.getMessageDirection() == Message.MessageDirection.RECEIVE) {//接收显示同意拒绝
             String oppositeSidePhone = info.getNumber();//请求方手机号
             String minePhone = SpUtils.getPhoneNum();//接收方自己手机
@@ -81,12 +80,6 @@ public class PhoneProvider extends IContainerItemProvider.MessageProvider<PhoneI
             holder.rlContent.setVisibility(View.GONE);
         }
     }
-    private void setClickableFalse( PhoneHolder holder){
-        holder.btnReject.setEnabled(false);
-        holder.btnReject.setClickable(false);
-        holder.btnAgree.setEnabled(false);
-        holder.btnAgree.setClickable(false);
-    }
 
     @Override //这里意思是你的这个自定义消息显示的内容
     public Spannable getContentSummary(PhoneInfo phoneInfo) {
@@ -95,7 +88,6 @@ public class PhoneProvider extends IContainerItemProvider.MessageProvider<PhoneI
 
     @Override  //点击你的自定义消息执行的操作
     public void onItemClick(View view, int i, PhoneInfo phoneInfo, UIMessage uiMessage) {
-
     }
 
     class PhoneHolder {

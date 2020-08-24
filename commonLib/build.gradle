@@ -126,5 +126,7 @@ dependencies {
 
     // 神策Sensors Analytics SDK 依赖
     api 'com.sensorsdata.analytics.android:SensorsAnalyticsSDK:4.2.4'
+    //zxing
+    api 'cn.bingoogolapple:bga-qrcode-zxing:1.3.7'
 
 }

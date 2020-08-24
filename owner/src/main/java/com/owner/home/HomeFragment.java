@@ -36,8 +36,10 @@ import com.owner.home.contract.HomeContract;
 import com.owner.home.presenter.HomePresenter;
 import com.owner.mine.model.UserOwnerBean;
 import com.owner.utils.UnIdifyDialog;
+import com.owner.zxing.QRScanActivity;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
@@ -75,6 +77,11 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements Home
         //版本更新
         new VersionDialog(mActivity);
         mPresenter.getUserInfo();
+    }
+
+    @Click(resName = "tv_scan")
+    void scanClick() {
+        startActivity(new Intent(getActivity(), QRScanActivity.class));
     }
 
     /**
