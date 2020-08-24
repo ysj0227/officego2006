@@ -64,20 +64,20 @@ public class FindHouseActivity extends BaseMvpActivity<FindhousePresenter>
     TextView tvWorkstation;
     @ViewById(R.id.sbp_workstation)
     SeekBarPressure sbpseats;
-    //联合办公 租金/工位
+    //共享办公 租金/工位
     @ViewById(R.id.sbp_rent2)
     SeekBarPressure sbpRent2;
     @ViewById(R.id.sbp_workstation2)
     SeekBarPressure sbpseats2;
     /**
-     * * btype 	是 	int 	类型,1:楼盘 写字楼,2:网点 联合办公
+     * * btype 	是 	int 	类型,1:楼盘 写字楼,2:网点 共享办公
      * * constructionArea 	是 	String 	建筑面积 范围值,逗号分隔
      * * rentPrice 	是 	String 	租金 范围值,逗号分隔
      * * seats 	是 	String 	工位数范围,逗号分隔
      * * decoration 	是 	String 	装修类型 字典数据
      * * houseTags 	是 	String 	房源特色,字典数据
      * * ** ** ** ** ** ** ** ** ** ** ** ** ** *
-     * 联合办公
+     * 共享办公
      * 租金： 范围 0 - 10万   默认 2000 - 20000
      * 工位： 范围 0 - 20    默认 2 -10
      * <p>
@@ -88,8 +88,8 @@ public class FindHouseActivity extends BaseMvpActivity<FindhousePresenter>
      */
     private String btype;
     private String constructionArea = "0,200";
-    private String rentPrice = "0,4", rentPrice2 = "2000,20000"; //写字楼，联合办公
-    private String seats = "0,100", seats2 = "2,10";//写字楼，联合办公
+    private String rentPrice = "0,4", rentPrice2 = "2000,20000"; //写字楼，共享办公
+    private String seats = "0,100", seats2 = "2,10";//写字楼，共享办公
     private String decoration = "";//装修类型
     private String houseTags = "";//装修特色
 
@@ -144,7 +144,7 @@ public class FindHouseActivity extends BaseMvpActivity<FindhousePresenter>
     }
 
     /**
-     * 联合办公
+     * 共享办公
      */
     @Click(R.id.rb_joint_work)
     void jointWorkClick() {
@@ -225,10 +225,10 @@ public class FindHouseActivity extends BaseMvpActivity<FindhousePresenter>
             //工位
             seats = (int) progressLow + "," + (int) progressHigh;
         } else if (type == 3) {
-            //联合办公租金
+            //共享办公租金
             rentPrice2 = (int) progressLow + "," + (int) progressHigh;
         } else if (type == 4) {
-            //联合办公工位
+            //共享办公工位
             seats2 = (int) progressLow + "," + (int) progressHigh;
         }
     }

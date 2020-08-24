@@ -65,7 +65,7 @@
                         android:button="@null"
                         android:checked="false"
                         android:gravity="center"
-                        android:text="联合办公"
+                        android:text="共享办公"
                         android:textColor="@color/text_selector_blue_black" />
                 </RadioGroup>
 

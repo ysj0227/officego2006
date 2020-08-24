@@ -1,5 +1,6 @@
 package com.officego.ui.message;
 
+import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
@@ -40,6 +41,7 @@ import static android.app.Activity.RESULT_OK;
  * Data 2020/5/11.
  * Descriptions:
  **/
+@SuppressLint("NewApi")
 @EFragment(R.layout.conversationlist)
 public class MessageFragment extends BaseFragment {
     private static final int REQUEST_CODE = 1001;

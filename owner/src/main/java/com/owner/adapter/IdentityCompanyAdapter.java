@@ -70,7 +70,7 @@ public class IdentityCompanyAdapter extends CommonListAdapter<IdentityCompanyBea
             if (isCompany && TextUtils.equals("2", bean.getIdentityType())) {
                 tvAdd.setVisibility(View.GONE);
                 tvDown.setVisibility(View.VISIBLE);
-                tvDown.setText("该公司已认证为联合办公，不可重复认证");
+                tvDown.setText("该公司已认证为共享办公，不可重复认证");
                 holder.itemView.setEnabled(false);
             } else if (!isCompany && TextUtils.equals("1", bean.getIdentityType())) {
                 tvAdd.setVisibility(View.GONE);

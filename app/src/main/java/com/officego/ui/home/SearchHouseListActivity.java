@@ -293,13 +293,13 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
         getList();
     }
 
-    //全部，写字楼，联合办公
+    //全部，写字楼，共享办公
     @Override
     public void onOfficeTypePopUpWindow(int searchType, int officeType, int text) {
         LogCat.e("TAG", "onOfficeTypePopUpWindow data= " + officeType + "text=" + text);
         btype = officeType;
         tvSearchOffice.setText(text);
-        //初始化选择的写字楼或联合办公
+        //初始化选择的写字楼或共享办公
         area = "";
         seats = "";
         dayPrice = "";

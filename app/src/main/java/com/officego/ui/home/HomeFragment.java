@@ -51,6 +51,7 @@ import static com.officego.config.ConditionConfig.mConditionBean;
  * Data 2020/5/11.
  * Descriptions:
  **/
+@SuppressLint("NewApi")
 @EFragment(R.layout.home_fragment)
 public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         HomeContract.View, OnBannerListener,
@@ -138,7 +139,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
 
     private float alphaPercent;//渐变色百分比
 
-    @SuppressLint("NewApi")
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarMainColor(mActivity, ContextCompat.getColor(mActivity, R.color.common_blue_main));
@@ -493,12 +493,12 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         getList();
     }
 
-    //全部，写字楼，联合办公
+    //全部，写字楼，共享办公
     @Override
     public void onOfficeTypePopUpWindow(int searchType, int officeType, int text) {
         btype = officeType;
         tvSearchOffice.setText(text);
-        //初始化选择的写字楼或联合办公
+        //初始化选择的写字楼或共享办公
         area = "";
         seats = "";
         dayPrice = "";
@@ -717,7 +717,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         }
         rlOfficeType.setVisibility(View.GONE);
         rlOfficeType1.setVisibility(View.GONE);
-        //清除 初始化选择的写字楼或联合办公
+        //清除 初始化选择的写字楼或共享办公
         area = "";
         seats = "";
         dayPrice = "";
@@ -738,7 +738,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         }
         rlSelCondition.setVisibility(View.GONE);
         rlSelCondition1.setVisibility(View.GONE);
-        //清除 初始化选择的写字楼或联合办公
+        //清除 初始化选择的写字楼或共享办公
         area = "";
         seats = "";
         dayPrice = "";

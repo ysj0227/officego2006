@@ -20,7 +20,7 @@
     <string name="toast_press_again_quit">再按一次退出</string>
     <string name="str_house_all">全部</string>
     <string name="str_house_office">写字楼</string>
-    <string name="str_house_tenant">联合办公</string>
+    <string name="str_house_tenant">共享办公</string>
     <string name="str_order_def">默认排序</string>
     <string name="str_order_price_up_down">价格从高到低</string>
     <string name="str_order_price_down_up">价格从低到高</string>

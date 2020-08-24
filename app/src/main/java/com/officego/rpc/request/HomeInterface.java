@@ -77,7 +77,7 @@ public interface HomeInterface {
     Call<BaseResponse<HouseOfficeDetailsBean>> selectHousebyHouseId(@PartMap Map<String, RequestBody> params);
 
     /**
-     * 网点房源详情 联合办公
+     * 网点房源详情 共享办公
      * 表单形式
      *
      * @return

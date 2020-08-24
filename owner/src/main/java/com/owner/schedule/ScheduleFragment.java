@@ -1,5 +1,6 @@
 package com.owner.schedule;
 
+import android.annotation.SuppressLint;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
@@ -40,10 +41,10 @@ import java.util.List;
  * Data 2020/5/11.
  * Descriptions:
  **/
+@SuppressLint("NewApi")
 @EFragment(resName = "schedule_fragment")
 public class ScheduleFragment extends BaseMvpFragment<ViewingDatePresenter>
         implements ViewingDateContract.View {
-    private RelativeLayout rlTitle;
     private MonthPager monthPager;
     private RecyclerView rvToDoList;
     private TextView tvCurrentDate;
@@ -73,7 +74,7 @@ public class ScheduleFragment extends BaseMvpFragment<ViewingDatePresenter>
         StatusBarUtils.setStatusBarFullTransparent(mActivity);
         mPresenter = new ViewingDatePresenter();
         mPresenter.attachView(this);
-        rlTitle = mActivity.findViewById(R.id.rl_title);
+        RelativeLayout rlTitle = mActivity.findViewById(R.id.rl_title);
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) rlTitle.getLayoutParams();
         params.width = LinearLayout.LayoutParams.MATCH_PARENT;
         params.height = CommonHelper.statusHeight(mActivity) + CommonHelper.dp2px(mActivity, 60);

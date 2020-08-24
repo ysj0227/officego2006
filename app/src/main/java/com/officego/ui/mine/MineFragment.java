@@ -40,6 +40,7 @@ import static android.app.Activity.RESULT_OK;
  * Data 2020/5/11.
  * Descriptions:
  **/
+@SuppressLint("NewApi")
 @EFragment(R.layout.mine_fragment)
 public class MineFragment extends BaseMvpFragment<UserPresenter>
         implements UserContract.View {

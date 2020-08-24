@@ -426,7 +426,7 @@ public class OfficegoApi {
     }
 
     /**
-     * 联合办公提交
+     * 共享办公提交
      *
      * @param createCompany 1提交认证2企业确认3楼盘、网点确认
      * @param identityType  身份类型0个人1企业2联合

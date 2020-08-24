@@ -103,7 +103,7 @@
                     android:layout_centerHorizontal="true"
                     android:layout_marginTop="@dimen/sp_20"
                     android:layout_marginBottom="@dimen/dp_20"
-                    android:text="我是联合办公房东"
+                    android:text="我是共享办公房东"
                     android:textColor="@color/text_33"
                     android:textSize="@dimen/sp_14"
                     android:visibility="gone" />

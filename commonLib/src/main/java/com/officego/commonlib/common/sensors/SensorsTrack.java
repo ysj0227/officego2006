@@ -188,7 +188,7 @@ public class SensorsTrack {
      * 可能为一级区域或者地铁几号线
      * 也可能为二级拼接字符串"
      * officeType	办公场地选择类型	"STRING
-     * 办公楼和联合办公、全部"
+     * 办公楼和共享办公、全部"
      * oderType	排序选择类型	STRING
      * allOfficeType	综合筛选办公场地选择类型	STRING
      * area	面积	逗号拼接字符串
@@ -205,7 +205,7 @@ public class SensorsTrack {
         if (officeType == 1) {
             strOfficeType = "写字楼";
         } else if (officeType == 2) {
-            strOfficeType = "联合办公";
+            strOfficeType = "共享办公";
         } else {
             strOfficeType = "全部";
         }

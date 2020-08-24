@@ -63,7 +63,7 @@ public class CollectOfficeBuildingAdapter extends CommonListAdapter<CollectBuild
         holder.setText(R.id.tv_km, bean.getDistance());
         TextView price = holder.getView(R.id.tv_price);
         TextView unit = holder.getView(R.id.tv_unit);
-        //1:楼盘 写字楼,2:网点 联合办公
+        //1:楼盘 写字楼,2:网点 共享办公
         if (bean.getBtype() == 1) {
             price.setText("¥" + (bean.getMinDayPrice() == null ? "0.0" : bean.getMinDayPrice()));
             unit.setText("/m²/天起");
@@ -96,7 +96,7 @@ public class CollectOfficeBuildingAdapter extends CommonListAdapter<CollectBuild
                 labelsView.setVisibility(View.GONE);
             }
             labelsView.setLabels(areaMap, (label, position, data) -> data == null ? "0" : data.toString() + "m²");
-        } else {//2:网点 联合办公
+        } else {//2:网点 共享办公
             labelsView.setLabelTextSize(CommonHelper.sp2px(context, 12));
             labelsView.setWordMargin(40);
             labelsView.setLabelTextPadding(8, 5, 8, 5);

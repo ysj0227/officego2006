@@ -15,7 +15,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:leftDefaultClickEnable="true"
         app:leftIcon="@drawable/ic_back_light"
-        app:titleText="联合办公房东认证"
+        app:titleText="共享办公房东认证"
         app:titleTextColor="@color/white" />
 
     <androidx.core.widget.NestedScrollView
@@ -57,7 +57,7 @@
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/dp_4"
                     android:layout_toEndOf="@id/tv_identity"
-                    android:text="联合办公"
+                    android:text="共享办公"
                     android:textColor="@color/text_33"
                     android:textSize="@dimen/sp_15" />
 

@@ -65,8 +65,8 @@ public class SearchPopupWindow extends PopupWindow implements
     private String line = "", nearbySubway = ""; //地铁
     private int btype;//楼盘,网点
     private String constructionArea = "";//面积
-    private String rentPrice = "", rentPrice2 = ""; //写字楼，联合办公
-    private String simple = "", simple2 = "";//写字楼，联合办公
+    private String rentPrice = "", rentPrice2 = ""; //写字楼，共享办公
+    private String simple = "", simple2 = "";//写字楼，共享办公
     private String decoration = "";//装修类型
     private String houseTags = "";//装修特色
     private String sort = "0";//排序
@@ -452,7 +452,7 @@ public class SearchPopupWindow extends PopupWindow implements
         });
     }
 
-    //写字楼,联合办公（网点） 类型1:楼盘,2:网点, 0全部
+    //写字楼,共享办公（网点） 类型1:楼盘,2:网点, 0全部
     private void handleOffice(View viewLayout) {
         TextView tvPopAll = viewLayout.findViewById(R.id.tv_pop_all);
         TextView tvPopOffice = viewLayout.findViewById(R.id.tv_pop_office);
@@ -544,7 +544,7 @@ public class SearchPopupWindow extends PopupWindow implements
         SeekBarPressure sbpRent = viewLayout.findViewById(R.id.sbp_rent);
         TextView tvWorkstation = viewLayout.findViewById(R.id.tv_workstation);
         SeekBarPressure sbpSimple = viewLayout.findViewById(R.id.sbp_workstation);
-        //联合办公 租金/工位
+        //共享办公 租金/工位
         SeekBarPressure sbpRent2 = viewLayout.findViewById(R.id.sbp_rent2);
         SeekBarPressure sbpSimple2 = viewLayout.findViewById(R.id.sbp_workstation2);
         Button btnClear = viewLayout.findViewById(R.id.btn_clear);
@@ -583,7 +583,7 @@ public class SearchPopupWindow extends PopupWindow implements
 //        面积：    范围 0 -2000
 //        租金：    范围 0- 50
 //        工位：    范围 0 - 500
-//        联合办公
+//        共享办公
 //        工位：    范围 0 - 30
 //        租金：    范围 0 - 10万
         sbpArea.setProgressMax(2000, 2000);
@@ -705,10 +705,10 @@ public class SearchPopupWindow extends PopupWindow implements
                 //工位
                 simple = (int) progressLow + "," + (int) progressHigh;
             } else if (type == 3) {
-                //联合办公租金
+                //共享办公租金
                 rentPrice2 = (int) progressLow + "," + (int) progressHigh;
             } else if (type == 4) {
-                //联合办公工位
+                //共享办公工位
                 simple2 = (int) progressLow + "," + (int) progressHigh;
             }
         }

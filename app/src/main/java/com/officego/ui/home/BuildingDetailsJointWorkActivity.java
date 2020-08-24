@@ -77,7 +77,7 @@ import tv.danmaku.ijk.media.player.IMediaPlayer;
 /**
  * Created by YangShiJie
  * Data 2020/5/14.
- * Descriptions: 联合办公详情
+ * Descriptions: 共享办公详情
  **/
 @SuppressLint("Registered")
 @EActivity(R.layout.home_activity_house_details)

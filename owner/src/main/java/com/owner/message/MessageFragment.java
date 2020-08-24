@@ -1,5 +1,6 @@
 package com.owner.message;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.net.Uri;
 import android.view.View;
@@ -28,6 +29,7 @@ import io.rong.imlib.model.Conversation;
  * Data 2020/5/11.
  * Descriptions:
  **/
+@SuppressLint("NewApi")
 @EFragment(resName = "conversationlist")
 public class MessageFragment extends BaseFragment {
     @ViewById(resName = "ll_root_message")

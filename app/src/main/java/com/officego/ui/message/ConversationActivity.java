@@ -89,7 +89,6 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         tvJob = findViewById(R.id.tv_job);
         llRoot.setPadding(0, CommonHelper.statusHeight(this), 0, 0);
         Intent intent = getIntent();
-//        LogCat.e(TAG,"1111111111 buildingId="+buildingId+" houseId="+houseId);
         if (intent != null && intent.hasExtra("chatTargetId")) {//聊天认证申请进入
             //认证申请页面进入
             isSendApply = intent.hasExtra("isSendApply");
@@ -107,12 +106,11 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         } else {
             initIMInfo();
             //认证申请聊天列表进入
-            if (TextUtils.isEmpty(targetId)) {
-                shortTip("获取信息异常，请稍后再聊");
-                return;
-            }
-            if (targetId.length() > 1 && TextUtils.equals(Constants.TYPE_OWNER, targetId.substring(targetId.length() - 1)) &&
-                    TextUtils.equals(Constants.TYPE_OWNER, SpUtils.getRongChatId().substring(SpUtils.getRongChatId().length() - 1))) {
+            String mineId = SpUtils.getRongChatId();
+            if (!TextUtils.isEmpty(targetId) && targetId.length() > 1 &&
+                    TextUtils.equals(Constants.TYPE_OWNER, targetId.substring(targetId.length() - 1)) &&
+                    (!TextUtils.isEmpty(mineId) && mineId.length() > 1 &&
+                            TextUtils.equals(Constants.TYPE_OWNER, mineId.substring(mineId.length() - 1)))) {
                 //认证申请聊天列表进入,融云id最后一位是“1”
                 isSendApply = false;
                 ctlChat.setVisibility(View.GONE);
@@ -156,6 +154,9 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             if (getIntent().getData() != null) {
                 targetId = getIntent().getData().getQueryParameter("targetId");
             }
+        }
+        if (TextUtils.isEmpty(targetId)) {
+            shortTip("对方获取信息异常，请稍后再聊");
         }
         if (!TextUtils.isEmpty(targetId) && targetId.length() > 1) {
             getHouseChatId = targetId.substring(0, targetId.length() - 1);
@@ -426,10 +427,11 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         }
     }
 
-    private int getHouseId(){
+    private int getHouseId() {
         return ((mData == null || mData.getBuilding().getHouseId() == null) ? 0 :
-                Integer.parseInt(CommonHelper.bigDecimal(mData.getBuilding().getHouseId(),true)));
+                Integer.parseInt(CommonHelper.bigDecimal(mData.getBuilding().getHouseId(), true)));
     }
+
     //神策手机交换状态
     private void sensorsPhoneExStatus(boolean isAgree) {
         SensorsTrack.confirmPhoneExchangeState(mData == null ? 0 : mData.getIsBuildOrHouse(),

@@ -162,7 +162,7 @@ public class OfficegoApi {
     /**
      * 我想找
      * token 	是 	string 	根据token解析用户id
-     * btype 	是 	int 	类型,1:楼盘 写字楼,2:网点 联合办公
+     * btype 	是 	int 	类型,1:楼盘 写字楼,2:网点 共享办公
      * area 	是 	String 	建筑面积 范围值,逗号分隔
      * dayPrice 	是 	String 	租金 范围值,逗号分隔
      * seats 	是 	String 	工位数范围,逗号分隔
@@ -177,7 +177,7 @@ public class OfficegoApi {
         LogCat.e(TAG, "Token=" + SpUtils.getSignToken());
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
-        map.put("btype", requestBody(btype)); //1:楼盘 写字楼,2:网点 联合办公
+        map.put("btype", requestBody(btype)); //1:楼盘 写字楼,2:网点 共享办公
         map.put("area", requestBody(constructionArea));
         map.put("dayPrice", requestBody(rentPrice));
         map.put("seats", requestBody(seats));
@@ -471,7 +471,7 @@ public class OfficegoApi {
     }
 
     /**
-     * 联合办公|网点房源详情
+     * 共享办公|网点房源详情
      * houseId 	是 	int 	房源id
      * btype 	是 	int 	类型1标准楼盘下的房源2联合网点下的房源
      * token 	是 	string 	登录凭证

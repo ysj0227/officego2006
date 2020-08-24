@@ -85,8 +85,10 @@ public class ConversationViewingDateActivity extends BaseMvpActivity<Conversatio
         mPresenter = new ConversationPresenter();
         mPresenter.attachView(this);
         //去除 targetId  的最后一位 ,产品定义
-        String getHouseChatId = targetId.substring(0, targetId.length() - 1);
-        mPresenter.getHouseDetails(buildingId, houseId, getHouseChatId);
+        if (!TextUtils.isEmpty(targetId) && targetId.length() > 1) {
+            String getHouseChatId = targetId.substring(0, targetId.length() - 1);
+            mPresenter.getHouseDetails(buildingId, houseId, getHouseChatId);
+        }
     }
 
     @Click(R.id.rl_back)
