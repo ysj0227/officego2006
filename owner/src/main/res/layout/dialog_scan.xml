@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
     android:layout_height="wrap_content"
     android:layout_gravity="center"
@@ -39,7 +40,8 @@
             android:layout_below="@id/tv_office_url"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/dp_26"
-            android:background="@mipmap/ic_app_bg" />
+            android:background="@mipmap/ic_undraw_site_stats"
+            tools:ignore="ContentDescription" />
 
         <Button
             android:id="@+id/btn_app"
@@ -63,6 +65,8 @@
             android:layout_marginBottom="@dimen/dp_35"
             android:background="@drawable/btn_common_bg_primary"
             android:text="去电脑上编辑"
+            android:paddingLeft="@dimen/dp_10"
+            android:drawableStart="@mipmap/ic_scan_white"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_14" />
 

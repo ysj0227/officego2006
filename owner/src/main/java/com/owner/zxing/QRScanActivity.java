@@ -1,5 +1,6 @@
 package com.owner.zxing;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
 import android.widget.LinearLayout;
@@ -7,14 +8,15 @@ import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 
 import com.officego.commonlib.base.BaseActivity;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.TitleBarView;
+import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
 
 import cn.bingoogolapple.qrcode.core.QRCodeView;
 import cn.bingoogolapple.qrcode.zxing.ZXingView;
 
 public class QRScanActivity extends BaseActivity implements QRCodeView.Delegate {
+    private static final int REQUEST_CODE = 1000;
     ZXingView mZXingView;
     TitleBarView titleBar;
     private boolean isOpenFlashlight;
@@ -88,10 +90,32 @@ public class QRScanActivity extends BaseActivity implements QRCodeView.Delegate 
 
     @Override
     public void onScanQRCodeSuccess(String result) {
-        LogCat.e(TAG, "result:" + result);
         vibrate();
-        shortTip("扫描:" + result);
-        mZXingView.startSpot(); // 开始识别
+        if (!result.contains("officego")) {
+            scanQRError();
+        } else {
+            ScanCompleteActivity_.intent(context).startForResult(REQUEST_CODE);
+        }
+    }
+
+    private void scanQRError() {
+        CommonDialog dialog = new CommonDialog.Builder(context)
+                .setTitle("二维码不符合规则，请重新扫描")
+                .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
+                    if (mZXingView != null) {
+                        mZXingView.startSpot(); // 重新开始识别
+                    }
+                }).create();
+        dialog.showWithOutTouchable(false);
+        dialog.setCancelable(false);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == REQUEST_CODE && resultCode == RESULT_OK) {
+            finish();
+        }
     }
 
     @Override

@@ -20,8 +20,8 @@ import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
@@ -64,8 +64,8 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements Home
     RelativeLayout rlException;
     @ViewById(resName = "btn_again")
     Button btnAgain;
-    @ViewById(resName = "tv_scan")
-    TextView tvScan;
+    @ViewById(resName = "iv_scan")
+    ImageView tvScan;
 
     private String webViewUrl;
     private SMWebChromeClient webChrome;
@@ -86,7 +86,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements Home
     }
 
     //扫一扫
-    @Click(resName = "tv_scan")
+    @Click(resName = "iv_scan")
     void scanClick() {
         scanDialog(getContext());
     }

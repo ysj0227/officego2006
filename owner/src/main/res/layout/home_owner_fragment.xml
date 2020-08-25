@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
@@ -10,15 +11,15 @@
 
     <include layout="@layout/include_exception" />
 
-    <TextView
-        android:id="@+id/tv_scan"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <ImageView
+        android:id="@+id/iv_scan"
+        android:layout_width="@dimen/dp_34"
+        android:layout_height="@dimen/dp_34"
         android:layout_alignParentEnd="true"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="@dimen/dp_80"
-        android:background="@drawable/button_corners25_solid_main"
+        android:layout_marginEnd="@dimen/dp_16"
+        android:layout_marginBottom="@dimen/dp_20"
         android:padding="@dimen/dp_10"
-        android:text="扫一扫"
-        android:textColor="@color/white" />
+        android:background="@mipmap/ic_scan_qr"
+        tools:ignore="ContentDescription" />
 </RelativeLayout>
