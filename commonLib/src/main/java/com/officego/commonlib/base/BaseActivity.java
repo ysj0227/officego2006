@@ -42,7 +42,7 @@ public abstract class BaseActivity extends FragmentActivity
         initDialog();
         initView();
         BaseApplication.getInstance().addActivity(this);
-        registerBroadCast();
+//        registerBroadCast();
     }
 
     protected int activityLayoutId() {
@@ -66,7 +66,7 @@ public abstract class BaseActivity extends FragmentActivity
         hideLoadingDialog();    //防止窗口泄漏
         loadingDialog = null;
         removeObserver();
-        unregisterBroadCast();
+//        unregisterBroadCast();
     }
 
     @Override

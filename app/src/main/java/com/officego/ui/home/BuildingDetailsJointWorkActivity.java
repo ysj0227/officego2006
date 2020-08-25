@@ -28,6 +28,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
+import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.utils.CommonHelper;
@@ -54,6 +55,7 @@ import com.officego.ui.home.model.BuildingJointWorkBean;
 import com.officego.ui.home.model.ChatsBean;
 import com.officego.ui.home.model.ConditionBean;
 import com.officego.ui.home.presenter.BuildingDetailsJointWorkPresenter;
+import com.officego.ui.login.LoginActivity_;
 import com.officego.ui.message.ConversationActivity_;
 import com.officego.utils.ImageLoaderUtils;
 import com.officego.utils.WeChatUtils;
@@ -467,6 +469,11 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         if (isFastClick(1200)) {
             return;
         }
+        //未登录去登录
+        if (TextUtils.isEmpty(SpUtils.getSignToken())) {
+            LoginActivity_.intent(context).start();
+            return;
+        }
         if (mBuildingBean != null) {
             //神策
             SensorsTrack.clickFavoritesButton(mBuildingBean.getBuildingId(), !isFavorite);
@@ -495,6 +502,11 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     @Click(R.id.btn_chat)
     void chatClick() {
         if (isFastClick(1200)) {
+            return;
+        }
+        //未登录去登录
+        if (TextUtils.isEmpty(SpUtils.getSignToken())) {
+            LoginActivity_.intent(context).start();
             return;
         }
         //判断是否单房东

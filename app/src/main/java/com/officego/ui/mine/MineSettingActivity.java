@@ -140,8 +140,6 @@ public class MineSettingActivity extends BaseActivity {
                     shortTip(msg);
                     SpUtils.clearLoginInfo();
                     GotoActivityUtils.loginClearActivity(context, false);
-                } else {
-                    shortTip("切换角色失败");
                 }
             }
         });

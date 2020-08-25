@@ -2,12 +2,15 @@ package com.owner.home;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.text.TextUtils;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.WebChromeClient;
@@ -18,6 +21,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
@@ -60,6 +64,8 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements Home
     RelativeLayout rlException;
     @ViewById(resName = "btn_again")
     Button btnAgain;
+    @ViewById(resName = "tv_scan")
+    TextView tvScan;
 
     private String webViewUrl;
     private SMWebChromeClient webChrome;
@@ -82,10 +88,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements Home
     //扫一扫
     @Click(resName = "tv_scan")
     void scanClick() {
-        if (!fragmentCheckSDCardCameraPermission()) {
-            return;
-        }
-        startActivity(new Intent(getActivity(), QRScanActivity.class));
+        scanDialog(getContext());
     }
 
     /**
@@ -281,17 +284,24 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements Home
 
     /**
      * 身份类型 0个人1企业2联合
+     * getAuditStatus 0待审核1审核通过2审核未通过 3过期(和2未通过一样处理)-1未认证
      */
     @Override
     public void userInfoSuccess(UserOwnerBean data) {
         if (isIdentity(data)) {
+            tvScan.setVisibility(View.GONE);
             new UnIdifyDialog(mActivity, data);
-            return;
-        }
-        if (data.getIdentityType() == 2) {
-            loadWebView(AppConfig.H5_OWNER_HOUSElIST + identity());
         } else {
-            loadWebView(AppConfig.H5_OWNER_BUILDINGlIST + identity());
+            tvScan.setVisibility(View.VISIBLE);
+            if (TextUtils.isEmpty(SpUtils.getEditToWeb())) {
+                scanDialog(getContext());
+                SpUtils.saveEditToWeb();
+            }
+            if (data.getIdentityType() == 2) {
+                loadWebView(AppConfig.H5_OWNER_HOUSElIST + identity());
+            } else {
+                loadWebView(AppConfig.H5_OWNER_BUILDINGlIST + identity());
+            }
         }
     }
 
@@ -327,5 +337,24 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements Home
         if (id == CommonNotifications.ownerIdentityHandle) {
             mPresenter.getUserInfo();
         }
+    }
+
+    //扫一扫
+    private void scanDialog(Context context) {
+        Dialog dialog = new Dialog(context, R.style.BottomDialog);
+        View inflate = LayoutInflater.from(context).inflate(R.layout.dialog_scan, null);
+        dialog.setContentView(inflate);
+        inflate.findViewById(R.id.btn_close).setOnClickListener(v -> dialog.dismiss());
+        inflate.findViewById(R.id.btn_app).setOnClickListener(v -> dialog.dismiss());
+        inflate.findViewById(R.id.btn_web).setOnClickListener(v -> {
+            if (!fragmentCheckSDCardCameraPermission()) {
+                return;
+            }
+            dialog.dismiss();
+            startActivity(new Intent(getActivity(), QRScanActivity.class));
+        });
+        dialog.setCancelable(true);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
     }
 }

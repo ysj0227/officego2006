@@ -29,6 +29,8 @@ public class SpUtils {
     private static final String LEAD_PAGES = PACKAGE_NAME + "LEAD_PAGES";
     //协议
     private static final String AGREE_PROTOCOL = PACKAGE_NAME + "AGREE_PROTOCOL";
+    //是否去网页编辑
+    private static final String EDIT_TO_WEB = PACKAGE_NAME + "EDIT_TO_WEB";
 
     private static SharedPreferences getSharedPreference() {
         return SharedManager.getSharedPreference(BaseApplication.getContext());
@@ -53,6 +55,7 @@ public class SpUtils {
         SharedManager.clearValue(BaseApplication.getContext(), HEADER_IMG);
         SharedManager.clearValue(BaseApplication.getContext(), NICK_NAME);
         SharedManager.clearValue(BaseApplication.getContext(), CANCEL_UPDATE);
+        SharedManager.clearValue(BaseApplication.getContext(), EDIT_TO_WEB);
         //融云断开连接
         RongIM.getInstance().disconnect();
     }
@@ -149,13 +152,13 @@ public class SpUtils {
         return SharedManager.getValue(BaseApplication.getContext(), LOGIN_ROLE);
     }
 
-    //取消版本更新
-    public static void saveCancelUpdate() {
-        SharedManager.putValue(BaseApplication.getContext(), CANCEL_UPDATE, "Y");
+    //是否去web编辑
+    public static void saveEditToWeb() {
+        SharedManager.putValue(BaseApplication.getContext(), EDIT_TO_WEB, "Y");
     }
 
-    public static String getCancelUpdate() {
-        return SharedManager.getValue(BaseApplication.getContext(), CANCEL_UPDATE);
+    public static String getEditToWeb() {
+        return SharedManager.getValue(BaseApplication.getContext(), EDIT_TO_WEB);
     }
 
     //保存是否显示引导页

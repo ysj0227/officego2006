@@ -26,6 +26,7 @@ import androidx.core.widget.NestedScrollView;
 import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
+import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.GlideUtils;
@@ -38,6 +39,7 @@ import com.officego.ui.home.model.ChatsBean;
 import com.officego.ui.home.model.HouseIdBundleBean;
 import com.officego.ui.home.model.HouseOfficeDetailsJointWorkBean;
 import com.officego.ui.home.presenter.BuildingDetailsChildJointWorkPresenter;
+import com.officego.ui.login.LoginActivity_;
 import com.officego.ui.message.ConversationActivity_;
 import com.officego.utils.ImageLoaderUtils;
 import com.officego.utils.WeChatUtils;
@@ -428,11 +430,16 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
     }
 
     /**
-     * 分享
+     * 收藏
      */
     @Click(R.id.tv_favorite)
     void tv_favoriteClick() {
         if (isFastClick(1200)) {
+            return;
+        }
+        //未登录去登录
+        if (TextUtils.isEmpty(SpUtils.getSignToken())) {
+            LoginActivity_.intent(context).start();
             return;
         }
         //神策
@@ -450,6 +457,11 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
     @Click(R.id.btn_chat)
     void chatClick() {
         if (isFastClick(1500)) {
+            return;
+        }
+        //未登录去登录
+        if (TextUtils.isEmpty(SpUtils.getSignToken())) {
+            LoginActivity_.intent(context).start();
             return;
         }
         if (!NetworkUtils.isNetworkAvailable(context)) {

@@ -31,6 +31,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
+import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.utils.CommonHelper;
@@ -53,6 +54,7 @@ import com.officego.ui.home.model.BuildingJointWorkBean;
 import com.officego.ui.home.model.ChatsBean;
 import com.officego.ui.home.model.ConditionBean;
 import com.officego.ui.home.presenter.BuildingDetailsPresenter;
+import com.officego.ui.login.LoginActivity_;
 import com.officego.ui.message.ConversationActivity_;
 import com.officego.utils.ImageLoaderUtils;
 import com.officego.utils.WeChatUtils;
@@ -420,6 +422,11 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         if (isFastClick(1200)) {
             return;
         }
+        //未登录去登录
+        if (TextUtils.isEmpty(SpUtils.getSignToken())) {
+            LoginActivity_.intent(context).start();
+            return;
+        }
         if (mBuildingBean != null) {
             //神策
             SensorsTrack.clickFavoritesButton(mBuildingBean.getBuildingId(), !isFavorite);
@@ -448,6 +455,11 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     @Click(R.id.btn_chat)
     void chatClick() {
         if (isFastClick(1200)) {
+            return;
+        }
+        //未登录去登录
+        if (TextUtils.isEmpty(SpUtils.getSignToken())) {
+            LoginActivity_.intent(context).start();
             return;
         }
         //判断是否单房东
@@ -881,16 +893,16 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             String mArea = "0㎡";
             if (data.getBuilding().getMinArea() != null && data.getBuilding().getMaxArea() != null) {
                 if (TextUtils.equals(data.getBuilding().getMinArea().toString(), data.getBuilding().getMaxArea().toString())) {
-                    mArea = CommonHelper.bigDecimal(data.getBuilding().getMaxArea(),true) + "㎡";
+                    mArea = CommonHelper.bigDecimal(data.getBuilding().getMaxArea(), true) + "㎡";
                 } else {
-                    mArea = CommonHelper.bigDecimal(data.getBuilding().getMinArea(),true) + "~" + CommonHelper.bigDecimal(data.getBuilding().getMaxArea(),true) + "㎡";
+                    mArea = CommonHelper.bigDecimal(data.getBuilding().getMinArea(), true) + "~" + CommonHelper.bigDecimal(data.getBuilding().getMaxArea(), true) + "㎡";
                 }
             }
             reSizeTextView(tvIndependentOfficeArea, mArea);
             tvIndependentOfficeArea.setTextColor(ContextCompat.getColor(context, R.color.common_blue_main));
             String mPrice;
             if (data.getBuilding().getMinDayPrice() != null) {
-                mPrice = "¥" + CommonHelper.bigDecimal(data.getBuilding().getMinDayPrice(),false) + "/㎡/天起";
+                mPrice = "¥" + CommonHelper.bigDecimal(data.getBuilding().getMinDayPrice(), false) + "/㎡/天起";
             } else {
                 mPrice = "¥0.0/㎡/天起";
             }

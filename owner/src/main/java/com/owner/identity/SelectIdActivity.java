@@ -12,15 +12,12 @@ import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
-import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.rongcloud.ConnectRongCloudUtils;
 import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.constant.Constants;
-import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
 import com.owner.rpc.OfficegoApi;
@@ -133,8 +130,6 @@ public class SelectIdActivity extends BaseActivity {
                     shortTip(msg);
                     SpUtils.clearLoginInfo();
                     GotoActivityUtils.loginClearActivity(context, true);
-                } else {
-                    shortTip("切换角色失败");
                 }
             }
         });

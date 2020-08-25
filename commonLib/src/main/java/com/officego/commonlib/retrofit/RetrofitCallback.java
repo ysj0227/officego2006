@@ -72,12 +72,13 @@ public abstract class RetrofitCallback<T> implements Callback<BaseResponse<T>> {
         } else {
             onFail(response.getStatus(), response.getMessage(), response.getData());
             LogCat.e(TAG, "error: " + response.getStatus() + response.getMessage() + " data:" + response.getData());
-            if (response.getStatus() == RpcErrorCode.ERROR_CODE_5001) {
-                //未登录发送广播
-                Intent intent = new Intent();
-                intent.setAction(PACKAGE_NAME);
-                BaseApplication.getContext().sendBroadcast(intent);
-            } else if (response.getStatus() == Constants.ERROR_CODE_5009) {
+//            if (response.getStatus() == RpcErrorCode.ERROR_CODE_5001) {
+//                //未登录发送广播
+//                Intent intent = new Intent();
+//                intent.setAction(PACKAGE_NAME);
+//                BaseApplication.getContext().sendBroadcast(intent);
+//            } else
+                if (response.getStatus() == Constants.ERROR_CODE_5009) {
                 //当前身份发送变化，重新登录
                 BaseNotification.newInstance().postNotificationName(
                         CommonNotifications.identityChangeToRelogin, response.getMessage());
