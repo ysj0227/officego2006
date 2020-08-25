@@ -59,6 +59,7 @@ public class SearchPopupWindow extends PopupWindow implements
     private Activity mContext;
     private TextView mSetTitleView;
 
+    private Map<Integer, String> mMapDecoration;//装修类型
     private HashSet<Integer> mHashSetLine, mHashSetBusiness;
     private SparseBooleanArray mCheckStatesLine, mCheckStatesBusiness;//记录选中的位置
     private String district = "", business = "";//商圈
@@ -110,7 +111,7 @@ public class SearchPopupWindow extends PopupWindow implements
 
         //筛选
         void onConditionPopUpWindow(int searchType, int btype, String constructionArea, String rentPrice,
-                                    String simple, String decoration, String tags);
+                                    String simple, String decoration, String tags, Map<Integer, String> mMapDecoration);
     }
 
     /**
@@ -145,7 +146,7 @@ public class SearchPopupWindow extends PopupWindow implements
                              int btype, HashSet<Integer> hashSet, SparseBooleanArray checkStates,
                              String district, String business, String line,
                              String nearbySubway, String area, String dayPrice, String seats,
-                             String decoration, String houseTags, String sort) {
+                             String decoration, String houseTags, String sort, Map<Integer, String> mapDecoration) {
         super();
         this.mContext = activity;
         this.mSetTitleView = setTextView;
@@ -185,6 +186,7 @@ public class SearchPopupWindow extends PopupWindow implements
         this.decoration = decoration;
         this.houseTags = houseTags;
         this.sort = sort;
+        this.mMapDecoration = mapDecoration;
 
         LayoutInflater inflater = LayoutInflater.from(mContext);
         if (searchType == SEARCH_TYPE_AREA) {
@@ -623,6 +625,7 @@ public class SearchPopupWindow extends PopupWindow implements
             this.simple2 = "";
             this.decoration = "";
             this.houseTags = "";
+            this.mMapDecoration.clear();
             Constants.SENSORS_AREA_CONTENT = "";
             Constants.SENSORS_DECORATION = "";
             //请求list
@@ -655,7 +658,7 @@ public class SearchPopupWindow extends PopupWindow implements
         mRentPrice = rbOffice.isChecked() ? rentPrice : rentPrice2;
         mSimple = rbOffice.isChecked() ? simple : simple2;
         mArea = rbOffice.isChecked() ? constructionArea : "";
-        onSureClickListener.onConditionPopUpWindow(mSearchType, btype, mArea, mRentPrice, mSimple, decoration, houseTags);
+        onSureClickListener.onConditionPopUpWindow(mSearchType, btype, mArea, mRentPrice, mSimple, decoration, houseTags, mMapDecoration);
     }
 
     private void showConditionOfficeLayout(boolean isOffice, RecyclerView rvDecorationType, TextView tvDecorationType,
@@ -1038,26 +1041,32 @@ public class SearchPopupWindow extends PopupWindow implements
     //装修类型
     private class DecorationTypeAdapter extends CommonListAdapter<DirectoryBean.DataBean> {
         //当前选中的数据列表
-        private Map<Integer, String> map;
-
+//        private Map<Integer, String> map;
         @SuppressLint("UseSparseArrays")
         DecorationTypeAdapter(Context context, List<DirectoryBean.DataBean> list) {
             super(context, R.layout.item_house_type, list);
-            map = new HashMap<>();
+            if (mMapDecoration == null) {
+                mMapDecoration = new HashMap<>();
+            }
         }
 
         @Override
         public void convert(ViewHolder holder, final DirectoryBean.DataBean bean) {
             CheckBox cbType = holder.getView(R.id.cb_type);
             cbType.setText(bean.getDictCname());
+            if (mMapDecoration != null) {
+                cbType.setChecked(mMapDecoration.containsKey(bean.getDictValue()));
+            }
             cbType.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (isChecked) {
-                    map.put(bean.getDictValue(), bean.getDictCname());
+                    if (!mMapDecoration.containsKey(bean.getDictValue())) {
+                        mMapDecoration.put(bean.getDictValue(), bean.getDictCname());
+                    }
                 } else {
-                    map.remove(bean.getDictValue());
+                    mMapDecoration.remove(bean.getDictValue());
                 }
-                decoration = getKey(map);
-                sensorsDecorationEvent(map);
+                decoration = getKey(mMapDecoration);
+                sensorsDecorationEvent(mMapDecoration);
             });
         }
     }

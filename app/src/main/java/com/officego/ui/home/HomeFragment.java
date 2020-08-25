@@ -23,6 +23,7 @@ import com.officego.commonlib.update.VersionDialog;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.ui.adapter.HouseAdapter;
 import com.officego.ui.home.contract.HomeContract;
 import com.officego.ui.home.model.BuildingBean;
@@ -43,6 +44,7 @@ import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
+import java.util.Map;
 
 import static com.officego.config.ConditionConfig.mConditionBean;
 
@@ -132,6 +134,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     private boolean hasMore;
     //所有的筛选条件
     private int btype = 0;
+    private Map<Integer, String> mapDecoration;//装修类型
     private HashSet<Integer> hashSet;//地铁商圈的传值
     private SparseBooleanArray checkStates; //记录选中的位置
     private String district = "", business = "", line = "", nearbySubway = "",
@@ -341,7 +344,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         popupWindow = new SearchPopupWindow(mActivity, ctlSearch, textView, searchType,
                 btype, hashSet, checkStates, district, business,
                 line, nearbySubway, area, dayPrice, seats,
-                decoration, houseTags, sort);
+                decoration, houseTags, sort, mapDecoration);
         popupWindow.setOnSureClickListener(this);
     }
 
@@ -520,15 +523,16 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
 
     @Override
     public void onConditionPopUpWindow(int searchType, int btype, String constructionArea,
-                                       String rentPrice, String simple, String decoration, String tags) {
-//        LogCat.e("TAG", "onConditionPopUpWindow btype= " + btype + " constructionArea=" + constructionArea +
-//                " rentPrice=" + rentPrice + " simple=" + simple + " decoration=" + decoration + " tags=" + tags);
+                                       String rentPrice, String simple, String decoration, String tags, Map<Integer, String> mapDecoration) {
+        LogCat.e("TAG", "onConditionPopUpWindow btype= " + btype + " constructionArea=" + constructionArea +
+                " rentPrice=" + rentPrice + " simple=" + simple + " decoration=" + decoration + " tags=" + tags);
         this.btype = btype;
         this.area = constructionArea;
         this.dayPrice = rentPrice;
         this.seats = simple;
         this.decoration = decoration;
         this.houseTags = tags;
+        this.mapDecoration = mapDecoration;
         mConditionBean = setConditionBean();
         if (btype == 0) {
             tvSearchOffice.setText(R.string.str_house_all);
