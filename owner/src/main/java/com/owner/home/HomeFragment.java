@@ -26,6 +26,7 @@ import android.widget.RelativeLayout;
 import androidx.annotation.NonNull;
 
 import com.officego.commonlib.base.BaseMvpFragment;
+import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.constant.AppConfig;
@@ -33,6 +34,7 @@ import com.officego.commonlib.update.VersionDialog;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.commonlib.view.webview.SMWebChromeClient;
 import com.officego.commonlib.view.webview.SMWebViewClient;
 import com.owner.R;
@@ -356,5 +358,20 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements Home
         dialog.setCancelable(true);
         dialog.setCanceledOnTouchOutside(false);
         dialog.show();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (TextUtils.isEmpty(SpUtils.getSignToken())) {
+            CommonDialog dialog = new CommonDialog.Builder(getContext())
+                    .setMessage("账号已退出，请重新登录")
+                    .setConfirmButton(com.officego.commonlib.R.string.str_login, (dialog12, which) -> {
+                        GotoActivityUtils.gotoLoginActivity(getActivity());
+                        dialog12.dismiss();
+                    }).create();
+            dialog.showWithOutTouchable(false);
+            dialog.setCancelable(false);
+        }
     }
 }

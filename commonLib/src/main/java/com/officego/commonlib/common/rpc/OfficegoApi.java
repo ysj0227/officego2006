@@ -6,12 +6,12 @@ import com.officego.commonlib.common.model.ChatHouseBean;
 import com.officego.commonlib.common.model.FirstChatBean;
 import com.officego.commonlib.common.model.IdentitychattedMsgBean;
 import com.officego.commonlib.common.model.RongUserInfoBean;
+import com.officego.commonlib.common.model.ExchangeContactsBean;
 import com.officego.commonlib.common.rpc.request.ChatInterface;
 import com.officego.commonlib.common.rpc.request.LicenceInterface;
 import com.officego.commonlib.common.rpc.request.MineMsgInterface;
 import com.officego.commonlib.common.rpc.request.ScheduleInterface;
 import com.officego.commonlib.retrofit.RetrofitCallback;
-import com.officego.commonlib.utils.log.LogCat;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -133,6 +133,18 @@ public class OfficegoApi {
     }
 
     /**
+     * 判断是否可以交换手机和微信
+     */
+    public void exchangeContactsVerification(String targetId, RetrofitCallback<ExchangeContactsBean> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("targetId", requestBody(targetId));
+        OfficegoRetrofitClient.getInstance().create(ChatInterface.class)
+                .exchangeContactsVerification(map)
+                .enqueue(callback);
+    }
+
+    /**
      * 管理员审核申请加入员工接口
      * auditStatus 1通过2取消
      */
@@ -163,9 +175,9 @@ public class OfficegoApi {
     }
 
     /**
-     *获取消息信息
+     * 获取消息信息
      */
-    public void getRongUserInfo(String targetId,RetrofitCallback<RongUserInfoBean> callback) {
+    public void getRongUserInfo(String targetId, RetrofitCallback<RongUserInfoBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("targetId", requestBody(targetId));
         OfficegoRetrofitClient.getInstance().create(ChatInterface.class)

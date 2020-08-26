@@ -74,6 +74,14 @@ public class MessageFragment extends BaseFragment {
         initIm();
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (TextUtils.isEmpty(SpUtils.getSignToken())) {
+            loginOut();
+        }
+    }
+
     @Click(R.id.btn_login)
     void loginClick() {
         if (isFastClick(1500)) {

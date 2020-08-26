@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ctl_chat"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
@@ -16,12 +17,13 @@
         app:layout_constraintRight_toLeftOf="@id/rl_wx"
         app:layout_constraintTop_toTopOf="parent">
 
+<!--        android:background="@mipmap/ic_mobile_blue_big"-->
         <ImageView
             android:id="@+id/iv_mobile"
             android:layout_width="@dimen/dp_16"
             android:layout_height="@dimen/dp_22"
             android:layout_centerHorizontal="true"
-            android:background="@mipmap/ic_mobile_blue_big" />
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -43,12 +45,13 @@
         app:layout_constraintRight_toLeftOf="@id/rl_viewing_date"
         app:layout_constraintTop_toTopOf="parent">
 
+<!--        android:background="@mipmap/ic_wx_exchange"-->
         <ImageView
             android:id="@+id/iv_wx"
-            android:layout_width="@dimen/dp_22"
-            android:layout_height="@dimen/dp_22"
+            android:layout_width="@dimen/dp_24"
+            android:layout_height="@dimen/dp_23"
             android:layout_centerHorizontal="true"
-            android:background="@mipmap/ic_wx" />
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -76,7 +79,8 @@
             android:layout_width="@dimen/dp_22"
             android:layout_height="@dimen/dp_22"
             android:layout_centerHorizontal="true"
-            android:background="@mipmap/ic_viewing_date_blue_big" />
+            android:background="@mipmap/ic_viewing_date_blue_big"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -90,10 +94,10 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:visibility="gone"
         android:id="@+id/rl_report"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:visibility="gone"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toRightOf="@id/rl_viewing_date"
         app:layout_constraintRight_toRightOf="parent"
@@ -104,7 +108,8 @@
             android:layout_width="@dimen/dp_20"
             android:layout_height="@dimen/dp_22"
             android:layout_centerHorizontal="true"
-            android:background="@mipmap/ic_report_blue_big" />
+            android:background="@mipmap/ic_report_blue_big"
+            tools:ignore="ContentDescription" />
 
         <TextView
             android:layout_width="wrap_content"

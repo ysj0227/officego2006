@@ -9,13 +9,11 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
-import com.officego.commonlib.common.contract.ConversationContract;
+import com.officego.commonlib.common.contract.ConversationViewDateContract;
 import com.officego.commonlib.common.dialog.ViewingDateDialog;
 import com.officego.commonlib.common.model.ChatHouseBean;
-import com.officego.commonlib.common.model.FirstChatBean;
-import com.officego.commonlib.common.model.IdentitychattedMsgBean;
 import com.officego.commonlib.common.model.RenterBean;
-import com.officego.commonlib.common.presenter.ConversationPresenter;
+import com.officego.commonlib.common.presenter.ConversationViewDatePresenter;
 import com.officego.commonlib.common.rongcloud.SendMessageManager;
 import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.constant.Constants;
@@ -41,8 +39,8 @@ import java.util.Date;
  **/
 @SuppressLint("Registered")
 @EActivity(R.layout.conversation_activity_viewing_date)
-public class ConversationViewingDateActivity extends BaseMvpActivity<ConversationPresenter>
-        implements ConversationContract.View, ViewingDateDialog.SureClickListener {
+public class ConversationViewingDateActivity extends BaseMvpActivity<ConversationViewDatePresenter>
+        implements ConversationViewDateContract.View, ViewingDateDialog.SureClickListener {
     @ViewById(R.id.tv_select_time)
     TextView tvSelectTime;
     @ViewById(R.id.iv_house)
@@ -82,7 +80,7 @@ public class ConversationViewingDateActivity extends BaseMvpActivity<Conversatio
     @AfterExtras
     void init() {
         StatusBarUtils.setStatusBarFullTransparent(this);
-        mPresenter = new ConversationPresenter();
+        mPresenter = new ConversationViewDatePresenter();
         mPresenter.attachView(this);
         //去除 targetId  的最后一位 ,产品定义
         if (!TextUtils.isEmpty(targetId) && targetId.length() > 1) {
@@ -185,16 +183,6 @@ public class ConversationViewingDateActivity extends BaseMvpActivity<Conversatio
                 }
             }
         }
-    }
-
-    @Override
-    public void firstChatSuccess(FirstChatBean data) {
-
-    }
-
-    @Override
-    public void identityChattedMsgSuccess(IdentitychattedMsgBean data) {
-
     }
 
     public void addRenter(int buildingId, String time, String targetId) {

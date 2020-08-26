@@ -82,6 +82,15 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         return false;
     }
 
+    @Override
+    public void onResume() {
+        super.onResume();
+        //未登录
+        if (TextUtils.isEmpty(SpUtils.getSignToken())) {
+            noLoginView();
+        }
+    }
+
     @Click(R.id.btn_login)
     void loginClick() {
         if (isFastClick(1500)) {

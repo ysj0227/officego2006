@@ -15,7 +15,15 @@ public class GotoActivityUtils {
     public static void loginClearActivity(Context context) {
         ComponentName comp = new ComponentName(context, "com.officego.ui.login.LoginActivity_");
         Intent intent = new Intent();
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);;
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setComponent(comp);
+        intent.setAction("android.intent.action.VIEW");
+        context.startActivity(intent);
+    }
+
+    public static void gotoLoginActivity(Context context) {
+        ComponentName comp = new ComponentName(context, "com.officego.ui.login.LoginActivity_");
+        Intent intent = new Intent();
         intent.setComponent(comp);
         intent.setAction("android.intent.action.VIEW");
         context.startActivity(intent);

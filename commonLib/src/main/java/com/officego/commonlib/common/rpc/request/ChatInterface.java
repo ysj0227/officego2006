@@ -5,6 +5,7 @@ import com.officego.commonlib.common.model.ChatHouseBean;
 import com.officego.commonlib.common.model.FirstChatBean;
 import com.officego.commonlib.common.model.IdentitychattedMsgBean;
 import com.officego.commonlib.common.model.RongUserInfoBean;
+import com.officego.commonlib.common.model.ExchangeContactsBean;
 import com.officego.commonlib.retrofit.BaseResponse;
 
 import java.util.Map;
@@ -37,6 +38,13 @@ public interface ChatInterface {
     @Multipart
     @POST(path + "chat/addChatApp")
     Call<BaseResponse<FirstChatBean>> isChat(@PartMap Map<String, RequestBody> params);
+
+    /**
+     * 判断是否可以交换手机和微信
+     */
+    @Multipart
+    @POST(path + "chat/exchangePhoneVerification")
+    Call<BaseResponse<ExchangeContactsBean>> exchangeContactsVerification(@PartMap Map<String, RequestBody> params);
 
     /**
      * 获取融云token

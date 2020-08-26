@@ -23,6 +23,7 @@ import com.officego.commonlib.update.VersionDialog;
 import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.CircleImage;
+import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.h5.WebViewActivity_;
 import com.owner.identity.IdentityCancelActivity_;
 import com.owner.mine.contract.UserContract;
@@ -75,6 +76,21 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         //版本更新
         new VersionDialog(mActivity);
         mPresenter.getUserInfo();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (TextUtils.isEmpty(SpUtils.getSignToken())) {
+            CommonDialog dialog = new CommonDialog.Builder(getContext())
+                    .setMessage("账号已退出，请重新登录")
+                    .setConfirmButton(com.officego.commonlib.R.string.str_login, (dialog12, which) -> {
+                        GotoActivityUtils.gotoLoginActivity(getActivity());
+                        dialog12.dismiss();
+                    }).create();
+            dialog.showWithOutTouchable(false);
+            dialog.setCancelable(false);
+        }
     }
 
     @Click(resName = "iv_setting")

@@ -5,7 +5,9 @@ import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
@@ -27,10 +29,8 @@ import com.officego.commonlib.common.model.RongUserInfoBean;
 import com.officego.commonlib.common.presenter.ConversationPresenter;
 import com.officego.commonlib.common.rongcloud.RongCloudSetUserInfoUtils;
 import com.officego.commonlib.common.rongcloud.SendMessageManager;
-import com.officego.commonlib.common.rpc.OfficegoApi;
 import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.constant.Constants;
-import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
@@ -41,8 +41,6 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
-
-import java.util.Date;
 
 import io.rong.imkit.RongIM;
 import io.rong.imkit.fragment.ConversationFragment;
@@ -62,7 +60,10 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
     private LinearLayout llRoot;
     private ConstraintLayout ctlChat;
     private TextView tvTitleName, tvJob;
-    private String getHouseChatId; //去除 targetId  的最后一位 ,产品定义
+    private TextView tvTip;
+    private RelativeLayout rlTip;
+    private ImageView ivMobile, ivWx;
+
     @Extra
     String targetId;//融云的id
     @Extra
@@ -70,24 +71,33 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
     @Extra
     int houseId;//房源详情传入
 
+    private String getHouseChatId;//去除 targetId  的最后一位 ,产品定义
     private ChatHouseBean mData;
-    // "isChat": 0 :点击发送按钮的时候需要调用 addChat接口，1:不需要
-    private boolean isFirstChat = true;//是否第一次聊天
-
+    private boolean isFirstChat = true;//是否第一次聊天  isChat": 0 :点击发送按钮的时候需要调用 addChat接口，1:不需要
     private boolean isSendApply;//租户认证发送的申请
     private String mNikeName;
-    private String sensorEventDate;
+    private boolean isCanExchange;//是否可以交换手机微信
+
+    private void initViewById() {
+        llRoot = findViewById(R.id.ll_root);
+        ctlChat = findViewById(R.id.ctl_chat);
+        tvTitleName = findViewById(R.id.tv_title_name);
+        tvJob = findViewById(R.id.tv_job);
+        rlTip = findViewById(R.id.rl_tip);
+        tvTip = findViewById(R.id.tv_tip);
+        ivMobile = findViewById(R.id.iv_mobile);
+        ivWx = findViewById(R.id.iv_wx);
+        llRoot.setPadding(0, CommonHelper.statusHeight(this), 0, 0);
+        ivMobile.setImageResource(R.mipmap.ic_mobile_gray_big);
+        ivWx.setImageResource(R.mipmap.ic_wx_exchange_gray);
+    }
 
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarFullTransparent(this);
         mPresenter = new ConversationPresenter();
         mPresenter.attachView(this);
-        llRoot = findViewById(R.id.ll_root);
-        ctlChat = findViewById(R.id.ctl_chat);
-        tvTitleName = findViewById(R.id.tv_title_name);
-        tvJob = findViewById(R.id.tv_job);
-        llRoot.setPadding(0, CommonHelper.statusHeight(this), 0, 0);
+        initViewById();
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("chatTargetId")) {//聊天认证申请进入
             //认证申请页面进入
@@ -124,6 +134,8 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
                 tvTitleName.setPadding(0, 28, 0, 0);
                 initIM();
             } else {
+                //是否可以交换微信电话
+                mPresenter.exchangeContactsVerification(targetId);
                 //租户-房东聊天
                 isSendApply = false;
                 ctlChat.setVisibility(View.VISIBLE);
@@ -201,7 +213,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
     @Override
     public void houseSuccess(ChatHouseBean data) {
         if (data == null) {
-            getRongTargetInfo(targetId); //推送点击获取Target用户信息
+            mPresenter.getRongTargetInfo(targetId); //推送点击获取Target用户信息
             return;
         }
         mData = data;
@@ -273,6 +285,28 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         return info;
     }
 
+    /**
+     * 判断是否可以交换手机和微信
+     */
+    @Override
+    public void exchangeContactsSuccess(boolean isCanExchange) {
+        this.isCanExchange = isCanExchange;
+        if (isCanExchange) {
+            rlTip.setVisibility(View.GONE);
+            ivMobile.setImageResource(R.mipmap.ic_mobile_blue_big);
+            ivWx.setImageResource(R.mipmap.ic_wx_exchange);
+        } else {
+            rlTip.setVisibility(View.VISIBLE);
+            ivMobile.setImageResource(R.mipmap.ic_mobile_gray_big);
+            ivWx.setImageResource(R.mipmap.ic_wx_exchange_gray);
+            if (!TextUtils.isEmpty(SpUtils.getSignToken())) {
+                tvTip.setText(TextUtils.equals(Constants.TYPE_TENANT, SpUtils.getRole()) ?
+                        "和房东建立聊天后即可发起交换微信和电话" :
+                        "双方建立看房日程后才能发起交换微信和电话");
+            }
+        }
+    }
+
     @Override
     public void firstChatSuccess(FirstChatBean data) {
         //是否第一次聊天
@@ -290,6 +324,13 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         tvJob.setText(data.getJob());
     }
 
+    //推送点击获取Target用户信息
+    @Override
+    public void rongTargetInfoSuccess(RongUserInfoBean data) {
+        tvTitleName.setText(data.getName());
+        tvTitleName.setPadding(0, 28, 0, 0);
+    }
+
     /**
      * 交换手机
      */
@@ -298,6 +339,12 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         if (isFastClick(3000)) {
             return;
         }
+        //聊天次数是否可以交换手机微信
+        if (!isCanExchange) {
+            mPresenter.exchangeContactsVerification(targetId);
+            return;
+        }
+        //交换
         if (!TextUtils.isEmpty(SpUtils.getPhoneNum())) {
             new ConfirmDialog(context, true, getString(
                     R.string.dialog_title_exchange_phone_contacts), "");
@@ -312,6 +359,12 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         if (isFastClick(3000)) {
             return;
         }
+        //聊天次数是否可以交换手机微信
+        if (!isCanExchange) {
+            mPresenter.exchangeContactsVerification(targetId);
+            return;
+        }
+        //交换
         if (TextUtils.isEmpty(SpUtils.getWechat())) {
             new InputContactsDialog(context);
         } else {
@@ -404,10 +457,10 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             SendMessageManager.getInstance().sendViewingDateStatusMessage(false, targetId, "拒绝预约看房", "");
         } else if (id == CommonNotifications.conversationBindWeChat) {
             //开始发送交换微信信息 dataMes微信号  本人发出要约， 填写自己微信   mData加入神策数据使用
-            SendMessageManager.getInstance().sendWeChatMessage(mData,targetId, "我想和您交换微信号", dataMes, "");
+            SendMessageManager.getInstance().sendWeChatMessage(mData, targetId, "我想和您交换微信号", dataMes, "");
         } else if (id == CommonNotifications.conversationBindPhone) {
             //开始发送交换手机信息   本人发出要约，发出自己手机号    mData加入神策数据使用
-            SendMessageManager.getInstance().sendPhoneMessage(mData,targetId, "我想和您交换手机号", SpUtils.getPhoneNum(), "");
+            SendMessageManager.getInstance().sendPhoneMessage(mData, targetId, "我想和您交换手机号", SpUtils.getPhoneNum(), "");
         } else if (id == CommonNotifications.conversationIdApplyAgree) {
             //同意认证申请
             SendMessageManager.getInstance().sendIdApplyStatusMessage(true, targetId, "我已同意你加入公司，欢迎", "");
@@ -457,22 +510,4 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         }
         return false;
     }
-
-    private void getRongTargetInfo(String targetId) {
-        if (!TextUtils.isEmpty(targetId)) {
-            OfficegoApi.getInstance().getRongUserInfo(targetId,
-                    new RetrofitCallback<RongUserInfoBean>() {
-                        @Override
-                        public void onSuccess(int code, String msg, RongUserInfoBean data) {
-                            tvTitleName.setText(data.getName());
-                            tvTitleName.setPadding(0, 28, 0, 0);
-                        }
-
-                        @Override
-                        public void onFail(int code, String msg, RongUserInfoBean data) {
-                        }
-                    });
-        }
-    }
-
 }

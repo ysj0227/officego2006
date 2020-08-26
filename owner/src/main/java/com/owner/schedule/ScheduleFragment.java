@@ -18,11 +18,14 @@ import com.ldf.calendar.model.CalendarDate;
 import com.ldf.calendar.view.Calendar;
 import com.ldf.calendar.view.MonthPager;
 import com.officego.commonlib.base.BaseMvpFragment;
+import com.officego.commonlib.common.GotoActivityUtils;
+import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.date.CustomDayView;
 import com.officego.commonlib.common.date.ThemeDayView;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
 import com.owner.schedule.contract.ViewingDateContract;
 import com.owner.schedule.model.ViewingDateBean;
@@ -95,6 +98,21 @@ public class ScheduleFragment extends BaseMvpFragment<ViewingDatePresenter>
         initCurrentDate();
         initCalendarView();
         getViewingDateList();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (TextUtils.isEmpty(SpUtils.getSignToken())) {
+            CommonDialog dialog = new CommonDialog.Builder(getContext())
+                    .setMessage("账号已退出，请重新登录")
+                    .setConfirmButton(com.officego.commonlib.R.string.str_login, (dialog12, which) -> {
+                        GotoActivityUtils.gotoLoginActivity(getActivity());
+                        dialog12.dismiss();
+                    }).create();
+            dialog.showWithOutTouchable(false);
+            dialog.setCancelable(false);
+        }
     }
 
     @Override

@@ -308,8 +308,8 @@ public class DesktopCornerUtil {
     private static void setBadgeNumberMiui(int badgeNumber) {
         mNotificationManager = (NotificationManager) context
                 .getSystemService(Context.NOTIFICATION_SERVICE);
-        Notification.Builder builder = new Notification.Builder(context)
-                .setContentTitle("title").setContentText("text").setSmallIcon(R.mipmap.ic_logo);
+        Notification.Builder builder = new Notification.Builder(context);
+//                .setContentTitle("OfficeGo").setContentText("").setSmallIcon(R.mipmap.ic_logo);
         Notification notification = builder.build();
         try {
             Field field = notification.getClass().getDeclaredField("extraNotification");

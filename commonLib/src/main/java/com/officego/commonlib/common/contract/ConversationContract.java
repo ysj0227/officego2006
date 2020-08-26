@@ -4,6 +4,8 @@ import com.officego.commonlib.base.BaseView;
 import com.officego.commonlib.common.model.ChatHouseBean;
 import com.officego.commonlib.common.model.FirstChatBean;
 import com.officego.commonlib.common.model.IdentitychattedMsgBean;
+import com.officego.commonlib.common.model.RongUserInfoBean;
+import com.officego.commonlib.common.model.ExchangeContactsBean;
 
 /**
  * Created by YangShiJie
@@ -15,16 +17,24 @@ public interface ConversationContract {
     interface View extends BaseView {
         void houseSuccess(ChatHouseBean data);
 
+        void exchangeContactsSuccess(boolean isCanExchange);
+
         void firstChatSuccess(FirstChatBean data);
 
         void identityChattedMsgSuccess(IdentitychattedMsgBean data);
+
+        void rongTargetInfoSuccess(RongUserInfoBean data);
     }
 
     interface Presenter {
-        void getHouseDetails(int buildingId,int houseId, String targetId);
+        void getHouseDetails(int buildingId, int houseId, String targetId);
 
-        void isFirstChat(int buildingId,int houseId,  String targetId);
+        void exchangeContactsVerification(String targetId);
+
+        void isFirstChat(int buildingId, int houseId, String targetId);
 
         void identityChattedMsg(String targetId);
+
+        void getRongTargetInfo(String targetId);
     }
 }

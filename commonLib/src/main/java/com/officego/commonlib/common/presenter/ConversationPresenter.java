@@ -5,8 +5,10 @@ import android.text.TextUtils;
 import com.officego.commonlib.base.BasePresenter;
 import com.officego.commonlib.common.contract.ConversationContract;
 import com.officego.commonlib.common.model.ChatHouseBean;
+import com.officego.commonlib.common.model.ExchangeContactsBean;
 import com.officego.commonlib.common.model.FirstChatBean;
 import com.officego.commonlib.common.model.IdentitychattedMsgBean;
+import com.officego.commonlib.common.model.RongUserInfoBean;
 import com.officego.commonlib.common.rpc.OfficegoApi;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.log.LogCat;
@@ -41,6 +43,33 @@ public class ConversationPresenter extends BasePresenter<ConversationContract.Vi
                         @Override
                         public void onFail(int code, String msg, ChatHouseBean data) {
                             LogCat.e(TAG, "getDetails onFail code=" + code + "  msg=" + msg);
+                            if (isViewAttached()) {
+                                mView.hideLoadingDialog();
+                            }
+                        }
+                    });
+        }
+    }
+
+    /**
+     * 判断是否可以交换手机和微信
+     */
+    @Override
+    public void exchangeContactsVerification(String targetId) {
+        if (!TextUtils.isEmpty(targetId)) {
+            mView.showLoadingDialog();
+            OfficegoApi.getInstance().exchangeContactsVerification(targetId,
+                    new RetrofitCallback<ExchangeContactsBean>() {
+                        @Override
+                        public void onSuccess(int code, String msg, ExchangeContactsBean data) {
+                            if (isViewAttached()) {
+                                mView.hideLoadingDialog();
+                                mView.exchangeContactsSuccess(data.isIsOk());
+                            }
+                        }
+
+                        @Override
+                        public void onFail(int code, String msg, ExchangeContactsBean data) {
                             if (isViewAttached()) {
                                 mView.hideLoadingDialog();
                             }
@@ -88,5 +117,24 @@ public class ConversationPresenter extends BasePresenter<ConversationContract.Vi
                         }
                     }
                 });
+    }
+
+    @Override
+    public void getRongTargetInfo(String targetId) {
+        if (!TextUtils.isEmpty(targetId)) {
+            OfficegoApi.getInstance().getRongUserInfo(targetId,
+                    new RetrofitCallback<RongUserInfoBean>() {
+                        @Override
+                        public void onSuccess(int code, String msg, RongUserInfoBean data) {
+                            if (isViewAttached()) {
+                                mView.rongTargetInfoSuccess(data);
+                            }
+                        }
+
+                        @Override
+                        public void onFail(int code, String msg, RongUserInfoBean data) {
+                        }
+                    });
+        }
     }
 }

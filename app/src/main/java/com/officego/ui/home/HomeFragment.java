@@ -23,7 +23,6 @@ import com.officego.commonlib.update.VersionDialog;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.ui.adapter.HouseAdapter;
 import com.officego.ui.home.contract.HomeContract;
 import com.officego.ui.home.model.BuildingBean;
