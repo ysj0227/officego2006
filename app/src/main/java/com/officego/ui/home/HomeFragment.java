@@ -524,8 +524,8 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     @Override
     public void onConditionPopUpWindow(int searchType, int btype, String constructionArea,
                                        String rentPrice, String simple, String decoration, String tags, Map<Integer, String> mapDecoration) {
-        LogCat.e("TAG", "onConditionPopUpWindow btype= " + btype + " constructionArea=" + constructionArea +
-                " rentPrice=" + rentPrice + " simple=" + simple + " decoration=" + decoration + " tags=" + tags);
+//        LogCat.e("TAG", "onConditionPopUpWindow btype= " + btype + " constructionArea=" + constructionArea +
+//                " rentPrice=" + rentPrice + " simple=" + simple + " decoration=" + decoration + " tags=" + tags);
         this.btype = btype;
         this.area = constructionArea;
         this.dayPrice = rentPrice;

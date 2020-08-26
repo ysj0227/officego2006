@@ -25,6 +25,7 @@ public class LaunchActivity extends BaseActivity
         super.onCreate(savedInstanceState);
         if (!isTaskRoot()) {
             finish();
+            return;
         }
         StatusBarUtils.setStatusBarFullTransparent(this);
         if (TextUtils.isEmpty(SpUtils.getProtocol())) {
