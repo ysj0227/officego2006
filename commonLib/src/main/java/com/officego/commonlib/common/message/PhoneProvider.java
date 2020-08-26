@@ -55,7 +55,7 @@ public class PhoneProvider extends IContainerItemProvider.MessageProvider<PhoneI
     @Override
     public void bindView(View view, int i, PhoneInfo info, UIMessage uiMessage) {
         PhoneHolder holder = (PhoneHolder) view.getTag();
-        LogCat.e("TAG", "getMessageId=" + uiMessage.getMessageId() + " uid=" + uiMessage.getUId());
+//        LogCat.e("TAG", "getMessageId=" + uiMessage.getMessageId() + " uid=" + uiMessage.getUId());
         if (uiMessage.getMessageDirection() == Message.MessageDirection.RECEIVE) {//接收显示同意拒绝
             String oppositeSidePhone = info.getNumber();//请求方手机号
             String minePhone = SpUtils.getPhoneNum();//接收方自己手机
@@ -65,13 +65,13 @@ public class PhoneProvider extends IContainerItemProvider.MessageProvider<PhoneI
             holder.tvContent.setText(info.getContent());
             holder.ivIcon.setBackgroundResource(R.mipmap.ic_exchange_phone);
             holder.btnAgree.setOnClickListener(v -> {
-                LogCat.e("TAG", "click getMessageId=" + uiMessage.getMessageId() + " uid=" + uiMessage.getUId());
+//                LogCat.e("TAG", "click getMessageId=" + uiMessage.getMessageId() + " uid=" + uiMessage.getUId());
                 BaseNotification.newInstance().postNotificationName(
-                        CommonNotifications.conversationPhoneAgree, oppositeSidePhone, minePhone);
+                        CommonNotifications.conversationPhoneAgree, oppositeSidePhone, minePhone,uiMessage.getUId());
             });
             holder.btnReject.setOnClickListener(v -> {
                 BaseNotification.newInstance().postNotificationName(
-                        CommonNotifications.conversationPhoneReject, "conversation");
+                        CommonNotifications.conversationPhoneReject, uiMessage.getUId());
             });
         } else {//消息方向，自己发送的
             holder.tvSend.setText(info.getContent());
@@ -90,7 +90,7 @@ public class PhoneProvider extends IContainerItemProvider.MessageProvider<PhoneI
 
     @Override  //点击你的自定义消息执行的操作
     public void onItemClick(View view, int i, PhoneInfo phoneInfo, UIMessage uiMessage) {
-        LogCat.e("TAG", "onItemClick getMessageId=" + uiMessage.getMessageId() + " uid=" + uiMessage.getUId());
+//        LogCat.e("TAG", "onItemClick getMessageId=" + uiMessage.getMessageId() + " uid=" + uiMessage.getUId());
     }
 
     class PhoneHolder {

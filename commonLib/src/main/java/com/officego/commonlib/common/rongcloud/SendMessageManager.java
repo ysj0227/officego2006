@@ -11,7 +11,13 @@ import com.officego.commonlib.common.message.PhoneInfo;
 import com.officego.commonlib.common.message.ViewingDateInfo;
 import com.officego.commonlib.common.message.ViewingDateStatusInfo;
 import com.officego.commonlib.common.message.WeChatInfo;
+import com.officego.commonlib.common.model.ChatHouseBean;
+import com.officego.commonlib.common.sensors.SensorsTrack;
+import com.officego.commonlib.utils.CommonHelper;
+import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.commonlib.utils.log.LogCat;
+
+import java.util.Date;
 
 import io.rong.imkit.RongIM;
 import io.rong.imlib.IRongCallback;
@@ -43,27 +49,64 @@ public class SendMessageManager {
     /**
      * 发送自定义消息 PhoneInfo
      */
-    public void sendPhoneMessage(String targetId, String content, String number, String extraMessage) {
+    public void sendPhoneMessage(ChatHouseBean mData, String targetId, String content, String number, String extraMessage) {
         PhoneInfo info = new PhoneInfo();
         info.setContent(content);
         info.setNumber(number);
         info.setExtraMessage(extraMessage);
         //targetId是接收消息方的id   Conversation.ConversationType 是消息会话的类型在这里表示的是私聊
         Message message = Message.obtain(targetId, Conversation.ConversationType.PRIVATE, info);
-        RongIM.getInstance().sendMessage(message, null, null, callback);
+        RongIM.getInstance().sendMessage(message, content, null, new IRongCallback.ISendMessageCallback() {
+            @Override //表示消息添加到本地数据库
+            public void onAttached(Message message) {
+
+            }
+
+            @Override//消息发送成功
+            public void onSuccess(Message message) {
+                //神策 发送交换手机
+                String createTime = DateTimeUtils.formatDate("yyyy-MM-dd HH:mm:ss", new Date());
+                int houseId = (mData == null || mData.getBuilding().getHouseId() == null) ? 0 :
+                        Integer.parseInt(CommonHelper.bigDecimal(mData.getBuilding().getHouseId(), true));
+                SensorsTrack.clickPhoneExchangeButton(mData == null ? 0 : mData.getBuilding().getBuildingId(),
+                        houseId, message.getUId(), createTime);
+            }
+
+            @Override //消息发送失败
+            public void onError(Message message, RongIMClient.ErrorCode errorCode) {
+            }
+        });
     }
 
     /**
      * 发送自定义消息 WeChatInfo
      */
-    public void sendWeChatMessage(String targetId, String content, String number, String extraMessage) {
+    public void sendWeChatMessage(ChatHouseBean mData, String targetId, String content, String number, String extraMessage) {
         WeChatInfo info = new WeChatInfo();
         info.setContent(content);
         info.setNumber(number);
         info.setExtraMessage(extraMessage);
         //targetId是接收消息方的id   Conversation.ConversationType 是消息会话的类型在这里表示的是私聊
         Message message = Message.obtain(targetId, Conversation.ConversationType.PRIVATE, info);
-        RongIM.getInstance().sendMessage(message, null, null, callback);
+        RongIM.getInstance().sendMessage(message, content, null, new IRongCallback.ISendMessageCallback() {
+            @Override //表示消息添加到本地数据库
+            public void onAttached(Message message) {
+            }
+
+            @Override//消息发送成功
+            public void onSuccess(Message message) {
+                //神策
+                String createTime = DateTimeUtils.formatDate("yyyy-MM-dd HH:mm:ss", new Date());
+                int houseId = (mData == null || mData.getBuilding().getHouseId() == null) ? 0 :
+                        Integer.parseInt(CommonHelper.bigDecimal(mData.getBuilding().getHouseId(), true));
+                SensorsTrack.clickWechatExchangeButton(mData == null ? 0 : mData.getBuilding().getBuildingId(),
+                        houseId, message.getUId(), createTime);
+            }
+
+            @Override //消息发送失败
+            public void onError(Message message, RongIMClient.ErrorCode errorCode) {
+            }
+        });
     }
 
     /**
@@ -79,7 +122,7 @@ public class SendMessageManager {
         info.setAgree(isAgree);
         //targetId是接收消息方的id   Conversation.ConversationType 是消息会话的类型在这里表示的是私聊
         Message message = Message.obtain(targetId, Conversation.ConversationType.PRIVATE, info);
-        RongIM.getInstance().sendMessage(message, null, null, callback);
+        RongIM.getInstance().sendMessage(message, content, null, callback);
     }
 
     /**
@@ -95,7 +138,7 @@ public class SendMessageManager {
         info.setAgree(isAgree);
         //targetId是接收消息方的id   Conversation.ConversationType 是消息会话的类型在这里表示的是私聊
         Message message = Message.obtain(targetId, Conversation.ConversationType.PRIVATE, info);
-        RongIM.getInstance().sendMessage(message, null, null, callback);
+        RongIM.getInstance().sendMessage(message, content, null, callback);
     }
 
     /**

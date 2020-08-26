@@ -54,7 +54,6 @@ public class InputContactsDialog {
             if (TextUtils.isEmpty(weChat)) {
                 ToastUtils.toastForShort(context, R.string.str_input_wechat);
             } else {
-                //todo 设置微信接口
                 setWechat(weChat);
                 dialog.dismiss();
                 BaseNotification.newInstance().postNotificationName(CommonNotifications.conversationBindWeChat, weChat);

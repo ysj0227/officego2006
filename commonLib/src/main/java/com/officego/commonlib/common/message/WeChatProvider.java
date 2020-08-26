@@ -73,13 +73,13 @@ public class WeChatProvider extends IContainerItemProvider.MessageProvider<WeCha
             //此时需要判断接收人微信是否已经绑定
             holder.btnAgree.setOnClickListener(v -> {
                 if (TextUtils.isEmpty(mineWx)) {
-                    weChatInputDialog(context, otherWx);
+                    weChatInputDialog(context, otherWx, uiMessage.getUId());
                 } else {
-                    BaseNotification.newInstance().postNotificationName(CommonNotifications.conversationWeChatAgree, otherWx, mineWx);
+                    sendConversationWeChatAgree(otherWx, mineWx, uiMessage.getUId());
                 }
             });
             holder.btnReject.setOnClickListener(v -> {
-                BaseNotification.newInstance().postNotificationName(CommonNotifications.conversationWeChatReject, "conversation");
+                BaseNotification.newInstance().postNotificationName(CommonNotifications.conversationWeChatReject, uiMessage.getUId());
             });
         } else {//消息方向，自己发送的
             holder.tvSend.setText(info.getContent());
@@ -90,6 +90,10 @@ public class WeChatProvider extends IContainerItemProvider.MessageProvider<WeCha
             holder.rlContent.setVisibility(View.GONE);
         }
     }
+    //同意交换微信
+    private void sendConversationWeChatAgree(String otherWx, String mineWx, String messageUid) {
+        BaseNotification.newInstance().postNotificationName(CommonNotifications.conversationWeChatAgree, otherWx, mineWx, messageUid);
+    }
 
     private void setClickableFalse(WeChatHolder holder) {
         holder.btnReject.setEnabled(false);
@@ -98,7 +102,7 @@ public class WeChatProvider extends IContainerItemProvider.MessageProvider<WeCha
         holder.btnAgree.setClickable(false);
     }
 
-    public void weChatInputDialog(Context context, String otherWx) {
+    public void weChatInputDialog(Context context, String otherWx, String messageUid) {
         Dialog dialog = new Dialog(context, R.style.BottomDialog);
         View viewLayout = LayoutInflater.from(context).inflate(R.layout.conversation_dialog_cantacts_input, null);
         //将布局设置给Dialog
@@ -123,8 +127,7 @@ public class WeChatProvider extends IContainerItemProvider.MessageProvider<WeCha
                 ToastUtils.toastForShort(context, R.string.str_input_wechat);
             } else {
                 dialog.dismiss();
-                //发送微信信息
-                BaseNotification.newInstance().postNotificationName(CommonNotifications.conversationWeChatAgree, otherWx, weChat);
+                sendConversationWeChatAgree(otherWx, weChat, messageUid); //发送微信信息
             }
         });
         viewLayout.findViewById(R.id.btn_cancel).setOnClickListener(v ->

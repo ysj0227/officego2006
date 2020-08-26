@@ -534,7 +534,9 @@ public class SensorsTrack {
             }
             properties.put("rid", TextUtils.equals(Constants.TYPE_TENANT, SpUtils.getRole()) ? "租户" : "房东");
             properties.put("statusPhone", "申请中");
-            properties.put("timestamp", timestamp);
+            if (!TextUtils.isEmpty(timestamp)) {
+                properties.put("timestamp", timestamp);
+            }
             properties.put("createTime", createTime);
             SensorsDataAPI.sharedInstance().track("click_phone_exchange_button", properties);
         } catch (JSONException e) {
@@ -603,7 +605,9 @@ public class SensorsTrack {
             }
             properties.put("rid", TextUtils.equals(Constants.TYPE_TENANT, SpUtils.getRole()) ? "租户" : "房东");
             properties.put("statusWechat", "申请中");
-            properties.put("timestamp", timestamp);
+            if (!TextUtils.isEmpty(timestamp)) {
+                properties.put("timestamp", timestamp);
+            }
             properties.put("createTime", createTime);
             SensorsDataAPI.sharedInstance().track("click_wechat_exchange_button", properties);
         } catch (JSONException e) {
