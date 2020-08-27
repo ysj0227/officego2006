@@ -32,10 +32,6 @@ android {
 
     signingConfigs {
         sign {
-//            storeFile file("../officego.jks")
-//            storePassword "12345678"
-//            keyAlias "biiid"
-//            keyPassword "12345678"
             storeFile file("../androidrelease.jks")
             storePassword "123456"
             keyAlias "release_key"

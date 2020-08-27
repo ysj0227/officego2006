@@ -246,7 +246,7 @@
             android:name="com.donkingliang.imageselector.ClipImageActivity"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
 
-        <!--        融云推送-->
+        <!--     自定义   融云推送-->
         <receiver
             android:name=".commonlib.common.rongcloud.push.OfficeGoPushMessageReceiver"
             android:exported="true">
@@ -366,23 +366,23 @@
         </receiver>
         <!-- 华为 配置结束 < -->
 
-        <!--        &lt;!&ndash; oppo 配置开始 < &ndash;&gt;-->
-        <!--        <service-->
-        <!--            android:name="com.heytap.mcssdk.PushService"-->
-        <!--            android:permission="com.coloros.mcs.permission.SEND_MCS_MESSAGE">-->
-        <!--            <intent-filter>-->
-        <!--                <action android:name="com.coloros.mcs.action.RECEIVE_MCS_MESSAGE"/>-->
-        <!--            </intent-filter>-->
-        <!--        </service>-->
+        <!-- oppo 配置开始 < -->
+<!--        <service-->
+<!--            android:name="com.heytap.mcssdk.PushService"-->
+<!--            android:permission="com.coloros.mcs.permission.SEND_MCS_MESSAGE">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="com.coloros.mcs.action.RECEIVE_MCS_MESSAGE"/>-->
+<!--            </intent-filter>-->
+<!--        </service>-->
 
-        <!--        <service-->
-        <!--            android:name="com.heytap.mcssdk.AppPushService"-->
-        <!--            android:permission="com.heytap.mcs.permission.SEND_MCS_MESSAGE">-->
-        <!--            <intent-filter>-->
-        <!--                <action android:name="com.heytap.mcs.action.RECEIVE_MCS_MESSAGE"/>-->
-        <!--            </intent-filter>-->
-        <!--        </service>-->
-        <!--        &lt;!&ndash; oppo 配置结束 < &ndash;&gt;-->
+<!--        <service-->
+<!--            android:name="com.heytap.mcssdk.AppPushService"-->
+<!--            android:permission="com.heytap.mcs.permission.SEND_MCS_MESSAGE">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="com.heytap.mcs.action.RECEIVE_MCS_MESSAGE"/>-->
+<!--            </intent-filter>-->
+<!--        </service>-->
+        <!-- oppo 配置结束 < -->
 
     </application>
 

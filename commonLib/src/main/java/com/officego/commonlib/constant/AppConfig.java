@@ -33,6 +33,9 @@ public class AppConfig extends BaseConfig {
     //小米推送
     public static final String MI_APP_ID = "2882303761518466472";
     public static final String MI_APP_KEY = "5901846688472";
+    //OPPO推送
+    public static final String OPPO_APP_KEY = "114e9b66ee5d4bc394d5267f30c00034";
+    public static final String OPPO_APP_SECRET = "acb2bbe32bf04af38c961229fb4b4b13";
 
     //神策数据
     public static  String SA_SERVER_URL = "";

@@ -122,8 +122,9 @@ dependencies {
     //华为push
     api 'com.huawei.android.hms:base:2.6.1.301'
     api 'com.huawei.android.hms:push:2.6.1.301'
-    //oppo
-
+    //OPPO push
+//    api 'com.heytap.mcssdk:mcssdk:2.0.2'
+//    api 'com.heytap.mcssdk:mcssdk:2.1.0'
     // 神策Sensors Analytics SDK 依赖
     api 'com.sensorsdata.analytics.android:SensorsAnalyticsSDK:4.2.4'
     //zxing

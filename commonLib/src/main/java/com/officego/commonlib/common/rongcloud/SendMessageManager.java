@@ -156,7 +156,7 @@ public class SendMessageManager {
         info.setExtraMessage(extraMessage);
         //targetId是接收消息方的id   Conversation.ConversationType 是消息会话的类型在这里表示的是私聊
         Message message = Message.obtain(targetId, Conversation.ConversationType.PRIVATE, info);
-        RongIM.getInstance().sendMessage(message, null, null, callback);
+        RongIM.getInstance().sendMessage(message, content, null, callback);
     }
 
     /**
@@ -169,7 +169,7 @@ public class SendMessageManager {
         info.setExtraMessage(extraMessage);
         //targetId是接收消息方的id   Conversation.ConversationType 是消息会话的类型在这里表示的是私聊
         Message message = Message.obtain(targetId, Conversation.ConversationType.PRIVATE, info);
-        RongIM.getInstance().sendMessage(message, null, null, callback);
+        RongIM.getInstance().sendMessage(message, content, null, callback);
     }
 
 
@@ -184,7 +184,7 @@ public class SendMessageManager {
         info.setExtraMessage(extraMessage);
         //targetId是接收消息方的id   Conversation.ConversationType 是消息会话的类型在这里表示的是私聊
         Message message = Message.obtain(targetId, Conversation.ConversationType.PRIVATE, info);
-        RongIM.getInstance().sendMessage(message, null, null, callback);
+        RongIM.getInstance().sendMessage(message, content, null, callback);
     }
 
     /**
@@ -197,7 +197,7 @@ public class SendMessageManager {
         info.setExtraMessage(targetId);
         //targetId是接收消息方的id   Conversation.ConversationType 是消息会话的类型在这里表示的是私聊
         Message message = Message.obtain(targetId, Conversation.ConversationType.PRIVATE, info);
-        RongIM.getInstance().sendMessage(message, null, null, callback);
+        RongIM.getInstance().sendMessage(message, content, null, callback);
     }
 
     /**

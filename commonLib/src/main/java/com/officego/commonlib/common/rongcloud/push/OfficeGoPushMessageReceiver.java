@@ -23,6 +23,10 @@ public class OfficeGoPushMessageReceiver extends PushMessageReceiver {
     private static final String TAG = "OfficeGoPushMessageReceiver";
     private boolean isGotoConversion;
 
+    public void onThirdPartyPushState(PushType pushType, String action, long resultCode) {
+        LogCat.e(TAG, "onThirdPartyPushState pushType: " + pushType.getName() + " action: " + action + " resultCode: " + resultCode);
+    }
+
     /**
      * 返回 false, 会弹出融云 SDK 默认通知; 返回 true, 融云 SDK 不会弹通知, 通知需要由您自定义。
      */

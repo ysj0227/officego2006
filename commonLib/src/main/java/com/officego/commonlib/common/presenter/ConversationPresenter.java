@@ -64,7 +64,9 @@ public class ConversationPresenter extends BasePresenter<ConversationContract.Vi
                         public void onSuccess(int code, String msg, ExchangeContactsBean data) {
                             if (isViewAttached()) {
                                 mView.hideLoadingDialog();
-                                mView.exchangeContactsSuccess(data.isIsOk());
+                                if (data!=null){
+                                    mView.exchangeContactsSuccess(data.isIsOk());
+                                }
                             }
                         }
 
