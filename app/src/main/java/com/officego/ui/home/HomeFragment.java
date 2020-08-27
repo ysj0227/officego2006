@@ -84,6 +84,14 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     @ViewById(R.id.rl_home_title)
     RelativeLayout rlHomeTitle;
     //搜索 区域，写字楼，排序，筛选
+    @ViewById(R.id.rl_search_area)
+    RelativeLayout rlSearchArea;
+    @ViewById(R.id.rl_search_office)
+    RelativeLayout rlSearchOffice;
+    @ViewById(R.id.rl_search_order)
+    RelativeLayout rlSearchOrder;
+    @ViewById(R.id.rl_search_condition)
+    RelativeLayout rlSearchCondition;
     @ViewById(R.id.tv_search_area)
     TextView tvSearchArea;
     @ViewById(R.id.tv_search_office)
@@ -92,7 +100,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     TextView tvSearchOrder;
     @ViewById(R.id.tv_search_condition)
     TextView tvSearchCondition;
-    //选项的条件
+    //选项标签的条件
     @ViewById(R.id.rl_label_construction)
     RelativeLayout rlLabelConstruction;
     @ViewById(R.id.rl_construction)
@@ -311,22 +319,22 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         SearchRecommendActivity_.intent(mActivity).start();
     }
 
-    @Click(R.id.tv_search_area)
+    @Click(R.id.rl_search_area)
     void searchAreaClick() {
         popupWindowSearch(tvSearchArea, 0);
     }
 
-    @Click(R.id.tv_search_office)
+    @Click(R.id.rl_search_office)
     void searchOfficeClick() {
         popupWindowSearch(tvSearchOffice, 1);
     }
 
-    @Click(R.id.tv_search_order)
+    @Click(R.id.rl_search_order)
     void searchOrderClick() {
         popupWindowSearch(tvSearchOrder, 2);
     }
 
-    @Click(R.id.tv_search_condition)
+    @Click(R.id.rl_search_condition)
     void searchConditionClick() {
         popupWindowSearch(tvSearchCondition, 3);
     }
@@ -376,15 +384,15 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
             //title滑动透明度
             rlHomeTitle.setAlpha(abs * alphaPercent);
             if (abs * alphaPercent < 0.9) {
-                tvSearchArea.setEnabled(false);
-                tvSearchOffice.setEnabled(false);
-                tvSearchOrder.setEnabled(false);
-                tvSearchCondition.setEnabled(false);
+                rlSearchArea.setEnabled(false);
+                rlSearchOffice.setEnabled(false);
+                rlSearchOrder.setEnabled(false);
+                rlSearchCondition.setEnabled(false);
             } else {
-                tvSearchArea.setEnabled(true);
-                tvSearchOffice.setEnabled(true);
-                tvSearchOrder.setEnabled(true);
-                tvSearchCondition.setEnabled(true);
+                rlSearchArea.setEnabled(true);
+                rlSearchOffice.setEnabled(true);
+                rlSearchOrder.setEnabled(true);
+                rlSearchCondition.setEnabled(true);
             }
             //标签筛选
             labelConstruction(abs);
@@ -629,6 +637,9 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
      */
     @SuppressLint("SetTextI18n")
     private void labelsConditionView() {
+        //设置标签栏不可点击
+        rlLabelConstruction.setOnClickListener(null);
+        rlLabelConstruction1.setOnClickListener(null);
         //交通
         if (TextUtils.isEmpty(line) && TextUtils.isEmpty(district)) {
             rlConstruction.setVisibility(View.GONE);
@@ -636,7 +647,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         } else {
             rlConstruction.setVisibility(View.VISIBLE);
             rlConstruction1.setVisibility(View.VISIBLE);
-            if (checkStates == null) {
+            if (checkStates == null || checkStates.size() == 0) {
                 tvConstruction.setText(!TextUtils.isEmpty(line) ? "地铁" : "商圈 ");
                 tvConstruction1.setText(!TextUtils.isEmpty(line) ? "地铁" : "商圈");
             } else {

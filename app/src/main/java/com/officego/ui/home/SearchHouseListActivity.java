@@ -191,22 +191,22 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
         SearchRecommendActivity_.intent(context).start();
     }
 
-    @Click(R.id.tv_search_area)
+    @Click(R.id.rl_search_area)
     void searchAreaClick() {
         popupWindowSearch(tvSearchArea, 0);
     }
 
-    @Click(R.id.tv_search_office)
+    @Click(R.id.rl_search_office)
     void searchOfficeClick() {
         popupWindowSearch(tvSearchOffice, 1);
     }
 
-    @Click(R.id.tv_search_order)
+    @Click(R.id.rl_search_order)
     void searchOrderClick() {
         popupWindowSearch(tvSearchOrder, 2);
     }
 
-    @Click(R.id.tv_search_condition)
+    @Click(R.id.rl_search_condition)
     void searchConditionClick() {
         popupWindowSearch(tvSearchCondition, 3);
     }
@@ -270,7 +270,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
     @Override
     public void onSurePopUpWindow(boolean isLine, HashSet<Integer> hashSet,
                                   SparseBooleanArray checkStates, String data1, String data2) {
-        LogCat.e("TAG", "onSurePopUpWindow  isLine=" + isLine + " data1=" + data1 + " data2=" + data2);
+//        LogCat.e("TAG", "onSurePopUpWindow  isLine=" + isLine + " data1=" + data1 + " data2=" + data2);
         if (TextUtils.isEmpty(data1) && TextUtils.isEmpty(data2)) {
             tvSearchArea.setText("区域");
             tvSearchArea.setTextColor(ContextCompat.getColor(context, R.color.text_66));

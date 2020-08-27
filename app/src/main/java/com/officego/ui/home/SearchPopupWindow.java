@@ -70,8 +70,9 @@ public class SearchPopupWindow extends PopupWindow implements
     private String simple = "", simple2 = "";//写字楼，共享办公
     private String decoration = "";//装修类型
     private String houseTags = "";//装修特色
-    private String sort = "0";//排序
+    private String sort;//排序
 
+    //layout 类型
     private final int SEARCH_TYPE_AREA = 0;
     private final int SEARCH_TYPE_OFFICE = 1;
     private final int SEARCH_TYPE_ORDER = 2;
@@ -152,7 +153,7 @@ public class SearchPopupWindow extends PopupWindow implements
         this.mSetTitleView = setTextView;
         this.mSearchType = searchType;
         this.btype = btype;
-        if (TextUtils.isEmpty(district) && TextUtils.isEmpty(business)) {
+        if (TextUtils.isEmpty(district)) {
             this.mHashSetLine = hashSet;
             this.mCheckStatesLine = checkStates;
             if (this.mHashSetBusiness != null) {
@@ -233,7 +234,6 @@ public class SearchPopupWindow extends PopupWindow implements
                 event.getAction() == MotionEvent.ACTION_DOWN) {
             int topY = searchHeight + titleBarHeight + statusBarHeight;//状态栏到搜索title的高度
             int bottomY = (int) (mContext.getResources().getDimension(R.dimen.dp_250));
-            // LogCat.e("TAG", "topY:" + topY + "  event.getY: " + event.getY() + "  getRawY:" + event.getRawY());
             if (mSearchType == SEARCH_TYPE_OFFICE || mSearchType == SEARCH_TYPE_ORDER) {
                 if (this.isShowing() && event.getRawY() < topY || event.getRawY() > topY + bottomY) {
                     dismiss();
@@ -292,10 +292,11 @@ public class SearchPopupWindow extends PopupWindow implements
     //区域
     private boolean isLine;//是否地铁
     private MeterAdapter meterAdapter;
-
     private StationAdapter stationAdapter;
+    private BusinessCircleAdapter businessCircleAdapter;
     private BusinessCircleDetailsAdapter businessCircleDetailsAdapter;
 
+    @SuppressLint("DefaultLocale")
     private void handleArea(View viewLayout) {
         RecyclerView recyclerViewCenter = viewLayout.findViewById(R.id.rv_center);
         recyclerViewCenter.setLayoutManager(new LinearLayoutManager(mContext));
@@ -311,35 +312,35 @@ public class SearchPopupWindow extends PopupWindow implements
         getSearchSubwayList(tvMeterText, tvBusinessCircleText, recyclerViewCenter, tvMeterNum, recyclerViewRight);
         //初始化显示商圈
         getSearchDistrictList(tvBusinessCircleText, tvMeterText, recyclerViewCenter, tvBusinessCircleNum, recyclerViewRight);
+
         if (mHashSetLine != null && mHashSetLine.size() > 0) {
             tvMeterNum.setVisibility(View.VISIBLE);
             tvMeterNum.setText(String.format("%d", mHashSetLine.size()));
+            tvMeterText.setTextColor(ContextCompat.getColor(mContext, R.color.common_blue_main));
+        } else {
+            tvBusinessCircleText.setTextColor(ContextCompat.getColor(mContext, R.color.text_33));
         }
         if (mHashSetBusiness != null && mHashSetBusiness.size() > 0) {
             tvBusinessCircleNum.setVisibility(View.VISIBLE);
             tvBusinessCircleNum.setText(String.format("%d", mHashSetBusiness.size()));
+            tvBusinessCircleText.setTextColor(ContextCompat.getColor(mContext, R.color.common_blue_main));
+        } else {
+            tvMeterText.setTextColor(ContextCompat.getColor(mContext, R.color.text_33));
         }
         //点击监听
         View.OnClickListener clickListener = v -> {
             switch (v.getId()) {
                 case R.id.tv_shopping://商圈
-                    //todo
                     clearSelectedItem();
                     isLine = false;
-                    tvBusinessCircleText.setTextColor(ContextCompat.getColor(mContext, R.color.common_blue_main));
-                    tvMeterText.setTextColor(ContextCompat.getColor(mContext, R.color.text_33));
-                    recyclerViewCenter.setAdapter(new BusinessCircleAdapter(mContext, tvBusinessCircleNum, businessCircleList, recyclerViewRight));
+                    showBusinessAdapter(tvBusinessCircleText, tvMeterText, recyclerViewCenter, tvBusinessCircleNum, recyclerViewRight);
                     tvMeterNum.setText("");
                     tvMeterNum.setVisibility(View.GONE);
                     break;
                 case R.id.tv_meter://地铁
-                    //todo
                     clearSelectedItem();
                     isLine = true;
-                    tvMeterText.setTextColor(ContextCompat.getColor(mContext, R.color.common_blue_main));
-                    tvBusinessCircleText.setTextColor(ContextCompat.getColor(mContext, R.color.text_33));
-                    meterAdapter = new MeterAdapter(mContext, tvMeterNum, meterList, recyclerViewRight);
-                    recyclerViewCenter.setAdapter(meterAdapter);
+                    showMeterAdapter(tvMeterText, tvBusinessCircleText, recyclerViewCenter, tvMeterNum, recyclerViewRight);
                     tvBusinessCircleNum.setText("");
                     tvBusinessCircleNum.setVisibility(View.GONE);
                     break;
@@ -348,17 +349,12 @@ public class SearchPopupWindow extends PopupWindow implements
                         line = "";
                         nearbySubway = "";
                         clearMeterHashSet(tvMeterNum);
-                        tvMeterText.setTextColor(ContextCompat.getColor(mContext, R.color.common_blue_main));
-                        tvBusinessCircleText.setTextColor(ContextCompat.getColor(mContext, R.color.text_33));
-                        meterAdapter = new MeterAdapter(mContext, tvMeterNum, meterList, recyclerViewRight);
-                        recyclerViewCenter.setAdapter(meterAdapter);
+                        showMeterAdapter(tvMeterText, tvBusinessCircleText, recyclerViewCenter, tvMeterNum, recyclerViewRight);
                     } else {
                         district = "";
                         business = "";
                         clearBusinessHashSet(tvBusinessCircleNum);
-                        tvBusinessCircleText.setTextColor(ContextCompat.getColor(mContext, R.color.common_blue_main));
-                        tvMeterText.setTextColor(ContextCompat.getColor(mContext, R.color.text_33));
-                        recyclerViewCenter.setAdapter(new BusinessCircleAdapter(mContext, tvBusinessCircleNum, businessCircleList, recyclerViewRight));
+                        showBusinessAdapter(tvBusinessCircleText, tvMeterText, recyclerViewCenter, tvBusinessCircleNum, recyclerViewRight);
                     }
                     clearData();
                     break;
@@ -372,6 +368,31 @@ public class SearchPopupWindow extends PopupWindow implements
         tvMeterText.setOnClickListener(clickListener);
         btnClear.setOnClickListener(clickListener);
         btnSure.setOnClickListener(clickListener);
+    }
+
+    /**
+     * 地铁adapter
+     */
+    private void showMeterAdapter(TextView tvMeterText, TextView tvBusinessCircleText,
+                                  RecyclerView recyclerViewCenter, TextView tvMeterNum,
+                                  RecyclerView recyclerViewRight) {
+        tvMeterText.setTextColor(ContextCompat.getColor(mContext, R.color.common_blue_main));
+        tvBusinessCircleText.setTextColor(ContextCompat.getColor(mContext, R.color.text_33));
+        meterAdapter = new MeterAdapter(mContext, tvMeterNum, meterList, recyclerViewRight);
+        recyclerViewCenter.setAdapter(meterAdapter);
+    }
+
+    /**
+     * 商圈adapter
+     */
+    private void showBusinessAdapter(TextView tvBusinessCircleText, TextView tvMeterText,
+                                     RecyclerView recyclerViewCenter,
+                                     TextView tvBusinessCircleNum,
+                                     RecyclerView recyclerViewRight) {
+        tvBusinessCircleText.setTextColor(ContextCompat.getColor(mContext, R.color.common_blue_main));
+        tvMeterText.setTextColor(ContextCompat.getColor(mContext, R.color.text_33));
+        businessCircleAdapter = new BusinessCircleAdapter(mContext, tvBusinessCircleNum, businessCircleList, recyclerViewRight);
+        recyclerViewCenter.setAdapter(businessCircleAdapter);
     }
 
     /**
@@ -412,13 +433,10 @@ public class SearchPopupWindow extends PopupWindow implements
             @Override
             public void onSuccess(int code, String msg, List<MeterBean.DataBean> data) {
                 meterList.clear();
-                meterList = data;
-                if (!TextUtils.isEmpty(nearbySubway)) {
+                meterList.addAll(data);
+                if (!TextUtils.isEmpty(line)) {
                     isLine = true;
-                    tvMeterText.setTextColor(ContextCompat.getColor(mContext, R.color.common_blue_main));
-                    tvBusinessCircleText.setTextColor(ContextCompat.getColor(mContext, R.color.text_33));
-                    meterAdapter = new MeterAdapter(mContext, tvMeterNum, meterList, recyclerViewRight);
-                    recyclerViewCenter.setAdapter(meterAdapter);
+                    showMeterAdapter(tvMeterText, tvBusinessCircleText, recyclerViewCenter, tvMeterNum, recyclerViewRight);
                 }
             }
 
@@ -429,7 +447,6 @@ public class SearchPopupWindow extends PopupWindow implements
     }
 
     //商圈
-    private BusinessCircleAdapter businessCircleAdapter;
 
     private void getSearchDistrictList(TextView tvBusinessCircleText, TextView tvMeterText,
                                        RecyclerView recyclerViewCenter,
@@ -439,13 +456,10 @@ public class SearchPopupWindow extends PopupWindow implements
             @Override
             public void onSuccess(int code, String msg, List<BusinessCircleBean.DataBean> data) {
                 businessCircleList.clear();
-                businessCircleList = data;
-                //初始化默认选中商圈
-                tvBusinessCircleText.setTextColor(ContextCompat.getColor(mContext, R.color.common_blue_main));
-                tvMeterText.setTextColor(ContextCompat.getColor(mContext, R.color.text_33));
-                businessCircleAdapter = new BusinessCircleAdapter(mContext, tvBusinessCircleNum,
-                        businessCircleList, recyclerViewRight);
-                recyclerViewCenter.setAdapter(businessCircleAdapter);
+                businessCircleList.addAll(data);
+                if (TextUtils.isEmpty(line)) { //初始化默认选中商圈
+                    showBusinessAdapter(tvBusinessCircleText, tvMeterText, recyclerViewCenter, tvBusinessCircleNum, recyclerViewRight);
+                }
             }
 
             @Override
@@ -765,7 +779,6 @@ public class SearchPopupWindow extends PopupWindow implements
         private RecyclerView recyclerViewRight;
         private TextView tvNum;
         private boolean onBind;
-        private int checkedPosition = 0;//默认选中第一个
 
         public MeterAdapter(Context context, TextView tvNum, List<MeterBean.DataBean> list, RecyclerView recyclerViewRight) {
             super(context, R.layout.item_search_meter, list);
@@ -793,7 +806,6 @@ public class SearchPopupWindow extends PopupWindow implements
             }
             holder.itemView.setOnClickListener(v -> {
                 mapMeter.clear();
-                checkedPosition = holder.getAdapterPosition();
                 mapMeter.put(holder.getAdapterPosition(), true);
                 if (!onBind) {
                     notifyDataSetChanged();

@@ -306,20 +306,20 @@ public class DesktopCornerUtil {
     private static NotificationManager mNotificationManager;
 
     private static void setBadgeNumberMiui(int badgeNumber) {
-        mNotificationManager = (NotificationManager) context
-                .getSystemService(Context.NOTIFICATION_SERVICE);
-        Notification.Builder builder = new Notification.Builder(context)
-                .setContentTitle("OfficeGo").setContentText("").setSmallIcon(R.mipmap.ic_logo);
-        Notification notification = builder.build();
-        try {
-            Field field = notification.getClass().getDeclaredField("extraNotification");
-            Object extraNotification = field.get(notification);
-            Method method = extraNotification.getClass().getDeclaredMethod("setMessageCount", int.class);
-            method.invoke(extraNotification, badgeNumber);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        mNotificationManager.notify(0, notification);
+//        mNotificationManager = (NotificationManager) context
+//                .getSystemService(Context.NOTIFICATION_SERVICE);
+//        Notification.Builder builder = new Notification.Builder(context)
+//                .setContentTitle("OfficeGo").setContentText("").setSmallIcon(R.mipmap.ic_logo);
+//        Notification notification = builder.build();
+//        try {
+//            Field field = notification.getClass().getDeclaredField("extraNotification");
+//            Object extraNotification = field.get(notification);
+//            Method method = extraNotification.getClass().getDeclaredMethod("setMessageCount", int.class);
+//            method.invoke(extraNotification, badgeNumber);
+//        } catch (Exception e) {
+//            e.printStackTrace();
+//        }
+//        mNotificationManager.notify(0, notification);
     }
 
     /**
