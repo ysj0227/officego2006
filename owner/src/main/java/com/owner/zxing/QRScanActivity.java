@@ -3,6 +3,7 @@ package com.owner.zxing;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Vibrator;
+import android.text.TextUtils;
 import android.widget.LinearLayout;
 
 import androidx.annotation.Nullable;
@@ -17,10 +18,11 @@ import cn.bingoogolapple.qrcode.zxing.ZXingView;
 
 public class QRScanActivity extends BaseActivity implements QRCodeView.Delegate {
     private static final int REQUEST_CODE = 1000;
-    ZXingView mZXingView;
-    TitleBarView titleBar;
+    private static final String RULE_QR_CODE = "officego_";
+    private ZXingView mZXingView;
+    private TitleBarView titleBar;
     private boolean isOpenFlashlight;
-    private LinearLayout.LayoutParams layoutParams;
+
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -34,7 +36,7 @@ public class QRScanActivity extends BaseActivity implements QRCodeView.Delegate 
     }
 
     private void initLightParams() {
-        layoutParams = (LinearLayout.LayoutParams) titleBar.getRightImg().getLayoutParams();
+        LinearLayout.LayoutParams layoutParams = (LinearLayout.LayoutParams) titleBar.getRightImg().getLayoutParams();
         layoutParams.height = getResources().getDimensionPixelSize(R.dimen.dp_25);
         layoutParams.width = getResources().getDimensionPixelSize(R.dimen.dp_25);
         titleBar.getRightImg().setLayoutParams(layoutParams);
@@ -91,11 +93,11 @@ public class QRScanActivity extends BaseActivity implements QRCodeView.Delegate 
     @Override
     public void onScanQRCodeSuccess(String result) {
         vibrate();
-        if (!result.contains("officego")) {
+        if (!result.contains(RULE_QR_CODE) || result.length() <= RULE_QR_CODE.length()) {
             scanQRError();
         } else {
             ScanCompleteActivity_.intent(context)
-                    .scanContent(result)
+                    .scanContent(result.replace(RULE_QR_CODE, ""))
                     .startForResult(REQUEST_CODE);
         }
     }

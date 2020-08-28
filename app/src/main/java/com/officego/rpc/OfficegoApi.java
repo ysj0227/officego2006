@@ -673,6 +673,7 @@ public class OfficegoApi {
      * token 	是 	是 	token
      */
     public void getTargetId(String buildingId, RetrofitCallback<ChatsBean> callback) {
+//        LogCat.e(TAG,"chatApp  token="+SpUtils.getSignToken()+" buildingId="+buildingId);
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("buildingId", requestBody(buildingId));

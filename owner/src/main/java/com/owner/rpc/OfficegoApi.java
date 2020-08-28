@@ -662,7 +662,7 @@ public class OfficegoApi {
     /**
      * app扫码web登录
      */
-    public void scanWebLogin(String content, RetrofitCallback<ScanBean> callback) {
+    public void scanWebLogin(String content, RetrofitCallback<Object> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("uid", requestBody(SpUtils.getUserId()));
         map.put("token", requestBody(content));

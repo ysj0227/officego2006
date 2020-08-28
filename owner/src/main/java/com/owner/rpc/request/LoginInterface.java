@@ -45,7 +45,7 @@ public interface LoginInterface {
      */
     @Multipart
     @POST(path + "login/bindTokenUser")
-    Call<BaseResponse<ScanBean>> scanLogin(@PartMap Map<String, RequestBody> params);
+    Call<BaseResponse<Object>> scanLogin(@PartMap Map<String, RequestBody> params);
 
 
 }

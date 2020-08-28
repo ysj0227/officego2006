@@ -98,7 +98,7 @@ public class ViewingDateProvider extends IContainerItemProvider.MessageProvider<
 
     @Override //这里意思是你的这个自定义消息显示的内容
     public Spannable getContentSummary(ViewingDateInfo info) {
-        return new SpannableString(mMessage);
+        return new SpannableString(TextUtils.isEmpty(mMessage) ? "看房邀约消息" : mMessage);
     }
 
     @Override  //点击你的自定义消息执行的操作
