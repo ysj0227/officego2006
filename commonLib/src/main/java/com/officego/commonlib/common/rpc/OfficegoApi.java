@@ -12,6 +12,7 @@ import com.officego.commonlib.common.rpc.request.LicenceInterface;
 import com.officego.commonlib.common.rpc.request.MineMsgInterface;
 import com.officego.commonlib.common.rpc.request.ScheduleInterface;
 import com.officego.commonlib.retrofit.RetrofitCallback;
+import com.officego.commonlib.utils.log.LogCat;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -93,6 +94,9 @@ public class OfficegoApi {
      * 获取大楼详情
      */
     public void getChatHouseDetails(int buildingId, int houseId, String targetId, RetrofitCallback<ChatHouseBean> callback) {
+//        LogCat.e(TAG, "token=" + SpUtils.getSignToken() + " uid=" + targetId +
+//                " buildingId=" + (buildingId == 0 ? "" : buildingId +
+//                " houseId=" + (houseId == 0 ? "" : String.valueOf(houseId))));
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("uid", requestBody(targetId));

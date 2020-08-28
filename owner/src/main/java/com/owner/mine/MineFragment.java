@@ -190,7 +190,9 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
             if (TextUtils.isEmpty(data.getProprietorCompany())) {
                 tvAccount.setText(TextUtils.isEmpty(data.getProprietorJob()) ? "" : data.getProprietorJob());
             } else {
-                tvAccount.setText(data.getProprietorCompany() + "·" + (TextUtils.isEmpty(data.getProprietorJob()) ? "" : data.getProprietorJob()));
+                tvAccount.setText(TextUtils.isEmpty(data.getProprietorJob()) ?
+                        data.getProprietorCompany() :
+                        data.getProprietorCompany() + "·" + data.getProprietorJob());
             }
             if (isIdentity()) {
                 new UnIdifyDialog(mActivity, mUserInfo);

@@ -10,6 +10,7 @@ import com.officego.commonlib.base.BaseConfig;
 public class AppConfig extends BaseConfig {
     public static String APP_URL = "";//接口调用
     public static String APP_URL_MAIN = "";//数据连接
+    public static String WEB_URL_SCAN_LOGIN= "";//app扫码web登录
 
     public static String H5_ABOUT_US = "";//关于我们
     public static String H5_HELP_FEEDBACK = "";//帮助反馈
@@ -46,6 +47,7 @@ public class AppConfig extends BaseConfig {
         //URL
         APP_URL = "http://debug.officego.com.cn/";
         APP_URL_MAIN = "http://test1.officego.com.cn/";
+        WEB_URL_SCAN_LOGIN="http://debugweb.officego.com.cn/";
         SA_SERVER_URL="https://officego.datasink.sensorsdata.cn/sa?project=default&token=d0db7a742f154aac";
 //        APP_URL = "http://admin.officego.com.cn/";
 //        APP_URL_MAIN = "http://test.officego.com.cn/";
@@ -78,6 +80,7 @@ public class AppConfig extends BaseConfig {
         //URL
         APP_URL = "https://api.officego.com/";
         APP_URL_MAIN = "https://m.officego.com/";
+        WEB_URL_SCAN_LOGIN="http://webapi.officego.com/";
         SA_SERVER_URL="https://officego.datasink.sensorsdata.cn/sa?project=production&token=d0db7a742f154aac";
         //个人中心
         H5_ABOUT_US = APP_URL_MAIN + "lessee/aboutUs.html";

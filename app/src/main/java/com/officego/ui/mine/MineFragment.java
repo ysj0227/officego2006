@@ -192,14 +192,17 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
             if (TextUtils.isEmpty((String) data.getCompany())) {
                 tvAccount.setText(TextUtils.isEmpty((String) data.getJob()) ? "" : (String) data.getJob());
             } else {
-                tvAccount.setText(data.getCompany() + "·" + (TextUtils.isEmpty((String) data.getJob()) ? "" : (String) data.getJob()));
+                if (TextUtils.isEmpty((String) data.getJob())) {
+                    tvAccount.setText((String) data.getCompany());
+                } else {
+                    tvAccount.setText(data.getCompany() + "·" + (TextUtils.isEmpty((String) data.getJob()) ? "" : (String) data.getJob()));
+                }
             }
         }
     }
 
     @Override
     public void userInfoFail(int code, String msg) {
-//        shortTip(R.string.tip_get_person_exception);
     }
 
     @Override

@@ -244,11 +244,21 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
 
     //刷新用户信息
     private void refreshChatUserInfo(ChatHouseBean data) {
-        mNikeName = data.getChatted().getNickname();
-        RongCloudSetUserInfoUtils.refreshUserInfoCache(targetId, data.getChatted().getNickname(), data.getChatted().getAvatar());
-        RongCloudSetUserInfoUtils.refreshUserInfoCache(SpUtils.getRongChatId(), SpUtils.getNickName(), SpUtils.getHeaderImg());
-        tvTitleName.setText(data.getChatted().getNickname());
-        tvJob.setText(data.getChatted().getJob());
+        if (data.getChatted() != null) {
+            mNikeName = data.getChatted().getNickname();
+            tvTitleName.setText(data.getChatted().getNickname());
+            tvJob.setText(data.getChatted().getJob());
+            if (!TextUtils.isEmpty(targetId)) {
+                RongCloudSetUserInfoUtils.refreshUserInfoCache(targetId,
+                        TextUtils.isEmpty(data.getChatted().getNickname()) ? "" : data.getChatted().getNickname(),
+                        TextUtils.isEmpty(data.getChatted().getAvatar()) ? "" : data.getChatted().getAvatar());
+            }
+            if (!TextUtils.isEmpty(SpUtils.getRongChatId())) {
+                RongCloudSetUserInfoUtils.refreshUserInfoCache(SpUtils.getRongChatId(),
+                        TextUtils.isEmpty(SpUtils.getNickName()) ? "" : SpUtils.getNickName(),
+                        TextUtils.isEmpty(SpUtils.getHeaderImg()) ? "" : SpUtils.getHeaderImg());
+            }
+        }
     }
 
     //插入楼盘信息

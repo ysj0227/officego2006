@@ -35,8 +35,8 @@ public class QRScanActivity extends BaseActivity implements QRCodeView.Delegate 
 
     private void initLightParams() {
         layoutParams = (LinearLayout.LayoutParams) titleBar.getRightImg().getLayoutParams();
-        layoutParams.height = 100;
-        layoutParams.width = 100;
+        layoutParams.height = getResources().getDimensionPixelSize(R.dimen.dp_25);
+        layoutParams.width = getResources().getDimensionPixelSize(R.dimen.dp_25);
         titleBar.getRightImg().setLayoutParams(layoutParams);
         titleBar.getRightImg().setImageResource(R.mipmap.ic_light_close);
     }
@@ -94,7 +94,9 @@ public class QRScanActivity extends BaseActivity implements QRCodeView.Delegate 
         if (!result.contains("officego")) {
             scanQRError();
         } else {
-            ScanCompleteActivity_.intent(context).startForResult(REQUEST_CODE);
+            ScanCompleteActivity_.intent(context)
+                    .scanContent(result)
+                    .startForResult(REQUEST_CODE);
         }
     }
 

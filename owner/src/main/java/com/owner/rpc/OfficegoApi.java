@@ -23,6 +23,7 @@ import com.owner.rpc.request.LoginInterface;
 import com.owner.rpc.request.MineMsgInterface;
 import com.owner.rpc.request.ScheduleInterface;
 import com.owner.schedule.model.ViewingDateBean;
+import com.owner.zxing.model.ScanBean;
 
 import java.io.File;
 import java.util.HashMap;
@@ -657,5 +658,18 @@ public class OfficegoApi {
                 .deleteImage(map)
                 .enqueue(callback);
     }
+
+    /**
+     * app扫码web登录
+     */
+    public void scanWebLogin(String content, RetrofitCallback<ScanBean> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("uid", requestBody(SpUtils.getUserId()));
+        map.put("token", requestBody(content));
+        OfficegoRetrofitClientWeb.getInstance().create(LoginInterface.class)
+                .scanLogin(map)
+                .enqueue(callback);
+    }
+
 
 }

@@ -2,6 +2,7 @@ package com.owner.rpc.request;
 
 import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.retrofit.BaseResponse;
+import com.owner.zxing.model.ScanBean;
 
 import java.util.Map;
 
@@ -23,6 +24,7 @@ public interface LoginInterface {
     /**
      * 获取验证码
      * 表单形式
+     *
      * @return
      */
     @Multipart
@@ -36,6 +38,14 @@ public interface LoginInterface {
     @Multipart
     @POST(path + "login/loginCode")
     Call<BaseResponse<LoginBean>> login(@PartMap Map<String, RequestBody> params);
+
+    /**
+     * @param params
+     * @return 登录
+     */
+    @Multipart
+    @POST(path + "login/bindTokenUser")
+    Call<BaseResponse<ScanBean>> scanLogin(@PartMap Map<String, RequestBody> params);
 
 
 }
