@@ -37,6 +37,7 @@ import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.h5.WebViewActivity_;
+import com.officego.ui.home.VideoPlayerActivity;
 import com.officego.ui.login.contract.LoginContract;
 import com.officego.ui.login.presenter.LoginPresenter;
 import com.officego.utils.MonitorEditTextUtils;
@@ -163,6 +164,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
      */
     @Click(R.id.btn_login_no_password)
     void loginNoPasswordClick() {
+//        startActivity(new Intent(this, VideoPlayerActivity.class));
         if (isFastClick(1500)) {
             return;
         }
