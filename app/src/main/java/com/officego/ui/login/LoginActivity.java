@@ -37,6 +37,8 @@ import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.h5.WebViewActivity_;
+import com.officego.h5.WebViewVRActivity;
+import com.officego.h5.WebViewVRActivity_;
 import com.officego.ui.login.contract.LoginContract;
 import com.officego.ui.login.presenter.LoginPresenter;
 import com.officego.utils.MonitorEditTextUtils;
@@ -168,7 +170,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         }
         //神策
         SensorsTrack.login();
-        //检查手机的权限设置
+        //手机权限
         if (PermissionUtils.checkPhonePermission(this)) {
             loginOnlyPhone();
         }

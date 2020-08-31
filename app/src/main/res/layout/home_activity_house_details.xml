@@ -51,17 +51,29 @@
                     android:layout_centerHorizontal="true"
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="@dimen/dp_50"
-                    android:background="@drawable/button_selected_white_solid12"
+                    android:background="@drawable/button_corner_white_center"
                     android:orientation="horizontal"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent">
 
                     <RadioButton
+                        android:id="@+id/rb_vr"
+                        android:layout_width="@dimen/dp_45"
+                        android:layout_height="@dimen/dp_24"
+                        android:background="@drawable/button_selector_center"
+                        android:button="@null"
+                        android:checked="true"
+                        android:gravity="center"
+                        android:text="@string/str_text_vr"
+                        android:textColor="@color/text_selector_blue_white"
+                        android:textSize="@dimen/sp_11" />
+
+                    <RadioButton
                         android:id="@+id/rb_video"
                         android:layout_width="@dimen/dp_45"
                         android:layout_height="@dimen/dp_24"
-                        android:background="@drawable/button_selector_left"
+                        android:background="@drawable/button_selector_center"
                         android:button="@null"
                         android:checked="true"
                         android:gravity="center"
@@ -73,7 +85,7 @@
                         android:id="@+id/rb_picture"
                         android:layout_width="@dimen/dp_45"
                         android:layout_height="@dimen/dp_24"
-                        android:background="@drawable/button_selector_right"
+                        android:background="@drawable/button_selector_center"
                         android:button="@null"
                         android:checked="false"
                         android:gravity="center"
