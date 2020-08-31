@@ -265,11 +265,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         hasData();
     }
 
-    @Override
-    public void OnBannerClick(int position) {
-
-    }
-
     //下拉刷新
     private void pullDownRefreshList() {
         pageNum = 1;
@@ -289,6 +284,8 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     //开始下拉刷新
     @Override
     public void onRefresh() {
+        //轮播图
+        mPresenter.getBannerList();
         pullDownRefreshList();
     }
 
@@ -428,10 +425,14 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     }
 
     @Override
+    public void OnBannerClick(int position) {
+        //跳转详情
+    }
+
+    @Override
     public void bannerListSuccess(List<String> bannerList) {
         playBanner(bannerList);
     }
-
 
     //网络异常重试
     @Click(R.id.btn_again)
@@ -475,7 +476,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     @Override
     public void onSurePopUpWindow(boolean isLine, HashSet<Integer> hashSet,
                                   SparseBooleanArray checkStates, String data1, String data2) {
-        // LogCat.e("TAG", "onSurePopUpWindow  isLine=" + isLine + " data1=" + data1 + " data2=" + data2);
         if (TextUtils.isEmpty(data1) && TextUtils.isEmpty(data2)) {
             tvSearchArea.setText("区域");
             tvSearchArea.setTextColor(ContextCompat.getColor(mActivity, R.color.text_66));

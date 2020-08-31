@@ -9,7 +9,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.CookieManager;
@@ -291,9 +290,11 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements Home
     public void userInfoSuccess(UserOwnerBean data) {
         if (isIdentity(data)) {
             tvScan.setVisibility(View.GONE);
-//            new UnIdifyDialog(mActivity, data);
             if (data.getAuditStatus() == -1) {
+                //未认证
                 SelectIdActivity_.intent(getContext()).start();
+            } else {
+                new UnIdifyDialog(mActivity, data);
             }
         } else {
             tvScan.setVisibility(View.VISIBLE);

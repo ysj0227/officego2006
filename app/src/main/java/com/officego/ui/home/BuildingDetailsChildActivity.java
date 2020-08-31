@@ -34,6 +34,7 @@ import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.IVideoPlayer;
 import com.officego.commonlib.view.LabelsView;
+import com.officego.h5.WebViewVRActivity_;
 import com.officego.model.ShareBean;
 import com.officego.ui.home.contract.BuildingDetailsChildContract;
 import com.officego.ui.home.model.ChatsBean;
@@ -256,9 +257,23 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         view.setLayoutParams(params);
     }
 
+    //back
     @Click(R.id.btn_back)
     void backClick() {
         finish();
+    }
+
+    //vr显示
+    @Click(R.id.rb_vr)
+    void vrClick() {
+        if (isFastClick(1200)) {
+            return;
+        }
+        if (mData != null && mData.getVrUrl() != null && mData.getVrUrl().size() > 0) {
+            WebViewVRActivity_.intent(context).vrUrl(mData.getVrUrl().get(0).getImgUrl()).start();
+        }else {
+            shortTip(R.string.str_no_vr);
+        }
     }
 
     @SuppressLint("SetTextI18n")

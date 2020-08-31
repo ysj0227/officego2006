@@ -40,6 +40,7 @@ import com.officego.commonlib.view.LabelsView;
 import com.officego.commonlib.view.RoundImageView;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.config.ConditionConfig;
+import com.officego.h5.WebViewVRActivity_;
 import com.officego.model.ShareBean;
 import com.officego.ui.adapter.HouseItemAllAdapter;
 import com.officego.ui.adapter.JointWorkAllChildAdapter;
@@ -355,7 +356,18 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         }
         finish();
     }
-
+    //vr显示
+    @Click(R.id.rb_vr)
+    void vrClick() {
+        if (isFastClick(1200)) {
+            return;
+        }
+        if (mData != null && mData.getVrUrl() != null && mData.getVrUrl().size() > 0) {
+            WebViewVRActivity_.intent(context).vrUrl(mData.getVrUrl().get(0).getImgUrl()).start();
+        }else {
+            shortTip(R.string.str_no_vr);
+        }
+    }
     //初始化中间播放按钮显示
     private void centerPlayIsShow(boolean isShow) {
         rlDefaultHousePic.setVisibility(isShow ? View.VISIBLE : View.GONE);

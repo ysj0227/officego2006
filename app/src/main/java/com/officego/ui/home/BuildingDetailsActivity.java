@@ -38,10 +38,12 @@ import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.IVideoPlayer;
 import com.officego.commonlib.view.LabelsView;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.config.ConditionConfig;
+import com.officego.h5.WebViewVRActivity_;
 import com.officego.model.ShareBean;
 import com.officego.ui.adapter.HouseItemAllAdapter;
 import com.officego.ui.adapter.IndependentAllChildAdapter;
@@ -342,6 +344,19 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             SensorsTrack.visitBuildingDataPageComplete(mBuildingBean.getBuildingId(), isRead);
         }
         finish();
+    }
+
+    //vr显示
+    @Click(R.id.rb_vr)
+    void vrClick() {
+        if (isFastClick(1200)) {
+            return;
+        }
+        if (mData != null && mData.getVrUrl() != null && mData.getVrUrl().size() > 0) {
+            WebViewVRActivity_.intent(context).vrUrl(mData.getVrUrl().get(0).getImgUrl()).start();
+        } else {
+            shortTip(R.string.str_no_vr);
+        }
     }
 
     //初始化中间播放按钮显示

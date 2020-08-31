@@ -33,6 +33,7 @@ import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.IVideoPlayer;
+import com.officego.h5.WebViewVRActivity_;
 import com.officego.model.ShareBean;
 import com.officego.ui.home.contract.BuildingDetailsChildJointWorkContract;
 import com.officego.ui.home.model.ChatsBean;
@@ -70,7 +71,7 @@ import tv.danmaku.ijk.media.player.IMediaPlayer;
 @SuppressLint("Registered")
 @EActivity(R.layout.home_activity_house_details_child)
 public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<BuildingDetailsChildJointWorkPresenter>
-        implements OnBannerListener,BuildingDetailsChildJointWorkContract.View,
+        implements OnBannerListener, BuildingDetailsChildJointWorkContract.View,
         NestedScrollView.OnScrollChangeListener,
         SeekBar.OnSeekBarChangeListener,
         IMediaPlayer.OnBufferingUpdateListener,
@@ -257,6 +258,19 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         finish();
     }
 
+    //vr显示
+    @Click(R.id.rb_vr)
+    void vrClick() {
+        if (isFastClick(1200)) {
+            return;
+        }
+        if (mData != null && mData.getVrUrl() != null && mData.getVrUrl().size() > 0) {
+            WebViewVRActivity_.intent(context).vrUrl(mData.getVrUrl().get(0).getImgUrl()).start();
+        } else {
+            shortTip(R.string.str_no_vr);
+        }
+    }
+
     @SuppressLint("SetTextI18n")
     @Override
     public void detailsSuccess(HouseOfficeDetailsJointWorkBean data) {
@@ -275,13 +289,13 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
             tvIndependentOfficeAreaText.setText(data.getHouse().getSeats() + "个工位");
             if (data.getHouse().getArea() != null) {
                 tvIndependentOfficeArea.setText(Html.fromHtml("<font color='#46C3C2'>" +
-                        CommonHelper.bigDecimal(data.getHouse().getArea(),true) + "</font>㎡"));
+                        CommonHelper.bigDecimal(data.getHouse().getArea(), true) + "</font>㎡"));
             } else {
                 tvIndependentOfficeArea.setText(R.string.str_text_line);
             }
             if (data.getHouse().getDayPrice() != null) {
                 tvIndependentOfficePrice.setText(Html.fromHtml("<font color='#46C3C2'>¥" +
-                        CommonHelper.bigDecimal(data.getHouse().getDayPrice(),false) + "</font>/位/天起"));
+                        CommonHelper.bigDecimal(data.getHouse().getDayPrice(), false) + "</font>/位/天起"));
             } else {
                 tvIndependentOfficePrice.setText(R.string.str_text_line);
             }
@@ -882,6 +896,7 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         bannerImage.setOnBannerListener(this);
         bannerImage.start();
     }
+
     //查看大图
     @Override
     public void OnBannerClick(int position) {
@@ -893,6 +908,7 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
                 .current(position)
                 .start();
     }
+
     //户型介绍图
     @Click(R.id.iv_pattern)
     void patternImgClick() {

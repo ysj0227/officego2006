@@ -26,7 +26,6 @@ public class UnIdifyDialog {
      * auditStatus为3，按照2驳回处理
      */
     private void unIdifyDialog(Context context, UserOwnerBean data) {
-
         if (dialog != null) {
             if (dialog.isShowing()) {
                 return;

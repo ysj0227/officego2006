@@ -6,7 +6,6 @@ import com.officego.commonlib.base.BasePresenter;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.retrofit.RpcErrorCode;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.rpc.OfficegoApi;
 import com.officego.ui.home.contract.HomeContract;
 import com.officego.ui.home.model.BannerBean;
@@ -36,7 +35,6 @@ public class HomePresenter extends BasePresenter<HomeContract.View> implements H
         OfficegoApi.getInstance().getBannerList(new RetrofitCallback<List<BannerBean.DataBean>>() {
             @Override
             public void onSuccess(int code, String msg, List<BannerBean.DataBean> data) {
-                LogCat.e(TAG, "getBannerList onSuccess =" + data);
                 if (isViewAttached()) {
                     bannerList.clear();
                     if (data != null) {
@@ -50,7 +48,6 @@ public class HomePresenter extends BasePresenter<HomeContract.View> implements H
 
             @Override
             public void onFail(int code, String msg, List<BannerBean.DataBean> data) {
-                LogCat.e(TAG, "getBannerList onFail code=" + code + "  msg=" + msg);
                 if (isViewAttached()) {
                 }
             }
@@ -67,7 +64,6 @@ public class HomePresenter extends BasePresenter<HomeContract.View> implements H
                 houseTags, sort, keyWord, new RetrofitCallback<BuildingBean>() {
                     @Override
                     public void onSuccess(int code, String msg, BuildingBean data) {
-                        LogCat.e(TAG, "getBuildingList onSuccess =" + data);
                         if (isViewAttached()) {
                             mView.hideLoadingDialog();
                             mView.BuildingListSuccess(data.getList(), data.getList().size() >= 10);
@@ -77,7 +73,6 @@ public class HomePresenter extends BasePresenter<HomeContract.View> implements H
 
                     @Override
                     public void onFail(int code, String msg, BuildingBean data) {
-                        LogCat.e(TAG, "getBuildingList onFail code=" + code + "  msg=" + msg);
                         if (isViewAttached()) {
                             mView.hideLoadingDialog();
                             mView.endRefresh();

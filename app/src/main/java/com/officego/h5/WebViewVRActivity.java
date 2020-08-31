@@ -49,7 +49,7 @@ public class WebViewVRActivity extends BaseActivity {
     void init() {
         StatusBarUtils.setStatusBarColor(this);
         setWebChromeClient();
-        titleBar.getAppTitle().setText("");
+        titleBar.getAppTitle().setText(R.string.str_text_vr);
         vrUrl = "https://sky.city8.com/panoramic-images/IMG_339520200828-125117-122787.html";
         loadWebView(vrUrl);
     }
