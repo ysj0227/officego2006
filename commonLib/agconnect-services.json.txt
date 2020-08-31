@@ -1,0 +1,30 @@
+{
+	"agcgw":{
+		"backurl":"connect-drcn.dbankcloud.cn",
+		"url":"connect-drcn.hispace.hicloud.com"
+	},
+	"client":{
+		"cp_id":"2850086000385498726",
+		"product_id":"736430079244552893",
+		"client_id":"401892181419230208",
+		"client_secret":"8D85B0FB476A50B99D4643B8DA777E8A7FA461913DCDD8F4F2344818EF8E0475",
+		"app_id":"102526157",
+		"package_name":"com.officego",
+		"api_key":"CgB6e3x93v49cqvGAhcpnXK1uDehRe765Slp/rbvnWPpX0E7X0W4fUoaVFaqH50QAFguwavRNJ/MMXyDqf5pqpvY"
+	},
+	"service":{
+		"analytics":{
+			"collector_url":"datacollector-drcn.dt.hicloud.com,datacollector-drcn.dt.dbankcloud.cn",
+			"resource_id":"p1",
+			"channel_id":""
+		},
+		"cloudstorage":{
+			"storage_url":"https://agc-storage-drcn.platform.dbankcloud.cn"
+		},
+		"ml":{
+			"mlservice_url":"ml-api-drcn.ai.dbankcloud.com,ml-api-drcn.ai.dbankcloud.cn"
+		}
+	},
+	"region":"CN",
+	"configuration_version":"1.0"
+}

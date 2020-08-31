@@ -42,11 +42,13 @@ import com.officego.ui.home.model.HouseOfficeDetailsBean;
 import com.officego.ui.home.presenter.BuildingDetailsChildPresenter;
 import com.officego.ui.login.LoginActivity_;
 import com.officego.ui.message.ConversationActivity_;
+import com.officego.ui.previewimg.ImageBigActivity_;
 import com.officego.utils.ImageLoaderUtils;
 import com.officego.utils.WeChatUtils;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
+import com.youth.banner.listener.OnBannerListener;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -69,7 +71,7 @@ import tv.danmaku.ijk.media.player.IMediaPlayer;
 @SuppressLint("Registered")
 @EActivity(R.layout.home_activity_house_details_child)
 public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetailsChildPresenter>
-        implements BuildingDetailsChildContract.View,
+        implements OnBannerListener, BuildingDetailsChildContract.View,
         NestedScrollView.OnScrollChangeListener,
         SeekBar.OnSeekBarChangeListener,
         IMediaPlayer.OnBufferingUpdateListener,
@@ -411,32 +413,6 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         isExpand = !isExpand;
         tvQueryTrains.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, isExpand ? up : down, null);
         showBusLine();
-    }
-
-    private List<String> mBannerList = new ArrayList<>();
-
-    private void playBanner(List<HouseOfficeDetailsBean.ImgUrlBean> list) {
-        if (list == null || list.size() == 0) {
-            return;
-        }
-        //视频设置第一张图为默认背景
-        GlideUtils.urlToDrawable(this, rlDefaultHousePic, list.get(0).getImgUrl());
-
-        for (int i = 0; i < list.size(); i++) {
-            if (!TextUtils.isEmpty(list.get(i).getImgUrl())) {
-                mBannerList.add(list.get(i).getImgUrl());
-            }
-        }
-        bannerImage.setBannerStyle(BannerConfig.NUM_INDICATOR);
-        //设置图片加载器，图片加载器在下方
-        bannerImage.setImageLoader(new ImageLoaderUtils(context));
-        //设置图片网址或地址的集合
-        bannerImage.setImages(mBannerList);
-        //设置轮播的动画效果，内含多种特效，可点入方法内查找后内逐一体验
-        bannerImage.setBannerAnimation(Transformer.Default);
-        //设置是否为自动轮播，默认是“是”。
-        bannerImage.isAutoPlay(false);
-        bannerImage.start();
     }
 
     //微信分享
@@ -896,6 +872,63 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         }
         if (iVideoPlayer != null) {
             iVideoPlayer.release();
+        }
+    }
+
+    /**
+     * 轮播图
+     */
+    private List<String> mBannerList = new ArrayList<>();
+
+    private void playBanner(List<HouseOfficeDetailsBean.ImgUrlBean> list) {
+        if (list == null || list.size() == 0) {
+            return;
+        }
+        //视频设置第一张图为默认背景
+        GlideUtils.urlToDrawable(this, rlDefaultHousePic, list.get(0).getImgUrl());
+
+        for (int i = 0; i < list.size(); i++) {
+            if (!TextUtils.isEmpty(list.get(i).getImgUrl())) {
+                mBannerList.add(list.get(i).getImgUrl());
+            }
+        }
+        bannerImage.setBannerStyle(BannerConfig.NUM_INDICATOR);
+        //设置图片加载器，图片加载器在下方
+        bannerImage.setImageLoader(new ImageLoaderUtils(context));
+        //设置图片网址或地址的集合
+        bannerImage.setImages(mBannerList);
+        //设置轮播的动画效果，内含多种特效，可点入方法内查找后内逐一体验
+        bannerImage.setBannerAnimation(Transformer.Default);
+        //设置是否为自动轮播，默认是“是”。
+        bannerImage.isAutoPlay(false);
+        bannerImage.setOnBannerListener(this);
+        bannerImage.start();
+    }
+
+    //查看大图
+    @Override
+    public void OnBannerClick(int position) {
+        if (mBannerList == null || mBannerList.size() == 0) {
+            return;
+        }
+        ImageBigActivity_.intent(this)
+                .imagesUrl((ArrayList<String>) mBannerList)
+                .current(position)
+                .start();
+    }
+
+    //户型介绍图
+    @Click(R.id.iv_pattern)
+    void patternImgClick() {
+        if (mData != null && mData.getHouse() != null &&
+                mData.getHouse().getBasicInformation() != null) {
+            String url = mData.getHouse().getBasicInformation().getUnitPatternImg();
+            ArrayList<String> mList = new ArrayList<>();
+            mList.add(url);
+            ImageBigActivity_.intent(this)
+                    .imagesUrl(mList)
+                    .current(0)
+                    .start();
         }
     }
 }
