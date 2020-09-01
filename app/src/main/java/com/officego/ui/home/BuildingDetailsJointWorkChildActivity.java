@@ -145,6 +145,8 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
     @ViewById(R.id.tv_favorite)
     TextView tvFavorite;
     //视频图片切换
+    @ViewById(R.id.rb_vr)
+    RadioButton rbVr;
     @ViewById(R.id.rb_video)
     RadioButton rbVideo;
     @ViewById(R.id.rb_picture)
@@ -258,22 +260,12 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         finish();
     }
 
-    //vr显示
-    @Click(R.id.rb_vr)
-    void vrClick() {
-        if (isFastClick(1200)) {
-            return;
-        }
-        if (mData != null && mData.getVrUrl() != null && mData.getVrUrl().size() > 0) {
-            WebViewVRActivity_.intent(context).vrUrl(mData.getVrUrl().get(0).getImgUrl()).start();
-        } else {
-            shortTip(R.string.str_no_vr);
-        }
-    }
-
     @SuppressLint("SetTextI18n")
     @Override
     public void detailsSuccess(HouseOfficeDetailsJointWorkBean data) {
+        if (data == null) {
+            return;
+        }
         mData = data;
         getVideoUrl(data);
         houseId = data.getHouse().getId() + "";
@@ -357,7 +349,7 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
 
     //公交
     private void showBusLine() {
-        if (mData.getHouse().getStationline() != null && mData.getHouse().getStationline().size() > 0) {
+        if (mData != null && mData.getHouse().getStationline() != null && mData.getHouse().getStationline().size() > 0) {
             List<String> stationLine = mData.getHouse().getStationline();
             List<String> stationName = mData.getHouse().getStationNames();
             List<String> workTime = mData.getHouse().getNearbySubwayTime();
@@ -513,12 +505,26 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
      * video****************************
      */
     private void getVideoUrl(HouseOfficeDetailsJointWorkBean data) {
-        if (data.getVideoUrl() != null && data.getVideoUrl().size() > 0) {
+        if (data.getVrUrl() != null && data.getVrUrl().size() > 0) {
+            rbVr.setChecked(true);
+            rbVr.setVisibility(View.VISIBLE);
+            rbVideo.setVisibility(View.GONE);
+            rbPicture.setVisibility(View.VISIBLE);
+        } else if (data.getVideoUrl() != null && data.getVideoUrl().size() > 0) {
             videoUrl = data.getVideoUrl().get(0).getImgUrl();
+            rbVideo.setChecked(true);
+            rbVr.setVisibility(View.GONE);
+            rbVideo.setVisibility(View.VISIBLE);
+            rbPicture.setVisibility(View.VISIBLE);
+        } else if (data.getVrUrl() != null && data.getVrUrl().size() > 0 &&
+                data.getVideoUrl() != null && data.getVideoUrl().size() > 0) {
+            rbVr.setChecked(true);
+            rbVr.setVisibility(View.VISIBLE);
+            rbVideo.setVisibility(View.VISIBLE);
+            rbPicture.setVisibility(View.VISIBLE);
         } else {
             //没有视频只显示轮播图
-            ctlVideoPlay.setVisibility(View.GONE);
-            bannerImage.setVisibility(View.VISIBLE);
+            playButtonIsShow(false);
             centerPlayIsShow(false);
             radioGroupIsShow(false);
         }
@@ -534,31 +540,55 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         rgVideoPicture.setVisibility(isShow ? View.VISIBLE : View.GONE);
     }
 
+    //是否显示播放vr video按钮
+    private void playButtonIsShow(boolean isShow) {
+        if (isShow) {
+            ctlVideoPlay.setVisibility(View.VISIBLE);
+            bannerImage.setVisibility(View.GONE);
+        } else {
+            ctlVideoPlay.setVisibility(View.GONE);
+            bannerImage.setVisibility(View.VISIBLE);
+        }
+    }
+
+    //vr显示
+    @Click(R.id.rb_vr)
+    void vrClick() {
+        rlBottomPanel.setVisibility(View.GONE);
+        centerPlayIsShow(true);
+        playButtonIsShow(true);
+        pauseVideo();
+    }
+
     //视频按钮
     @Click(R.id.rb_video)
     void videoClick() {
-        ctlVideoPlay.setVisibility(View.VISIBLE);
-        bannerImage.setVisibility(View.GONE);
+        playButtonIsShow(true);
     }
 
     //开始播放中间按钮
     @Click(R.id.ib_init_start)
     void ibStartClick() {
-        centerPlayIsShow(false);
-        radioGroupIsShow(false);
-        ctlVideoPlay.setVisibility(View.VISIBLE);
-        bannerImage.setVisibility(View.GONE);
-        //loading
-        loadingView();
-        //初始化播放
-        initVideoPlay();
+        if (rbVr.isChecked()) {
+            if (mData != null && mData.getVrUrl() != null && mData.getVrUrl().size() > 0) {
+                WebViewVRActivity_.intent(context).vrUrl(mData.getVrUrl().get(0).getImgUrl()).start();
+            } else {
+                shortTip(R.string.str_no_vr);
+            }
+        } else if (rbVideo.isChecked()) {
+            centerPlayIsShow(false);
+            radioGroupIsShow(false);
+            playButtonIsShow(true);
+            loadingView();
+            //初始化播放
+            initVideoPlay();
+        }
     }
 
     //图片按钮
     @Click(R.id.rb_picture)
     void pictureClick() {
-        ctlVideoPlay.setVisibility(View.GONE);
-        bannerImage.setVisibility(View.VISIBLE);
+        playButtonIsShow(false);
         pauseVideo();
     }
 

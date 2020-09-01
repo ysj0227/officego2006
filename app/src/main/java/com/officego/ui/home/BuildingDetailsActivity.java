@@ -38,7 +38,6 @@ import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.IVideoPlayer;
 import com.officego.commonlib.view.LabelsView;
 import com.officego.commonlib.view.dialog.CommonDialog;
@@ -109,6 +108,8 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     @ViewById(R.id.banner_image)
     Banner bannerImage;
     //视频图片切换
+    @ViewById(R.id.rb_vr)
+    RadioButton rbVr;
     @ViewById(R.id.rb_video)
     RadioButton rbVideo;
     @ViewById(R.id.rb_picture)
@@ -346,19 +347,6 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         finish();
     }
 
-    //vr显示
-    @Click(R.id.rb_vr)
-    void vrClick() {
-        if (isFastClick(1200)) {
-            return;
-        }
-        if (mData != null && mData.getVrUrl() != null && mData.getVrUrl().size() > 0) {
-            WebViewVRActivity_.intent(context).vrUrl(mData.getVrUrl().get(0).getImgUrl()).start();
-        } else {
-            shortTip(R.string.str_no_vr);
-        }
-    }
-
     //初始化中间播放按钮显示
     private void centerPlayIsShow(boolean isShow) {
         rlDefaultHousePic.setVisibility(isShow ? View.VISIBLE : View.GONE);
@@ -369,31 +357,55 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         rgVideoPicture.setVisibility(isShow ? View.VISIBLE : View.GONE);
     }
 
+    //是否显示播放vr video按钮
+    private void playButtonIsShow(boolean isShow) {
+        if (isShow) {
+            ctlVideoPlay.setVisibility(View.VISIBLE);
+            bannerImage.setVisibility(View.GONE);
+        } else {
+            ctlVideoPlay.setVisibility(View.GONE);
+            bannerImage.setVisibility(View.VISIBLE);
+        }
+    }
+
+    //vr显示
+    @Click(R.id.rb_vr)
+    void vrClick() {
+        rlBottomPanel.setVisibility(View.GONE);
+        centerPlayIsShow(true);
+        playButtonIsShow(true);
+        pauseVideo();
+    }
+
     //视频按钮
     @Click(R.id.rb_video)
     void videoClick() {
-        ctlVideoPlay.setVisibility(View.VISIBLE);
-        bannerImage.setVisibility(View.GONE);
+        playButtonIsShow(true);
     }
 
     //开始播放中间按钮
     @Click(R.id.ib_init_start)
     void ibStartClick() {
-        centerPlayIsShow(false);
-        radioGroupIsShow(false);
-        ctlVideoPlay.setVisibility(View.VISIBLE);
-        bannerImage.setVisibility(View.GONE);
-        //loading
-        loadingView();
-        //初始化播放
-        initVideoPlay();
+        if (rbVr.isChecked()) {
+            if (mData != null && mData.getVrUrl() != null && mData.getVrUrl().size() > 0) {
+                WebViewVRActivity_.intent(context).vrUrl(mData.getVrUrl().get(0).getImgUrl()).start();
+            } else {
+                shortTip(R.string.str_no_vr);
+            }
+        } else if (rbVideo.isChecked()) {
+            centerPlayIsShow(false);
+            radioGroupIsShow(false);
+            playButtonIsShow(true);
+            loadingView();
+            //初始化播放
+            initVideoPlay();
+        }
     }
 
     //图片按钮
     @Click(R.id.rb_picture)
     void pictureClick() {
-        ctlVideoPlay.setVisibility(View.GONE);
-        bannerImage.setVisibility(View.VISIBLE);
+        playButtonIsShow(false);
         pauseVideo();
     }
 
@@ -460,7 +472,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             ConversationActivity_.intent(context).buildingId(mData.getBuilding().getBuildingId()).targetId(data.getTargetId()).start();
         } else {
             CommonDialog dialog = new CommonDialog.Builder(context)
-                    .setTitle("请先选择房源，再和房东聊")
+                    .setTitle(R.string.str_selected_owner_to_chat)
                     .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
                         dialog12.dismiss();
                         scrollViewY();
@@ -888,15 +900,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             return;
         }
         mData = data;
-        if (data.getVideoUrl() != null && data.getVideoUrl().size() > 0) {
-            videoUrl = data.getVideoUrl().get(0).getImgUrl();
-        } else {
-            //没有视频只显示轮播图
-            ctlVideoPlay.setVisibility(View.GONE);
-            bannerImage.setVisibility(View.VISIBLE);
-            centerPlayIsShow(false);
-            radioGroupIsShow(false);
-        }
+        showVrVideoImg(data);
         //是否收藏
         isFavorite = data.isIsFavorite();
         isFavoriteView(data.isIsFavorite());
@@ -974,6 +978,32 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         independentBuildingList(data);
         //独立办公室子列表
         getChildBuildingList();
+    }
+
+    private void showVrVideoImg(BuildingDetailsBean data) {
+        if (data.getVrUrl() != null && data.getVrUrl().size() > 0) {
+            rbVr.setChecked(true);
+            rbVr.setVisibility(View.VISIBLE);
+            rbVideo.setVisibility(View.GONE);
+            rbPicture.setVisibility(View.VISIBLE);
+        } else if (data.getVideoUrl() != null && data.getVideoUrl().size() > 0) {
+            videoUrl = data.getVideoUrl().get(0).getImgUrl();
+            rbVideo.setChecked(true);
+            rbVr.setVisibility(View.GONE);
+            rbVideo.setVisibility(View.VISIBLE);
+            rbPicture.setVisibility(View.VISIBLE);
+        } else if (data.getVrUrl() != null && data.getVrUrl().size() > 0 &&
+                data.getVideoUrl() != null && data.getVideoUrl().size() > 0) {
+            rbVr.setChecked(true);
+            rbVr.setVisibility(View.VISIBLE);
+            rbVideo.setVisibility(View.VISIBLE);
+            rbPicture.setVisibility(View.VISIBLE);
+        } else {
+            //没有视频只显示轮播图
+            playButtonIsShow(false);
+            centerPlayIsShow(false);
+            radioGroupIsShow(false);
+        }
     }
 
     //公交

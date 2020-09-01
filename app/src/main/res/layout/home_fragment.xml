@@ -37,7 +37,7 @@
                     <com.youth.banner.Banner
                         android:id="@+id/banner"
                         android:layout_width="match_parent"
-                        android:layout_height="@dimen/dp_300"
+                        android:layout_height="@dimen/dp_280"
                         android:background="@mipmap/ic_def_banner"
                         app:image_scale_type="center_crop"
                         app:indicator_drawable_selected="@mipmap/ic_banner_point_selected"

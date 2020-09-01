@@ -82,5 +82,6 @@
 \t\n6.未经你的同意，我们不会从第三方处获取、共享或向其提供你的信息。</string>
     <string name="str_text_vr">VR</string>
     <string name="str_no_vr">暂无VR视频</string>
+    <string name="str_selected_owner_to_chat">请先选择房源，再和房东聊</string>
 
 </resources>
