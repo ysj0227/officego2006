@@ -894,7 +894,7 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
     @Override
     protected void onRestart() {
         super.onRestart();
-        if (rbVr.isChecked()) {
+        if (rbVideo.isChecked()) {
             //重新初始化
             initVideoPlay();
         }
