@@ -176,41 +176,25 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
     RelativeLayout rlBottomPanel;
     @ViewById(R.id.ll_play_loading)
     LinearLayout llPlayLoading;
-    /**
-     * ******************************
-     * 同步进度
-     */
+    //同步进度
     private static final int MESSAGE_SHOW_PROGRESS = 1;
-    /**
-     * 缓冲进度界限值
-     */
+    //缓冲进度界限值
     private static final int BUFFERING_PROGRESS = 95;
-    /**
-     * 延迟毫秒数
-     */
+    //延迟毫秒数
     private static final int DELAY_MILLIS = 10;
-    /**
-     * 是否在拖动进度条中，默认为停止拖动，true为在拖动中，false为停止拖动
-     */
+    //是否在拖动进度条中，默认为停止拖动，true为在拖动中，false为停止拖动
     private boolean isDragging;
-    /**
-     * 是否暂停，是否静音，是否初始化了截屏
-     */
+    //是否暂停，是否静音，是否初始化了截屏
     private boolean isPaused;
-    /**
-     * 音量
-     */
+    //音量
     private int bufferingUpdate;
     private boolean isSetVideoRate;
     private String videoUrl;
-//    String videoUrl = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
-    /**
-     * 消息处理
-     */
+    //String videoUrl = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
+    //消息处理
     private Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
-            //滑动中，同步播放进度
             if (msg.what == MESSAGE_SHOW_PROGRESS) {
                 if (!isDragging) {
                     msg = obtainMessage(MESSAGE_SHOW_PROGRESS, iVideoPlayer.getCurrentPosition());
@@ -244,7 +228,8 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         rlCharacteristic.setVisibility(View.GONE);//网点无特色
         if (mChildHouseBean != null) {
             mPresenter.getDetails(String.valueOf(mChildHouseBean.getBtype()), String.valueOf(mChildHouseBean.getHouseId()));
-        }     //神策
+        }
+        //神策
         SensorsTrack.visitHouseDataPage(String.valueOf(mChildHouseBean.getHouseId()));
     }
 
@@ -377,9 +362,7 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         }
     }
 
-    /**
-     * 全部站点是否展开
-     */
+    //全部站点是否展开
     @Click(R.id.tv_query_trains)
     void queryTrainsClick() {
         if (mData == null) {
@@ -412,15 +395,13 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         }
     }
 
-    /**
-     * 收藏
-     */
+    //收藏
     @Click(R.id.tv_favorite)
     void tv_favoriteClick() {
         if (isFastClick(1200)) {
             return;
         }
-        //未登录去登录
+        //未登录
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
             LoginActivity_.intent(context).start();
             return;
@@ -442,7 +423,7 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         if (isFastClick(1500)) {
             return;
         }
-        //未登录去登录
+        //未登录
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
             LoginActivity_.intent(context).start();
             return;
@@ -501,9 +482,6 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         }
     }
 
-    /**
-     * video****************************
-     */
     private void getVideoUrl(HouseOfficeDetailsJointWorkBean data) {
         if (data.getVrUrl() != null && data.getVrUrl().size() > 0 &&
                 data.getVideoUrl() != null && data.getVideoUrl().size() > 0) {
@@ -511,7 +489,8 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
             rbVr.setVisibility(View.VISIBLE);
             rbVideo.setVisibility(View.VISIBLE);
             rbPicture.setVisibility(View.VISIBLE);
-        } if (data.getVrUrl() != null && data.getVrUrl().size() > 0) {
+        }
+        if (data.getVrUrl() != null && data.getVrUrl().size() > 0) {
             rbVr.setChecked(true);
             rbVr.setVisibility(View.VISIBLE);
             rbVideo.setVisibility(View.GONE);
@@ -609,9 +588,7 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         }
     }
 
-    /**
-     * 初始视频设置
-     */
+    //初始视频设置
     private void initVideo() {
         initScreenWidthHeight();
         if (!NetworkUtils.isNetworkAvailable(context)) {
@@ -619,9 +596,7 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         }
     }
 
-    /**
-     * 初始视频宽高
-     */
+    //初始视频宽高
     private void initScreenWidthHeight() {
         int screenWidth = CommonHelper.getScreenWidth(context);
         ViewGroup.LayoutParams params = iVideoPlayer.getLayoutParams();
@@ -630,9 +605,7 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         iVideoPlayer.setLayoutParams(params);
     }
 
-    /**
-     * 初始化播放
-     */
+    //初始化播放
     private void initVideoPlay() {
         if (TextUtils.isEmpty(videoUrl)) {
             return;
@@ -647,9 +620,7 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         }, 200);
     }
 
-    /**
-     * 初始化video listener
-     */
+    //初始化video
     private void setVideoListener() {
         sbBar.setOnSeekBarChangeListener(this);
         iVideoPlayer.setOnPreparedListener(this);
@@ -699,9 +670,7 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         }
     }
 
-    /**
-     * 更新进度
-     */
+    //更新进度
     private void syncProgress(Object obj) {
         if (obj != null) {
             String strProgress = String.valueOf(obj);
@@ -744,15 +713,9 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         rlDefaultHousePic.setVisibility(View.GONE);
     }
 
-    /**
-     * 视频尺寸
-     */
+    //视频尺寸
     @Override
     public void onVideoSizeChanged(IMediaPlayer iMediaPlayer, int width, int height, int i2, int i3) {
-        setVideoPlayerScreenRate(width, height);
-    }
-
-    private void setVideoPlayerScreenRate(int width, int height) {
         if (!isSetVideoRate) {
             isSetVideoRate = true;
             ViewGroup.LayoutParams params = iVideoPlayer.getLayoutParams();
@@ -773,9 +736,7 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         }
     }
 
-    /**
-     * 缓存状态
-     **/
+    // 缓存状态
     @Override
     public void onBufferingUpdate(IMediaPlayer iMediaPlayer, int i) {
         if (iVideoPlayer != null) {
@@ -790,9 +751,7 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         }
     }
 
-    /**
-     * 播放完毕
-     **/
+    //播放完毕
     @Override
     public void onCompletion(IMediaPlayer iMediaPlayer) {
         if (iVideoPlayer != null) {
@@ -810,20 +769,14 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         }
     }
 
-    /**
-     * 播放异常
-     **/
+    //播放异常
     @Override
     public boolean onError(IMediaPlayer iMediaPlayer, int i, int i1) {
-//        shortTip(R.string.str_server_exception);
         errorView();
         return false;
     }
 
-
-    /**
-     * 开始播放
-     **/
+    //开始播放
     @Override
     public void onPrepared(IMediaPlayer iMediaPlayer) {
         if (iVideoPlayer != null) {
@@ -843,16 +796,12 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         }
     }
 
-    /**
-     * Seek拖动完毕
-     **/
+    //Seek拖动完毕
     @Override
     public void onSeekComplete(IMediaPlayer iMediaPlayer) {
     }
 
-    /**
-     * 进度条滑动监听
-     */
+    //进度条滑动监听
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         if (fromUser) {
@@ -861,18 +810,14 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         }
     }
 
-    /**
-     * 开始拖动
-     */
+    //开始拖动
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
         isDragging = true;
         mHandler.removeMessages(MESSAGE_SHOW_PROGRESS);
     }
 
-    /**
-     * 停止拖动
-     */
+    //停止拖动
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         if (iVideoPlayer != null) {
@@ -884,6 +829,15 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
             }
             isDragging = false;
             mHandler.sendEmptyMessageDelayed(MESSAGE_SHOW_PROGRESS, DELAY_MILLIS);
+        }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if (rbVr.isChecked()) {
+            //重新初始化
+            initVideoPlay();
         }
     }
 

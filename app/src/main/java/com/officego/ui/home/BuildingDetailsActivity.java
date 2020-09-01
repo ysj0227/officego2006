@@ -192,7 +192,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     TextView tvOpenWorkModelPrice;
     @ViewById(R.id.tv_min_month)
     TextView tvMinMonth;
-    //独立办公室，写字楼 list 查看更多
+    //独立办公室，写字楼
     @ViewById(R.id.rl_independent_office_model)
     RelativeLayout rlIndependentOfficeModel;
     @ViewById(R.id.rl_independent_office_set_area)
@@ -246,40 +246,25 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     TextView tvFavorite;
     //神策是否已读
     private boolean isRead;
-    /**
-     * 同步进度
-     */
+    //同步进度
     private static final int MESSAGE_SHOW_PROGRESS = 1;
-    /**
-     * 缓冲进度界限值
-     */
+    //缓冲进度界限值
     private static final int BUFFERING_PROGRESS = 95;
-    /**
-     * 延迟毫秒数
-     */
+    //延迟毫秒数
     private static final int DELAY_MILLIS = 10;
-    /**
-     * 是否在拖动进度条中，默认为停止拖动，true为在拖动中，false为停止拖动
-     */
+    //是否在拖动进度条中，默认为停止拖动，true为在拖动中，false为停止拖动
     private boolean isDragging;
-    /**
-     * 是否暂停，是否静音，是否初始化了截屏
-     */
+    //是否暂停，是否静音，是否初始化了截屏
     private boolean isPaused;
-    /**
-     * 音量
-     */
+    //音量
     private int bufferingUpdate;
     private String videoUrl;
-    //    String videoUrl = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
+    // String videoUrl = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
     private boolean isSetVideoRate;
-    /**
-     * 消息处理
-     */
+    //Video 消息处理
     private Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
-            //滑动中，同步播放进度
             if (msg.what == MESSAGE_SHOW_PROGRESS) {
                 if (!isDragging) {
                     msg = obtainMessage(MESSAGE_SHOW_PROGRESS, iVideoPlayer.getCurrentPosition());
@@ -319,32 +304,24 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         initIndependentBuildingRecView();
         centerPlayIsShow(true);
         initVideo();
-        //详情
+        getBuildingDetails();
+    }
+
+    private void initIndependentBuildingRecView() {
+        tvIndependentOfficeText.setText("在租写字楼");
+        LinearLayoutManager lmHorizontal = new LinearLayoutManager(this);
+        lmHorizontal.setOrientation(LinearLayoutManager.HORIZONTAL);
+        rvHorizontalAll.setLayoutManager(lmHorizontal);
+        rvIndependentOfficeChild.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    private void getBuildingDetails() {
         mPresenter.getBuildingDetails(String.valueOf(mBuildingBean.getBtype()), String.valueOf(mBuildingBean.getBuildingId()),
                 mConditionBean == null || TextUtils.isEmpty(mConditionBean.getAreaValue()) ? "" : mConditionBean.getAreaValue(),
                 mConditionBean == null || TextUtils.isEmpty(mConditionBean.getDayPrice()) ? "" : mConditionBean.getDayPrice(),
                 mConditionBean == null || TextUtils.isEmpty(mConditionBean.getDecoration()) ? "" : mConditionBean.getDecoration(),
                 mConditionBean == null || TextUtils.isEmpty(mConditionBean.getHouseTags()) ? "" : mConditionBean.getHouseTags(),
                 mConditionBean == null || TextUtils.isEmpty(mConditionBean.getSeatsValue()) ? "" : mConditionBean.getSeatsValue());
-    }
-
-    private void initIndependentBuildingRecView() {
-        tvIndependentOfficeText.setText("在租写字楼");
-        //parents
-        LinearLayoutManager lmHorizontal = new LinearLayoutManager(this);
-        lmHorizontal.setOrientation(LinearLayoutManager.HORIZONTAL);
-        rvHorizontalAll.setLayoutManager(lmHorizontal);
-        //child
-        rvIndependentOfficeChild.setLayoutManager(new LinearLayoutManager(this));
-    }
-
-    @Click(R.id.btn_back)
-    void backClick() {
-        //神策
-        if (mBuildingBean != null) {
-            SensorsTrack.visitBuildingDataPageComplete(mBuildingBean.getBuildingId(), isRead);
-        }
-        finish();
     }
 
     //初始化中间播放按钮显示
@@ -366,6 +343,15 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             ctlVideoPlay.setVisibility(View.GONE);
             bannerImage.setVisibility(View.VISIBLE);
         }
+    }
+
+    @Click(R.id.btn_back)
+    void backClick() {
+        //神策
+        if (mBuildingBean != null) {
+            SensorsTrack.visitBuildingDataPageComplete(mBuildingBean.getBuildingId(), isRead);
+        }
+        finish();
     }
 
     //vr显示
@@ -446,13 +432,13 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         }
     }
 
-    //是否收藏 0收藏 1取消
+    //收藏 0收藏 1取消
     @Click(R.id.tv_favorite)
     void favoriteClick() {
         if (isFastClick(1200)) {
             return;
         }
-        //未登录去登录
+        //未登录
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
             LoginActivity_.intent(context).start();
             return;
@@ -465,9 +451,9 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         }
     }
 
+    // 0:单房东,1:多房东  判断是否单房东
     @Override
     public void chatSuccess(ChatsBean data) {
-        //0:单房东,1:多房东  判断是否单房东
         if (data.getMultiOwner() == 0) {
             ConversationActivity_.intent(context).buildingId(mData.getBuilding().getBuildingId()).targetId(data.getTargetId()).start();
         } else {
@@ -487,7 +473,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         if (isFastClick(1200)) {
             return;
         }
-        //未登录去登录
+        //未登录
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
             LoginActivity_.intent(context).start();
             return;
@@ -496,9 +482,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         mPresenter.gotoChat(mData.getBuilding().getBuildingId() + "");
     }
 
-    /**
-     * 滚动指定view
-     */
+    //滚动指定view
     private void scrollViewY() {
         int[] position = new int[2];
         rlIndependentOfficeModel.getLocationOnScreen(position);
@@ -522,9 +506,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
 
     //*******************************************
 
-    /**
-     * 初始视频设置
-     */
+    //初始视频设置
     private void initVideo() {
         initScreenWidthHeight();
         if (!NetworkUtils.isNetworkAvailable(context)) {
@@ -532,9 +514,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         }
     }
 
-    /**
-     * 初始视频宽高
-     */
+    // 初始视频宽高
     private void initScreenWidthHeight() {
         int screenWidth = CommonHelper.getScreenWidth(context);
         ViewGroup.LayoutParams params = iVideoPlayer.getLayoutParams();
@@ -543,9 +523,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         iVideoPlayer.setLayoutParams(params);
     }
 
-    /**
-     * 初始化播放
-     */
+    // 初始化播放
     private void initVideoPlay() {
         if (TextUtils.isEmpty(videoUrl)) {
             return;
@@ -560,9 +538,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         }, 200);
     }
 
-    /**
-     * 初始化video listener
-     */
+    // 初始化video
     private void setVideoListener() {
         sbBar.setOnSeekBarChangeListener(this);
         iVideoPlayer.setOnPreparedListener(this);
@@ -612,9 +588,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         }
     }
 
-    /**
-     * 更新进度
-     */
+    //更新进度
     private void syncProgress(Object obj) {
         if (obj != null) {
             String strProgress = String.valueOf(obj);
@@ -658,15 +632,9 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     }
 
 
-    /**
-     * 视频尺寸
-     */
+    // 视频尺寸
     @Override
     public void onVideoSizeChanged(IMediaPlayer iMediaPlayer, int width, int height, int i2, int i3) {
-        setVideoPlayerScreenRate(width, height);
-    }
-
-    private void setVideoPlayerScreenRate(int width, int height) {
         if (!isSetVideoRate) {
             isSetVideoRate = true;
             ViewGroup.LayoutParams params = iVideoPlayer.getLayoutParams();
@@ -687,9 +655,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         }
     }
 
-    /**
-     * 缓存状态
-     **/
+    //缓存状态
     @Override
     public void onBufferingUpdate(IMediaPlayer iMediaPlayer, int i) {
         if (iVideoPlayer != null) {
@@ -704,9 +670,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         }
     }
 
-    /**
-     * 播放完毕
-     **/
+    // 播放完毕
     @Override
     public void onCompletion(IMediaPlayer iMediaPlayer) {
         if (iVideoPlayer != null) {
@@ -724,20 +688,15 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         }
     }
 
-    /**
-     * 播放异常
-     **/
+    ///播放异常
     @Override
     public boolean onError(IMediaPlayer iMediaPlayer, int i, int i1) {
-//        shortTip(R.string.str_server_exception);
         errorView();
         return false;
     }
 
 
-    /**
-     * 开始播放
-     **/
+    //开始播放
     @Override
     public void onPrepared(IMediaPlayer iMediaPlayer) {
         if (iVideoPlayer != null) {
@@ -757,16 +716,12 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         }
     }
 
-    /**
-     * Seek拖动完毕
-     **/
+    //Seek拖动完毕
     @Override
     public void onSeekComplete(IMediaPlayer iMediaPlayer) {
     }
 
-    /**
-     * 进度条滑动监听
-     */
+    //进度条滑动监听
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         if (fromUser) {
@@ -784,9 +739,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         mHandler.removeMessages(MESSAGE_SHOW_PROGRESS);
     }
 
-    /**
-     * 停止拖动
-     */
+    //停止拖动
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         if (iVideoPlayer != null) {
@@ -798,6 +751,15 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             }
             isDragging = false;
             mHandler.sendEmptyMessageDelayed(MESSAGE_SHOW_PROGRESS, DELAY_MILLIS);
+        }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if (rbVr.isChecked()) {
+            //重新初始化
+            initVideoPlay();
         }
     }
 
@@ -825,8 +787,8 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             return;
         }
         if (id == CommonNotifications.independentAll) {
-            currentAreaValue = (String) args[0]; //传递的面积区间值
-            //LogCat.e(TAG, "1111: area=" + currentAreaValue);
+            //传递的面积区间值
+            currentAreaValue = (String) args[0];
             //请求当前楼盘下的列表 初始化list 和pageNum
             childList.clear();
             pageNum = 1;
@@ -877,31 +839,15 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         rlIndependentOfficeSetArea.setVisibility(View.GONE);
     }
 
-    /**
-     * "airConditioning": "无空调",//空调
-     * "propertyCosts": "8.8",//物业费(元/平米/月)
-     * "ParkingSpaceRent": "800",//车位租金(元/月)
-     * "passengerLift": 5,//客梯
-     * "parkingSpace": "400",//车位数量
-     * "completionTime": 694224000,//竣工时间
-     * "promoteSlogan": "市中心，交通便利",//宣传口号
-     * "cargoLift": 8,//货梯
-     * "totalFloor": "20",//总楼层
-     * "property": "上海要你美物业管理有限公司",//物业
-     * "storeyHeight": "标准3.7米，净高2.5米",//层高
-     * "constructionArea": "586321",//建筑面积
-     * "internet": "电信,联通,"//网络
-     */
+    //详情
     @SuppressLint("SetTextI18n")
     @Override
     public void BuildingDetailsSuccess(BuildingDetailsBean data) {
-        //video url
         if (data == null) {
             return;
         }
         mData = data;
         showVrVideoImg(data);
-        //是否收藏
         isFavorite = data.isIsFavorite();
         isFavoriteView(data.isIsFavorite());
         //轮播图
@@ -1098,7 +1044,6 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     public void buildingSelectListSuccess(int totals, List<BuildingDetailsChildBean.ListBean> list) {
         tvItemListBottom.setText(totals + "套");//自选面积多少套
         hasMore = list == null || list.size() >= 9;
-        //btnQueryMore.setText(hasMore ? getString(R.string.str_query_more_data) : getResources().getString(R.string.tip_no_more_data));
         btnQueryMore.setVisibility(hasMore ? View.VISIBLE : View.GONE);
         assert list != null;
         childList.addAll(list);

@@ -179,41 +179,25 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
     RelativeLayout rlBottomPanel;
     @ViewById(R.id.ll_play_loading)
     LinearLayout llPlayLoading;
-    /**
-     * ******************************
-     * 同步进度
-     */
+    //同步进度
     private static final int MESSAGE_SHOW_PROGRESS = 1;
-    /**
-     * 缓冲进度界限值
-     */
+    //缓冲进度界限值
     private static final int BUFFERING_PROGRESS = 95;
-    /**
-     * 延迟毫秒数
-     */
+    //延迟毫秒数
     private static final int DELAY_MILLIS = 10;
-    /**
-     * 是否在拖动进度条中，默认为停止拖动，true为在拖动中，false为停止拖动
-     */
+    //是否在拖动进度条中，默认为停止拖动，true为在拖动中，false为停止拖动
     private boolean isDragging;
-    /**
-     * 是否暂停，是否静音，是否初始化了截屏
-     */
+    //是否暂停，是否静音，是否初始化了截屏
     private boolean isPaused;
-    /**
-     * 音量
-     */
+    //音量
     private int bufferingUpdate;
     private boolean isSetVideoRate;
     private String videoUrl;
-//    String videoUrl = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
-    /**
-     * 消息处理
-     */
+    //String videoUrl = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
+    //消息处理
     private Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
-            //滑动中，同步播放进度
             if (msg.what == MESSAGE_SHOW_PROGRESS) {
                 if (!isDragging) {
                     msg = obtainMessage(MESSAGE_SHOW_PROGRESS, iVideoPlayer.getCurrentPosition());
@@ -445,7 +429,7 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         if (isFastClick(1500)) {
             return;
         }
-        //未登录去登录
+        //未登录
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
             LoginActivity_.intent(context).start();
             return;
@@ -481,7 +465,7 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         if (isFastClick(1200)) {
             return;
         }
-        //未登录去登录
+        //未登录
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
             LoginActivity_.intent(context).start();
             return;
@@ -530,7 +514,8 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
             rbVr.setVisibility(View.VISIBLE);
             rbVideo.setVisibility(View.VISIBLE);
             rbPicture.setVisibility(View.VISIBLE);
-        } if (data.getVrUrl() != null && data.getVrUrl().size() > 0) {
+        }
+        if (data.getVrUrl() != null && data.getVrUrl().size() > 0) {
             rbVr.setChecked(true);
             rbVr.setVisibility(View.VISIBLE);
             rbVideo.setVisibility(View.GONE);
@@ -541,7 +526,7 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
             rbVr.setVisibility(View.GONE);
             rbVideo.setVisibility(View.VISIBLE);
             rbPicture.setVisibility(View.VISIBLE);
-        }else {
+        } else {
             //没有视频只显示轮播图
             playButtonIsShow(false);
             centerPlayIsShow(false);
@@ -903,6 +888,15 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
             }
             isDragging = false;
             mHandler.sendEmptyMessageDelayed(MESSAGE_SHOW_PROGRESS, DELAY_MILLIS);
+        }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if (rbVr.isChecked()) {
+            //重新初始化
+            initVideoPlay();
         }
     }
 

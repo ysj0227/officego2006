@@ -490,7 +490,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
             nearbySubway = data2;
             district = "";
             business = "";
-
         } else {
             district = data1;
             business = data2;
@@ -524,7 +523,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     @Override
     public void onOfficeOrderPopUpWindow(int searchType, String order) {
         sort = order;
-        //查询列表
         getList();
     }
 
@@ -550,7 +548,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         }
         //筛选标签
         labelsConditionView();
-        //查询列表
         getList();
     }
 
