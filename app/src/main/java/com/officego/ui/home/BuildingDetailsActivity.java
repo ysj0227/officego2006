@@ -409,7 +409,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         pauseVideo();
     }
 
-    //onPause
+    //暂停
     @Override
     protected void onPause() {
         super.onPause();
