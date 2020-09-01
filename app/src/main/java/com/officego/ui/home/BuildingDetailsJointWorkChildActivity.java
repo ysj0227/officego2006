@@ -505,21 +505,21 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
      * video****************************
      */
     private void getVideoUrl(HouseOfficeDetailsJointWorkBean data) {
-        if (data.getVrUrl() != null && data.getVrUrl().size() > 0) {
+        if (data.getVrUrl() != null && data.getVrUrl().size() > 0 &&
+                data.getVideoUrl() != null && data.getVideoUrl().size() > 0) {
+            rbVr.setChecked(true);
+            rbVr.setVisibility(View.VISIBLE);
+            rbVideo.setVisibility(View.VISIBLE);
+            rbPicture.setVisibility(View.VISIBLE);
+        } if (data.getVrUrl() != null && data.getVrUrl().size() > 0) {
             rbVr.setChecked(true);
             rbVr.setVisibility(View.VISIBLE);
             rbVideo.setVisibility(View.GONE);
             rbPicture.setVisibility(View.VISIBLE);
         } else if (data.getVideoUrl() != null && data.getVideoUrl().size() > 0) {
-            videoUrl = data.getVideoUrl().get(0).getImgUrl();
+            videoUrl = data.getVideoUrl().get(0).getImgUrl();//video
             rbVideo.setChecked(true);
             rbVr.setVisibility(View.GONE);
-            rbVideo.setVisibility(View.VISIBLE);
-            rbPicture.setVisibility(View.VISIBLE);
-        } else if (data.getVrUrl() != null && data.getVrUrl().size() > 0 &&
-                data.getVideoUrl() != null && data.getVideoUrl().size() > 0) {
-            rbVr.setChecked(true);
-            rbVr.setVisibility(View.VISIBLE);
             rbVideo.setVisibility(View.VISIBLE);
             rbPicture.setVisibility(View.VISIBLE);
         } else {
