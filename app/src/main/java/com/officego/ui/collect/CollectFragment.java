@@ -143,7 +143,7 @@ public class CollectFragment extends BaseMvpFragment<CollectedPresenter>
         }
         //神策
         SensorsTrack.login();
-        LoginActivity_.intent(mActivity).isGotoLogin(true).startForResult(REQUEST_CODE);
+        LoginActivity_.intent(mActivity).isTenantGotoLogin(true).startForResult(REQUEST_CODE);
     }
 
     @OnActivityResult(REQUEST_CODE)

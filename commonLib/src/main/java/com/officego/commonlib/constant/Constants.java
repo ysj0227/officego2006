@@ -75,4 +75,7 @@ public class Constants {
     //神策埋点筛选区域文本,装修类型文本
     public static String SENSORS_AREA_CONTENT = "";
     public static String SENSORS_DECORATION = "";
+
+    //当前是否在消息的MessageFragment  切换账号为了刷新会话列表
+    public static int TABLE_BAR_POSITION;
 }

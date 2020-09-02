@@ -160,7 +160,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rvHouse.setLayoutManager(layoutManager);
         appBarLayout.addOnOffsetChangedListener(appBarStateChangeListener);
-        alphaPercent = (float) 1 / CommonHelper.dp2px(mActivity, 175);
+        alphaPercent = (float) 1 / CommonHelper.dp2px(mActivity, 180);
         initBarLayoutBg();
         initRefresh();
         if (!NetworkUtils.isNetworkAvailable(mActivity)) {

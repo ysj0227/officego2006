@@ -3,7 +3,6 @@ package com.officego.ui.login;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.CountDownTimer;
@@ -37,8 +36,6 @@ import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.h5.WebViewActivity_;
-import com.officego.h5.WebViewVRActivity;
-import com.officego.h5.WebViewVRActivity_;
 import com.officego.ui.login.contract.LoginContract;
 import com.officego.ui.login.presenter.LoginPresenter;
 import com.officego.utils.MonitorEditTextUtils;
@@ -88,7 +85,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
     private String mobile;
     //判断是否从收藏或者个人中心未登录的时候进入
     @Extra
-    boolean isGotoLogin;
+    boolean isTenantGotoLogin;
     //房东model修改密码重新登录
     private boolean isOwnerLogin;
     //房东model修改密码重新登录,不清除栈顶
@@ -123,8 +120,9 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         }
         smsEditText();
     }
+
     //点击验证码输入框
-    private void smsEditText(){
+    private void smsEditText() {
         etCode.setOnFocusChangeListener((view, b) -> {
             SensorsTrack.codeInput();//神策
         });
@@ -254,9 +252,10 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         //当身份未变化
         if (TextUtils.equals(Constants.TYPE_OWNER, SpUtils.getRole())) {
             if (isReOwnerLogin) {
-                //房东退出登录后的，重新登录
-                Intent intent = getIntent();
-                setResult(RESULT_OK, intent);
+                //房东退出登录后的，重新登录 根据TABLE_BAR_POSITION
+                MainOwnerActivity_.intent(context).start();
+//                Intent intent = getIntent();
+//                setResult(RESULT_OK, intent);
             } else if (isOwnerLogin) {
                 MainOwnerActivity_.intent(context).start();
             } else {
@@ -264,9 +263,10 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
                 MainOwnerActivity_.intent(context).start();
             }
         }
-        if (isGotoLogin) {
-            Intent intent = getIntent();
-            setResult(RESULT_OK, intent);
+        if (isTenantGotoLogin) {
+            MainActivity_.intent(context).start();
+//            Intent intent = getIntent();
+//            setResult(RESULT_OK, intent);
         }
         finish();
     }

@@ -25,7 +25,6 @@ import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.DesktopCornerUtil;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.ui.collect.CollectFragment_;
 import com.officego.ui.home.BuildingDetailsActivity_;
 import com.officego.ui.home.BuildingDetailsChildActivity_;
@@ -47,6 +46,8 @@ import cn.bingoogolapple.badgeview.BGABadgeTextView;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.manager.IUnReadMessageObserver;
 import io.rong.imlib.model.Conversation;
+
+import static com.officego.commonlib.constant.Constants.TABLE_BAR_POSITION;
 
 /**
  * Created by YangShiJie
@@ -81,7 +82,15 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         StatusBarUtils.setStatusBarColor(this);
         fManager = getSupportFragmentManager();
         rg_tab_bar.setOnCheckedChangeListener(this);
-        rb_1.setChecked(true);
+        if (TABLE_BAR_POSITION == 1) {
+            rb_2.setChecked(true);
+        } else if (TABLE_BAR_POSITION == 2) {
+            rb_3.setChecked(true);
+        } else if (TABLE_BAR_POSITION == 3) {
+            rb_4.setChecked(true);
+        } else {
+            rb_1.setChecked(true);
+        }
         initBottomImage();
         if (!TextUtils.isEmpty(SpUtils.getSignToken())) {
             new ConnectRongCloudUtils();
@@ -133,6 +142,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         hideAllFragment(fTransaction);
         switch (checkedId) {
             case R.id.tab_home:
+                TABLE_BAR_POSITION = 0;
                 if (fg1 == null) {
                     fg1 = new HomeFragment_();
                     fTransaction.add(R.id.ly_content, fg1, "Fragment1");
@@ -141,6 +151,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                 }
                 break;
             case R.id.tab_message:
+                TABLE_BAR_POSITION = 1;
                 if (fg2 == null) {
                     fg2 = new MessageFragment_();
                     fTransaction.add(R.id.ly_content, fg2, "Fragment2");
@@ -149,10 +160,12 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                 }
                 break;
             case R.id.tab_collect:
+                TABLE_BAR_POSITION = 2;
                 fg3 = new CollectFragment_();
                 fTransaction.add(R.id.ly_content, fg3, "Fragment3");
                 break;
             case R.id.tab_mine:
+                TABLE_BAR_POSITION = 3;
                 fg4 = new MineFragment_();
                 fTransaction.add(R.id.ly_content, fg4, "Fragment4");
                 break;
