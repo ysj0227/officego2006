@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.WebChromeClient;
@@ -18,10 +17,8 @@ import android.widget.RelativeLayout;
 
 import com.officego.R;
 import com.officego.commonlib.base.BaseActivity;
-import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.constant.AppConfig;
 import com.officego.commonlib.view.TitleBarView;
 import com.officego.view.webview.SMWebViewClient;
 
@@ -37,7 +34,7 @@ import org.androidannotations.annotations.ViewById;
  **/
 @SuppressLint("Registered")
 @EActivity(R.layout.activity_webview)
-public class WebViewNoImgActivity extends BaseActivity {
+public class WebViewBannerActivity extends BaseActivity {
     @ViewById(R.id.wv_view)
     WebView webView;
     @ViewById(R.id.title_bar)
@@ -47,22 +44,14 @@ public class WebViewNoImgActivity extends BaseActivity {
     @ViewById(R.id.btn_again)
     Button btnAgain;
     @Extra
-    int flags;
+    String url;
 
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarColor(this);
         setWebChromeClient();
-        if (flags == Constants.H5_HELP) {
-            titleBar.getAppTitle().setText(getString(R.string.str_title_help));
-            loadWebView(AppConfig.H5_HELP_FEEDBACK);
-        } else if (flags == Constants.H5_PROTOCOL) {
-            titleBar.getAppTitle().setText(getString(R.string.str_title_protocol));
-            loadWebView(AppConfig.H5_PRIVACY);
-        } else if (flags == Constants.H5_ABOUTS) {
-            titleBar.getAppTitle().setText(getString(R.string.str_title_about_us));
-            loadWebView(AppConfig.H5_ABOUT_US);
-        }
+        titleBar.getAppTitle().setText("详情");
+        loadWebView(url);
     }
 
     /**
@@ -107,9 +96,7 @@ public class WebViewNoImgActivity extends BaseActivity {
         webSetting.setAllowFileAccess(true);// 设置允许访问文件数据
         webSetting.setLoadWithOverviewMode(true);
         webSetting.setBlockNetworkImage(false);//解决图片不显示
-//        webView.addJavascriptInterface(new JsInterface(this), "android");
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-//        webView.setWebChromeClient(new WebChromeClient());//
         webView.loadUrl(url);
         webView.setWebViewClient(new SMWebViewClient(this) {
             @Override
@@ -126,18 +113,16 @@ public class WebViewNoImgActivity extends BaseActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
-                Log.d(TAG, "webview onPageFinished url=" + url);
             }
 
             @Override
             protected void receiverError(WebView view, WebResourceRequest request, WebResourceError error) {
-                Log.d(TAG, "webview receiverError");
                 exceptionPageError(view, request);
             }
 
             @Override
             public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
-                exceptionPageHttpError(view, errorResponse);
+//                exceptionPageHttpError(view, errorResponse);
                 super.onReceivedHttpError(view, request, errorResponse);
             }
         });
@@ -161,20 +146,7 @@ public class WebViewNoImgActivity extends BaseActivity {
             rlException.setVisibility(View.GONE);
             view.clearCache(true);
             view.clearHistory();
-            if (flags == Constants.H5_HELP) {
-                webView.loadUrl(AppConfig.H5_HELP_FEEDBACK);
-            } else if (flags == Constants.H5_PROTOCOL) {
-                webView.loadUrl(AppConfig.H5_PRIVACY);
-            } else if (flags == Constants.H5_ABOUTS) {
-                webView.loadUrl(AppConfig.H5_ABOUT_US);
-            }
-//            webView.loadUrl(AppConfig.H5_MINE_CENTER_URL);
-//            if (TextUtils.isEmpty(webViewUrl)) {
-////                loadWebView(AppConfig.H5_MINE_CENTER_URL);
-//                webView.loadUrl(AppConfig.H5_MINE_CENTER_URL);
-//            } else {
-//                webView.loadUrl(webViewUrl);
-//            }
+            webView.loadUrl(url);
         });
     }
 

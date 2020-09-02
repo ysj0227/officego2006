@@ -23,13 +23,14 @@ import com.officego.commonlib.update.VersionDialog;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
+import com.officego.h5.WebViewBannerActivity_;
 import com.officego.ui.adapter.HouseAdapter;
 import com.officego.ui.home.contract.HomeContract;
 import com.officego.ui.home.model.BannerBean;
 import com.officego.ui.home.model.BuildingBean;
 import com.officego.ui.home.model.ConditionBean;
 import com.officego.ui.home.presenter.HomePresenter;
+import com.officego.ui.home.utils.BundleUtils;
 import com.officego.utils.AppBarStateChangeListener;
 import com.officego.utils.ImageLoaderUtils;
 import com.youth.banner.Banner;
@@ -418,7 +419,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         //设置轮播的动画效果，内含多种特效，可点入方法内查找后内逐一体验
         banner.setBannerAnimation(Transformer.Default);
         //设置轮播间隔时间
-        banner.setDelayTime(3000);
+        banner.setDelayTime(4000);
         //设置是否为自动轮播，默认是“是”。
         banner.isAutoPlay(true);
         //设置指示器的位置，小点点，左中右。
@@ -448,12 +449,26 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
                     Integer.valueOf(CommonHelper.bigDecimal(mBannerClickList.get(position).getPageType(), true));
             int pageId = mBannerClickList.get(position).getPageId() == null ? 0 :
                     Integer.valueOf(CommonHelper.bigDecimal(mBannerClickList.get(position).getPageId(), true));
-            String wUrl = mBannerClickList.get(position).getWurl();
-//            LogCat.e(TAG, "1111111 type=" + type + "  pageType=" + pageType + "  pageId=" + pageId + "   wUrl=" + wUrl);
-
-
-
-
+            if (type == 1) {
+                //内链类型1：楼盘详情，2:网点详情 3:楼盘房源详情,4:网点房源详情
+                if (pageType == 1) {
+                    BuildingDetailsActivity_.intent(mActivity)
+                            .mBuildingBean(BundleUtils.BuildingMessage(Constants.TYPE_BUILDING, pageId)).start();
+                } else if (pageType == 2) {
+                    BuildingDetailsJointWorkActivity_.intent(mActivity)
+                            .mBuildingBean(BundleUtils.BuildingMessage(Constants.TYPE_JOINTWORK, pageId)).start();
+                } else if (pageType == 3) {
+                    BuildingDetailsChildActivity_.intent(mActivity)
+                            .mChildHouseBean(BundleUtils.houseMessage(Constants.TYPE_BUILDING, pageId)).start();
+                } else if (pageType == 4) {
+                    BuildingDetailsJointWorkChildActivity_.intent(mActivity)
+                            .mChildHouseBean(BundleUtils.houseMessage(Constants.TYPE_JOINTWORK, pageId)).start();
+                }
+            } else if (type == 3) {
+                //外链跳转
+                String wUrl = mBannerClickList.get(position).getWurl();
+                WebViewBannerActivity_.intent(getContext()).url(wUrl).start();
+            }
         }
     }
 

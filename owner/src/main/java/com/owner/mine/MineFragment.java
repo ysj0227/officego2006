@@ -24,6 +24,7 @@ import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.CircleImage;
 import com.officego.commonlib.view.dialog.CommonDialog;
+import com.owner.R;
 import com.owner.h5.WebViewActivity_;
 import com.owner.identity.IdentityCancelActivity_;
 import com.owner.mine.contract.UserContract;
@@ -185,6 +186,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
             RongCloudSetUserInfoUtils.refreshUserInfoCache(SpUtils.getRongChatId(), data.getRealname(), data.getAvatar());
             mUserInfo = data;
             tvIdify.setText(StringIdentity.identityInfo(data));
+            tvIdify.setBackgroundResource(R.drawable.button_corners5_solid_white);
             Glide.with(mActivity).applyDefaultRequestOptions(GlideUtils.avaOoptions()).load(data.getAvatar()).into(civAvatar);
             tvName.setText(data.getProprietorRealname());
             if (TextUtils.isEmpty(data.getProprietorCompany())) {
