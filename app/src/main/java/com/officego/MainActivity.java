@@ -101,13 +101,10 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         Intent intent = getIntent();
         Uri uri = intent.getData();
         if (uri != null) {
-            //完整的url信息
-            String url = uri.toString();
             //获取参数值
-            String btyte = uri.getQueryParameter("byte");
+            String btyte = uri.getQueryParameter("btyte");
             String buildingId = uri.getQueryParameter("buildingId");
             String houseId = uri.getQueryParameter("houseId");
-            LogCat.e(TAG, "host:" + url);
             if (!TextUtils.isEmpty(buildingId) && !TextUtils.isEmpty(btyte)) {
                 //楼盘，网点
                 if (TextUtils.equals(String.valueOf(Constants.TYPE_BUILDING), btyte)) {

@@ -72,8 +72,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     Banner banner;
     @ViewById(R.id.app_bar)
     AppBarLayout appBarLayout;
-    @ViewById(R.id.ctl_inside_bar)
-    ConstraintLayout ctlInsideBar;
     //暂无数据，网络异常
     @ViewById(R.id.tv_no_data)
     TextView tvNoData;
