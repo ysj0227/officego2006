@@ -581,7 +581,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
             currentSeatsValue = mConditionBean.getSeats();
             ivClearSetArea.setOnClickListener(v -> {
                 showAllAreaView();//显示全部的面积view
-                mConditionBean.setSeats("");//点击清除初始化
+//                mConditionBean.setSeats("");//点击清除初始化
                 currentSeatsValue = "";
                 childList.clear();
                 mPresenter.getBuildingSelectList(pageNum, String.valueOf(mBuildingBean.getBtype()), String.valueOf(mBuildingBean.getBuildingId()),

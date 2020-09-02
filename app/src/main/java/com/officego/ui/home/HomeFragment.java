@@ -23,8 +23,10 @@ import com.officego.commonlib.update.VersionDialog;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.ui.adapter.HouseAdapter;
 import com.officego.ui.home.contract.HomeContract;
+import com.officego.ui.home.model.BannerBean;
 import com.officego.ui.home.model.BuildingBean;
 import com.officego.ui.home.model.ConditionBean;
 import com.officego.ui.home.presenter.HomePresenter;
@@ -148,6 +150,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
             area = "", dayPrice = "", seats = "", decoration = "", houseTags = "", sort = "0";
 
     private float alphaPercent;//渐变色百分比
+    private List<BannerBean.DataBean> mBannerClickList = new ArrayList<>();
 
     @AfterViews
     void init() {
@@ -425,13 +428,33 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     }
 
     @Override
-    public void OnBannerClick(int position) {
-        //跳转详情
+    public void bannerListSuccess(List<String> bannerList, List<BannerBean.DataBean> data) {
+        mBannerClickList.clear();
+        mBannerClickList.addAll(data);
+        playBanner(bannerList);
     }
 
+    /**
+     * "type": 0,//类型:0不可跳转,1内链 2:富文本 3外链
+     * "pageType": 1,//内链类型，1：楼盘详情，2:网点详情 3:楼盘房源详情,4:网点房源详情 0
+     * "pageId": null,//内链类型的id
+     * "wurl": "",//外链跳转url
+     */
     @Override
-    public void bannerListSuccess(List<String> bannerList) {
-        playBanner(bannerList);
+    public void OnBannerClick(int position) {
+        if (mBannerClickList != null) {
+            int type = mBannerClickList.get(position).getType();
+            int pageType = mBannerClickList.get(position).getPageType() == null ? 0 :
+                    Integer.valueOf(CommonHelper.bigDecimal(mBannerClickList.get(position).getPageType(), true));
+            int pageId = mBannerClickList.get(position).getPageId() == null ? 0 :
+                    Integer.valueOf(CommonHelper.bigDecimal(mBannerClickList.get(position).getPageId(), true));
+            String wUrl = mBannerClickList.get(position).getWurl();
+//            LogCat.e(TAG, "1111111 type=" + type + "  pageType=" + pageType + "  pageId=" + pageId + "   wUrl=" + wUrl);
+
+
+
+
+        }
     }
 
     //网络异常重试

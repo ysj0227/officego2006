@@ -41,7 +41,7 @@ public class HomePresenter extends BasePresenter<HomeContract.View> implements H
                         for (int i = 0; i < data.size(); i++) {
                             bannerList.add(data.get(i).getImg());
                         }
-                        mView.bannerListSuccess(bannerList);
+                        mView.bannerListSuccess(bannerList,data);
                     }
                 }
             }

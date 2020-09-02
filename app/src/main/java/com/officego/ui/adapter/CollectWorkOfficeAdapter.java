@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.view.RoundImageView;
 import com.officego.commonlib.view.dialog.CommonDialog;
@@ -53,6 +54,7 @@ public class CollectWorkOfficeAdapter extends CommonListAdapter<CollectHouseBean
         tvHouseName.setText(bean.getBuildingName());
         tvLocation.setText(bean.getBusinessDistrict());
         Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getMainPic()).into(ivItemListChild);
+        holder.setText(R.id.tv_type, bean.getBtype() == Constants.TYPE_BUILDING ? "写字楼" : "共享办公");
         //"officeType": 1是独立办公室，2是开放工位
         if (TextUtils.equals("1", bean.getOfficeType())) {
             tvIsIndependentOffice.setVisibility(View.VISIBLE);

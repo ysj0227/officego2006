@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.view.LabelsView;
 import com.officego.commonlib.view.dialog.CommonDialog;
@@ -60,6 +61,7 @@ public class CollectOfficeBuildingAdapter extends CommonListAdapter<CollectBuild
         } else {
             tvBus.setVisibility(View.GONE);
         }
+        holder.setText(R.id.tv_type, bean.getBtype() == Constants.TYPE_BUILDING ? "写字楼" : "共享办公");
         holder.setText(R.id.tv_km, bean.getDistance());
         TextView price = holder.getView(R.id.tv_price);
         TextView unit = holder.getView(R.id.tv_unit);

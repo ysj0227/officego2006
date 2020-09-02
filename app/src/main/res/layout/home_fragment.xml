@@ -42,7 +42,8 @@
                         app:image_scale_type="center_crop"
                         app:indicator_drawable_selected="@mipmap/ic_banner_point_selected"
                         app:indicator_drawable_unselected="@mipmap/ic_banner_point_unselected"
-                        app:indicator_width="@dimen/dp_8"
+                        app:indicator_width="@dimen/dp_10"
+                        app:indicator_height="@dimen/dp_10"
                         app:title_height="@dimen/dp_8" />
 
                     <!-- inside search-->

@@ -1,6 +1,7 @@
 package com.officego.ui.home.contract;
 
 import com.officego.commonlib.base.BaseView;
+import com.officego.ui.home.model.BannerBean;
 import com.officego.ui.home.model.BuildingBean;
 
 import java.util.List;
@@ -16,7 +17,7 @@ public interface HomeContract {
 
         void endRefresh();
 
-        void bannerListSuccess(List<String> bannerList);
+        void bannerListSuccess(List<String> bannerList,List<BannerBean.DataBean> data);
 
         void BuildingListSuccess(List<BuildingBean.ListBean> list, boolean hasMore);
 

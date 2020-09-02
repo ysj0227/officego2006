@@ -807,7 +807,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             currentAreaValue = mConditionBean.getArea();
             ivClearSetArea.setOnClickListener(v -> {
                 showAllAreaView();//显示全部的面积view
-                mConditionBean.setArea("");
+//                mConditionBean.setArea("");
                 currentAreaValue = "";
                 childList.clear();
                 mPresenter.getBuildingSelectList(pageNum, String.valueOf(mBuildingBean.getBtype()),

@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.officego.commonlib.R;
+import com.officego.commonlib.utils.ToastUtils;
 import com.officego.commonlib.view.LabelsView;
 import com.officego.commonlib.view.RoundImageView;
 
@@ -85,7 +86,7 @@ public class BuildingProvider extends IContainerItemProvider.MessageProvider<Bui
 
     @Override  //点击你的自定义消息执行的操作
     public void onItemClick(View view, int i, BuildingInfo info, UIMessage uiMessage) {
-
+        ToastUtils.toastForShort(context,"暂未开通");
     }
 
     class BuildingHolder {
