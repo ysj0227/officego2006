@@ -30,6 +30,8 @@ import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
+import com.officego.commonlib.common.model.BuildingIdBundleBean;
+import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.GlideUtils;
@@ -51,7 +53,6 @@ import com.officego.ui.home.contract.BuildingDetailsJointWorkContract;
 import com.officego.ui.home.model.BuildingConditionItem;
 import com.officego.ui.home.model.BuildingDetailsBean;
 import com.officego.ui.home.model.BuildingDetailsChildBean;
-import com.officego.ui.home.model.BuildingIdBundleBean;
 import com.officego.ui.home.model.BuildingJointWorkBean;
 import com.officego.ui.home.model.ChatsBean;
 import com.officego.ui.home.model.ConditionBean;
@@ -312,6 +313,9 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         tvIndependentOffice.setVisibility(View.VISIBLE);
         ctlShareService.setVisibility(View.VISIBLE);
         mConditionBean = ConditionConfig.mConditionBean;
+        if (BundleUtils.buildingBean(this)!=null){//聊天插入楼盘点击
+            mBuildingBean=BundleUtils.buildingBean(this);
+        }
         initIndependentBuildingRecView();
         centerPlayIsShow(true);
         initVideo();

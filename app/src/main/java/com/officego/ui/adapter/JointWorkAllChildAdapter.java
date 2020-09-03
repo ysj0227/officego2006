@@ -13,7 +13,7 @@ import com.officego.commonlib.ViewHolder;
 import com.officego.commonlib.constant.Constants;
 import com.officego.ui.home.BuildingDetailsJointWorkChildActivity_;
 import com.officego.ui.home.model.BuildingDetailsChildBean;
-import com.officego.ui.home.utils.BundleUtils;
+import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.view.RoundImageView;
 import com.officego.commonlib.utils.GlideUtils;
 

@@ -20,7 +20,7 @@ import com.officego.model.LabelBean;
 import com.officego.ui.collect.model.CollectBuildingBean;
 import com.officego.ui.home.BuildingDetailsActivity_;
 import com.officego.ui.home.BuildingDetailsJointWorkActivity_;
-import com.officego.ui.home.utils.BundleUtils;
+import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.utils.GlideUtils;
 
 import java.util.ArrayList;

@@ -94,7 +94,8 @@ public class OfficegoApi {
      * 获取大楼详情
      */
     public void getChatHouseDetails(int buildingId, int houseId, String targetId, RetrofitCallback<ChatHouseBean> callback) {
-        LogCat.e(TAG, "token=" + SpUtils.getSignToken() + " uid=" + targetId +
+        LogCat.e(TAG, "token=" + SpUtils.getSignToken() +
+                " uid=" + targetId +
                 " buildingId=" +( buildingId == 0 ? "" : buildingId )+
                 " houseId=" + (houseId == 0 ? "" : String.valueOf(houseId)));
         Map<String, RequestBody> map = new HashMap<>();
@@ -110,7 +111,6 @@ public class OfficegoApi {
     /**
      * 重新获取融云token
      *
-     * @param callback
      */
     public void getRongCloudToken(RetrofitCallback<Object> callback) {
         Map<String, RequestBody> map = new HashMap<>();

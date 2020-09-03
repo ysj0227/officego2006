@@ -27,6 +27,8 @@ import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.model.HouseIdBundleBean;
+import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.GlideUtils;
@@ -37,7 +39,6 @@ import com.officego.h5.WebViewVRActivity_;
 import com.officego.model.ShareBean;
 import com.officego.ui.home.contract.BuildingDetailsChildJointWorkContract;
 import com.officego.ui.home.model.ChatsBean;
-import com.officego.ui.home.model.HouseIdBundleBean;
 import com.officego.ui.home.model.HouseOfficeDetailsJointWorkBean;
 import com.officego.ui.home.presenter.BuildingDetailsChildJointWorkPresenter;
 import com.officego.ui.login.LoginActivity_;
@@ -219,17 +220,21 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         StatusBarUtils.setStatusBarFullTransparent(this);
         mPresenter = new BuildingDetailsChildJointWorkPresenter(context);
         mPresenter.attachView(this);
+        rlRootHouseTitle.setPadding(0, CommonHelper.statusHeight(this), 0, 0);
         setImageViewLayoutParams(context, ivPattern);
+        if (BundleUtils.houseBean(this)!=null){//聊天插入楼盘点击
+            mChildHouseBean=BundleUtils.houseBean(this);
+        }
         centerPlayIsShow(true);
         initVideo();
         nsvView.setOnScrollChangeListener(this);
-        rlRootHouseTitle.setPadding(0, CommonHelper.statusHeight(this), 0, 0);
         tvIndependentOffice.setVisibility(View.GONE);//独立办公室title
         rlCharacteristic.setVisibility(View.GONE);//网点无特色
         if (mChildHouseBean != null) {
             mPresenter.getDetails(String.valueOf(mChildHouseBean.getBtype()), String.valueOf(mChildHouseBean.getHouseId()));
         }
         //神策
+        assert mChildHouseBean != null;
         SensorsTrack.visitHouseDataPage(String.valueOf(mChildHouseBean.getHouseId()));
     }
 

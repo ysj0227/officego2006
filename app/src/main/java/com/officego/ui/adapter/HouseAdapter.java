@@ -21,7 +21,7 @@ import com.officego.ui.home.BuildingDetailsActivity_;
 import com.officego.ui.home.BuildingDetailsJointWorkActivity_;
 import com.officego.ui.home.model.BuildingBean;
 import com.officego.ui.home.model.ConditionBean;
-import com.officego.ui.home.utils.BundleUtils;
+import com.officego.commonlib.common.model.utils.BundleUtils;
 
 import java.util.ArrayList;
 import java.util.List;

@@ -290,8 +290,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements Home
     public void userInfoSuccess(UserOwnerBean data) {
         if (isIdentity(data)) {
             tvScan.setVisibility(View.GONE);
-            if (data.getAuditStatus() == -1) {
-                //未认证
+            if (data.getAuditStatus() == -1) { //未认证
                 SelectIdActivity_.intent(getContext()).start();
             } else {
                 new UnIdifyDialog(mActivity, data);

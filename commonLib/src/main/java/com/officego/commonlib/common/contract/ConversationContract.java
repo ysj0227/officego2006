@@ -27,7 +27,7 @@ public interface ConversationContract {
     }
 
     interface Presenter {
-        void getHouseDetails(int buildingId, int houseId, String targetId);
+        void firstChatApp(int buildingId, int houseId, String getHouseChatId);
 
         void exchangeContactsVerification(String targetId);
 

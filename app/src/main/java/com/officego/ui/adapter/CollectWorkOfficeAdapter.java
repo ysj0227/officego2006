@@ -20,7 +20,7 @@ import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.ui.collect.model.CollectHouseBean;
 import com.officego.ui.home.BuildingDetailsChildActivity_;
 import com.officego.ui.home.BuildingDetailsJointWorkChildActivity_;
-import com.officego.ui.home.utils.BundleUtils;
+import com.officego.commonlib.common.model.utils.BundleUtils;
 
 import java.util.List;
 

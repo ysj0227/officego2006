@@ -30,7 +30,7 @@ import com.officego.ui.home.model.BannerBean;
 import com.officego.ui.home.model.BuildingBean;
 import com.officego.ui.home.model.ConditionBean;
 import com.officego.ui.home.presenter.HomePresenter;
-import com.officego.ui.home.utils.BundleUtils;
+import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.utils.AppBarStateChangeListener;
 import com.officego.utils.ImageLoaderUtils;
 import com.youth.banner.Banner;

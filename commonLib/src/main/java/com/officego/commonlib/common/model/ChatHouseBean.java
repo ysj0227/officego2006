@@ -43,7 +43,16 @@ public class ChatHouseBean {
     private boolean IsFavorite;
     @SerializedName("isChat")
     private int isChat;
+    @SerializedName("house")
+    private HouseBean house;
 
+    public HouseBean getHouse() {
+        return house;
+    }
+
+    public void setHouse(HouseBean house) {
+        this.house = house;
+    }
     public int getIsBuildOrHouse() {
         return isBuildOrHouse;
     }
@@ -452,6 +461,271 @@ public class ChatHouseBean {
              * dictValue : 1
              * dictImg : null
              * dictCname : 星巴克
+             * dictImgBlack : null
+             */
+
+            @SerializedName("dictValue")
+            private int dictValue;
+            @SerializedName("dictImg")
+            private Object dictImg;
+            @SerializedName("dictCname")
+            private String dictCname;
+            @SerializedName("dictImgBlack")
+            private Object dictImgBlack;
+
+            public int getDictValue() {
+                return dictValue;
+            }
+
+            public void setDictValue(int dictValue) {
+                this.dictValue = dictValue;
+            }
+
+            public Object getDictImg() {
+                return dictImg;
+            }
+
+            public void setDictImg(Object dictImg) {
+                this.dictImg = dictImg;
+            }
+
+            public String getDictCname() {
+                return dictCname;
+            }
+
+            public void setDictCname(String dictCname) {
+                this.dictCname = dictCname;
+            }
+
+            public Object getDictImgBlack() {
+                return dictImgBlack;
+            }
+
+            public void setDictImgBlack(Object dictImgBlack) {
+                this.dictImgBlack = dictImgBlack;
+            }
+        }
+    }
+
+    public static class HouseBean {
+        /**
+         * houseId : 17189
+         * address : 金科路
+         * distance :
+         * btype : 1
+         * latitude : 31.204213
+         * dictCname : 毛坯
+         * tags : [{"dictValue":4,"dictImg":null,"dictCname":"金牌物业","dictImgBlack":null},{"dictValue":5,"dictImg":null,"dictCname":"区域地标","dictImgBlack":null}]
+         * buildingId : 8649
+         * buildingName : 王者峡谷1
+         * houseName : 10.0m²•毛坯•王者峡谷1
+         * minSinglePrice : 1200
+         * stationNames : ["金科路"]
+         * maxArea : 10
+         * district : 浦东新区-其他
+         * mainPic : https://img.officego.com/test/1597038923768.jpg?x-oss-process=style/small
+         * stationline : ["2"]
+         * nearbySubwayTime : ["1"]
+         * officeType : 1
+         * longitude : 121.601989
+         */
+
+        @SerializedName("houseId")
+        private int houseId;
+        @SerializedName("address")
+        private String address;
+        @SerializedName("distance")
+        private String distance;
+        @SerializedName("btype")
+        private int btype;
+        @SerializedName("latitude")
+        private String latitude;
+        @SerializedName("dictCname")
+        private String dictCname;
+        @SerializedName("buildingId")
+        private int buildingId;
+        @SerializedName("buildingName")
+        private String buildingName;
+        @SerializedName("houseName")
+        private String houseName;
+        @SerializedName("minSinglePrice")
+        private Object minSinglePrice;
+        @SerializedName("maxArea")
+        private Object maxArea;
+        @SerializedName("district")
+        private String district;
+        @SerializedName("mainPic")
+        private String mainPic;
+        @SerializedName("officeType")
+        private int officeType;
+        @SerializedName("longitude")
+        private String longitude;
+        @SerializedName("tags")
+        private List<TagsBeanX> tags;
+        @SerializedName("stationNames")
+        private List<String> stationNames;
+        @SerializedName("stationline")
+        private List<String> stationline;
+        @SerializedName("nearbySubwayTime")
+        private List<String> nearbySubwayTime;
+
+        public int getHouseId() {
+            return houseId;
+        }
+
+        public void setHouseId(int houseId) {
+            this.houseId = houseId;
+        }
+
+        public String getAddress() {
+            return address;
+        }
+
+        public void setAddress(String address) {
+            this.address = address;
+        }
+
+        public String getDistance() {
+            return distance;
+        }
+
+        public void setDistance(String distance) {
+            this.distance = distance;
+        }
+
+        public int getBtype() {
+            return btype;
+        }
+
+        public void setBtype(int btype) {
+            this.btype = btype;
+        }
+
+        public String getLatitude() {
+            return latitude;
+        }
+
+        public void setLatitude(String latitude) {
+            this.latitude = latitude;
+        }
+
+        public String getDictCname() {
+            return dictCname;
+        }
+
+        public void setDictCname(String dictCname) {
+            this.dictCname = dictCname;
+        }
+
+        public int getBuildingId() {
+            return buildingId;
+        }
+
+        public void setBuildingId(int buildingId) {
+            this.buildingId = buildingId;
+        }
+
+        public String getBuildingName() {
+            return buildingName;
+        }
+
+        public void setBuildingName(String buildingName) {
+            this.buildingName = buildingName;
+        }
+
+        public String getHouseName() {
+            return houseName;
+        }
+
+        public void setHouseName(String houseName) {
+            this.houseName = houseName;
+        }
+
+        public Object getMinSinglePrice() {
+            return minSinglePrice;
+        }
+
+        public void setMinSinglePrice(Object minSinglePrice) {
+            this.minSinglePrice = minSinglePrice;
+        }
+
+        public Object getMaxArea() {
+            return maxArea;
+        }
+
+        public void setMaxArea(Object maxArea) {
+            this.maxArea = maxArea;
+        }
+
+        public String getDistrict() {
+            return district;
+        }
+
+        public void setDistrict(String district) {
+            this.district = district;
+        }
+
+        public String getMainPic() {
+            return mainPic;
+        }
+
+        public void setMainPic(String mainPic) {
+            this.mainPic = mainPic;
+        }
+
+        public int getOfficeType() {
+            return officeType;
+        }
+
+        public void setOfficeType(int officeType) {
+            this.officeType = officeType;
+        }
+
+        public String getLongitude() {
+            return longitude;
+        }
+
+        public void setLongitude(String longitude) {
+            this.longitude = longitude;
+        }
+
+        public List<TagsBeanX> getTags() {
+            return tags;
+        }
+
+        public void setTags(List<TagsBeanX> tags) {
+            this.tags = tags;
+        }
+
+        public List<String> getStationNames() {
+            return stationNames;
+        }
+
+        public void setStationNames(List<String> stationNames) {
+            this.stationNames = stationNames;
+        }
+
+        public List<String> getStationline() {
+            return stationline;
+        }
+
+        public void setStationline(List<String> stationline) {
+            this.stationline = stationline;
+        }
+
+        public List<String> getNearbySubwayTime() {
+            return nearbySubwayTime;
+        }
+
+        public void setNearbySubwayTime(List<String> nearbySubwayTime) {
+            this.nearbySubwayTime = nearbySubwayTime;
+        }
+
+        public static class TagsBeanX {
+            /**
+             * dictValue : 4
+             * dictImg : null
+             * dictCname : 金牌物业
              * dictImgBlack : null
              */
 

@@ -24,4 +24,25 @@ public class HouseTags {
         }
         return key.toString();
     }
+
+    /**
+     * 聊天楼盘tags
+     *
+     * @param data data
+     * @return String
+     */
+    public static String getHouseTags(ChatHouseBean data) {
+        StringBuilder key = new StringBuilder();
+        for (int i = 0; i < data.getHouse().getTags().size(); i++) {
+            if (data.getHouse().getTags().size() == 1) {
+                key.append(data.getHouse().getTags().get(i).getDictCname());
+            } else {
+                key.append(data.getHouse().getTags().get(i).getDictCname()).append(",");
+            }
+        }
+        if (data.getHouse().getTags().size() > 1) {
+            key = key.replace(key.length() - 1, key.length(), "");
+        }
+        return key.toString();
+    }
 }

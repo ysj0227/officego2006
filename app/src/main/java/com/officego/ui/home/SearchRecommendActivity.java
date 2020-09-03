@@ -28,7 +28,7 @@ import com.officego.ui.home.contract.SearchContract;
 import com.officego.ui.home.model.QueryHistoryKeywordsBean;
 import com.officego.ui.home.model.SearchListBean;
 import com.officego.ui.home.presenter.SearchKeywordsPresenter;
-import com.officego.ui.home.utils.BundleUtils;
+import com.officego.commonlib.common.model.utils.BundleUtils;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;

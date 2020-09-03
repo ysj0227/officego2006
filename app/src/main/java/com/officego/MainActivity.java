@@ -31,7 +31,7 @@ import com.officego.ui.home.BuildingDetailsChildActivity_;
 import com.officego.ui.home.BuildingDetailsJointWorkActivity_;
 import com.officego.ui.home.BuildingDetailsJointWorkChildActivity_;
 import com.officego.ui.home.HomeFragment_;
-import com.officego.ui.home.utils.BundleUtils;
+import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.ui.message.MessageFragment_;
 import com.officego.ui.mine.MineFragment_;
 import com.officego.utils.GotoActivityUtils;

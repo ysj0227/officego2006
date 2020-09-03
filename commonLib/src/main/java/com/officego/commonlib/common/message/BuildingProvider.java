@@ -6,7 +6,9 @@ package com.officego.commonlib.common.message;
  * Descriptions:
  **/
 
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -17,7 +19,9 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.officego.commonlib.R;
-import com.officego.commonlib.utils.ToastUtils;
+import com.officego.commonlib.common.model.utils.BundleUtils;
+import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.LabelsView;
 import com.officego.commonlib.view.RoundImageView;
 
@@ -86,7 +90,34 @@ public class BuildingProvider extends IContainerItemProvider.MessageProvider<Bui
 
     @Override  //点击你的自定义消息执行的操作
     public void onItemClick(View view, int i, BuildingInfo info, UIMessage uiMessage) {
-        ToastUtils.toastForShort(context,"暂未开通");
+        gotoDetailsActivity(context, info);
+    }
+
+    //插入消息点击进入详情
+    private void gotoDetailsActivity(Context context, BuildingInfo info) {
+        ComponentName comp;
+        Intent intent = new Intent();
+        if (info.getIsBuildOrHouse() == 1) {//楼盘网点
+            if (Constants.TYPE_BUILDING == info.getBtype()) {
+                comp = new ComponentName(context, "com.officego.ui.home.BuildingDetailsActivity_");
+            } else {
+                comp = new ComponentName(context, "com.officego.ui.home.BuildingDetailsJointWorkActivity_");
+            }
+            LogCat.e("TAG","1111111111111 btype="+info.getBtype()+"  getBuildingId="+info.getBuildingId());
+            intent.putExtra("conversationBuilding", BundleUtils.BuildingMessage(info.getBtype(), info.getBuildingId()));
+        } else {//房源
+            if (Constants.TYPE_BUILDING == info.getBtype()) {
+                comp = new ComponentName(context, "com.officego.ui.home.BuildingDetailsChildActivity_");
+            } else {
+                comp = new ComponentName(context, "com.officego.ui.home.BuildingDetailsJointWorkChildActivity_");
+            }
+            LogCat.e("TAG","1111111111111 btype="+info.getBtype()+"  getBuildingId="+info.getHouseId());
+            intent.putExtra("conversationHouse", BundleUtils.houseMessage(info.getBtype(), info.getHouseId()));
+        }
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setComponent(comp);
+        intent.setAction("android.intent.action.VIEW");
+        context.startActivity(intent);
     }
 
     class BuildingHolder {

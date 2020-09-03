@@ -22,33 +22,42 @@ public class BuildingInfo extends MessageContent {
     private String buildingName;
     private String distance;
     private String createTime;
-    private boolean isFavorite;
     private String minSinglePrice;//单价
     private String district;//商圈
     private String routeMap;//线路
     private String tags;//特色
     private String imgUrl;//大楼图片
+    private int isBuildOrHouse;//1 楼盘网点 2房源
+    private int btype;
+    private int buildingId;
+    private int houseId;
 
     public static BuildingInfo setBuildingData(String buildingName,
                                                String distance,
                                                String createTime,
-                                               boolean isFavorite,
                                                String minSinglePrice,
                                                String district,
                                                String routeMap,
                                                String tags,
-                                               String imgUrl
+                                               String imgUrl,
+                                               int isBuildOrHouse,
+                                               int btype,
+                                               int buildingId,
+                                               int houseId
     ) {
         BuildingInfo info = new BuildingInfo();
         info.buildingName = buildingName;
         info.distance = distance;
         info.createTime = createTime;
-        info.isFavorite = isFavorite;
         info.minSinglePrice = minSinglePrice;
         info.district = district;
         info.routeMap = routeMap;
         info.tags = tags;
-        info.imgUrl=imgUrl;
+        info.imgUrl = imgUrl;
+        info.isBuildOrHouse = isBuildOrHouse;
+        info.btype = btype;
+        info.buildingId = buildingId;
+        info.houseId = houseId;
         return info;
     }
 
@@ -58,12 +67,15 @@ public class BuildingInfo extends MessageContent {
         object.put("buildingName", buildingName);
         object.put("distance", distance);
         object.put("createTime", createTime);
-        object.put("isFavorite", isFavorite);
         object.put("minSinglePrice", minSinglePrice);
         object.put("district", district);
         object.put("routeMap", routeMap);
         object.put("tags", tags);
         object.put("imgUrl", imgUrl);
+        object.put("isBuildOrHouse", isBuildOrHouse);
+        object.put("btype", btype);
+        object.put("buildingId", buildingId);
+        object.put("houseId", houseId);
         return object.toString().getBytes(StandardCharsets.UTF_8);
     }
 
@@ -78,13 +90,16 @@ public class BuildingInfo extends MessageContent {
             JSONObject object = JSON.parseObject(jsonStr);
             setbuildingName(object.getString("buildingName"));
             setdistance(object.getString("distance"));
-            setFavorite(object.getBoolean("isFavorite"));
             setCreateTime(object.getString("createTime"));
             setMinSinglePrice(object.getString("minSinglePrice"));
             setDistrict(object.getString("district"));
             setRouteMap(object.getString("routeMap"));
             setTags(object.getString("tags"));
             setImgUrl(object.getString("imgUrl"));
+            setIsBuildOrHouse(object.getInteger("isBuildOrHouse"));
+            setBtype(object.getInteger("btype"));
+            setBuildingId(object.getInteger("buildingId"));
+            setHouseId(object.getInteger("houseId"));
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -95,12 +110,15 @@ public class BuildingInfo extends MessageContent {
         ParcelUtils.writeToParcel(dest, buildingName);
         ParcelUtils.writeToParcel(dest, distance);
         ParcelUtils.writeToParcel(dest, createTime);
-        ParcelUtils.writeToParcel(dest, isFavorite ? 1 : 0);
         ParcelUtils.writeToParcel(dest, minSinglePrice);
         ParcelUtils.writeToParcel(dest, district);
         ParcelUtils.writeToParcel(dest, routeMap);
         ParcelUtils.writeToParcel(dest, tags);
         ParcelUtils.writeToParcel(dest, imgUrl);
+        ParcelUtils.writeToParcel(dest, isBuildOrHouse);
+        ParcelUtils.writeToParcel(dest, btype);
+        ParcelUtils.writeToParcel(dest, buildingId);
+        ParcelUtils.writeToParcel(dest, houseId);
     }
 
     public static final Creator<BuildingInfo> CREATOR = new Creator<BuildingInfo>() {
@@ -121,12 +139,15 @@ public class BuildingInfo extends MessageContent {
         buildingName = ParcelUtils.readFromParcel(parcel);
         distance = ParcelUtils.readFromParcel(parcel);
         createTime = ParcelUtils.readFromParcel(parcel);
-        isFavorite = ParcelUtils.readIntFromParcel(parcel) == 1;
         minSinglePrice = ParcelUtils.readFromParcel(parcel);
         district = ParcelUtils.readFromParcel(parcel);
         routeMap = ParcelUtils.readFromParcel(parcel);
         tags = ParcelUtils.readFromParcel(parcel);
         imgUrl = ParcelUtils.readFromParcel(parcel);
+        isBuildOrHouse = ParcelUtils.readIntFromParcel(parcel);
+        btype = ParcelUtils.readIntFromParcel(parcel);
+        buildingId = ParcelUtils.readIntFromParcel(parcel);
+        houseId = ParcelUtils.readIntFromParcel(parcel);
     }
 
 
@@ -167,14 +188,6 @@ public class BuildingInfo extends MessageContent {
         this.createTime = createTime;
     }
 
-    public boolean isFavorite() {
-        return isFavorite;
-    }
-
-    public void setFavorite(boolean favorite) {
-        isFavorite = favorite;
-    }
-
     public String getMinSinglePrice() {
         return minSinglePrice;
     }
@@ -205,5 +218,37 @@ public class BuildingInfo extends MessageContent {
 
     public void setImgUrl(String imgUrl) {
         this.imgUrl = imgUrl;
+    }
+
+    public int getIsBuildOrHouse() {
+        return isBuildOrHouse;
+    }
+
+    public void setIsBuildOrHouse(int isBuildOrHouse) {
+        this.isBuildOrHouse = isBuildOrHouse;
+    }
+
+    public int getBtype() {
+        return btype;
+    }
+
+    public void setBtype(int btype) {
+        this.btype = btype;
+    }
+
+    public int getHouseId() {
+        return houseId;
+    }
+
+    public void setHouseId(int houseId) {
+        this.houseId = houseId;
+    }
+
+    public int getBuildingId() {
+        return buildingId;
+    }
+
+    public void setBuildingId(int buildingId) {
+        this.buildingId = buildingId;
     }
 }
