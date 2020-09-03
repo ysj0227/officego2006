@@ -85,14 +85,8 @@ public class MessageFragment extends BaseFragment {
         }
         //神策
         SensorsTrack.login();
-        LoginActivity_.intent(mActivity).isTenantGotoLogin(true).startForResult(REQUEST_CODE);
-    }
-
-    @OnActivityResult(REQUEST_CODE)
-    void onAvatarResult(int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            initIm();
-        }
+        //登录
+        LoginActivity_.intent(mActivity).start();
     }
 
     //初始化聊天列表

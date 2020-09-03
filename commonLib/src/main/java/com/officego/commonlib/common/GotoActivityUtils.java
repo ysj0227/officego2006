@@ -41,15 +41,6 @@ public class GotoActivityUtils {
         context.startActivity(intent);
     }
 
-    public static void loginActivity(Activity context, int code) {
-        ComponentName comp = new ComponentName(context, "com.officego.ui.login.LoginActivity_");
-        Intent intent = new Intent();
-        intent.putExtra("isReOwnerLogin", true);
-        intent.setComponent(comp);
-        intent.setAction("android.intent.action.VIEW");
-        context.startActivityForResult(intent, code);
-    }
-
     public static void mainActivity(Context context) {
         ComponentName comp = new ComponentName(context, "com.officego.MainActivity_");
         Intent intent = new Intent();

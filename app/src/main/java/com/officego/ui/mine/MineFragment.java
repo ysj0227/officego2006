@@ -76,7 +76,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
 
     private boolean isToLogin() {
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
-            LoginActivity_.intent(mActivity).isTenantGotoLogin(true).startForResult(REQUEST_CODE_LOGIN);
+            LoginActivity_.intent(mActivity).start();
             return true;
         }
         return false;
@@ -98,14 +98,8 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         }
         //神策
         SensorsTrack.login();
-        LoginActivity_.intent(mActivity).isTenantGotoLogin(true).startForResult(REQUEST_CODE_LOGIN);
-    }
-
-    @OnActivityResult(REQUEST_CODE_LOGIN)
-    void onLoginResult(int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            mPresenter.getUserInfo();
-        }
+        //登录
+        LoginActivity_.intent(mActivity).start();
     }
 
     @Click(R.id.iv_setting)

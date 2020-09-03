@@ -79,18 +79,18 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <!--            <intent-filter>-->
-            <!--                &lt;!&ndash; web或js打开本地APP 协议部分，自定义设置 &ndash;&gt;-->
-            <!--                <data-->
-            <!--                    android:host="officego"-->
-            <!--                    android:path="/app"-->
-            <!--                    android:port="8080"-->
-            <!--                    android:scheme="url" />-->
-            <!--                <action android:name="android.intent.action.VIEW" />-->
+<!--            <intent-filter>-->
+<!--                &lt;!&ndash; web或js打开本地APP 协议部分，自定义设置 &ndash;&gt;-->
+<!--                <data-->
+<!--                    android:host="officego"-->
+<!--                    android:path="/app"-->
+<!--                    android:port="8080"-->
+<!--                    android:scheme="url" />-->
+<!--                <action android:name="android.intent.action.VIEW" />-->
 
-            <!--                <category android:name="android.intent.category.DEFAULT" />-->
-            <!--                <category android:name="android.intent.category.BROWSABLE" />-->
-            <!--            </intent-filter>-->
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+<!--                <category android:name="android.intent.category.BROWSABLE" />-->
+<!--            </intent-filter>-->
         </activity>
 
         <activity
