@@ -18,7 +18,6 @@ import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.ui.login.LoginActivity_;
 
 import org.androidannotations.annotations.AfterViews;
@@ -28,10 +27,7 @@ import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
-import java.util.List;
-
 import io.rong.imkit.fragment.ConversationListFragment;
-import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 
 import static android.app.Activity.RESULT_OK;
@@ -89,47 +85,27 @@ public class MessageFragment extends BaseFragment {
         }
         //神策
         SensorsTrack.login();
-        LoginActivity_.intent(mActivity).isGotoLogin(true).startForResult(REQUEST_CODE);
+        //登录
+        LoginActivity_.intent(mActivity).start();
     }
 
-    @OnActivityResult(REQUEST_CODE)
-    void onAvatarResult(int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            initIm();
-        }
-    }
+    //初始化聊天列表
+    private ConversationListFragment fragment;
 
-    /**
-     * 初始化聊天列表
-     */
     private void initIm() {
-        ConversationListFragment fragment = new ConversationListFragment();
-        Uri uri = Uri.parse("rong://" + mActivity.getApplicationInfo().packageName).buildUpon()
-                .appendPath("conversationlist")
-                .appendQueryParameter(Conversation.ConversationType.PRIVATE.getName(), "false") //设置私聊会话，该会话聚合显示
-//                .appendQueryParameter(Conversation.ConversationType.GROUP.getName(), "false")//设置群组会话，该会话非聚合显示
-                .appendQueryParameter(Conversation.ConversationType.SYSTEM.getName(), "false")//设置群组会话，该会话非聚合显示
-                .build();
-        fragment.setUri(uri);
+        if (fragment == null) {
+            fragment = new ConversationListFragment();
+            Uri uri = Uri.parse("rong://" + mActivity.getApplicationInfo().packageName).buildUpon()
+                    .appendPath("conversationlist")
+                    .appendQueryParameter(Conversation.ConversationType.PRIVATE.getName(), "false") //设置私聊会话，该会话聚合显示
+                    .appendQueryParameter(Conversation.ConversationType.SYSTEM.getName(), "false")//设置群组会话，该会话非聚合显示
+                    .build();
+            fragment.setUri(uri);
 
-        FragmentTransaction transaction = mActivity.getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.conversationlist, fragment);
-        transaction.commit();
-//        getList();
-    }
-
-    private void getList() {
-        RongIMClient.getInstance().getConversationListByPage(new RongIMClient.ResultCallback<List<Conversation>>() {
-            @Override
-            public void onSuccess(List<Conversation> conversations) {
-                LogCat.e(TAG, "1111111111111  getConversationListByPage=" + (conversations == null ? 0 : conversations.size()));
-            }
-
-            @Override
-            public void onError(RongIMClient.ErrorCode errorCode) {
-                LogCat.e(TAG, "1111111111111  getConversationListByPage error getMessage=" + errorCode.getMessage() + " getValue=" + errorCode.getValue());
-            }
-        }, System.currentTimeMillis() / 1000, 10, Conversation.ConversationType.PRIVATE);
+            FragmentTransaction transaction = mActivity.getSupportFragmentManager().beginTransaction();
+            transaction.add(R.id.conversationlist, fragment);
+            transaction.commit();
+        }
     }
 
     @Override

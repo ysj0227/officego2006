@@ -12,12 +12,22 @@
         android:layout_marginTop="@dimen/dp_13">
 
         <com.officego.commonlib.view.RoundImageView
-            android:scaleType="centerCrop"
             android:id="@+id/iv_item_list_child"
             android:layout_width="@dimen/dp_88"
             android:layout_height="@dimen/dp_88"
             android:background="@color/transparent"
+            android:scaleType="centerCrop"
             tools:ignore="ContentDescription" />
+
+        <TextView
+            android:id="@+id/tv_type"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:paddingLeft="@dimen/dp_2"
+            android:paddingRight="@dimen/dp_2"
+            android:background="@drawable/text_label_blue_no_stroke"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_10" />
 
         <TextView
             android:id="@+id/tv_is_independent_office"

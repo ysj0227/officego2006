@@ -11,6 +11,7 @@ import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.view.LabelsView;
@@ -20,7 +21,7 @@ import com.officego.ui.home.BuildingDetailsActivity_;
 import com.officego.ui.home.BuildingDetailsJointWorkActivity_;
 import com.officego.ui.home.model.BuildingBean;
 import com.officego.ui.home.model.ConditionBean;
-import com.officego.ui.home.utils.BundleUtils;
+import com.officego.commonlib.common.model.utils.BundleUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -75,6 +76,7 @@ public class HouseAdapter extends CommonListAdapter<BuildingBean.ListBean> {
             line = "";
         }
         tvBus.setText(line);
+        holder.setText(R.id.tv_type, bean.getBtype() == Constants.TYPE_BUILDING ? "写字楼" : "共享办公");
         holder.setText(R.id.tv_km, bean.getDistance());
         TextView price = holder.getView(R.id.tv_price);
         TextView unit = holder.getView(R.id.tv_unit);
@@ -164,10 +166,10 @@ public class HouseAdapter extends CommonListAdapter<BuildingBean.ListBean> {
             itemListener.listItemClick(holder.getAdapterPosition(), bean.getId(), bean.getBtype());
             if (bean.getBtype() == 1) {
                 BuildingDetailsActivity_.intent(context).mConditionBean(conditionBean)
-                        .mBuildingBean(BundleUtils.BuildingMessage(1, bean.getId())).start();
+                        .mBuildingBean(BundleUtils.BuildingMessage(Constants.TYPE_BUILDING, bean.getId())).start();
             } else {
                 BuildingDetailsJointWorkActivity_.intent(context).mConditionBean(conditionBean)
-                        .mBuildingBean(BundleUtils.BuildingMessage(2, bean.getId())).start();
+                        .mBuildingBean(BundleUtils.BuildingMessage(Constants.TYPE_JOINTWORK, bean.getId())).start();
             }
         });
     }

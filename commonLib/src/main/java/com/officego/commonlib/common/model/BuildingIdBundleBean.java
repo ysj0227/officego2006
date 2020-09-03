@@ -1,4 +1,4 @@
-package com.officego.ui.home.model;
+package com.officego.commonlib.common.model;
 
 import java.io.Serializable;
 

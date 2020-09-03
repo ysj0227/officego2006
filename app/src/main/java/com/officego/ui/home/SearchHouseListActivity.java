@@ -25,6 +25,7 @@ import com.officego.commonlib.view.ClearableEditText;
 import com.officego.config.ConditionConfig;
 import com.officego.ui.adapter.HouseAdapter;
 import com.officego.ui.home.contract.HomeContract;
+import com.officego.ui.home.model.BannerBean;
 import com.officego.ui.home.model.BuildingBean;
 import com.officego.ui.home.model.ConditionBean;
 import com.officego.ui.home.presenter.HomePresenter;
@@ -379,8 +380,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
     }
 
     @Override
-    public void bannerListSuccess(List<String> bannerList) {
-
+    public void bannerListSuccess(List<String> bannerList, List<BannerBean.DataBean> data) {
     }
 
     private ConditionBean setConditionBean() {

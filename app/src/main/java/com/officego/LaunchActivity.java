@@ -12,7 +12,6 @@ import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.ui.IdSelectActivity_;
 import com.officego.ui.login.LoginActivity_;
 
 
@@ -41,14 +40,10 @@ public class LaunchActivity extends BaseActivity
         if (TextUtils.isEmpty(SpUtils.getLead())) {
             LeadPagesActivity_.intent(context).start();
         } else {
-            if (!TextUtils.isEmpty(SpUtils.getRole())) {
-                if (TextUtils.equals(Constants.TYPE_TENANT, SpUtils.getRole())) {
-                    MainActivity_.intent(context).start();
-                } else {
-                    LoginActivity_.intent(context).start();
-                }
+            if (TextUtils.equals(Constants.TYPE_OWNER, SpUtils.getRole())) {
+                LoginActivity_.intent(context).start();
             } else {
-                IdSelectActivity_.intent(context).start();
+                MainActivity_.intent(context).start();
             }
         }
         finish();

@@ -1,7 +1,6 @@
 package com.officego.ui.collect;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.util.TypedValue;
@@ -34,13 +33,10 @@ import com.officego.ui.login.LoginActivity_;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by YangShiJie
@@ -143,14 +139,8 @@ public class CollectFragment extends BaseMvpFragment<CollectedPresenter>
         }
         //神策
         SensorsTrack.login();
-        LoginActivity_.intent(mActivity).isGotoLogin(true).startForResult(REQUEST_CODE);
-    }
-
-    @OnActivityResult(REQUEST_CODE)
-    void onLoginResult(int resultCode, Intent data) {
-        if (resultCode == RESULT_OK) {
-            setListInit();
-        }
+        //登录
+        LoginActivity_.intent(mActivity).start();
     }
 
     //写字楼/网点

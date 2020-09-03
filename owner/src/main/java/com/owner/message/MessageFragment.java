@@ -42,6 +42,7 @@ public class MessageFragment extends BaseFragment {
     RelativeLayout rlTitle;
     @ViewById(resName = "conversationlist")
     View conversationList;
+    private ConversationListFragment fragment;
 
     @AfterViews
     void init() {
@@ -53,23 +54,22 @@ public class MessageFragment extends BaseFragment {
         initIm();
     }
 
-    /**
-     * 初始化聊天列表
-     */
+    //初始化聊天列表
     private void initIm() {
         conversationList.setVisibility(View.VISIBLE);
-        ConversationListFragment fragment = new ConversationListFragment();
-        Uri uri = Uri.parse("rong://" + mActivity.getApplicationInfo().packageName).buildUpon()
-                .appendPath("conversationlist")
-                .appendQueryParameter(Conversation.ConversationType.PRIVATE.getName(), "false") //设置私聊会话，该会话聚合显示
-//                .appendQueryParameter(Conversation.ConversationType.GROUP.getName(), "false")//设置群组会话，该会话非聚合显示
-                .appendQueryParameter(Conversation.ConversationType.SYSTEM.getName(), "false")//设置群组会话，该会话非聚合显示
-                .build();
-        fragment.setUri(uri);
+        if (fragment == null) {
+            fragment = new ConversationListFragment();
+            Uri uri = Uri.parse("rong://" + mActivity.getApplicationInfo().packageName).buildUpon()
+                    .appendPath("conversationlist")
+                    .appendQueryParameter(Conversation.ConversationType.PRIVATE.getName(), "false") //设置私聊会话，该会话聚合显示
+                    .appendQueryParameter(Conversation.ConversationType.SYSTEM.getName(), "false")//设置群组会话，该会话非聚合显示
+                    .build();
+            fragment.setUri(uri);
 
-        FragmentTransaction transaction = mActivity.getSupportFragmentManager().beginTransaction();
-        transaction.add(R.id.conversationlist, fragment);
-        transaction.commit();
+            FragmentTransaction transaction = mActivity.getSupportFragmentManager().beginTransaction();
+            transaction.add(R.id.conversationlist, fragment);
+            transaction.commit();
+        }
     }
 
     @Override

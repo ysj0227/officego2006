@@ -54,9 +54,9 @@ public class BannerBean {
         @SerializedName("type")
         private int type;
         @SerializedName("pageType")
-        private int pageType;
+        private Object pageType;
         @SerializedName("pageId")
-        private int pageId;
+        private Object pageId;
         @SerializedName("wurl")
         private String wurl;
         @SerializedName("remark")
@@ -118,19 +118,19 @@ public class BannerBean {
             this.type = type;
         }
 
-        public int getPageType() {
+        public Object getPageType() {
             return pageType;
         }
 
-        public void setPageType(int pageType) {
+        public void setPageType(Object pageType) {
             this.pageType = pageType;
         }
 
-        public int getPageId() {
+        public Object getPageId() {
             return pageId;
         }
 
-        public void setPageId(int pageId) {
+        public void setPageId(Object pageId) {
             this.pageId = pageId;
         }
 

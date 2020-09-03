@@ -24,8 +24,10 @@ import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.CircleImage;
 import com.officego.commonlib.view.dialog.CommonDialog;
+import com.owner.R;
 import com.owner.h5.WebViewActivity_;
 import com.owner.identity.IdentityCancelActivity_;
+import com.owner.identity.SelectIdActivity_;
 import com.owner.mine.contract.UserContract;
 import com.owner.mine.model.UserOwnerBean;
 import com.owner.mine.presenter.UserPresenter;
@@ -185,6 +187,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
             RongCloudSetUserInfoUtils.refreshUserInfoCache(SpUtils.getRongChatId(), data.getRealname(), data.getAvatar());
             mUserInfo = data;
             tvIdify.setText(StringIdentity.identityInfo(data));
+            tvIdify.setBackgroundResource(R.drawable.button_corners5_solid_white);
             Glide.with(mActivity).applyDefaultRequestOptions(GlideUtils.avaOoptions()).load(data.getAvatar()).into(civAvatar);
             tvName.setText(data.getProprietorRealname());
             if (TextUtils.isEmpty(data.getProprietorCompany())) {
@@ -195,7 +198,11 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
                         data.getProprietorCompany() + "·" + data.getProprietorJob());
             }
             if (isIdentity()) {
-                new UnIdifyDialog(mActivity, mUserInfo);
+                if (data.getAuditStatus() == -1) {//未认证
+                    SelectIdActivity_.intent(getContext()).start();
+                } else {
+                    new UnIdifyDialog(mActivity, mUserInfo);
+                }
             }
             //1企业2联合 &&管理员显示员工管理  权职0普通员工1管理员 -1无
             if ((data.getIdentityType() == 1 || data.getIdentityType() == 2)
@@ -207,7 +214,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         }
     }
 
-    // 0待审核 1审核通过 2审核未通过 3过期(和2未通过一样处理)
+    // 0待审核 1审核通过 2审核未通过 3过期(和2未通过一样处理) -1 未认证
     private boolean isIdentity() {
         if (mUserInfo != null) {
             return mUserInfo.getAuditStatus() != 0 && mUserInfo.getAuditStatus() != 1;

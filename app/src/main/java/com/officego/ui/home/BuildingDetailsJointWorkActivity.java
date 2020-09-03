@@ -30,6 +30,8 @@ import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
+import com.officego.commonlib.common.model.BuildingIdBundleBean;
+import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.GlideUtils;
@@ -40,6 +42,7 @@ import com.officego.commonlib.view.LabelsView;
 import com.officego.commonlib.view.RoundImageView;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.config.ConditionConfig;
+import com.officego.h5.WebViewVRActivity_;
 import com.officego.model.ShareBean;
 import com.officego.ui.adapter.HouseItemAllAdapter;
 import com.officego.ui.adapter.JointWorkAllChildAdapter;
@@ -50,18 +53,19 @@ import com.officego.ui.home.contract.BuildingDetailsJointWorkContract;
 import com.officego.ui.home.model.BuildingConditionItem;
 import com.officego.ui.home.model.BuildingDetailsBean;
 import com.officego.ui.home.model.BuildingDetailsChildBean;
-import com.officego.ui.home.model.BuildingIdBundleBean;
 import com.officego.ui.home.model.BuildingJointWorkBean;
 import com.officego.ui.home.model.ChatsBean;
 import com.officego.ui.home.model.ConditionBean;
 import com.officego.ui.home.presenter.BuildingDetailsJointWorkPresenter;
 import com.officego.ui.login.LoginActivity_;
 import com.officego.ui.message.ConversationActivity_;
+import com.officego.ui.previewimg.ImageBigActivity_;
 import com.officego.utils.ImageLoaderUtils;
 import com.officego.utils.WeChatUtils;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
+import com.youth.banner.listener.OnBannerListener;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -84,7 +88,8 @@ import tv.danmaku.ijk.media.player.IMediaPlayer;
 @SuppressLint("Registered")
 @EActivity(R.layout.home_activity_house_details)
 public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDetailsJointWorkPresenter>
-        implements BuildingDetailsJointWorkContract.View, NestedScrollView.OnScrollChangeListener,
+        implements OnBannerListener,
+        BuildingDetailsJointWorkContract.View, NestedScrollView.OnScrollChangeListener,
         SeekBar.OnSeekBarChangeListener,
         IMediaPlayer.OnBufferingUpdateListener,
         IMediaPlayer.OnCompletionListener,
@@ -105,6 +110,8 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     @ViewById(R.id.banner_image)
     Banner bannerImage;
     //视频图片切换
+    @ViewById(R.id.rb_vr)
+    RadioButton rbVr;
     @ViewById(R.id.rb_video)
     RadioButton rbVideo;
     @ViewById(R.id.rb_picture)
@@ -191,7 +198,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     TextView tvOpenWorkModelPrice;
     @ViewById(R.id.tv_min_month)
     TextView tvMinMonth;
-    //独立办公室，写字楼 list 查看更多
+    //独立办公室，写字楼
     @ViewById(R.id.rl_independent_office_model)
     RelativeLayout rlIndependentOfficeModel;
     @ViewById(R.id.rl_independent_office_set_area)
@@ -246,41 +253,25 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     TextView tvFavorite;
     //神策是否已读
     private boolean isRead;
-
-    /**
-     * 同步进度
-     */
+    //同步进度
     private static final int MESSAGE_SHOW_PROGRESS = 1;
-    /**
-     * 缓冲进度界限值
-     */
+    //缓冲进度界限值
     private static final int BUFFERING_PROGRESS = 95;
-    /**
-     * 延迟毫秒数
-     */
+    //延迟毫秒数
     private static final int DELAY_MILLIS = 10;
-    /**
-     * 是否在拖动进度条中，默认为停止拖动，true为在拖动中，false为停止拖动
-     */
+    //是否在拖动进度条中，默认为停止拖动，true为在拖动中，false为停止拖动
     private boolean isDragging;
-    /**
-     * 是否暂停，是否静音，是否初始化了截屏
-     */
+    //是否暂停，是否静音，是否初始化了截屏
     private boolean isPaused;
-    /**
-     * 音量
-     */
+    //音量
     private int bufferingUpdate;
     private boolean isSetVideoRate;
     private String videoUrl;
-//    String videoUrl = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
-    /**
-     * 消息处理
-     */
+    //String videoUrl = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
+    //video 消息处理
     private Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
-            //滑动中，同步播放进度
             if (msg.what == MESSAGE_SHOW_PROGRESS) {
                 if (!isDragging) {
                     msg = obtainMessage(MESSAGE_SHOW_PROGRESS, iVideoPlayer.getCurrentPosition());
@@ -322,35 +313,30 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         tvIndependentOffice.setVisibility(View.VISIBLE);
         ctlShareService.setVisibility(View.VISIBLE);
         mConditionBean = ConditionConfig.mConditionBean;
+        if (BundleUtils.buildingBean(this)!=null){//聊天插入楼盘点击
+            mBuildingBean=BundleUtils.buildingBean(this);
+        }
         initIndependentBuildingRecView();
         centerPlayIsShow(true);
         initVideo();
-        //详情
+        getBuildingDetails();
+    }
+
+    private void initIndependentBuildingRecView() {
+        tvIndependentOfficeText.setText("独立办公室");
+        LinearLayoutManager lmHorizontal = new LinearLayoutManager(this);
+        lmHorizontal.setOrientation(LinearLayoutManager.HORIZONTAL);
+        rvHorizontalAll.setLayoutManager(lmHorizontal);
+        rvIndependentOfficeChild.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    private void getBuildingDetails() {
         mPresenter.getBuildingDetails(String.valueOf(mBuildingBean.getBtype()), String.valueOf(mBuildingBean.getBuildingId()),
                 mConditionBean == null || TextUtils.isEmpty(mConditionBean.getAreaValue()) ? "" : mConditionBean.getAreaValue(),
                 mConditionBean == null || TextUtils.isEmpty(mConditionBean.getDayPrice()) ? "" : mConditionBean.getDayPrice(),
                 mConditionBean == null || TextUtils.isEmpty(mConditionBean.getDecoration()) ? "" : mConditionBean.getDecoration(),
                 mConditionBean == null || TextUtils.isEmpty(mConditionBean.getHouseTags()) ? "" : mConditionBean.getHouseTags(),
                 mConditionBean == null || TextUtils.isEmpty(mConditionBean.getSeatsValue()) ? "" : mConditionBean.getSeatsValue());
-    }
-
-    private void initIndependentBuildingRecView() {
-        tvIndependentOfficeText.setText("独立办公室");
-        //parents
-        LinearLayoutManager lmHorizontal = new LinearLayoutManager(this);
-        lmHorizontal.setOrientation(LinearLayoutManager.HORIZONTAL);
-        rvHorizontalAll.setLayoutManager(lmHorizontal);
-        //child
-        rvIndependentOfficeChild.setLayoutManager(new LinearLayoutManager(this));
-    }
-
-    @Click(R.id.btn_back)
-    void backClick() {
-        //神策
-        if (mBuildingBean != null) {
-            SensorsTrack.visitBuildingDataPageComplete(mBuildingBean.getBuildingId(), isRead);
-        }
-        finish();
     }
 
     //初始化中间播放按钮显示
@@ -363,31 +349,64 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         rgVideoPicture.setVisibility(isShow ? View.VISIBLE : View.GONE);
     }
 
+    //是否显示播放vr video按钮
+    private void playButtonIsShow(boolean isShow) {
+        if (isShow) {
+            ctlVideoPlay.setVisibility(View.VISIBLE);
+            bannerImage.setVisibility(View.GONE);
+        } else {
+            ctlVideoPlay.setVisibility(View.GONE);
+            bannerImage.setVisibility(View.VISIBLE);
+        }
+    }
+
+    @Click(R.id.btn_back)
+    void backClick() {
+        //神策
+        if (mBuildingBean != null) {
+            SensorsTrack.visitBuildingDataPageComplete(mBuildingBean.getBuildingId(), isRead);
+        }
+        finish();
+    }
+
+    //vr显示
+    @Click(R.id.rb_vr)
+    void vrClick() {
+        rlBottomPanel.setVisibility(View.GONE);
+        centerPlayIsShow(true);
+        playButtonIsShow(true);
+        pauseVideo();
+    }
+
     //视频按钮
     @Click(R.id.rb_video)
     void videoClick() {
-        ctlVideoPlay.setVisibility(View.VISIBLE);
-        bannerImage.setVisibility(View.GONE);
+        playButtonIsShow(true);
     }
 
     //开始播放中间按钮
     @Click(R.id.ib_init_start)
     void ibStartClick() {
-        centerPlayIsShow(false);
-        radioGroupIsShow(false);
-        ctlVideoPlay.setVisibility(View.VISIBLE);
-        bannerImage.setVisibility(View.GONE);
-        //loading
-        loadingView();
-        //初始化播放
-        initVideoPlay();
+        if (rbVr.isChecked()) {
+            if (mData != null && mData.getVrUrl() != null && mData.getVrUrl().size() > 0) {
+                WebViewVRActivity_.intent(context).vrUrl(mData.getVrUrl().get(0).getImgUrl()).start();
+            } else {
+                shortTip(R.string.str_no_vr);
+            }
+        } else if (rbVideo.isChecked()) {
+            centerPlayIsShow(false);
+            radioGroupIsShow(false);
+            playButtonIsShow(true);
+            loadingView();
+            //初始化播放
+            initVideoPlay();
+        }
     }
 
     //图片按钮
     @Click(R.id.rb_picture)
     void pictureClick() {
-        ctlVideoPlay.setVisibility(View.GONE);
-        bannerImage.setVisibility(View.VISIBLE);
+        playButtonIsShow(false);
         pauseVideo();
     }
 
@@ -408,9 +427,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         }
     }
 
-    /**
-     * service logo dialog
-     */
+    //service logo dialog
     @Click(R.id.iv_arrow_create)
     void serviceCreateClick() {
         if (corporateServicesList.size() == 0) {
@@ -463,15 +480,15 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         }
     }
 
-    //是否收藏 0收藏 1取消
+    //收藏 0收藏 1取消
     @Click(R.id.tv_favorite)
     void favoriteClick() {
         if (isFastClick(1200)) {
             return;
         }
-        //未登录去登录
+        //未登录
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
-            LoginActivity_.intent(context).start();
+            new LoginTenantUtils(context);
             return;
         }
         if (mBuildingBean != null) {
@@ -482,14 +499,14 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         }
     }
 
+    //0:单房东,1:多房东  判断是否单房东
     @Override
     public void chatSuccess(ChatsBean data) {
-        //0:单房东,1:多房东  判断是否单房东
         if (data.getMultiOwner() == 0) {
             ConversationActivity_.intent(context).buildingId(mData.getBuilding().getBuildingId()).targetId(data.getTargetId() + "").start();
         } else {
             CommonDialog dialog = new CommonDialog.Builder(context)
-                    .setTitle("请先选择房源，再和房东聊")
+                    .setTitle(R.string.str_selected_owner_to_chat)
                     .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
                         dialog12.dismiss();
                         scrollViewY();
@@ -504,18 +521,16 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         if (isFastClick(1200)) {
             return;
         }
-        //未登录去登录
+        //未登录
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
-            LoginActivity_.intent(context).start();
+            new LoginTenantUtils(context);
             return;
         }
         //判断是否单房东
         mPresenter.gotoChat(mData.getBuilding().getBuildingId() + "");
     }
 
-    /**
-     * 滚动指定view
-     */
+    //滚动指定view
     private void scrollViewY() {
         int[] position = new int[2];
         rlIndependentOfficeModel.getLocationOnScreen(position);
@@ -550,8 +565,8 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
             return;
         }
         if (id == CommonNotifications.independentAll) {
-            currentSeatsValue = (String) args[0]; //传递的面积区间值
-            //LogCat.e(TAG, "1111: seats=" + currentSeatsValue);
+            //传递的面积区间值
+            currentSeatsValue = (String) args[0];
             //请求当前楼盘下的列表 初始化list 和pageNum
             childList.clear();
             pageNum = 1;
@@ -570,7 +585,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
             currentSeatsValue = mConditionBean.getSeats();
             ivClearSetArea.setOnClickListener(v -> {
                 showAllAreaView();//显示全部的面积view
-                mConditionBean.setSeats("");//点击清除初始化
+//                mConditionBean.setSeats("");//点击清除初始化
                 currentSeatsValue = "";
                 childList.clear();
                 mPresenter.getBuildingSelectList(pageNum, String.valueOf(mBuildingBean.getBtype()), String.valueOf(mBuildingBean.getBuildingId()),
@@ -602,9 +617,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     }
 //***********************************************
 
-    /**
-     * 初始视频设置
-     */
+    //初始视频设置
     private void initVideo() {
         initScreenWidthHeight();
         if (!NetworkUtils.isNetworkAvailable(context)) {
@@ -612,9 +625,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         }
     }
 
-    /**
-     * 初始视频宽高
-     */
+    //初始视频宽高
     private void initScreenWidthHeight() {
         int screenWidth = CommonHelper.getScreenWidth(context);
         ViewGroup.LayoutParams params = iVideoPlayer.getLayoutParams();
@@ -623,9 +634,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         iVideoPlayer.setLayoutParams(params);
     }
 
-    /**
-     * 初始化播放
-     */
+    //初始化播放
     private void initVideoPlay() {
         if (TextUtils.isEmpty(videoUrl)) {
             return;
@@ -640,9 +649,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         }, 200);
     }
 
-    /**
-     * 初始化video listener
-     */
+    //初始化video
     private void setVideoListener() {
         sbBar.setOnSeekBarChangeListener(this);
         iVideoPlayer.setOnPreparedListener(this);
@@ -692,9 +699,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         }
     }
 
-    /**
-     * 更新进度
-     */
+    //更新进度
     private void syncProgress(Object obj) {
         if (obj != null) {
             String strProgress = String.valueOf(obj);
@@ -737,9 +742,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         rlDefaultHousePic.setVisibility(View.GONE);
     }
 
-    /**
-     * 视频尺寸
-     */
+    //视频尺寸
     @Override
     public void onVideoSizeChanged(IMediaPlayer iMediaPlayer, int width, int height, int i2, int i3) {
         setVideoPlayerScreenRate(width, height);
@@ -766,9 +769,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         }
     }
 
-    /**
-     * 缓存状态
-     **/
+    //缓存状态
     @Override
     public void onBufferingUpdate(IMediaPlayer iMediaPlayer, int i) {
         if (iVideoPlayer != null) {
@@ -783,9 +784,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         }
     }
 
-    /**
-     * 播放完毕
-     **/
+    // 播放完毕
     @Override
     public void onCompletion(IMediaPlayer iMediaPlayer) {
         if (iVideoPlayer != null) {
@@ -803,9 +802,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         }
     }
 
-    /**
-     * 播放异常
-     **/
+    //播放异常
     @Override
     public boolean onError(IMediaPlayer iMediaPlayer, int i, int i1) {
         shortTip(R.string.str_server_exception);
@@ -814,9 +811,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     }
 
 
-    /**
-     * 开始播放
-     **/
+    //开始播放
     @Override
     public void onPrepared(IMediaPlayer iMediaPlayer) {
         if (iVideoPlayer != null) {
@@ -836,16 +831,12 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         }
     }
 
-    /**
-     * Seek拖动完毕
-     **/
+    //Seek拖动完毕
     @Override
     public void onSeekComplete(IMediaPlayer iMediaPlayer) {
     }
 
-    /**
-     * 进度条滑动监听
-     */
+    //进度条滑动监听
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         if (fromUser) {
@@ -854,18 +845,14 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         }
     }
 
-    /**
-     * 开始拖动
-     */
+    //开始拖动
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
         isDragging = true;
         mHandler.removeMessages(MESSAGE_SHOW_PROGRESS);
     }
 
-    /**
-     * 停止拖动
-     */
+    //停止拖动
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         if (iVideoPlayer != null) {
@@ -877,6 +864,15 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
             }
             isDragging = false;
             mHandler.sendEmptyMessageDelayed(MESSAGE_SHOW_PROGRESS, DELAY_MILLIS);
+        }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if (rbVideo.isChecked()) {
+            //重新初始化
+            initVideoPlay();
         }
     }
 
@@ -982,9 +978,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         }
     }
 
-    /**
-     * 全部站点是否展开
-     */
+    //全部站点是否展开
     @Click(R.id.tv_query_trains)
     void queryTrainsClick() {
         if (mData == null) {
@@ -1023,7 +1017,6 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     public void buildingSelectListSuccess(int totals, List<BuildingDetailsChildBean.ListBean> list) {
         tvItemListBottom.setText(totals + "套");//自选面积多少套
         hasMore = list == null || list.size() >= 9;
-        // btnQueryMore.setText(hasMore ? getString(R.string.str_query_more_data) : getResources().getString(R.string.tip_no_more_data));
         btnQueryMore.setVisibility(hasMore ? View.VISIBLE : View.GONE);
         assert list != null;
         childList.addAll(list);
@@ -1034,45 +1027,11 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         childAdapter.notifyDataSetChanged();
     }
 
-
-    private List<String> mBannerList = new ArrayList<>();
-
-    private void playBanner(List<BuildingJointWorkBean.ImgUrlBean> list) {
-        mBannerList.clear();
-        //视频设置第一张图为默认背景
-        if (list.size() > 0) {
-            GlideUtils.urlToDrawable(this, rlDefaultHousePic, list.get(0).getImgUrl());
-        }
-        for (int i = 0; i < list.size(); i++) {
-            if (!TextUtils.isEmpty(list.get(i).getImgUrl())) {
-                mBannerList.add(list.get(i).getImgUrl());
-            }
-        }
-        bannerImage.setBannerStyle(BannerConfig.NUM_INDICATOR);
-        //设置图片加载器，图片加载器在下方
-        bannerImage.setImageLoader(new ImageLoaderUtils(context));
-        //设置图片网址或地址的集合
-        bannerImage.setImages(mBannerList);
-        //设置轮播的动画效果，内含多种特效，可点入方法内查找后内逐一体验
-        bannerImage.setBannerAnimation(Transformer.Default);
-        //设置是否为自动轮播，默认是“是”。
-        bannerImage.isAutoPlay(false);
-        bannerImage.start();
-    }
-
     //是否开放工位
     @SuppressLint("SetTextI18n")
     private void showOpenStationView(BuildingJointWorkBean data) {
-        //video url
-        if (data.getVideoUrl() != null && data.getVideoUrl().size() > 0) {
-            videoUrl = data.getVideoUrl().get(0).getImgUrl();
-        } else {
-            //没有视频只显示轮播图
-            ctlVideoPlay.setVisibility(View.GONE);
-            bannerImage.setVisibility(View.VISIBLE);
-            centerPlayIsShow(false);
-            radioGroupIsShow(false);
-        }
+        //url
+        showVrVideoImg(data);
         //是否收藏
         isFavorite = data.isIsFavorite();
         isFavoriteView(data.isIsFavorite());
@@ -1100,6 +1059,32 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         getChildBuildingList();
     }
 
+    private void showVrVideoImg(BuildingJointWorkBean data) {
+        if (data.getVrUrl() != null && data.getVrUrl().size() > 0 &&
+                data.getVideoUrl() != null && data.getVideoUrl().size() > 0) {
+            rbVr.setChecked(true);
+            rbVr.setVisibility(View.VISIBLE);
+            rbVideo.setVisibility(View.VISIBLE);
+            rbPicture.setVisibility(View.VISIBLE);
+        } else if (data.getVrUrl() != null && data.getVrUrl().size() > 0) {
+            rbVr.setChecked(true);
+            rbVr.setVisibility(View.VISIBLE);
+            rbVideo.setVisibility(View.GONE);
+            rbPicture.setVisibility(View.VISIBLE);
+        } else if (data.getVideoUrl() != null && data.getVideoUrl().size() > 0) {
+            videoUrl = data.getVideoUrl().get(0).getImgUrl();//video
+            rbVideo.setChecked(true);
+            rbVr.setVisibility(View.GONE);
+            rbVideo.setVisibility(View.VISIBLE);
+            rbPicture.setVisibility(View.VISIBLE);
+        } else {
+            //没有视频只显示轮播图
+            playButtonIsShow(false);
+            centerPlayIsShow(false);
+            radioGroupIsShow(false);
+        }
+    }
+
     //办公详情
     private void showOfficeMessage(BuildingJointWorkBean data) {
         if (data.getBuilding() != null) {
@@ -1110,7 +1095,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
                 tvIndependentOfficeArea.setText(Html.fromHtml("<font color='#46C3C2'>" + CommonHelper.bigDecimal(data.getBuilding().getMaxAreaIndependentOffice(), true) + "</font>㎡"));
             } else {
                 tvIndependentOfficeArea.setText(Html.fromHtml("<font color='#46C3C2'>" +
-                        CommonHelper.bigDecimal(data.getBuilding().getMinAreaIndependentOffice(), true) +  "~" +
+                        CommonHelper.bigDecimal(data.getBuilding().getMinAreaIndependentOffice(), true) + "~" +
                         CommonHelper.bigDecimal(data.getBuilding().getMaxAreaIndependentOffice(), true) + "</font>㎡"));
             }
             tvIndependentOfficePrice.setText(Html.fromHtml("<font color='#46C3C2'>¥" + CommonHelper.bigDecimal(data.getBuilding().getAvgDayPriceIndependentOffice(), false) + "</font>/位/月"));
@@ -1122,7 +1107,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
             tvOpenOfficeNumText.setText("工位数");
             tvOpenOfficePriceText.setText("均价");
             tvOpenOfficeNum.setText(Html.fromHtml("<font color='#46C3C2'>" + data.getBuilding().getMinSeatsOpenStation() + "</font>位"));
-            tvOpenOfficePrice.setText(Html.fromHtml("<font color='#46C3C2'>¥" + CommonHelper.bigDecimal(data.getBuilding().getAvgDayPriceOpenStation(),false) + "</font>/位/月"));
+            tvOpenOfficePrice.setText(Html.fromHtml("<font color='#46C3C2'>¥" + CommonHelper.bigDecimal(data.getBuilding().getAvgDayPriceOpenStation(), false) + "</font>/位/月"));
         }
     }
 
@@ -1190,4 +1175,44 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         }
     }
 
+    /**
+     * 轮播图
+     */
+    private List<String> mBannerList = new ArrayList<>();
+
+    private void playBanner(List<BuildingJointWorkBean.ImgUrlBean> list) {
+        mBannerList.clear();
+        //视频设置第一张图为默认背景
+        if (list.size() > 0) {
+            GlideUtils.urlToDrawable(this, rlDefaultHousePic, list.get(0).getImgUrl());
+        }
+        for (int i = 0; i < list.size(); i++) {
+            if (!TextUtils.isEmpty(list.get(i).getImgUrl())) {
+                mBannerList.add(list.get(i).getImgUrl());
+            }
+        }
+        bannerImage.setBannerStyle(BannerConfig.NUM_INDICATOR);
+        //设置图片加载器，图片加载器在下方
+        bannerImage.setImageLoader(new ImageLoaderUtils(context));
+        //设置图片网址或地址的集合
+        bannerImage.setImages(mBannerList);
+        //设置轮播的动画效果，内含多种特效，可点入方法内查找后内逐一体验
+        bannerImage.setBannerAnimation(Transformer.Default);
+        //设置是否为自动轮播，默认是“是”。
+        bannerImage.isAutoPlay(false);
+        bannerImage.setOnBannerListener(this);
+        bannerImage.start();
+    }
+
+    //查看大图
+    @Override
+    public void OnBannerClick(int position) {
+        if (mBannerList == null || mBannerList.size() == 0) {
+            return;
+        }
+        ImageBigActivity_.intent(this)
+                .imagesUrl((ArrayList<String>) mBannerList)
+                .current(position)
+                .start();
+    }
 }

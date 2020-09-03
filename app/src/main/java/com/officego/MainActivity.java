@@ -1,14 +1,10 @@
 package com.officego;
 
 import android.annotation.SuppressLint;
-import android.app.Notification;
-import android.app.NotificationChannel;
-import android.app.NotificationManager;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.os.Build;
+import android.net.Uri;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.widget.RadioButton;
@@ -16,7 +12,6 @@ import android.widget.RadioGroup;
 import android.widget.RelativeLayout;
 
 import androidx.annotation.Nullable;
-import androidx.core.app.NotificationCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
@@ -30,9 +25,13 @@ import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.DesktopCornerUtil;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.ui.collect.CollectFragment_;
+import com.officego.ui.home.BuildingDetailsActivity_;
+import com.officego.ui.home.BuildingDetailsChildActivity_;
+import com.officego.ui.home.BuildingDetailsJointWorkActivity_;
+import com.officego.ui.home.BuildingDetailsJointWorkChildActivity_;
 import com.officego.ui.home.HomeFragment_;
+import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.ui.message.MessageFragment_;
 import com.officego.ui.mine.MineFragment_;
 import com.officego.utils.GotoActivityUtils;
@@ -41,14 +40,14 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
-import java.lang.reflect.Field;
-import java.lang.reflect.Method;
 import java.util.List;
 
 import cn.bingoogolapple.badgeview.BGABadgeTextView;
 import io.rong.imkit.RongIM;
 import io.rong.imkit.manager.IUnReadMessageObserver;
 import io.rong.imlib.model.Conversation;
+
+import static com.officego.commonlib.constant.Constants.TABLE_BAR_POSITION;
 
 /**
  * Created by YangShiJie
@@ -83,7 +82,15 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         StatusBarUtils.setStatusBarColor(this);
         fManager = getSupportFragmentManager();
         rg_tab_bar.setOnCheckedChangeListener(this);
-        rb_1.setChecked(true);
+        if (TABLE_BAR_POSITION == 1) {
+            rb_2.setChecked(true);
+        } else if (TABLE_BAR_POSITION == 2) {
+            rb_3.setChecked(true);
+        } else if (TABLE_BAR_POSITION == 3) {
+            rb_4.setChecked(true);
+        } else {
+            rb_1.setChecked(true);
+        }
         initBottomImage();
         if (!TextUtils.isEmpty(SpUtils.getSignToken())) {
             new ConnectRongCloudUtils();
@@ -94,6 +101,39 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         params.width = CommonHelper.getScreenWidth(context) / 4;
         params.leftMargin = CommonHelper.getScreenWidth(context) / 4;
         unreadMessage.setLayoutParams(params);
+        //外部链接唤起app
+        appScheme();
+    }
+
+    //外部链接唤起app
+    private void appScheme() {
+        Intent intent = getIntent();
+        Uri uri = intent.getData();
+        if (uri != null) {
+            //获取参数值
+            String btyte = uri.getQueryParameter("btyte");
+            String buildingId = uri.getQueryParameter("buildingId");
+            String houseId = uri.getQueryParameter("houseId");
+            if (!TextUtils.isEmpty(buildingId) && !TextUtils.isEmpty(btyte)) {
+                //楼盘，网点
+                if (TextUtils.equals(String.valueOf(Constants.TYPE_BUILDING), btyte)) {
+                    BuildingDetailsActivity_.intent(context)
+                            .mBuildingBean(BundleUtils.BuildingMessage(Constants.TYPE_BUILDING, Integer.valueOf(buildingId))).start();
+                } else {
+                    BuildingDetailsJointWorkActivity_.intent(context)
+                            .mBuildingBean(BundleUtils.BuildingMessage(Constants.TYPE_JOINTWORK, Integer.valueOf(buildingId))).start();
+                }
+            } else if (!TextUtils.isEmpty(houseId) && !TextUtils.isEmpty(btyte)) {
+                //房源
+                if (TextUtils.equals(String.valueOf(Constants.TYPE_BUILDING), btyte)) {
+                    BuildingDetailsChildActivity_.intent(context)
+                            .mChildHouseBean(BundleUtils.houseMessage(Constants.TYPE_BUILDING, Integer.valueOf(houseId))).start();
+                } else {
+                    BuildingDetailsJointWorkChildActivity_.intent(context)
+                            .mChildHouseBean(BundleUtils.houseMessage(Constants.TYPE_JOINTWORK, Integer.valueOf(houseId))).start();
+                }
+            }
+        }
     }
 
     @Override
@@ -102,6 +142,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         hideAllFragment(fTransaction);
         switch (checkedId) {
             case R.id.tab_home:
+                TABLE_BAR_POSITION = 0;
                 if (fg1 == null) {
                     fg1 = new HomeFragment_();
                     fTransaction.add(R.id.ly_content, fg1, "Fragment1");
@@ -110,6 +151,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                 }
                 break;
             case R.id.tab_message:
+                TABLE_BAR_POSITION = 1;
                 if (fg2 == null) {
                     fg2 = new MessageFragment_();
                     fTransaction.add(R.id.ly_content, fg2, "Fragment2");
@@ -118,10 +160,12 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                 }
                 break;
             case R.id.tab_collect:
+                TABLE_BAR_POSITION = 2;
                 fg3 = new CollectFragment_();
                 fTransaction.add(R.id.ly_content, fg3, "Fragment3");
                 break;
             case R.id.tab_mine:
+                TABLE_BAR_POSITION = 3;
                 fg4 = new MineFragment_();
                 fTransaction.add(R.id.ly_content, fg4, "Fragment4");
                 break;

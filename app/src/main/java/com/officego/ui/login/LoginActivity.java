@@ -3,7 +3,6 @@ package com.officego.ui.login;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.CountDownTimer;
@@ -83,18 +82,13 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
     Button btnLoginNoPassword;
     @ViewById(R.id.btn_test)
     Button btnTest;
-
-    private String mobile;
-    //判断是否从收藏或者个人中心未登录的时候进入
+    //关闭当前租户页面
     @Extra
-    boolean isGotoLogin;
+    boolean isFinishCurrentView;
+    private String mobile;
     //房东model修改密码重新登录
     private boolean isOwnerLogin;
-    //房东model修改密码重新登录,不清除栈顶
-    private boolean isReOwnerLogin;
-    /**
-     * 倒计时对象,总共的时间,每隔多少秒更新一次时间
-     */
+    //倒计时对象,总共的时间,每隔多少秒更新一次时间
     final MyCountDownTimer mTimer = new MyCountDownTimer(Constants.SMS_TIME, 1000);
 
     @AfterViews
@@ -108,7 +102,6 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         tvProtocol.setText(Html.fromHtml(getString(R.string.str_click_login_agree_service)));
         if (getIntent().getExtras() != null) {
             isOwnerLogin = getIntent().getExtras().getBoolean("isOwnerLogin");
-            isReOwnerLogin = getIntent().getExtras().getBoolean("isReOwnerLogin");
             rlBack.setVisibility(isOwnerLogin ? View.GONE : View.VISIBLE);
         }
         if (!TextUtils.isEmpty(SpUtils.getSignToken())) {
@@ -122,8 +115,9 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         }
         smsEditText();
     }
+
     //点击验证码输入框
-    private void smsEditText(){
+    private void smsEditText() {
         etCode.setOnFocusChangeListener((view, b) -> {
             SensorsTrack.codeInput();//神策
         });
@@ -170,7 +164,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         }
         //神策
         SensorsTrack.login();
-        //检查手机的权限设置
+        //手机权限
         if (PermissionUtils.checkPhonePermission(this)) {
             loginOnlyPhone();
         }
@@ -242,31 +236,14 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
     public void loginSuccess(LoginBean data) {
         //神策
         SensorsTrack.sensorsLogin(data.getUid());
-        //当身份变化
-        if (!TextUtils.equals(SpUtils.getRole(), String.valueOf(data.getRid()))) {
-            SpUtils.saveRole(String.valueOf(data.getRid()));//保存角色
+        //登录成功跳转
+        SpUtils.saveRole(String.valueOf(data.getRid()));
+        if (!isFinishCurrentView) {
             if (TextUtils.equals(Constants.TYPE_OWNER, String.valueOf(data.getRid()))) {
                 MainOwnerActivity_.intent(context).start();
             } else {
                 MainActivity_.intent(context).start();
             }
-        }
-        //当身份未变化
-        if (TextUtils.equals(Constants.TYPE_OWNER, SpUtils.getRole())) {
-            if (isReOwnerLogin) {
-                //房东退出登录后的，重新登录
-                Intent intent = getIntent();
-                setResult(RESULT_OK, intent);
-            } else if (isOwnerLogin) {
-                MainOwnerActivity_.intent(context).start();
-            } else {
-                //房东首次登录跳转首页
-                MainOwnerActivity_.intent(context).start();
-            }
-        }
-        if (isGotoLogin) {
-            Intent intent = getIntent();
-            setResult(RESULT_OK, intent);
         }
         finish();
     }

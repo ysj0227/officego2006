@@ -27,7 +27,7 @@ public class HouseOfficeDetailsJointWorkBean {
     @SerializedName("imgUrl")
     private List<ImgUrlBean> imgUrl;
     @SerializedName("vrUrl")
-    private List<?> vrUrl;
+    private List<VrUrlBean> vrUrl;
     @SerializedName("videoUrl")
     private List<VideoUrlBean> videoUrl;
 
@@ -55,11 +55,11 @@ public class HouseOfficeDetailsJointWorkBean {
         this.imgUrl = imgUrl;
     }
 
-    public List<?> getVrUrl() {
+    public List<VrUrlBean> getVrUrl() {
         return vrUrl;
     }
 
-    public void setVrUrl(List<?> vrUrl) {
+    public void setVrUrl(List<VrUrlBean> vrUrl) {
         this.vrUrl = vrUrl;
     }
 
@@ -514,6 +514,67 @@ public class HouseOfficeDetailsJointWorkBean {
         }
 
         public void setRemark(Object remark) {
+            this.remark = remark;
+        }
+
+        public int getId() {
+            return id;
+        }
+
+        public void setId(int id) {
+            this.id = id;
+        }
+
+        public int getImgType() {
+            return imgType;
+        }
+
+        public void setImgType(int imgType) {
+            this.imgType = imgType;
+        }
+    }
+
+    public static class VrUrlBean {
+        /**
+         * imgUrl : www.hahaha.com
+         * typeId : 224
+         * remark :
+         * id : 133
+         * imgType : 2
+         */
+
+        @SerializedName("imgUrl")
+        private String imgUrl;
+        @SerializedName("typeId")
+        private int typeId;
+        @SerializedName("remark")
+        private String remark;
+        @SerializedName("id")
+        private int id;
+        @SerializedName("imgType")
+        private int imgType;
+
+        public String getImgUrl() {
+            return imgUrl;
+        }
+
+        public void setImgUrl(String imgUrl) {
+            this.imgUrl = imgUrl;
+        }
+
+        public int getTypeId() {
+            return typeId;
+        }
+
+        public void setTypeId(int typeId) {
+            this.typeId = typeId;
+        }
+
+        public String getRemark() {
+            return remark;
+        }
+
+        public void setRemark(String remark) {
             this.remark = remark;
         }
 

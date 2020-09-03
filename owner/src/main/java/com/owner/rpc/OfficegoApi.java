@@ -299,7 +299,7 @@ public class OfficegoApi {
      */
     public void getDistrictList(RetrofitCallback<List<BusinessCircleBean.DataBean>> callback) {
         Map<String, RequestBody> map = new HashMap<>();
-        map.put("city", requestBody("上海市"));
+//        map.put("city", requestBody("上海市"));
         map.put("type", requestBody("1")); //1：全部，0：系统已有楼盘的地铁
         OfficegoRetrofitClient.getInstance().create(IdentitySearchInterface.class)
                 .getDistrictList(map)

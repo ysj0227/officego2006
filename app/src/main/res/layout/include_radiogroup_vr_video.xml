@@ -1,0 +1,48 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RadioGroup xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rg_video_picture"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_alignParentBottom="true"
+    android:layout_centerHorizontal="true"
+    android:layout_gravity="center_horizontal"
+    android:layout_marginBottom="@dimen/dp_50"
+    android:background="@drawable/button_corner_white_center"
+    android:orientation="horizontal">
+
+    <RadioButton
+        android:id="@+id/rb_vr"
+        android:layout_width="@dimen/dp_45"
+        android:layout_height="@dimen/dp_24"
+        android:background="@drawable/button_selector_center"
+        android:button="@null"
+        android:checked="true"
+        android:gravity="center"
+        android:text="@string/str_text_vr"
+        android:textColor="@color/text_selector_blue_white"
+        android:textSize="@dimen/sp_11" />
+
+    <RadioButton
+        android:id="@+id/rb_video"
+        android:layout_width="@dimen/dp_45"
+        android:layout_height="@dimen/dp_24"
+        android:background="@drawable/button_selector_center"
+        android:button="@null"
+        android:checked="false"
+        android:gravity="center"
+        android:text="@string/str_text_video"
+        android:textColor="@color/text_selector_blue_white"
+        android:textSize="@dimen/sp_11" />
+
+    <RadioButton
+        android:id="@+id/rb_picture"
+        android:layout_width="@dimen/dp_45"
+        android:layout_height="@dimen/dp_24"
+        android:background="@drawable/button_selector_center"
+        android:button="@null"
+        android:checked="false"
+        android:gravity="center"
+        android:text="@string/str_text_picture"
+        android:textColor="@color/text_selector_blue_white"
+        android:textSize="@dimen/sp_11" />
+</RadioGroup>

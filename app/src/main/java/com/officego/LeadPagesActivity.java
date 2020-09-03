@@ -8,7 +8,6 @@ package com.officego;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.content.Intent;
 import android.text.TextUtils;
 import android.util.SparseArray;
 import android.view.LayoutInflater;
@@ -25,8 +24,6 @@ import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
-import com.officego.ui.IdSelectActivity_;
 import com.officego.ui.login.LoginActivity_;
 
 import org.androidannotations.annotations.AfterViews;
@@ -119,14 +116,11 @@ public class LeadPagesActivity extends BaseActivity {
     private void gotoActivity() {
         if (isFastClick(1000)) return;
         SpUtils.saveLead();//保存是否开启了引导页
-        if (!TextUtils.isEmpty(SpUtils.getRole())) {
-            if (TextUtils.equals(Constants.TYPE_TENANT, SpUtils.getRole())) {
-                MainActivity_.intent(context).start();
-            } else {
-                LoginActivity_.intent(context).start();
-            }
+        SpUtils.saveRole(Constants.TYPE_TENANT);
+        if (TextUtils.equals(Constants.TYPE_OWNER, SpUtils.getRole())) {
+            LoginActivity_.intent(context).start();
         } else {
-            IdSelectActivity_.intent(context).start();
+            MainActivity_.intent(context).start();
         }
         finish();
     }

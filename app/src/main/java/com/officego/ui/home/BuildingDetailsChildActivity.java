@@ -27,6 +27,8 @@ import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.model.HouseIdBundleBean;
+import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.GlideUtils;
@@ -34,19 +36,21 @@ import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.IVideoPlayer;
 import com.officego.commonlib.view.LabelsView;
+import com.officego.h5.WebViewVRActivity_;
 import com.officego.model.ShareBean;
 import com.officego.ui.home.contract.BuildingDetailsChildContract;
 import com.officego.ui.home.model.ChatsBean;
-import com.officego.ui.home.model.HouseIdBundleBean;
 import com.officego.ui.home.model.HouseOfficeDetailsBean;
 import com.officego.ui.home.presenter.BuildingDetailsChildPresenter;
 import com.officego.ui.login.LoginActivity_;
 import com.officego.ui.message.ConversationActivity_;
+import com.officego.ui.previewimg.ImageBigActivity_;
 import com.officego.utils.ImageLoaderUtils;
 import com.officego.utils.WeChatUtils;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
+import com.youth.banner.listener.OnBannerListener;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -69,7 +73,7 @@ import tv.danmaku.ijk.media.player.IMediaPlayer;
 @SuppressLint("Registered")
 @EActivity(R.layout.home_activity_house_details_child)
 public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetailsChildPresenter>
-        implements BuildingDetailsChildContract.View,
+        implements OnBannerListener, BuildingDetailsChildContract.View,
         NestedScrollView.OnScrollChangeListener,
         SeekBar.OnSeekBarChangeListener,
         IMediaPlayer.OnBufferingUpdateListener,
@@ -145,6 +149,8 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
     @ViewById(R.id.tv_favorite)
     TextView tvFavorite;
     //视频图片切换
+    @ViewById(R.id.rb_vr)
+    RadioButton rbVr;
     @ViewById(R.id.rb_video)
     RadioButton rbVideo;
     @ViewById(R.id.rb_picture)
@@ -174,41 +180,25 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
     RelativeLayout rlBottomPanel;
     @ViewById(R.id.ll_play_loading)
     LinearLayout llPlayLoading;
-    /**
-     * ******************************
-     * 同步进度
-     */
+    //同步进度
     private static final int MESSAGE_SHOW_PROGRESS = 1;
-    /**
-     * 缓冲进度界限值
-     */
+    //缓冲进度界限值
     private static final int BUFFERING_PROGRESS = 95;
-    /**
-     * 延迟毫秒数
-     */
+    //延迟毫秒数
     private static final int DELAY_MILLIS = 10;
-    /**
-     * 是否在拖动进度条中，默认为停止拖动，true为在拖动中，false为停止拖动
-     */
+    //是否在拖动进度条中，默认为停止拖动，true为在拖动中，false为停止拖动
     private boolean isDragging;
-    /**
-     * 是否暂停，是否静音，是否初始化了截屏
-     */
+    //是否暂停，是否静音，是否初始化了截屏
     private boolean isPaused;
-    /**
-     * 音量
-     */
+    //音量
     private int bufferingUpdate;
     private boolean isSetVideoRate;
     private String videoUrl;
-//    String videoUrl = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
-    /**
-     * 消息处理
-     */
+    //String videoUrl = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
+    //消息处理
     private Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
-            //滑动中，同步播放进度
             if (msg.what == MESSAGE_SHOW_PROGRESS) {
                 if (!isDragging) {
                     msg = obtainMessage(MESSAGE_SHOW_PROGRESS, iVideoPlayer.getCurrentPosition());
@@ -234,11 +224,14 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         StatusBarUtils.setStatusBarFullTransparent(this);
         mPresenter = new BuildingDetailsChildPresenter(context);
         mPresenter.attachView(this);
+        rlRootHouseTitle.setPadding(0, CommonHelper.statusHeight(this), 0, 0);
         setImageViewLayoutParams(context, ivPattern);
+        if (BundleUtils.houseBean(this)!=null){//聊天插入楼盘点击
+            mChildHouseBean=BundleUtils.houseBean(this);
+        }
         centerPlayIsShow(true);
         initVideo();
         nsvView.setOnScrollChangeListener(this);
-        rlRootHouseTitle.setPadding(0, CommonHelper.statusHeight(this), 0, 0);
         tvIndependentOffice.setVisibility(View.GONE);
         if (mChildHouseBean != null) {
             mPresenter.getDetails(String.valueOf(mChildHouseBean.getBtype()), String.valueOf(mChildHouseBean.getHouseId()));
@@ -254,6 +247,7 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         view.setLayoutParams(params);
     }
 
+    //back
     @Click(R.id.btn_back)
     void backClick() {
         finish();
@@ -370,7 +364,7 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
 
     //公交
     private void showBusLine() {
-        if (mData.getHouse().getStationline() != null && mData.getHouse().getStationline().size() > 0) {
+        if (mData != null && mData.getHouse().getStationline() != null && mData.getHouse().getStationline().size() > 0) {
             List<String> stationLine = mData.getHouse().getStationline();
             List<String> stationName = mData.getHouse().getStationNames();
             List<String> workTime = mData.getHouse().getNearbySubwayTime();
@@ -413,32 +407,6 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         showBusLine();
     }
 
-    private List<String> mBannerList = new ArrayList<>();
-
-    private void playBanner(List<HouseOfficeDetailsBean.ImgUrlBean> list) {
-        if (list == null || list.size() == 0) {
-            return;
-        }
-        //视频设置第一张图为默认背景
-        GlideUtils.urlToDrawable(this, rlDefaultHousePic, list.get(0).getImgUrl());
-
-        for (int i = 0; i < list.size(); i++) {
-            if (!TextUtils.isEmpty(list.get(i).getImgUrl())) {
-                mBannerList.add(list.get(i).getImgUrl());
-            }
-        }
-        bannerImage.setBannerStyle(BannerConfig.NUM_INDICATOR);
-        //设置图片加载器，图片加载器在下方
-        bannerImage.setImageLoader(new ImageLoaderUtils(context));
-        //设置图片网址或地址的集合
-        bannerImage.setImages(mBannerList);
-        //设置轮播的动画效果，内含多种特效，可点入方法内查找后内逐一体验
-        bannerImage.setBannerAnimation(Transformer.Default);
-        //设置是否为自动轮播，默认是“是”。
-        bannerImage.isAutoPlay(false);
-        bannerImage.start();
-    }
-
     //微信分享
     @Click(R.id.btn_share)
     void shareClick() {
@@ -465,9 +433,9 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         if (isFastClick(1500)) {
             return;
         }
-        //未登录去登录
+        //未登录
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
-            LoginActivity_.intent(context).start();
+            new LoginTenantUtils(context);
             return;
         }
         if (!NetworkUtils.isNetworkAvailable(context)) {
@@ -501,9 +469,9 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         if (isFastClick(1200)) {
             return;
         }
-        //未登录去登录
+        //未登录
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
-            LoginActivity_.intent(context).start();
+            new LoginTenantUtils(context);
             return;
         }
         //神策
@@ -544,12 +512,27 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
      * video****************************
      */
     private void getVideoUrl(HouseOfficeDetailsBean data) {
-        if (data.getVideoUrl() != null && data.getVideoUrl().size() > 0) {
-            videoUrl = data.getVideoUrl().get(0).getImgUrl();
+        if (data.getVrUrl() != null && data.getVrUrl().size() > 0 &&
+                data.getVideoUrl() != null && data.getVideoUrl().size() > 0) {
+            rbVr.setChecked(true);
+            rbVr.setVisibility(View.VISIBLE);
+            rbVideo.setVisibility(View.VISIBLE);
+            rbPicture.setVisibility(View.VISIBLE);
+        }
+        if (data.getVrUrl() != null && data.getVrUrl().size() > 0) {
+            rbVr.setChecked(true);
+            rbVr.setVisibility(View.VISIBLE);
+            rbVideo.setVisibility(View.GONE);
+            rbPicture.setVisibility(View.VISIBLE);
+        } else if (data.getVideoUrl() != null && data.getVideoUrl().size() > 0) {
+            videoUrl = data.getVideoUrl().get(0).getImgUrl();//video
+            rbVideo.setChecked(true);
+            rbVr.setVisibility(View.GONE);
+            rbVideo.setVisibility(View.VISIBLE);
+            rbPicture.setVisibility(View.VISIBLE);
         } else {
             //没有视频只显示轮播图
-            ctlVideoPlay.setVisibility(View.GONE);
-            bannerImage.setVisibility(View.VISIBLE);
+            playButtonIsShow(false);
             centerPlayIsShow(false);
             radioGroupIsShow(false);
         }
@@ -565,31 +548,55 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         rgVideoPicture.setVisibility(isShow ? View.VISIBLE : View.GONE);
     }
 
+    //是否显示播放vr video按钮
+    private void playButtonIsShow(boolean isShow) {
+        if (isShow) {
+            ctlVideoPlay.setVisibility(View.VISIBLE);
+            bannerImage.setVisibility(View.GONE);
+        } else {
+            ctlVideoPlay.setVisibility(View.GONE);
+            bannerImage.setVisibility(View.VISIBLE);
+        }
+    }
+
+    //vr显示
+    @Click(R.id.rb_vr)
+    void vrClick() {
+        rlBottomPanel.setVisibility(View.GONE);
+        centerPlayIsShow(true);
+        playButtonIsShow(true);
+        pauseVideo();
+    }
+
     //视频按钮
     @Click(R.id.rb_video)
     void videoClick() {
-        ctlVideoPlay.setVisibility(View.VISIBLE);
-        bannerImage.setVisibility(View.GONE);
+        playButtonIsShow(true);
     }
 
     //开始播放中间按钮
     @Click(R.id.ib_init_start)
     void ibStartClick() {
-        centerPlayIsShow(false);
-        radioGroupIsShow(false);
-        ctlVideoPlay.setVisibility(View.VISIBLE);
-        bannerImage.setVisibility(View.GONE);
-        //loading
-        loadingView();
-        //初始化播放
-        initVideoPlay();
+        if (rbVr.isChecked()) {
+            if (mData != null && mData.getVrUrl() != null && mData.getVrUrl().size() > 0) {
+                WebViewVRActivity_.intent(context).vrUrl(mData.getVrUrl().get(0).getImgUrl()).start();
+            } else {
+                shortTip(R.string.str_no_vr);
+            }
+        } else if (rbVideo.isChecked()) {
+            centerPlayIsShow(false);
+            radioGroupIsShow(false);
+            playButtonIsShow(true);
+            loadingView();
+            //初始化播放
+            initVideoPlay();
+        }
     }
 
     //图片按钮
     @Click(R.id.rb_picture)
     void pictureClick() {
-        ctlVideoPlay.setVisibility(View.GONE);
-        bannerImage.setVisibility(View.VISIBLE);
+        playButtonIsShow(false);
         pauseVideo();
     }
 
@@ -889,6 +896,15 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
     }
 
     @Override
+    protected void onRestart() {
+        super.onRestart();
+        if (rbVideo.isChecked()) {
+            //重新初始化
+            initVideoPlay();
+        }
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
         if (mHandler != null) {
@@ -896,6 +912,63 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         }
         if (iVideoPlayer != null) {
             iVideoPlayer.release();
+        }
+    }
+
+    /**
+     * 轮播图
+     */
+    private List<String> mBannerList = new ArrayList<>();
+
+    private void playBanner(List<HouseOfficeDetailsBean.ImgUrlBean> list) {
+        if (list == null || list.size() == 0) {
+            return;
+        }
+        //视频设置第一张图为默认背景
+        GlideUtils.urlToDrawable(this, rlDefaultHousePic, list.get(0).getImgUrl());
+
+        for (int i = 0; i < list.size(); i++) {
+            if (!TextUtils.isEmpty(list.get(i).getImgUrl())) {
+                mBannerList.add(list.get(i).getImgUrl());
+            }
+        }
+        bannerImage.setBannerStyle(BannerConfig.NUM_INDICATOR);
+        //设置图片加载器，图片加载器在下方
+        bannerImage.setImageLoader(new ImageLoaderUtils(context));
+        //设置图片网址或地址的集合
+        bannerImage.setImages(mBannerList);
+        //设置轮播的动画效果，内含多种特效，可点入方法内查找后内逐一体验
+        bannerImage.setBannerAnimation(Transformer.Default);
+        //设置是否为自动轮播，默认是“是”。
+        bannerImage.isAutoPlay(false);
+        bannerImage.setOnBannerListener(this);
+        bannerImage.start();
+    }
+
+    //查看大图
+    @Override
+    public void OnBannerClick(int position) {
+        if (mBannerList == null || mBannerList.size() == 0) {
+            return;
+        }
+        ImageBigActivity_.intent(this)
+                .imagesUrl((ArrayList<String>) mBannerList)
+                .current(position)
+                .start();
+    }
+
+    //户型介绍图
+    @Click(R.id.iv_pattern)
+    void patternImgClick() {
+        if (mData != null && mData.getHouse() != null &&
+                mData.getHouse().getBasicInformation() != null) {
+            String url = mData.getHouse().getBasicInformation().getUnitPatternImg();
+            ArrayList<String> mList = new ArrayList<>();
+            mList.add(url);
+            ImageBigActivity_.intent(this)
+                    .imagesUrl(mList)
+                    .current(0)
+                    .start();
         }
     }
 }

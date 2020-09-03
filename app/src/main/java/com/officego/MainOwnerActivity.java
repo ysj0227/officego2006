@@ -42,6 +42,8 @@ import io.rong.imkit.RongIM;
 import io.rong.imkit.manager.IUnReadMessageObserver;
 import io.rong.imlib.model.Conversation;
 
+import static com.officego.commonlib.constant.Constants.TABLE_BAR_POSITION;
+
 /**
  * Created by YangShiJie
  * Data 2020/7/3.
@@ -79,7 +81,11 @@ public class MainOwnerActivity extends BaseActivity implements RadioGroup.OnChec
         rb_3.setText(R.string.str_tab_schedule);
         //初始化第一个选中
         Intent intent = getIntent();
-        if (intent != null && intent.hasExtra("isIdentifyChat")) {
+        if (TABLE_BAR_POSITION == 1) {
+            rb_2.setChecked(true);
+        } else if (TABLE_BAR_POSITION == 2) {
+            rb_3.setChecked(true);
+        } else if (TABLE_BAR_POSITION == 3 || (intent != null && intent.hasExtra("isIdentifyChat"))) {
             rb_4.setChecked(true);
         } else {
             rb_1.setChecked(true);
@@ -91,8 +97,8 @@ public class MainOwnerActivity extends BaseActivity implements RadioGroup.OnChec
         addUnReadMessageCountChangedObserver();
         //设置未读消息位置
         RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) unreadMessage.getLayoutParams();
-        params.width=CommonHelper.getScreenWidth(context) / 4;
-        params.leftMargin = CommonHelper.getScreenWidth(context) / 4 ;
+        params.width = CommonHelper.getScreenWidth(context) / 4;
+        params.leftMargin = CommonHelper.getScreenWidth(context) / 4;
         unreadMessage.setLayoutParams(params);
     }
 
@@ -103,11 +109,13 @@ public class MainOwnerActivity extends BaseActivity implements RadioGroup.OnChec
         hideAllFragment(fTransaction);
         switch (checkedId) {
             case R.id.tab_home:
+                TABLE_BAR_POSITION = 0;
                 StatusBarUtils.setStatusBarColor(this);
                 fg1 = new HomeFragment_();
                 fTransaction.add(R.id.ly_content, fg1, "Fragment1");
                 break;
             case R.id.tab_message:
+                TABLE_BAR_POSITION = 1;
                 StatusBarUtils.setStatusBarFullTransparent(this);
                 if (fg2 == null) {
                     fg2 = new MessageFragment_();
@@ -117,6 +125,7 @@ public class MainOwnerActivity extends BaseActivity implements RadioGroup.OnChec
                 }
                 break;
             case R.id.tab_collect:
+                TABLE_BAR_POSITION = 2;
                 StatusBarUtils.setStatusBarFullTransparent(this);
                 if (fg3 == null) {
                     fg3 = new ScheduleFragment_();
@@ -126,6 +135,7 @@ public class MainOwnerActivity extends BaseActivity implements RadioGroup.OnChec
                 }
                 break;
             case R.id.tab_mine:
+                TABLE_BAR_POSITION = 3;
                 StatusBarUtils.setStatusBarFullTransparent(this);
                 fg4 = new MineFragment_();
                 fTransaction.add(R.id.ly_content, fg4, "Fragment4");
@@ -181,7 +191,7 @@ public class MainOwnerActivity extends BaseActivity implements RadioGroup.OnChec
      * 否则会造成内存泄漏。
      */
     IUnReadMessageObserver observer = this::showMessageCount;
-    private int unreadNum=0;
+    private int unreadNum = 0;
 
     private void showMessageCount(int i) {
         unreadMessage.showCirclePointBadge();
@@ -197,10 +207,10 @@ public class MainOwnerActivity extends BaseActivity implements RadioGroup.OnChec
             unreadNum = 0;
         } else if (i < 100) {
             unreadMessage.showTextBadge(String.valueOf(i));
-            unreadNum=i;
+            unreadNum = i;
         } else {
             unreadMessage.showTextBadge("99+");
-            unreadNum=99;
+            unreadNum = 99;
         }
         DesktopCornerUtil.setBadgeNumber(unreadNum);
     }

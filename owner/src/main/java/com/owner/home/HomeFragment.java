@@ -9,7 +9,6 @@ import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.webkit.CookieManager;
@@ -40,6 +39,7 @@ import com.officego.commonlib.view.webview.SMWebViewClient;
 import com.owner.R;
 import com.owner.home.contract.HomeContract;
 import com.owner.home.presenter.HomePresenter;
+import com.owner.identity.SelectIdActivity_;
 import com.owner.mine.model.UserOwnerBean;
 import com.owner.utils.UnIdifyDialog;
 import com.owner.zxing.QRScanActivity;
@@ -144,12 +144,10 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements Home
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
                 hideLoadingDialog();
-                Log.d(TAG, "webview onPageFinished url=" + url);
             }
 
             @Override
             protected void receiverError(WebView view, WebResourceRequest request, WebResourceError error) {
-                Log.d(TAG, "webview receiverError");
                 hideLoadingDialog();
                 exceptionPageError(view, request);
             }
@@ -207,7 +205,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements Home
     /**
      * 网络异常
      *
-     * @param view
+     * @param view view
      */
     private void receiverExceptionError(WebView view) {
         webView.setVisibility(View.GONE);
@@ -292,7 +290,11 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements Home
     public void userInfoSuccess(UserOwnerBean data) {
         if (isIdentity(data)) {
             tvScan.setVisibility(View.GONE);
-            new UnIdifyDialog(mActivity, data);
+            if (data.getAuditStatus() == -1) { //未认证
+                SelectIdActivity_.intent(getContext()).start();
+            } else {
+                new UnIdifyDialog(mActivity, data);
+            }
         } else {
             tvScan.setVisibility(View.VISIBLE);
             if (TextUtils.isEmpty(SpUtils.getEditToWeb())) {

@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">officego</string>
+<!--    <string name="app_name">OfficeGo</string>-->
     <string name="str_tab_home">首页</string>
     <string name="str_tab_message">消息</string>
     <string name="str_tab_schedule">行程</string>

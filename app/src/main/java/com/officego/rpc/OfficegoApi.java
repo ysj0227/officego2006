@@ -96,7 +96,7 @@ public class OfficegoApi {
         map.put("code", requestBody(code));
         map.put("imei", requestBody(CommonHelper.getIMEI(context)));
         map.put("channel", requestBody("2"));
-        map.put("idType", requestBody(SpUtils.getRole()));
+        map.put("idType", requestBody(TextUtils.isEmpty(SpUtils.getRole()) ? Constants.TYPE_TENANT : SpUtils.getRole()));
         OfficegoRetrofitClient.getInstance().create(LoginInterface.class)
                 .login(map)
                 .enqueue(callback);
@@ -105,16 +105,15 @@ public class OfficegoApi {
     /**
      * 手机免密登录
      *
-     * @param mobile
-     * @param callback
+     * @param mobile mobile
+     * @param callback callback
      */
     public void loginOnlyPhone(Context context, String mobile, RetrofitCallback<LoginBean> callback) {
-        LogCat.e(TAG, "111111111111 role=" + SpUtils.getRole());
         Map<String, RequestBody> map = new HashMap<>();
         map.put("phone", requestBody(mobile));
         map.put("imei", requestBody(CommonHelper.getIMEI(context)));
         map.put("channel", requestBody("2"));
-        map.put("idType", requestBody(SpUtils.getRole()));
+        map.put("idType", requestBody(TextUtils.isEmpty(SpUtils.getRole()) ? Constants.TYPE_TENANT : SpUtils.getRole()));
         OfficegoRetrofitClient.getInstance().create(LoginInterface.class)
                 .loginOnlyPhone(map)
                 .enqueue(callback);

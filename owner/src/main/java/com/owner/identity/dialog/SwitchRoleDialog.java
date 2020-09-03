@@ -28,17 +28,7 @@ public class SwitchRoleDialog {
                 .setMessage("信息尚未提交,是否确认离开？")
                 .setConfirmButton(R.string.str_go_away, (dialog12, which) -> {
                     activity.finish();
-                    BaseNotification.newInstance().postNotificationName(CommonNotifications.ownerIdentityHandle, "ownerIdentityHandle");
-                })
-                .setCancelButton(R.string.sm_cancel, (dialog1, which) -> dialog1.dismiss()).create();
-        dialog.showWithOutTouchable(false);
-    }
-
-    private static void secondBackDialog(Activity activity) {
-        CommonDialog dialog = new CommonDialog.Builder(activity)
-                .setMessage("请再次确认是否离开？")
-                .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
-
+//                    BaseNotification.newInstance().postNotificationName(CommonNotifications.ownerIdentityHandle, "ownerIdentityHandle");
                 })
                 .setCancelButton(R.string.sm_cancel, (dialog1, which) -> dialog1.dismiss()).create();
         dialog.showWithOutTouchable(false);
@@ -54,7 +44,7 @@ public class SwitchRoleDialog {
                 .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
                     //跳转房东个人中心
                     GotoActivityUtils.mainOwnerDefMainActivity(activity);
-                    BaseNotification.newInstance().postNotificationName(CommonNotifications.ownerIdentityHandle, "ownerIdentityHandle");
+//                    BaseNotification.newInstance().postNotificationName(CommonNotifications.ownerIdentityHandle, "ownerIdentityHandle");
                     activity.finish();
                 }).create();
         dialog.showWithOutTouchable(false);

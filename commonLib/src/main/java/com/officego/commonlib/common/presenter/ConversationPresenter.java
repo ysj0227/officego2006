@@ -26,7 +26,7 @@ public class ConversationPresenter extends BasePresenter<ConversationContract.Vi
      * 获取聊天房源信息
      */
     @Override
-    public void getHouseDetails(int buildingId, int houseId, String targetId) {
+    public void firstChatApp(int buildingId, int houseId, String targetId) {
         if (!TextUtils.isEmpty(targetId)) {
             mView.showLoadingDialog();
             OfficegoApi.getInstance().getChatHouseDetails(buildingId, houseId, targetId,
@@ -64,7 +64,7 @@ public class ConversationPresenter extends BasePresenter<ConversationContract.Vi
                         public void onSuccess(int code, String msg, ExchangeContactsBean data) {
                             if (isViewAttached()) {
                                 mView.hideLoadingDialog();
-                                if (data!=null){
+                                if (data != null) {
                                     mView.exchangeContactsSuccess(data.isIsOk());
                                 }
                             }
