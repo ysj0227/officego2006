@@ -435,7 +435,7 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         }
         //未登录
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
-            LoginActivity_.intent(context).start();
+            new LoginTenantUtils(context);
             return;
         }
         if (!NetworkUtils.isNetworkAvailable(context)) {
@@ -471,7 +471,7 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         }
         //未登录
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
-            LoginActivity_.intent(context).start();
+            new LoginTenantUtils(context);
             return;
         }
         //神策

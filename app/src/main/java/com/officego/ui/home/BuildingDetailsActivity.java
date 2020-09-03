@@ -303,8 +303,8 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         rlRootHouseTitle.setPadding(0, CommonHelper.statusHeight(this), 0, 0);
         nsvView.setOnScrollChangeListener(this);
         mConditionBean = ConditionConfig.mConditionBean;
-        if (BundleUtils.buildingBean(this)!=null){//聊天插入楼盘点击
-            mBuildingBean=BundleUtils.buildingBean(this);
+        if (BundleUtils.buildingBean(this) != null) {//聊天插入楼盘点击
+            mBuildingBean = BundleUtils.buildingBean(this);
         }
         initIndependentBuildingRecView();
         centerPlayIsShow(true);
@@ -445,7 +445,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         }
         //未登录
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
-            LoginActivity_.intent(context).start();
+            new LoginTenantUtils(context);
             return;
         }
         if (mBuildingBean != null) {
@@ -480,7 +480,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         }
         //未登录
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
-            LoginActivity_.intent(context).start();
+            new LoginTenantUtils(context);
             return;
         }
         //判断是否单房东

@@ -81,13 +81,13 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
     Button btnLoginNoPassword;
     @ViewById(R.id.btn_test)
     Button btnTest;
-
+    //关闭当前租户页面
+    @Extra
+    boolean isFinishCurrentView;
     private String mobile;
     //房东model修改密码重新登录
     private boolean isOwnerLogin;
-    /**
-     * 倒计时对象,总共的时间,每隔多少秒更新一次时间
-     */
+    //倒计时对象,总共的时间,每隔多少秒更新一次时间
     final MyCountDownTimer mTimer = new MyCountDownTimer(Constants.SMS_TIME, 1000);
 
     @AfterViews
@@ -236,10 +236,12 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         SensorsTrack.sensorsLogin(data.getUid());
         //登录成功跳转
         SpUtils.saveRole(String.valueOf(data.getRid()));
-        if (TextUtils.equals(Constants.TYPE_OWNER, String.valueOf(data.getRid()))) {
-            MainOwnerActivity_.intent(context).start();
-        } else {
-            MainActivity_.intent(context).start();
+        if (!isFinishCurrentView) {
+            if (TextUtils.equals(Constants.TYPE_OWNER, String.valueOf(data.getRid()))) {
+                MainOwnerActivity_.intent(context).start();
+            } else {
+                MainActivity_.intent(context).start();
+            }
         }
         finish();
     }

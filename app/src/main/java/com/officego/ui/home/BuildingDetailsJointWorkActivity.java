@@ -488,7 +488,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         }
         //未登录
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
-            LoginActivity_.intent(context).start();
+            new LoginTenantUtils(context);
             return;
         }
         if (mBuildingBean != null) {
@@ -523,7 +523,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         }
         //未登录
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
-            LoginActivity_.intent(context).start();
+            new LoginTenantUtils(context);
             return;
         }
         //判断是否单房东
