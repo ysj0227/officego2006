@@ -160,7 +160,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rvHouse.setLayoutManager(layoutManager);
         appBarLayout.addOnOffsetChangedListener(appBarStateChangeListener);
-        alphaPercent = (float) 1 / CommonHelper.dp2px(mActivity, 180);
+        alphaPercent = (float) 1 / CommonHelper.dp2px(mActivity, 190);
         initBarLayoutBg();
         initRefresh();
         if (!NetworkUtils.isNetworkAvailable(mActivity)) {
@@ -249,7 +249,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
 
     private void initRefresh() {
         mSwipeRefreshLayout.setOnRefreshListener(this);
-        mSwipeRefreshLayout.setProgressViewOffset(true, -20, 100);
+        mSwipeRefreshLayout.setProgressViewOffset(true, -20, 160);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.common_blue_main_80a, R.color.common_blue_main);
         //加载更多
         rvHouse.addOnScrollListener(new OnLoadMoreListener() {
@@ -663,6 +663,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         tvNoData.setVisibility(View.GONE);
         rlException.setVisibility(View.VISIBLE);
         rvHouse.setVisibility(View.GONE);
+        labelsConditionView();
     }
 
     /**
