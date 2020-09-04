@@ -11,6 +11,8 @@
         android:layout_height="match_parent"
         android:layout_marginTop="@dimen/dp_20" />
 
+    <include layout="@layout/include_exception" />
+
     <com.officego.commonlib.view.TitleBarView
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
@@ -20,7 +22,4 @@
         app:leftDefaultClickEnable="true"
         app:leftIcon="@drawable/ic_back_dark"
         app:titleTextColor="@color/text_main" />
-
-    <include layout="@layout/include_exception" />
-
 </RelativeLayout>

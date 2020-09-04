@@ -3,6 +3,7 @@ package com.officego.h5;
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
 import android.os.Build;
+import android.text.TextUtils;
 import android.view.View;
 import android.webkit.CookieManager;
 import android.webkit.WebChromeClient;
@@ -13,6 +14,7 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.officego.R;
 import com.officego.commonlib.base.BaseActivity;
@@ -45,18 +47,18 @@ public class WebViewVRActivity extends BaseActivity {
     @Extra
     String vrUrl;
 
+    //    String vrUrl = "https://sky.city8.com/panoramic-images/IMG_339520200828-125117-122787.html";
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarColor(this);
         setWebChromeClient();
         titleBar.getAppTitle().setText(R.string.str_text_vr);
-        vrUrl = "https://sky.city8.com/panoramic-images/IMG_339520200828-125117-122787.html";
-        loadWebView(vrUrl);
+        if (!TextUtils.isEmpty(vrUrl)) {
+            loadWebView(vrUrl);
+        }
     }
 
-    /**
-     * 设置setWebChromeClient对象
-     */
+    //设置setWebChromeClient对象
     private void setWebChromeClient() {
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
@@ -190,12 +192,18 @@ public class WebViewVRActivity extends BaseActivity {
      * Android 6.0以上处理方法
      * onReceivedHttpError
      */
+    @SuppressLint("SetTextI18n")
     private void exceptionPageHttpError(WebView view, WebResourceResponse errorResponse) {
         int statusCode = errorResponse.getStatusCode();
         if (404 == statusCode || 500 == statusCode) {
             view.loadUrl("about:blank");// 避免出现默认的错误界面
             view.removeAllViews();
             receiverExceptionError(view);
+            titleBar.setVisibility(View.VISIBLE);
+            TextView tv = findViewById(R.id.tv_net_tip);
+            Button button = findViewById(R.id.btn_again);
+            tv.setText("VR链接打开异常 \n 请稍后再试");
+            button.setVisibility(View.GONE);
         }
     }
 }

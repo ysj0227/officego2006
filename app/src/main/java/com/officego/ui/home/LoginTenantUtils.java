@@ -5,8 +5,8 @@ import android.content.Context;
 import com.officego.ui.login.LoginActivity_;
 
 /**
- * 租户
- * 当前未登录
+ * 租户当前未登录
+ * 此时去登陆后，直接消失当前页面，不重新打开应用
  */
 class LoginTenantUtils {
     LoginTenantUtils(Context context) {
