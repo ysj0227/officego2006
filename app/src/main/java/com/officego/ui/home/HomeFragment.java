@@ -396,7 +396,12 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
             //标签筛选
             labelConstruction(abs);
             //是否可以下拉刷新
-            if (abs * alphaPercent < 0.2) {
+//            if (abs * alphaPercent < 0.2) {
+//                mSwipeRefreshLayout.setEnabled(true);
+//            } else {
+//                mSwipeRefreshLayout.setEnabled(false);
+//            }
+            if (abs == 0) {
                 mSwipeRefreshLayout.setEnabled(true);
             } else {
                 mSwipeRefreshLayout.setEnabled(false);
