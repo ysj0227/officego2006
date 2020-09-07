@@ -21,7 +21,6 @@ import com.bumptech.glide.Glide;
 import com.officego.commonlib.R;
 import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.constant.Constants;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.LabelsView;
 import com.officego.commonlib.view.RoundImageView;
 
@@ -61,7 +60,7 @@ public class BuildingProvider extends IContainerItemProvider.MessageProvider<Bui
     @Override
     public void bindView(View view, int i, BuildingInfo info, UIMessage uiMessage) {
         BuildingHolder holder = (BuildingHolder) view.getTag();
-        Glide.with(context).load(info.getImgUrl()).into(holder.ivHouse);
+        Glide.with(view).load(info.getImgUrl()).into(holder.ivHouse);
         holder.tvHouseName.setText(info.getbuildingName());
         holder.tvStartConversationTime.setText(info.getCreateTime());
         holder.tvPrice.setText(info.getMinSinglePrice());
@@ -90,6 +89,9 @@ public class BuildingProvider extends IContainerItemProvider.MessageProvider<Bui
 
     @Override  //点击你的自定义消息执行的操作
     public void onItemClick(View view, int i, BuildingInfo info, UIMessage uiMessage) {
+        if (context==null){
+            return;
+        }
         gotoDetailsActivity(context, info);
     }
 
