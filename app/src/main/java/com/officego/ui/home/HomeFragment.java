@@ -13,6 +13,7 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.officego.R;
@@ -400,10 +401,25 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         }
     };
 
+    //轮播图
     private void playBanner(List<String> bannerList) {
         if (bannerList == null || bannerList.size() == 0) {
             return;
         }
+        banner.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+            @Override
+            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+            }
+
+            @Override
+            public void onPageSelected(int position) {
+            }
+
+            @Override
+            public void onPageScrollStateChanged(int state) {
+                mSwipeRefreshLayout.setEnabled(false);
+            }
+        });
         //设置内置样式，共有六种可以点入方法内逐一体验使用。
         //  banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE);
         //设置图片加载器，图片加载器在下方
@@ -415,12 +431,13 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         //设置轮播间隔时间
         banner.setDelayTime(4000);
         //设置是否为自动轮播，默认是“是”。
-        banner.isAutoPlay(true);
+        banner.isAutoPlay(false);
         //设置指示器的位置，小点点，左中右。
         banner.setIndicatorGravity(BannerConfig.CENTER)
                 .setOnBannerListener(this)
                 .start();
     }
+
 
     @Override
     public void bannerListSuccess(List<String> bannerList, List<BannerBean.DataBean> data) {
