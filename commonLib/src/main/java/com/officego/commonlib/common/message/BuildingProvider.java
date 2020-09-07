@@ -95,23 +95,22 @@ public class BuildingProvider extends IContainerItemProvider.MessageProvider<Bui
 
     //插入消息点击进入详情
     private void gotoDetailsActivity(Context context, BuildingInfo info) {
+        String pathClass = "com.officego.ui.home.";
         ComponentName comp;
         Intent intent = new Intent();
         if (info.getIsBuildOrHouse() == 1) {//楼盘网点
             if (Constants.TYPE_BUILDING == info.getBtype()) {
-                comp = new ComponentName(context, "com.officego.ui.home.BuildingDetailsActivity_");
+                comp = new ComponentName(context, pathClass + "BuildingDetailsActivity_");
             } else {
-                comp = new ComponentName(context, "com.officego.ui.home.BuildingDetailsJointWorkActivity_");
+                comp = new ComponentName(context, pathClass + "BuildingDetailsJointWorkActivity_");
             }
-            LogCat.e("TAG","1111111111111 btype="+info.getBtype()+"  getBuildingId="+info.getBuildingId());
             intent.putExtra("conversationBuilding", BundleUtils.BuildingMessage(info.getBtype(), info.getBuildingId()));
         } else {//房源
             if (Constants.TYPE_BUILDING == info.getBtype()) {
-                comp = new ComponentName(context, "com.officego.ui.home.BuildingDetailsChildActivity_");
+                comp = new ComponentName(context, pathClass + "BuildingDetailsChildActivity_");
             } else {
-                comp = new ComponentName(context, "com.officego.ui.home.BuildingDetailsJointWorkChildActivity_");
+                comp = new ComponentName(context, pathClass + "BuildingDetailsJointWorkChildActivity_");
             }
-            LogCat.e("TAG","1111111111111 btype="+info.getBtype()+"  getBuildingId="+info.getHouseId());
             intent.putExtra("conversationHouse", BundleUtils.houseMessage(info.getBtype(), info.getHouseId()));
         }
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);

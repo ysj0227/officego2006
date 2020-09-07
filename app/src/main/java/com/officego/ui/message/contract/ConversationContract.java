@@ -1,4 +1,4 @@
-package com.officego.commonlib.common.contract;
+package com.officego.ui.message.contract;
 
 import com.officego.commonlib.base.BaseView;
 import com.officego.commonlib.common.model.ChatHouseBean;
@@ -27,7 +27,7 @@ public interface ConversationContract {
     }
 
     interface Presenter {
-        void firstChatApp(int buildingId, int houseId, String getHouseChatId);
+        void firstChatApp(String targetId,int buildingId, int houseId, String getHouseChatId);
 
         void exchangeContactsVerification(String targetId);
 

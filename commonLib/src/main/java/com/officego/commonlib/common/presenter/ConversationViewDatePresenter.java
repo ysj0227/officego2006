@@ -3,12 +3,8 @@ package com.officego.commonlib.common.presenter;
 import android.text.TextUtils;
 
 import com.officego.commonlib.base.BasePresenter;
-import com.officego.commonlib.common.contract.ConversationContract;
 import com.officego.commonlib.common.contract.ConversationViewDateContract;
 import com.officego.commonlib.common.model.ChatHouseBean;
-import com.officego.commonlib.common.model.FirstChatBean;
-import com.officego.commonlib.common.model.IdentitychattedMsgBean;
-import com.officego.commonlib.common.model.RongUserInfoBean;
 import com.officego.commonlib.common.rpc.OfficegoApi;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.log.LogCat;

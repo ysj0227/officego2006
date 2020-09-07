@@ -254,7 +254,6 @@ public class MineMessageActivity extends BaseMvpActivity<UpdateUserPresenter>
 
     @Override
     public void UpdateUserSuccess() {
-        //发送通知
         BaseNotification.newInstance().postNotificationName(CommonNotifications.updateUserInfoSuccess, "");
         shortTip(R.string.tip_save_success);
         finish();
@@ -263,6 +262,7 @@ public class MineMessageActivity extends BaseMvpActivity<UpdateUserPresenter>
     @Override
     public void UpdateAvatarSuccess(String avatar) {
         if (imageFile != null) {
+            BaseNotification.newInstance().postNotificationName(CommonNotifications.updateUserInfoSuccess, "");
             avatarUrl = avatar;
             updateHeaderImg(imageFile);
             shortTip(R.string.tip_save_success);
@@ -272,7 +272,6 @@ public class MineMessageActivity extends BaseMvpActivity<UpdateUserPresenter>
 
     @Override
     public void UpdateUserFail(int code, String msg) {
-        LogCat.e(TAG, "1111 code=" + code);
         shortTip(R.string.tip_save_fail);
     }
 }

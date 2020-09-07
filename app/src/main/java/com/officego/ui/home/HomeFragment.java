@@ -17,6 +17,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.appbar.AppBarLayout;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpFragment;
+import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.update.VersionDialog;
@@ -30,7 +31,6 @@ import com.officego.ui.home.model.BannerBean;
 import com.officego.ui.home.model.BuildingBean;
 import com.officego.ui.home.model.ConditionBean;
 import com.officego.ui.home.presenter.HomePresenter;
-import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.utils.AppBarStateChangeListener;
 import com.officego.utils.ImageLoaderUtils;
 import com.youth.banner.Banner;
@@ -208,7 +208,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
      */
     private void getBuildingList() {
         String mArea = "", mDayPrice = "", mSeats = "";
-        if (btype == 1) {
+        if (btype == Constants.TYPE_BUILDING) {
             if (TextUtils.equals("", area) || TextUtils.equals("0,2000", area)) {
                 mArea = "0,999999";
             } else {
@@ -219,7 +219,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
             } else {
                 mDayPrice = dayPrice;
             }
-        } else if (btype == 2) {
+        } else if (btype == Constants.TYPE_JOINTWORK) {
             if (TextUtils.equals("", dayPrice) || TextUtils.equals("0,50000", dayPrice)) {
                 mDayPrice = "0,999999";
             } else {
@@ -396,16 +396,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
             //标签筛选
             labelConstruction(abs);
             //是否可以下拉刷新
-//            if (abs * alphaPercent < 0.2) {
-//                mSwipeRefreshLayout.setEnabled(true);
-//            } else {
-//                mSwipeRefreshLayout.setEnabled(false);
-//            }
-            if (abs == 0) {
-                mSwipeRefreshLayout.setEnabled(true);
-            } else {
-                mSwipeRefreshLayout.setEnabled(false);
-            }
+            mSwipeRefreshLayout.setEnabled(abs == 0);
         }
     };
 
