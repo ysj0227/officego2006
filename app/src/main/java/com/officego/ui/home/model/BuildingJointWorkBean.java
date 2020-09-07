@@ -105,97 +105,17 @@ public class BuildingJointWorkBean implements Serializable {
         this.tags = tags;
     }
 
-    public static class IntroductionBean implements Serializable{
+    public static class IntroductionBean implements Serializable {
         /**
-         * airConditioning : 中央空调
-         * propertyCosts : 单独计费
-         * ParkingSpaceRent : 1200
-         * passengerLift : 12
-         * parkingSpace : 22
-         * completionTime : null
          * promoteSlogan : null
-         * cargoLift : 10
-         * totalFloor : null
-         * property : null
-         * storeyHeight : 60
-         * constructionArea : null
-         * internet : undefined电信,联通,移动
          */
 
-        @SerializedName("airConditioning")
-        private String airConditioning;
-        @SerializedName("propertyCosts")
-        private String propertyCosts;
-        @SerializedName("ParkingSpaceRent")
-        private String ParkingSpaceRent;
-        @SerializedName("passengerLift")
-        private Object passengerLift;
-        @SerializedName("parkingSpace")
-        private String parkingSpace;
-        @SerializedName("completionTime")
-        private Object completionTime;
         @SerializedName("promoteSlogan")
         private Object promoteSlogan;
-        @SerializedName("cargoLift")
-        private Object cargoLift;
-        @SerializedName("totalFloor")
-        private Object totalFloor;
-        @SerializedName("property")
-        private Object property;
-        @SerializedName("storeyHeight")
-        private String storeyHeight;
-        @SerializedName("constructionArea")
-        private Object constructionArea;
-        @SerializedName("internet")
-        private String internet;
-
-        public String getAirConditioning() {
-            return airConditioning;
-        }
-
-        public void setAirConditioning(String airConditioning) {
-            this.airConditioning = airConditioning;
-        }
-
-        public String getPropertyCosts() {
-            return propertyCosts;
-        }
-
-        public void setPropertyCosts(String propertyCosts) {
-            this.propertyCosts = propertyCosts;
-        }
-
-        public String getParkingSpaceRent() {
-            return ParkingSpaceRent;
-        }
-
-        public void setParkingSpaceRent(String ParkingSpaceRent) {
-            this.ParkingSpaceRent = ParkingSpaceRent;
-        }
-
-        public Object getPassengerLift() {
-            return passengerLift;
-        }
-
-        public void setPassengerLift(Object passengerLift) {
-            this.passengerLift = passengerLift;
-        }
-
-        public String getParkingSpace() {
-            return parkingSpace;
-        }
-
-        public void setParkingSpace(String parkingSpace) {
-            this.parkingSpace = parkingSpace;
-        }
-
-        public Object getCompletionTime() {
-            return completionTime;
-        }
-
-        public void setCompletionTime(Object completionTime) {
-            this.completionTime = completionTime;
-        }
+        @SerializedName("buildingMsg")
+        private List<BuildingMsgBean> buildingMsg;
+        @SerializedName("settlementLicence")
+        private String settlementLicence;
 
         public Object getPromoteSlogan() {
             return promoteSlogan;
@@ -205,56 +125,47 @@ public class BuildingJointWorkBean implements Serializable {
             this.promoteSlogan = promoteSlogan;
         }
 
-        public Object getCargoLift() {
-            return cargoLift;
+        public List<BuildingMsgBean> getBuildingMsg() {
+            return buildingMsg;
         }
 
-        public void setCargoLift(Object cargoLift) {
-            this.cargoLift = cargoLift;
+        public void setBuildingMsg(List<BuildingMsgBean> buildingMsg) {
+            this.buildingMsg = buildingMsg;
         }
 
-        public Object getTotalFloor() {
-            return totalFloor;
+        public String getSettlementLicence() {
+            return settlementLicence;
         }
 
-        public void setTotalFloor(Object totalFloor) {
-            this.totalFloor = totalFloor;
+        public void setSettlementLicence(String settlementLicence) {
+            this.settlementLicence = settlementLicence;
         }
 
-        public Object getProperty() {
-            return property;
-        }
+        public static class BuildingMsgBean implements Serializable {
+            @SerializedName("name")
+            private String name;
+            @SerializedName("value")
+            private String value;
 
-        public void setProperty(Object property) {
-            this.property = property;
-        }
+            public String getName() {
+                return name;
+            }
 
-        public String getStoreyHeight() {
-            return storeyHeight;
-        }
+            public void setName(String name) {
+                this.name = name;
+            }
 
-        public void setStoreyHeight(String storeyHeight) {
-            this.storeyHeight = storeyHeight;
-        }
+            public String getValue() {
+                return value;
+            }
 
-        public Object getConstructionArea() {
-            return constructionArea;
-        }
-
-        public void setConstructionArea(Object constructionArea) {
-            this.constructionArea = constructionArea;
-        }
-
-        public String getInternet() {
-            return internet;
-        }
-
-        public void setInternet(String internet) {
-            this.internet = internet;
+            public void setValue(String value) {
+                this.value = value;
+            }
         }
     }
 
-    public static class BuildingBean implements Serializable{
+    public static class BuildingBean implements Serializable {
         /**
          * maxSeatsIndependentOffice : 29
          * address : 龙阳路2277号
@@ -512,7 +423,7 @@ public class BuildingJointWorkBean implements Serializable {
             this.stationColours = stationColours;
         }
 
-        public static class OpenStationMapBean implements Serializable{
+        public static class OpenStationMapBean implements Serializable {
             /**
              * houseId : 228
              * minimumLease : 1
@@ -573,7 +484,7 @@ public class BuildingJointWorkBean implements Serializable {
             }
         }
 
-        public static class CorporateServicesBean implements Serializable{
+        public static class CorporateServicesBean implements Serializable {
             /**
              * dictValue : 2
              * dictImg : https://img.officego.com.cn/dictionary/gsnj.png
@@ -623,7 +534,7 @@ public class BuildingJointWorkBean implements Serializable {
             }
         }
 
-        public static class BasicServicesBean implements Serializable{
+        public static class BasicServicesBean implements Serializable {
             /**
              * dictValue : 1
              * dictImg : https://img.officego.com.cn/dictionary/bgjj.png
@@ -674,7 +585,7 @@ public class BuildingJointWorkBean implements Serializable {
         }
     }
 
-    public static class FactorMapBean implements Serializable{
+    public static class FactorMapBean implements Serializable {
         /**
          * jointworkItem6 : 0
          * jointworkItem7 : 1
@@ -768,7 +679,7 @@ public class BuildingJointWorkBean implements Serializable {
         }
     }
 
-    public static class ImgUrlBean implements Serializable{
+    public static class ImgUrlBean implements Serializable {
         /**
          * imgUrl : https://img.officego.com.cn/building/1591000392743.jpg
          * typeId : 57
@@ -829,7 +740,7 @@ public class BuildingJointWorkBean implements Serializable {
         }
     }
 
-    public static class VrUrlBean implements Serializable{
+    public static class VrUrlBean implements Serializable {
         /**
          * imgUrl :
          * typeId : 57
@@ -890,7 +801,7 @@ public class BuildingJointWorkBean implements Serializable {
         }
     }
 
-    public static class VideoUrlBean implements Serializable{
+    public static class VideoUrlBean implements Serializable {
         /**
          * imgUrl : https://img.officego.com.cn/building/1591239116858.mp4
          * typeId : 57

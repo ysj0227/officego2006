@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/ctl_building_details"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
@@ -11,311 +10,48 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_40"
-        android:text="楼盘信息"
         android:textColor="@color/text_33"
         android:textSize="@dimen/sp_16"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TableLayout
-        android:id="@+id/tl_details"
-        android:layout_width="match_parent"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_building_message_info"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_building_text">
+        app:layout_constraintTop_toBottomOf="@id/tv_building_text" />
 
-        <TableRow tools:ignore="UselessParent">
-
-            <TextView
-                android:layout_width="@dimen/dp_0"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="left"
-                android:text="空调："
-                android:textColor="@color/text_66_p50"
-                android:textSize="@dimen/sp_12" />
-
-            <TextView
-                android:layout_width="@dimen/dp_0"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="空调费:"
-                android:textColor="@color/text_66_p50"
-                android:textSize="@dimen/sp_12" />
-        </TableRow>
-
-        <TableRow
-            android:layout_marginTop="@dimen/dp_12"
-            android:orientation="vertical"
-            tools:ignore="UselessParent">
-
-            <TextView
-                android:id="@+id/tv_air_conditioning"
-                android:layout_width="@dimen/dp_0"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="left"
-                android:text="@string/str_text_line"
-                android:textColor="@color/text_33"
-                android:textSize="@dimen/sp_12" />
-
-            <TextView
-                android:id="@+id/tv_air_conditioning_costs"
-                android:layout_width="@dimen/dp_0"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/str_text_line"
-                android:textColor="@color/text_33"
-                android:textSize="@dimen/sp_12" />
-        </TableRow>
-
-        <TableRow
-            android:visibility="gone"
-            android:layout_marginTop="@dimen/dp_12"
-            tools:ignore="UselessParent">
-
-            <TextView
-                android:layout_width="@dimen/dp_0"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="left"
-                android:text="@string/str_text_line"
-                android:textColor="@color/text_33"
-                android:textSize="@dimen/sp_12" />
-
-            <TextView
-                android:layout_width="@dimen/dp_0"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/str_text_line"
-                android:textColor="@color/text_33"
-                android:textSize="@dimen/sp_12" />
-        </TableRow>
-
-        <TableRow
-            android:layout_marginTop="@dimen/dp_15"
-            tools:ignore="UselessParent">
-
-            <TextView
-                android:layout_width="@dimen/dp_0"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="left"
-                android:text="竣工时间："
-                android:textColor="@color/text_66_p50"
-                android:textSize="@dimen/sp_12" />
-
-            <TextView
-                android:layout_width="@dimen/dp_0"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="总楼层："
-                android:textColor="@color/text_66_p50"
-                android:textSize="@dimen/sp_12" />
-        </TableRow>
-
-        <TableRow
-            android:layout_marginTop="@dimen/dp_12"
-            tools:ignore="UselessParent">
-
-            <TextView
-                android:id="@+id/tv_completion_time"
-                android:layout_width="@dimen/dp_0"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="left"
-                android:text="@string/str_text_line"
-                android:textColor="@color/text_33"
-                android:textSize="@dimen/sp_12" />
-
-            <TextView
-                android:id="@+id/tv_total_floor"
-                android:layout_width="@dimen/dp_0"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/str_text_line"
-                android:textColor="@color/text_33"
-                android:textSize="@dimen/sp_12" />
-        </TableRow>
-
-        <TableRow
-            android:layout_marginTop="@dimen/dp_15"
-            tools:ignore="UselessParent">
-
-            <TextView
-                android:layout_width="@dimen/dp_0"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="left"
-                android:text="层高:"
-                android:textColor="@color/text_66_p50"
-                android:textSize="@dimen/sp_12" />
-
-            <TextView
-                android:layout_width="@dimen/dp_0"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="电梯:"
-                android:textColor="@color/text_66_p50"
-                android:textSize="@dimen/sp_12" />
-        </TableRow>
-
-        <TableRow
-            android:layout_marginTop="@dimen/dp_12"
-            tools:ignore="UselessParent">
-
-            <TextView
-                android:id="@+id/tv_storey_height"
-                android:layout_width="@dimen/dp_0"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="left"
-                android:text="@string/str_text_line"
-                android:textColor="@color/text_33"
-                android:textSize="@dimen/sp_12" />
-
-            <TextView
-                android:id="@+id/tv_lift"
-                android:layout_width="@dimen/dp_0"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/str_text_line"
-                android:textColor="@color/text_33"
-                android:textSize="@dimen/sp_12" />
-        </TableRow>
-
-        <TableRow
-            android:layout_marginTop="@dimen/dp_12"
-            tools:ignore="UselessParent">
-
-            <TextView
-                android:layout_width="@dimen/dp_0"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="left"
-                android:text="车位数:"
-                android:textColor="@color/text_66_p50"
-                android:textSize="@dimen/sp_12" />
-
-            <TextView
-                android:layout_width="@dimen/dp_0"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="停车费:"
-                android:textColor="@color/text_66_p50"
-                android:textSize="@dimen/sp_12" />
-        </TableRow>
-
-        <TableRow
-            android:layout_marginTop="@dimen/dp_12"
-            tools:ignore="UselessParent">
-
-            <TextView
-                android:id="@+id/tv_parking_space"
-                android:layout_width="@dimen/dp_0"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="left"
-                android:text="@string/str_text_line"
-                android:textColor="@color/text_33"
-                android:textSize="@dimen/sp_12" />
-
-            <TextView
-                android:id="@+id/tv_parking_space_rent"
-                android:layout_width="@dimen/dp_0"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/str_text_line"
-                android:textColor="@color/text_33"
-                android:textSize="@dimen/sp_12" />
-        </TableRow>
-
-        <TableRow
-            android:layout_marginTop="@dimen/dp_15"
-            tools:ignore="UselessParent">
-
-            <TextView
-                android:layout_width="@dimen/dp_0"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="left"
-                android:text="物业公司:"
-                android:textColor="@color/text_66_p50"
-                android:textSize="@dimen/sp_12" />
-
-            <TextView
-                android:layout_width="@dimen/dp_0"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="物业费:"
-                android:textColor="@color/text_66_p50"
-                android:textSize="@dimen/sp_12" />
-        </TableRow>
-
-        <TableRow
-            android:layout_marginTop="@dimen/dp_12"
-            tools:ignore="UselessParent">
-
-            <TextView
-                android:id="@+id/tv_property"
-                android:layout_width="@dimen/dp_0"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="left"
-                android:text="@string/str_text_line"
-                android:textColor="@color/text_33"
-                android:textSize="@dimen/sp_12" />
-
-            <TextView
-                android:id="@+id/tv_property_costs"
-                android:layout_width="@dimen/dp_0"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:text="@string/str_text_line"
-                android:textColor="@color/text_33"
-                android:textSize="@dimen/sp_12" />
-        </TableRow>
+    <RelativeLayout
+        android:id="@+id/rl_joint_company"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rv_building_message_info">
 
         <TextView
+            android:id="@+id/tv_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_15"
-            android:gravity="left"
-            android:text="网络："
+            android:layout_marginTop="@dimen/dp_12"
+            android:text="入住企业："
             android:textColor="@color/text_66_p50"
             android:textSize="@dimen/sp_12" />
 
         <TextView
-            android:id="@+id/tv_net"
+            android:id="@+id/tv_company_info"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_12"
-            android:text="@string/str_text_line"
+            android:layout_below="@id/tv_name"
+            android:layout_marginTop="@dimen/dp_8"
             android:textColor="@color/text_33"
             android:textSize="@dimen/sp_12" />
 
-        <TextView
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_15"
-            android:gravity="start"
-            android:text="入驻企业:"
-            android:textColor="@color/text_66_p50"
-            android:textSize="@dimen/sp_12" />
-
-        <TextView
-            android:visibility="gone"
-            android:id="@+id/tv_promote_slogan"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_12"
-            android:text="@string/str_text_line"
-            android:textColor="@color/text_33"
-            android:textSize="@dimen/sp_12" />
-    </TableLayout>
+    </RelativeLayout>
 
     <View
         android:layout_width="@dimen/dp_0"
@@ -324,6 +60,6 @@
         android:background="@color/common_divider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tl_details" />
+        app:layout_constraintTop_toBottomOf="@id/rl_joint_company" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

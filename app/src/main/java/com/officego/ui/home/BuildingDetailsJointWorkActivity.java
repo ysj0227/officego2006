@@ -22,6 +22,7 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -44,6 +45,7 @@ import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.config.ConditionConfig;
 import com.officego.h5.WebViewVRActivity_;
 import com.officego.model.ShareBean;
+import com.officego.ui.adapter.BuildingInfoAdapter;
 import com.officego.ui.adapter.HouseItemAllAdapter;
 import com.officego.ui.adapter.JointWorkAllChildAdapter;
 import com.officego.ui.adapter.ServiceBaseLogoAdapter;
@@ -53,11 +55,11 @@ import com.officego.ui.home.contract.BuildingDetailsJointWorkContract;
 import com.officego.ui.home.model.BuildingConditionItem;
 import com.officego.ui.home.model.BuildingDetailsBean;
 import com.officego.ui.home.model.BuildingDetailsChildBean;
+import com.officego.ui.home.model.BuildingInfoBean;
 import com.officego.ui.home.model.BuildingJointWorkBean;
 import com.officego.ui.home.model.ChatsBean;
 import com.officego.ui.home.model.ConditionBean;
 import com.officego.ui.home.presenter.BuildingDetailsJointWorkPresenter;
-import com.officego.ui.login.LoginActivity_;
 import com.officego.ui.message.ConversationActivity_;
 import com.officego.ui.previewimg.ImageBigActivity_;
 import com.officego.utils.ImageLoaderUtils;
@@ -225,30 +227,15 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     @ViewById(R.id.rv_base_service)
     RecyclerView rvBaseService;
     //楼盘信息
-    @ViewById(R.id.tv_air_conditioning)
-    TextView tvAirConditioning;
-    @ViewById(R.id.tv_air_conditioning_costs)
-    TextView tvAirConditioningCosts;
-    @ViewById(R.id.tv_completion_time)
-    TextView tvCompletionTime;
-    @ViewById(R.id.tv_total_floor)
-    TextView tvTotalFloor;
-    @ViewById(R.id.tv_storey_height)
-    TextView tvStoreyHeight;
-    @ViewById(R.id.tv_lift)
-    TextView tvLift;
-    @ViewById(R.id.tv_parking_space)
-    TextView tvParkingSpace;
-    @ViewById(R.id.tv_parking_space_rent)
-    TextView tvParkingSpaceRent;
-    @ViewById(R.id.tv_property)
-    TextView tvProperty;
-    @ViewById(R.id.tv_property_costs)
-    TextView tvPropertyCosts;
-    @ViewById(R.id.tv_net)
-    TextView tvNet;
-    @ViewById(R.id.tv_promote_slogan)
-    TextView tvPromoteSlogan;
+    @ViewById(R.id.tv_building_text)
+    TextView tvBuildingText;
+    @ViewById(R.id.rv_building_message_info)
+    RecyclerView rvBuildingMessageInfo;
+    @ViewById(R.id.rl_joint_company)
+    RelativeLayout rlJointCompany;
+    @ViewById(R.id.tv_company_info)
+    TextView tvCompanyInfo;
+    //收藏
     @ViewById(R.id.tv_favorite)
     TextView tvFavorite;
     //神策是否已读
@@ -313,10 +300,11 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         tvIndependentOffice.setVisibility(View.VISIBLE);
         ctlShareService.setVisibility(View.VISIBLE);
         mConditionBean = ConditionConfig.mConditionBean;
-        if (BundleUtils.buildingBean(this)!=null){//聊天插入楼盘点击
-            mBuildingBean=BundleUtils.buildingBean(this);
+        if (BundleUtils.buildingBean(this) != null) {//聊天插入楼盘点击
+            mBuildingBean = BundleUtils.buildingBean(this);
         }
         initIndependentBuildingRecView();
+        buildingIntroduceInfo();
         centerPlayIsShow(true);
         initVideo();
         getBuildingDetails();
@@ -328,6 +316,14 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         lmHorizontal.setOrientation(LinearLayoutManager.HORIZONTAL);
         rvHorizontalAll.setLayoutManager(lmHorizontal);
         rvIndependentOfficeChild.setLayoutManager(new LinearLayoutManager(this));
+    }
+
+    //网点信息
+    private void buildingIntroduceInfo() {
+        tvBuildingText.setText(getString(R.string.str_joint_work_info));
+        GridLayoutManager layoutManager = new GridLayoutManager(context, 2);
+        layoutManager.setSmoothScrollbarEnabled(true);
+        rvBuildingMessageInfo.setLayoutManager(layoutManager);
     }
 
     private void getBuildingDetails() {
@@ -892,6 +888,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
 
     }
 
+
     @SuppressLint("SetTextI18n")
     @Override
     public void BuildingJointWorkDetailsSuccess(BuildingJointWorkBean data) {
@@ -917,38 +914,39 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         }
         //公交
         showBusLine();
-        //楼盘信息
-        tvAirConditioning.setText("常规：" + data.getIntroduction().getAirConditioning());
-        if (data.getIntroduction().getCompletionTime() != null) {
-            tvCompletionTime.setText(data.getIntroduction().getCompletionTime() + "年");
-        }
-        tvTotalFloor.setText(data.getIntroduction().getTotalFloor() == null ?
-                getResources().getString(R.string.str_text_line) : data.getIntroduction().getTotalFloor() + "层");
-        tvStoreyHeight.setText(TextUtils.isEmpty(data.getIntroduction().getStoreyHeight()) ?
-                getResources().getString(R.string.str_text_line) : data.getIntroduction().getStoreyHeight() + "米");
-        tvLift.setText(data.getIntroduction().getPassengerLift() == null ? getResources().getString(R.string.str_text_line) : data.getIntroduction().getPassengerLift() + "客梯" +
-                (data.getIntroduction().getCargoLift() == null ? getResources().getString(R.string.str_text_line) : data.getIntroduction().getCargoLift() + "货梯"));
-        tvParkingSpace.setText(TextUtils.isEmpty(data.getIntroduction().getParkingSpace()) ?
-                getResources().getString(R.string.str_text_line) : data.getIntroduction().getParkingSpace() + "个");
-        tvParkingSpaceRent.setText(TextUtils.isEmpty(data.getIntroduction().getParkingSpaceRent()) ?
-                getResources().getString(R.string.str_text_line) : data.getIntroduction().getParkingSpaceRent() + "元/月/位");
-        tvProperty.setText(data.getIntroduction().getProperty() == null ?
-                getResources().getString(R.string.str_text_line) : (String) data.getIntroduction().getProperty());
-        tvPropertyCosts.setText(TextUtils.isEmpty(data.getIntroduction().getPropertyCosts()) ?
-                getResources().getString(R.string.str_text_line) : data.getIntroduction().getPropertyCosts() + "元/㎡/月");
-        tvNet.setText(TextUtils.isEmpty(data.getIntroduction().getInternet()) ?
-                getResources().getString(R.string.str_text_line) : data.getIntroduction().getInternet());
-        tvPromoteSlogan.setText(data.getIntroduction().getPromoteSlogan() == null ?
-                getResources().getString(R.string.str_text_line) : (String) data.getIntroduction().getPromoteSlogan());
-        //特色
-        if (data.getTags() != null && data.getTags().size() > 0) {
-            rlCharacteristic.setVisibility(View.VISIBLE);
-            labelHouseTags.setLabels(data.getTags(), (label, position, data1) -> data1.getDictCname());
-        } else {
-            rlCharacteristic.setVisibility(View.GONE);
-        }
         //图标
         showServiceLogo(data);
+        //特色
+        showTags(data);
+        //楼盘信息
+        buildingInfo(data);
+    }
+
+    //楼盘信息
+    private void buildingInfo(BuildingJointWorkBean data) {
+        if (data != null && data.getIntroduction() != null && data.getIntroduction().getBuildingMsg() != null) {
+            //信息
+            if (data.getIntroduction().getBuildingMsg() != null) {
+                List<BuildingJointWorkBean.IntroductionBean.BuildingMsgBean> list = data.getIntroduction().getBuildingMsg();
+                List<BuildingInfoBean> infoBeanList = new ArrayList<>();
+                BuildingInfoBean bean;
+                for (int i = 0; i < list.size(); i++) {
+                    bean = new BuildingInfoBean();
+                    bean.setName(list.get(i).getName());
+                    bean.setValue(list.get(i).getValue());
+                    infoBeanList.add(bean);
+                }
+                BuildingInfoAdapter infoAdapter = new BuildingInfoAdapter(context, infoBeanList);
+                rvBuildingMessageInfo.setAdapter(infoAdapter);
+            }
+            //入住企业
+            if (TextUtils.isEmpty(data.getIntroduction().getSettlementLicence())) {
+                rlJointCompany.setVisibility(View.GONE);
+            } else {
+                rlJointCompany.setVisibility(View.VISIBLE);
+                tvCompanyInfo.setText(data.getIntroduction().getSettlementLicence());
+            }
+        }
     }
 
     //公交
@@ -975,6 +973,16 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         } else {
             ctlBusLine.setVisibility(View.GONE);
             tvQueryTrains.setVisibility(View.GONE);
+        }
+    }
+
+    //tags
+    private void showTags(BuildingJointWorkBean data) {
+        if (data != null && data.getTags() != null && data.getTags().size() > 0) {
+            rlCharacteristic.setVisibility(View.VISIBLE);
+            labelHouseTags.setLabels(data.getTags(), (label, position, data1) -> data1.getDictCname());
+        } else {
+            rlCharacteristic.setVisibility(View.GONE);
         }
     }
 
@@ -1014,7 +1022,8 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void buildingSelectListSuccess(int totals, List<BuildingDetailsChildBean.ListBean> list) {
+    public void buildingSelectListSuccess(int totals, List<
+            BuildingDetailsChildBean.ListBean> list) {
         tvItemListBottom.setText(totals + "套");//自选面积多少套
         hasMore = list == null || list.size() >= 9;
         btnQueryMore.setVisibility(hasMore ? View.VISIBLE : View.GONE);
@@ -1159,7 +1168,8 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     }
 
     @Override
-    public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
+    public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX,
+                               int oldScrollY) {
         if (scrollY > oldScrollY) {//向下滚动
             if (scrollY > getResources().getDimensionPixelSize(R.dimen.dp_230)) {
                 llTitle.setVisibility(View.VISIBLE);

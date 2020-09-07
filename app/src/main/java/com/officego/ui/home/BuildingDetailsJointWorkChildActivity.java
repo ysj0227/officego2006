@@ -22,6 +22,8 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
+import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
 import com.officego.R;
@@ -37,11 +39,13 @@ import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.IVideoPlayer;
 import com.officego.h5.WebViewVRActivity_;
 import com.officego.model.ShareBean;
+import com.officego.ui.adapter.BuildingInfoAdapter;
 import com.officego.ui.home.contract.BuildingDetailsChildJointWorkContract;
+import com.officego.ui.home.model.BuildingInfoBean;
 import com.officego.ui.home.model.ChatsBean;
+import com.officego.ui.home.model.HouseOfficeDetailsBean;
 import com.officego.ui.home.model.HouseOfficeDetailsJointWorkBean;
 import com.officego.ui.home.presenter.BuildingDetailsChildJointWorkPresenter;
-import com.officego.ui.login.LoginActivity_;
 import com.officego.ui.message.ConversationActivity_;
 import com.officego.ui.previewimg.ImageBigActivity_;
 import com.officego.utils.ImageLoaderUtils;
@@ -112,18 +116,8 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
     @ViewById(R.id.tv_independent_office_num_text)
     TextView tvIndependentOfficeNumText;
     //房源介绍
-    @ViewById(R.id.tv_office_pattern)
-    TextView tvOfficePattern;
-    @ViewById(R.id.tv_orientation)
-    TextView tvOrientation;
-    @ViewById(R.id.tv_total_floor)
-    TextView tvTotalFloor;
-    @ViewById(R.id.tv_earliest_delivery)
-    TextView tvEarliestDelivery;
-    @ViewById(R.id.tv_rent_free_period)
-    TextView tvRentFreePeriod;
-    @ViewById(R.id.tv_minimum_lease)
-    TextView tvMinimumLease;
+    @ViewById(R.id.rv_building_message_info)
+    RecyclerView rvBuildingMessageInfo;
     //介绍图
     @ViewById(R.id.iv_pattern)
     ImageView ivPattern;
@@ -222,9 +216,10 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         mPresenter.attachView(this);
         rlRootHouseTitle.setPadding(0, CommonHelper.statusHeight(this), 0, 0);
         setImageViewLayoutParams(context, ivPattern);
-        if (BundleUtils.houseBean(this)!=null){//聊天插入楼盘点击
-            mChildHouseBean=BundleUtils.houseBean(this);
+        if (BundleUtils.houseBean(this) != null) {//聊天插入楼盘点击
+            mChildHouseBean = BundleUtils.houseBean(this);
         }
+        buildingIntroduceInfo();
         centerPlayIsShow(true);
         initVideo();
         nsvView.setOnScrollChangeListener(this);
@@ -245,6 +240,12 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         view.setLayoutParams(params);
     }
 
+    private void buildingIntroduceInfo() {
+        GridLayoutManager layoutManager = new GridLayoutManager(context, 2);
+        layoutManager.setSmoothScrollbarEnabled(true);
+        rvBuildingMessageInfo.setLayoutManager(layoutManager);
+    }
+
     @Click(R.id.btn_back)
     void backClick() {
         finish();
@@ -256,17 +257,27 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         if (data == null) {
             return;
         }
+        tvTitle.setText(data.getHouse().getBranchesName());
+        tvBuildingName.setText("独立办公室");
         mData = data;
         getVideoUrl(data);
         houseId = data.getHouse().getId() + "";
+        //收藏
         isFavorite = data.isIsFavorite();
         isFavoriteView(isFavorite);
-        //楼盘信息
-        tvTitle.setText(data.getHouse().getBuildingName());
         //轮播图
         playBanner(data.getImgUrl());
-        tvBuildingName.setText("独立办公室");
-        //详情
+        //楼盘信息
+        houseInfo(data);
+        //基础信息
+        houseBaseInfo(data);
+        //交通
+        trafficView(data);
+    }
+
+    //楼盘房源信息
+    @SuppressLint("SetTextI18n")
+    private void houseInfo(HouseOfficeDetailsJointWorkBean data) {
         if (data.getHouse() != null) {
             tvIndependentOfficeAreaText.setText(data.getHouse().getSeats() + "个工位");
             if (data.getHouse().getArea() != null) {
@@ -292,35 +303,41 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
                 tvIndependentOfficeNum.setText(R.string.str_text_line);
             }
             tvIndependentOfficeNumText.setText("装修风格");
-            //楼盘信息
-            if (data.getHouse().getBasicInformation() != null) {
-                tvOfficePattern.setText(TextUtils.isEmpty(data.getHouse().getBasicInformation().getOfficePattern()) ?
-                        getResources().getString(R.string.str_text_line) : data.getHouse().getBasicInformation().getOfficePattern());
-                tvTotalFloor.setText(TextUtils.isEmpty(data.getHouse().getBasicInformation().getFloor()) ?
-                        getResources().getString(R.string.str_text_line) : data.getHouse().getBasicInformation().getFloor() + "层");
-                tvEarliestDelivery.setText(TextUtils.isEmpty(data.getHouse().getBasicInformation().getEarliestDelivery()) ?
-                        getResources().getString(R.string.str_text_line) : data.getHouse().getBasicInformation().getEarliestDelivery());
-                tvRentFreePeriod.setText(TextUtils.isEmpty(data.getHouse().getBasicInformation().getRentFreePeriod()) ?
-                        getResources().getString(R.string.str_text_line) : data.getHouse().getBasicInformation().getRentFreePeriod());
-                tvMinimumLease.setText(TextUtils.isEmpty(data.getHouse().getBasicInformation().getMinimumLease()) ?
-                        getResources().getString(R.string.str_text_line) : data.getHouse().getBasicInformation().getMinimumLease() + "月起");
-                //户型介绍
-                if (TextUtils.isEmpty(data.getHouse().getBasicInformation().getUnitPatternImg()) &&
-                        TextUtils.isEmpty(data.getHouse().getBasicInformation().getUnitPatternRemark())) {
-                    ctlPatternDetails.setVisibility(View.GONE);
+        }
+    }
+
+    //楼盘房源基础信息
+    private void houseBaseInfo(HouseOfficeDetailsJointWorkBean data) {
+        //户型介绍
+        if (data.getHouse().getBasicInformation() != null) {
+            if (TextUtils.isEmpty(data.getHouse().getBasicInformation().getUnitPatternImg()) &&
+                    TextUtils.isEmpty(data.getHouse().getBasicInformation().getUnitPatternRemark())) {
+                ctlPatternDetails.setVisibility(View.GONE);
+            } else {
+                ctlPatternDetails.setVisibility(View.VISIBLE);
+                Glide.with(context).load(data.getHouse().getBasicInformation().getUnitPatternImg()).into(ivPattern);
+                if (TextUtils.isEmpty(data.getHouse().getBasicInformation().getUnitPatternRemark())) {
+                    tvPatternDescription.setVisibility(View.GONE);
                 } else {
-                    ctlPatternDetails.setVisibility(View.VISIBLE);
-                    Glide.with(context).load(data.getHouse().getBasicInformation().getUnitPatternImg()).into(ivPattern);
-                    if (TextUtils.isEmpty(data.getHouse().getBasicInformation().getUnitPatternRemark())) {
-                        tvPatternDescription.setVisibility(View.GONE);
-                    } else {
-                        tvPatternDescription.setVisibility(View.VISIBLE);
-                        tvPatternDescription.setText(data.getHouse().getBasicInformation().getUnitPatternRemark());
-                    }
+                    tvPatternDescription.setVisibility(View.VISIBLE);
+                    tvPatternDescription.setText(data.getHouse().getBasicInformation().getUnitPatternRemark());
                 }
             }
-            //交通
-            trafficView(data);
+        }
+        //基础字段介绍信息
+        if (data.getHouse().getBasicInformation().getHouseMsg() != null) {
+            List<HouseOfficeDetailsJointWorkBean.HouseBean.BasicInformationBean.HouseMsgBean> list =
+                    data.getHouse().getBasicInformation().getHouseMsg();
+            List<BuildingInfoBean> infoBeanList = new ArrayList<>();
+            BuildingInfoBean bean;
+            for (int i = 0; i < list.size(); i++) {
+                bean = new BuildingInfoBean();
+                bean.setName(list.get(i).getName());
+                bean.setValue(list.get(i).getValue());
+                infoBeanList.add(bean);
+            }
+            BuildingInfoAdapter infoAdapter = new BuildingInfoAdapter(context, infoBeanList);
+            rvBuildingMessageInfo.setAdapter(infoAdapter);
         }
     }
 
@@ -332,7 +349,6 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
             } else {
                 tvLocation.setText(data.getHouse().getBusinessDistrict());
             }
-            //公交
             showBusLine();
         }
     }

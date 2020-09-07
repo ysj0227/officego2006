@@ -105,97 +105,16 @@ public class BuildingDetailsBean implements Serializable {
         this.tags = tags;
     }
 
-    public static class IntroductionBean implements Serializable{
+    public static class IntroductionBean implements Serializable {
         /**
-         * airConditioning : 中央空调(无需额外付费)
-         * propertyCosts : 100
-         * ParkingSpaceRent : 1000
-         * passengerLift : 20
-         * parkingSpace : 20
-         * completionTime : 915148800
          * promoteSlogan : null
-         * cargoLift : 10
-         * totalFloor : 30
-         * property : 测试
-         * storeyHeight : 10
-         * constructionArea : 200
-         * internet : 电信,联通
          */
-
-        @SerializedName("airConditioning")
-        private String airConditioning;
-        @SerializedName("propertyCosts")
-        private String propertyCosts;
-        @SerializedName("ParkingSpaceRent")
-        private String ParkingSpaceRent;
-        @SerializedName("passengerLift")
-        private String passengerLift;
-        @SerializedName("parkingSpace")
-        private String parkingSpace;
-        @SerializedName("completionTime")
-        private String completionTime;
+        @SerializedName("buildingMsg")
+        private List<BuildingMsgBean> buildingMsg;
         @SerializedName("promoteSlogan")
         private Object promoteSlogan;
-        @SerializedName("cargoLift")
-        private String cargoLift;
-        @SerializedName("totalFloor")
-        private String totalFloor;
-        @SerializedName("property")
-        private String property;
-        @SerializedName("storeyHeight")
-        private String storeyHeight;
-        @SerializedName("constructionArea")
-        private String constructionArea;
-        @SerializedName("internet")
-        private String internet;
-
-        public String getAirConditioning() {
-            return airConditioning;
-        }
-
-        public void setAirConditioning(String airConditioning) {
-            this.airConditioning = airConditioning;
-        }
-
-        public String getPropertyCosts() {
-            return propertyCosts;
-        }
-
-        public void setPropertyCosts(String propertyCosts) {
-            this.propertyCosts = propertyCosts;
-        }
-
-        public String getParkingSpaceRent() {
-            return ParkingSpaceRent;
-        }
-
-        public void setParkingSpaceRent(String ParkingSpaceRent) {
-            this.ParkingSpaceRent = ParkingSpaceRent;
-        }
-
-        public String getPassengerLift() {
-            return passengerLift;
-        }
-
-        public void setPassengerLift(String passengerLift) {
-            this.passengerLift = passengerLift;
-        }
-
-        public String getParkingSpace() {
-            return parkingSpace;
-        }
-
-        public void setParkingSpace(String parkingSpace) {
-            this.parkingSpace = parkingSpace;
-        }
-
-        public String getCompletionTime() {
-            return completionTime;
-        }
-
-        public void setCompletionTime(String completionTime) {
-            this.completionTime = completionTime;
-        }
+        @SerializedName("settlementLicence")
+        private String settlementLicence;
 
         public Object getPromoteSlogan() {
             return promoteSlogan;
@@ -205,52 +124,43 @@ public class BuildingDetailsBean implements Serializable {
             this.promoteSlogan = promoteSlogan;
         }
 
-        public String getCargoLift() {
-            return cargoLift;
+        public List<BuildingMsgBean> getBuildingMsg() {
+            return buildingMsg;
         }
 
-        public void setCargoLift(String cargoLift) {
-            this.cargoLift = cargoLift;
+        public void setBuildingMsg(List<BuildingMsgBean> buildingMsg) {
+            this.buildingMsg = buildingMsg;
         }
 
-        public String getTotalFloor() {
-            return totalFloor;
+        public String getSettlementLicence() {
+            return settlementLicence;
         }
 
-        public void setTotalFloor(String totalFloor) {
-            this.totalFloor = totalFloor;
+        public void setSettlementLicence(String settlementLicence) {
+            this.settlementLicence = settlementLicence;
         }
 
-        public String getProperty() {
-            return property;
-        }
+        public static class BuildingMsgBean implements Serializable {
+            @SerializedName("name")
+            private String name;
+            @SerializedName("value")
+            private String value;
 
-        public void setProperty(String property) {
-            this.property = property;
-        }
+            public String getName() {
+                return name;
+            }
 
-        public String getStoreyHeight() {
-            return storeyHeight;
-        }
+            public void setName(String name) {
+                this.name = name;
+            }
 
-        public void setStoreyHeight(String storeyHeight) {
-            this.storeyHeight = storeyHeight;
-        }
+            public String getValue() {
+                return value;
+            }
 
-        public String getConstructionArea() {
-            return constructionArea;
-        }
-
-        public void setConstructionArea(String constructionArea) {
-            this.constructionArea = constructionArea;
-        }
-
-        public String getInternet() {
-            return internet;
-        }
-
-        public void setInternet(String internet) {
-            this.internet = internet;
+            public void setValue(String value) {
+                this.value = value;
+            }
         }
     }
 
@@ -414,7 +324,7 @@ public class BuildingDetailsBean implements Serializable {
         }
     }
 
-    public static class FactorMapBean implements Serializable{
+    public static class FactorMapBean implements Serializable {
         /**
          * buildingItem7 : 0
          * buildingItem3 : 0
@@ -508,7 +418,7 @@ public class BuildingDetailsBean implements Serializable {
         }
     }
 
-    public static class ImgUrlBean implements Serializable{
+    public static class ImgUrlBean implements Serializable {
         /**
          * imgUrl : https://img.officego.com.cn/building/1590990890022.jpg
          * typeId : 54
@@ -569,7 +479,7 @@ public class BuildingDetailsBean implements Serializable {
         }
     }
 
-    public static class VrUrlBean implements Serializable{
+    public static class VrUrlBean implements Serializable {
         /**
          * imgUrl :
          * typeId : 54
@@ -630,7 +540,7 @@ public class BuildingDetailsBean implements Serializable {
         }
     }
 
-    public static class VideoUrlBean implements Serializable{
+    public static class VideoUrlBean implements Serializable {
         /**
          * imgUrl : https://img.officego.com.cn/building/1591239116858.mp4
          * typeId : 54
@@ -691,7 +601,7 @@ public class BuildingDetailsBean implements Serializable {
         }
     }
 
-    public static class TagsBean implements Serializable{
+    public static class TagsBean implements Serializable {
         /**
          * dictValue : 1
          * dictImg :

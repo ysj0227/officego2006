@@ -291,7 +291,6 @@ public class OfficegoApi {
                                    RetrofitCallback<BuildingDetailsBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
-//        map.put("token", requestBody(""));
         map.put("btype", requestBody(btype));
         map.put("buildingId", requestBody(buildingId));
         map.put("area", requestBody(area));
@@ -322,7 +321,6 @@ public class OfficegoApi {
                                             RetrofitCallback<BuildingJointWorkBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
-//        map.put("token", requestBody(""));
         map.put("btype", requestBody(btype));
         map.put("buildingId", requestBody(buildingId));
         map.put("area", requestBody(area));

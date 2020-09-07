@@ -342,20 +342,10 @@ public class HouseOfficeDetailsJointWorkBean {
 
             @SerializedName("unitPatternImg")
             private String unitPatternImg;
-            @SerializedName("officePattern")
-            private String officePattern;
-            @SerializedName("minimumLease")
-            private String minimumLease;
-            @SerializedName("earliestDelivery")
-            private String earliestDelivery;
             @SerializedName("unitPatternRemark")
             private String unitPatternRemark;
-            @SerializedName("rentFreePeriod")
-            private String rentFreePeriod;
-            @SerializedName("otherRemark")
-            private Object otherRemark;
-            @SerializedName("floor")
-            private String floor;
+            @SerializedName("houseMsg")
+            private List<HouseMsgBean> houseMsg;
 
             public String getUnitPatternImg() {
                 return unitPatternImg;
@@ -363,30 +353,6 @@ public class HouseOfficeDetailsJointWorkBean {
 
             public void setUnitPatternImg(String unitPatternImg) {
                 this.unitPatternImg = unitPatternImg;
-            }
-
-            public String getOfficePattern() {
-                return officePattern;
-            }
-
-            public void setOfficePattern(String officePattern) {
-                this.officePattern = officePattern;
-            }
-
-            public String getMinimumLease() {
-                return minimumLease;
-            }
-
-            public void setMinimumLease(String minimumLease) {
-                this.minimumLease = minimumLease;
-            }
-
-            public String getEarliestDelivery() {
-                return earliestDelivery;
-            }
-
-            public void setEarliestDelivery(String earliestDelivery) {
-                this.earliestDelivery = earliestDelivery;
             }
 
             public String getUnitPatternRemark() {
@@ -397,28 +363,35 @@ public class HouseOfficeDetailsJointWorkBean {
                 this.unitPatternRemark = unitPatternRemark;
             }
 
-            public String getRentFreePeriod() {
-                return rentFreePeriod;
+            public List<HouseMsgBean> getHouseMsg() {
+                return houseMsg;
             }
 
-            public void setRentFreePeriod(String rentFreePeriod) {
-                this.rentFreePeriod = rentFreePeriod;
+            public void setHouseMsg(List<HouseMsgBean> houseMsg) {
+                this.houseMsg = houseMsg;
             }
 
-            public Object getOtherRemark() {
-                return otherRemark;
-            }
+            public static class HouseMsgBean {
+                @SerializedName("name")
+                private String name;
+                @SerializedName("value")
+                private String value;
 
-            public void setOtherRemark(Object otherRemark) {
-                this.otherRemark = otherRemark;
-            }
+                public String getName() {
+                    return name;
+                }
 
-            public String getFloor() {
-                return floor;
-            }
+                public void setName(String name) {
+                    this.name = name;
+                }
 
-            public void setFloor(String floor) {
-                this.floor = floor;
+                public String getValue() {
+                    return value;
+                }
+
+                public void setValue(String value) {
+                    this.value = value;
+                }
             }
         }
 
