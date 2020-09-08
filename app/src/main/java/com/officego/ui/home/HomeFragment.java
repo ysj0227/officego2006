@@ -13,7 +13,6 @@ import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
-import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.appbar.AppBarLayout;
 import com.officego.R;
@@ -34,6 +33,7 @@ import com.officego.ui.home.model.ConditionBean;
 import com.officego.ui.home.presenter.HomePresenter;
 import com.officego.utils.AppBarStateChangeListener;
 import com.officego.utils.ImageLoaderUtils;
+import com.officego.utils.SuperSwipeRefreshLayout;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -66,7 +66,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     @ViewById(R.id.cdl_root)
     CoordinatorLayout cdlRoot;
     @ViewById(R.id.bga_refresh)
-    SwipeRefreshLayout mSwipeRefreshLayout;
+    SuperSwipeRefreshLayout mSwipeRefreshLayout;
     @ViewById(R.id.rv_house)
     RecyclerView rvHouse;
     @ViewById(R.id.banner)
@@ -383,17 +383,13 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         public void onStateAbs(int abs) {
             //title滑动透明度
             rlHomeTitle.setAlpha(abs * alphaPercent);
-            if (abs * alphaPercent < 0.9) {
-                rlSearchArea.setEnabled(false);
-                rlSearchOffice.setEnabled(false);
-                rlSearchOrder.setEnabled(false);
-                rlSearchCondition.setEnabled(false);
-            } else {
-                rlSearchArea.setEnabled(true);
-                rlSearchOffice.setEnabled(true);
-                rlSearchOrder.setEnabled(true);
-                rlSearchCondition.setEnabled(true);
-            }
+            //筛选点击
+            //筛选是否可点击
+            boolean isSearchClick = abs * alphaPercent >= 0.9;
+            rlSearchArea.setEnabled(isSearchClick);
+            rlSearchOffice.setEnabled(isSearchClick);
+            rlSearchOrder.setEnabled(isSearchClick);
+            rlSearchCondition.setEnabled(isSearchClick);
             //标签筛选
             labelConstruction(abs);
             //是否可以下拉刷新
@@ -406,22 +402,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         if (bannerList == null || bannerList.size() == 0) {
             return;
         }
-//        banner.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-//            @Override
-//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//            }
-//
-//            @Override
-//            public void onPageSelected(int position) {
-//            }
-//
-//            @Override
-//            public void onPageScrollStateChanged(int state) {
-//                if (mSwipeRefreshLayout != null) {
-//                    mSwipeRefreshLayout.setEnabled(false);
-//                }
-//            }
-//        });
         //设置内置样式，共有六种可以点入方法内逐一体验使用。
         //  banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE);
         //设置图片加载器，图片加载器在下方
