@@ -23,13 +23,13 @@ public class ConnectRongCloudUtils {
         IMManager.getInstance().connectIM(SpUtils.getRongToken(), new ResultCallback<String>() {
             @Override
             public void onSuccess(String s) {
-                LogCat.d(TAG, "ConnectionStatus onSuccess userRongChatId=" + s);
+                LogCat.e(TAG, "ConnectionStatus onSuccess userRongChatId=" + s);
                 RongCloudSetUserInfoUtils.setCurrentInfo(s);
             }
 
             @Override
             public void onFail(int errorCode) {
-                LogCat.d(TAG, "ConnectionStatus onFail errorCode=" + errorCode);
+                LogCat.e(TAG, "ConnectionStatus onFail errorCode=" + errorCode);
             }
         });
     }

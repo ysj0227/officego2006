@@ -10,7 +10,7 @@ import com.officego.commonlib.base.BaseConfig;
 public class AppConfig extends BaseConfig {
     public static String APP_URL = "";//接口调用
     public static String APP_URL_MAIN = "";//数据连接
-    public static String WEB_URL_SCAN_LOGIN= "";//app扫码web登录
+    public static String WEB_URL_SCAN_LOGIN = "";//app扫码web登录
 
     public static String H5_ABOUT_US = "";//关于我们
     public static String H5_HELP_FEEDBACK = "";//帮助反馈
@@ -22,12 +22,8 @@ public class AppConfig extends BaseConfig {
 
     public static String H5_OWNER_BUILDINGlIST = "";//房源管理
     public static String H5_OWNER_HOUSElIST = "";// 网点管理
-    public static String H5_OWNER_IDIFY = "";//认证
-    public static String H5_OWNER_IDIFY_PERSION = "";//个人认证
-    public static String H5_OWNER_IDIFY_COMPANY = "";//企业认证
-    public static String H5_OWNER_IDIFY_JOINTWORK = "";//网点认证
-
-    public static String RC_APPKEY = "";//融云key
+    //融云key
+    public static String RC_APPKEY = "";
     public static String RC_APPSECRET = "";
     //bugly
     public static String BUGLY_ID = "";
@@ -37,9 +33,8 @@ public class AppConfig extends BaseConfig {
     //OPPO推送
     public static final String OPPO_APP_KEY = "114e9b66ee5d4bc394d5267f30c00034";
     public static final String OPPO_APP_SECRET = "acb2bbe32bf04af38c961229fb4b4b13";
-
     //神策数据
-    public static  String SA_SERVER_URL = "";
+    public static String SA_SERVER_URL = "";
 
     //测试
     @Override
@@ -47,8 +42,9 @@ public class AppConfig extends BaseConfig {
         //URL
         APP_URL = "http://debug.officego.com.cn/";
         APP_URL_MAIN = "http://test1.officego.com.cn/";
-        WEB_URL_SCAN_LOGIN="http://debugweb.officego.com.cn/";
-        SA_SERVER_URL="https://officego.datasink.sensorsdata.cn/sa?project=default&token=d0db7a742f154aac";
+        WEB_URL_SCAN_LOGIN = "http://debugweb.officego.com.cn/";
+        //神策数据
+        SA_SERVER_URL = "https://officego.datasink.sensorsdata.cn/sa?project=default&token=d0db7a742f154aac";
 //        APP_URL = "http://admin.officego.com.cn/";
 //        APP_URL_MAIN = "http://test.officego.com.cn/";
         //个人中心
@@ -61,12 +57,8 @@ public class AppConfig extends BaseConfig {
         //楼盘网点管理
         H5_OWNER_BUILDINGlIST = APP_URL_MAIN + "owner/houseList.html";
         H5_OWNER_HOUSElIST = APP_URL_MAIN + "owner/branchList.html";
-        //认证
-        H5_OWNER_IDIFY = APP_URL_MAIN + "owner/myHome.html";
-        H5_OWNER_IDIFY_PERSION = APP_URL_MAIN + "owner/attestationPersonage.html";
-        H5_OWNER_IDIFY_COMPANY = APP_URL_MAIN + "owner/company.html";
-        H5_OWNER_IDIFY_JOINTWORK = APP_URL_MAIN + "owner/company2.html";
-        H5_STAFF_LIST = APP_URL_MAIN + "owner/staffList.html";  //员工管理
+        //员工管理
+        H5_STAFF_LIST = APP_URL_MAIN + "owner/staffList.html";
         //融云IM test
         RC_APPKEY = "kj7swf8oknm02";
         RC_APPSECRET = "OF78PpILjjRk4";
@@ -80,8 +72,9 @@ public class AppConfig extends BaseConfig {
         //URL
         APP_URL = "https://api.officego.com/";
         APP_URL_MAIN = "https://m.officego.com/";
-        WEB_URL_SCAN_LOGIN="http://webapi.officego.com/";
-        SA_SERVER_URL="https://officego.datasink.sensorsdata.cn/sa?project=production&token=d0db7a742f154aac";
+        WEB_URL_SCAN_LOGIN = "http://webapi.officego.com/";
+        //神策数据
+        SA_SERVER_URL = "https://officego.datasink.sensorsdata.cn/sa?project=production&token=d0db7a742f154aac";
         //个人中心
         H5_ABOUT_US = APP_URL_MAIN + "lessee/aboutUs.html";
         H5_HELP_FEEDBACK = APP_URL_MAIN + "lessee/opinion.html";
@@ -92,12 +85,8 @@ public class AppConfig extends BaseConfig {
         //楼盘网点管理
         H5_OWNER_BUILDINGlIST = APP_URL_MAIN + "owner/houseList.html";
         H5_OWNER_HOUSElIST = APP_URL_MAIN + "owner/branchList.html";
-        //认证
-        H5_OWNER_IDIFY = APP_URL_MAIN + "owner/myHome.html";
-        H5_OWNER_IDIFY_PERSION = APP_URL_MAIN + "owner/attestationPersonage.html";
-        H5_OWNER_IDIFY_COMPANY = APP_URL_MAIN + "owner/company.html";
-        H5_OWNER_IDIFY_JOINTWORK = APP_URL_MAIN + "owner/company2.html";
-        H5_STAFF_LIST = APP_URL_MAIN + "owner/staffList.html";  //员工管理
+        //员工管理
+        H5_STAFF_LIST = APP_URL_MAIN + "owner/staffList.html";
         //融云IM release
         RC_APPKEY = "qf3d5gbjq94mh";
         RC_APPSECRET = "xtDkNCjJse";

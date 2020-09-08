@@ -22,7 +22,6 @@ import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.update.AppUpdate;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.rpc.OfficegoApi;
 
@@ -42,6 +41,7 @@ public class MineSettingActivity extends BaseActivity {
     @ViewById(R.id.tv_version)
     TextView tvVersion;
 
+    @SuppressLint("SetTextI18n")
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarColor(this);
@@ -107,7 +107,6 @@ public class MineSettingActivity extends BaseActivity {
 
             @Override
             public void onFail(int code, String msg, VersionBean data) {
-                LogCat.e(TAG, "updateVersion onFail code=" + code + "  msg=" + msg);
                 hideLoadingDialog();
                 if (code == Constants.ERROR_CODE_5008) {
                     shortTip(R.string.tip_current_newest_version);

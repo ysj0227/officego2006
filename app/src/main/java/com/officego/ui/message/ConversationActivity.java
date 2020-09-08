@@ -18,15 +18,12 @@ import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
-import com.officego.ui.message.contract.ConversationContract;
 import com.officego.commonlib.common.dialog.ConfirmDialog;
 import com.officego.commonlib.common.dialog.InputContactsDialog;
-import com.officego.commonlib.common.message.BuildingInfo;
 import com.officego.commonlib.common.model.ChatHouseBean;
 import com.officego.commonlib.common.model.FirstChatBean;
 import com.officego.commonlib.common.model.IdentitychattedMsgBean;
 import com.officego.commonlib.common.model.RongUserInfoBean;
-import com.officego.ui.message.presenter.ConversationPresenter;
 import com.officego.commonlib.common.rongcloud.RongCloudSetUserInfoUtils;
 import com.officego.commonlib.common.rongcloud.SendMessageManager;
 import com.officego.commonlib.common.sensors.SensorsTrack;
@@ -35,7 +32,8 @@ import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.ToastUtils;
-import com.officego.db.LitepalUtils;
+import com.officego.ui.message.contract.ConversationContract;
+import com.officego.ui.message.presenter.ConversationPresenter;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -125,7 +123,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
                 ctlChat.setVisibility(View.GONE);
                 mPresenter.identityChattedMsg(targetId);
                 initIM();
-            } else if (TextUtils.equals("3", targetId) ||
+            } else if (TextUtils.equals(Constants.TYPE_SYSTEM, targetId) ||
                     (targetId.length() > 1 && TextUtils.equals(Constants.TYPE_SYSTEM, targetId.substring(targetId.length() - 1)))) {
                 //系统消息聊天列表进入
                 ctlChat.setVisibility(View.GONE);

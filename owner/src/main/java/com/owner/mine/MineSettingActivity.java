@@ -10,11 +10,9 @@ import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.VersionBean;
-import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.rongcloud.ConnectRongCloudUtils;
 import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.constant.Constants;
-import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.update.AppUpdate;
 import com.officego.commonlib.utils.CommonHelper;
@@ -43,6 +41,7 @@ public class MineSettingActivity extends BaseActivity {
     TextView tvVersion;
 
 
+    @SuppressLint("SetTextI18n")
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarColor(this);
@@ -95,6 +94,7 @@ public class MineSettingActivity extends BaseActivity {
                     SpUtils.clearLoginInfo();
                     //跳转登录
                     GotoActivityUtils.loginClearActivity(context, true);
+                    finish();
                 })
                 .setCancelButton(R.string.sm_cancel, (dialog1, which) -> dialog1.dismiss()).create();
         dialog.showWithOutTouchable(false);
