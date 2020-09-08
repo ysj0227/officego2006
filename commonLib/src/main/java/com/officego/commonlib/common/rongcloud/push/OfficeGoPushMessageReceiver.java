@@ -71,7 +71,7 @@ public class OfficeGoPushMessageReceiver extends PushMessageReceiver {
      */
     private void pushMIClick(Context context, String targetId) {
         if (!TextUtils.isEmpty(SpUtils.getSignToken())) {
-            IMManager.getInstance().connectIM(SpUtils.getRongToken(), true, new ResultCallback<String>() {
+            IMManager.getInstance().connectIM(SpUtils.getRongToken(),  new ResultCallback<String>() {
                 @Override
                 public void onSuccess(String s) {
                     RongCloudSetUserInfoUtils.setCurrentInfo(s);

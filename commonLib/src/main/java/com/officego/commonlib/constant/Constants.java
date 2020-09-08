@@ -51,11 +51,6 @@ public class Constants {
     public static final String SERVICE_TECHNICAL_SUPPORT = "13052007068";
     public static final String SERVICE_EMAIL = "Clientservice@officego.com";
 
-    //h5 认证
-    public final static int H5_OWNER_IDIFY_PERSION = 1000;//个人认证
-    public final static int H5_OWNER_IDIFY_COMPANY = 1001;//企业认证
-    public final static int H5_OWNER_IDIFY_JOINTWORK = 1002;//网点认证
-
     //楼盘，网点类型
     public final static int TYPE_BUILDING = 1;
     public final static int TYPE_JOINTWORK = 2;
@@ -78,4 +73,6 @@ public class Constants {
 
     //当前是否在消息的MessageFragment  切换账号为了刷新会话列表
     public static int TABLE_BAR_POSITION;
+    //融云是否连接成功
+    public static boolean isRCIMConnectSuccess;
 }

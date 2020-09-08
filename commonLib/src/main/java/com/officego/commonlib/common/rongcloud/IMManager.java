@@ -27,6 +27,7 @@ import com.officego.commonlib.common.message.WeChatProvider;
 import com.officego.commonlib.common.model.RongUserInfoBean;
 import com.officego.commonlib.common.rpc.OfficegoApi;
 import com.officego.commonlib.constant.AppConfig;
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.log.LogCat;
@@ -153,11 +154,10 @@ public class IMManager {
     /**
      * 连接 IM 服务
      *
-     * @param token
-     * @param getTokenOnIncorrect
-     * @param callback
+     * @param token    token
+     * @param callback callback
      */
-    public void connectIM(String token, boolean getTokenOnIncorrect, ResultCallback<String> callback) {
+    public void connectIM(String token, ResultCallback<String> callback) {
         RongIM.connect(token, new RongIMClient.ConnectCallback() {
             /**
              * Token 错误。可以从下面两点检查 1.  Token 是否过期，如果过期您需要向 App Server 重新请求一个新的 Token
@@ -165,26 +165,30 @@ public class IMManager {
              */
             @Override
             public void onTokenIncorrect() {
-                LogCat.e(TAG, "connect error - onTokenIncorrect");
+                LogCat.e(TAG, "connect onTokenIncorrect");
             }
 
             @Override
             public void onSuccess(String s) {
+                LogCat.e(TAG, "connect onSuccess");
+                Constants.isRCIMConnectSuccess = true;
                 callback.onSuccess(s);
             }
 
             @Override
             public void onError(RongIMClient.ErrorCode errorCode) {
-                LogCat.e(TAG, "connect error - code:" + errorCode.getValue() + ", msg:" + errorCode.getMessage());
-                if (errorCode == RongIMClient.ErrorCode.RC_CONN_REDIRECTED) {
-                    // 重定向错误，直接调用重新连接
-                    connectIM(token, getTokenOnIncorrect, callback);
+                LogCat.e(TAG, "connect onError - code:" + errorCode.getValue() + ", msg:" + errorCode.getMessage());
+                Constants.isRCIMConnectSuccess = false;
+                if (errorCode == RongIMClient.ErrorCode.RC_MSG_RESP_TIMEOUT ||
+                        errorCode == RongIMClient.ErrorCode.RC_SOCKET_NOT_CREATED ||
+                        errorCode == RongIMClient.ErrorCode.RC_SOCKET_DISCONNECTED) {
+                    connectIM(token, callback);
                 } else {
                     if (callback != null) {
                         callback.onFail(errorCode.getValue());
                     } else {
-                        // do nothing
-                        connectIM(token, getTokenOnIncorrect, callback);
+                        //do something
+                        //connectIM(token, callback);
                     }
                 }
 
@@ -424,7 +428,7 @@ public class IMManager {
                         public void onSuccess(int code, String msg, RongUserInfoBean data) {
                             RongCloudSetUserInfoUtils.refreshUserInfoCache(targetId,
                                     data.getName(), data.getAvatar());
-                          }
+                        }
 
                         @Override
                         public void onFail(int code, String msg, RongUserInfoBean data) {

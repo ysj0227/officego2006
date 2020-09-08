@@ -149,7 +149,6 @@ public class MineSettingActivity extends BaseActivity {
 
             @Override
             public void onFail(int code, String msg, LoginBean data) {
-                LogCat.e(TAG, "switchId owner onFail code=" + code + "  msg=" + msg);
                 hideLoadingDialog();
                 if (code == Constants.ERROR_CODE_5009) {
                     shortTip(msg);

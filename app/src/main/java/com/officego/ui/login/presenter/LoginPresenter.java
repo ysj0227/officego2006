@@ -87,7 +87,6 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
         OfficegoApi.getInstance().loginOnlyPhone(context, mobile, new RetrofitCallback<LoginBean>() {
             @Override
             public void onSuccess(int code, String msg, LoginBean data) {
-                LogCat.e(TAG, "loginOnlyPhone onSuccess =" + data);
                 if (isViewAttached()) {
                     BaseNotification.newInstance().postNotificationName(
                             CommonNotifications.loginIn, "loginIn");

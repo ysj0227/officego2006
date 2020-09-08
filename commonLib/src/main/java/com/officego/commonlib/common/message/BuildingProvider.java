@@ -6,6 +6,7 @@ package com.officego.commonlib.common.message;
  * Descriptions:
  **/
 
+import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
@@ -115,7 +116,9 @@ public class BuildingProvider extends IContainerItemProvider.MessageProvider<Bui
             }
             intent.putExtra("conversationHouse", BundleUtils.houseMessage(info.getBtype(), info.getHouseId()));
         }
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        if (!(context instanceof Activity)) {
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        }
         intent.setComponent(comp);
         intent.setAction("android.intent.action.VIEW");
         context.startActivity(intent);

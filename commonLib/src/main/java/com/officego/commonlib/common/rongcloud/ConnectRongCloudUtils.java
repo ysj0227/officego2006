@@ -20,7 +20,7 @@ public class ConnectRongCloudUtils {
      * 连接融云
      */
     private void initRCIM() {
-        IMManager.getInstance().connectIM(SpUtils.getRongToken(), true, new ResultCallback<String>() {
+        IMManager.getInstance().connectIM(SpUtils.getRongToken(), new ResultCallback<String>() {
             @Override
             public void onSuccess(String s) {
                 LogCat.d(TAG, "ConnectionStatus onSuccess userRongChatId=" + s);

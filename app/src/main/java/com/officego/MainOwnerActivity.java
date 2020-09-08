@@ -91,7 +91,7 @@ public class MainOwnerActivity extends BaseActivity implements RadioGroup.OnChec
             rb_1.setChecked(true);
         }
         initBottomImage();
-        if (!TextUtils.isEmpty(SpUtils.getSignToken())) {
+        if (!TextUtils.isEmpty(SpUtils.getSignToken()) && !Constants.isRCIMConnectSuccess) {
             new ConnectRongCloudUtils();
         }
         addUnReadMessageCountChangedObserver();

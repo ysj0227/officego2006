@@ -92,7 +92,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
             rb_1.setChecked(true);
         }
         initBottomImage();
-        if (!TextUtils.isEmpty(SpUtils.getSignToken())) {
+        if (!TextUtils.isEmpty(SpUtils.getSignToken()) && !Constants.isRCIMConnectSuccess) {
             new ConnectRongCloudUtils();
         }
         addUnReadMessageCountChangedObserver();

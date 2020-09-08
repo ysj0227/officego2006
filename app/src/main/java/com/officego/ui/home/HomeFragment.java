@@ -417,7 +417,9 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
 
             @Override
             public void onPageScrollStateChanged(int state) {
-                mSwipeRefreshLayout.setEnabled(false);
+                if (mSwipeRefreshLayout != null) {
+                    mSwipeRefreshLayout.setEnabled(false);
+                }
             }
         });
         //设置内置样式，共有六种可以点入方法内逐一体验使用。
