@@ -11,6 +11,7 @@ import com.officego.R;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.utils.CommonHelper;
 import com.officego.ui.home.BuildingDetailsJointWorkChildActivity_;
 import com.officego.ui.home.model.BuildingDetailsChildBean;
 import com.officego.commonlib.common.model.utils.BundleUtils;
@@ -47,7 +48,7 @@ public class JointWorkAllChildAdapter extends CommonListAdapter<BuildingDetailsC
         Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getMainPic()).into(ivItemListChild);
         tvItemListChildCenterUp.setVisibility(View.INVISIBLE);
         tvItemListChildCenterDown.setVisibility(View.INVISIBLE);
-        tvItemListChildLeftUp.setText(bean.getArea() + "㎡");
+        tvItemListChildLeftUp.setText(CommonHelper.bigDecimal(bean.getArea().toString(), true)  + "㎡");
         tvItemListChildLeftDown.setText(bean.getSeats() + "工位");
         tvItemListChildRightUp.setText(Html.fromHtml("<font color='#46C3C2'>¥" + bean.getMonthPrice() + "</font>/月"));
         tvItemListChildRightDown.setText(Html.fromHtml("<font color='#46C3C2'>¥" + bean.getDayPrice() + "</font>/位/天"));

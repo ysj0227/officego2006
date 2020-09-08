@@ -14,6 +14,7 @@ import com.officego.R;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.view.RoundImageView;
 import com.officego.commonlib.view.dialog.CommonDialog;
@@ -73,7 +74,7 @@ public class CollectWorkOfficeAdapter extends CommonListAdapter<CollectHouseBean
                 String str1 = bean.getSimple().substring(0, bean.getSimple().indexOf(","));
                 seats = bean.getSimple().substring(str1.length() + 1);
             }
-            tvItemListChildLeftUp.setText(bean.getArea() + "㎡");
+            tvItemListChildLeftUp.setText(CommonHelper.bigDecimal(bean.getArea().toString(), true) + "㎡");
             tvItemListChildLeftDown.setText("最多" + seats + "个工位");
             tvItemListChildCenterUp.setText(Html.fromHtml("<font color='#46C3C2'>¥" + bean.getDayPrice() + "</font>/㎡/天"));
             tvItemListChildCenterDown.setText("¥" + (bean.getMonthPrice() == null ? "0.0" : bean.getMonthPrice()) + "/月");

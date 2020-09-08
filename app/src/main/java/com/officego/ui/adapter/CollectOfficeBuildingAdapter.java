@@ -97,7 +97,7 @@ public class CollectOfficeBuildingAdapter extends CommonListAdapter<CollectBuild
             } else {
                 labelsView.setVisibility(View.GONE);
             }
-            labelsView.setLabels(areaMap, (label, position, data) -> data == null ? "0" : data.toString() + "m²");
+            labelsView.setLabels(areaMap, (label, position, data) -> data == null ? "0" : CommonHelper.bigDecimal(data.toString(), true) + "m²");
         } else {//2:网点 共享办公
             labelsView.setLabelTextSize(CommonHelper.sp2px(context, 12));
             labelsView.setWordMargin(40);

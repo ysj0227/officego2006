@@ -170,20 +170,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_login_no_password" />
 
-    <TextView
-        android:id="@+id/tv_wx_login"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:drawableTop="@mipmap/ic_wx"
-        android:drawablePadding="@dimen/dp_12"
-        android:text="微信登录"
-        android:textColor="@color/common_grey_66"
-        android:textSize="@dimen/sp_13"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
-
     <Button
         android:id="@+id/btn_test"
         android:layout_width="wrap_content"

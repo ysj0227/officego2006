@@ -431,7 +431,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         //设置轮播间隔时间
         banner.setDelayTime(4000);
         //设置是否为自动轮播，默认是“是”。
-        banner.isAutoPlay(false);
+        banner.isAutoPlay(true);
         //设置指示器的位置，小点点，左中右。
         banner.setIndicatorGravity(BannerConfig.CENTER)
                 .setOnBannerListener(this)

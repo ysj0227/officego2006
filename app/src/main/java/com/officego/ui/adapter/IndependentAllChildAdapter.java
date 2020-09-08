@@ -12,6 +12,7 @@ import com.officego.R;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.utils.CommonHelper;
 import com.officego.ui.home.BuildingDetailsChildActivity_;
 import com.officego.ui.home.model.BuildingDetailsChildBean;
 import com.officego.commonlib.common.model.utils.BundleUtils;
@@ -52,7 +53,7 @@ public class IndependentAllChildAdapter extends CommonListAdapter<BuildingDetail
             String str1 = bean.getSimple().substring(0, bean.getSimple().indexOf(","));
             seats = bean.getSimple().substring(str1.length() + 1);
         }
-        tvItemListChildLeftUp.setText(bean.getArea() + "㎡");
+        tvItemListChildLeftUp.setText(CommonHelper.bigDecimal(bean.getArea().toString(), true)  + "㎡");
         tvItemListChildLeftDown.setText("最多" + seats + "个工位");
         tvItemListChildCenterUp.setText(Html.fromHtml("<font color='#46C3C2'>¥" + bean.getDayPrice() + "</font>/㎡/天"));
         tvItemListChildCenterDown.setText("¥"+bean.getMonthPrice() + "/月");

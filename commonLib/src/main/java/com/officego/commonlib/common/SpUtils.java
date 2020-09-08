@@ -133,16 +133,6 @@ public class SpUtils {
         return SharedManager.getValue(BaseApplication.getContext(), WE_CHAT);
     }
 
-    //聊天插入楼盘消息 tooken+融云token+buildingId+houseId+targetId
-    public static void saveChatBuildingInfo(String key, String value) {
-        SharedManager.putValue(BaseApplication.getContext(), key, value);
-    }
-
-    //获取聊天插入楼盘消息 tooken+houseId+targetId
-    public static String getChatBuildingInfo(String key) {
-        return SharedManager.getValue(BaseApplication.getContext(), key);
-    }
-
     //role  ：0租户，1户主
     public static void saveRole(String role) {
         SharedManager.putValue(BaseApplication.getContext(), LOGIN_ROLE, role);
