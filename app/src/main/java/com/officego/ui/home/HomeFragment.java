@@ -406,22 +406,22 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         if (bannerList == null || bannerList.size() == 0) {
             return;
         }
-        banner.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-            }
-
-            @Override
-            public void onPageSelected(int position) {
-            }
-
-            @Override
-            public void onPageScrollStateChanged(int state) {
-                if (mSwipeRefreshLayout != null) {
-                    mSwipeRefreshLayout.setEnabled(false);
-                }
-            }
-        });
+//        banner.setOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+//            @Override
+//            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+//            }
+//
+//            @Override
+//            public void onPageSelected(int position) {
+//            }
+//
+//            @Override
+//            public void onPageScrollStateChanged(int state) {
+//                if (mSwipeRefreshLayout != null) {
+//                    mSwipeRefreshLayout.setEnabled(false);
+//                }
+//            }
+//        });
         //设置内置样式，共有六种可以点入方法内逐一体验使用。
         //  banner.setBannerStyle(BannerConfig.CIRCLE_INDICATOR_TITLE);
         //设置图片加载器，图片加载器在下方
@@ -431,7 +431,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         //设置轮播的动画效果，内含多种特效，可点入方法内查找后内逐一体验
         banner.setBannerAnimation(Transformer.Default);
         //设置轮播间隔时间
-        banner.setDelayTime(4000);
+        banner.setDelayTime(3000);
         //设置是否为自动轮播，默认是“是”。
         banner.isAutoPlay(true);
         //设置指示器的位置，小点点，左中右。
@@ -495,7 +495,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
 
     @Override
     public void BuildingListSuccess(List<BuildingBean.ListBean> list, boolean hasMore) {
-        //pageNum == 1首次请求且size==0
         if (list == null || pageNum == 1 && list.size() == 0) {
             noData();
             return;

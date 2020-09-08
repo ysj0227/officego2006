@@ -22,7 +22,7 @@ public abstract class AppBarStateChangeListener implements AppBarLayout.OnOffset
 
     @Override
     public final void onOffsetChanged(AppBarLayout appBarLayout, int i) {
-        LogCat.e("TAG", "dec=" + Math.abs(i)+"; appBarLayout="+appBarLayout.getTotalScrollRange());
+        //LogCat.e("TAG", "dec=" + Math.abs(i)+"; appBarLayout="+appBarLayout.getTotalScrollRange());
         if (i == 0) {
             if (mCurrentState != State.EXPANDED) {
                 onStateChanged(appBarLayout, State.EXPANDED,i);
