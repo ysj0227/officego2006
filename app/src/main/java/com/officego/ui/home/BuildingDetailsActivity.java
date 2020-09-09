@@ -885,7 +885,6 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
                 }
             }
             CommonHelper.reSizeTextView(context, tvIndependentOfficeArea, mArea);
-            tvIndependentOfficeArea.setTextColor(ContextCompat.getColor(context, R.color.common_blue_main));
             String mPrice;
             if (data.getBuilding().getMinDayPrice() != null) {
                 mPrice = "¥" + CommonHelper.bigDecimal(data.getBuilding().getMinDayPrice(), false) + "/㎡/天起";
@@ -893,10 +892,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
                 mPrice = "¥0.0/㎡/天起";
             }
             CommonHelper.reSizeTextView(context, tvIndependentOfficePrice, mPrice);
-            tvIndependentOfficePrice.setTextColor(ContextCompat.getColor(context, R.color.common_blue_main));
             tvIndependentOfficeNum.setText(Html.fromHtml("<font color='#46C3C2'>" + data.getBuilding().getHouseCount() + "套" + "</font>"));
-            //神策
-            SensorsTrack.buildingDataPageScreen(data.getBuilding().getBuildingId(), data.getBuilding().getHouseCount() + "");
             //线路
             if (TextUtils.isEmpty(data.getBuilding().getAddress())) {
                 tvLocation.setVisibility(View.GONE);
@@ -904,6 +900,8 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
                 tvLocation.setVisibility(View.VISIBLE);
                 tvLocation.setText(data.getBuilding().getAddress());
             }
+            //神策
+            SensorsTrack.buildingDataPageScreen(data.getBuilding().getBuildingId(), data.getBuilding().getHouseCount() + "");
         }
     }
 

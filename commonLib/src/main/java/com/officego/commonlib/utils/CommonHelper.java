@@ -19,7 +19,6 @@ import android.os.Build;
 import android.os.LocaleList;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
-import android.text.Html;
 import android.text.Selection;
 import android.text.TextUtils;
 import android.util.TypedValue;
@@ -32,6 +31,9 @@ import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
+import com.officego.commonlib.R;
 import com.officego.commonlib.utils.log.LogCat;
 
 import java.io.File;
@@ -535,27 +537,6 @@ public class CommonHelper {
         }
         textView.invalidate();
         textView.setText(text);
-    }
-
-    /**
-     * 文本自适应大小 加载html
-     */
-    public static void reSizeTextViewHtml(Context context, TextView textView, String text) {
-        float maxWidth = (context.getResources().getDisplayMetrics().widthPixels - 80 * 2) / 3;
-        Paint paint = textView.getPaint();
-        float textWidth = paint.measureText(text);
-        int textSizeInDp = 30;
-        if (textWidth > maxWidth) {
-            for (; textSizeInDp > 0; textSizeInDp--) {
-                textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSizeInDp);
-                paint = textView.getPaint();
-                textWidth = paint.measureText(text);
-                if (textWidth <= maxWidth) {
-                    break;
-                }
-            }
-        }
-        textView.invalidate();
-        textView.setText(Html.fromHtml(text));
+        textView.setTextColor(ContextCompat.getColor(context, R.color.common_blue_main));
     }
 }

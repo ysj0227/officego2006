@@ -303,7 +303,7 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
                 tvIndependentOfficeArea.setText(R.string.str_text_line);
             }
             if (data.getHouse().getDayPrice() != null) {
-                tvIndependentOfficePrice.setText(Html.fromHtml("<font color='#46C3C2'>¥" + CommonHelper.bigDecimal(data.getHouse().getDayPrice(), false) + "</font>/㎡/天起"));
+                CommonHelper.reSizeTextView(context, tvIndependentOfficePrice, "¥" + CommonHelper.bigDecimal(data.getHouse().getDayPrice(), false) + "/㎡/天起");
             } else {
                 tvIndependentOfficePrice.setText(R.string.str_text_line);
             }
@@ -839,7 +839,6 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
      **/
     @Override
     public boolean onError(IMediaPlayer iMediaPlayer, int i, int i1) {
-//        shortTip(R.string.str_server_exception);
         errorView();
         return false;
     }

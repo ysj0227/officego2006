@@ -287,8 +287,7 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
                 tvIndependentOfficeArea.setText(R.string.str_text_line);
             }
             if (data.getHouse().getDayPrice() != null) {
-                tvIndependentOfficePrice.setText(Html.fromHtml("<font color='#46C3C2'>¥" +
-                        CommonHelper.bigDecimal(data.getHouse().getDayPrice(), false) + "</font>/位/天起"));
+                CommonHelper.reSizeTextView(context, tvIndependentOfficePrice, "¥" + CommonHelper.bigDecimal(data.getHouse().getDayPrice(), false) + "/位/天起");
             } else {
                 tvIndependentOfficePrice.setText(R.string.str_text_line);
             }
