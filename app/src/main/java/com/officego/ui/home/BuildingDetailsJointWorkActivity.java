@@ -526,7 +526,9 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
             return;
         }
         //判断是否单房东
-        mPresenter.gotoChat(mData.getBuilding().getBuildingId() + "");
+        if (mData != null) {
+            mPresenter.gotoChat(mData.getBuilding().getBuildingId() + "");
+        }
     }
 
     //滚动指定view

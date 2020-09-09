@@ -39,7 +39,6 @@ import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.IVideoPlayer;
 import com.officego.commonlib.view.LabelsView;
 import com.officego.commonlib.view.dialog.CommonDialog;
@@ -480,7 +479,9 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             return;
         }
         //判断是否单房东
-        mPresenter.gotoChat(mData.getBuilding().getBuildingId() + "");
+        if (mData != null) {
+            mPresenter.gotoChat(mData.getBuilding().getBuildingId() + "");
+        }
     }
 
     //滚动指定view

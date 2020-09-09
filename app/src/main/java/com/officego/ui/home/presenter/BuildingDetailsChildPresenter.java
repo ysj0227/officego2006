@@ -53,26 +53,28 @@ public class BuildingDetailsChildPresenter extends BasePresenter<BuildingDetails
 
     @Override
     public void favoriteChild(String houseId, int flag) {
-        mView.showLoadingDialog();
-        OfficegoApi.getInstance().favoriteChild(houseId, flag, new RetrofitCallback<Object>() {
-            @Override
-            public void onSuccess(int code, String msg, Object data) {
-                if (isViewAttached()) {
-                    mView.hideLoadingDialog();
-                    mView.favoriteChildSuccess();
-                }
-            }
-
-            @Override
-            public void onFail(int code, String msg, Object data) {
-                if (isViewAttached()) {
-                    mView.hideLoadingDialog();
-                    if (code == Constants.DEFAULT_ERROR_CODE) {
-                        mView.shortTip(msg);
+        if (!TextUtils.isEmpty(houseId)) {
+            mView.showLoadingDialog();
+            OfficegoApi.getInstance().favoriteChild(houseId, flag, new RetrofitCallback<Object>() {
+                @Override
+                public void onSuccess(int code, String msg, Object data) {
+                    if (isViewAttached()) {
+                        mView.hideLoadingDialog();
+                        mView.favoriteChildSuccess();
                     }
                 }
-            }
-        });
+
+                @Override
+                public void onFail(int code, String msg, Object data) {
+                    if (isViewAttached()) {
+                        mView.hideLoadingDialog();
+                        if (code == Constants.DEFAULT_ERROR_CODE) {
+                            mView.shortTip(msg);
+                        }
+                    }
+                }
+            });
+        }
     }
 
     /**
