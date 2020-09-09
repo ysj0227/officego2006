@@ -194,7 +194,7 @@ public class ConversationPresenter extends BasePresenter<ConversationContract.Vi
             info.setHouseId(0);
             info.setbuildingName(data.getBuilding().getBuildingName());
             info.setImgUrl(data.getBuilding().getMainPic());
-            info.setDistrict(data.getBuilding().getAddress());
+            info.setDistrict(data.getBuilding().getDistrict());
             if (data.getBuilding().getStationline().size() > 0) {
                 String workTime = data.getBuilding().getNearbySubwayTime().get(0);
                 String stationLine = data.getBuilding().getStationline().get(0);
@@ -218,7 +218,7 @@ public class ConversationPresenter extends BasePresenter<ConversationContract.Vi
                 info.setHouseId(data.getHouse().getHouseId());
                 info.setbuildingName(data.getHouse().getHouseName());
                 info.setImgUrl(data.getHouse().getMainPic());
-                info.setDistrict(data.getHouse().getAddress());
+                info.setDistrict(data.getHouse().getDistrict());
                 if (data.getHouse().getStationline().size() > 0) {
                     String workTime = data.getHouse().getNearbySubwayTime().get(0);
                     String stationLine = data.getHouse().getStationline().get(0);

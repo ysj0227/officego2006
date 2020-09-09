@@ -19,7 +19,8 @@
         android:layout_alignParentBottom="true"
         android:layout_marginEnd="@dimen/dp_16"
         android:layout_marginBottom="@dimen/dp_20"
-        android:padding="@dimen/dp_10"
         android:background="@mipmap/ic_scan_qr"
+        android:padding="@dimen/dp_10"
+        android:visibility="gone"
         tools:ignore="ContentDescription" />
 </RelativeLayout>

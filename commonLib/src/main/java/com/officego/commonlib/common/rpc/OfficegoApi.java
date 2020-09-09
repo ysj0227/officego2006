@@ -140,6 +140,7 @@ public class OfficegoApi {
      * 判断是否可以交换手机和微信
      */
     public void exchangeContactsVerification(String targetId, RetrofitCallback<ExchangeContactsBean> callback) {
+        LogCat.e(TAG,"111  token="+SpUtils.getSignToken()+"  targetId="+targetId);
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("targetId", requestBody(targetId));

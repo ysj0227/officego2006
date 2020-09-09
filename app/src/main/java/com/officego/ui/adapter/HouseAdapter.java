@@ -2,6 +2,7 @@ package com.officego.ui.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.TextView;
 
@@ -11,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
+import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.GlideUtils;
@@ -21,7 +23,6 @@ import com.officego.ui.home.BuildingDetailsActivity_;
 import com.officego.ui.home.BuildingDetailsJointWorkActivity_;
 import com.officego.ui.home.model.BuildingBean;
 import com.officego.ui.home.model.ConditionBean;
-import com.officego.commonlib.common.model.utils.BundleUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -62,7 +63,15 @@ public class HouseAdapter extends CommonListAdapter<BuildingBean.ListBean> {
         RoundImageView ivHouse = holder.getView(R.id.iv_house);
         Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getMainPic()).into(ivHouse);
         holder.setText(R.id.tv_house_name, bean.getName());
-        holder.setText(R.id.tv_location, bean.getBusinessDistrict());
+        //商圈
+        TextView tvLocation = holder.getView(R.id.tv_location);
+        if (TextUtils.isEmpty(bean.getBusinessDistrict())) {
+            tvLocation.setVisibility(View.GONE);
+        } else {
+            tvLocation.setVisibility(View.VISIBLE);
+            tvLocation.setText(bean.getBusinessDistrict());
+        }
+        //地铁
         TextView tvBus = holder.getView(R.id.tv_bus);
         String line;
         if (bean.getBuildingMap() != null && bean.getBuildingMap().getStationline().size() > 0) {

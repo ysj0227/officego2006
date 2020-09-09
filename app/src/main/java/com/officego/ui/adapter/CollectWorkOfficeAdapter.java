@@ -53,7 +53,12 @@ public class CollectWorkOfficeAdapter extends CommonListAdapter<CollectHouseBean
         TextView tvItemListChildRightUp = holder.getView(R.id.tv_item_list_child_right_up);
         TextView tvItemListChildRightDown = holder.getView(R.id.tv_item_list_child_right_down);
         tvHouseName.setText(bean.getBuildingName());
-        tvLocation.setText(bean.getBusinessDistrict());
+        if (TextUtils.isEmpty(bean.getBusinessDistrict())) {
+            tvLocation.setVisibility(View.GONE);
+        } else {
+            tvLocation.setVisibility(View.VISIBLE);
+            tvLocation.setText(bean.getBusinessDistrict());
+        }
         Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getMainPic()).into(ivItemListChild);
         holder.setText(R.id.tv_type, bean.getBtype() == Constants.TYPE_BUILDING ? "写字楼" : "共享办公");
         //"officeType": 1是独立办公室，2是开放工位

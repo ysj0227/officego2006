@@ -258,7 +258,7 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
             return;
         }
         tvTitle.setText(data.getHouse().getBranchesName());
-        tvBuildingName.setText("独立办公室");
+        tvBuildingName.setText(data.getHouse().getBranchesName());
         mData = data;
         getVideoUrl(data);
         houseId = data.getHouse().getId() + "";

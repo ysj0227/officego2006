@@ -2,6 +2,7 @@ package com.officego.ui.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -48,7 +49,14 @@ public class CollectOfficeBuildingAdapter extends CommonListAdapter<CollectBuild
         ImageView ivHouse = holder.getView(R.id.iv_house);
         Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getMainPic()).into(ivHouse);
         holder.setText(R.id.tv_house_name, bean.getName());
-        holder.setText(R.id.tv_location, bean.getBusinessDistrict());
+        //商圈
+        TextView tvLocation = holder.getView(R.id.tv_location);
+        if (TextUtils.isEmpty(bean.getBusinessDistrict())) {
+            tvLocation.setVisibility(View.GONE);
+        } else {
+            tvLocation.setVisibility(View.VISIBLE);
+            tvLocation.setText(bean.getBusinessDistrict());
+        }
         TextView tvBus = holder.getView(R.id.tv_bus);
         String line;
         if (bean.getBuildingMap() != null && bean.getBuildingMap().getStationline().size() > 0) {
