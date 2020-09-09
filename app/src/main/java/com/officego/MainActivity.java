@@ -16,9 +16,11 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.officego.application.SchemeOpenApp;
 import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
+import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.common.rongcloud.ConnectRongCloudUtils;
 import com.officego.commonlib.common.rongcloud.kickDialog;
 import com.officego.commonlib.constant.Constants;
@@ -31,7 +33,6 @@ import com.officego.ui.home.BuildingDetailsChildActivity_;
 import com.officego.ui.home.BuildingDetailsJointWorkActivity_;
 import com.officego.ui.home.BuildingDetailsJointWorkChildActivity_;
 import com.officego.ui.home.HomeFragment_;
-import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.ui.message.MessageFragment_;
 import com.officego.ui.mine.MineFragment_;
 import com.officego.utils.GotoActivityUtils;
@@ -102,38 +103,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         params.leftMargin = CommonHelper.getScreenWidth(context) / 4;
         unreadMessage.setLayoutParams(params);
         //外部链接唤起app
-        appScheme();
-    }
-
-    //外部链接唤起app
-    private void appScheme() {
-        Intent intent = getIntent();
-        Uri uri = intent.getData();
-        if (uri != null) {
-            //获取参数值
-            String btyte = uri.getQueryParameter("btyte");
-            String buildingId = uri.getQueryParameter("buildingId");
-            String houseId = uri.getQueryParameter("houseId");
-            if (!TextUtils.isEmpty(buildingId) && !TextUtils.isEmpty(btyte)) {
-                //楼盘，网点
-                if (TextUtils.equals(String.valueOf(Constants.TYPE_BUILDING), btyte)) {
-                    BuildingDetailsActivity_.intent(context)
-                            .mBuildingBean(BundleUtils.BuildingMessage(Constants.TYPE_BUILDING, Integer.valueOf(buildingId))).start();
-                } else {
-                    BuildingDetailsJointWorkActivity_.intent(context)
-                            .mBuildingBean(BundleUtils.BuildingMessage(Constants.TYPE_JOINTWORK, Integer.valueOf(buildingId))).start();
-                }
-            } else if (!TextUtils.isEmpty(houseId) && !TextUtils.isEmpty(btyte)) {
-                //房源
-                if (TextUtils.equals(String.valueOf(Constants.TYPE_BUILDING), btyte)) {
-                    BuildingDetailsChildActivity_.intent(context)
-                            .mChildHouseBean(BundleUtils.houseMessage(Constants.TYPE_BUILDING, Integer.valueOf(houseId))).start();
-                } else {
-                    BuildingDetailsJointWorkChildActivity_.intent(context)
-                            .mChildHouseBean(BundleUtils.houseMessage(Constants.TYPE_JOINTWORK, Integer.valueOf(houseId))).start();
-                }
-            }
-        }
+        new SchemeOpenApp(this);
     }
 
     @Override

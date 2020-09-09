@@ -71,14 +71,15 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:background="@color/common_blue_main_60a"
+            android:background="@color/common_blue_main_20a"
             android:drawableStart="@mipmap/ic_conversation_tip"
             android:drawablePadding="@dimen/dp_3"
             android:paddingStart="@dimen/dp_10"
-            android:paddingTop="@dimen/dp_6"
-            android:paddingBottom="@dimen/dp_6"
-            android:textColor="@color/white"
-            android:textSize="@dimen/sp_12" />
+            android:paddingTop="@dimen/dp_10"
+            android:paddingBottom="@dimen/dp_10"
+            android:textColor="@color/common_blue_main"
+            android:textSize="@dimen/sp_12"
+            tools:ignore="RtlSymmetry" />
     </RelativeLayout>
 
     <fragment

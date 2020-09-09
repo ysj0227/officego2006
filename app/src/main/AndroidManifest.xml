@@ -66,6 +66,7 @@
         android:networkSecurityConfig="@xml/network_security_config"
         android:roundIcon="@mipmap/ic_logo"
         android:supportsRtl="true"
+        android:testOnly="false"
         android:theme="@style/AppTheme"
         tools:ignore="GoogleAppIndexingWarning"
         tools:replace="label">
@@ -79,18 +80,6 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
-            <!--            <intent-filter>-->
-            <!--                &lt;!&ndash; web或js打开本地APP 协议部分，自定义设置 &ndash;&gt;-->
-            <!--                <data-->
-            <!--                    android:host="officego"-->
-            <!--                    android:path="/app"-->
-            <!--                    android:port="8080"-->
-            <!--                    android:scheme="url" />-->
-            <!--                <action android:name="android.intent.action.VIEW" />-->
-
-            <!--                <category android:name="android.intent.category.DEFAULT" />-->
-            <!--                <category android:name="android.intent.category.BROWSABLE" />-->
-            <!--            </intent-filter>-->
         </activity>
 
         <activity
@@ -100,14 +89,6 @@
         <activity
             android:name=".MainActivity_"
             android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.BROWSABLE" />
-                <category android:name="android.intent.category.DEFAULT" />
-
-                <data android:scheme="${SENSORS_SCHEME}" />
-            </intent-filter>
             <intent-filter>
                 <!-- web或js打开本地APP 协议部分，自定义设置 -->
                 <data
@@ -369,7 +350,9 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <!--        vr-->
-        <activity android:name=".h5.WebViewVRActivity_" />
+        <activity
+            android:name=".h5.WebViewVRActivity_"
+            android:launchMode="singleTop" />
 
         <provider
             android:name="com.huawei.hms.update.provider.UpdateProvider"
