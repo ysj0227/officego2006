@@ -37,16 +37,10 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
         OfficegoApi.getInstance().getSmsCode(mobile, new RetrofitCallback<Object>() {
             @Override
             public void onSuccess(int code, String msg, Object data) {
-                if (isViewAttached()) {
-                    mView.sendSmsSuccess();
-                }
             }
 
             @Override
             public void onFail(int code, String msg, Object data) {
-                LogCat.e(TAG, "getSmsCode onFail code=" + code + "  msg=" + msg);
-                if (isViewAttached()) {
-                }
             }
         });
     }
@@ -98,7 +92,6 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
 
             @Override
             public void onFail(int code, String msg, LoginBean data) {
-                LogCat.e(TAG, "loginOnlyPhone onFail code=" + code + "  msg=" + msg);
                 if (isViewAttached()) {
                     mView.loginFail(code, msg);
                 }

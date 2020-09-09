@@ -227,11 +227,6 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
     }
 
     @Override
-    public void sendSmsSuccess() {
-        shortTip(R.string.tip_sms_code_send_success);
-    }
-
-    @Override
     public void loginSuccess(LoginBean data) {
         //神策
         SensorsTrack.sensorsLogin(data.getUid());

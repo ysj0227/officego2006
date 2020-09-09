@@ -11,7 +11,6 @@ import com.officego.commonlib.common.LoginBean;
 public interface LoginContract {
 
     interface View extends BaseView {
-        void sendSmsSuccess();
 
         void loginSuccess(LoginBean data);
 
