@@ -97,6 +97,7 @@ public class WebViewVRActivity extends BaseActivity {
         webView.setWebViewClient(new SMWebViewClient(this) {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
+                showLoadingDialog();
                 view.loadUrl(url);
                 return true;
             }
@@ -108,16 +109,19 @@ public class WebViewVRActivity extends BaseActivity {
 
             @Override
             public void onPageFinished(WebView view, String url) {
+                hideLoadingDialog();
                 super.onPageFinished(view, url);
             }
 
             @Override
             protected void receiverError(WebView view, WebResourceRequest request, WebResourceError error) {
+                hideLoadingDialog();
                 exceptionPageError(view, request);
             }
 
             @Override
             public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
+                hideLoadingDialog();
                 exceptionPageHttpError(view, errorResponse);
                 super.onReceivedHttpError(view, request, errorResponse);
             }

@@ -1,7 +1,6 @@
 package com.officego.ui.home;
 
 import android.annotation.SuppressLint;
-import android.graphics.Paint;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
@@ -9,7 +8,6 @@ import android.os.Looper;
 import android.os.Message;
 import android.text.Html;
 import android.text.TextUtils;
-import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -39,9 +37,9 @@ import com.officego.commonlib.common.model.BuildingIdBundleBean;
 import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.utils.CommonHelper;
-import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.IVideoPlayer;
 import com.officego.commonlib.view.LabelsView;
 import com.officego.commonlib.view.dialog.CommonDialog;
@@ -137,6 +135,8 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     TextView tvCurrentPlayTime;
     @ViewById(R.id.tv_count_play_time)
     TextView tvCountPlayTime;
+    @ViewById(R.id.tv_fail_tip)
+    TextView tvFailTip;
     @ViewById(R.id.sb_bar)
     SeekBar sbBar;
     @ViewById(R.id.ll_play_fail)
@@ -527,6 +527,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     // 初始化播放
     private void initVideoPlay() {
         if (TextUtils.isEmpty(videoUrl)) {
+            errorView();
             return;
         }
         new Handler().postDelayed(() -> {
@@ -536,7 +537,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             ibPlay.setBackgroundResource(R.mipmap.pause_normal);
             sbBar.setProgress(0);
             tvCurrentPlayTime.setText(iVideoPlayer.generateTime(0));
-        }, 200);
+        }, 300);
     }
 
     // 初始化video
@@ -550,16 +551,19 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         iVideoPlayer.setOnVideoSizeChangedListener(this);
     }
 
+    //播放异常重试
     @Click(R.id.tv_retry)
     void retryClick() {
+        if (isFastClick(1500)) {
+            return;
+        }
         if (!NetworkUtils.isNetworkAvailable(context)) {
             shortTip(R.string.toast_network_error);
             return;
         }
-        if (isFastClick(1500)) {
-            return;
-        }
         loadingView();
+        //初始化
+        initVideoPlay();
     }
 
     @Click(R.id.ib_play)
@@ -615,6 +619,9 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         iVideoPlayer.setVisibility(View.GONE);
         llPlayFail.setVisibility(View.VISIBLE);
         llPlayLoading.setVisibility(View.GONE);
+        tvFailTip.setText(TextUtils.isEmpty(videoUrl) ?
+                getString(R.string.tip_video_play_exception) :
+                getString(R.string.toast_network_error));
     }
 
     private void isShowBottomView() {
@@ -934,6 +941,9 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
 
     //顶部视频，VR，图片
     private void showVrVideoImg(BuildingDetailsBean data) {
+        if (data.getVideoUrl() != null && data.getVideoUrl().size() > 0) {
+            videoUrl = data.getVideoUrl().get(0).getImgUrl();//video
+        }
         if (data.getVrUrl() != null && data.getVrUrl().size() > 0 &&
                 data.getVideoUrl() != null && data.getVideoUrl().size() > 0) {
             rbVr.setChecked(true);
@@ -946,7 +956,6 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             rbVideo.setVisibility(View.GONE);
             rbPicture.setVisibility(View.VISIBLE);
         } else if (data.getVideoUrl() != null && data.getVideoUrl().size() > 0) {
-            videoUrl = data.getVideoUrl().get(0).getImgUrl();//video
             rbVideo.setChecked(true);
             rbVr.setVisibility(View.GONE);
             rbVideo.setVisibility(View.VISIBLE);

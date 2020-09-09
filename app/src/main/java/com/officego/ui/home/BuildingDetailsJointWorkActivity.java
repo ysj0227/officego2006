@@ -136,6 +136,8 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     TextView tvCurrentPlayTime;
     @ViewById(R.id.tv_count_play_time)
     TextView tvCountPlayTime;
+    @ViewById(R.id.tv_fail_tip)
+    TextView tvFailTip;
     @ViewById(R.id.sb_bar)
     SeekBar sbBar;
     @ViewById(R.id.ll_play_fail)
@@ -634,6 +636,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     //初始化播放
     private void initVideoPlay() {
         if (TextUtils.isEmpty(videoUrl)) {
+            errorView();
             return;
         }
         new Handler().postDelayed(() -> {
@@ -667,6 +670,8 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
             return;
         }
         loadingView();
+        //初始化
+        initVideoPlay();
     }
 
     @Click(R.id.ib_play)
@@ -722,6 +727,9 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         iVideoPlayer.setVisibility(View.GONE);
         llPlayFail.setVisibility(View.VISIBLE);
         llPlayLoading.setVisibility(View.GONE);
+        tvFailTip.setText(TextUtils.isEmpty(videoUrl) ?
+                getString(R.string.tip_video_play_exception) :
+                getString(R.string.toast_network_error));
     }
 
     private void isShowBottomView() {
@@ -1070,6 +1078,9 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     }
 
     private void showVrVideoImg(BuildingJointWorkBean data) {
+        if (data.getVideoUrl() != null && data.getVideoUrl().size() > 0) {
+            videoUrl = data.getVideoUrl().get(0).getImgUrl();//video
+        }
         if (data.getVrUrl() != null && data.getVrUrl().size() > 0 &&
                 data.getVideoUrl() != null && data.getVideoUrl().size() > 0) {
             rbVr.setChecked(true);
@@ -1082,7 +1093,6 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
             rbVideo.setVisibility(View.GONE);
             rbPicture.setVisibility(View.VISIBLE);
         } else if (data.getVideoUrl() != null && data.getVideoUrl().size() > 0) {
-            videoUrl = data.getVideoUrl().get(0).getImgUrl();//video
             rbVideo.setChecked(true);
             rbVr.setVisibility(View.GONE);
             rbVideo.setVisibility(View.VISIBLE);
