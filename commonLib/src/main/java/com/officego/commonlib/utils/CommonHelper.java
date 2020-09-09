@@ -8,6 +8,7 @@ import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.content.pm.PackageManager.NameNotFoundException;
 import android.graphics.Bitmap;
+import android.graphics.Paint;
 import android.graphics.Point;
 import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
@@ -18,6 +19,7 @@ import android.os.Build;
 import android.os.LocaleList;
 import android.provider.Settings;
 import android.telephony.TelephonyManager;
+import android.text.Html;
 import android.text.Selection;
 import android.text.TextUtils;
 import android.util.TypedValue;
@@ -28,6 +30,7 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import com.officego.commonlib.utils.log.LogCat;
 
@@ -510,5 +513,49 @@ public class CommonHelper {
         bd = bd.setScale(isInteger ? 0 : 1, BigDecimal.ROUND_HALF_UP);
         //转化为字符串输出
         return bd.toString();
+    }
+
+    /**
+     * 文本自适应大小
+     */
+    public static void reSizeTextView(Context context, TextView textView, String text) {
+        float maxWidth = (context.getResources().getDisplayMetrics().widthPixels - 80 * 2) / 3;
+        Paint paint = textView.getPaint();
+        float textWidth = paint.measureText(text);
+        int textSizeInDp = 30;
+        if (textWidth > maxWidth) {
+            for (; textSizeInDp > 0; textSizeInDp--) {
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSizeInDp);
+                paint = textView.getPaint();
+                textWidth = paint.measureText(text);
+                if (textWidth <= maxWidth) {
+                    break;
+                }
+            }
+        }
+        textView.invalidate();
+        textView.setText(text);
+    }
+
+    /**
+     * 文本自适应大小 加载html
+     */
+    public static void reSizeTextViewHtml(Context context, TextView textView, String text) {
+        float maxWidth = (context.getResources().getDisplayMetrics().widthPixels - 80 * 2) / 3;
+        Paint paint = textView.getPaint();
+        float textWidth = paint.measureText(text);
+        int textSizeInDp = 30;
+        if (textWidth > maxWidth) {
+            for (; textSizeInDp > 0; textSizeInDp--) {
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSizeInDp);
+                paint = textView.getPaint();
+                textWidth = paint.measureText(text);
+                if (textWidth <= maxWidth) {
+                    break;
+                }
+            }
+        }
+        textView.invalidate();
+        textView.setText(Html.fromHtml(text));
     }
 }

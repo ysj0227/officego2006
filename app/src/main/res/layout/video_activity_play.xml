@@ -20,11 +20,18 @@
         android:id="@+id/rl_default_house_picture"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:background="@mipmap/ic_loading_def_bg"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:id="@+id/iv_video_bg"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@mipmap/ic_loading_def_bg"
+            android:scaleType="centerCrop"
+            tools:ignore="ContentDescription" />
 
         <ImageButton
             android:id="@+id/ib_init_start"
@@ -32,7 +39,8 @@
             android:layout_height="@dimen/dp_40"
             android:layout_centerInParent="true"
             android:background="@mipmap/ic_video_start"
-            android:visibility="visible" />
+            android:visibility="visible"
+            tools:ignore="ContentDescription" />
     </RelativeLayout>
     <!--底部控制区-->
     <RelativeLayout

@@ -35,7 +35,6 @@ import com.officego.commonlib.common.model.BuildingIdBundleBean;
 import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.utils.CommonHelper;
-import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.IVideoPlayer;
@@ -125,6 +124,8 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     ConstraintLayout ctlVideoPlay;
     @ViewById(R.id.rl_default_house_picture)
     RelativeLayout rlDefaultHousePic;
+    @ViewById(R.id.iv_video_bg)
+    ImageView ivVideoBg;
     @ViewById(R.id.ib_init_start)
     ImageButton ibInitStart;
     @ViewById(R.id.ivp_player)
@@ -1193,8 +1194,9 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     private void playBanner(List<BuildingJointWorkBean.ImgUrlBean> list) {
         mBannerList.clear();
         //视频设置第一张图为默认背景
-        if (list.size() > 0) {
-            GlideUtils.urlToDrawable(this, rlDefaultHousePic, list.get(0).getImgUrl());
+        if (context != null && list.size() > 0) {
+            Glide.with(context).load(list.get(0).getImgUrl()).error(R.mipmap.ic_loading_def_bg)
+                    .into(ivVideoBg);
         }
         for (int i = 0; i < list.size(); i++) {
             if (!TextUtils.isEmpty(list.get(i).getImgUrl())) {

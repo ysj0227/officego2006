@@ -33,7 +33,6 @@ import com.officego.commonlib.common.model.HouseIdBundleBean;
 import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.utils.CommonHelper;
-import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.IVideoPlayer;
@@ -155,6 +154,8 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
     ConstraintLayout ctlVideoPlay;
     @ViewById(R.id.rl_default_house_picture)
     RelativeLayout rlDefaultHousePic;
+    @ViewById(R.id.iv_video_bg)
+    ImageView ivVideoBg;
     @ViewById(R.id.ib_init_start)
     ImageButton ibInitStart;
     @ViewById(R.id.ivp_player)
@@ -282,6 +283,7 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
     }
 
     //楼盘房源信息
+    @SuppressLint("SetTextI18n")
     private void houseInfo(HouseOfficeDetailsBean data) {
         if (data.getHouse() != null) {
             tvTitle.setText(data.getHouse().getBuildingName());
@@ -935,28 +937,29 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
     private List<String> mBannerList = new ArrayList<>();
 
     private void playBanner(List<HouseOfficeDetailsBean.ImgUrlBean> list) {
-        if (list == null || list.size() == 0) {
-            return;
-        }
-        //视频设置第一张图为默认背景
-        GlideUtils.urlToDrawable(this, rlDefaultHousePic, list.get(0).getImgUrl());
-
-        for (int i = 0; i < list.size(); i++) {
-            if (!TextUtils.isEmpty(list.get(i).getImgUrl())) {
-                mBannerList.add(list.get(i).getImgUrl());
+        if (list != null && list.size() > 0) {
+            //视频设置第一张图为默认背景
+            if (context != null) {
+                Glide.with(context).load(list.get(0).getImgUrl()).error(R.mipmap.ic_loading_def_bg)
+                        .into(ivVideoBg);
             }
+            for (int i = 0; i < list.size(); i++) {
+                if (!TextUtils.isEmpty(list.get(i).getImgUrl())) {
+                    mBannerList.add(list.get(i).getImgUrl());
+                }
+            }
+            bannerImage.setBannerStyle(BannerConfig.NUM_INDICATOR);
+            //设置图片加载器，图片加载器在下方
+            bannerImage.setImageLoader(new ImageLoaderUtils(context));
+            //设置图片网址或地址的集合
+            bannerImage.setImages(mBannerList);
+            //设置轮播的动画效果，内含多种特效，可点入方法内查找后内逐一体验
+            bannerImage.setBannerAnimation(Transformer.Default);
+            //设置是否为自动轮播，默认是“是”。
+            bannerImage.isAutoPlay(false);
+            bannerImage.setOnBannerListener(this);
+            bannerImage.start();
         }
-        bannerImage.setBannerStyle(BannerConfig.NUM_INDICATOR);
-        //设置图片加载器，图片加载器在下方
-        bannerImage.setImageLoader(new ImageLoaderUtils(context));
-        //设置图片网址或地址的集合
-        bannerImage.setImages(mBannerList);
-        //设置轮播的动画效果，内含多种特效，可点入方法内查找后内逐一体验
-        bannerImage.setBannerAnimation(Transformer.Default);
-        //设置是否为自动轮播，默认是“是”。
-        bannerImage.isAutoPlay(false);
-        bannerImage.setOnBannerListener(this);
-        bannerImage.start();
     }
 
     //查看大图

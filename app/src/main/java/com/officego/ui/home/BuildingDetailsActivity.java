@@ -30,6 +30,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
@@ -124,6 +125,8 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     ConstraintLayout ctlVideoPlay;
     @ViewById(R.id.rl_default_house_picture)
     RelativeLayout rlDefaultHousePic;
+    @ViewById(R.id.iv_video_bg)
+    ImageView ivVideoBg;
     @ViewById(R.id.ib_init_start)
     ImageButton ibInitStart;
     @ViewById(R.id.ivp_player)
@@ -877,10 +880,11 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
                 if (TextUtils.equals(data.getBuilding().getMinArea().toString(), data.getBuilding().getMaxArea().toString())) {
                     mArea = CommonHelper.bigDecimal(data.getBuilding().getMaxArea(), true) + "㎡";
                 } else {
-                    mArea = CommonHelper.bigDecimal(data.getBuilding().getMinArea(), true) + "~" + CommonHelper.bigDecimal(data.getBuilding().getMaxArea(), true) + "㎡";
+                    mArea = CommonHelper.bigDecimal(data.getBuilding().getMinArea(), true) + "~" +
+                            CommonHelper.bigDecimal(data.getBuilding().getMaxArea(), true) + "㎡";
                 }
             }
-            reSizeTextView(tvIndependentOfficeArea, mArea);
+            CommonHelper.reSizeTextView(context, tvIndependentOfficeArea, mArea);
             tvIndependentOfficeArea.setTextColor(ContextCompat.getColor(context, R.color.common_blue_main));
             String mPrice;
             if (data.getBuilding().getMinDayPrice() != null) {
@@ -888,7 +892,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             } else {
                 mPrice = "¥0.0/㎡/天起";
             }
-            reSizeTextView(tvIndependentOfficePrice, mPrice);
+            CommonHelper.reSizeTextView(context, tvIndependentOfficePrice, mPrice);
             tvIndependentOfficePrice.setTextColor(ContextCompat.getColor(context, R.color.common_blue_main));
             tvIndependentOfficeNum.setText(Html.fromHtml("<font color='#46C3C2'>" + data.getBuilding().getHouseCount() + "套" + "</font>"));
             //神策
@@ -1010,26 +1014,6 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         showBusLine(mData);
     }
 
-    private void reSizeTextView(TextView textView, String text) {
-        float maxWidth = (getResources().getDisplayMetrics().widthPixels - 80 * 2) / 3;
-        Paint paint = textView.getPaint();
-        float textWidth = paint.measureText(text);
-        int textSizeInDp = 30;
-        if (textWidth > maxWidth) {
-            for (; textSizeInDp > 0; textSizeInDp--) {
-                textView.setTextSize(TypedValue.COMPLEX_UNIT_DIP, textSizeInDp);
-                paint = textView.getPaint();
-                textWidth = paint.measureText(text);
-                if (textWidth <= maxWidth) {
-                    break;
-                }
-            }
-        }
-        textView.invalidate();
-        textView.setText(text);
-    }
-
-
     @Override
     public void BuildingJointWorkDetailsSuccess(BuildingJointWorkBean data) {
 
@@ -1056,6 +1040,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         }
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void buildingSelectListSuccess(int totals, List<BuildingDetailsChildBean.ListBean> list) {
         tvItemListBottom.setText(totals + "套");//自选面积多少套
@@ -1126,8 +1111,9 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
 
     private void playBanner(List<BuildingDetailsBean.ImgUrlBean> list) {
         //视频设置第一张图为默认背景
-        if (list.size() > 0) {
-            GlideUtils.urlToDrawable(this, rlDefaultHousePic, list.get(0).getImgUrl());
+        if (context != null && list.size() > 0) {
+            Glide.with(context).load(list.get(0).getImgUrl()).error(R.mipmap.ic_loading_def_bg)
+                    .into(ivVideoBg);
         }
         for (int i = 0; i < list.size(); i++) {
             if (!TextUtils.isEmpty(list.get(i).getImgUrl())) {

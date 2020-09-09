@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.widget.TextView;
 
 import com.officego.commonlib.base.BaseMvpActivity;
+import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.constant.Constants;
@@ -15,7 +16,6 @@ import com.officego.commonlib.view.ClearableEditText;
 import com.owner.R;
 import com.owner.mine.contract.ModifyMobileContract;
 import com.owner.mine.presenter.ModifyMobilePresenter;
-import com.officego.commonlib.common.GotoActivityUtils;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -62,23 +62,20 @@ public class ModifyMobileActivity extends BaseMvpActivity<ModifyMobilePresenter>
         }
         smsEditText();
     }
+
     //点击验证码输入框
-    private void smsEditText(){
+    private void smsEditText() {
         etCode.setOnFocusChangeListener((view, b) -> {
             SensorsTrack.codeInput();//神策
         });
     }
+
     @Click(resName = "tv_send_code")
     void getCodeClick() {
-        if (isFastClick(1200)) {
-            return;
-        }
         //神策
         SensorsTrack.smsCode();
         //发送验证码
-        mobile = RegexUtils.handleIllegalCharacter(etMobile.getText().toString().trim());
-        if (TextUtils.isEmpty(mobile)) {
-            shortTip("请输入手机号");
+        if (isMobileCorrect()) {
             return;
         }
         startDownTimer(mobile);
@@ -86,12 +83,7 @@ public class ModifyMobileActivity extends BaseMvpActivity<ModifyMobilePresenter>
 
     @Click(resName = "btn_modify")
     void modifyMobileClick() {
-        if (isFastClick(1200)) {
-            return;
-        }
-        mobile = RegexUtils.handleIllegalCharacter(etMobile.getText().toString().trim());
-        if (TextUtils.isEmpty(mobile)) {
-            shortTip("请输入手机号");
+        if (isMobileCorrect()) {
             return;
         }
         String code = etCode.getText() == null ? "" : etCode.getText().toString();
@@ -100,6 +92,23 @@ public class ModifyMobileActivity extends BaseMvpActivity<ModifyMobilePresenter>
             return;
         }
         mPresenter.modifyMobile(mobile, code);
+    }
+
+    private boolean isMobileCorrect() {
+        if (isFastClick(1200)) {
+            return true;
+        }
+        mobile = RegexUtils.handleIllegalCharacter(etMobile.getText() == null ? "" :
+                etMobile.getText().toString().trim());
+        if (TextUtils.isEmpty(mobile)) {
+            shortTip("请输入手机号");
+            return true;
+        }
+        if (!RegexUtils.isChinaPhone(mobile)) {
+            shortTip(R.string.tip_input_correct_phone);
+            return true;
+        }
+        return false;
     }
 
     private void startDownTimer(String mobile) {

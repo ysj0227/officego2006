@@ -127,7 +127,8 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         if (isFastClick(1500)) {
             return;
         }
-        mobile = RegexUtils.handleIllegalCharacter(etMobile.getText().toString().trim());
+        mobile = RegexUtils.handleIllegalCharacter(etMobile.getText() == null ? "" :
+                etMobile.getText().toString().trim());
         if (rlCode.isShown()) {
             //神策
             SensorsTrack.login();
