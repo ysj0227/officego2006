@@ -925,7 +925,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         }
         //公交
         showBusLine();
-        //图标
+        //共享服务
         showServiceLogo(data);
         //特色
         showTags(data);
@@ -1134,14 +1134,14 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     }
 
     private void showServiceLogo(BuildingJointWorkBean data) {
-        corporateServicesList = data.getBuilding().getCorporateServices();
-        basicServicesList = data.getBuilding().getBasicServices();
         LinearLayoutManager lmHorizontal = new LinearLayoutManager(this);
         lmHorizontal.setOrientation(LinearLayoutManager.HORIZONTAL);
         rvCreateService.setLayoutManager(lmHorizontal);
         LinearLayoutManager lmHorizontal2 = new LinearLayoutManager(this);
         lmHorizontal2.setOrientation(LinearLayoutManager.HORIZONTAL);
         rvBaseService.setLayoutManager(lmHorizontal2);
+        corporateServicesList = data.getBuilding().getCorporateServices();
+        basicServicesList = data.getBuilding().getBasicServices();
         rvCreateService.setAdapter(new ServiceCreateLogoAdapter(context, data.getBuilding().getCorporateServices()));
         rvBaseService.setAdapter(new ServiceBaseLogoAdapter(context, data.getBuilding().getBasicServices()));
     }
