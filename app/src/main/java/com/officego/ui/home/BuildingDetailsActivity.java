@@ -174,6 +174,8 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     @ViewById(R.id.tv_open_office_price_text)
     TextView tvOpenOfficePriceText;
     //线路，特色
+    @ViewById(R.id.rl_route_map)
+    RelativeLayout rlRouteMap;
     @ViewById(R.id.label_house_characteristic)
     LabelsView labelHouseTags;
     @ViewById(R.id.tv_location)
@@ -222,6 +224,8 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     @ViewById(R.id.rv_base_service)
     RecyclerView rvBaseService;
     //楼盘信息
+    @ViewById(R.id.ctl_building_details)
+    ConstraintLayout ctlBuildingDetails;
     @ViewById(R.id.tv_building_text)
     TextView tvBuildingText;
     @ViewById(R.id.rv_building_message_info)
@@ -695,6 +699,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             sbBar.setProgress(sbBar.getMax());
             tvCurrentPlayTime.setText(iVideoPlayer.generateTime(sbBar.getMax()));
         }
+        radioGroupIsShow(true);
     }
 
     ///播放异常
@@ -1151,4 +1156,5 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
                 .current(position)
                 .start();
     }
+
 }

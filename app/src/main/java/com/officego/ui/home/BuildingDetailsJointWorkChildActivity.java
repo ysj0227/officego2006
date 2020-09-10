@@ -324,21 +324,21 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
                     tvPatternDescription.setText(data.getHouse().getBasicInformation().getUnitPatternRemark());
                 }
             }
-        }
-        //基础字段介绍信息
-        if (data.getHouse().getBasicInformation().getHouseMsg() != null) {
-            List<HouseOfficeDetailsJointWorkBean.HouseBean.BasicInformationBean.HouseMsgBean> list =
-                    data.getHouse().getBasicInformation().getHouseMsg();
-            List<BuildingInfoBean> infoBeanList = new ArrayList<>();
-            BuildingInfoBean bean;
-            for (int i = 0; i < list.size(); i++) {
-                bean = new BuildingInfoBean();
-                bean.setName(list.get(i).getName());
-                bean.setValue(list.get(i).getValue());
-                infoBeanList.add(bean);
+            //基础字段介绍信息
+            if (data.getHouse().getBasicInformation().getHouseMsg() != null) {
+                List<HouseOfficeDetailsJointWorkBean.HouseBean.BasicInformationBean.HouseMsgBean> list =
+                        data.getHouse().getBasicInformation().getHouseMsg();
+                List<BuildingInfoBean> infoBeanList = new ArrayList<>();
+                BuildingInfoBean bean;
+                for (int i = 0; i < list.size(); i++) {
+                    bean = new BuildingInfoBean();
+                    bean.setName(list.get(i).getName());
+                    bean.setValue(list.get(i).getValue());
+                    infoBeanList.add(bean);
+                }
+                BuildingInfoAdapter infoAdapter = new BuildingInfoAdapter(context, infoBeanList);
+                rvBuildingMessageInfo.setAdapter(infoAdapter);
             }
-            BuildingInfoAdapter infoAdapter = new BuildingInfoAdapter(context, infoBeanList);
-            rvBuildingMessageInfo.setAdapter(infoAdapter);
         }
     }
 
@@ -796,6 +796,7 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
             sbBar.setProgress(sbBar.getMax());
             tvCurrentPlayTime.setText(iVideoPlayer.generateTime(sbBar.getMax()));
         }
+        radioGroupIsShow(true);
     }
 
     //播放异常

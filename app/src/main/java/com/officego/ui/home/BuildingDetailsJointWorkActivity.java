@@ -225,8 +225,16 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     //共享服务 图片
     @ViewById(R.id.ctl_share_service)
     ConstraintLayout ctlShareService;
+    @ViewById(R.id.tv_create_service)
+    TextView tvCreateService;
+    @ViewById(R.id.rl_create_service)
+    RelativeLayout rlCreateService;
     @ViewById(R.id.rv_create_service)
     RecyclerView rvCreateService;
+    @ViewById(R.id.tv_base_service)
+    TextView tvBaseService;
+    @ViewById(R.id.rl_base_service)
+    RelativeLayout rlBaseService;
     @ViewById(R.id.rv_base_service)
     RecyclerView rvBaseService;
     //楼盘信息
@@ -807,6 +815,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
             sbBar.setProgress(sbBar.getMax());
             tvCurrentPlayTime.setText(iVideoPlayer.generateTime(sbBar.getMax()));
         }
+        radioGroupIsShow(true);
     }
 
     //播放异常
@@ -1133,6 +1142,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         }
     }
 
+    //共享服务
     private void showServiceLogo(BuildingJointWorkBean data) {
         LinearLayoutManager lmHorizontal = new LinearLayoutManager(this);
         lmHorizontal.setOrientation(LinearLayoutManager.HORIZONTAL);
@@ -1140,10 +1150,42 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         LinearLayoutManager lmHorizontal2 = new LinearLayoutManager(this);
         lmHorizontal2.setOrientation(LinearLayoutManager.HORIZONTAL);
         rvBaseService.setLayoutManager(lmHorizontal2);
-        corporateServicesList = data.getBuilding().getCorporateServices();
-        basicServicesList = data.getBuilding().getBasicServices();
-        rvCreateService.setAdapter(new ServiceCreateLogoAdapter(context, data.getBuilding().getCorporateServices()));
-        rvBaseService.setAdapter(new ServiceBaseLogoAdapter(context, data.getBuilding().getBasicServices()));
+        if (data.getBuilding() == null) {
+            ctlShareService.setVisibility(View.GONE);
+        } else {
+            ctlShareService.setVisibility(View.VISIBLE);
+            if (data.getBuilding().getCorporateServices() != null &&
+                    data.getBuilding().getCorporateServices().size() > 0 &&
+                    data.getBuilding().getBasicServices() == null) {
+                tvCreateService.setVisibility(View.VISIBLE);
+                rlCreateService.setVisibility(View.VISIBLE);
+                tvBaseService.setVisibility(View.GONE);
+                rlBaseService.setVisibility(View.GONE);
+                corporateServicesList = data.getBuilding().getCorporateServices();
+                rvCreateService.setAdapter(new ServiceCreateLogoAdapter(context, data.getBuilding().getCorporateServices()));
+            } else if (data.getBuilding().getBasicServices() != null &&
+                    data.getBuilding().getBasicServices().size() > 0 &&
+                    data.getBuilding().getCorporateServices() == null) {
+                tvCreateService.setVisibility(View.GONE);
+                rlCreateService.setVisibility(View.GONE);
+                tvBaseService.setVisibility(View.VISIBLE);
+                rlBaseService.setVisibility(View.VISIBLE);
+                basicServicesList = data.getBuilding().getBasicServices();
+                rvBaseService.setAdapter(new ServiceBaseLogoAdapter(context, data.getBuilding().getBasicServices()));
+            } else if (data.getBuilding().getCorporateServices() != null &&
+                    data.getBuilding().getCorporateServices().size() > 0 &&
+                    data.getBuilding().getBasicServices() != null &&
+                    data.getBuilding().getBasicServices().size() > 0) {
+                tvCreateService.setVisibility(View.VISIBLE);
+                rlCreateService.setVisibility(View.VISIBLE);
+                tvBaseService.setVisibility(View.VISIBLE);
+                rlBaseService.setVisibility(View.VISIBLE);
+                corporateServicesList = data.getBuilding().getCorporateServices();
+                rvCreateService.setAdapter(new ServiceCreateLogoAdapter(context, data.getBuilding().getCorporateServices()));
+                basicServicesList = data.getBuilding().getBasicServices();
+                rvBaseService.setAdapter(new ServiceBaseLogoAdapter(context, data.getBuilding().getBasicServices()));
+            }
+        }
     }
 
     /**

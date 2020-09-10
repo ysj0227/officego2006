@@ -332,7 +332,14 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
                 ctlPatternDetails.setVisibility(View.GONE);
             } else {
                 ctlPatternDetails.setVisibility(View.VISIBLE);
-                Glide.with(context).load(data.getHouse().getBasicInformation().getUnitPatternImg()).into(ivPattern);
+                //布局图
+                if (TextUtils.isEmpty(data.getHouse().getBasicInformation().getUnitPatternImg())) {
+                    ivPattern.setVisibility(View.GONE);
+                } else {
+                    ivPattern.setVisibility(View.VISIBLE);
+                    Glide.with(context).load(data.getHouse().getBasicInformation().getUnitPatternImg()).into(ivPattern);
+                }
+                //描述
                 if (TextUtils.isEmpty(data.getHouse().getBasicInformation().getUnitPatternRemark())) {
                     tvPatternDescription.setVisibility(View.GONE);
                 } else {
@@ -841,6 +848,7 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
             sbBar.setProgress(sbBar.getMax());
             tvCurrentPlayTime.setText(iVideoPlayer.generateTime(sbBar.getMax()));
         }
+        radioGroupIsShow(true);
     }
 
     /**

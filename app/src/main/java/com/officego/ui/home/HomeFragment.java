@@ -24,6 +24,7 @@ import com.officego.commonlib.update.VersionDialog;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.config.ConditionConfig;
 import com.officego.h5.WebViewBannerActivity_;
 import com.officego.ui.adapter.HouseAdapter;
 import com.officego.ui.home.contract.HomeContract;
@@ -162,6 +163,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         rvHouse.setLayoutManager(layoutManager);
         appBarLayout.addOnOffsetChangedListener(appBarStateChangeListener);
         alphaPercent = (float) 1 / CommonHelper.dp2px(mActivity, 190);
+        ConditionConfig.mConditionBean = null;
         initBarLayoutBg();
         initRefresh();
         if (!NetworkUtils.isNetworkAvailable(mActivity)) {

@@ -3,6 +3,7 @@ package com.officego.commonlib.common.rongcloud.push;
 import android.content.Context;
 import android.text.TextUtils;
 
+import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.rongcloud.IMManager;
 import com.officego.commonlib.common.rongcloud.ResultCallback;
@@ -71,7 +72,7 @@ public class OfficeGoPushMessageReceiver extends PushMessageReceiver {
      */
     private void pushMIClick(Context context, String targetId) {
         if (!TextUtils.isEmpty(SpUtils.getSignToken())) {
-            IMManager.getInstance().connectIM(SpUtils.getRongToken(),  new ResultCallback<String>() {
+            IMManager.getInstance().connectIM(SpUtils.getRongToken(), new ResultCallback<String>() {
                 @Override
                 public void onSuccess(String s) {
                     RongCloudSetUserInfoUtils.setCurrentInfo(s);
@@ -85,6 +86,11 @@ public class OfficeGoPushMessageReceiver extends PushMessageReceiver {
                 public void onFail(int errorCode) {
                 }
             });
+        } else {
+            //去登录
+            if (context != null) {
+                GotoActivityUtils.gotoLoginActivity(context);
+            }
         }
     }
 }
