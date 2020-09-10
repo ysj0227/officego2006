@@ -258,7 +258,6 @@ public class ScheduleFragment extends BaseMvpFragment<ViewingDatePresenter>
                 return;
             } else if (i == viewingDateAllList.size() - 1 && !isHasList) {
                 noData();
-//                shortTip(R.string.tip_current_day_no_data);
             }
         }
     }
@@ -290,6 +289,11 @@ public class ScheduleFragment extends BaseMvpFragment<ViewingDatePresenter>
                         mSelectedYear = currentDate.getYear();
                         mSelectedMonth = currentDate.getMonth();
                         getViewingDateList();
+                        //如果切回当前月，重新选中当天
+                        CalendarDate mD = new CalendarDate();
+                        if (mSelectedYear == mD.getYear() && mSelectedMonth == mD.getMonth()) {
+                            onSwitchBackToDay();
+                        }
                         return;
                     }
                     mSelectedYear = currentDate.getYear();
