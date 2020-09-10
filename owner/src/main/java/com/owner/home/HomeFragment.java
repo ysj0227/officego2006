@@ -121,7 +121,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements Home
         webSetting.setAllowFileAccess(true);// 设置允许访问文件数据
         webSetting.setLoadWithOverviewMode(true);
         webSetting.setBlockNetworkImage(false);//解决图片不显示
-//        webView.addJavascriptInterface(new JsInterface(this), "android");
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         webChrome = new SMWebChromeClient(mActivity);
         webView.setWebChromeClient(webChrome);

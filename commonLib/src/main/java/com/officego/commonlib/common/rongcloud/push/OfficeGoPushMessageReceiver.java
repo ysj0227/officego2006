@@ -46,7 +46,7 @@ public class OfficeGoPushMessageReceiver extends PushMessageReceiver {
     public boolean onNotificationMessageClicked(Context context, PushType pushType, PushNotificationMessage message) {
         // true. 代表不触发 SDK 默认实现，您自定义处理通知点击跳转事件。  false 融云内置跳转
         String targetId = message.getTargetId();
-        LogCat.e(TAG, "pushType=" + pushType.getName() + "  getTargetId=" + targetId);
+        // LogCat.e(TAG, "pushType=" + pushType.getName() + "  getTargetId=" + targetId);
         isGotoConversion = false;
         if (pushType == PushType.RONG) {
             //跳转系统消息
@@ -87,10 +87,8 @@ public class OfficeGoPushMessageReceiver extends PushMessageReceiver {
                 }
             });
         } else {
-            //去登录
-            if (context != null) {
-                GotoActivityUtils.gotoLoginActivity(context);
-            }
+//            GotoActivityUtils.gotoLoginActivity(context);
+//            isGotoConversion = true;
         }
     }
 }

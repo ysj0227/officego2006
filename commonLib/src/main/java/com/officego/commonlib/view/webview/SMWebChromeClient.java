@@ -149,7 +149,7 @@ public class SMWebChromeClient extends WebChromeClient {
 
     private void selectImage() {
         final String[] items = {mActivity.getResources().getString(R.string.str_take_photo),
-                mActivity.getResources().getString(R.string.str_choose_from_album), "视频", "文件"};
+                mActivity.getResources().getString(R.string.str_choose_from_album), "录屏", "文件"};
         AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
         builder.setItems(items, (dialogInterface, i) -> {
             if (i == 0) {
