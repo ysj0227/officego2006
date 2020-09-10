@@ -34,8 +34,6 @@ public class GotoActivityUtils {
         Intent intent = new Intent();
         intent.putExtra("isOwnerLogin", isOwnerLogin);
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.setComponent(comp);
         intent.setAction("android.intent.action.VIEW");
         context.startActivity(intent);

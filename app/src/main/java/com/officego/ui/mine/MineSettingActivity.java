@@ -24,6 +24,7 @@ import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.rpc.OfficegoApi;
+import com.owner.mine.ModifyMobileActivity_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -40,12 +41,39 @@ import org.androidannotations.annotations.ViewById;
 public class MineSettingActivity extends BaseActivity {
     @ViewById(R.id.tv_version)
     TextView tvVersion;
+    @ViewById(R.id.tv_mobile)
+    TextView tvMobile;
 
     @SuppressLint("SetTextI18n")
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarColor(this);
         tvVersion.setText("v" + CommonHelper.getAppVersionName(context));
+        String mobile = SpUtils.getPhoneNum();
+        if (!TextUtils.isEmpty(mobile) && mobile.length() == 11) {
+            String phoneNumber = mobile.substring(0, 3) + "****" + mobile.substring(7);
+            tvMobile.setText(phoneNumber);
+        }
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (TextUtils.isEmpty(SpUtils.getSignToken())) {
+            CommonDialog dialog = new CommonDialog.Builder(context)
+                    .setMessage("账号已退出，请重新登录")
+                    .setConfirmButton(com.officego.commonlib.R.string.str_login, (dialog12, which) -> {
+                        GotoActivityUtils.gotoLoginActivity(context);
+                        dialog12.dismiss();
+                    }).create();
+            dialog.showWithOutTouchable(false);
+            dialog.setCancelable(false);
+        }
+    }
+
+    @Click(R.id.rl_mobile)
+    void modifyMobileClick() {
+        ModifyMobileActivity_.intent(context).start();
     }
 
     @Click(R.id.rl_version_update)

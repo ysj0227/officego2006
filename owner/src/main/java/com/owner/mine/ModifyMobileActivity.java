@@ -126,7 +126,8 @@ public class ModifyMobileActivity extends BaseMvpActivity<ModifyMobilePresenter>
     @Override
     public void modifyMobileSuccess() {
         //重新登录
-        GotoActivityUtils.loginClearActivity(context, true);
+        GotoActivityUtils.loginClearActivity(context);
+        finish();
     }
 
     //倒计时函数

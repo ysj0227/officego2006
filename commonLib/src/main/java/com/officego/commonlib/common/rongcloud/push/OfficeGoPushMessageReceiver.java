@@ -76,9 +76,12 @@ public class OfficeGoPushMessageReceiver extends PushMessageReceiver {
                 @Override
                 public void onSuccess(String s) {
                     RongCloudSetUserInfoUtils.setCurrentInfo(s);
-                    if (!TextUtils.isEmpty(targetId) && TextUtils.equals(Constants.TYPE_SYSTEM, targetId.substring(targetId.length() - 1))) {
-                        gotoSystemPushConversationActivity(context, targetId);
-                        isGotoConversion = true;
+                    if (!TextUtils.isEmpty(targetId)) {
+                        if ((targetId.length() == 1 && TextUtils.equals(Constants.TYPE_SYSTEM, targetId)) ||
+                                (targetId.length() > 1 && TextUtils.equals(Constants.TYPE_SYSTEM, targetId.substring(targetId.length() - 1)))) {
+                            gotoSystemPushConversationActivity(context, targetId);
+                            isGotoConversion = true;
+                        }
                     }
                 }
 

@@ -18,10 +18,53 @@
         app:titleTextColor="@color/text_33" />
 
     <RelativeLayout
-        android:id="@+id/rl_version_update"
+        android:id="@+id/rl_mobile"
         android:layout_width="wrap_content"
         android:layout_height="@dimen/dp_56"
         android:layout_below="@id/title_bar"
+        android:background="@color/white"
+        android:paddingLeft="@dimen/dp_18"
+        android:paddingRight="@dimen/dp_18">
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:text="@string/str_modify_mobile"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_15"
+            tools:ignore="RelativeOverlap" />
+
+        <TextView
+            android:id="@+id/tv_mobile"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dp_28"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_15" />
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:background="@drawable/ic_right_arrow_small"
+            tools:ignore="ContentDescription" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"
+            android:layout_alignParentBottom="true"
+            android:background="@color/common_divider" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_version_update"
+        android:layout_width="wrap_content"
+        android:layout_height="@dimen/dp_56"
+        android:layout_below="@id/rl_mobile"
         android:background="@color/white"
         android:paddingLeft="@dimen/dp_18"
         android:paddingRight="@dimen/dp_18">

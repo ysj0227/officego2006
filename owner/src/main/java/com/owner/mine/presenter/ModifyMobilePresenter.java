@@ -1,10 +1,9 @@
 package com.owner.mine.presenter;
 
 import com.officego.commonlib.base.BasePresenter;
+import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
-import com.officego.commonlib.utils.log.LogCat;
-import com.owner.R;
 import com.owner.mine.contract.ModifyMobileContract;
 import com.owner.rpc.OfficegoApi;
 
@@ -15,7 +14,6 @@ import com.owner.rpc.OfficegoApi;
  **/
 public class ModifyMobilePresenter extends BasePresenter<ModifyMobileContract.View>
         implements ModifyMobileContract.Presenter {
-    private final String TAG = this.getClass().getSimpleName();
 
     @Override
     public void getSms(String mobile) {
@@ -25,13 +23,11 @@ public class ModifyMobilePresenter extends BasePresenter<ModifyMobileContract.Vi
             public void onSuccess(int code, String msg, Object data) {
                 if (isViewAttached()) {
                     mView.hideLoadingDialog();
-                    mView.shortTip(R.string.tip_sms_code_send_success);
                 }
             }
 
             @Override
             public void onFail(int code, String msg, Object data) {
-                LogCat.e(TAG, "getSmsCode onFail code=" + code + "  msg=" + msg);
                 if (isViewAttached()) {
                     mView.hideLoadingDialog();
                 }
@@ -46,6 +42,7 @@ public class ModifyMobilePresenter extends BasePresenter<ModifyMobileContract.Vi
             @Override
             public void onSuccess(int code, String msg, Object data) {
                 if (isViewAttached()) {
+                    SpUtils.clearLoginInfo();
                     mView.hideLoadingDialog();
                     mView.modifyMobileSuccess();
                     mView.shortTip("修改成功");
@@ -54,7 +51,6 @@ public class ModifyMobilePresenter extends BasePresenter<ModifyMobileContract.Vi
 
             @Override
             public void onFail(int code, String msg, Object data) {
-                LogCat.e(TAG, "getSmsCode onFail code=" + code + "  msg=" + msg);
                 if (isViewAttached()) {
                     mView.hideLoadingDialog();
                     if (code == Constants.DEFAULT_ERROR_CODE) {

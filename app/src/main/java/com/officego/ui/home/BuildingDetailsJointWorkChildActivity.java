@@ -578,12 +578,7 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
                 shortTip(R.string.str_no_vr);
             }
         } else if (rbVideo.isChecked()) {
-            centerPlayIsShow(false);
-            radioGroupIsShow(false);
-            playButtonIsShow(true);
-            loadingView();
-            //初始化播放
-            initVideoPlay();
+            playVideo();
         }
     }
 
@@ -664,9 +659,7 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         if (isFastClick(1500)) {
             return;
         }
-        loadingView();
-        //初始化
-        initVideoPlay();
+        playVideo();
     }
 
     @Click(R.id.ib_play)
@@ -866,9 +859,17 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
     protected void onRestart() {
         super.onRestart();
         if (rbVideo.isChecked()) {
-            //重新初始化
-            initVideoPlay();
+            playVideo();
         }
+    }
+
+    private void playVideo() {
+        centerPlayIsShow(false);
+        radioGroupIsShow(false);
+        playButtonIsShow(true);
+        loadingView();
+        //重新初始化
+        initVideoPlay();
     }
 
     @Override

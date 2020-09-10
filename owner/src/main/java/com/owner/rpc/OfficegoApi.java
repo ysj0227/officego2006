@@ -23,7 +23,6 @@ import com.owner.rpc.request.LoginInterface;
 import com.owner.rpc.request.MineMsgInterface;
 import com.owner.rpc.request.ScheduleInterface;
 import com.owner.schedule.model.ViewingDateBean;
-import com.owner.zxing.model.ScanBean;
 
 import java.io.File;
 import java.util.HashMap;
@@ -116,22 +115,6 @@ public class OfficegoApi {
                 .enqueue(callback);
     }
 
-//    /**
-//     * 添加微信
-//     * wxId 	是 	String 	微信号
-//     * channel 	是 	int 	终端渠道,1:IOS,2:安卓,3:H5
-//     * token 	是 	String 	token (登录接口返回)
-//     */
-//    public void bindWechat(String wxId, RetrofitCallback<Object> callback) {
-//        Map<String, RequestBody> map = new HashMap<>();
-//        map.put("token", requestBody(SpUtils.getSignToken()));
-//        map.put("wxId", requestBody(wxId));
-//        map.put("channel", requestBody("2"));
-//        OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
-//                .bindWechat(map)
-//                .enqueue(callback);
-//    }
-
     /**
      * 修改手机号
      */
@@ -160,22 +143,6 @@ public class OfficegoApi {
 //                .updateVersion(map)
 //                .enqueue(callback);
 //    }
-
-    /**
-     * 添加微信
-     * wxId 	是 	String 	微信号
-     * channel 	是 	int 	终端渠道,1:IOS,2:安卓,3:H5
-     * token 	是 	String 	token (登录接口返回)
-     */
-    public void addWechat(String wxId, RetrofitCallback<Object> callback) {
-        Map<String, RequestBody> map = new HashMap<>();
-        map.put("token", requestBody(SpUtils.getSignToken()));
-        map.put("wxId", requestBody(wxId));
-        map.put("channel", requestBody("2"));
-        OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
-                .bindWechat(map)
-                .enqueue(callback);
-    }
 
     /**
      * 预约看房行程

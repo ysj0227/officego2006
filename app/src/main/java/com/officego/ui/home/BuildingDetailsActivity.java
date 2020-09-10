@@ -383,13 +383,25 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
                 shortTip(R.string.str_no_vr);
             }
         } else if (rbVideo.isChecked()) {
-            centerPlayIsShow(false);
-            radioGroupIsShow(false);
-            playButtonIsShow(true);
-            loadingView();
-            //初始化播放
-            initVideoPlay();
+            playVideo();
         }
+    }
+
+    @Override
+    protected void onRestart() {
+        super.onRestart();
+        if (rbVideo.isChecked()) {
+            playVideo();
+        }
+    }
+
+    private void playVideo() {
+        centerPlayIsShow(false);
+        radioGroupIsShow(false);
+        playButtonIsShow(true);
+        loadingView();
+        //重新初始化
+        initVideoPlay();
     }
 
     //图片按钮
@@ -566,9 +578,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             shortTip(R.string.toast_network_error);
             return;
         }
-        loadingView();
-        //初始化
-        initVideoPlay();
+        playVideo();
     }
 
     @Click(R.id.ib_play)
@@ -765,15 +775,6 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             }
             isDragging = false;
             mHandler.sendEmptyMessageDelayed(MESSAGE_SHOW_PROGRESS, DELAY_MILLIS);
-        }
-    }
-
-    @Override
-    protected void onRestart() {
-        super.onRestart();
-        if (rbVideo.isChecked()) {
-            //重新初始化
-            initVideoPlay();
         }
     }
 

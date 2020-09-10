@@ -121,7 +121,6 @@ public class MineSettingActivity extends BaseActivity {
 
             @Override
             public void onFail(int code, String msg, VersionBean data) {
-                LogCat.e(TAG, "updateVersion onFail code=" + code + "  msg=" + msg);
                 hideLoadingDialog();
                 if (code == Constants.ERROR_CODE_5008) {
                     shortTip(R.string.tip_current_newest_version);
