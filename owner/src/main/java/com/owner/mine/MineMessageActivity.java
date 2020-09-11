@@ -26,7 +26,6 @@ import com.officego.commonlib.utils.FileUtils;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.PhotoUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.CircleImage;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.TitleBarView;
@@ -121,15 +120,19 @@ public class MineMessageActivity extends BaseMvpActivity<UpdateUserPresenter>
 
     @Click(resName = "btn_save")
     void saveClick() {
-        if (TextUtils.isEmpty(etSexContent.getText().toString())) {
+        String nikeName = etNameContent.getText() == null ? "" : etNameContent.getText().toString().trim();
+        if (TextUtils.isEmpty(nikeName)) {
+            shortTip("请输入姓名");
+            return;
+        }
+        String sex = etSexContent.getText().toString().trim();
+        if (TextUtils.isEmpty(sex)) {
             shortTip("请选择性别");
             return;
         }
-        String nikeName = TextUtils.isEmpty(etNameContent.getText()) ? "" : etNameContent.getText().toString().trim();
-        String sex = etSexContent.getText().toString().trim();
-        String company = TextUtils.isEmpty(etCompanyContent.getText()) ? "" : etCompanyContent.getText().toString().trim();
-        String job = TextUtils.isEmpty(etJobContent.getText()) ? "" : etJobContent.getText().toString().trim();
-        String wx = TextUtils.isEmpty(etWxContent.getText()) ? "" : etWxContent.getText().toString().trim();
+        String company = etCompanyContent.getText() == null ? "" : etCompanyContent.getText().toString().trim();
+        String job = etJobContent.getText() == null ? "" : etJobContent.getText().toString().trim();
+        String wx = etWxContent.getText() == null ? "" : etWxContent.getText().toString().trim();
         mPresenter.UpdateUserInfo(nikeName, TextUtils.equals("男", sex) ? "1" : "0", company, job, wx);
     }
 
