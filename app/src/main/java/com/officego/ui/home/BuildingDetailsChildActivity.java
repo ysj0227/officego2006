@@ -35,6 +35,7 @@ import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.IVideoPlayer;
 import com.officego.commonlib.view.LabelsView;
 import com.officego.h5.WebViewVRActivity_;
@@ -231,6 +232,7 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         nsvView.setOnScrollChangeListener(this);
         tvIndependentOffice.setVisibility(View.GONE);
         if (mChildHouseBean != null) {
+            LogCat.e(TAG,"111 getBtype="+ mChildHouseBean.getBtype() + " id=" + mChildHouseBean.getHouseId());
             mPresenter.getDetails(String.valueOf(mChildHouseBean.getBtype()), String.valueOf(mChildHouseBean.getHouseId()));
         }
         //神策
@@ -290,7 +292,7 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         if (data.getHouse() != null) {
             tvTitle.setText(data.getHouse().getBuildingName());
             tvBuildingName.setText(data.getHouse().getBuildingName());
-            String seats = "0";
+            String seats;
             if (data.getHouse().getSimple() != null && data.getHouse().getSimple().contains(",")) {
                 String str1 = data.getHouse().getSimple().substring(0, data.getHouse().getSimple().indexOf(","));
                 seats = data.getHouse().getSimple().substring(str1.length() + 1);

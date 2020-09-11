@@ -13,6 +13,7 @@ import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
+import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.GlideUtils;
@@ -21,7 +22,6 @@ import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.ui.collect.model.CollectHouseBean;
 import com.officego.ui.home.BuildingDetailsChildActivity_;
 import com.officego.ui.home.BuildingDetailsJointWorkChildActivity_;
-import com.officego.commonlib.common.model.utils.BundleUtils;
 
 import java.util.List;
 
@@ -44,6 +44,7 @@ public class CollectWorkOfficeAdapter extends CommonListAdapter<CollectHouseBean
     public void convert(ViewHolder holder, final CollectHouseBean.ListBean bean) {
         RoundImageView ivItemListChild = holder.getView(R.id.iv_item_list_child);
         TextView tvHouseName = holder.getView(R.id.tv_house_name);
+        TextView tvType = holder.getView(R.id.tv_type);
         TextView tvLocation = holder.getView(R.id.tv_location);
         TextView tvIsIndependentOffice = holder.getView(R.id.tv_is_independent_office);
         TextView tvItemListChildLeftUp = holder.getView(R.id.tv_item_list_child_left_up);
@@ -60,7 +61,12 @@ public class CollectWorkOfficeAdapter extends CommonListAdapter<CollectHouseBean
             tvLocation.setText(bean.getBusinessDistrict());
         }
         Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getMainPic()).into(ivItemListChild);
-        holder.setText(R.id.tv_type, bean.getBtype() == Constants.TYPE_BUILDING ? "写字楼" : "共享办公");
+        if (bean.getBtype() == Constants.TYPE_JOINTWORK) {
+            tvType.setVisibility(View.VISIBLE);
+            holder.setText(R.id.tv_type, "共享办公");
+        } else {
+            tvType.setVisibility(View.GONE);
+        }
         //"officeType": 1是独立办公室，2是开放工位
         if (TextUtils.equals("1", bean.getOfficeType())) {
             tvIsIndependentOffice.setVisibility(View.VISIBLE);
@@ -98,13 +104,12 @@ public class CollectWorkOfficeAdapter extends CommonListAdapter<CollectHouseBean
         holder.itemView.setOnClickListener(v -> {
             int isFailed = bean.isIsfailure();
             if (isFailed == 1 || isFailed == 2 || isFailed == 3) {
-                //独立办公室
-                if (TextUtils.equals("1", bean.getOfficeType())) {
+                if (Constants.TYPE_BUILDING == bean.getBtype()) {
                     BuildingDetailsChildActivity_.intent(context)
-                            .mChildHouseBean(BundleUtils.houseMessage(1, bean.getId())).start();
-                } else {//开放工位
+                            .mChildHouseBean(BundleUtils.houseMessage(bean.getBtype(), bean.getId())).start();
+                } else {
                     BuildingDetailsJointWorkChildActivity_.intent(context)
-                            .mChildHouseBean(BundleUtils.houseMessage(2, bean.getId())).start();
+                            .mChildHouseBean(BundleUtils.houseMessage(bean.getBtype(), bean.getId())).start();
                 }
             } else {
                 dialog(isFailed);

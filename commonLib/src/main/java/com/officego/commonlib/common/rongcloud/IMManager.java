@@ -107,8 +107,8 @@ public class IMManager {
     private void initRongPush() {
         PushConfig config = new PushConfig.Builder()
                 .enableMiPush(AppConfig.MI_APP_ID, AppConfig.MI_APP_KEY)
+                .enableHWPush(true)
 //                .enableOppoPush(AppConfig.OPPO_APP_KEY, AppConfig.OPPO_APP_SECRET)
-//                .enableHWPush(true)
                 .build();
         RongPushClient.setPushConfig(config);
     }

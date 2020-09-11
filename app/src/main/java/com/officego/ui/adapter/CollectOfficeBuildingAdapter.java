@@ -13,16 +13,16 @@ import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
+import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
+import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.view.LabelsView;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.model.LabelBean;
 import com.officego.ui.collect.model.CollectBuildingBean;
 import com.officego.ui.home.BuildingDetailsActivity_;
 import com.officego.ui.home.BuildingDetailsJointWorkActivity_;
-import com.officego.commonlib.common.model.utils.BundleUtils;
-import com.officego.commonlib.utils.GlideUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -151,12 +151,12 @@ public class CollectOfficeBuildingAdapter extends CommonListAdapter<CollectBuild
         holder.itemView.setOnClickListener(v -> {
             int isFailed = bean.getIsfailure();
             if (isFailed == 1 || isFailed == 2 || isFailed == 3) {
-                if (bean.getBtype() == 1) {
+                if (Constants.TYPE_BUILDING == bean.getBtype()) {
                     BuildingDetailsActivity_.intent(context).
-                            mBuildingBean(BundleUtils.BuildingMessage(1, bean.getId())).start();
+                            mBuildingBean(BundleUtils.BuildingMessage(bean.getBtype(), bean.getId())).start();
                 } else {
                     BuildingDetailsJointWorkActivity_.intent(context)
-                            .mBuildingBean(BundleUtils.BuildingMessage(2, bean.getId())).start();
+                            .mBuildingBean(BundleUtils.BuildingMessage(bean.getBtype(), bean.getId())).start();
                 }
             } else {
                 dialog(isFailed);
