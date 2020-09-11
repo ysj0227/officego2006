@@ -3,7 +3,6 @@ package com.officego.commonlib.common.rongcloud.push;
 import android.content.Context;
 import android.text.TextUtils;
 
-import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.rongcloud.IMManager;
 import com.officego.commonlib.common.rongcloud.ResultCallback;
@@ -33,6 +32,7 @@ public class OfficeGoPushMessageReceiver extends PushMessageReceiver {
      */
     @Override
     public boolean onNotificationMessageArrived(Context context, PushType pushType, PushNotificationMessage notificationMessage) {
+        LogCat.e(TAG, "pushType=" + pushType.getName() + "  getTargetId=" + notificationMessage.getTargetId());
         return false;
     }
 
@@ -50,7 +50,8 @@ public class OfficeGoPushMessageReceiver extends PushMessageReceiver {
         isGotoConversion = false;
         if (pushType == PushType.RONG) {
             //跳转系统消息
-            if (!TextUtils.isEmpty(targetId) && TextUtils.equals(Constants.TYPE_SYSTEM, targetId.substring(targetId.length() - 1))) {
+            if ((targetId.length() == 1 && TextUtils.equals(Constants.TYPE_SYSTEM, targetId)) ||
+                    (targetId.length() > 1 && TextUtils.equals(Constants.TYPE_SYSTEM, targetId.substring(targetId.length() - 1)))) {
                 gotoSystemPushConversationActivity(context, targetId);
                 return true;
             }
@@ -62,7 +63,6 @@ public class OfficeGoPushMessageReceiver extends PushMessageReceiver {
         }
         return false;
     }
-
 
     /**
      * 连接融云
