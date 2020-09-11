@@ -284,6 +284,8 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     private String currentAreaValue = "";
     //初始化是否展开
     private boolean isExpand;
+    //是否播放过视频
+    private boolean isPlayedVideo;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @AfterViews
@@ -390,7 +392,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     @Override
     protected void onRestart() {
         super.onRestart();
-        if (rbVideo.isChecked()) {
+        if (isPlayedVideo && rbVideo.isChecked()) {
             playVideo();
         }
     }
@@ -548,6 +550,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             return;
         }
         new Handler().postDelayed(() -> {
+            isPlayedVideo = true;
             iVideoPlayer.load(videoUrl);
             setVideoListener();
             isPaused = false;

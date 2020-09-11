@@ -210,6 +210,8 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
     private HouseOfficeDetailsJointWorkBean mData;
     //初始化是否展开
     private boolean isExpand;
+    //是否播放过视频
+    private boolean isPlayedVideo;
 
     @AfterViews
     void init() {
@@ -630,6 +632,7 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
             return;
         }
         new Handler().postDelayed(() -> {
+            isPlayedVideo = true;
             iVideoPlayer.load(videoUrl);
             setVideoListener();
             isPaused = false;
@@ -858,7 +861,7 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
     @Override
     protected void onRestart() {
         super.onRestart();
-        if (rbVideo.isChecked()) {
+        if (isPlayedVideo && rbVideo.isChecked()) {
             playVideo();
         }
     }

@@ -215,6 +215,8 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
     private HouseOfficeDetailsBean mData;
     //初始化是否展开
     private boolean isExpand;
+    //是否播放过视频
+    private boolean isPlayedVideo;
 
     @AfterViews
     void init() {
@@ -232,7 +234,7 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         nsvView.setOnScrollChangeListener(this);
         tvIndependentOffice.setVisibility(View.GONE);
         if (mChildHouseBean != null) {
-            LogCat.e(TAG,"111 getBtype="+ mChildHouseBean.getBtype() + " id=" + mChildHouseBean.getHouseId());
+            LogCat.e(TAG, "111 getBtype=" + mChildHouseBean.getBtype() + " id=" + mChildHouseBean.getHouseId());
             mPresenter.getDetails(String.valueOf(mChildHouseBean.getBtype()), String.valueOf(mChildHouseBean.getHouseId()));
         }
         //神策
@@ -670,6 +672,7 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
             return;
         }
         new Handler().postDelayed(() -> {
+            isPlayedVideo = true;
             iVideoPlayer.load(videoUrl);
             setVideoListener();
             isPaused = false;
@@ -925,7 +928,7 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
     @Override
     protected void onRestart() {
         super.onRestart();
-        if (rbVideo.isChecked()) {
+        if (isPlayedVideo && rbVideo.isChecked()) {
             playVideo();
         }
     }
