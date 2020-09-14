@@ -238,7 +238,7 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         SensorsTrack.visitHouseDataPage(String.valueOf(mChildHouseBean.getHouseId()));
     }
 
-    public static void setImageViewLayoutParams(Context context, View view) {
+    private void setImageViewLayoutParams(Context context, View view) {
         ViewGroup.LayoutParams params = view.getLayoutParams();
         params.width = RelativeLayout.LayoutParams.MATCH_PARENT;
         params.height = CommonHelper.getScreenWidth(context) * 3 / 4;
@@ -319,12 +319,19 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
                 ctlPatternDetails.setVisibility(View.GONE);
             } else {
                 ctlPatternDetails.setVisibility(View.VISIBLE);
-                Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(data.getHouse().getBasicInformation().getUnitPatternImg()).into(ivPattern);
+                //描述
                 if (TextUtils.isEmpty(data.getHouse().getBasicInformation().getUnitPatternRemark())) {
                     tvPatternDescription.setVisibility(View.GONE);
                 } else {
                     tvPatternDescription.setVisibility(View.VISIBLE);
                     tvPatternDescription.setText(data.getHouse().getBasicInformation().getUnitPatternRemark());
+                }
+                //布局图
+                if (TextUtils.isEmpty(data.getHouse().getBasicInformation().getUnitPatternImg())) {
+                    ivPattern.setVisibility(View.GONE);
+                } else {
+                    ivPattern.setVisibility(View.VISIBLE);
+                    Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(data.getHouse().getBasicInformation().getUnitPatternImg()).into(ivPattern);
                 }
             }
             //基础字段介绍信息

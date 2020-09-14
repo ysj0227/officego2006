@@ -242,7 +242,7 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         SensorsTrack.visitHouseDataPage(String.valueOf(mChildHouseBean.getHouseId()));
     }
 
-    public static void setImageViewLayoutParams(Context context, View view) {
+    private void setImageViewLayoutParams(Context context, View view) {
         ViewGroup.LayoutParams params = view.getLayoutParams();
         params.width = RelativeLayout.LayoutParams.MATCH_PARENT;
         params.height = CommonHelper.getScreenWidth(context) * 3 / 4;
