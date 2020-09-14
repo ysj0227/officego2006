@@ -48,8 +48,8 @@ import com.officego.ui.home.model.ChatsBean;
 import com.officego.ui.home.model.HouseOfficeDetailsBean;
 import com.officego.ui.home.presenter.BuildingDetailsChildPresenter;
 import com.officego.ui.message.ConversationActivity_;
-import com.officego.ui.previewimg.ImageBigActivity_;
 import com.officego.utils.ImageLoaderUtils;
+import com.officego.utils.PreImageDialog;
 import com.officego.utils.WeChatUtils;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -991,10 +991,7 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         if (mBannerList == null || mBannerList.size() == 0) {
             return;
         }
-        ImageBigActivity_.intent(this)
-                .imagesUrl((ArrayList<String>) mBannerList)
-                .current(position)
-                .start();
+        new PreImageDialog(context, (ArrayList<String>) mBannerList, position);
     }
 
     //户型介绍图
@@ -1005,10 +1002,7 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
             String url = mData.getHouse().getBasicInformation().getUnitPatternImg();
             ArrayList<String> mList = new ArrayList<>();
             mList.add(url);
-            ImageBigActivity_.intent(this)
-                    .imagesUrl(mList)
-                    .current(0)
-                    .start();
+            new PreImageDialog(context, mList, 0);
         }
     }
 }

@@ -208,6 +208,11 @@ public class ConversationPresenter extends BasePresenter<ConversationContract.Vi
                     info.setMinSinglePrice("¥" + data.getBuilding().getMinSinglePrice() + "/位/月");
                 }
             }
+            if (data.getBuilding().getBtype() == Constants.TYPE_BUILDING) {
+                info.setMinSinglePrice("¥" + (data.getBuilding().getMinSinglePrice() == null ? "0.0" : data.getBuilding().getMinSinglePrice()) + "/㎡/天");
+            } else {
+                info.setMinSinglePrice("¥" + (data.getBuilding().getMinSinglePrice() == null ? "0.0" : data.getBuilding().getMinSinglePrice()) + "/位/月");
+            }
             if (data.getBuilding().getTags() != null && data.getBuilding().getTags().size() > 0) {
                 info.setTags(HouseTags.getTags(data));
             }
@@ -225,12 +230,10 @@ public class ConversationPresenter extends BasePresenter<ConversationContract.Vi
                     String stationName = data.getHouse().getStationNames().get(0);
                     info.setRouteMap("步行" + workTime + "分钟到 | " + stationLine + "号线 ·" + stationName);
                 }
-                if (data.getHouse().getMinSinglePrice() != null) {
-                    if (data.getHouse().getBtype() == Constants.TYPE_BUILDING) {
-                        info.setMinSinglePrice("¥" + data.getHouse().getMinSinglePrice() + "/㎡/天");
-                    } else {
-                        info.setMinSinglePrice("¥" + data.getHouse().getMinSinglePrice() + "/位/月");
-                    }
+                if (data.getHouse().getBtype() == Constants.TYPE_BUILDING) {
+                    info.setMinSinglePrice("¥" + (data.getHouse().getMinSinglePrice() == null ? "0.0" : data.getHouse().getMinSinglePrice()) + "/㎡/天");
+                } else {
+                    info.setMinSinglePrice("¥" + (data.getHouse().getMinSinglePrice() == null ? "0.0" : data.getHouse().getMinSinglePrice()) + "/位/月");
                 }
                 if (data.getHouse().getTags() != null && data.getHouse().getTags().size() > 0) {
                     info.setTags(HouseTags.getHouseTags(data));

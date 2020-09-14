@@ -36,11 +36,6 @@ public class WeChatUtils {
     }
 
     private void shareWx(Context context, ShareBean bean) {
-//        final String[] items = {"分享微信好友", "分享到微信朋友圈"};
-//        new AlertDialog.Builder(context)
-//                .setItems(items, (dialogInterface, i) -> {
-//                    gotoWxActivity(context, i, bean);
-////                }).create().show();
         shareDialog(context, bean);
     }
 

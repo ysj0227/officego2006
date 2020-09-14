@@ -43,7 +43,6 @@ public class GotoActivityUtils {
         ComponentName comp = new ComponentName(context, "com.officego.MainActivity_");
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.setComponent(comp);
         intent.setAction("android.intent.action.VIEW");
@@ -74,7 +73,6 @@ public class GotoActivityUtils {
         ComponentName comp = new ComponentName(context, "com.officego.MainOwnerActivity_");
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.setComponent(comp);
         intent.setAction("android.intent.action.VIEW");
@@ -86,7 +84,6 @@ public class GotoActivityUtils {
         ComponentName comp = new ComponentName(context, "com.officego.MainOwnerActivity_");
         Intent intent = new Intent();
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TASK);
         intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
         intent.putExtra("isIdentifyChat", true);//是否认证聊天返回
         intent.setComponent(comp);

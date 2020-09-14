@@ -104,9 +104,7 @@ public class HouseAdapter extends CommonListAdapter<BuildingBean.ListBean> {
 
     //add label
     private void addLabel(ViewHolder holder, BuildingBean.ListBean bean) {
-        TextView tvMore = holder.getView(R.id.tv_more);
         TextView tvTagMore = holder.getView(R.id.tv_tag_more);
-        tvMore.setVisibility(View.GONE);
         LabelsView labelsView = holder.getView(R.id.ll_house_area);
         //1:楼盘 写字楼
         if (bean.getBtype() == 1) {

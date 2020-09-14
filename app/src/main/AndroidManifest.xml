@@ -190,7 +190,7 @@
         <!--会话界面-->
         <activity
             android:name=".ui.message.ConversationActivity_"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize">
             <intent-filter>

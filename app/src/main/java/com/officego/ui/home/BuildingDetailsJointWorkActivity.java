@@ -60,8 +60,8 @@ import com.officego.ui.home.model.ChatsBean;
 import com.officego.ui.home.model.ConditionBean;
 import com.officego.ui.home.presenter.BuildingDetailsJointWorkPresenter;
 import com.officego.ui.message.ConversationActivity_;
-import com.officego.ui.previewimg.ImageBigActivity_;
 import com.officego.utils.ImageLoaderUtils;
+import com.officego.utils.PreImageDialog;
 import com.officego.utils.WeChatUtils;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
@@ -1280,9 +1280,6 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         if (mBannerList == null || mBannerList.size() == 0) {
             return;
         }
-        ImageBigActivity_.intent(this)
-                .imagesUrl((ArrayList<String>) mBannerList)
-                .current(position)
-                .start();
+        new PreImageDialog(context, (ArrayList<String>) mBannerList, position);
     }
 }
