@@ -2,6 +2,7 @@ package com.owner.rpc;
 
 import com.officego.commonlib.constant.AppConfig;
 import com.officego.commonlib.retrofit.BaseRetrofitClient;
+import com.officego.commonlib.retrofit.BaseRetrofitClientWeb;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -11,7 +12,7 @@ import java.util.Map;
  * Data 2020/5/8.
  * Descriptions:
  **/
-public class OfficegoRetrofitClientWeb extends BaseRetrofitClient {
+public class OfficegoRetrofitClientWeb extends BaseRetrofitClientWeb {
     private static volatile OfficegoRetrofitClientWeb instance;
 
     private OfficegoRetrofitClientWeb() {

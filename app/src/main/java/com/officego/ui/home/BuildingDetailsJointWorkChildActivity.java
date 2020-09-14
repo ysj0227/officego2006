@@ -33,6 +33,7 @@ import com.officego.commonlib.common.model.HouseIdBundleBean;
 import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.utils.CommonHelper;
+import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.IVideoPlayer;
@@ -318,7 +319,7 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
                 ctlPatternDetails.setVisibility(View.GONE);
             } else {
                 ctlPatternDetails.setVisibility(View.VISIBLE);
-                Glide.with(context).load(data.getHouse().getBasicInformation().getUnitPatternImg()).into(ivPattern);
+                Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(data.getHouse().getBasicInformation().getUnitPatternImg()).into(ivPattern);
                 if (TextUtils.isEmpty(data.getHouse().getBasicInformation().getUnitPatternRemark())) {
                     tvPatternDescription.setVisibility(View.GONE);
                 } else {

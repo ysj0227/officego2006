@@ -33,6 +33,7 @@ import com.officego.commonlib.common.model.HouseIdBundleBean;
 import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.utils.CommonHelper;
+import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.log.LogCat;
@@ -341,7 +342,7 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
                     ivPattern.setVisibility(View.GONE);
                 } else {
                     ivPattern.setVisibility(View.VISIBLE);
-                    Glide.with(context).load(data.getHouse().getBasicInformation().getUnitPatternImg()).into(ivPattern);
+                    Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(data.getHouse().getBasicInformation().getUnitPatternImg()).into(ivPattern);
                 }
                 //描述
                 if (TextUtils.isEmpty(data.getHouse().getBasicInformation().getUnitPatternRemark())) {
