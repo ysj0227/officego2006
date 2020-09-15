@@ -83,6 +83,7 @@ public class WebViewBannerActivity extends BaseActivity {
 
     @SuppressLint("SetJavaScriptEnabled")
     private void loadWebView(String url) {
+        showLoadingDialog();
         WebSettings webSetting = webView.getSettings();
         webSetting.setJavaScriptEnabled(true);
         webSetting.setAllowUniversalAccessFromFileURLs(true);

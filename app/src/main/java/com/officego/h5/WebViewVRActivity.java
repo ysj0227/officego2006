@@ -80,6 +80,7 @@ public class WebViewVRActivity extends BaseActivity {
 
     @SuppressLint("SetJavaScriptEnabled")
     private void loadWebView(String url) {
+        showLoadingDialog();
         WebSettings webSetting = webView.getSettings();
         webSetting.setJavaScriptEnabled(true);
         webSetting.setAllowUniversalAccessFromFileURLs(true);
@@ -97,7 +98,6 @@ public class WebViewVRActivity extends BaseActivity {
         webView.setWebViewClient(new SMWebViewClient(this) {
             @Override
             public boolean shouldOverrideUrlLoading(WebView view, String url) {
-                showLoadingDialog();
                 view.loadUrl(url);
                 return true;
             }
