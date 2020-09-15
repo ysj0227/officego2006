@@ -306,6 +306,8 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     private boolean isPlayedVideo;
     //是否关闭了筛选条件
     private boolean isClosedCondition;
+    //跳转防止黑屏重新播放视频
+    private boolean isRePlayVideo;
 
     @AfterViews
     void init() {
@@ -417,8 +419,12 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     @Override
     protected void onResume() {
         super.onResume();
-        if (isPlayedVideo && rbVideo.isChecked() && mData != null) {
-            playVideo();
+        if (isPlayedVideo && mData != null) {
+            if (rbVideo.isChecked()) {
+                playVideo();
+            } else {
+                isRePlayVideo = true;
+            }
         }
     }
 
@@ -710,6 +716,12 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     @Click(R.id.ib_play)
     void onPlayClick() {
         if (mData == null || iVideoPlayer == null) {
+            return;
+        }
+        if (isRePlayVideo) {
+            isRePlayVideo = !isPlayedVideo;
+            iVideoPlayer.seekTo(0);
+            playVideo();
             return;
         }
         ibPlay.setBackgroundResource(isPaused ? R.mipmap.pause_normal : R.mipmap.play_normal);
