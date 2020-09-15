@@ -1,4 +1,4 @@
-package com.officego.utils;
+package com.officego.ui.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -27,10 +27,10 @@ import java.util.List;
  * Data 2020/6/16.
  * Descriptions:
  **/
-public class WeChatUtils {
+public class WeChatShareDialog {
     private Context context;
 
-    public WeChatUtils(Context context, ShareBean bean) {
+    public WeChatShareDialog(Context context, ShareBean bean) {
         this.context = context;
         shareWx(context, bean);
     }

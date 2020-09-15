@@ -47,8 +47,8 @@ import com.officego.ui.home.model.HouseOfficeDetailsJointWorkBean;
 import com.officego.ui.home.presenter.BuildingDetailsChildJointWorkPresenter;
 import com.officego.ui.message.ConversationActivity_;
 import com.officego.utils.ImageLoaderUtils;
-import com.officego.utils.PreImageDialog;
-import com.officego.utils.WeChatUtils;
+import com.officego.ui.dialog.PreImageDialog;
+import com.officego.ui.dialog.WeChatShareDialog;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -423,7 +423,7 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
             bean.setDes(dec);
             bean.setImgUrl(mData.getHouse().getMainPic());
             bean.setDetailsUrl(mData.getHouse().getMainPic());
-            new WeChatUtils(context, bean);
+            new WeChatShareDialog(context, bean);
         }
     }
 

@@ -1,4 +1,4 @@
-package com.officego.utils;
+package com.officego.ui.dialog;
 
 import android.app.Dialog;
 import android.content.Context;

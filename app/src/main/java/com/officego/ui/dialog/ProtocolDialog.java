@@ -1,4 +1,4 @@
-package com.officego;
+package com.officego.ui.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -15,6 +15,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 
+import com.officego.R;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.h5.WebViewActivity_;

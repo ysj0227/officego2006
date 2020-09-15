@@ -12,6 +12,7 @@ import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.ui.dialog.ProtocolDialog;
 import com.officego.ui.login.LoginActivity_;
 
 

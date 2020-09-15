@@ -1,4 +1,4 @@
-package com.officego.ui.home;
+package com.officego.ui.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
@@ -33,7 +33,7 @@ public class ServiceLogoDialog {
         serviceDialog(context, title, list);
     }
 
-    public void serviceDialog(Context context, String title, List<DirectoryBean.DataBean> list) {
+    private void serviceDialog(Context context, String title, List<DirectoryBean.DataBean> list) {
         Dialog dialog = new Dialog(context, R.style.BottomDialog);
         View viewLayout = LayoutInflater.from(context).inflate(R.layout.dialog_house_service, null);
         //将布局设置给Dialog
