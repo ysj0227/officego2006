@@ -231,8 +231,12 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         //神策
         SensorsTrack.sensorsLogin(data.getUid());
         //登录成功跳转
-        SpUtils.saveRole(String.valueOf(data.getRid()));
-        if (!isFinishCurrentView) {
+        String rid = String.valueOf(data.getRid());
+        //初始化未登录时，当前身份身份有变化
+        if (isFinishCurrentView && TextUtils.equals(SpUtils.getRole(), rid)) {
+            SpUtils.saveRole(rid);
+        } else {
+            SpUtils.saveRole(rid);
             if (TextUtils.equals(Constants.TYPE_OWNER, String.valueOf(data.getRid()))) {
                 MainOwnerActivity_.intent(context).start();
             } else {

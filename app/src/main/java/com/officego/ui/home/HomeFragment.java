@@ -773,9 +773,11 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         getList();
     }
 
-    //删除工位面积
+    //删除工位或面积
     @Click({R.id.ibt_delete_sel_condition, R.id.ibt_delete_sel_condition1})
     void deleteSelConditionClick() {
+        //清除筛选的面积或工位
+        ConditionConfig.mConditionBean = null;
         if (rlConstruction.getVisibility() == View.GONE && rlOfficeType.getVisibility() == View.GONE) {
             rlLabelConstruction.setVisibility(View.GONE);
             rlLabelConstruction1.setVisibility(View.GONE);

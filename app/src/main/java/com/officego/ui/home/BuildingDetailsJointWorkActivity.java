@@ -37,6 +37,7 @@ import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.IVideoPlayer;
 import com.officego.commonlib.view.LabelsView;
 import com.officego.commonlib.view.RoundImageView;
@@ -1167,13 +1168,24 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         LinearLayoutManager lmHorizontal2 = new LinearLayoutManager(this);
         lmHorizontal2.setOrientation(LinearLayoutManager.HORIZONTAL);
         rvBaseService.setLayoutManager(lmHorizontal2);
+        LogCat.e(TAG, "111111111  size=" + data.getBuilding().getCorporateServices().size());
+        LogCat.e(TAG, "111111112  size=" + data.getBuilding().getBasicServices().size());
         if (data.getBuilding() == null) {
             ctlShareService.setVisibility(View.GONE);
         } else {
             ctlShareService.setVisibility(View.VISIBLE);
-            if (data.getBuilding().getCorporateServices() != null &&
-                    data.getBuilding().getCorporateServices().size() > 0 &&
-                    data.getBuilding().getBasicServices() == null) {
+            if (data.getBuilding().getCorporateServices() != null && data.getBuilding().getCorporateServices().size() > 0 &&
+                    data.getBuilding().getBasicServices() != null && data.getBuilding().getBasicServices().size() > 0) {
+                tvCreateService.setVisibility(View.VISIBLE);
+                rlCreateService.setVisibility(View.VISIBLE);
+                tvBaseService.setVisibility(View.VISIBLE);
+                rlBaseService.setVisibility(View.VISIBLE);
+                corporateServicesList = data.getBuilding().getCorporateServices();
+                rvCreateService.setAdapter(new ServiceCreateLogoAdapter(context, data.getBuilding().getCorporateServices()));
+                basicServicesList = data.getBuilding().getBasicServices();
+                rvBaseService.setAdapter(new ServiceBaseLogoAdapter(context, data.getBuilding().getBasicServices()));
+            } else if (data.getBuilding().getCorporateServices() != null && data.getBuilding().getCorporateServices().size() > 0 &&
+                    (data.getBuilding().getBasicServices() == null || data.getBuilding().getBasicServices().size() < 1)) {
                 tvCreateService.setVisibility(View.VISIBLE);
                 rlCreateService.setVisibility(View.VISIBLE);
                 tvBaseService.setVisibility(View.GONE);
@@ -1182,25 +1194,15 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
                 rvCreateService.setAdapter(new ServiceCreateLogoAdapter(context, data.getBuilding().getCorporateServices()));
             } else if (data.getBuilding().getBasicServices() != null &&
                     data.getBuilding().getBasicServices().size() > 0 &&
-                    data.getBuilding().getCorporateServices() == null) {
+                    (data.getBuilding().getCorporateServices() == null || data.getBuilding().getCorporateServices().size() < 1)) {
                 tvCreateService.setVisibility(View.GONE);
                 rlCreateService.setVisibility(View.GONE);
                 tvBaseService.setVisibility(View.VISIBLE);
                 rlBaseService.setVisibility(View.VISIBLE);
                 basicServicesList = data.getBuilding().getBasicServices();
                 rvBaseService.setAdapter(new ServiceBaseLogoAdapter(context, data.getBuilding().getBasicServices()));
-            } else if (data.getBuilding().getCorporateServices() != null &&
-                    data.getBuilding().getCorporateServices().size() > 0 &&
-                    data.getBuilding().getBasicServices() != null &&
-                    data.getBuilding().getBasicServices().size() > 0) {
-                tvCreateService.setVisibility(View.VISIBLE);
-                rlCreateService.setVisibility(View.VISIBLE);
-                tvBaseService.setVisibility(View.VISIBLE);
-                rlBaseService.setVisibility(View.VISIBLE);
-                corporateServicesList = data.getBuilding().getCorporateServices();
-                rvCreateService.setAdapter(new ServiceCreateLogoAdapter(context, data.getBuilding().getCorporateServices()));
-                basicServicesList = data.getBuilding().getBasicServices();
-                rvBaseService.setAdapter(new ServiceBaseLogoAdapter(context, data.getBuilding().getBasicServices()));
+            }else {
+                ctlShareService.setVisibility(View.GONE);
             }
         }
     }
