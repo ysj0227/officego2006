@@ -876,9 +876,9 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
     }
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
-        if (isPlayedVideo && rbVideo.isChecked()) {
+    protected void onResume() {
+        super.onResume();
+        if (isPlayedVideo && rbVideo.isChecked() && mData != null) {
             playVideo();
         }
     }

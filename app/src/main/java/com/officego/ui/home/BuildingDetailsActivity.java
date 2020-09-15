@@ -286,6 +286,8 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     private boolean isExpand;
     //是否播放过视频
     private boolean isPlayedVideo;
+    //是否关闭了筛选条件
+    private boolean isClosedCondition;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @AfterViews
@@ -392,11 +394,10 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         }
     }
 
-
     @Override
-    protected void onRestart() {
-        super.onRestart();
-        if (isPlayedVideo && rbVideo.isChecked()) {
+    protected void onResume() {
+        super.onResume();
+        if (isPlayedVideo && rbVideo.isChecked() && mData != null) {
             playVideo();
         }
     }
@@ -824,14 +825,14 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
 
     //获取详情下的独立办公室列表
     private void getChildBuildingList() {
-        if (mConditionBean == null || TextUtils.isEmpty(mConditionBean.getArea())) {
+        if (mConditionBean == null || TextUtils.isEmpty(mConditionBean.getArea()) || isClosedCondition) {
             showAllAreaView();//显示全部的面积view
         } else {
             showSetAreaView();//显示筛选面积的view
             currentAreaValue = mConditionBean.getArea();
             ivClearSetArea.setOnClickListener(v -> {
-                showAllAreaView();//显示全部的面积view
-//                mConditionBean.setArea("");
+                isClosedCondition = true;
+                showAllAreaView();
                 currentAreaValue = "";
                 childList.clear();
                 mPresenter.getBuildingSelectList(pageNum, String.valueOf(mBuildingBean.getBtype()),

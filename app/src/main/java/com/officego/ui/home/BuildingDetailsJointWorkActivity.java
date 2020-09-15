@@ -304,6 +304,8 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     private boolean isExpand;
     //是否播放过视频
     private boolean isPlayedVideo;
+    //是否关闭了筛选条件
+    private boolean isClosedCondition;
 
     @AfterViews
     void init() {
@@ -413,9 +415,9 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     }
 
     @Override
-    protected void onRestart() {
-        super.onRestart();
-        if (isPlayedVideo && rbVideo.isChecked()) {
+    protected void onResume() {
+        super.onResume();
+        if (isPlayedVideo && rbVideo.isChecked() && mData != null) {
             playVideo();
         }
     }
@@ -609,14 +611,14 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
 
     //获取详情下的独立办公室列表
     private void getChildBuildingList() {
-        if (mConditionBean == null || TextUtils.isEmpty(mConditionBean.getSeats())) {
+        if (mConditionBean == null || TextUtils.isEmpty(mConditionBean.getSeats()) || isClosedCondition) {
             showAllAreaView();//显示全部的面积view
         } else {
             showSetAreaView();//显示筛选面积的view
             currentSeatsValue = mConditionBean.getSeats();
             ivClearSetArea.setOnClickListener(v -> {
-                showAllAreaView();//显示全部的面积view
-//                mConditionBean.setSeats("");//点击清除初始化
+                isClosedCondition = true;
+                showAllAreaView();
                 currentSeatsValue = "";
                 childList.clear();
                 mPresenter.getBuildingSelectList(pageNum, String.valueOf(mBuildingBean.getBtype()), String.valueOf(mBuildingBean.getBuildingId()),
@@ -1201,7 +1203,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
                 rlBaseService.setVisibility(View.VISIBLE);
                 basicServicesList = data.getBuilding().getBasicServices();
                 rvBaseService.setAdapter(new ServiceBaseLogoAdapter(context, data.getBuilding().getBasicServices()));
-            }else {
+            } else {
                 ctlShareService.setVisibility(View.GONE);
             }
         }
