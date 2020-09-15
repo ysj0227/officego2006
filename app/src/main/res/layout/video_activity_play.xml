@@ -39,7 +39,6 @@
             android:layout_height="@dimen/dp_40"
             android:layout_centerInParent="true"
             android:background="@mipmap/ic_video_start"
-            android:visibility="visible"
             tools:ignore="ContentDescription" />
     </RelativeLayout>
     <!--底部控制区-->

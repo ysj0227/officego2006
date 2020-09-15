@@ -551,16 +551,19 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
             rbVr.setVisibility(View.VISIBLE);
             rbVideo.setVisibility(View.VISIBLE);
             rbPicture.setVisibility(View.VISIBLE);
+            radioGroupIsShow(true);
         } else if (data.getVrUrl() != null && data.getVrUrl().size() > 0) {
             rbVr.setChecked(true);
             rbVr.setVisibility(View.VISIBLE);
             rbVideo.setVisibility(View.GONE);
             rbPicture.setVisibility(View.VISIBLE);
+            radioGroupIsShow(true);
         } else if (data.getVideoUrl() != null && data.getVideoUrl().size() > 0) {
             rbVideo.setChecked(true);
             rbVr.setVisibility(View.GONE);
             rbVideo.setVisibility(View.VISIBLE);
             rbPicture.setVisibility(View.VISIBLE);
+            radioGroupIsShow(true);
         } else {
             //没有视频只显示轮播图
             playButtonIsShow(false);

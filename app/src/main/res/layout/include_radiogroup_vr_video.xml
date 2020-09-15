@@ -7,6 +7,7 @@
     android:layout_centerHorizontal="true"
     android:layout_gravity="center_horizontal"
     android:layout_marginBottom="@dimen/dp_50"
+    android:visibility="gone"
     android:background="@drawable/button_corner_white_center"
     android:orientation="horizontal">
 

@@ -335,7 +335,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         rlDefaultHousePic.setVisibility(isShow ? View.VISIBLE : View.GONE);
     }
 
-    //是否显示视频，图片按钮
+    //是否显示VR ,视频 ,图片按钮
     private void radioGroupIsShow(boolean isShow) {
         rgVideoPicture.setVisibility(isShow ? View.VISIBLE : View.GONE);
     }
@@ -722,7 +722,6 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         return false;
     }
 
-
     //开始播放
     @Override
     public void onPrepared(IMediaPlayer iMediaPlayer) {
@@ -960,16 +959,19 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             rbVr.setVisibility(View.VISIBLE);
             rbVideo.setVisibility(View.VISIBLE);
             rbPicture.setVisibility(View.VISIBLE);
+            radioGroupIsShow(true);
         } else if (data.getVrUrl() != null && data.getVrUrl().size() > 0) {
             rbVr.setChecked(true);
             rbVr.setVisibility(View.VISIBLE);
             rbVideo.setVisibility(View.GONE);
             rbPicture.setVisibility(View.VISIBLE);
+            radioGroupIsShow(true);
         } else if (data.getVideoUrl() != null && data.getVideoUrl().size() > 0) {
             rbVideo.setChecked(true);
             rbVr.setVisibility(View.GONE);
             rbVideo.setVisibility(View.VISIBLE);
             rbPicture.setVisibility(View.VISIBLE);
+            radioGroupIsShow(true);
         } else {
             //没有视频只显示轮播图
             playButtonIsShow(false);
