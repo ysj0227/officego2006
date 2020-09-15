@@ -40,6 +40,8 @@ import com.officego.commonlib.view.IVideoPlayer;
 import com.officego.h5.WebViewVRActivity_;
 import com.officego.model.ShareBean;
 import com.officego.ui.adapter.BuildingInfoAdapter;
+import com.officego.ui.dialog.PreImageDialog;
+import com.officego.ui.dialog.WeChatShareDialog;
 import com.officego.ui.home.contract.BuildingDetailsChildJointWorkContract;
 import com.officego.ui.home.model.BuildingInfoBean;
 import com.officego.ui.home.model.ChatsBean;
@@ -47,8 +49,6 @@ import com.officego.ui.home.model.HouseOfficeDetailsJointWorkBean;
 import com.officego.ui.home.presenter.BuildingDetailsChildJointWorkPresenter;
 import com.officego.ui.message.ConversationActivity_;
 import com.officego.utils.ImageLoaderUtils;
-import com.officego.ui.dialog.PreImageDialog;
-import com.officego.ui.dialog.WeChatShareDialog;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -433,6 +433,9 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         if (isFastClick(1200)) {
             return;
         }
+        if (mData == null) {
+            return;
+        }
         //未登录
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
             new LoginTenantUtils(context);
@@ -584,6 +587,9 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
     //开始播放中间按钮
     @Click(R.id.ib_init_start)
     void ibStartClick() {
+        if (mData == null) {
+            return;
+        }
         if (rbVr.isChecked()) {
             if (mData != null && mData.getVrUrl() != null && mData.getVrUrl().size() > 0) {
                 WebViewVRActivity_.intent(context).vrUrl(mData.getVrUrl().get(0).getImgUrl()).start();
@@ -678,7 +684,7 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
 
     @Click(R.id.ib_play)
     void onPlayClick() {
-        if (iVideoPlayer == null) {
+        if (mData == null || iVideoPlayer == null) {
             return;
         }
         ibPlay.setBackgroundResource(isPaused ? R.mipmap.pause_normal : R.mipmap.play_normal);

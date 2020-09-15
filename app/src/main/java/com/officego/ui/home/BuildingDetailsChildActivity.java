@@ -611,6 +611,9 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
     //开始播放中间按钮
     @Click(R.id.ib_init_start)
     void ibStartClick() {
+        if (mData == null) {
+            return;
+        }
         if (rbVr.isChecked()) {
             if (mData != null && mData.getVrUrl() != null && mData.getVrUrl().size() > 0) {
                 WebViewVRActivity_.intent(context).vrUrl(mData.getVrUrl().get(0).getImgUrl()).start();

@@ -48,6 +48,8 @@ import com.officego.model.ShareBean;
 import com.officego.ui.adapter.BuildingInfoAdapter;
 import com.officego.ui.adapter.HouseItemAllAdapter;
 import com.officego.ui.adapter.IndependentAllChildAdapter;
+import com.officego.ui.dialog.PreImageDialog;
+import com.officego.ui.dialog.WeChatShareDialog;
 import com.officego.ui.home.contract.BuildingDetailsContract;
 import com.officego.ui.home.model.BuildingConditionItem;
 import com.officego.ui.home.model.BuildingDetailsBean;
@@ -59,8 +61,6 @@ import com.officego.ui.home.model.ConditionBean;
 import com.officego.ui.home.presenter.BuildingDetailsPresenter;
 import com.officego.ui.message.ConversationActivity_;
 import com.officego.utils.ImageLoaderUtils;
-import com.officego.ui.dialog.PreImageDialog;
-import com.officego.ui.dialog.WeChatShareDialog;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -378,8 +378,11 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     //开始播放中间按钮
     @Click(R.id.ib_init_start)
     void ibStartClick() {
+        if (mData == null) {
+            return;
+        }
         if (rbVr.isChecked()) {
-            if (mData != null && mData.getVrUrl() != null && mData.getVrUrl().size() > 0) {
+            if (mData.getVrUrl() != null && mData.getVrUrl().size() > 0) {
                 WebViewVRActivity_.intent(context).vrUrl(mData.getVrUrl().get(0).getImgUrl()).start();
             } else {
                 shortTip(R.string.str_no_vr);
@@ -388,6 +391,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             playVideo();
         }
     }
+
 
     @Override
     protected void onRestart() {
@@ -454,6 +458,9 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     @Click(R.id.tv_favorite)
     void favoriteClick() {
         if (isFastClick(1200)) {
+            return;
+        }
+        if (mData == null) {
             return;
         }
         //未登录
@@ -586,7 +593,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
 
     @Click(R.id.ib_play)
     void onPlayClick() {
-        if (iVideoPlayer == null) {
+        if (mData == null || iVideoPlayer == null) {
             return;
         }
         ibPlay.setBackgroundResource(isPaused ? R.mipmap.pause_normal : R.mipmap.play_normal);
@@ -1051,6 +1058,9 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
 
     @Click(R.id.btn_query_more)
     void queryMoreClick() {
+        if (mData == null) {
+            return;
+        }
         if (hasMore) {
             pageNum++;
             getChildBuildingList();
@@ -1063,7 +1073,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     @Override
     public void buildingSelectListSuccess(int totals, List<BuildingDetailsChildBean.ListBean> list) {
         tvItemListBottom.setText(totals + "套");//自选面积多少套
-        hasMore = list == null || list.size() >= 9;
+        hasMore = list == null || list.size() > 9;
         btnQueryMore.setVisibility(hasMore ? View.VISIBLE : View.GONE);
         assert list != null;
         childList.addAll(list);

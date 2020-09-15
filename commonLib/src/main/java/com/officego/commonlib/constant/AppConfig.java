@@ -39,13 +39,15 @@ public class AppConfig extends BaseConfig {
     //测试
     @Override
     protected void initTest(Context context, String env) {
-        //URL
-        APP_URL = "http://debug.officego.com.cn/";
-        APP_URL_MAIN = "http://test1.officego.com.cn/";
+        //预发环境
+        APP_URL = "http://admin.officego.com.cn/";
+        APP_URL_MAIN = "http://test.officego.com.cn/";
+        //开发环境
+//        APP_URL = "http://debug.officego.com.cn/";
+//        APP_URL_MAIN = "http://test1.officego.com.cn/";
+        //web扫码
         WEB_URL_SCAN_LOGIN = "http://debugweb.officego.com.cn/";
         SA_SERVER_URL = "https://officego.datasink.sensorsdata.cn/sa?project=default&token=d0db7a742f154aac";
-//        APP_URL = "http://admin.officego.com.cn/";
-//        APP_URL_MAIN = "http://test.officego.com.cn/";
         //个人中心
         H5_ABOUT_US = APP_URL_MAIN + "lessee/aboutUs.html";
         H5_HELP_FEEDBACK = APP_URL_MAIN + "lessee/opinion.html";
