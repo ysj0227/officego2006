@@ -30,6 +30,7 @@ import com.officego.commonlib.constant.AppConfig;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.retrofit.RetrofitCallback;
+import com.officego.commonlib.utils.log.LogCat;
 
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
@@ -171,7 +172,7 @@ public class IMManager {
 
             @Override
             public void onError(RongIMClient.ErrorCode errorCode) {
-                //LogCat.e(TAG, "connect onError - code:" + errorCode.getValue() + ", msg:" + errorCode.getMessage());
+                LogCat.d(TAG, "connect onError - code:" + errorCode.getValue() + ", msg:" + errorCode.getMessage());
                 Constants.isRCIMConnectSuccess = false;
                 if (errorCode == RongIMClient.ErrorCode.RC_MSG_RESP_TIMEOUT ||
                         errorCode == RongIMClient.ErrorCode.RC_SOCKET_NOT_CREATED ||
@@ -291,7 +292,7 @@ public class IMManager {
         RongIM.setConnectionStatusListener(new RongIMClient.ConnectionStatusListener() {
             @Override
             public void onChanged(ConnectionStatus connectionStatus) {
-                //LogCat.d(TAG, "ConnectionStatus onChanged = " + connectionStatus.getMessage() + " rcToken=" + SpUtils.getRongToken());
+                LogCat.d(TAG, "ConnectionStatus onChanged = " + connectionStatus.getMessage() + " rcToken=" + SpUtils.getRongToken());
                 if (connectionStatus.equals(ConnectionStatus.KICKED_OFFLINE_BY_OTHER_CLIENT)) {
                     //被其他提出时，需要返回登录界面 剔除其他登录
                     BaseNotification.newInstance().postNotificationName(CommonNotifications.rongCloudkickDialog, "rongCloudkickDialog");
