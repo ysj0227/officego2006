@@ -3,10 +3,11 @@ package com.officego.commonlib.common.rpc;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.VersionBean;
 import com.officego.commonlib.common.model.ChatHouseBean;
+import com.officego.commonlib.common.model.ChatListBean;
+import com.officego.commonlib.common.model.ExchangeContactsBean;
 import com.officego.commonlib.common.model.FirstChatBean;
 import com.officego.commonlib.common.model.IdentitychattedMsgBean;
 import com.officego.commonlib.common.model.RongUserInfoBean;
-import com.officego.commonlib.common.model.ExchangeContactsBean;
 import com.officego.commonlib.common.rpc.request.ChatInterface;
 import com.officego.commonlib.common.rpc.request.LicenceInterface;
 import com.officego.commonlib.common.rpc.request.MineMsgInterface;
@@ -15,6 +16,7 @@ import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.log.LogCat;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.MediaType;
@@ -96,7 +98,7 @@ public class OfficegoApi {
     public void getChatHouseDetails(int buildingId, int houseId, String targetId, RetrofitCallback<ChatHouseBean> callback) {
         LogCat.e(TAG, "token=" + SpUtils.getSignToken() +
                 " uid=" + targetId +
-                " buildingId=" +( buildingId == 0 ? "" : buildingId )+
+                " buildingId=" + (buildingId == 0 ? "" : buildingId) +
                 " houseId=" + (houseId == 0 ? "" : String.valueOf(houseId)));
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
@@ -110,7 +112,6 @@ public class OfficegoApi {
 
     /**
      * 重新获取融云token
-     *
      */
     public void getRongCloudToken(RetrofitCallback<Object> callback) {
         Map<String, RequestBody> map = new HashMap<>();
@@ -140,7 +141,7 @@ public class OfficegoApi {
      * 判断是否可以交换手机和微信
      */
     public void exchangeContactsVerification(String targetId, RetrofitCallback<ExchangeContactsBean> callback) {
-        LogCat.e(TAG,"111  token="+SpUtils.getSignToken()+"  targetId="+targetId);
+        LogCat.e(TAG, "111  token=" + SpUtils.getSignToken() + "  targetId=" + targetId);
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("targetId", requestBody(targetId));
@@ -187,6 +188,17 @@ public class OfficegoApi {
         map.put("targetId", requestBody(targetId));
         OfficegoRetrofitClient.getInstance().create(ChatInterface.class)
                 .getRongUserInfo(map)
+                .enqueue(callback);
+    }
+
+    /**
+     * 获取会话列表
+     */
+    public void getChatList(RetrofitCallback<List<ChatListBean>> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        OfficegoRetrofitClient.getInstance().create(ChatInterface.class)
+                .getChatList(map)
                 .enqueue(callback);
     }
 }

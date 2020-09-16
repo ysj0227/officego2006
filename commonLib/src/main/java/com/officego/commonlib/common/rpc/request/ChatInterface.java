@@ -2,12 +2,14 @@ package com.officego.commonlib.common.rpc.request;
 
 
 import com.officego.commonlib.common.model.ChatHouseBean;
+import com.officego.commonlib.common.model.ChatListBean;
 import com.officego.commonlib.common.model.FirstChatBean;
 import com.officego.commonlib.common.model.IdentitychattedMsgBean;
 import com.officego.commonlib.common.model.RongUserInfoBean;
 import com.officego.commonlib.common.model.ExchangeContactsBean;
 import com.officego.commonlib.retrofit.BaseResponse;
 
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.RequestBody;
@@ -66,5 +68,12 @@ public interface ChatInterface {
     @Multipart
     @POST(path + "user/getUser")
     Call<BaseResponse<RongUserInfoBean>> getRongUserInfo(@PartMap Map<String, RequestBody> params);
+
+    /**
+     * 聊天列表
+     */
+    @Multipart
+    @POST(path + "chat/chatList")
+    Call<BaseResponse<List<ChatListBean>>> getChatList(@PartMap Map<String, RequestBody> params);
 
 }
