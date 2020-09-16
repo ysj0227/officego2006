@@ -114,6 +114,7 @@ public class WebViewActivity extends BaseActivity {
 
     @SuppressLint("SetJavaScriptEnabled")
     private void loadWebView(String url) {
+        showLoadingDialog();
         WebSettings webSetting = webView.getSettings();
         webSetting.setJavaScriptEnabled(true);
         webSetting.setAllowUniversalAccessFromFileURLs(true);
@@ -148,17 +149,19 @@ public class WebViewActivity extends BaseActivity {
 
             @Override
             public void onPageFinished(WebView view, String url) {
+                hideLoadingDialog();
                 super.onPageFinished(view, url);
             }
 
             @Override
             protected void receiverError(WebView view, WebResourceRequest request, WebResourceError error) {
+                hideLoadingDialog();
                 exceptionPageError(view, request);
             }
 
             @Override
             public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
-//                exceptionPageHttpError(view, errorResponse);
+                hideLoadingDialog();
                 super.onReceivedHttpError(view, request, errorResponse);
             }
         });

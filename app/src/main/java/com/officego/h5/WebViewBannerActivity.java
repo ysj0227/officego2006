@@ -114,16 +114,19 @@ public class WebViewBannerActivity extends BaseActivity {
             @Override
             public void onPageFinished(WebView view, String url) {
                 super.onPageFinished(view, url);
+                hideLoadingDialog();
             }
 
             @Override
             protected void receiverError(WebView view, WebResourceRequest request, WebResourceError error) {
+                hideLoadingDialog();
                 exceptionPageError(view, request);
             }
 
             @Override
             public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
 //                exceptionPageHttpError(view, errorResponse);
+                hideLoadingDialog();
                 super.onReceivedHttpError(view, request, errorResponse);
             }
         });
