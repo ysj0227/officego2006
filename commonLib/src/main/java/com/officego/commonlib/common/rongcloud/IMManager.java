@@ -2,8 +2,8 @@ package com.officego.commonlib.common.rongcloud;
 
 import android.content.Context;
 import android.text.TextUtils;
-import android.util.Log;
 
+import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.message.BuildingInfo;
@@ -30,17 +30,11 @@ import com.officego.commonlib.constant.AppConfig;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.retrofit.RetrofitCallback;
-import com.officego.commonlib.utils.log.LogCat;
 
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
-import io.rong.imlib.model.MessageContent;
-import io.rong.message.ImageMessage;
-import io.rong.message.RichContentMessage;
-import io.rong.message.TextMessage;
-import io.rong.message.VoiceMessage;
 import io.rong.push.RongPushClient;
 import io.rong.push.common.PushCacheHelper;
 import io.rong.push.pushconfig.PushConfig;
@@ -88,7 +82,7 @@ public class IMManager {
         //初始化自定义消息
         initMessageType();
         // 初始化连接状态变化监听
-        initConnectStateChangeListener();
+        initConnectStateChangeListener(context);
         // 初始化消息监听
         initSendReceiveMessageListener();
         //初始化接收消息监听
@@ -165,12 +159,12 @@ public class IMManager {
              */
             @Override
             public void onTokenIncorrect() {
-                //LogCat.e(TAG, "connect onTokenIncorrect");
+                //融云token错误,从服务端重新获取
+                rongCloudTokenError();
             }
 
             @Override
             public void onSuccess(String s) {
-                //LogCat.e(TAG, "connect onSuccess");
                 Constants.isRCIMConnectSuccess = true;
                 callback.onSuccess(s);
             }
@@ -293,7 +287,7 @@ public class IMManager {
     /**
      * 初始化连接状态监听
      */
-    private void initConnectStateChangeListener() {
+    private void initConnectStateChangeListener(Context context) {
         RongIM.setConnectionStatusListener(new RongIMClient.ConnectionStatusListener() {
             @Override
             public void onChanged(ConnectionStatus connectionStatus) {
@@ -302,8 +296,9 @@ public class IMManager {
                     //被其他提出时，需要返回登录界面 剔除其他登录
                     BaseNotification.newInstance().postNotificationName(CommonNotifications.rongCloudkickDialog, "rongCloudkickDialog");
                 } else if (connectionStatus == ConnectionStatus.TOKEN_INCORRECT) {
-                    //融云token错误,从服务端重新获取
-                    rongCloudTokenError();
+                    //token错误退出登录
+                    SpUtils.clearLoginInfo();
+                    GotoActivityUtils.loginClearActivity(context);
                 }
             }
         });
@@ -316,9 +311,9 @@ public class IMManager {
         com.officego.commonlib.common.rpc.OfficegoApi.getInstance().getRongCloudToken(new RetrofitCallback<Object>() {
             @Override
             public void onSuccess(int code, String msg, Object data) {
-                if (data != null)
+                if (data != null) {
                     SpUtils.saveRongToken(data.toString());
-                new ConnectRongCloudUtils();
+                }
             }
 
             @Override
