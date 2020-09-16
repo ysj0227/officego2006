@@ -614,7 +614,11 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
     @Override
     protected void onPause() {
         super.onPause();
-        pauseVideo();
+        //pauseVideo();
+        //释放-防止预加载退出后台时继续播放
+        if (iVideoPlayer != null){
+            iVideoPlayer.release();
+        }
     }
 
     //视频暂停
