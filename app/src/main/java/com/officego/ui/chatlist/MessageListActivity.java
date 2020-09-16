@@ -1,5 +1,7 @@
 package com.officego.ui.chatlist;
 
+import android.annotation.SuppressLint;
+
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.officego.R;
@@ -13,6 +15,7 @@ import org.androidannotations.annotations.ViewById;
  * Created by shijie
  * Date 2020/9/16
  **/
+@SuppressLint("Registered")
 @EActivity(R.layout.activity_message_list)
 public class MessageListActivity extends BaseActivity {
     @ViewById(R.id.rv_message_list)

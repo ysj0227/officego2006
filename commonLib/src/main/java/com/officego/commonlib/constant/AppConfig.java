@@ -33,6 +33,9 @@ public class AppConfig extends BaseConfig {
     //OPPO推送
     public static final String OPPO_APP_KEY = "114e9b66ee5d4bc394d5267f30c00034";
     public static final String OPPO_APP_SECRET = "acb2bbe32bf04af38c961229fb4b4b13";
+    //Vivo推送
+    public static final String VIVO_APP_ID = "103930536";
+    public static final String VIVO_APP_KEY = "6ae46b0df31681793fc065eb57ba9c03";
     //神策数据
     public static String SA_SERVER_URL = "";
 

@@ -175,12 +175,10 @@ public class ConversationViewingDateActivity extends BaseMvpActivity<Conversatio
             } else {
                 tvRouteMap.setVisibility(View.GONE);
             }
-            if (data.getBuilding().getMinSinglePrice() != null) {
-                if (data.getBuilding().getBtype() == Constants.TYPE_BUILDING) {
-                    tvPrice.setText("¥" + data.getBuilding().getMinSinglePrice() + "/㎡/天");
-                } else {
-                    tvPrice.setText("¥" + data.getBuilding().getMinSinglePrice() + "/位/月");
-                }
+            if (data.getBuilding().getBtype() == Constants.TYPE_BUILDING) {
+                tvPrice.setText("¥" + (data.getBuilding().getMinSinglePrice() == null ? "0.0" : data.getBuilding().getMinSinglePrice()) + "/㎡/天");
+            } else {
+                tvPrice.setText("¥" + (data.getBuilding().getMinSinglePrice() == null ? "0.0" : data.getBuilding().getMinSinglePrice()) + "/位/月");
             }
         }
     }

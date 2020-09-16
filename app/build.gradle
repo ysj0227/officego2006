@@ -124,4 +124,5 @@ dependencies {
 
     api "org.androidannotations:androidannotations-api:${AAVersion}"
     annotationProcessor "org.androidannotations:androidannotations:${AAVersion}"
+    implementation files("libs/vivo_pushsdk-v2.9.0.0.aar")
 }
