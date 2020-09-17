@@ -73,7 +73,7 @@ public class IMManager {
 
     public void init(Context context) {
         //push
-        initRongPush();
+        initRongPush(context);
         // 调用 RongIM 初始化
         initRongIM(context);
         //接收新用户信息，并设置用户信息提供者
@@ -99,7 +99,7 @@ public class IMManager {
     }
 
     //融云推送
-    private void initRongPush() {
+    private void initRongPush(Context context) {
         PushConfig config = new PushConfig.Builder()
                 .enableMiPush(AppConfig.MI_APP_ID, AppConfig.MI_APP_KEY)
                 .enableHWPush(true)

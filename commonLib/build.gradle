@@ -121,8 +121,8 @@ dependencies {
     //华为push 2.0
     api 'com.huawei.android.hms:base:2.6.1.301'
     api 'com.huawei.android.hms:push:2.6.1.301'
-    //华为push 4.0
-//    api 'com.huawei.hms:push:4.0.2.300'
+    //vivo push
+    api files("libs/vivo_pushsdk-v2.9.0.0.aar")
     // 神策Sensors Analytics SDK 依赖
     api 'com.sensorsdata.analytics.android:SensorsAnalyticsSDK:4.2.4'
     //zxing

@@ -32,6 +32,7 @@ import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.ToastUtils;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.ui.message.contract.ConversationContract;
 import com.officego.ui.message.presenter.ConversationPresenter;
 
@@ -123,14 +124,15 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
                 ctlChat.setVisibility(View.GONE);
                 mPresenter.identityChattedMsg(targetId);
                 initIM();
-            } else if (TextUtils.equals(Constants.TYPE_SYSTEM, targetId) ||
-                    (targetId.length() > 1 && TextUtils.equals(Constants.TYPE_SYSTEM, targetId.substring(targetId.length() - 1)))) {
+            } else if (!TextUtils.isEmpty(targetId) && (TextUtils.equals(Constants.TYPE_SYSTEM, targetId) ||
+                    (targetId.length() > 1 && TextUtils.equals(Constants.TYPE_SYSTEM, targetId.substring(targetId.length() - 1))))) {
                 //系统消息聊天列表进入
                 ctlChat.setVisibility(View.GONE);
                 tvTitleName.setText("系统消息");
                 tvTitleName.setPadding(0, 28, 0, 0);
                 initIM();
             } else {
+                LogCat.e(TAG,"1111111 chat");
                 //是否可以交换微信电话
                 mPresenter.exchangeContactsVerification(targetId);
                 //租户-房东聊天
@@ -138,7 +140,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
                 ctlChat.setVisibility(View.VISIBLE);
                 initIM();
                 RongIM.getInstance().setSendMessageListener(this);
-                mPresenter.firstChatApp(targetId,buildingId, houseId, getHouseChatId);
+                mPresenter.firstChatApp(targetId, buildingId, houseId, getHouseChatId);
             }
         }
     }
