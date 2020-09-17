@@ -22,7 +22,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_20"
-        android:text="创业服务"
+        android:text="企业服务"
         android:textColor="@color/text_66"
         android:textSize="@dimen/sp_12"
         app:layout_constraintStart_toStartOf="parent"
