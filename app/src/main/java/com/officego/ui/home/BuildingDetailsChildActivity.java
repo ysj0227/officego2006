@@ -784,6 +784,7 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         tvFailTip.setText(TextUtils.isEmpty(videoUrl) ?
                 getString(R.string.tip_video_play_exception) :
                 getString(R.string.toast_network_error));
+        radioGroupIsShow(false);
     }
 
     private void isShowBottomView() {
