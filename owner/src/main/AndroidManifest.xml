@@ -28,6 +28,9 @@
         <activity
             android:name=".message.MessageFragment_"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".message.MessageFragment2_"
+            android:screenOrientation="portrait" />
 
         <activity
             android:name=".mine.MineFragment_"

@@ -119,6 +119,9 @@
             android:name=".ui.message.MessageFragment_"
             android:screenOrientation="portrait" />
         <activity
+            android:name=".ui.chatlist.Message2Fragment_"
+            android:screenOrientation="portrait" />
+        <activity
             android:name=".ui.mine.MineFragment_"
             android:screenOrientation="portrait" />
         <activity
@@ -230,10 +233,6 @@
         <activity
             android:name=".MainOwnerActivity_"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".ui.chatlist.MessageListActivity_"
-            android:screenOrientation="portrait" />
-
         <!--    图片选择Activity
                 去掉Activity的ActionBar。
                 使用者可以根据自己的项目去配置，不一定要这样写，只要让Activity的ActionBar去掉就可以了。

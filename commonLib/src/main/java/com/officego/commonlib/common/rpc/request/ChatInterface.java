@@ -73,7 +73,7 @@ public interface ChatInterface {
      * 聊天列表
      */
     @Multipart
-    @POST(path + "chat/chatList")
-    Call<BaseResponse<List<ChatListBean>>> getChatList(@PartMap Map<String, RequestBody> params);
+    @POST(path + "chat/chatListApp")
+    Call<BaseResponse<ChatListBean>> getChatList(@PartMap Map<String, RequestBody> params);
 
 }

@@ -37,7 +37,6 @@ import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.IVideoPlayer;
 import com.officego.commonlib.view.LabelsView;
 import com.officego.commonlib.view.RoundImageView;
@@ -1187,8 +1186,6 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         LinearLayoutManager lmHorizontal2 = new LinearLayoutManager(this);
         lmHorizontal2.setOrientation(LinearLayoutManager.HORIZONTAL);
         rvBaseService.setLayoutManager(lmHorizontal2);
-        LogCat.e(TAG, "111111111  size=" + data.getBuilding().getCorporateServices().size());
-        LogCat.e(TAG, "111111112  size=" + data.getBuilding().getBasicServices().size());
         if (data.getBuilding() == null) {
             ctlShareService.setVisibility(View.GONE);
         } else {

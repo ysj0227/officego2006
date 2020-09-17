@@ -1,10 +1,7 @@
-package com.officego.ui.chatlist.contract;
+package com.officego.commonlib.common.contract;
 
 import com.officego.commonlib.base.BaseView;
 import com.officego.commonlib.common.model.ChatListBean;
-import com.officego.ui.find.model.DirectoryBean;
-import com.officego.ui.home.model.QueryHistoryKeywordsBean;
-import com.officego.ui.home.model.SearchListBean;
 
 import java.util.List;
 
@@ -17,11 +14,15 @@ public interface ChatListContract {
 
     interface View extends BaseView {
 
-        void chatListSuccess(List<ChatListBean> data);
+        void chatListSuccess(List<ChatListBean.ListBean> data);
+
+        void unreadCountSuccess(Integer unReadCount);
 
     }
 
     interface Presenter {
         void getChatList();
+
+        void getUnReadCount(String targetId);
     }
 }

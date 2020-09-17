@@ -194,7 +194,7 @@ public class OfficegoApi {
     /**
      * 获取会话列表
      */
-    public void getChatList(RetrofitCallback<List<ChatListBean>> callback) {
+    public void getChatList(RetrofitCallback<ChatListBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         OfficegoRetrofitClient.getInstance().create(ChatInterface.class)

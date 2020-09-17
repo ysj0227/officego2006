@@ -35,6 +35,7 @@ public class CommonNotifications {
     public static final int loginIn = totalEvents++;
     public static final int loginOut = totalEvents++;
 
-    //房东个人中心
-    public static final int ownerMainTab = totalEvents++;
+    //刷新会话列表
+    public static final int refreshConversationList = totalEvents++;
+
 }

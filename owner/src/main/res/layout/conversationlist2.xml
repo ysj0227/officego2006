@@ -86,11 +86,9 @@
         </RelativeLayout>
     </RelativeLayout>
 
-    <fragment
-        android:id="@+id/conversationlist"
-        android:name="io.rong.imkit.fragment.ConversationListFragment"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_message_list"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        tools:ignore="FragmentTagUsage" />
+        android:layout_height="match_parent" />
 
 </LinearLayout>

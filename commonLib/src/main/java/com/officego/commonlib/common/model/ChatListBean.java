@@ -11,95 +11,112 @@ import java.util.List;
 public class ChatListBean {
 
     /**
-     * buildingName : 快易名商-虹桥万通中心
-     * chattedId : 4641
-     * Isblock : false
-     * nickname : Leo Zhong
-     * IsDepartureStatus : false
-     * typeId : 1
-     * sort : 0
-     * avatar : https://img.officego.com/head.png?x-oss-process=style/small
+     * list : [{"buildingName":"APP金星大厦物业管理公司","chattedId":"2501","Isblock":false,"nickname":"李芳","IsDepartureStatus":false,"typeId":1,"sort":0,"avatar":"https://img.officego.com/user/1592975329881.png?x-oss-process=style/small"},{"buildingName":"officego测试网点","chattedId":"4761","Isblock":false,"nickname":"1","IsDepartureStatus":false,"typeId":0,"sort":0,"avatar":"https://img.officego.com/head.png"}]
+     * states :
      */
 
-    @SerializedName("buildingName")
-    private String buildingName;
-    @SerializedName("chattedId")
-    private String chattedId;
-    @SerializedName("Isblock")
-    private boolean Isblock;
-    @SerializedName("nickname")
-    private String nickname;
-    @SerializedName("IsDepartureStatus")
-    private boolean IsDepartureStatus;
-    @SerializedName("typeId")
-    private int typeId;
-    @SerializedName("sort")
-    private int sort;
-    @SerializedName("avatar")
-    private String avatar;
+    @SerializedName("states")
+    private String states;
+    @SerializedName("list")
+    private List<ListBean> list;
 
-    public String getBuildingName() {
-        return buildingName;
+    public String getStates() {
+        return states;
     }
 
-    public void setBuildingName(String buildingName) {
-        this.buildingName = buildingName;
+    public void setStates(String states) {
+        this.states = states;
     }
 
-    public String getChattedId() {
-        return chattedId;
+    public List<ListBean> getList() {
+        return list;
     }
 
-    public void setChattedId(String chattedId) {
-        this.chattedId = chattedId;
+    public void setList(List<ListBean> list) {
+        this.list = list;
     }
 
-    public boolean isIsblock() {
-        return Isblock;
-    }
+    public static class ListBean {
+        /**
+         * buildingName : APP金星大厦物业管理公司
+         * chattedId : 2501
+         * Isblock : false
+         * nickname : 李芳
+         * IsDepartureStatus : false
+         * typeId : 1
+         * sort : 0
+         * avatar : https://img.officego.com/user/1592975329881.png?x-oss-process=style/small
+         */
 
-    public void setIsblock(boolean Isblock) {
-        this.Isblock = Isblock;
-    }
+        @SerializedName("chattedId")
+        private String chattedId;
+        @SerializedName("Isblock")
+        private boolean Isblock;
+        @SerializedName("nickname")
+        private String nickname;
+        @SerializedName("IsDepartureStatus")
+        private boolean IsDepartureStatus;
+        @SerializedName("typeId")
+        private int typeId;
+        @SerializedName("sort")
+        private int sort;
+        @SerializedName("avatar")
+        private String avatar;
 
-    public String getNickname() {
-        return nickname;
-    }
+        public String getChattedId() {
+            return chattedId;
+        }
 
-    public void setNickname(String nickname) {
-        this.nickname = nickname;
-    }
+        public void setChattedId(String chattedId) {
+            this.chattedId = chattedId;
+        }
 
-    public boolean isIsDepartureStatus() {
-        return IsDepartureStatus;
-    }
+        public boolean isIsblock() {
+            return Isblock;
+        }
 
-    public void setIsDepartureStatus(boolean IsDepartureStatus) {
-        this.IsDepartureStatus = IsDepartureStatus;
-    }
+        public void setIsblock(boolean Isblock) {
+            this.Isblock = Isblock;
+        }
 
-    public int getTypeId() {
-        return typeId;
-    }
+        public String getNickname() {
+            return nickname;
+        }
 
-    public void setTypeId(int typeId) {
-        this.typeId = typeId;
-    }
+        public void setNickname(String nickname) {
+            this.nickname = nickname;
+        }
 
-    public int getSort() {
-        return sort;
-    }
+        public boolean isIsDepartureStatus() {
+            return IsDepartureStatus;
+        }
 
-    public void setSort(int sort) {
-        this.sort = sort;
-    }
+        public void setIsDepartureStatus(boolean IsDepartureStatus) {
+            this.IsDepartureStatus = IsDepartureStatus;
+        }
 
-    public String getAvatar() {
-        return avatar;
-    }
+        public int getTypeId() {
+            return typeId;
+        }
 
-    public void setAvatar(String avatar) {
-        this.avatar = avatar;
-    }
+        public void setTypeId(int typeId) {
+            this.typeId = typeId;
+        }
 
+        public int getSort() {
+            return sort;
+        }
+
+        public void setSort(int sort) {
+            this.sort = sort;
+        }
+
+        public String getAvatar() {
+            return avatar;
+        }
+
+        public void setAvatar(String avatar) {
+            this.avatar = avatar;
+        }
+    }
 }

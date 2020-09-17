@@ -408,7 +408,9 @@ public class IMManager {
     //接收新用户信息，并设置用户信息提供者
     private void receiveUserInfoProvider() {
         RongIM.setUserInfoProvider(userId -> {
+            LogCat.e(TAG, "111111  receiveUserInfoProvider");
             getRongUserInfo(userId);
+            BaseNotification.newInstance().postNotificationName(CommonNotifications.refreshConversationList, "refreshConversationList");
             return null;
         }, true);
     }

@@ -22,7 +22,6 @@ import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.CircleImage;
 import com.officego.h5.WebViewActivity_;
-import com.officego.ui.chatlist.MessageListActivity_;
 import com.officego.ui.login.LoginActivity_;
 import com.officego.ui.mine.contract.UserContract;
 import com.officego.ui.mine.model.UserBean;
@@ -123,8 +122,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
             mPresenter.getUserInfo();
             return;
         }
-//        MineMessageActivity_.intent(mActivity).mUserInfo(mUserInfo).startForResult(REQUEST_CODE);
-        MessageListActivity_.intent(mActivity).start();
+        MineMessageActivity_.intent(mActivity).mUserInfo(mUserInfo).startForResult(REQUEST_CODE);
     }
 
     @Click(R.id.tv_name)
