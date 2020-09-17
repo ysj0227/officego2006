@@ -403,6 +403,15 @@ public class IMManager {
                 return false;
             }
         });
+
+//        RongIMClient.setOnReceiveMessageListener(new RongIMClient.OnReceiveMessageListener() {
+//                                                     @Override
+//                                                     public boolean onReceived(Message message, int i) {
+//                                                         BaseNotification.newInstance().postNotificationName(CommonNotifications.refreshConversationList, "refreshConversationList");
+//                                                         return false;
+//                                                     }
+//                                                 }
+//        );
     }
 
     //接收新用户信息，并设置用户信息提供者

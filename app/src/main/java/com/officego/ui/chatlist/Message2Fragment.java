@@ -132,7 +132,6 @@ public class Message2Fragment extends BaseMvpFragment<ChatListPresenter>
 
     @Override
     public void chatListSuccess(List<ChatListBean.ListBean> data) {
-//        LogCat.e(TAG, "111111 chatListSuccess  data=" + data.size());
         if (adapter == null) {
             adapter = new ChatListAdapter(mActivity, data);
             rvMessageList.setAdapter(adapter);

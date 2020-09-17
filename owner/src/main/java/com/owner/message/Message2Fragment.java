@@ -55,7 +55,6 @@ public class Message2Fragment extends BaseMvpFragment<ChatListPresenter> impleme
         mPresenter.attachView(this);
         initIm();
         mPresenter.getChatList();
-        mPresenter.getUnReadCount("4320");
     }
 
     //初始化聊天列表
