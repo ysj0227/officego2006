@@ -1,6 +1,8 @@
 package com.officego.ui.chatlist;
 
 import android.annotation.SuppressLint;
+import android.view.View;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,6 +31,8 @@ public class MessageListActivity extends BaseMvpActivity<ChatListPresenter>
         implements ChatListContract.View {
     @ViewById(R.id.rv_message_list)
     RecyclerView rvMessageList;
+    @ViewById(R.id.tv_no_data)
+    TextView tvNoData;
     private ChatListAdapter adapter;
 
     @AfterViews
@@ -39,15 +43,29 @@ public class MessageListActivity extends BaseMvpActivity<ChatListPresenter>
         mPresenter.getChatList();
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         rvMessageList.setLayoutManager(layoutManager);
-
     }
 
     @Override
     public void chatListSuccess(List<ChatListBean.ListBean> data) {
-        if (adapter == null) {
-            adapter = new ChatListAdapter(context, data);
-            rvMessageList.setAdapter(adapter);
+        if (data != null && data.size() > 0) {
+            hasData();
+            if (adapter == null) {
+                adapter = new ChatListAdapter(context, data);
+                rvMessageList.setAdapter(adapter);
+            }
+            adapter.notifyDataSetChanged();
+        } else {
+            noData();
         }
-        adapter.notifyDataSetChanged();
+    }
+
+    private void noData() {
+        tvNoData.setVisibility(View.VISIBLE);
+        rvMessageList.setVisibility(View.GONE);
+    }
+
+    private void hasData() {
+        tvNoData.setVisibility(View.GONE);
+        rvMessageList.setVisibility(View.VISIBLE);
     }
 }

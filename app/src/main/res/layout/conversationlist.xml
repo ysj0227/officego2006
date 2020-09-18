@@ -39,7 +39,7 @@
                 android:paddingRight="@dimen/dp_10"
                 android:text="@string/str_history_contacts"
                 android:textColor="@color/white"
-                android:textSize="@dimen/sp_16" />
+                android:textSize="@dimen/sp_14" />
 
             <RelativeLayout
                 android:id="@+id/rl_input_text"

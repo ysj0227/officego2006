@@ -33,7 +33,8 @@ public class ProtocolDialog {
     }
 
     private AgreeProtocolListener listener;
-    public interface  AgreeProtocolListener{
+
+    public interface AgreeProtocolListener {
         void sureProtocol();
     }
 
@@ -61,8 +62,8 @@ public class ProtocolDialog {
         spannableBuilder.setSpan(colorSpan, str.indexOf("《"), str.lastIndexOf("》") + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
         // 单独设置点击事件
         tvContent.setMovementMethod(LinkMovementMethod.getInstance());
-        spannableBuilder.setSpan(new TextClickableSpan(context, 0), str.indexOf("《"), str.indexOf("《") + 7, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
-//        spannableBuilder.setSpan(new TextClickableSpan(context, 1), str.lastIndexOf("《"), str.lastIndexOf("》") + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableBuilder.setSpan(new TextClickableSpan(context, 0), str.indexOf("《"), str.indexOf("《") + 5, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
+        spannableBuilder.setSpan(new TextClickableSpan(context, 1), str.lastIndexOf("《"), str.lastIndexOf("》") + 1, Spanned.SPAN_EXCLUSIVE_EXCLUSIVE);
 
         tvContent.setText(spannableBuilder);
         tvContent.setHighlightColor(Color.parseColor("#00000000"));
@@ -84,10 +85,10 @@ public class ProtocolDialog {
     /**
      * 半角转换为全角
      *
-     * @param input
-     * @return
+     * @param input input
+     * @return input
      */
-    public static String ToDBC(String input) {
+    private static String ToDBC(String input) {
         char[] c = input.toCharArray();
         for (int i = 0; i < c.length; i++) {
             if (c[i] == 12288) {// 全角空格为12288，半角空格为32
@@ -112,7 +113,7 @@ public class ProtocolDialog {
 
         @Override
         public void onClick(@NonNull View widget) {
-            WebViewActivity_.intent(context).flags(Constants.H5_PROTOCOL).start();
+            WebViewActivity_.intent(context).flags(type == 0 ? Constants.H5_PROTOCOL_SERVICE : Constants.H5_PROTOCOL).start();
         }
 
         @Override

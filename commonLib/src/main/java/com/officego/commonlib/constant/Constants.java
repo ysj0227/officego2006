@@ -43,13 +43,18 @@ public class Constants {
     //h5 flags
     public final static int H5_HELP = 0;
     public final static int H5_PROTOCOL = 1;
+    public final static int H5_PROTOCOL_SERVICE = 3;
     public final static int H5_ABOUTS = 2;
     public final static int H5_ROLE = 4;
 
     //客服
     public static final String SERVICE_HOT_MOBILE = "17321221162";
     public static final String SERVICE_TECHNICAL_SUPPORT = "13052007068";
-    public static final String SERVICE_EMAIL = "Clientservice@officego.com";
+    //    租户端邮箱:service@officego.com
+//    业主端邮箱:business@officego.com
+    public static final String SERVICE_EMAIL_TENANT = "service@officego.com";
+    public static final String SERVICE_EMAIL_OWNER = "business@officego.com";
+
 
     //楼盘，网点类型
     public final static int TYPE_BUILDING = 1;

@@ -164,6 +164,11 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         WebViewActivity_.intent(mActivity).flags(Constants.H5_HELP).start();
     }
 
+    @Click(resName = "rl_protocol_service")
+    void protocolServiceClick() {
+        WebViewActivity_.intent(mActivity).flags(Constants.H5_PROTOCOL_SERVICE).start();
+    }
+
     @Click(resName = "rl_service")
     void serviceClick() {
         GotoActivityUtils.serviceActivity(mActivity);

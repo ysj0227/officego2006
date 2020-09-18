@@ -3,9 +3,11 @@ package com.officego.ui.mine;
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.text.TextUtils;
 
 import com.officego.R;
 import com.officego.commonlib.base.BaseActivity;
+import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
@@ -33,7 +35,8 @@ public class ServiceActivity extends BaseActivity {
         // i.setType("text/plain"); //模拟器请使用这行
         i.setType("message/rfc822"); //真机上使用这行
         i.putExtra(Intent.EXTRA_EMAIL,
-                new String[]{Constants.SERVICE_EMAIL});
+                new String[]{TextUtils.equals(Constants.TYPE_OWNER, SpUtils.getRole()) ?
+                        Constants.SERVICE_EMAIL_OWNER : Constants.SERVICE_EMAIL_TENANT});
         i.putExtra(Intent.EXTRA_SUBJECT, "您的建议");
         i.putExtra(Intent.EXTRA_TEXT, " ");
         startActivity(Intent.createChooser(i, "选择邮箱"));

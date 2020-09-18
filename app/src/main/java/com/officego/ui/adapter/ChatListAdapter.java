@@ -38,7 +38,7 @@ public class ChatListAdapter extends CommonListAdapter<ChatListBean.ListBean> {
     @Override
     public void convert(ViewHolder holder, final ChatListBean.ListBean bean) {
         RoundImageView rivAvatar = holder.getView(R.id.riv_avatar);
-        Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getAvatar()).into(rivAvatar);
+        Glide.with(context).applyDefaultRequestOptions(GlideUtils.avaOoptions()).load(bean.getAvatar()).into(rivAvatar);
         holder.setText(R.id.tv_name, bean.getNickname());
         TextView tvMessage = holder.getView(R.id.tv_message);
         if (bean.getBuildingName() == null) {

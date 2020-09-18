@@ -202,13 +202,23 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         finish();
     }
 
+    //登录
     @Click(R.id.tv_protocol)
     void protocolClick() {
         if (isFastClick(1200)) {
             return;
         }
+        WebViewActivity_.intent(context).flags(Constants.H5_PROTOCOL_SERVICE).start();
+    }
+
+    @Click(R.id.tv_privacy)
+    void protocolPrivacyClick() {
+        if (isFastClick(1200)) {
+            return;
+        }
         WebViewActivity_.intent(context).flags(Constants.H5_PROTOCOL).start();
     }
+
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,

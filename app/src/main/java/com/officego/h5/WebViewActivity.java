@@ -64,6 +64,9 @@ public class WebViewActivity extends BaseActivity {
         if (flags == Constants.H5_HELP) {
             titleBar.getAppTitle().setText(getString(R.string.str_title_help));
             loadWebView(AppConfig.H5_HELP_FEEDBACK + chanel());
+        } else if (flags == Constants.H5_PROTOCOL_SERVICE) {
+            titleBar.getAppTitle().setText(getString(com.owner.R.string.str_protocol_service));
+            loadWebView(AppConfig.H5_REGISTER + chanel());
         } else if (flags == Constants.H5_PROTOCOL) {
             titleBar.getAppTitle().setText(getString(R.string.str_title_protocol));
             loadWebView(AppConfig.H5_PRIVACY + chanel());
@@ -197,6 +200,8 @@ public class WebViewActivity extends BaseActivity {
             view.clearHistory();
             if (flags == Constants.H5_HELP) {
                 webView.loadUrl(AppConfig.H5_HELP_FEEDBACK + chanel());
+            } else if (flags == Constants.H5_PROTOCOL_SERVICE) {
+                webView.loadUrl(AppConfig.H5_REGISTER + chanel());
             } else if (flags == Constants.H5_PROTOCOL) {
                 webView.loadUrl(AppConfig.H5_PRIVACY + chanel());
             } else if (flags == Constants.H5_ABOUTS) {
