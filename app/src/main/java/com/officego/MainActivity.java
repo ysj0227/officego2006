@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
-import android.net.Uri;
 import android.text.TextUtils;
 import android.view.KeyEvent;
 import android.widget.RadioButton;
@@ -20,19 +19,13 @@ import com.officego.application.SchemeOpenApp;
 import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
-import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.common.rongcloud.ConnectRongCloudUtils;
 import com.officego.commonlib.common.rongcloud.kickDialog;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.DesktopCornerUtil;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.ui.chatlist.Message2Fragment_;
 import com.officego.ui.collect.CollectFragment_;
-import com.officego.ui.home.BuildingDetailsActivity_;
-import com.officego.ui.home.BuildingDetailsChildActivity_;
-import com.officego.ui.home.BuildingDetailsJointWorkActivity_;
-import com.officego.ui.home.BuildingDetailsJointWorkChildActivity_;
 import com.officego.ui.home.HomeFragment_;
 import com.officego.ui.message.MessageFragment_;
 import com.officego.ui.mine.MineFragment_;
@@ -73,8 +66,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     BGABadgeTextView unreadMessage;
 
     private HomeFragment_ fg1;
-//    private MessageFragment_ fg2;
-    private Message2Fragment_ fg2;
+    private MessageFragment_ fg2;
     private CollectFragment_ fg3;
     private MineFragment_ fg4;
     private FragmentManager fManager;
@@ -124,15 +116,12 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                 break;
             case R.id.tab_message:
                 TABLE_BAR_POSITION = 1;
-//                if (fg2 == null) {
-//                    fg2 = new MessageFragment_();
-//                    fTransaction.add(R.id.ly_content, fg2, "Fragment2");
-//                } else {
-//                    fTransaction.show(fg2);
-//                }
-
-                fg2 = new Message2Fragment_();
-                fTransaction.add(R.id.ly_content, fg2, "Fragment2");
+                if (fg2 == null) {
+                    fg2 = new MessageFragment_();
+                    fTransaction.add(R.id.ly_content, fg2, "Fragment2");
+                } else {
+                    fTransaction.show(fg2);
+                }
                 break;
             case R.id.tab_collect:
                 TABLE_BAR_POSITION = 2;

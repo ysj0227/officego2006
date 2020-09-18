@@ -30,7 +30,6 @@ import com.officego.commonlib.constant.AppConfig;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.retrofit.RetrofitCallback;
-import com.officego.commonlib.utils.log.LogCat;
 
 import io.rong.imkit.RongIM;
 import io.rong.imlib.RongIMClient;
@@ -73,7 +72,7 @@ public class IMManager {
 
     public void init(Context context) {
         //push
-        initRongPush(context);
+        initRongPush();
         // 调用 RongIM 初始化
         initRongIM(context);
         //接收新用户信息，并设置用户信息提供者
@@ -88,22 +87,16 @@ public class IMManager {
         initSendReceiveMessageListener();
         //初始化接收消息监听
         initReceiveMessageWrapperListener();
-//        // 初始化会话界面相关内容
-//        initConversation();
-//        // 初始化会话列表界面相关内容
-//        initConversationList();
-//        // 初始化消息监听
-//        initOnReceiveMessage(context);
-//        // 缓存连接
+        // 缓存连接
 //        cacheConnectIM();
     }
 
     //融云推送
-    private void initRongPush(Context context) {
+    private void initRongPush() {
         PushConfig config = new PushConfig.Builder()
                 .enableMiPush(AppConfig.MI_APP_ID, AppConfig.MI_APP_KEY)
                 .enableHWPush(true)
-                .enableVivoPush(true)
+//                .enableVivoPush(true)
                 .build();
         RongPushClient.setPushConfig(config);
     }
@@ -172,7 +165,6 @@ public class IMManager {
 
             @Override
             public void onError(RongIMClient.ErrorCode errorCode) {
-                LogCat.d(TAG, "connect onError - code:" + errorCode.getValue() + ", msg:" + errorCode.getMessage());
                 Constants.isRCIMConnectSuccess = false;
                 if (errorCode == RongIMClient.ErrorCode.RC_MSG_RESP_TIMEOUT ||
                         errorCode == RongIMClient.ErrorCode.RC_SOCKET_NOT_CREATED ||
@@ -191,86 +183,6 @@ public class IMManager {
             }
         });
     }
-
-//    /**
-//     * 初始化会话相关
-//     */
-//    private void initConversation() {
-//        // 启用会话界面新消息提示
-//        RongIM.getInstance().enableNewComingMessageIcon(true);
-//        // 启用会话界面未读信息提示
-//        RongIM.getInstance().enableUnreadMessageIcon(true);
-//        // 添加会话界面点击事件
-//
-//        RongIM.setConversationClickListener(new RongIM.ConversationClickListener() {
-//            @Override
-//            public boolean onUserPortraitClick(Context context, Conversation.ConversationType conversationType, UserInfo userInfo, String s) {
-//                if (conversationType != Conversation.ConversationType.CUSTOMER_SERVICE) {
-//                    Intent intent = new Intent(context, UserDetailActivity.class);
-//                    intent.putExtra(IntentExtra.STR_TARGET_ID, userInfo.getUserId());
-//                    if (conversationType == Conversation.ConversationType.GROUP) {
-//                        Group groupInfo = RongUserInfoManager.getInstance().getGroupInfo(s);
-//                        if (groupInfo != null) {
-//                            intent.putExtra(IntentExtra.GROUP_ID, groupInfo.getId());
-//                            intent.putExtra(IntentExtra.STR_GROUP_NAME, groupInfo.getName());
-//                        }
-//                    }
-//                    context.startActivity(intent);
-//                }
-//                return true;
-//            }
-//
-//            @Override
-//            public boolean onUserPortraitLongClick(Context context, Conversation.ConversationType conversationType, UserInfo userInfo, String s) {
-//                if (conversationType == Conversation.ConversationType.GROUP) {
-//                    // 当在群组时长按用户在输入框中加入 @ 信息
-//                    ThreadManager.getInstance().runOnWorkThread(() -> {
-//                        // 获取该群成员的用户名并显示在 @ 中的信息
-//                        UserInfo groupMemberInfo = imInfoProvider.getGroupMemberUserInfo(s, userInfo.getUserId());
-//                        if (groupMemberInfo != null) {
-//                            groupMemberInfo.setName("@" + groupMemberInfo.getName());
-//                            ThreadManager.getInstance().runOnUIThread(new Runnable() {
-//                                @Override
-//                                public void run() {
-//                                    RongMentionManager.getInstance().mentionMember(groupMemberInfo);
-//                                    // 填充完用户@信息后弹出软键盘
-//                                    if (context instanceof ConversationActivity) {
-//                                        ((ConversationActivity) context).showSoftInput();
-//                                    }
-//                                }
-//                            });
-//                        }
-//                    });
-//                    return true;
-//                }
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onMessageClick(Context context, View view, Message message) {
-//                if (message.getContent() instanceof ImageMessage) {
-//                    Intent intent = new Intent(view.getContext(), SealPicturePagerActivity.class);
-//                    intent.setPackage(view.getContext().getPackageName());
-//                    intent.putExtra("message", message);
-//                    view.getContext().startActivity(intent);
-//                    return true;
-//                }
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onMessageLinkClick(Context context, String s, Message message) {
-//                return false;
-//            }
-//
-//            @Override
-//            public boolean onMessageLongClick(Context context, View view, Message message) {
-//                return false;
-//            }
-//        });
-//    }
-//
-//
 
     /**
      * 初始化已读回执类型
@@ -292,7 +204,6 @@ public class IMManager {
         RongIM.setConnectionStatusListener(new RongIMClient.ConnectionStatusListener() {
             @Override
             public void onChanged(ConnectionStatus connectionStatus) {
-                LogCat.d(TAG, "ConnectionStatus onChanged = " + connectionStatus.getMessage() + " rcToken=" + SpUtils.getRongToken());
                 if (connectionStatus.equals(ConnectionStatus.KICKED_OFFLINE_BY_OTHER_CLIENT)) {
                     //被其他提出时，需要返回登录界面 剔除其他登录
                     BaseNotification.newInstance().postNotificationName(CommonNotifications.rongCloudkickDialog, "rongCloudkickDialog");
@@ -346,33 +257,6 @@ public class IMManager {
              */
             @Override
             public boolean onSent(Message message, RongIM.SentMessageErrorCode sentMessageErrorCode) {
-//                if (message.getSentStatus() == Message.SentStatus.FAILED) {
-//                    if (sentMessageErrorCode == RongIM.SentMessageErrorCode.NOT_IN_CHATROOM) {
-//                        //不在聊天室
-//                    } else if (sentMessageErrorCode == RongIM.SentMessageErrorCode.NOT_IN_DISCUSSION) {
-//                        //不在讨论组
-//                    } else if (sentMessageErrorCode == RongIM.SentMessageErrorCode.NOT_IN_GROUP) {
-//                        //不在群组
-//                    } else if (sentMessageErrorCode == RongIM.SentMessageErrorCode.REJECTED_BY_BLACKLIST) {
-//                        //你在他的黑名单中
-//                    }
-//                }
-//                MessageContent messageContent = message.getContent();
-//                if (messageContent instanceof TextMessage) {//文本消息
-//                    TextMessage textMessage = (TextMessage) messageContent;
-//                    Log.d(TAG, "onSent-TextMessage:" + textMessage.getContent());
-//                } else if (messageContent instanceof ImageMessage) {//图片消息
-//                    ImageMessage imageMessage = (ImageMessage) messageContent;
-//                    Log.d(TAG, "onSent-ImageMessage:" + imageMessage.getRemoteUri());
-//                } else if (messageContent instanceof VoiceMessage) {//语音消息
-//                    VoiceMessage voiceMessage = (VoiceMessage) messageContent;
-//                    Log.d(TAG, "onSent-voiceMessage:" + voiceMessage.getUri().toString());
-//                } else if (messageContent instanceof RichContentMessage) {//图文消息
-//                    RichContentMessage richContentMessage = (RichContentMessage) messageContent;
-//                    Log.d(TAG, "onSent-RichContentMessage:" + richContentMessage.getContent());
-//                } else {
-//                    Log.d(TAG, "onSent-其他消息，自己来判断处理");
-//                }
                 return false;
             }
         });
@@ -403,23 +287,12 @@ public class IMManager {
                 return false;
             }
         });
-
-//        RongIMClient.setOnReceiveMessageListener(new RongIMClient.OnReceiveMessageListener() {
-//                                                     @Override
-//                                                     public boolean onReceived(Message message, int i) {
-//                                                         BaseNotification.newInstance().postNotificationName(CommonNotifications.refreshConversationList, "refreshConversationList");
-//                                                         return false;
-//                                                     }
-//                                                 }
-//        );
     }
 
     //接收新用户信息，并设置用户信息提供者
     private void receiveUserInfoProvider() {
         RongIM.setUserInfoProvider(userId -> {
-            LogCat.e(TAG, "111111  receiveUserInfoProvider");
             getRongUserInfo(userId);
-            BaseNotification.newInstance().postNotificationName(CommonNotifications.refreshConversationList, "refreshConversationList");
             return null;
         }, true);
     }

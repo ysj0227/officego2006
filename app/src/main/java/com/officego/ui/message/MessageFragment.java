@@ -7,6 +7,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentTransaction;
@@ -18,6 +19,8 @@ import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.ui.chatlist.MessageListActivity;
+import com.officego.ui.chatlist.MessageListActivity_;
 import com.officego.ui.login.LoginActivity_;
 
 import org.androidannotations.annotations.AfterViews;
@@ -53,6 +56,8 @@ public class MessageFragment extends BaseFragment {
     ConstraintLayout ctlNoLogin;
     @ViewById(R.id.conversationlist)
     View conversationList;
+    @ViewById(R.id.tv_message_history)
+    TextView tvMessageHistory;
 
     @AfterViews
     void init() {
@@ -76,6 +81,11 @@ public class MessageFragment extends BaseFragment {
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
             loginOut();
         }
+    }
+
+    @Click(R.id.tv_message_history)
+    void historyListClick() {
+        MessageListActivity_.intent(mActivity).start();
     }
 
     @Click(R.id.btn_login)
@@ -128,11 +138,13 @@ public class MessageFragment extends BaseFragment {
     void loginIn() {
         ctlNoLogin.setVisibility(View.GONE);
         conversationList.setVisibility(View.VISIBLE);
+        tvMessageHistory.setVisibility(View.VISIBLE);
     }
 
     @UiThread
     void loginOut() {
         ctlNoLogin.setVisibility(View.VISIBLE);
         conversationList.setVisibility(View.GONE);
+        tvMessageHistory.setVisibility(View.GONE);
     }
 }

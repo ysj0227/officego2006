@@ -34,8 +34,4 @@ public class CommonNotifications {
     //登录登出
     public static final int loginIn = totalEvents++;
     public static final int loginOut = totalEvents++;
-
-    //刷新会话列表
-    public static final int refreshConversationList = totalEvents++;
-
 }

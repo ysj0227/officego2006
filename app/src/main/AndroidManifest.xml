@@ -119,9 +119,6 @@
             android:name=".ui.message.MessageFragment_"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".ui.chatlist.Message2Fragment_"
-            android:screenOrientation="portrait" />
-        <activity
             android:name=".ui.mine.MineFragment_"
             android:screenOrientation="portrait" />
         <activity
@@ -354,6 +351,10 @@
         <!--        vr-->
         <activity
             android:name=".h5.WebViewVRActivity_"
+            android:launchMode="singleTop" />
+        <!--        历史联系人-->
+        <activity
+            android:name=".ui.chatlist.MessageListActivity_"
             android:launchMode="singleTop" />
 
         <provider

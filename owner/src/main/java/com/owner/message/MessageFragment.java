@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.fragment.app.FragmentTransaction;
 
@@ -18,6 +19,7 @@ import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
 import org.androidannotations.annotations.ViewById;
 
@@ -42,6 +44,8 @@ public class MessageFragment extends BaseFragment {
     RelativeLayout rlTitle;
     @ViewById(resName = "conversationlist")
     View conversationList;
+    @ViewById(resName = "tv_message_history")
+    TextView tvMessageHistory;
     private ConversationListFragment fragment;
 
     @AfterViews
@@ -70,6 +74,11 @@ public class MessageFragment extends BaseFragment {
             transaction.add(R.id.conversationlist, fragment);
             transaction.commit();
         }
+    }
+
+    @Click(resName = "tv_message_history")
+    void historyListClick() {
+        GotoActivityUtils.gotoMessageHistoryListActivity(mActivity);
     }
 
     @Override

@@ -112,4 +112,14 @@ public class GotoActivityUtils {
         intent.setAction("android.intent.action.VIEW");
         context.startActivity(intent);
     }
+
+    //历史聊天列表
+    public static void gotoMessageHistoryListActivity(Context context) {
+        ComponentName comp = new ComponentName(context, "com.officego.ui.chatlist.MessageListActivity_");
+        Intent intent = new Intent();
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        intent.setComponent(comp);
+        intent.setAction("android.intent.action.VIEW");
+        context.startActivity(intent);
+    }
 }

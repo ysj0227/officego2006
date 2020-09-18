@@ -27,7 +27,6 @@ import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.DesktopCornerUtil;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.owner.home.HomeFragment_;
-import com.owner.message.Message2Fragment_;
 import com.owner.message.MessageFragment_;
 import com.owner.mine.MineFragment_;
 import com.owner.schedule.ScheduleFragment_;
@@ -67,8 +66,7 @@ public class MainOwnerActivity extends BaseActivity implements RadioGroup.OnChec
     BGABadgeTextView unreadMessage;
 
     private HomeFragment_ fg1;
-//    private MessageFragment_ fg2;
-    private Message2Fragment_ fg2;
+    private MessageFragment_ fg2;
     private ScheduleFragment_ fg3;
     private MineFragment_ fg4;
     private FragmentManager fManager;
@@ -119,15 +117,12 @@ public class MainOwnerActivity extends BaseActivity implements RadioGroup.OnChec
             case R.id.tab_message:
                 TABLE_BAR_POSITION = 1;
                 StatusBarUtils.setStatusBarFullTransparent(this);
-//                if (fg2 == null) {
-//                    fg2 = new MessageFragment_();
-//                    fTransaction.add(R.id.ly_content, fg2, "Fragment2");
-//                } else {
-//                    fTransaction.show(fg2);
-//                }
-
-                fg2 = new Message2Fragment_();
-                fTransaction.add(R.id.ly_content, fg2, "Fragment2");
+                if (fg2 == null) {
+                    fg2 = new MessageFragment_();
+                    fTransaction.add(R.id.ly_content, fg2, "Fragment2");
+                } else {
+                    fTransaction.show(fg2);
+                }
                 break;
             case R.id.tab_collect:
                 TABLE_BAR_POSITION = 2;

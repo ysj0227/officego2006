@@ -62,6 +62,8 @@ public class ChatListBean {
         private int sort;
         @SerializedName("avatar")
         private String avatar;
+        @SerializedName("buildingName")
+        private String buildingName;
 
         public String getChattedId() {
             return chattedId;
@@ -117,6 +119,14 @@ public class ChatListBean {
 
         public void setAvatar(String avatar) {
             this.avatar = avatar;
+        }
+
+        public String getBuildingName() {
+            return buildingName;
+        }
+
+        public void setBuildingName(String buildingName) {
+            this.buildingName = buildingName;
         }
     }
 }

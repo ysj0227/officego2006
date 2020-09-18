@@ -8,11 +8,11 @@
         android:id="@+id/title_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/common_blue_main"
         app:dividerShow="true"
-        app:titleText="消息"
-        app:leftDefaultClickEnable="false"
-        app:titleTextColor="@color/white" />
+        app:leftDefaultClickEnable="true"
+        app:leftIcon="@drawable/ic_back_dark"
+        app:titleText="@string/str_history_contacts"
+        app:titleTextColor="@color/text_33" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_message_list"
