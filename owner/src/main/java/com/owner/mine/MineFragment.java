@@ -15,10 +15,14 @@ import androidx.annotation.NonNull;
 import com.bumptech.glide.Glide;
 import com.officego.commonlib.base.BaseMvpFragment;
 import com.officego.commonlib.common.GotoActivityUtils;
+import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
+import com.officego.commonlib.common.rongcloud.ConnectRongCloudUtils;
 import com.officego.commonlib.common.rongcloud.RongCloudSetUserInfoUtils;
+import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.update.VersionDialog;
 import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
@@ -31,6 +35,7 @@ import com.owner.identity.SelectIdActivity_;
 import com.owner.mine.contract.UserContract;
 import com.owner.mine.model.UserOwnerBean;
 import com.owner.mine.presenter.UserPresenter;
+import com.owner.rpc.OfficegoApi;
 import com.owner.utils.UnIdifyDialog;
 
 import org.androidannotations.annotations.AfterViews;
@@ -182,6 +187,55 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
     @Click(resName = "rl_about")
     void aboutClick() {
         WebViewActivity_.intent(mActivity).flags(Constants.H5_ABOUTS).start();
+    }
+
+    @Click(resName = "rl_switch_id")
+    void switchClick() {
+        if (isFastClick(1000)) {
+            return;
+        }
+        switchDialog();
+    }
+
+    private void switchDialog() {
+        CommonDialog dialog = new CommonDialog.Builder(mActivity)
+                .setTitle(R.string.are_you_sure_switch_tenant)
+                .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
+                    switchId(Constants.TYPE_TENANT);
+                    //神策
+                    SensorsTrack.ownerToTenant();
+                })
+                .setCancelButton(R.string.sm_cancel, (dialog1, which) -> dialog1.dismiss()).create();
+        dialog.showWithOutTouchable(false);
+    }
+
+    //房东端--- 用户身份标：0租户，1户主
+    private void switchId(String role) {
+        showLoadingDialog();
+        OfficegoApi.getInstance().switchId(role, new RetrofitCallback<LoginBean>() {
+            @Override
+            public void onSuccess(int code, String msg, LoginBean data) {
+                hideLoadingDialog();
+                SpUtils.saveLoginInfo(data, SpUtils.getPhoneNum());
+                SpUtils.saveRole(String.valueOf(data.getRid()));
+                new ConnectRongCloudUtils();//连接融云
+                if (TextUtils.equals(Constants.TYPE_TENANT, String.valueOf(data.getRid()))) {
+                    GotoActivityUtils.mainActivity(mActivity); //跳转租户首页
+                } else if (TextUtils.equals(Constants.TYPE_OWNER, String.valueOf(data.getRid()))) {
+                    GotoActivityUtils.mainOwnerActivity(mActivity); //租户切换房东
+                }
+            }
+
+            @Override
+            public void onFail(int code, String msg, LoginBean data) {
+                hideLoadingDialog();
+                if (code == Constants.ERROR_CODE_5009) {
+                    shortTip(msg);
+                    SpUtils.clearLoginInfo();
+                    GotoActivityUtils.loginClearActivity(mActivity, true);
+                }
+            }
+        });
     }
 
     @SuppressLint("SetTextI18n")
