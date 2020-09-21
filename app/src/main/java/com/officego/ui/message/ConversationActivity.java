@@ -32,7 +32,6 @@ import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.ToastUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.ui.message.contract.ConversationContract;
 import com.officego.ui.message.presenter.ConversationPresenter;
 
@@ -132,7 +131,6 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
                 tvTitleName.setPadding(0, 28, 0, 0);
                 initIM();
             } else {
-                LogCat.e(TAG,"1111111 chat");
                 //是否可以交换微信电话
                 mPresenter.exchangeContactsVerification(targetId);
                 //租户-房东聊天
