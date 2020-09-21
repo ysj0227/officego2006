@@ -2,7 +2,7 @@ package com.officego.ui.chatlist;
 
 import android.annotation.SuppressLint;
 import android.view.View;
-import android.widget.TextView;
+import android.widget.RelativeLayout;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -31,8 +31,8 @@ public class MessageListActivity extends BaseMvpActivity<ChatListPresenter>
         implements ChatListContract.View {
     @ViewById(R.id.rv_message_list)
     RecyclerView rvMessageList;
-    @ViewById(R.id.tv_no_data)
-    TextView tvNoData;
+    @ViewById(R.id.rl_no_data)
+    RelativeLayout tvNoData;
     private ChatListAdapter adapter;
 
     @AfterViews

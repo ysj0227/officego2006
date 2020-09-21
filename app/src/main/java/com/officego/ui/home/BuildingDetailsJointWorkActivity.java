@@ -449,7 +449,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         super.onPause();
         //pauseVideo();
         //释放-防止预加载退出后台时继续播放
-        if (iVideoPlayer != null){
+        if (iVideoPlayer != null) {
             iVideoPlayer.release();
         }
     }
@@ -567,7 +567,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
             return;
         }
         //判断是否单房东
-        if (mData != null) {
+        if (mData != null && mData.getBuilding() != null) {
             mPresenter.gotoChat(mData.getBuilding().getBuildingId() + "");
         }
     }
