@@ -29,7 +29,7 @@
             android:layout_marginTop="@dimen/dp_44"
             style="@style/marginLeftRight25"
             android:gravity="center"
-            android:text="打开http://www.officego.com.cn在电脑上发布和管理房源"
+            android:text="打开https://www.officego.com在电脑上发布和管理房源"
             android:textColor="@color/text_33"
             android:textSize="@dimen/sp_16" />
 
