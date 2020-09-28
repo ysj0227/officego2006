@@ -45,14 +45,17 @@ public class WebViewVRActivity extends BaseActivity {
     @ViewById(R.id.btn_again)
     Button btnAgain;
     @Extra
+    String title;
+    @Extra
     String vrUrl;
 
     //    String vrUrl = "https://sky.city8.com/panoramic-images/IMG_339520200828-125117-122787.html";
+    @SuppressLint("SetTextI18n")
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarColor(this);
         setWebChromeClient();
-        titleBar.getAppTitle().setText(R.string.str_text_vr);
+        titleBar.getAppTitle().setText(title+"VR看房_OfficeGo办公租赁平台");
         if (!TextUtils.isEmpty(vrUrl)) {
             loadWebView(vrUrl);
         }

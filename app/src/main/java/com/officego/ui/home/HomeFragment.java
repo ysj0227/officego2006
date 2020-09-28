@@ -213,23 +213,23 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         String mArea = "", mDayPrice = "", mSeats = "";
         if (btype == Constants.TYPE_BUILDING) {
             if (TextUtils.equals("", area) || TextUtils.equals("0,2000", area)) {
-                mArea = "0,999999";
+                mArea = "0,999999999";
             } else {
                 mArea = area;
             }
             if (TextUtils.equals("", dayPrice) || TextUtils.equals("0,50", dayPrice)) {
-                mDayPrice = "0,999999";
+                mDayPrice = "0,999999999";
             } else {
                 mDayPrice = dayPrice;
             }
         } else if (btype == Constants.TYPE_JOINTWORK) {
             if (TextUtils.equals("", dayPrice) || TextUtils.equals("0,50000", dayPrice)) {
-                mDayPrice = "0,999999";
+                mDayPrice = "0,999999999";
             } else {
                 mDayPrice = dayPrice;
             }
             if (TextUtils.equals("", seats) || TextUtils.equals("0,30", seats)) {
-                mSeats = "0,999999";
+                mSeats = "0,999999999";
             } else {
                 mSeats = seats;
             }
@@ -769,6 +769,14 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         houseTags = "";
         btype = 0;
         tvSearchOffice.setText(R.string.str_house_all);
+        //清除筛选的面积或工位
+        ConditionConfig.mConditionBean = null;
+        if (rlConstruction.getVisibility() == View.GONE && rlOfficeType.getVisibility() == View.GONE) {
+            rlLabelConstruction.setVisibility(View.GONE);
+            rlLabelConstruction1.setVisibility(View.GONE);
+        }
+        rlSelCondition.setVisibility(View.GONE);
+        rlSelCondition1.setVisibility(View.GONE);
         //搜索
         getList();
     }

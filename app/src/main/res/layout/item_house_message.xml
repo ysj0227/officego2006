@@ -25,6 +25,7 @@
         android:paddingRight="@dimen/dp_2"
         android:textColor="@color/white"
         android:textSize="@dimen/sp_10"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

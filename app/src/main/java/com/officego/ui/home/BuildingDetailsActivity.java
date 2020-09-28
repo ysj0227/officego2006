@@ -388,7 +388,13 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         }
         if (rbVr.isChecked()) {
             if (mData.getVrUrl() != null && mData.getVrUrl().size() > 0) {
-                WebViewVRActivity_.intent(context).vrUrl(mData.getVrUrl().get(0).getImgUrl()).start();
+                String name;
+                if (mData.getBuilding() != null && mData.getBuilding().getName() != null) {
+                    name = mData.getBuilding().getName();
+                } else {
+                    name = "";
+                }
+                WebViewVRActivity_.intent(context).title(name).vrUrl(mData.getVrUrl().get(0).getImgUrl()).start();
             } else {
                 shortTip(R.string.str_no_vr);
             }
@@ -1130,7 +1136,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             conditionList.add(new BuildingConditionItem("500-1000㎡", "500,1000", data.getFactorMap().getBuildingItem6() + "套"));
         }
         if (data.getFactorMap().getBuildingItem7() > 0) {
-            conditionList.add(new BuildingConditionItem("1000㎡以上", "1000,9999", data.getFactorMap().getBuildingItem7() + "套"));
+            conditionList.add(new BuildingConditionItem("1000㎡以上", "1000,999999999", data.getFactorMap().getBuildingItem7() + "套"));
         }
         rvHorizontalAll.setAdapter(new HouseItemAllAdapter(context, conditionList));
     }

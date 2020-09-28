@@ -144,23 +144,23 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
         String mArea = "", mDayPrice = "", mSeats = "";
         if (btype == 1) {
             if (TextUtils.equals("", area) || TextUtils.equals("0,2000", area)) {
-                mArea = "0,999999";
+                mArea = "0,999999999";
             } else {
                 mArea = area;
             }
             if (TextUtils.equals("", dayPrice) || TextUtils.equals("0,50", dayPrice)) {
-                mDayPrice = "0,999999";
+                mDayPrice = "0,999999999";
             } else {
                 mDayPrice = dayPrice;
             }
         } else if (btype == 2) {
             if (TextUtils.equals("", dayPrice) || TextUtils.equals("0,50000", dayPrice)) {
-                mDayPrice = "0,999999";
+                mDayPrice = "0,999999999";
             } else {
                 mDayPrice = dayPrice;
             }
             if (TextUtils.equals("", seats) || TextUtils.equals("0,30", seats)) {
-                mSeats = "0,999999";
+                mSeats = "0,999999999";
             } else {
                 mSeats = seats;
             }

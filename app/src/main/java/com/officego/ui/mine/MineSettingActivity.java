@@ -6,16 +6,12 @@ import android.content.Intent;
 import android.text.TextUtils;
 import android.widget.TextView;
 
-import com.officego.MainOwnerActivity_;
 import com.officego.R;
 import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.GotoActivityUtils;
-import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.VersionBean;
 import com.officego.commonlib.common.config.CommonNotifications;
-import com.officego.commonlib.common.rongcloud.ConnectRongCloudUtils;
-import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.retrofit.RetrofitCallback;
@@ -23,7 +19,6 @@ import com.officego.commonlib.update.AppUpdate;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.dialog.CommonDialog;
-import com.officego.rpc.OfficegoApi;
 import com.owner.mine.ModifyMobileActivity_;
 
 import org.androidannotations.annotations.AfterViews;
@@ -81,22 +76,6 @@ public class MineSettingActivity extends BaseActivity {
         updateVersion(CommonHelper.getAppVersionName(context));
     }
 
-    @Click(R.id.rl_switch_id)
-    void switchIdClick() {
-        switchDialog();
-    }
-
-    private void switchDialog() {
-        CommonDialog dialog = new CommonDialog.Builder(context)
-                .setTitle(R.string.are_you_sure_switch_owner)
-                .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
-                    switchId(Constants.TYPE_OWNER);
-                    //神策
-                    SensorsTrack.tenantToOwner();
-                })
-                .setCancelButton(R.string.sm_cancel, (dialog1, which) -> dialog1.dismiss()).create();
-        dialog.showWithOutTouchable(false);
-    }
 
     @Click(R.id.btn_logout)
     void logoutClick() {
@@ -138,35 +117,6 @@ public class MineSettingActivity extends BaseActivity {
                 hideLoadingDialog();
                 if (code == Constants.ERROR_CODE_5008) {
                     shortTip(R.string.tip_current_newest_version);
-                }
-            }
-        });
-    }
-
-    //租户端---用户身份标：0租户，1户主
-    private void switchId(String role) {
-        showLoadingDialog();
-        OfficegoApi.getInstance().switchId(role, new RetrofitCallback<LoginBean>() {
-            @Override
-            public void onSuccess(int code, String msg, LoginBean data) {
-                hideLoadingDialog();
-                SpUtils.saveLoginInfo(data, SpUtils.getPhoneNum());
-                SpUtils.saveRole(String.valueOf(data.getRid()));
-                new ConnectRongCloudUtils();//连接融云
-                if (TextUtils.equals(Constants.TYPE_TENANT, String.valueOf(data.getRid()))) {
-                    GotoActivityUtils.mainActivity(context); //跳转租户首页
-                } else if (TextUtils.equals(Constants.TYPE_OWNER, String.valueOf(data.getRid()))) {
-                    MainOwnerActivity_.intent(context).start(); //租户切换房东
-                }
-            }
-
-            @Override
-            public void onFail(int code, String msg, LoginBean data) {
-                hideLoadingDialog();
-                if (code == Constants.ERROR_CODE_5009) {
-                    shortTip(msg);
-                    SpUtils.clearLoginInfo();
-                    GotoActivityUtils.loginClearActivity(context, false);
                 }
             }
         });

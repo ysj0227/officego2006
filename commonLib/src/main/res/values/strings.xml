@@ -126,6 +126,7 @@
     <string name="str_click_login_agree_service"><![CDATA[点击登录代表您已阅读并同意<font color=\'#46C3C2\'>服务协议</font>]]></string>
     <string name="str_text_area"><![CDATA[面积<font color=\'#999999\'>&#160;㎡</font>]]></string>
     <string name="str_text_rent"><![CDATA[租金<font color=\'#999999\'>&#160;元/㎡/天</font>]]></string>
+    <string name="str_text_rent_month"><![CDATA[租金<font color=\'#999999\'>&#160;元/㎡/月</font>]]></string>
     <string name="str_text_workstation"><![CDATA[工位<font color=\'#999999\'>&#160;个</font>]]></string>
     <string name="tip_input_correct_phone">请输入正确的手机号</string>
     <string name="tip_sms_code_send_success">验证码已发送</string>

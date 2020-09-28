@@ -618,7 +618,13 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         }
         if (rbVr.isChecked()) {
             if (mData != null && mData.getVrUrl() != null && mData.getVrUrl().size() > 0) {
-                WebViewVRActivity_.intent(context).vrUrl(mData.getVrUrl().get(0).getImgUrl()).start();
+                String name;
+                if (mData.getHouse() != null && mData.getHouse().getBuildingName() != null) {
+                    name = mData.getHouse().getBuildingName();
+                } else {
+                    name = "";
+                }
+                WebViewVRActivity_.intent(context).title(name).vrUrl(mData.getVrUrl().get(0).getImgUrl()).start();
             } else {
                 shortTip(R.string.str_no_vr);
             }

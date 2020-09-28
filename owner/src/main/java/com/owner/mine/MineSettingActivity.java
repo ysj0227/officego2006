@@ -68,24 +68,6 @@ public class MineSettingActivity extends BaseActivity {
         updateVersion(CommonHelper.getAppVersionName(context));
     }
 
-    @Click(resName = "rl_switch_id")
-    void switchIdClick() {
-        //房东切换租户
-        switchDialog();
-    }
-
-    private void switchDialog() {
-        CommonDialog dialog = new CommonDialog.Builder(context)
-                .setTitle(R.string.are_you_sure_switch_tenant)
-                .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
-                    switchId(Constants.TYPE_TENANT);
-                    //神策
-                    SensorsTrack.ownerToTenant();
-                })
-                .setCancelButton(R.string.sm_cancel, (dialog1, which) -> dialog1.dismiss()).create();
-        dialog.showWithOutTouchable(false);
-    }
-
     @Click(resName = "btn_logout")
     void logoutClick() {
         CommonDialog dialog = new CommonDialog.Builder(context)
@@ -124,35 +106,6 @@ public class MineSettingActivity extends BaseActivity {
                 hideLoadingDialog();
                 if (code == Constants.ERROR_CODE_5008) {
                     shortTip(R.string.tip_current_newest_version);
-                }
-            }
-        });
-    }
-
-    //房东端--- 用户身份标：0租户，1户主
-    private void switchId(String role) {
-        showLoadingDialog();
-        OfficegoApi.getInstance().switchId(role, new RetrofitCallback<LoginBean>() {
-            @Override
-            public void onSuccess(int code, String msg, LoginBean data) {
-                hideLoadingDialog();
-                SpUtils.saveLoginInfo(data, SpUtils.getPhoneNum());
-                SpUtils.saveRole(String.valueOf(data.getRid()));
-                new ConnectRongCloudUtils();//连接融云
-                if (TextUtils.equals(Constants.TYPE_TENANT, String.valueOf(data.getRid()))) {
-                    GotoActivityUtils.mainActivity(context); //跳转租户首页
-                } else if (TextUtils.equals(Constants.TYPE_OWNER, String.valueOf(data.getRid()))) {
-                    GotoActivityUtils.mainOwnerActivity(context); //租户切换房东
-                }
-            }
-
-            @Override
-            public void onFail(int code, String msg, LoginBean data) {
-                hideLoadingDialog();
-                if (code == Constants.ERROR_CODE_5009) {
-                    shortTip(msg);
-                    SpUtils.clearLoginInfo();
-                    GotoActivityUtils.loginClearActivity(context, true);
                 }
             }
         });

@@ -103,52 +103,12 @@
             android:background="@color/common_divider" />
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/rl_switch_id"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/dp_56"
-        android:layout_below="@id/rl_version_update"
-        android:background="@color/white"
-        android:paddingLeft="@dimen/dp_18"
-        android:paddingRight="@dimen/dp_18"
-        android:visibility="visible">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="@string/str_switch_id"
-            android:textColor="@color/text_33"
-            android:textSize="@dimen/sp_15" />
-
-        <TextView
-            android:id="@+id/tv_text_right"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="@dimen/dp_30"
-            android:text="@string/str_switch_owner"
-            android:textColor="@color/text_33"
-            android:textSize="@dimen/sp_14" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/ic_right_arrow_small"
-            tools:ignore="ContentDescription" />
-
-    </RelativeLayout>
-
-
     <Button
         android:id="@+id/btn_logout"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_50"
-        android:layout_below="@id/rl_switch_id"
+        android:layout_below="@id/rl_version_update"
         android:layout_marginStart="@dimen/dp_18"
         android:layout_marginTop="@dimen/dp_45"
         android:layout_marginEnd="@dimen/dp_18"

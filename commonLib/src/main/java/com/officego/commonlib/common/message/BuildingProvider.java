@@ -90,8 +90,13 @@ public class BuildingProvider extends IContainerItemProvider.MessageProvider<Bui
 
     @Override  //点击你的自定义消息执行的操作
     public void onItemClick(View view, int i, BuildingInfo info, UIMessage uiMessage) {
-        if (context==null){
+        if (context == null) {
             return;
+        }
+        if (info.getIsBuildOrHouse() == 1) {//楼盘网点
+            if (0 == info.getBuildingId()) return;
+        } else {//房源
+            if (0 == info.getHouseId()) return;
         }
         gotoDetailsActivity(context, info);
     }

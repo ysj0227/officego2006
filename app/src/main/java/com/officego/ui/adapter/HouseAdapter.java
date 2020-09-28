@@ -85,7 +85,13 @@ public class HouseAdapter extends CommonListAdapter<BuildingBean.ListBean> {
             line = "";
         }
         tvBus.setText(line);
-        holder.setText(R.id.tv_type, bean.getBtype() == Constants.TYPE_BUILDING ? "写字楼" : "共享办公");
+        TextView tvType = holder.getView(R.id.tv_type);
+        if (bean.getBtype() == Constants.TYPE_BUILDING) {
+            tvType.setVisibility(View.GONE);
+        } else {
+            tvType.setVisibility(View.VISIBLE);
+            tvType.setText("共享办公");
+        }
         holder.setText(R.id.tv_km, bean.getDistance());
         TextView price = holder.getView(R.id.tv_price);
         TextView unit = holder.getView(R.id.tv_unit);

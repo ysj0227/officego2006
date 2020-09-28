@@ -294,7 +294,7 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
                 tvIndependentOfficeArea.setText(R.string.str_text_line);
             }
             if (data.getHouse().getDayPrice() != null) {
-                CommonHelper.reSizeTextView(context, tvIndependentOfficePrice, "¥" + CommonHelper.bigDecimal(data.getHouse().getDayPrice(), false) + "/位/天起");
+                CommonHelper.reSizeTextView(context, tvIndependentOfficePrice, "¥" + CommonHelper.bigDecimal(data.getHouse().getDayPrice(), false) + "/位/月");
             } else {
                 tvIndependentOfficePrice.setText(R.string.str_text_line);
             }
@@ -594,7 +594,13 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         }
         if (rbVr.isChecked()) {
             if (mData != null && mData.getVrUrl() != null && mData.getVrUrl().size() > 0) {
-                WebViewVRActivity_.intent(context).vrUrl(mData.getVrUrl().get(0).getImgUrl()).start();
+                String name;
+                if (mData.getHouse() != null && mData.getHouse().getBuildingName() != null) {
+                    name = mData.getHouse().getBuildingName();
+                } else {
+                    name = "";
+                }
+                WebViewVRActivity_.intent(context).title(name).vrUrl(mData.getVrUrl().get(0).getImgUrl()).start();
             } else {
                 shortTip(R.string.str_no_vr);
             }
@@ -616,7 +622,7 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         super.onPause();
         //pauseVideo();
         //释放-防止预加载退出后台时继续播放
-        if (iVideoPlayer != null){
+        if (iVideoPlayer != null) {
             iVideoPlayer.release();
         }
     }

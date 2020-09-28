@@ -406,7 +406,13 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         }
         if (rbVr.isChecked()) {
             if (mData != null && mData.getVrUrl() != null && mData.getVrUrl().size() > 0) {
-                WebViewVRActivity_.intent(context).vrUrl(mData.getVrUrl().get(0).getImgUrl()).start();
+                String name;
+                if (mData.getBuilding() != null && mData.getBuilding().getName() != null) {
+                    name = mData.getBuilding().getName();
+                } else {
+                    name = "";
+                }
+                WebViewVRActivity_.intent(context).title(name).vrUrl(mData.getVrUrl().get(0).getImgUrl()).start();
             } else {
                 shortTip(R.string.str_no_vr);
             }
@@ -1251,7 +1257,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
                 conditionList.add(new BuildingConditionItem("16～20人", "16,20", data.getFactorMap().getJointworkItem6() + "套"));
             }
             if (data.getFactorMap().getJointworkItem7() > 0) {
-                conditionList.add(new BuildingConditionItem("20人以上", "20,9999", data.getFactorMap().getJointworkItem7() + "套"));
+                conditionList.add(new BuildingConditionItem("20人以上", "20,999999999", data.getFactorMap().getJointworkItem7() + "套"));
             }
             rvHorizontalAll.setAdapter(new HouseItemAllAdapter(context, conditionList));
         }

@@ -567,7 +567,6 @@ public class SearchPopupWindow extends PopupWindow implements
         Button btnSure = viewLayout.findViewById(R.id.btn_sure);
         //初始文本
         tvArea.setText(Html.fromHtml(mContext.getString(R.string.str_text_area)));
-        tvRent.setText(Html.fromHtml(mContext.getString(R.string.str_text_rent)));
         tvWorkstation.setText(Html.fromHtml(mContext.getString(R.string.str_text_workstation)));
         GridLayoutManager layoutManager = new GridLayoutManager(mContext, 3);
         rvDecorationType.setLayoutManager(layoutManager);
@@ -576,16 +575,19 @@ public class SearchPopupWindow extends PopupWindow implements
         rvHouseUnique.setLayoutManager(layoutManager1);
         rvHouseUnique.addItemDecoration(new SpaceItemDecoration(mContext, 3));
         if (btype == 0) {
+            tvRent.setText(Html.fromHtml(mContext.getString(R.string.str_text_rent)));
             rbOffice.setChecked(true);
             tvHouseType.setVisibility(View.VISIBLE);
             rgHouseGroup.setVisibility(View.VISIBLE);
         } else if (btype == 1) {
+            tvRent.setText(Html.fromHtml(mContext.getString(R.string.str_text_rent)));
             rbOffice.setChecked(true);
             tvHouseType.setVisibility(View.GONE);
             rgHouseGroup.setVisibility(View.GONE);
             showConditionOfficeLayout(true, rvDecorationType, tvDecorationType,
                     tvArea, sbpArea, sbpRent, tvWorkstation, sbpSimple, sbpRent2, sbpSimple2);
         } else if (btype == 2) {
+            tvRent.setText(Html.fromHtml(mContext.getString(R.string.str_text_rent_month)));
             rbOffice.setChecked(false);
             tvHouseType.setVisibility(View.GONE);
             rgHouseGroup.setVisibility(View.GONE);
@@ -622,10 +624,12 @@ public class SearchPopupWindow extends PopupWindow implements
         sbpRent2.setOnSeekBarChangeListener(listener, 3);
         sbpSimple2.setOnSeekBarChangeListener(listener, 4);
         rbOffice.setOnClickListener(v -> {
+            tvRent.setText(Html.fromHtml(mContext.getString(R.string.str_text_rent)));
             showConditionOfficeLayout(true, rvDecorationType, tvDecorationType,
                     tvArea, sbpArea, sbpRent, tvWorkstation, sbpSimple, sbpRent2, sbpSimple2);
         });
         rbJointWork.setOnClickListener(v -> {
+            tvRent.setText(Html.fromHtml(mContext.getString(R.string.str_text_rent_month)));
             showConditionOfficeLayout(false, rvDecorationType, tvDecorationType,
                     tvArea, sbpArea, sbpRent, tvWorkstation, sbpSimple, sbpRent2, sbpSimple2);
         });

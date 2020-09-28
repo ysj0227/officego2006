@@ -51,7 +51,7 @@ public class JointWorkAllChildAdapter extends CommonListAdapter<BuildingDetailsC
         tvItemListChildLeftUp.setText(CommonHelper.bigDecimal(bean.getArea().toString(), true)  + "㎡");
         tvItemListChildLeftDown.setText(bean.getSeats() + "工位");
         tvItemListChildRightUp.setText(Html.fromHtml("<font color='#46C3C2'>¥" + bean.getMonthPrice() + "</font>/月"));
-        tvItemListChildRightDown.setText(Html.fromHtml("<font color='#46C3C2'>¥" + bean.getDayPrice() + "</font>/位/天"));
+        tvItemListChildRightDown.setText(Html.fromHtml("<font color='#46C3C2'>¥" + bean.getDayPrice() + "</font>/位/月"));
         holder.itemView.setOnClickListener(v -> {
             BuildingDetailsJointWorkChildActivity_.intent(context)
                     .mChildHouseBean(BundleUtils.houseMessage(Constants.TYPE_JOINTWORK, bean.getId())).start();
