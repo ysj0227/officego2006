@@ -10,7 +10,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
-import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
@@ -29,6 +28,7 @@ import com.officego.ui.collect.model.CollectHouseBean;
 import com.officego.ui.collect.presenter.CollectedPresenter;
 import com.officego.ui.home.OnLoadMoreListener;
 import com.officego.ui.login.LoginActivity_;
+import com.officego.view.WrapContentLinearLayoutManager;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -82,7 +82,7 @@ public class CollectFragment extends BaseMvpFragment<CollectedPresenter>
         mPresenter = new CollectedPresenter();
         mPresenter.attachView(this);
         ctlRoot.setPadding(0, CommonHelper.statusHeight(mActivity), 0, 0);
-        LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
+        WrapContentLinearLayoutManager layoutManager = new WrapContentLinearLayoutManager(mActivity);
         rlCollect.setLayoutManager(layoutManager);
         initRefresh();
         if (!NetworkUtils.isNetworkAvailable(mActivity)) {
@@ -171,13 +171,13 @@ public class CollectFragment extends BaseMvpFragment<CollectedPresenter>
 
     private void setCheckedTextColor(boolean isBuilding, TextView tvOfficeBuilding, TextView tvWorkOffice) {
         if (isBuilding) {
-            tvOfficeBuilding.setTextSize(TypedValue.COMPLEX_UNIT_PX, CommonHelper.sp2px(mActivity, 16));
-            tvWorkOffice.setTextSize(TypedValue.COMPLEX_UNIT_PX, CommonHelper.sp2px(mActivity, 12));
+            tvOfficeBuilding.setTextSize(TypedValue.COMPLEX_UNIT_PX, CommonHelper.sp2px(mActivity, 17));
+            tvWorkOffice.setTextSize(TypedValue.COMPLEX_UNIT_PX, CommonHelper.sp2px(mActivity, 15));
             tvOfficeBuilding.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
             tvWorkOffice.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
         } else {
-            tvOfficeBuilding.setTextSize(TypedValue.COMPLEX_UNIT_PX, CommonHelper.sp2px(mActivity, 12));
-            tvWorkOffice.setTextSize(TypedValue.COMPLEX_UNIT_PX, CommonHelper.sp2px(mActivity, 16));
+            tvOfficeBuilding.setTextSize(TypedValue.COMPLEX_UNIT_PX, CommonHelper.sp2px(mActivity, 15));
+            tvWorkOffice.setTextSize(TypedValue.COMPLEX_UNIT_PX, CommonHelper.sp2px(mActivity, 17));
             tvOfficeBuilding.setTypeface(Typeface.defaultFromStyle(Typeface.NORMAL));
             tvWorkOffice.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));
         }
@@ -229,8 +229,8 @@ public class CollectFragment extends BaseMvpFragment<CollectedPresenter>
         } else {
             hasData();
         }
-        initOfficeBuildingAdapter();
         collectBuildingList.addAll(data.getList());
+        initOfficeBuildingAdapter();
         collectOfficeBuildingAdapter.notifyDataSetChanged();
     }
 
@@ -255,8 +255,8 @@ public class CollectFragment extends BaseMvpFragment<CollectedPresenter>
         } else {
             hasData();
         }
-        initWorkOfficeAdapter();
         workOfficeList.addAll(data.getList());
+        initWorkOfficeAdapter();
         workOfficeAdapter.notifyDataSetChanged();
     }
 
