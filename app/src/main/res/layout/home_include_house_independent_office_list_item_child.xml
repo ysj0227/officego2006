@@ -59,7 +59,7 @@
 
             <LinearLayout
                 android:id="@+id/ll_item_list_child_center_up"
-                android:layout_width="@dimen/dp_90"
+                android:layout_width="@dimen/dp_115"
                 android:layout_height="wrap_content">
 
                 <TextView
