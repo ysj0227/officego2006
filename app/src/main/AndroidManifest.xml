@@ -428,6 +428,10 @@
         <!--        </service>-->
         <!-- oppo 配置结束 < -->
 
+        <!--        高德 key： 191a7161f15a909826f73836198ba6e5-->
+        <meta-data
+            android:name="com.amap.api.v2.apikey"
+            android:value="191a7161f15a909826f73836198ba6e5" />
     </application>
 
 </manifest>
