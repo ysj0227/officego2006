@@ -50,8 +50,7 @@ public class BuildingDetailsJointWorkPresenter extends BasePresenter<BuildingDet
                         if (isViewAttached()) {
                             mView.hideLoadingDialog();
                             if (code == Constants.ERROR_CODE_7012 || code == Constants.ERROR_CODE_7013 || code == Constants.ERROR_CODE_7014) {
-                                mView.shortTip(msg);
-                                mView.BuildingTakeOff();
+                                mView.BuildingTakeOff(msg);
                             }
                         }
                     }

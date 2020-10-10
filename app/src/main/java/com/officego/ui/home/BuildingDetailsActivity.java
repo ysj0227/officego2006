@@ -916,8 +916,15 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     }
 
     @Override
-    public void BuildingTakeOff() {
-        finish();
+    public void BuildingTakeOff(String msg) {
+        CommonDialog dialog = new CommonDialog.Builder(context)
+                .setTitle(msg)
+                .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
+                    dialog12.dismiss();
+                    finish();
+                }).create();
+        dialog.showWithOutTouchable(false);
+        dialog.setCancelable(false);
     }
 
     //楼盘信息

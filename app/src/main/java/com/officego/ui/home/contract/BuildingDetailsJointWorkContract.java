@@ -21,7 +21,7 @@ public interface BuildingDetailsJointWorkContract {
 
         void BuildingJointWorkDetailsSuccess(BuildingJointWorkBean data);
 
-        void BuildingTakeOff();//下架
+        void BuildingTakeOff(String msg);//下架
 
         void favoriteSuccess();
 
