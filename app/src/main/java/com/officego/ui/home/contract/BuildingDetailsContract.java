@@ -19,6 +19,8 @@ public interface BuildingDetailsContract {
 
         void BuildingDetailsSuccess(BuildingDetailsBean data);
 
+        void BuildingTakeOff();//下架
+
         void BuildingJointWorkDetailsSuccess(BuildingJointWorkBean data);
 
         void favoriteSuccess();

@@ -915,6 +915,11 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         getChildBuildingList();
     }
 
+    @Override
+    public void BuildingTakeOff() {
+        finish();
+    }
+
     //楼盘信息
     private void buildingInfo(BuildingDetailsBean data) {
         if (data.getBuilding() != null) {

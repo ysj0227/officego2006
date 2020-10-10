@@ -63,7 +63,7 @@ public class CollectWorkOfficeAdapter extends CommonListAdapter<CollectHouseBean
         Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getMainPic()).into(ivItemListChild);
         if (bean.getBtype() == Constants.TYPE_JOINTWORK) {
             tvType.setVisibility(View.VISIBLE);
-            holder.setText(R.id.tv_type, "共享办公");
+            tvType.setText("共享办公");
         } else {
             tvType.setVisibility(View.GONE);
         }
@@ -75,7 +75,7 @@ public class CollectWorkOfficeAdapter extends CommonListAdapter<CollectHouseBean
             tvItemListChildLeftUp.setText(bean.getArea() + "㎡");
             tvItemListChildLeftDown.setText(bean.getSeats() + "工位");
             tvItemListChildRightUp.setText(Html.fromHtml("<font color='#46C3C2'>¥" + bean.getMonthPrice() + "</font>/月"));
-            tvItemListChildRightDown.setText(Html.fromHtml("<font color='#46C3C2'>¥" + bean.getDayPrice() + "</font>/位/天"));
+            tvItemListChildRightDown.setText(Html.fromHtml("<font color='#46C3C2'>¥" + bean.getDayPrice() + "</font>/位/月"));
         } else {
             tvIsIndependentOffice.setVisibility(View.GONE);
             tvItemListChildCenterUp.setVisibility(View.VISIBLE);

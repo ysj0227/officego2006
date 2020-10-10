@@ -1,6 +1,7 @@
 package com.owner.identity.presenter;
 
 import com.officego.commonlib.base.BasePresenter;
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.log.LogCat;
 import com.owner.identity.contract.SendMsgContract;
@@ -36,8 +37,8 @@ public class SendMsgPresenter extends BasePresenter<SendMsgContract.View>
     }
 
     @Override
-    public void sendApply(int identityType, int id,String chattedId) {
-        OfficegoApi.getInstance().applyLicenceProprietor(identityType, id,chattedId, new RetrofitCallback<ApplyJoinBean>() {
+    public void sendApply(int identityType, int id, String chattedId) {
+        OfficegoApi.getInstance().applyLicenceProprietor(identityType, id, chattedId, new RetrofitCallback<ApplyJoinBean>() {
             @Override
             public void onSuccess(int code, String msg, ApplyJoinBean data) {
                 if (isViewAttached()) {
@@ -47,7 +48,9 @@ public class SendMsgPresenter extends BasePresenter<SendMsgContract.View>
 
             @Override
             public void onFail(int code, String msg, ApplyJoinBean data) {
-                LogCat.e(TAG, "searchCompany onFail code=" + code + "  msg=" + msg);
+                if (Constants.DEFAULT_ERROR_CODE == code) {
+                    mView.shortTip(msg);
+                }
             }
         });
     }

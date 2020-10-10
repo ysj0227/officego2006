@@ -3,6 +3,7 @@ package com.officego.ui.adapter;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.Html;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.TextView;
 
@@ -48,9 +49,11 @@ public class JointWorkAllChildAdapter extends CommonListAdapter<BuildingDetailsC
         Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getMainPic()).into(ivItemListChild);
         tvItemListChildCenterUp.setVisibility(View.INVISIBLE);
         tvItemListChildCenterDown.setVisibility(View.INVISIBLE);
-        tvItemListChildLeftUp.setText(bean.getSeats() + "工位");
-        tvItemListChildLeftDown.setText(CommonHelper.bigDecimal(bean.getArea().toString(), true)  + "㎡");
+        tvItemListChildLeftUp.setText(Html.fromHtml("<font color='#46C3C2'>" + bean.getSeats() + "</font>"+ "<font color='#CC666666'>人间</font>"));
         tvItemListChildRightUp.setText(Html.fromHtml("<font color='#46C3C2'>¥" + bean.getMonthPrice() + "</font>/月"));
+        tvItemListChildLeftUp.setTextSize(TypedValue.COMPLEX_UNIT_PX, CommonHelper.sp2px(context, 15));
+
+        tvItemListChildLeftDown.setText(CommonHelper.bigDecimal(bean.getArea().toString(), true)  + "㎡");
         tvItemListChildRightDown.setText(Html.fromHtml("<font color='#46C3C2'>¥" + bean.getDayPrice() + "</font>/位/月"));
         holder.itemView.setOnClickListener(v -> {
             BuildingDetailsJointWorkChildActivity_.intent(context)

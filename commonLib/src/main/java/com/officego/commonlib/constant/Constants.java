@@ -19,6 +19,9 @@ public class Constants {
     public static final int ERROR_CODE_5008 = 5008;//操作成功返回的data为null
     public static final int ERROR_CODE_5009 = 5009;//当前身份发生变化,请重新登录
     public static final int ERROR_CODE_666 = 666;//需要统一抛出提示的状态码
+    public static final int ERROR_CODE_7012 = 7012;//楼盘已经下架
+    public static final int ERROR_CODE_7013 = 7013;//楼盘下的房源已经售完
+    public static final int ERROR_CODE_7014 = 7014;//楼盘已删除
 
     //微信
     public static final String APP_ID = "wx70ee9e90c1d62d83";//线上

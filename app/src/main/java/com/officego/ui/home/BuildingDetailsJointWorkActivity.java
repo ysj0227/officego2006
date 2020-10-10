@@ -7,6 +7,7 @@ import android.os.Looper;
 import android.os.Message;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -978,6 +979,11 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         buildingInfo(data);
     }
 
+    @Override
+    public void BuildingTakeOff() {
+        finish();
+    }
+
     //楼盘信息
     private void buildingInfo(BuildingJointWorkBean data) {
         if (data != null && data.getIntroduction() != null && data.getIntroduction().getBuildingMsg() != null) {
@@ -1108,8 +1114,9 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
             if (data.getBuilding().isOpenStationFlag() && data.getBuilding().getOpenStationMap() != null) {
                 ctlOpenWork.setVisibility(View.VISIBLE);
                 rlOpenWorkModel.setVisibility(View.VISIBLE);
-                tvOpenWorkModelText.setText(R.string.str_work_num);
-                tvOpenWorkModelNum.setText(data.getBuilding().getOpenStationMap().getSeats() + "工位");
+                tvOpenWorkModelText.setText("开放工位");
+                tvOpenWorkModelNum.setText(Html.fromHtml("<font color='#46C3C2'>" +data.getBuilding().getOpenStationMap().getSeats() + "</font>"+ "<font color='#CC666666'>工位</font>"));
+                tvOpenWorkModelNum.setTextSize(TypedValue.COMPLEX_UNIT_PX, CommonHelper.sp2px(context, 16));
                 tvMinMonth.setText(data.getBuilding().getOpenStationMap().getMinimumLease() + "个月起租");
                 tvOpenWorkModelPrice.setText(Html.fromHtml("<font color='#46C3C2'>¥" +
                         CommonHelper.bigDecimal(data.getBuilding().getOpenStationMap().getDayPrice(), false) + "</font>/位/月"));

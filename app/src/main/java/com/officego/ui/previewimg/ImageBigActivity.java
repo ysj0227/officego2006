@@ -23,7 +23,7 @@ import java.util.Locale;
  */
 @SuppressLint("Registered")
 @EActivity(R.layout.activtiy_big_image)
-public class ImageBigActivity extends BaseActivity implements PageAdapter.onLongClickListener {
+public class ImageBigActivity extends BaseActivity {
     @ViewById(R.id.page)
     TextView page;
     @ViewById(R.id.viewPager)
@@ -37,7 +37,6 @@ public class ImageBigActivity extends BaseActivity implements PageAdapter.onLong
     @AfterViews
     void init() {
         pagerAdapter = new PageAdapter(imagesUrl, getApplicationContext());
-        pagerAdapter.setLongClickListener(this);
         viewPager.setAdapter(pagerAdapter);
         viewPager.setCurrentItem(current);
         page.setText(String.format(Locale.getDefault(), "%d/%d", current + 1, imagesUrl.size()));
@@ -64,7 +63,4 @@ public class ImageBigActivity extends BaseActivity implements PageAdapter.onLong
         finish();
     }
 
-    @Override
-    public void longItemClick(int position) {
-    }
 }

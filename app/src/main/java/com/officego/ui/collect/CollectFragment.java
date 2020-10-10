@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.util.TypedValue;
+import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
@@ -77,6 +78,7 @@ public class CollectFragment extends BaseMvpFragment<CollectedPresenter>
     private List<CollectHouseBean.ListBean> workOfficeList = new ArrayList<>();
     private boolean isOffice = true;
 
+    @SuppressLint("ClickableViewAccessibility")
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarFullTransparent(mActivity);
@@ -96,6 +98,8 @@ public class CollectFragment extends BaseMvpFragment<CollectedPresenter>
         } else {
             setListInit();
         }
+        //解决当下拉刷新快速滑动crash问题
+        rlCollect.setOnTouchListener((v, event) -> mSwipeRefreshLayout.isRefreshing());
     }
 
     private void setListInit() {

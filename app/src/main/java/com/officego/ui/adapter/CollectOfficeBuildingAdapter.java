@@ -47,6 +47,7 @@ public class CollectOfficeBuildingAdapter extends CommonListAdapter<CollectBuild
     @Override
     public void convert(ViewHolder holder, final CollectBuildingBean.ListBean bean) {
         ImageView ivHouse = holder.getView(R.id.iv_house);
+        TextView tvType = holder.getView(R.id.tv_type);
         Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getMainPic()).into(ivHouse);
         holder.setText(R.id.tv_house_name, bean.getName());
         //商圈
@@ -69,7 +70,12 @@ public class CollectOfficeBuildingAdapter extends CommonListAdapter<CollectBuild
         } else {
             tvBus.setVisibility(View.GONE);
         }
-        holder.setText(R.id.tv_type, bean.getBtype() == Constants.TYPE_BUILDING ? "写字楼" : "共享办公");
+        if (bean.getBtype() == Constants.TYPE_JOINTWORK) {
+            tvType.setVisibility(View.VISIBLE);
+            tvType.setText("共享办公");
+        } else {
+            tvType.setVisibility(View.GONE);
+        }
         holder.setText(R.id.tv_km, bean.getDistance());
         TextView price = holder.getView(R.id.tv_price);
         TextView unit = holder.getView(R.id.tv_unit);
@@ -78,9 +84,8 @@ public class CollectOfficeBuildingAdapter extends CommonListAdapter<CollectBuild
             price.setText("¥" + (bean.getMinDayPrice() == null ? "0.0" : bean.getMinDayPrice()));
             unit.setText("/m²/天起");
         } else if (bean.getBtype() == 2) {
-//            price.setText("¥" + (bean.getSeatMonthPrice() == null ? "0.0" : bean.getSeatMonthPrice()));
             price.setText("¥" + (bean.getMinDayPrice() == null ? "0.0" : bean.getMinDayPrice()));
-            unit.setText("/位/月");
+            unit.setText("/位/月起");
         }
         addLabel(holder, bean);
         gotoDetails(holder, bean);

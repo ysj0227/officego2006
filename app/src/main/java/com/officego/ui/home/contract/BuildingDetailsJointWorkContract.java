@@ -21,11 +21,14 @@ public interface BuildingDetailsJointWorkContract {
 
         void BuildingJointWorkDetailsSuccess(BuildingJointWorkBean data);
 
+        void BuildingTakeOff();//下架
+
         void favoriteSuccess();
 
         void favoriteFail();
 
-        void buildingSelectListSuccess(int total,List<BuildingDetailsChildBean.ListBean> list);
+        void buildingSelectListSuccess(int total, List<BuildingDetailsChildBean.ListBean> list);
+
         void chatSuccess(ChatsBean data);
     }
 

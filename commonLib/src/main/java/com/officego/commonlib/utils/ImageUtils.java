@@ -309,6 +309,9 @@ public class ImageUtils {
      */
     public static void isSaveCropImageView(String path) {
         Bitmap bitMap = BitmapFactory.decodeFile(path);
+        if (bitMap == null || bitMap.getWidth() == 0) {
+            return;
+        }
         int width = bitMap.getWidth();
         int height = bitMap.getHeight();
         // 设置想要的大小

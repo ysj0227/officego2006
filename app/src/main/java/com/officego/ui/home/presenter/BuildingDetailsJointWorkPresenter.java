@@ -49,6 +49,10 @@ public class BuildingDetailsJointWorkPresenter extends BasePresenter<BuildingDet
                         LogCat.e(TAG, "getBuildingDetails onFail code=" + code + "  msg=" + msg);
                         if (isViewAttached()) {
                             mView.hideLoadingDialog();
+                            if (code == Constants.ERROR_CODE_7012 || code == Constants.ERROR_CODE_7013 || code == Constants.ERROR_CODE_7014) {
+                                mView.shortTip(msg);
+                                mView.BuildingTakeOff();
+                            }
                         }
                     }
                 });
@@ -74,7 +78,7 @@ public class BuildingDetailsJointWorkPresenter extends BasePresenter<BuildingDet
                     mView.hideLoadingDialog();
                     if (code == Constants.ERROR_CODE_5002 || code == RpcErrorCode.RPC_ERR_TIMEOUT) {
                         mView.favoriteFail();
-                    }else if (code == Constants.DEFAULT_ERROR_CODE) {
+                    } else if (code == Constants.DEFAULT_ERROR_CODE) {
                         mView.shortTip(msg);
                     }
                 }
@@ -124,7 +128,7 @@ public class BuildingDetailsJointWorkPresenter extends BasePresenter<BuildingDet
             public void onFail(int code, String msg, ChatsBean data) {
                 if (isViewAttached()) {
                     mView.hideLoadingDialog();
-                    if (code==Constants.ERROR_CODE_5002||code==Constants.DEFAULT_ERROR_CODE){
+                    if (code == Constants.ERROR_CODE_5002 || code == Constants.DEFAULT_ERROR_CODE) {
                         mView.shortTip(msg);
                     }
                 }
