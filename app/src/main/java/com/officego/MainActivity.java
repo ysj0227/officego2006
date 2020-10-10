@@ -26,6 +26,7 @@ import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.rongcloud.ConnectRongCloudUtils;
 import com.officego.commonlib.common.rongcloud.kickDialog;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.DesktopCornerUtil;
 import com.officego.commonlib.utils.StatusBarUtils;
@@ -289,7 +290,9 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     }
 
     /**
-     * 高德地图
+     * **********************************************
+     * *****************高德地图***********************
+     * **********************************************
      */
     private AMapLocationClient locationClient = null;
     private AMapLocationClientOption locationOption = null;
@@ -335,19 +338,26 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     /**
      * 定位监听
      */
+    private int firstLocation;
     AMapLocationListener locationListener = new AMapLocationListener() {
         @Override
         public void onLocationChanged(AMapLocation location) {
             if (null != location) {
                 //errCode等于0代表定位成功，其他的为定位失败，具体的可以参照官网定位错误码说明
                 if (location.getErrorCode() == 0) {
-                    LogCat.e(TAG, "经    度    : " + location.getLongitude() + "纬    度    : " + location.getLatitude());
+                    if (location.getLongitude() > 0 && location.getLatitude() > 0) {
+                        Constants.LONGITUDE = String.valueOf(location.getLongitude());
+                        Constants.LATITUDE = String.valueOf(location.getLatitude());
+                        firstLocation++;
+                        if (firstLocation == 1 || firstLocation == 2) {
+                            BaseNotification.newInstance().postNotificationName(CommonNotifications.locationRefresh, "locationRefresh");
+                        }
+                    }
+                    LogCat.e(TAG, "高德 经    度    : " + location.getLongitude() + "纬    度    : " + location.getLatitude() + " firstLocation=" + firstLocation);
                 } else {
                     //定位失败
-                    LogCat.e(TAG, "错误码:" + location.getErrorCode() + "错误信息:" + location.getErrorInfo() + "错误描述:" + location.getLocationDetail());
+                    LogCat.e(TAG, "高德 错误码:" + location.getErrorCode() + "错误信息:" + location.getErrorInfo() + "错误描述:" + location.getLocationDetail());
                 }
-            } else {
-                LogCat.e(TAG, "loc is null");
             }
         }
     };
@@ -355,11 +365,10 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     /**
      * 开始定位
      *
-     * @since 2.8.0
      * @author hongming.wang
-     *
+     * @since 2.8.0
      */
-    private void startLocation(){
+    private void startLocation() {
         // 设置定位参数
         locationClient.setLocationOption(locationOption);
         // 启动定位
@@ -369,11 +378,10 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     /**
      * 停止定位
      *
-     * @since 2.8.0
      * @author hongming.wang
-     *
+     * @since 2.8.0
      */
-    private void stopLocation(){
+    private void stopLocation() {
         // 停止定位
         locationClient.stopLocation();
     }
@@ -381,11 +389,10 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     /**
      * 销毁定位
      *
-     * @since 2.8.0
      * @author hongming.wang
-     *
+     * @since 2.8.0
      */
-    private void destroyLocation(){
+    private void destroyLocation() {
         if (null != locationClient) {
             locationClient.onDestroy();
             locationClient = null;

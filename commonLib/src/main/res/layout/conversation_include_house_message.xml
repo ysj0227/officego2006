@@ -86,16 +86,16 @@
         app:labelBackground="@drawable/text_label_gray"
         app:labelTextColor="@color/text_66"
         app:labelTextPaddingBottom="@dimen/dp_6"
-        app:labelTextPaddingLeft="@dimen/dp_22"
-        app:labelTextPaddingRight="@dimen/dp_22"
+        app:labelTextPaddingLeft="@dimen/dp_16"
+        app:labelTextPaddingRight="@dimen/dp_16"
         app:labelTextPaddingTop="@dimen/dp_6"
         app:labelTextSize="11sp"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/iv_house"
-        app:lineMargin="@dimen/dp_10"
+        app:lineMargin="@dimen/dp_6"
         app:maxLines="4"
         app:selectType="NONE"
-        app:wordMargin="@dimen/dp_8"
+        app:wordMargin="@dimen/dp_6"
         tools:ignore="MissingConstraints" />
 
     <View

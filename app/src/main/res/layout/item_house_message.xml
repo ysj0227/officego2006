@@ -59,6 +59,19 @@
         app:layout_constraintTop_toBottomOf="@id/tv_house_name" />
 
     <TextView
+        android:id="@+id/tv_km"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_12"
+        android:layout_marginTop="@dimen/dp_7"
+        android:textColor="@color/text_main"
+        android:textSize="@dimen/sp_12"
+        android:visibility="visible"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/iv_house"
+        app:layout_constraintTop_toBottomOf="@id/tv_house_name" />
+
+    <TextView
         android:id="@+id/tv_bus"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -71,18 +84,6 @@
         app:layout_constraintLeft_toRightOf="@id/iv_house"
         app:layout_constraintTop_toBottomOf="@id/tv_location" />
 
-    <TextView
-        android:id="@+id/tv_km"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginStart="@dimen/dp_12"
-        android:layout_marginTop="@dimen/dp_7"
-        android:textColor="@color/text_main"
-        android:textSize="@dimen/sp_11"
-        android:visibility="invisible"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintLeft_toRightOf="@id/iv_house"
-        app:layout_constraintTop_toBottomOf="@id/tv_location" />
 
     <TextView
         android:id="@+id/tv_price"

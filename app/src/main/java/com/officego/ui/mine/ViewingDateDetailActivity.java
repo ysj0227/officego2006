@@ -9,9 +9,13 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
+import com.officego.commonlib.common.model.utils.BundleUtils;
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.CircleImage;
+import com.officego.ui.home.BuildingDetailsActivity_;
+import com.officego.ui.home.BuildingDetailsJointWorkActivity_;
 import com.officego.ui.mine.contract.ViewingDateDetailsContract;
 import com.officego.ui.mine.model.ViewingDateDetailsBean;
 import com.officego.ui.mine.presenter.ViewingDateDetailsPresenter;
@@ -115,8 +119,10 @@ public class ViewingDateDetailActivity extends BaseMvpActivity<ViewingDateDetail
         tvTime.setText(DateTimeUtils.StampToDate(String.valueOf(data.getBuilding().getTime()) + "000", "yyyy-MM-dd HH:mm"));
         tvAddress.setText(data.getBuilding().getAddress());
         Glide.with(context).load(data.getBuilding().getMainPic()).into(civAvatar);
-        tvBuildingName.setText(String.format("约看：%s", data.getBuilding().getBuildingName()));
-
+        if (data.getBuilding().getBtype() != 0) {
+            tvBuildingName.setText(String.format("约看：%s", Constants.TYPE_BUILDING == data.getBuilding().getBtype() ?
+                    data.getBuilding().getBuildingName() : data.getBuilding().getBranchesName()));
+        }
         List<String> stationLine = data.getBuilding().getStationline();
         List<String> stationName = data.getBuilding().getStationNames();
         StringBuffer linePlan = new StringBuffer();

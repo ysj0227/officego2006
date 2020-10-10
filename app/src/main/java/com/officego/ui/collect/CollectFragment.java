@@ -17,6 +17,7 @@ import com.officego.R;
 import com.officego.commonlib.base.BaseMvpFragment;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.sensors.SensorsTrack;
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
@@ -109,9 +110,9 @@ public class CollectFragment extends BaseMvpFragment<CollectedPresenter>
     //初始化
     private void getList(boolean isOffice) {
         if (isOffice) {
-            mPresenter.favoriteBuildingList(pageNum, "", "");
+            mPresenter.favoriteBuildingList(pageNum, Constants.LONGITUDE, Constants.LATITUDE);
         } else {
-            mPresenter.favoriteHouseList(pageNum, "", "");
+            mPresenter.favoriteHouseList(pageNum, Constants.LONGITUDE, Constants.LATITUDE);
         }
     }
 

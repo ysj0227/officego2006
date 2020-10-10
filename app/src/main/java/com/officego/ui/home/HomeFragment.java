@@ -17,6 +17,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.google.android.material.appbar.AppBarLayout;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpFragment;
+import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.constant.Constants;
@@ -24,6 +25,7 @@ import com.officego.commonlib.update.VersionDialog;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.config.ConditionConfig;
 import com.officego.h5.WebViewBannerActivity_;
 import com.officego.ui.adapter.HouseAdapter;
@@ -808,5 +810,22 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         SensorsTrack.visitBuildingDataPage(position, buildingId);
         //点击卡片
         SensorsTrack.clickCardShow(buildingId, String.valueOf(position), false);
+    }
+
+    @Override
+    public int[] getStickNotificationId() {
+        return new int[]{CommonNotifications.locationRefresh};
+    }
+
+    @Override
+    public void didReceivedNotification(int id, Object... args) {
+        super.didReceivedNotification(id, args);
+        if (args == null) {
+            return;
+        }
+        if (id == CommonNotifications.locationRefresh) {
+            LogCat.e(TAG, "高德 5555555555555555 : ");
+            getList();
+        }
     }
 }

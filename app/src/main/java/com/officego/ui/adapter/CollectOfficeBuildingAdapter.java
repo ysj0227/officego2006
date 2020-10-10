@@ -78,7 +78,8 @@ public class CollectOfficeBuildingAdapter extends CommonListAdapter<CollectBuild
             price.setText("¥" + (bean.getMinDayPrice() == null ? "0.0" : bean.getMinDayPrice()));
             unit.setText("/m²/天起");
         } else if (bean.getBtype() == 2) {
-            price.setText("¥" + (bean.getSeatMonthPrice() == null ? "0.0" : bean.getSeatMonthPrice()));
+//            price.setText("¥" + (bean.getSeatMonthPrice() == null ? "0.0" : bean.getSeatMonthPrice()));
+            price.setText("¥" + (bean.getMinDayPrice() == null ? "0.0" : bean.getMinDayPrice()));
             unit.setText("/位/月");
         }
         addLabel(holder, bean);

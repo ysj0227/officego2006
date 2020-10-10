@@ -248,10 +248,9 @@ public class OfficegoApi {
      */
     public void getBuildingList(int pageNo, String btype, String district, String business, String line,
                                 String nearbySubway, String area, String dayPrice, String seats, String decoration,
-                                String houseTags, String sort, String keyWord,
+                                String houseTags, String sort, String keyWord,String longitude, String latitude,
                                 RetrofitCallback<BuildingBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
-//        map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("token", requestBody(""));
         map.put("btype", requestBody(btype));
         map.put("district", requestBody(district));
@@ -269,6 +268,8 @@ public class OfficegoApi {
         }
         map.put("pageNo", requestBody(pageNo + ""));
         map.put("pageSize", requestBody("10"));
+        map.put("longitude", requestBody(longitude));
+        map.put("latitude", requestBody(latitude));
         OfficegoRetrofitClient.getInstance().create(HomeInterface.class)
                 .getBuildingList(map)
                 .enqueue(callback);

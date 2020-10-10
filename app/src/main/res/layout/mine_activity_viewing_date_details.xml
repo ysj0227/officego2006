@@ -25,7 +25,7 @@
 
         <ImageView
             android:layout_width="@dimen/dp_18"
-            android:layout_height="@dimen/dp_22"
+            android:layout_height="@dimen/dp_24"
             android:background="@mipmap/ic_back_white"
             tools:ignore="ContentDescription" />
     </RelativeLayout>
@@ -61,7 +61,8 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_20"
             android:textColor="@color/text_33"
-            android:textSize="@dimen/sp_15"
+            android:textStyle="bold"
+            android:textSize="@dimen/sp_16"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -127,7 +128,7 @@
         <ImageView
             android:id="@+id/iv_mobile"
             android:layout_width="@dimen/dp_13"
-            android:layout_height="@dimen/dp_16"
+            android:layout_height="@dimen/dp_18"
             android:layout_marginTop="@dimen/dp_9"
             android:layout_marginEnd="@dimen/dp_20"
             android:background="@mipmap/ic_mobile_blue_big"
@@ -143,7 +144,7 @@
             android:layout_marginStart="@dimen/dp_20"
             android:layout_marginTop="@dimen/dp_20"
             android:text="时间"
-            android:textColor="@color/text_66"
+            android:textColor="@color/text_66_p50"
             android:textSize="@dimen/sp_14"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/civ_avatar" />
@@ -166,7 +167,7 @@
             android:layout_marginStart="@dimen/dp_20"
             android:layout_marginTop="@dimen/dp_20"
             android:text="地址"
-            android:textColor="@color/text_66"
+            android:textColor="@color/text_66_p50"
             android:textSize="@dimen/sp_14"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_time_text" />
@@ -191,7 +192,7 @@
             android:layout_marginStart="@dimen/dp_20"
             android:layout_marginTop="@dimen/dp_20"
             android:text="交通"
-            android:textColor="@color/text_66"
+            android:textColor="@color/text_66_p50"
             android:textSize="@dimen/sp_14"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/tv_address_text" />

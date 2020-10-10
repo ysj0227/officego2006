@@ -61,7 +61,7 @@ public class HomePresenter extends BasePresenter<HomeContract.View> implements H
         mView.showLoadingDialog();
         OfficegoApi.getInstance().getBuildingList(pageNo, btype, district, business,
                 line, nearbySubway, area, dayPrice, seats, decoration,
-                houseTags, sort, keyWord, new RetrofitCallback<BuildingBean>() {
+                houseTags, sort, keyWord,  Constants.LONGITUDE, Constants.LATITUDE,new RetrofitCallback<BuildingBean>() {
                     @Override
                     public void onSuccess(int code, String msg, BuildingBean data) {
                         if (isViewAttached()) {

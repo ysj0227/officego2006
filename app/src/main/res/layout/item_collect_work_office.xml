@@ -135,7 +135,6 @@
                 android:layout_below="@id/ll_item_list_child_center_up"
                 android:layout_alignEnd="@id/ll_item_list_child_center_up"
                 android:layout_marginTop="@dimen/dp_6"
-                android:text="620202020租"
                 android:textColor="@color/text_99"
                 android:textSize="@dimen/sp_12" />
         </RelativeLayout>

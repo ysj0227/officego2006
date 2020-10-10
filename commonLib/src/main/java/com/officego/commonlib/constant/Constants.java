@@ -80,4 +80,8 @@ public class Constants {
     public static int TABLE_BAR_POSITION;
     //融云是否连接成功
     public static boolean isRCIMConnectSuccess;
+
+    //经纬度高德地图
+    public static String LONGITUDE = "";
+    public static String LATITUDE = "";
 }

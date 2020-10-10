@@ -34,4 +34,7 @@ public class CommonNotifications {
     //登录登出
     public static final int loginIn = totalEvents++;
     public static final int loginOut = totalEvents++;
+
+    //初始化获取定位，刷新
+    public static final int locationRefresh = totalEvents++;
 }
