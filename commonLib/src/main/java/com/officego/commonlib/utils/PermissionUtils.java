@@ -211,7 +211,7 @@ public class PermissionUtils {
 
     //* 如果SDK版本大于等于23、或者Android系统版本是6.0以上，那么需要动态请求创建文件的权限 */
     public static boolean getLocationPermission(FragmentActivity getActivity) {
-        // 读,写,手机,定位,相机,短信权限
+        //定位
         int REQUEST_STORAGE = 1;
         String[] PERMISSIONS_STORAGE = {
                 "android.permission.ACCESS_COARSE_LOCATION",

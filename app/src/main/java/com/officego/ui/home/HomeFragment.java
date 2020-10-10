@@ -24,6 +24,7 @@ import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.update.VersionDialog;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
+import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.log.LogCat;
 import com.officego.config.ConditionConfig;
@@ -157,6 +158,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
 
     @AfterViews
     void init() {
+        PermissionUtils.getLocationPermission(mActivity);
         StatusBarUtils.setStatusBarMainColor(mActivity, ContextCompat.getColor(mActivity, R.color.common_blue_main));
         mPresenter = new HomePresenter(mActivity);
         mPresenter.attachView(this);
@@ -248,6 +250,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
                 !TextUtils.isEmpty(mArea) ||
                 !TextUtils.isEmpty(mDayPrice) ||
                 !TextUtils.isEmpty(mSeats);
+
         SensorsTrack.visitBuildingNetworkList("上海市", areaType, Constants.SENSORS_AREA_CONTENT, btype,
                 Integer.valueOf(sort), mArea, mDayPrice, mSeats, Constants.SENSORS_DECORATION, false, isSelect);
     }
