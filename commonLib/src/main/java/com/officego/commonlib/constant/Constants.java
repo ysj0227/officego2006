@@ -87,4 +87,5 @@ public class Constants {
     //经纬度高德地图
     public static String LONGITUDE = "";
     public static String LATITUDE = "";
+    public static int firstLocation;
 }

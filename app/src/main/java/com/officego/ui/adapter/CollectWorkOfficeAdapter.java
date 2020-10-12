@@ -5,6 +5,7 @@ import android.content.Context;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -44,7 +45,6 @@ public class CollectWorkOfficeAdapter extends CommonListAdapter<CollectHouseBean
     public void convert(ViewHolder holder, final CollectHouseBean.ListBean bean) {
         RoundImageView ivItemListChild = holder.getView(R.id.iv_item_list_child);
         TextView tvHouseName = holder.getView(R.id.tv_house_name);
-        TextView tvType = holder.getView(R.id.tv_type);
         TextView tvLocation = holder.getView(R.id.tv_location);
         TextView tvIsIndependentOffice = holder.getView(R.id.tv_is_independent_office);
         TextView tvItemListChildLeftUp = holder.getView(R.id.tv_item_list_child_left_up);
@@ -53,6 +53,8 @@ public class CollectWorkOfficeAdapter extends CommonListAdapter<CollectHouseBean
         TextView tvItemListChildCenterDown = holder.getView(R.id.tv_item_list_child_center_down);
         TextView tvItemListChildRightUp = holder.getView(R.id.tv_item_list_child_right_up);
         TextView tvItemListChildRightDown = holder.getView(R.id.tv_item_list_child_right_down);
+        ImageView ivVrFlay = holder.getView(R.id.iv_vr_flag);
+        ivVrFlay.setVisibility(TextUtils.equals("1", bean.getVr()) ? View.VISIBLE : View.GONE);
         tvHouseName.setText(bean.getBuildingName());
         if (TextUtils.isEmpty(bean.getBusinessDistrict())) {
             tvLocation.setVisibility(View.GONE);
@@ -61,12 +63,6 @@ public class CollectWorkOfficeAdapter extends CommonListAdapter<CollectHouseBean
             tvLocation.setText(bean.getBusinessDistrict());
         }
         Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getMainPic()).into(ivItemListChild);
-        if (bean.getBtype() == Constants.TYPE_JOINTWORK) {
-            tvType.setVisibility(View.VISIBLE);
-            tvType.setText("共享办公");
-        } else {
-            tvType.setVisibility(View.GONE);
-        }
         //"officeType": 1是独立办公室，2是开放工位
         if (TextUtils.equals("1", bean.getOfficeType())) {
             tvIsIndependentOffice.setVisibility(View.VISIBLE);

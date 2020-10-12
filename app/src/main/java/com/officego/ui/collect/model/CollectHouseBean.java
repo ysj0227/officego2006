@@ -155,6 +155,8 @@ public class CollectHouseBean {
         private String decoration;
         @SerializedName("officeType")
         private String officeType;
+        @SerializedName("vr")
+        private String vr;
 
         public Object getArea() {
             return area;
@@ -282,6 +284,14 @@ public class CollectHouseBean {
 
         public void setOfficeType(String officeType) {
             this.officeType = officeType;
+        }
+
+        public String getVr() {
+            return vr;
+        }
+
+        public void setVr(String vr) {
+            this.vr = vr;
         }
     }
 }

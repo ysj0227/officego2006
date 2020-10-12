@@ -211,6 +211,8 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             mPresenter.getRongTargetInfo(targetId); //推送点击获取Target用户信息
             return;
         }
+        //刷新用户信息
+        refreshChatUserInfo(data);
         mData = data;
         isFirstChat = data.getIsChat() == 0; //是否第一次聊天
         //租户第一次聊天,发送默认消息,且对方是房东
@@ -219,8 +221,6 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
                 TextUtils.equals(Constants.TYPE_TENANT, SpUtils.getRole())) {
             SendMessageManager.getInstance().sendTextMessage(targetId, "我对你发布的房源有兴趣，能聊聊吗？");
         }
-        //刷新用户信息
-        refreshChatUserInfo(data);
     }
 
     //刷新用户信息

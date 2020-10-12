@@ -156,7 +156,6 @@ public class CollectBuildingBean {
         private String mainPic;
         @SerializedName("id")
         private int id;
-
         @SerializedName("maxArea")
         private Object maxArea;
         @SerializedName("minArea")
@@ -167,7 +166,6 @@ public class CollectBuildingBean {
         private Object minDayPrice;
         @SerializedName("maxDayPrice")
         private Object maxDayPrice;
-
         @SerializedName("address")
         private String address;
         @SerializedName("Isfailure")
@@ -192,6 +190,8 @@ public class CollectBuildingBean {
         private int openStation;
         @SerializedName("officeType")
         private String officeType;
+        @SerializedName("vr")
+        private String vr;
         @SerializedName("areaMap")
         private List<Object> areaMap;
         @SerializedName("tags")
@@ -411,6 +411,14 @@ public class CollectBuildingBean {
 
         public void setOfficeType(String officeType) {
             this.officeType = officeType;
+        }
+
+        public String getVr() {
+            return vr;
+        }
+
+        public void setVr(String vr) {
+            this.vr = vr;
         }
 
         public List<Object> getAreaMap() {

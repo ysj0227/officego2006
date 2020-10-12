@@ -188,6 +188,8 @@ public class BuildingBean implements Serializable {
         private int openStation;
         @SerializedName("officeType")
         private String officeType;
+        @SerializedName("vr")
+        private String vr;
         @SerializedName("areaMap")
         private List<Object> areaMap;
         @SerializedName("tags")
@@ -415,6 +417,14 @@ public class BuildingBean implements Serializable {
 
         public void setTags(List<TagsBean> tags) {
             this.tags = tags;
+        }
+
+        public String getVr() {
+            return vr;
+        }
+
+        public void setVr(String vr) {
+            this.vr = vr;
         }
 
         public static class BuildingMapBean implements Serializable {

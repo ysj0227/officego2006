@@ -338,7 +338,6 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     /**
      * 定位监听
      */
-    private int firstLocation;
     AMapLocationListener locationListener = new AMapLocationListener() {
         @Override
         public void onLocationChanged(AMapLocation location) {
@@ -348,15 +347,15 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                     if (location.getLongitude() > 0 && location.getLatitude() > 0) {
                         Constants.LONGITUDE = String.valueOf(location.getLongitude());
                         Constants.LATITUDE = String.valueOf(location.getLatitude());
-                        firstLocation++;
-                        if (firstLocation == 1 || firstLocation == 2) {
+                        Constants.firstLocation++;
+                        if (Constants.firstLocation == 1 || Constants.firstLocation == 2) {
                             BaseNotification.newInstance().postNotificationName(CommonNotifications.locationRefresh, "locationRefresh");
                         }
                     }
-                    LogCat.e(TAG, "高德 经    度    : " + location.getLongitude() + "纬    度    : " + location.getLatitude() + " firstLocation=" + firstLocation);
+                    //LogCat.e(TAG, "高德 经    度    : " + location.getLongitude() + "纬    度    : " + location.getLatitude() + " firstLocation=" + Constants.firstLocation);
                 } else {
                     //定位失败
-                    LogCat.e(TAG, "高德 错误码:" + location.getErrorCode() + "错误信息:" + location.getErrorInfo() + "错误描述:" + location.getLocationDetail());
+                    //LogCat.e(TAG, "高德 错误码:" + location.getErrorCode() + "错误信息:" + location.getErrorInfo() + "错误描述:" + location.getLocationDetail());
                 }
             }
         }

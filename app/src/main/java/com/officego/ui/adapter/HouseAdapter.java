@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -63,6 +64,8 @@ public class HouseAdapter extends CommonListAdapter<BuildingBean.ListBean> {
         RoundImageView ivHouse = holder.getView(R.id.iv_house);
         Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getMainPic()).into(ivHouse);
         holder.setText(R.id.tv_house_name, bean.getName());
+        ImageView ivVrFlay = holder.getView(R.id.iv_vr_flag);
+        ivVrFlay.setVisibility(TextUtils.equals("1", bean.getVr()) ? View.VISIBLE : View.GONE);
         //商圈
         TextView tvLocation = holder.getView(R.id.tv_location);
         if (TextUtils.isEmpty(bean.getBusinessDistrict())) {

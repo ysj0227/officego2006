@@ -367,6 +367,11 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     //是否显示播放vr video按钮
     private void playButtonIsShow(boolean isShow) {
         if (isShow) {
+            if (rbVr.isChecked()) {
+                ibInitStart.setBackgroundResource(R.mipmap.ic_vr_play);
+            } else if (rbVideo.isChecked()) {
+                ibInitStart.setBackgroundResource(R.mipmap.ic_video_start);
+            }
             ctlVideoPlay.setVisibility(View.VISIBLE);
             bannerImage.setVisibility(View.GONE);
         } else {
@@ -1147,18 +1152,21 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         }
         if (data.getVrUrl() != null && data.getVrUrl().size() > 0 &&
                 data.getVideoUrl() != null && data.getVideoUrl().size() > 0) {
+            ibInitStart.setBackgroundResource(R.mipmap.ic_vr_play);
             rbVr.setChecked(true);
             rbVr.setVisibility(View.VISIBLE);
             rbVideo.setVisibility(View.VISIBLE);
             rbPicture.setVisibility(View.VISIBLE);
             radioGroupIsShow(true);
         } else if (data.getVrUrl() != null && data.getVrUrl().size() > 0) {
+            ibInitStart.setBackgroundResource(R.mipmap.ic_vr_play);
             rbVr.setChecked(true);
             rbVr.setVisibility(View.VISIBLE);
             rbVideo.setVisibility(View.GONE);
             rbPicture.setVisibility(View.VISIBLE);
             radioGroupIsShow(true);
         } else if (data.getVideoUrl() != null && data.getVideoUrl().size() > 0) {
+            ibInitStart.setBackgroundResource(R.mipmap.ic_video_start);
             rbVideo.setChecked(true);
             rbVr.setVisibility(View.GONE);
             rbVideo.setVisibility(View.VISIBLE);
