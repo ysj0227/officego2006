@@ -53,7 +53,7 @@ import com.officego.ui.adapter.ServiceCreateLogoAdapter;
 import com.officego.ui.dialog.PreImageDialog;
 import com.officego.ui.dialog.ServiceLogoDialog;
 import com.officego.ui.dialog.WeChatShareDialog;
-import com.officego.ui.find.model.DirectoryBean;
+import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.ui.home.contract.BuildingDetailsJointWorkContract;
 import com.officego.ui.home.model.BuildingConditionItem;
 import com.officego.ui.home.model.BuildingDetailsBean;

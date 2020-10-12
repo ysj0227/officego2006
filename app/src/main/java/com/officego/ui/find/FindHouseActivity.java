@@ -14,7 +14,7 @@ import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.ui.adapter.DecorationTypeAdapter;
 import com.officego.ui.adapter.HouseUniqueAdapter;
-import com.officego.ui.find.model.DirectoryBean;
+import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.utils.GotoActivityUtils;
 import com.officego.utils.SpaceItemDecoration;
 import com.officego.view.SeekBarPressure;

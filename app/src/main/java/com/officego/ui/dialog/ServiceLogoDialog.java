@@ -15,10 +15,9 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.officego.R;
-import com.officego.model.ServiceImageBean;
 import com.officego.ui.adapter.HouseServiceAdapter;
 import com.officego.ui.adapter.SpaceItemDecorationHouse;
-import com.officego.ui.find.model.DirectoryBean;
+import com.officego.commonlib.common.model.DirectoryBean;
 
 import java.util.List;
 

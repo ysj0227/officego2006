@@ -1,7 +1,6 @@
 package com.officego.rpc.request;
 
 import com.officego.commonlib.retrofit.BaseResponse;
-import com.officego.ui.find.model.DirectoryBean;
 import com.officego.ui.home.model.BusinessCircleBean;
 import com.officego.ui.home.model.MeterBean;
 

@@ -7,7 +7,7 @@ import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
-import com.officego.ui.find.model.DirectoryBean;
+import com.officego.commonlib.common.model.DirectoryBean;
 
 import java.util.List;
 

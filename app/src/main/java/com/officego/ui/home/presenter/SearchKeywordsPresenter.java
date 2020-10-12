@@ -9,7 +9,7 @@ import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.log.LogCat;
 import com.officego.rpc.OfficegoApi;
-import com.officego.ui.find.model.DirectoryBean;
+import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.ui.home.contract.SearchContract;
 import com.officego.ui.home.model.QueryHistoryKeywordsBean;
 import com.officego.ui.home.model.SearchListBean;

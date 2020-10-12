@@ -1,7 +1,7 @@
 package com.officego.rpc.request;
 
 import com.officego.commonlib.retrofit.BaseResponse;
-import com.officego.ui.find.model.DirectoryBean;
+import com.officego.commonlib.common.model.DirectoryBean;
 
 import java.util.List;
 import java.util.Map;

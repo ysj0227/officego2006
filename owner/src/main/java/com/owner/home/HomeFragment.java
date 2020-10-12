@@ -37,6 +37,7 @@ import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.commonlib.view.webview.SMWebChromeClient;
 import com.officego.commonlib.view.webview.SMWebViewClient;
 import com.owner.R;
+import com.owner.dialog.ServiceSelectedDialog;
 import com.owner.home.contract.HomeContract;
 import com.owner.home.presenter.HomePresenter;
 import com.owner.identity.SelectIdActivity_;
@@ -90,7 +91,8 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements Home
     //扫一扫
     @Click(resName = "iv_scan")
     void scanClick() {
-        scanDialog(getContext());
+//        scanDialog(getContext());
+        new ServiceSelectedDialog(mActivity);
     }
 
     /**

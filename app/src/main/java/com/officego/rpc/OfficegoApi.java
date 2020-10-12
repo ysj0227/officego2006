@@ -24,7 +24,7 @@ import com.officego.rpc.request.SearchAreaInterface;
 import com.officego.rpc.request.SearchInterface;
 import com.officego.ui.collect.model.CollectBuildingBean;
 import com.officego.ui.collect.model.CollectHouseBean;
-import com.officego.ui.find.model.DirectoryBean;
+import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.ui.home.model.BannerBean;
 import com.officego.ui.home.model.BuildingBean;
 import com.officego.ui.home.model.BuildingDetailsBean;

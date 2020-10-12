@@ -32,7 +32,7 @@ import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.rpc.OfficegoApi;
-import com.officego.ui.find.model.DirectoryBean;
+import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.ui.home.model.BusinessCircleBean;
 import com.officego.ui.home.model.MeterBean;
 import com.officego.utils.SpaceItemDecoration;

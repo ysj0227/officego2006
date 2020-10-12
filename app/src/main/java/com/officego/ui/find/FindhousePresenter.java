@@ -7,7 +7,7 @@ import com.officego.commonlib.base.BasePresenter;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.log.LogCat;
 import com.officego.rpc.OfficegoApi;
-import com.officego.ui.find.model.DirectoryBean;
+import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.utils.GotoActivityUtils;
 
 import java.util.List;

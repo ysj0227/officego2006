@@ -1,4 +1,4 @@
-package com.officego.ui.find.model;
+package com.officego.commonlib.common.model;
 
 import com.google.gson.annotations.SerializedName;
 

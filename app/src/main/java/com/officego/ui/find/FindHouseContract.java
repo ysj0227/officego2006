@@ -1,7 +1,7 @@
 package com.officego.ui.find;
 
 import com.officego.commonlib.base.BaseView;
-import com.officego.ui.find.model.DirectoryBean;
+import com.officego.commonlib.common.model.DirectoryBean;
 
 import java.util.List;
 

@@ -1,7 +1,7 @@
 package com.officego.ui.home.contract;
 
 import com.officego.commonlib.base.BaseView;
-import com.officego.ui.find.model.DirectoryBean;
+import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.ui.home.model.QueryHistoryKeywordsBean;
 import com.officego.ui.home.model.SearchListBean;
 

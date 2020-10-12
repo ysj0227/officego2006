@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="wrap_content"
+    android:layout_height="@dimen/dp_35">
+
+    <CheckBox
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/dp_20"
+        android:id="@+id/cb_name"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:button="@drawable/check_selector"
+        android:checked="false"
+        tools:ignore="RtlSymmetry" />
+
+    <ImageView
+        android:layout_marginStart="@dimen/dp_8"
+        android:layout_centerVertical="true"
+        android:id="@+id/iv_service_logo"
+        android:layout_width="@dimen/dp_26"
+        android:layout_height="@dimen/dp_26"
+        android:layout_toEndOf="@id/cb_name"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/tv_service_logo_text"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/dp_8"
+        android:layout_toEndOf="@id/iv_service_logo"
+        android:textColor="@color/text_66"
+        android:textSize="@dimen/sp_14"
+        tools:ignore="ContentDescription" />
+</RelativeLayout>
