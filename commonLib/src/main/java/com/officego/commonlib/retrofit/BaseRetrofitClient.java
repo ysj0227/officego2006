@@ -62,7 +62,7 @@ public class BaseRetrofitClient {
                 .hostnameVerifier(HttpsUtils.UnSafeHostnameVerifier)
                 .addInterceptor(new LoggingInterceptor
                         .Builder()//构建者模式
-                        .loggable(TextUtils.equals(Utils.getMetaValue(BaseApplication.getContext(),
+                        .loggable(!TextUtils.equals(Utils.getMetaValue(BaseApplication.getContext(),
                                 "ENV_DATA", BaseConfig.ENV_RELEASE), BaseConfig.ENV_RELEASE)) //是否开启日志打印
                         .setLevel(Level.BASIC) //打印的等级
                         .log(Platform.INFO) // 打印类型

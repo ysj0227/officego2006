@@ -99,10 +99,7 @@ public class IdentityApplyProvider extends IContainerItemProvider.MessageProvide
             ToastUtils.toastForShort(context, R.string.str_check_net);
             return;
         }
-        if (TextUtils.isEmpty(identityType)) {
-            return;
-        }
-        OfficegoApi.getInstance().updateAuditStatusIdentity(Integer.valueOf(identityType), id, licenceId, auditStatus,
+        OfficegoApi.getInstance().updateAuditStatusIdentity( id, licenceId, auditStatus,
                 new RetrofitCallback<Object>() {
                     @Override
                     public void onSuccess(int code, String msg, Object data) {
