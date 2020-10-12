@@ -32,6 +32,7 @@ import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.ToastUtils;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.ui.message.contract.ConversationContract;
 import com.officego.ui.message.presenter.ConversationPresenter;
 
@@ -207,10 +208,12 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
     @SuppressLint("SetTextI18n")
     @Override
     public void houseSuccess(ChatHouseBean data) {
+        LogCat.e(TAG, "chat response=" +data.getChatted().getNickname() );
         if (data == null) {
             mPresenter.getRongTargetInfo(targetId); //推送点击获取Target用户信息
             return;
         }
+        LogCat.e(TAG, "chat response 11=" +data.getChatted().getNickname() );
         //刷新用户信息
         refreshChatUserInfo(data);
         mData = data;

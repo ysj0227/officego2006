@@ -14,6 +14,7 @@ import com.officego.commonlib.common.rongcloud.SendMessageManager;
 import com.officego.commonlib.common.rpc.OfficegoApi;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
+import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.db.LitepalUtils;
 import com.officego.ui.message.HouseTags;
@@ -179,12 +180,12 @@ public class ConversationPresenter extends BasePresenter<ConversationContract.Vi
     private BuildingInfo info(ChatHouseBean data) {
         BuildingInfo info = new BuildingInfo();
         info.setIsBuildOrHouse(data.getIsBuildOrHouse());
-        String showUser = TextUtils.equals(SpUtils.getUserId(), data.getCreateUser()) ? "你" : "对方";
+        String showUser = TextUtils.equals(SpUtils.getUserId(), data.getCreateUser()) || TextUtils.isEmpty(data.getCreateUser()) ? "你" : "对方";
         String mDate;
-        if (data.getCreateTime() == 0) {
+        if (TextUtils.isEmpty(data.getCreateTime().toString()) || TextUtils.equals("0", data.getCreateTime().toString())) {
             mDate = DateTimeUtils.getStringDateTimeByStringPattern(DateTimeUtils.DateTimePattern.LONG_DATETIME_2);
         } else {
-            mDate = DateTimeUtils.secondToDate(data.getCreateTime(), "yyyy-MM-dd HH:mm");
+            mDate = DateTimeUtils.secondToDate(Long.valueOf(CommonHelper.bigDecimal(data.getCreateTime(), true)), "yyyy-MM-dd HH:mm");
         }
         info.setCreateTime(mDate + " 由" + showUser + "发起沟通");
         //1 楼盘网点 2房源

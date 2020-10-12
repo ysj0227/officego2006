@@ -28,7 +28,7 @@ public class ChatHouseBean {
     @SerializedName("chatted")
     private ChattedBean chatted;
     @SerializedName("createTime")
-    private int createTime;
+    private Object createTime;
     @SerializedName("scheduleStatus")
     private int scheduleStatus;
     @SerializedName("IsDepartureStatus")
@@ -69,11 +69,11 @@ public class ChatHouseBean {
         this.chatted = chatted;
     }
 
-    public int getCreateTime() {
+    public Object getCreateTime() {
         return createTime;
     }
 
-    public void setCreateTime(int createTime) {
+    public void setCreateTime(Object createTime) {
         this.createTime = createTime;
     }
 
@@ -315,8 +315,6 @@ public class ChatHouseBean {
         private List<String> stationline;
         @SerializedName("nearbySubwayTime")
         private List<String> nearbySubwayTime;
-        @SerializedName("stationColours")
-        private List<String> stationColours;
         @SerializedName("tags")
         private List<TagsBean> tags;
 
@@ -328,14 +326,6 @@ public class ChatHouseBean {
             this.tags = tags;
         }
 
-        //        public String getDistance() {
-//            return distance;
-//        }
-//
-//        public void setDistance(String distance) {
-//            this.distance = distance;
-//        }
-//
         public String getMainPic() {
             return mainPic;
         }
@@ -446,14 +436,6 @@ public class ChatHouseBean {
 
         public void setNearbySubwayTime(List<String> nearbySubwayTime) {
             this.nearbySubwayTime = nearbySubwayTime;
-        }
-
-        public List<String> getStationColours() {
-            return stationColours;
-        }
-
-        public void setStationColours(List<String> stationColours) {
-            this.stationColours = stationColours;
         }
 
         public static class TagsBean {
