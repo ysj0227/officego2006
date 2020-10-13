@@ -108,7 +108,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             //系统消息
             targetId = intent.getStringExtra("systemPushTargetId");
             ctlChat.setVisibility(View.GONE);
-            tvTitleName.setText("系统消息");
+            tvTitleName.setText(getString(R.string.str_system_message));
             tvTitleName.setPadding(0, 28, 0, 0);
             initIM();
         } else {
@@ -128,7 +128,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
                     (targetId.length() > 1 && TextUtils.equals(Constants.TYPE_SYSTEM, targetId.substring(targetId.length() - 1))))) {
                 //系统消息聊天列表进入
                 ctlChat.setVisibility(View.GONE);
-                tvTitleName.setText("系统消息");
+                tvTitleName.setText(getString(R.string.str_system_message));
                 tvTitleName.setPadding(0, 28, 0, 0);
                 initIM();
             } else {

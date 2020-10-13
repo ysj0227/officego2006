@@ -87,5 +87,6 @@
     <string name="str_house_details_info">房源信息</string>
     <string name="tip_video_play_exception">视频播放异常</string>
     <string name="str_text_and">和</string>
+    <string name="str_system_message">系统消息</string>
 
 </resources>

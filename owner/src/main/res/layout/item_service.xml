@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="wrap_content"
-    android:layout_height="@dimen/dp_35">
+    android:layout_height="@dimen/dp_40">
 
     <CheckBox
         android:layout_centerVertical="true"

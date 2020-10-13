@@ -92,7 +92,8 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements Home
     @Click(resName = "iv_scan")
     void scanClick() {
 //        scanDialog(getContext());
-        new ServiceSelectedDialog(mActivity);
+//        new ServiceSelectedDialog(mActivity);
+        UploadVideoVrActivity_.intent(getContext()).start();
     }
 
     /**

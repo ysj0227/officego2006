@@ -55,7 +55,6 @@ public class SpUtils {
         SharedManager.clearValue(BaseApplication.getContext(), HEADER_IMG);
         SharedManager.clearValue(BaseApplication.getContext(), NICK_NAME);
         SharedManager.clearValue(BaseApplication.getContext(), CANCEL_UPDATE);
-//        SharedManager.clearValue(BaseApplication.getContext(), EDIT_TO_WEB);
         //融云断开连接
         RongIM.getInstance().disconnect();
     }
