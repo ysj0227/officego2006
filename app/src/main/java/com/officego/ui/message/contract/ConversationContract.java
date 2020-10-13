@@ -19,6 +19,8 @@ public interface ConversationContract {
 
         void exchangeContactsSuccess(boolean isCanExchange);
 
+        void exchangeContactsFail(String msg);
+
         void firstChatSuccess(FirstChatBean data);
 
         void identityChattedMsgSuccess(IdentitychattedMsgBean data);

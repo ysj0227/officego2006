@@ -74,6 +74,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
     private boolean isSendApply;//租户认证发送的申请
     private String mNikeName;
     private boolean isCanExchange;//是否可以交换手机微信
+    private boolean isOnClickExchangeContacts;//是否点击可以交换手机微信
 
     private void initViewById() {
         LinearLayout llRoot = findViewById(R.id.ll_root);
@@ -263,6 +264,13 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
     }
 
     @Override
+    public void exchangeContactsFail(String msg) {
+        if (isOnClickExchangeContacts) {
+            shortTip(msg);
+        }
+    }
+
+    @Override
     public void firstChatSuccess(FirstChatBean data) {
         //是否第一次聊天
         isFirstChat = data.getIsChat() == 0;
@@ -295,6 +303,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         }
         //聊天次数是否可以交换手机微信
         if (!isCanExchange) {
+            isOnClickExchangeContacts=true;
             mPresenter.exchangeContactsVerification(targetId);
             return;
         }
@@ -315,6 +324,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         }
         //聊天次数是否可以交换手机微信
         if (!isCanExchange) {
+            isOnClickExchangeContacts=true;
             mPresenter.exchangeContactsVerification(targetId);
             return;
         }
