@@ -10,7 +10,6 @@ import android.widget.Toast;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
-import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 
 import com.officego.commonlib.R;
@@ -30,8 +29,6 @@ public class PermissionUtils {
         // 读,写,手机,定位,相机,短信权限
         int REQUEST_STORAGE = 1;
         String[] PERMISSIONS_STORAGE = {
-                "android.permission.ACCESS_COARSE_LOCATION",
-                "android.permission.ACCESS_FINE_LOCATION",
                 "android.permission.READ_PHONE_STATE",
                 "android.permission.READ_EXTERNAL_STORAGE",
                 "android.permission.WRITE_EXTERNAL_STORAGE",
@@ -43,21 +40,19 @@ public class PermissionUtils {
 
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             int permission0 = ContextCompat.checkSelfPermission(activity, PERMISSIONS_STORAGE[0]);
-            int permission2 = ContextCompat.checkSelfPermission(activity, PERMISSIONS_STORAGE[2]);
-            int permission3 = ContextCompat.checkSelfPermission(activity, PERMISSIONS_STORAGE[3]);
-            int permission4 = ContextCompat.checkSelfPermission(activity, PERMISSIONS_STORAGE[4]);
+            int permission2 = ContextCompat.checkSelfPermission(activity, PERMISSIONS_STORAGE[1]);
+            int permission3 = ContextCompat.checkSelfPermission(activity, PERMISSIONS_STORAGE[2]);
+            int permission4 = ContextCompat.checkSelfPermission(activity, PERMISSIONS_STORAGE[3]);
             int permission5 = ContextCompat.checkSelfPermission(activity, PERMISSIONS_STORAGE[5]);
-            int permission7 = ContextCompat.checkSelfPermission(activity, PERMISSIONS_STORAGE[7]);
-            int permission8 = ContextCompat.checkSelfPermission(activity, PERMISSIONS_STORAGE[8]);
-            int permission9 = ContextCompat.checkSelfPermission(activity, PERMISSIONS_STORAGE[9]);
+            int permission7 = ContextCompat.checkSelfPermission(activity, PERMISSIONS_STORAGE[6]);
+            int permission8 = ContextCompat.checkSelfPermission(activity, PERMISSIONS_STORAGE[7]);
             if (permission0 != PackageManager.PERMISSION_GRANTED &&
                     permission2 != PackageManager.PERMISSION_GRANTED &&
                     permission3 != PackageManager.PERMISSION_GRANTED &&
                     permission4 != PackageManager.PERMISSION_GRANTED &&
                     permission5 != PackageManager.PERMISSION_GRANTED &&
                     permission7 != PackageManager.PERMISSION_GRANTED &&
-                    permission8 != PackageManager.PERMISSION_GRANTED &&
-                    permission9 != PackageManager.PERMISSION_GRANTED) {
+                    permission8 != PackageManager.PERMISSION_GRANTED ) {
                 ActivityCompat.requestPermissions(activity, new String[]{
                         PERMISSIONS_STORAGE[0],
                         PERMISSIONS_STORAGE[1],
@@ -66,9 +61,7 @@ public class PermissionUtils {
                         PERMISSIONS_STORAGE[4],
                         PERMISSIONS_STORAGE[5],
                         PERMISSIONS_STORAGE[6],
-                        PERMISSIONS_STORAGE[7],
-                        PERMISSIONS_STORAGE[8],
-                        PERMISSIONS_STORAGE[9]
+                        PERMISSIONS_STORAGE[7]
                 }, REQUEST_STORAGE);
             }
         }

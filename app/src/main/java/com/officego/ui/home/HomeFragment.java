@@ -255,6 +255,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
                 Integer.valueOf(sort), mArea, mDayPrice, mSeats, Constants.SENSORS_DECORATION, false, isSelect);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void initRefresh() {
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setProgressViewOffset(true, -20, 160);
@@ -269,6 +270,8 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
                 loadingMoreList();
             }
         });
+        //解决当下拉刷新快速滑动crash问题
+        rvHouse.setOnTouchListener((v, event) -> mSwipeRefreshLayout.isRefreshing());
     }
 
     private void initBarLayoutBg() {
