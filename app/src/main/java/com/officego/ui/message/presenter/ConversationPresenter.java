@@ -82,6 +82,9 @@ public class ConversationPresenter extends BasePresenter<ConversationContract.Vi
                         public void onFail(int code, String msg, ExchangeContactsBean data) {
                             if (isViewAttached()) {
                                 mView.hideLoadingDialog();
+                                if (Constants.DEFAULT_ERROR_CODE == code) {
+                                    mView.exchangeContactsFail(msg);
+                                }
                             }
                         }
                     });
