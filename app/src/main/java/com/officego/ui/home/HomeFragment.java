@@ -271,7 +271,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
             }
         });
         //解决当下拉刷新快速滑动crash问题
-        rvHouse.setOnTouchListener((v, event) -> mSwipeRefreshLayout.isRefreshing());
+        rvHouse.setOnTouchListener((view, motionEvent) -> mSwipeRefreshLayout != null && mSwipeRefreshLayout.isRefreshing());
     }
 
     private void initBarLayoutBg() {
