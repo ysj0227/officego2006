@@ -99,7 +99,7 @@ public class CollectFragment extends BaseMvpFragment<CollectedPresenter>
             setListInit();
         }
         //解决当下拉刷新快速滑动crash问题
-        rlCollect.setOnTouchListener((v, event) -> mSwipeRefreshLayout.isRefreshing());
+        rlCollect.setOnTouchListener((view, motionEvent) -> mSwipeRefreshLayout != null && mSwipeRefreshLayout.isRefreshing());
     }
 
     private void setListInit() {

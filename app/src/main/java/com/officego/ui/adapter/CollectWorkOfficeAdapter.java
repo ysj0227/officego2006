@@ -4,6 +4,7 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.Html;
 import android.text.TextUtils;
+import android.util.TypedValue;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -85,6 +86,11 @@ public class CollectWorkOfficeAdapter extends CommonListAdapter<CollectHouseBean
             tvItemListChildLeftDown.setText("最多" + seats + "个工位");
             tvItemListChildCenterUp.setText(Html.fromHtml("<font color='#46C3C2'>¥" + bean.getDayPrice() + "</font>/㎡/天"));
             tvItemListChildCenterDown.setText("¥" + (bean.getMonthPrice() == null ? "0.0" : bean.getMonthPrice()) + "/月");
+            if (bean.getMonthPrice() != null && bean.getMonthPrice().toString().length() >= 10) {
+                tvItemListChildCenterDown.setTextSize(TypedValue.COMPLEX_UNIT_PX, CommonHelper.sp2px(context, 10));
+            }else {
+                tvItemListChildCenterDown.setTextSize(TypedValue.COMPLEX_UNIT_PX, CommonHelper.sp2px(context, 11));
+            }
             tvItemListChildRightUp.setText(bean.getDecoration());
             tvItemListChildRightUp.setTextColor(ContextCompat.getColor(context, R.color.common_blue_main));
             tvItemListChildRightDown.setText(bean.getFloor() + "/共" + bean.getTotalFloor() + "层");
