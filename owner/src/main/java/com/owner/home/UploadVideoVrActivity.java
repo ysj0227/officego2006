@@ -4,12 +4,9 @@ import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
 import android.graphics.Bitmap;
-import android.media.MediaMetadataRetriever;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
-import android.os.Build;
 import android.provider.MediaStore;
-import android.widget.Toast;
 
 import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.utils.StatusBarUtils;
@@ -113,30 +110,30 @@ public class UploadVideoVrActivity extends BaseActivity {
                     Bitmap bitmap2 = ThumbnailUtils.createVideoThumbnail(imagePath, MediaStore.Video.Thumbnails.MICRO_KIND);
                     // 如果追求更好的话可以利用 ThumbnailUtils.extractThumbnail 把缩略图转化为的制定大小
                     if (duration > 11000) {
-                        Toast.makeText(getApplicationContext(), "视频时长已超过10秒，请重新选择", Toast.LENGTH_SHORT).show();
-                        return;
+                        shortTip("视频时长已超过10秒，请重新选择");
+                    } else {
+                        shortTip("视频上传成功");
                     }
                 }
                 cursor.close();
             }
 
         } else if (resultCode == RESULT_OK && null != data && requestCode == 2) {
-            {
-                Uri uri = data.getData();
-                String path = getRealPathFromURI(uri);
-//                Log.d("path", "path==" + path);
-                File file = new File(path);
-                MediaMetadataRetriever mmr = new MediaMetadataRetriever();//实例化MediaMetadataRetriever对象
-                mmr.setDataSource(file.getAbsolutePath());
-                Bitmap bitmap = mmr.getFrameAtTime();//获得视频第一帧的Bitmap对象
-                String duration = mmr.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_DURATION);//时长(毫秒)
-//                Log.d("ddd", "duration==" + duration);
-                int int_duration = Integer.parseInt(duration);
-                if (int_duration > 11000) {
-                    Toast.makeText(getApplicationContext(), "视频时长已超过10秒，请重新选择", Toast.LENGTH_SHORT).show();
-                    return;
-                }
-            }
+            Uri uri = data.getData();
+            String path = getRealPathFromURI2(uri);
+            shortTip("视频获取成功");
+            File file = new File(path);
+
+//            MediaMetadataRetriever mmr = new MediaMetadataRetriever();//实例化MediaMetadataRetriever对象
+//            mmr.setDataSource(file.getAbsolutePath());
+//            Bitmap bitmap = mmr.getFrameAtTime();//获得视频第一帧的Bitmap对象
+//            String duration = mmr.extractMetadata(android.media.MediaMetadataRetriever.METADATA_KEY_DURATION);//时长(毫秒)
+//            int int_duration = Integer.parseInt(duration);
+//            if (int_duration > 11000) {
+//                shortTip("视频时长已超过10秒，请重新选择");
+//            } else {
+//                shortTip("视频上传成功");
+//            }
         }
     }
 
@@ -144,11 +141,24 @@ public class UploadVideoVrActivity extends BaseActivity {
         String res = null;
         String[] proj = {MediaStore.Images.Media.DATA};
         Cursor cursor = getContentResolver().query(contentUri, proj, null, null, null);
-        if (cursor.moveToFirst()) {
-            int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
-            res = cursor.getString(column_index);
+        if (cursor != null) {
+            if (cursor.moveToFirst()) {
+                int column_index = cursor.getColumnIndexOrThrow(MediaStore.Images.Media.DATA);
+                res = cursor.getString(column_index);
+            }
+            cursor.close();
         }
-        cursor.close();
+        return res;
+    }
+
+    public String getRealPathFromURI2(Uri contentUri) {
+        String res = null;
+        Cursor cursor = getContentResolver().query(contentUri, null, null, null, null);
+        if (cursor != null) {
+            cursor.moveToFirst();
+            res = cursor.getString(1); // 视频文件路径
+            cursor.close();
+        }
         return res;
     }
 }

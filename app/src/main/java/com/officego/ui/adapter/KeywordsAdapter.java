@@ -50,7 +50,7 @@ public class KeywordsAdapter extends CommonListAdapter<SearchListBean.DataBean> 
             searchHtmlTextView(tvBusiness, bean.getDistrict().toString() + " · " + bean.getBusiness().toString());
         }
         searchHtmlTextView(tvLocation, bean.getAddress());
-        holder.setText(R.id.tv_price, "¥" + bean.getDayPrice() + (bean.getBuildType() == Constants.TYPE_BUILDING ? "m²/天起" : "位/月起"));
+        holder.setText(R.id.tv_price, "¥" + bean.getDayPrice() + (bean.getBuildType() == Constants.TYPE_BUILDING ? "/m²/天起" : "/位/月起"));
         holder.itemView.setOnClickListener(v -> {
             if (listener != null) {
                 listener.searchListItemOnClick(bean);

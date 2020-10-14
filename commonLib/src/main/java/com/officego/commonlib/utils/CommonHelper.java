@@ -24,6 +24,7 @@ import android.text.TextUtils;
 import android.util.TypedValue;
 import android.view.Display;
 import android.view.View;
+import android.view.ViewGroup;
 import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.EditText;
@@ -476,6 +477,13 @@ public class CommonHelper {
         view.setLayoutParams(params);
     }
 
+    //RelativeLayout 设置布局间距状态栏的距离
+    public static void setViewGroupLayoutParams(Context context, View view) {
+        ViewGroup.LayoutParams params = view.getLayoutParams();
+        params.width = RelativeLayout.LayoutParams.MATCH_PARENT;
+        params.height = (int) (CommonHelper.statusHeight(context) + context.getResources().getDimension(R.dimen.dp_60));
+        view.setLayoutParams(params);
+    }
 
     //整数相除 保留一位小数
     public static float digits(int a, int b) {
