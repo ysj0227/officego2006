@@ -23,7 +23,9 @@ import androidx.viewpager.widget.ViewPager;
 import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.location.LocationUtils;
 import com.officego.ui.login.LoginActivity_;
 
 import org.androidannotations.annotations.AfterViews;
@@ -50,6 +52,8 @@ public class LeadPagesActivity extends BaseActivity {
 
     @AfterViews
     protected void init() {
+        LocationUtils.getInstance().initLocation(context);
+        LocationUtils.getInstance().startLocation();
         StatusBarUtils.setStatusBarFullTransparent(this);
         mPager.setAdapter(new ViewPagerAdapter(this));
         point1.setChecked(true);
@@ -163,5 +167,9 @@ public class LeadPagesActivity extends BaseActivity {
             }
         }
     }
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        LocationUtils.getInstance().destroyLocation();
+    }
 }

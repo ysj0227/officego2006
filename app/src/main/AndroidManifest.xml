@@ -51,6 +51,10 @@
     <!--    三星发布权限-->
     <uses-permission android:name="com.samsung.android.providers.context.permission.WRITE_USE_APP_FEATURE_SURVEY" />
 
+    <!-- huawei setting logo未读数量权限-->
+    <uses-permission android:name="com.huawei.android.launcher.permission.READ_SETTINGS" />
+    <uses-permission android:name="com.huawei.android.launcher.permission.WRITE_SETTINGS" />
+
     <!-- 小米 push配置开始 < -->
     <permission
         android:name="com.officego.permission.MIPUSH_RECEIVE"
