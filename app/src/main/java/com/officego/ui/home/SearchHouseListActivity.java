@@ -171,6 +171,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
                 decoration, houseTags, sort, searchKeywords);
     }
 
+    @SuppressLint("ClickableViewAccessibility")
     private void initRefresh() {
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setProgressViewOffset(true, -20, 100);
@@ -185,6 +186,8 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
                 loadingMoreList();
             }
         });
+        //解决当下拉刷新快速滑动crash问题
+        rvHouse.setOnTouchListener((view, motionEvent) -> mSwipeRefreshLayout != null && mSwipeRefreshLayout.isRefreshing());
     }
 
     //搜索
