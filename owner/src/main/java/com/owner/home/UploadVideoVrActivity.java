@@ -21,7 +21,7 @@ import java.io.File;
  * Created by shijie
  * Date 2020/10/13
  **/
-@EActivity(resName = "activity_upload_video_vr")
+@EActivity(resName = "activity_home_upload_video_vr")
 public class UploadVideoVrActivity extends BaseActivity {
     @AfterViews
     void init() {

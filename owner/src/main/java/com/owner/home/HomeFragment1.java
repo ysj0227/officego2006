@@ -310,11 +310,6 @@ public class HomeFragment1 extends BaseMvpFragment<HomePresenter> implements Hom
         }
     }
 
-    @Override
-    public void userInfoFail(int code, String msg) {
-
-    }
-
     // 0待审核1审核通过2审核未通过
     private boolean isIdentity(UserOwnerBean mUserInfo) {
         if (mUserInfo != null) {

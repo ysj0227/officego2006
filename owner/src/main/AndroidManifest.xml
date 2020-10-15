@@ -95,9 +95,14 @@
             android:name=".zxing.ScanCompleteActivity_"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-        <activity android:name=".home.UploadVideoVrActivity_"
+        <activity
+            android:name=".home.UploadVideoVrActivity_"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".home.HouseAddActivity_"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

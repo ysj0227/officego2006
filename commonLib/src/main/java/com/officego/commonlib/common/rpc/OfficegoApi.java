@@ -4,11 +4,13 @@ import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.VersionBean;
 import com.officego.commonlib.common.model.ChatHouseBean;
 import com.officego.commonlib.common.model.ChatListBean;
+import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.commonlib.common.model.ExchangeContactsBean;
 import com.officego.commonlib.common.model.FirstChatBean;
 import com.officego.commonlib.common.model.IdentitychattedMsgBean;
 import com.officego.commonlib.common.model.RongUserInfoBean;
 import com.officego.commonlib.common.rpc.request.ChatInterface;
+import com.officego.commonlib.common.rpc.request.DirectoryInterface;
 import com.officego.commonlib.common.rpc.request.LicenceInterface;
 import com.officego.commonlib.common.rpc.request.MineMsgInterface;
 import com.officego.commonlib.common.rpc.request.ScheduleInterface;
@@ -158,7 +160,7 @@ public class OfficegoApi {
                                           RetrofitCallback<Object> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
-        map.put("identityType", requestBody( ""));
+        map.put("identityType", requestBody(""));
         map.put("id", requestBody(id + ""));
         map.put("licenceId", requestBody(licenceId + ""));
         map.put("auditStatus", requestBody(auditStatus + ""));
@@ -201,4 +203,57 @@ public class OfficegoApi {
                 .getChatList(map)
                 .enqueue(callback);
     }
+
+    /**
+     * 获取房源特色
+     *
+     * @param callback
+     */
+    public void getHouseUnique(RetrofitCallback<List<DirectoryBean.DataBean>> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("code", requestBody("houseUnique"));
+        OfficegoRetrofitClient.getInstance().create(DirectoryInterface.class)
+                .getDictionary(map)
+                .enqueue(callback);
+    }
+
+    /**
+     * 装修类型
+     *
+     * @param callback
+     */
+    public void getDecoratedType(RetrofitCallback<List<DirectoryBean.DataBean>> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("code", requestBody("decoratedType"));
+        OfficegoRetrofitClient.getInstance().create(DirectoryInterface.class)
+                .getDictionary(map)
+                .enqueue(callback);
+    }
+
+    /**
+     * 基础服务
+     *
+     * @param callback
+     */
+    public void getBasicServices(RetrofitCallback<List<DirectoryBean.DataBean>> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("code", requestBody("basicServices"));
+        OfficegoRetrofitClient.getInstance().create(DirectoryInterface.class)
+                .getDictionary(map)
+                .enqueue(callback);
+    }
+
+    /**
+     * 企业服务
+     *
+     * @param callback
+     */
+    public void getCompanyService(RetrofitCallback<List<DirectoryBean.DataBean>> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("code", requestBody("companyService"));
+        OfficegoRetrofitClient.getInstance().create(DirectoryInterface.class)
+                .getDictionary(map)
+                .enqueue(callback);
+    }
+
 }

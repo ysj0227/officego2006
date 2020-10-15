@@ -20,10 +20,8 @@ import com.bumptech.glide.Glide;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
 import com.officego.commonlib.common.model.DirectoryBean;
-import com.officego.commonlib.utils.log.LogCat;
 import com.owner.R;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -36,17 +34,17 @@ import java.util.Map;
  **/
 public class ServiceSelectedDialog {
     private Context context;
+    private String mTitle;
+    private List<DirectoryBean.DataBean> list;
 
-    public ServiceSelectedDialog(Context context) {
+    public ServiceSelectedDialog(Context context, String title, List<DirectoryBean.DataBean> list) {
         this.context = context;
-        shareWx(context);
+        this.mTitle = title;
+        this.list = list;
+        serviceDialog(context);
     }
 
-    private void shareWx(Context context) {
-        shareDialog(context);
-    }
-
-    private void shareDialog(Context context) {
+    private void serviceDialog(Context context) {
         Dialog dialog = new Dialog(context, R.style.BottomDialog);
         View viewLayout = LayoutInflater.from(context).inflate(R.layout.dialog_service_select, null);
         dialog.setContentView(viewLayout);
@@ -64,27 +62,17 @@ public class ServiceSelectedDialog {
         lp.height = context.getResources().getDimensionPixelSize(R.dimen.dp_400);
         dialogWindow.setAttributes(lp);
         handleLayout(viewLayout);
-        viewLayout.findViewById(R.id.iv_exit).setOnClickListener(v -> dialog.dismiss());
+        viewLayout.findViewById(R.id.rl_exit).setOnClickListener(v -> dialog.dismiss());
         dialog.setCancelable(true);
         dialog.show();
     }
 
     private void handleLayout(View viewLayout) {
         TextView title = viewLayout.findViewById(R.id.tv_title);
+        title.setText(mTitle);
         RecyclerView rvService = viewLayout.findViewById(R.id.rv_service);
         rvService.setLayoutManager(new GridLayoutManager(context, 2));
-
-        List<DirectoryBean.DataBean> serviceList = new ArrayList<>();
-        DirectoryBean.DataBean bean;
-        for (int i = 0; i < 6; i++) {
-            bean = new DirectoryBean.DataBean();
-            bean.setDictValue(i);
-            bean.setDictImg("https://img.officego.com/dictionary/1591169908538.png");
-            bean.setDictCname(i == 0 ? "办公家具" : "设备发电机");
-            serviceList.add(bean);
-        }
-        rvService.setAdapter(new ServiceAdapter(context, serviceList));
-        title.setText("基础服务");
+        rvService.setAdapter(new ServiceAdapter(context, list));
     }
 
     class ServiceAdapter extends CommonListAdapter<DirectoryBean.DataBean> {
@@ -105,10 +93,9 @@ public class ServiceSelectedDialog {
         @Override
         public void convert(ViewHolder holder, final DirectoryBean.DataBean bean) {
             CheckBox cbName = holder.getView(R.id.cb_name);
-            TextView text = holder.getView(R.id.tv_service_logo_text);
             ImageView imageView = holder.getView(R.id.iv_service_logo);
-            Glide.with(context).load(bean.getDictImg()).into(imageView);
-            text.setText(bean.getDictCname());
+            Glide.with(context).load(bean.getDictImgBlack()).into(imageView);
+            cbName.setText(bean.getDictCname());
             if (mMapLogo != null) {
                 cbName.setChecked(mMapLogo.containsKey(bean.getDictValue()));
             }
@@ -121,7 +108,6 @@ public class ServiceSelectedDialog {
                     mMapLogo.remove(bean.getDictValue());
                 }
                 mStrLogo = getKey(mMapLogo);
-                LogCat.e("TAG", "service=" + mStrLogo);
             });
         }
 

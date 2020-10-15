@@ -13,7 +13,6 @@ public interface HomeContract {
 
         void userInfoSuccess(UserOwnerBean data);
 
-        void userInfoFail(int code, String msg);
     }
 
     interface Presenter {

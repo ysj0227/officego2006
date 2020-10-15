@@ -36,6 +36,8 @@ public class DirectoryBean {
         private String dictImg;
         @SerializedName("dictCname")
         private String dictCname;
+        @SerializedName("dictImgBlack")
+        private String dictImgBlack;
 
         public int getDictValue() {
             return dictValue;
@@ -59,6 +61,14 @@ public class DirectoryBean {
 
         public void setDictCname(String dictCname) {
             this.dictCname = dictCname;
+        }
+
+        public String getDictImgBlack() {
+            return dictImgBlack;
+        }
+
+        public void setDictImgBlack(String dictImgBlack) {
+            this.dictImgBlack = dictImgBlack;
         }
     }
 }

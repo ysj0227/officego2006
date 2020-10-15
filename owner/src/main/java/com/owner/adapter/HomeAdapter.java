@@ -2,15 +2,13 @@ package com.owner.adapter;
 
 import android.content.Context;
 import android.view.View;
-import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.constraintlayout.widget.ConstraintLayout;
-
+import com.bumptech.glide.Glide;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
-import com.officego.commonlib.utils.CommonHelper;
+import com.officego.commonlib.utils.GlideUtils;
+import com.officego.commonlib.view.RoundImageView;
 import com.owner.R;
 
 import java.util.List;
@@ -53,6 +51,10 @@ public class HomeAdapter extends CommonListAdapter<String> {
     @Override
     public void convert(ViewHolder holder, String s) {
         onClick(holder);
+        RoundImageView ivHouse = holder.getView(R.id.iv_house);
+        Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).
+                load("https://img.officego.com/building/1591868939785.jpg?x-oss-process=style/small").into(ivHouse);
+
     }
 
     private void onClick(ViewHolder holder) {

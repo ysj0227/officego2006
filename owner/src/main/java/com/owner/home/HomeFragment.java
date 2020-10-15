@@ -10,9 +10,10 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,6 +29,7 @@ import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
 import com.owner.adapter.HomeAdapter;
+import com.owner.dialog.HomeMoreDialog;
 import com.owner.dialog.ServiceSelectedDialog;
 import com.owner.home.contract.HomeContract;
 import com.owner.home.presenter.HomePresenter;
@@ -55,13 +57,20 @@ import static com.officego.commonlib.utils.PermissionUtils.REQ_PERMISSIONS_CAMER
 @EFragment(resName = "activity_home")
 public class HomeFragment extends BaseMvpFragment<HomePresenter>
         implements HomeContract.View, HomeAdapter.HomeItemListener {
-
     @ViewById(resName = "rl_title")
     RelativeLayout rlTitle;
     @ViewById(resName = "rv_view")
     RecyclerView rvView;
     @ViewById(resName = "iv_scan")
     ImageView tvScan;
+    @ViewById(resName = "tv_no_data")
+    TextView tvNoData;
+    @ViewById(resName = "rl_exception")
+    RelativeLayout rlException;
+    @ViewById(resName = "btn_again")
+    Button btnAgain;
+    private List<String> list = new ArrayList<>();
+    private HomeAdapter homeAdapter;
 
     @AfterViews
     void init() {
@@ -80,13 +89,16 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     }
 
     private void test() {
-        List<String> list = new ArrayList<>();
         for (int i = 0; i < 8; i++) {
             list.add("");
         }
-        HomeAdapter homeAdapter = new HomeAdapter(mActivity, list);
-        rvView.setAdapter(homeAdapter);
-        homeAdapter.setListener(this);
+        if (homeAdapter == null) {
+            homeAdapter = new HomeAdapter(mActivity, list);
+            rvView.setAdapter(homeAdapter);
+            homeAdapter.setListener(this);
+        } else {
+            homeAdapter.notifyDataSetChanged();
+        }
     }
 
     //扫一扫
@@ -123,17 +135,27 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         }
     }
 
-    @Override
-    public void userInfoFail(int code, String msg) {
-
-    }
-
     // 0待审核1审核通过2审核未通过
     private boolean isIdentity(UserOwnerBean mUserInfo) {
         if (mUserInfo != null) {
             return mUserInfo.getAuditStatus() != 0 && mUserInfo.getAuditStatus() != 1;
         }
         return false;
+    }
+
+    @Override
+    public void itemPreview() {
+
+    }
+
+    @Override
+    public void itemEdit() {
+        HouseAddActivity_.intent(getContext()).start();
+    }
+
+    @Override
+    public void itemMore() {
+        new HomeMoreDialog(mActivity);
     }
 
     @Override
@@ -149,6 +171,27 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
                 mPresenter.getUserInfo();
             }
         }
+    }
+
+    private void noData() {
+        tvNoData.setVisibility(View.VISIBLE);
+        rlException.setVisibility(View.GONE);
+        list.clear();
+        if (homeAdapter != null) {
+            homeAdapter.notifyDataSetChanged();
+        }
+    }
+
+    private void hasData() {
+        tvNoData.setVisibility(View.GONE);
+        rlException.setVisibility(View.GONE);
+        rvView.setVisibility(View.VISIBLE);
+    }
+
+    private void netException() {
+        tvNoData.setVisibility(View.GONE);
+        rlException.setVisibility(View.VISIBLE);
+        rvView.setVisibility(View.GONE);
     }
 
     //扫一扫
@@ -214,18 +257,4 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-    @Override
-    public void itemPreview() {
-
-    }
-
-    @Override
-    public void itemEdit() {
-        new ServiceSelectedDialog(mActivity);
-    }
-
-    @Override
-    public void itemMore() {
-
-    }
 }

@@ -76,4 +76,30 @@
         app:layout_constraintEnd_toEndOf="parent"
         tools:ignore="ContentDescription" />
 
+    <TextView
+        android:id="@+id/tv_no_data"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:drawableTop="@mipmap/ic_empty"
+        android:drawablePadding="@dimen/dp_6"
+        android:gravity="center"
+        android:text="@string/text_current_no_data"
+        android:textColor="@color/text_caption"
+        android:textSize="@dimen/sp_12"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rl_title" />
+
+    <include
+        layout="@layout/include_exception"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/c_white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rl_title" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>

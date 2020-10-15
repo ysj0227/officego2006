@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dp_400"
+    android:layout_height="@dimen/dp_320"
     android:background="@drawable/bg_shape_white">
 
     <RelativeLayout
@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="基础服务"
+            android:text="更多操作"
             android:textColor="@color/text_33"
             android:textSize="@dimen/sp_16" />
 
@@ -42,16 +42,51 @@
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_0_5"
             android:layout_alignParentBottom="true"
-            android:background="@color/common_divider" />
+            android:background="@color/common_divider"
+            android:visibility="gone" />
     </RelativeLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_service"
+    <TextView
+        android:id="@+id/tv_off"
+        style="@style/marginLeftRight20"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/rl_title"
-        android:layout_marginTop="@dimen/dp_10"
-        android:layout_marginBottom="@dimen/dp_70" />
+        android:layout_marginTop="@dimen/dp_15"
+        android:background="@drawable/line_bottom_gray"
+        android:gravity="center"
+        android:paddingBottom="@dimen/dp_15"
+        android:text="下架"
+        android:textColor="@color/text_33"
+        android:textSize="@dimen/sp_15" />
+
+    <TextView
+        android:id="@+id/tv_delete"
+        style="@style/marginLeftRight20"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_off"
+        android:layout_marginTop="@dimen/dp_15"
+        android:background="@drawable/line_bottom_gray"
+        android:gravity="center"
+        android:paddingBottom="@dimen/dp_15"
+        android:text="删除"
+        android:textColor="@color/text_33"
+        android:textSize="@dimen/sp_15" />
+
+    <TextView
+        android:id="@+id/tv_share"
+        style="@style/marginLeftRight20"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_delete"
+        android:layout_marginTop="@dimen/dp_15"
+        android:background="@drawable/line_bottom_gray"
+        android:gravity="center"
+        android:paddingBottom="@dimen/dp_15"
+        android:text="分享"
+        android:textColor="@color/text_33"
+        android:textSize="@dimen/sp_15" />
 
     <Button
         android:id="@+id/btn_cancel"
@@ -64,7 +99,7 @@
         android:layout_marginBottom="@dimen/dp_20"
         android:background="@drawable/btn_common_bg_primary"
         android:gravity="center"
-        android:text="@string/str_confirm"
+        android:text="@string/sm_cancel"
         android:textColor="@color/white"
         android:textSize="@dimen/sp_15" />
 

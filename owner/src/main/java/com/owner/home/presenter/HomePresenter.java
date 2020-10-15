@@ -35,7 +35,6 @@ public class HomePresenter extends BasePresenter<HomeContract.View>
                 LogCat.e(TAG, "getUserInfo onFail code=" + code + "  msg=" + msg);
                 if (isViewAttached()) {
                     mView.hideLoadingDialog();
-                    mView.userInfoFail(code, msg);
                     if (code == Constants.DEFAULT_ERROR_CODE) {
                         mView.shortTip(msg);
                     }
