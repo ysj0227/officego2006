@@ -48,6 +48,7 @@ import java.net.SocketException;
 import java.text.DecimalFormat;
 import java.util.Enumeration;
 import java.util.Locale;
+import java.util.Map;
 import java.util.Objects;
 
 import static android.content.Context.TELEPHONY_SERVICE;
@@ -546,5 +547,20 @@ public class CommonHelper {
         textView.invalidate();
         textView.setText(text);
         textView.setTextColor(ContextCompat.getColor(context, R.color.common_blue_main));
+    }
+
+    public static String getKey(Map<Integer, String> map) {
+        StringBuilder key = new StringBuilder();
+        for (Map.Entry<Integer, String> entry : map.entrySet()) {
+            if (map.size() == 1) {
+                key.append(entry.getKey());
+            } else {
+                key.append(entry.getKey()).append(",");
+            }
+        }
+        if (map.size() > 1) {
+            key = key.replace(key.length() - 1, key.length(), "");
+        }
+        return key.toString();
     }
 }

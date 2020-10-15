@@ -2,6 +2,7 @@ package com.officego.commonlib.view.widget;
 
 import android.content.Context;
 import android.content.res.TypedArray;
+import android.graphics.drawable.Drawable;
 import android.text.TextUtils;
 import android.util.AttributeSet;
 import android.util.TypedValue;
@@ -87,10 +88,9 @@ public class SettingItemLayout extends FrameLayout {
         //标记图片是否显示
         int markType = a.getInteger(R.styleable.SettingItemLayout_leftMarkShow, DIVIDER_VISIBLE);
         if (a.hasValue(R.styleable.SettingItemLayout_leftMarkShow)) {
-            ivMarkImage.setVisibility(VISIBLE);
-            ivMarkImage.setVisibility(markType == DIVIDER_VISIBLE ? VISIBLE : GONE);
+            ivMarkImage.setVisibility(markType == DIVIDER_VISIBLE ? VISIBLE : INVISIBLE);
         } else {
-            ivMarkImage.setVisibility(GONE);
+            ivMarkImage.setVisibility(INVISIBLE);
         }
 
         //设置中间文本内容
@@ -103,6 +103,15 @@ public class SettingItemLayout extends FrameLayout {
             tvContent.setVisibility(VISIBLE);
             tvContent.setText(centerContext);
         }
+//        //文本是否显示
+//        int centerType = a.getInteger(R.styleable.SettingItemLayout_showCenterText, DIVIDER_VISIBLE);
+//        if (a.hasValue(R.styleable.SettingItemLayout_showCenterText)) {
+//            tvContent.setVisibility(VISIBLE);
+//            editTextContent.setVisibility(GONE);
+//            tvContent.setVisibility(centerType == DIVIDER_VISIBLE ? VISIBLE : GONE);
+//        } else {
+//            tvContent.setVisibility(GONE);
+//        }
 
         //输入文本EditText
         String etContent = a.getString(R.styleable.SettingItemLayout_editTextContent);
@@ -131,56 +140,79 @@ public class SettingItemLayout extends FrameLayout {
             int defaultEditTextColor = 0xFFD8D8D8;
             editTextContent.setHintTextColor(a.getColor(R.styleable.SettingItemLayout_editTextHintColor, defaultEditTextColor));
         }
+        //是否显示编辑框
+        int editTextType = a.getInteger(R.styleable.SettingItemLayout_showEditText, DIVIDER_GONE);
+        if (a.hasValue(R.styleable.SettingItemLayout_showEditText)) {
+            editTextContent.setVisibility(VISIBLE);
+            editTextContent.setVisibility(editTextType == DIVIDER_VISIBLE ? VISIBLE : GONE);
+        } else {
+            editTextContent.setVisibility(GONE);
+        }
 
         //右侧箭头图片是否显示
         int rightArrowType = a.getInteger(R.styleable.SettingItemLayout_rightArrowShow, DIVIDER_VISIBLE);
         ivArrowRight.setVisibility(rightArrowType == DIVIDER_VISIBLE ? VISIBLE : GONE);
 
         //右侧设置其他图片是否显示
-        int rightOtherType = a.getInteger(R.styleable.SettingItemLayout_rightOtherImageViewShow, DIVIDER_VISIBLE);
-        ivOtherRight.setVisibility(rightOtherType == DIVIDER_VISIBLE ? VISIBLE : GONE);
-
+        int rightOtherType = a.getInteger(R.styleable.SettingItemLayout_rightOtherImageViewShow, DIVIDER_GONE);
+        if (a.hasValue(R.styleable.SettingItemLayout_rightOtherImageViewShow)) {
+            ivOtherRight.setVisibility(rightOtherType == DIVIDER_VISIBLE ? VISIBLE : GONE);
+        }else {
+            ivOtherRight.setVisibility(GONE);
+        }
+        //设置图片背景
+        Drawable backImage = a.getDrawable(R.styleable.SettingItemLayout_rightImageBackground);
+        if (a.hasValue(R.styleable.SettingItemLayout_rightImageBackground)) {
+            ivOtherRight.setVisibility(VISIBLE);
+            ivOtherRight.setImageDrawable(backImage);
+        }
         // 设置分割线
-        int topDividerType = a.getInteger(R.styleable.SettingItemLayout_showDividerTop, DIVIDER_VISIBLE);
+        int topDividerType = a.getInteger(R.styleable.SettingItemLayout_showDividerTop, DIVIDER_GONE);
         int bottomDividerType = a.getInteger(R.styleable.SettingItemLayout_showDividerBottom, DIVIDER_VISIBLE);
         if (a.hasValue(R.styleable.SettingItemLayout_showDividerTop)) {
-            vTopDivider.setVisibility(VISIBLE);
             vTopDivider.setVisibility(topDividerType == DIVIDER_VISIBLE ? VISIBLE : GONE);
         } else {
             vTopDivider.setVisibility(GONE);
         }
         if (a.hasValue(R.styleable.SettingItemLayout_showDividerBottom)) {
-            vBottomDivider.setVisibility(VISIBLE);
             vBottomDivider.setVisibility(bottomDividerType == DIVIDER_VISIBLE ? VISIBLE : GONE);
         } else {
             vBottomDivider.setVisibility(GONE);
         }
-
         a.recycle();
     }
 
 
-    private TextView getTitleView() {
+    public TextView getTitleView() {
         return tvTitle;
     }
 
-    private ImageView getMarkImage() {
+    public ImageView getMarkImage() {
         return ivMarkImage;
     }
 
-    private TextView getContextView() {
+    public TextView getContextView() {
         return tvContent;
     }
 
-    private EditText getEditTextView() {
+    public EditText getEditTextView() {
         return editTextContent;
     }
 
-    private ImageView getRightArrowImage() {
+    public ImageView getRightArrowImage() {
         return ivArrowRight;
     }
 
-    private ImageView getOtherImage() {
+    public ImageView getOtherImage() {
         return ivOtherRight;
+    }
+
+    public void setCenterText(int resId) {
+        tvContent.setVisibility(VISIBLE);
+        tvContent.setText(resId);
+    }
+    public void setCenterText(String resId) {
+        tvContent.setVisibility(VISIBLE);
+        tvContent.setText(resId);
     }
 }

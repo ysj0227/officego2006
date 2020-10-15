@@ -42,12 +42,12 @@
 
             <ImageView
                 android:id="@+id/iv_add"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="@dimen/dp_30"
+                android:layout_height="@dimen/dp_30"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
-                android:layout_marginEnd="@dimen/dp_20"
-                android:background="@mipmap/ic_scan_white"
+                android:layout_marginEnd="@dimen/dp_18"
+                android:background="@mipmap/ic_add_white"
                 tools:ignore="ContentDescription" />
         </RelativeLayout>
     </RelativeLayout>

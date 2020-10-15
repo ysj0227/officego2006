@@ -2,7 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <com.officego.commonlib.view.TitleBarView
         android:id="@+id/title_bar"
@@ -18,31 +19,191 @@
         app:titleText="添加房源"
         app:titleTextColor="@color/white" />
 
-    <Button
-        android:id="@+id/btn_company_service"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/title_bar"
-        android:layout_marginTop="@dimen/dp_60"
-        android:text="企业服务" />
-
-    <Button
-        android:id="@+id/btn_base_service"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/btn_company_service"
-        android:text="基础服务" />
-
-
-    <com.officego.commonlib.view.widget.SettingItemLayout
+    <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_60"
-        android:layout_below="@id/btn_base_service"
-        app:leftMarkShow="visible"
-        app:leftText="区域"
-        app:rightArrowShow="visible"
-        app:rightOtherImageViewShow="gone"
-        app:showDividerBottom="visible" />
+        android:layout_height="wrap_content"
+        android:layout_below="@id/title_bar">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <Button
+                android:id="@+id/btn_company_service"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_60"
+                android:text="企业服务" />
+
+            <Button
+                android:id="@+id/btn_base_service"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/btn_company_service"
+                android:text="基础服务" />
+
+            <com.officego.commonlib.view.widget.SettingItemLayout
+                android:id="@+id/sil_area"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/btn_base_service"
+                app:leftMarkShow="visible"
+                app:leftText="区域"
+                app:rightOtherImageViewShow="gone"
+                app:showDividerBottom="visible" />
+
+            <com.officego.commonlib.view.widget.SettingItemLayout
+                android:id="@+id/sil_address"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sil_area"
+                app:leftMarkShow="visible"
+                app:leftText="详细地址"
+                app:rightOtherImageViewShow="gone"
+                app:showCenterText="gone"
+                app:showDividerBottom="visible"
+                app:showEditText="visible" />
+
+            <com.officego.commonlib.view.widget.SettingItemLayout
+                android:id="@+id/sil_complete_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sil_address"
+                app:leftMarkShow="visible"
+                app:leftText="竣工时间"
+                app:rightArrowShow="gone"
+                app:rightImageBackground="@mipmap/ic_calender"
+                app:rightOtherImageViewShow="visible"
+                app:showCenterText="visible"
+                app:showDividerBottom="visible"
+                app:showEditText="gone" />
+
+            <com.officego.commonlib.view.widget.SettingItemLayout
+                android:id="@+id/sil_recomplete_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sil_complete_time"
+                app:leftMarkShow="invisible"
+                app:leftText="翻新时间"
+                app:rightArrowShow="gone"
+                app:rightImageBackground="@mipmap/ic_calender"
+                app:rightOtherImageViewShow="visible"
+                app:showCenterText="visible"
+                app:showDividerBottom="visible"
+                app:showEditText="gone" />
+
+            <com.officego.commonlib.view.widget.SettingItemLayout
+                android:id="@+id/sil_conditioned"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sil_recomplete_time"
+                app:centerText="中央空调"
+                app:leftMarkShow="visible"
+                app:leftText="空调类型"
+                app:rightOtherImageViewShow="gone"
+                app:showCenterText="visible"
+                app:showDividerBottom="visible" />
+
+            <com.officego.commonlib.view.widget.SettingItemLayout
+                android:id="@+id/sil_join_company"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sil_recomplete_time"
+                app:editTextContent="企业"
+                app:leftMarkShow="visible"
+                app:leftText="入住企业"
+                app:rightArrowShow="gone"
+                app:rightImageBackground="@mipmap/ic_add_blue"
+                app:rightOtherImageViewShow="visible"
+                app:showCenterText="gone"
+                app:showDividerBottom="visible"
+                app:showEditText="visible" />
 
 
+            <RelativeLayout
+                android:id="@+id/rl_net"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sil_join_company"
+                android:layout_marginStart="@dimen/dp_16"
+                android:layout_marginTop="@dimen/dp_15"
+                android:layout_marginEnd="@dimen/dp_16">
+
+                <TextView
+                    android:id="@+id/tv_net"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="网络"
+                    android:textColor="@color/text_66"
+                    android:textSize="@dimen/sp_16" />
+
+                <CheckBox
+                    android:id="@+id/rb_dx"
+                    android:layout_width="@dimen/dp_102"
+                    android:layout_height="@dimen/dp_38"
+                    android:layout_below="@+id/tv_net"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:background="@drawable/button_text_selector"
+                    android:button="@null"
+                    android:checked="false"
+                    android:gravity="center"
+                    android:text="电信"
+                    android:textColor="@color/text_selector_blue_black" />
+
+                <CheckBox
+                    android:id="@+id/rb_lt"
+                    android:layout_width="@dimen/dp_102"
+                    android:layout_height="@dimen/dp_38"
+                    android:layout_below="@+id/tv_net"
+                    android:layout_centerHorizontal="true"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:background="@drawable/button_text_selector"
+                    android:button="@null"
+                    android:checked="false"
+                    android:gravity="center"
+                    android:text="联通"
+                    android:textColor="@color/text_selector_blue_black" />
+
+                <CheckBox
+                    android:id="@+id/rb_yd"
+                    android:layout_width="@dimen/dp_102"
+                    android:layout_height="@dimen/dp_38"
+                    android:layout_below="@+id/tv_net"
+                    android:layout_alignParentRight="true"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:background="@drawable/button_text_selector"
+                    android:button="@null"
+                    android:checked="false"
+                    android:gravity="center"
+                    android:text="移动"
+                    android:textColor="@color/text_selector_blue_black" />
+
+            </RelativeLayout>
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rl_net"
+                android:layout_marginStart="@dimen/dp_16"
+                android:layout_marginTop="@dimen/dp_15"
+                android:layout_marginEnd="@dimen/dp_16">
+
+                <TextView
+                    android:id="@+id/tv_house_characteristic"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="特色"
+                    android:textColor="@color/text_66"
+                    android:textSize="@dimen/sp_16" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_house_characteristic"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_house_characteristic"
+                    android:layout_marginTop="@dimen/dp_18" />
+            </RelativeLayout>
+        </RelativeLayout>
+
+    </androidx.core.widget.NestedScrollView>
 </RelativeLayout>

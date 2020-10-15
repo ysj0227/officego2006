@@ -1,5 +1,4 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cl_container"
     android:layout_width="match_parent"
@@ -20,7 +19,7 @@
         android:layout_centerVertical="true"
         android:layout_marginStart="@dimen/dp_16"
         android:layout_marginTop="@dimen/dp_10"
-        android:textColor="@color/text_66_p50"
+        android:textColor="@color/text_66"
         android:textSize="@dimen/sp_16" />
 
     <ImageView
@@ -28,7 +27,7 @@
         android:layout_width="@dimen/dp_20"
         android:layout_height="@dimen/dp_20"
         android:layout_centerVertical="true"
-        android:layout_marginStart="@dimen/dp_6"
+        android:layout_marginStart="@dimen/dp_3"
         android:layout_toEndOf="@id/tv_title"
         android:background="@mipmap/ic_mark"
         android:visibility="visible"
@@ -39,27 +38,28 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginStart="@dimen/dp_16"
+        android:layout_marginStart="@dimen/dp_10"
         android:layout_marginTop="@dimen/dp_10"
         android:layout_toEndOf="@id/iv_mark_image"
         android:ellipsize="end"
         android:maxLines="1"
         android:textColor="@color/text_33"
         android:textSize="@dimen/sp_16"
-        android:visibility="gone" />
+        android:visibility="visible" />
 
     <com.officego.commonlib.view.ClearableEditText
         android:id="@+id/et_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
         android:layout_centerVertical="true"
-        android:layout_marginStart="@dimen/dp_16"
+        android:layout_marginStart="@dimen/dp_10"
         android:layout_marginTop="@dimen/dp_10"
-        android:layout_marginEnd="@dimen/dp_100"
+        android:layout_marginEnd="@dimen/dp_50"
         android:layout_toEndOf="@id/iv_mark_image"
+        android:gravity="center_vertical"
         android:background="@null"
         android:ellipsize="end"
-        android:maxLines="1"
+        android:singleLine="true"
         android:textColor="@color/text_33"
         android:textSize="@dimen/sp_16"
         tools:ignore="RelativeOverlap" />
@@ -76,23 +76,21 @@
         tools:ignore="ContentDescription" />
 
     <ImageView
-        android:visibility="gone"
         android:id="@+id/iv_other_right"
         android:layout_width="@dimen/dp_25"
         android:layout_height="@dimen/dp_25"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/dp_18"
+        android:visibility="gone"
         tools:ignore="ContentDescription" />
 
     <View
         android:id="@+id/bottom_divider"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="1px"
+        android:layout_alignParentBottom="true"
         android:background="@color/common_divider"
-        android:visibility="visible"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent" />
+        android:visibility="visible" />
 
 </RelativeLayout>
