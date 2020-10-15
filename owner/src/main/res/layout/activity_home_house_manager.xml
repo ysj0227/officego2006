@@ -19,10 +19,10 @@
         app:titleTextColor="@color/white" />
 
     <Button
-        android:layout_below="@id/title_bar"
         android:id="@+id/btn_company_service"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_below="@id/title_bar"
         android:layout_marginTop="@dimen/dp_60"
         android:text="企业服务" />
 
@@ -32,4 +32,17 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/btn_company_service"
         android:text="基础服务" />
+
+
+    <com.officego.commonlib.view.widget.SettingItemLayout
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        android:layout_below="@id/btn_base_service"
+        app:leftMarkShow="visible"
+        app:leftText="区域"
+        app:rightArrowShow="visible"
+        app:rightOtherImageViewShow="gone"
+        app:showDividerBottom="visible" />
+
+
 </RelativeLayout>
