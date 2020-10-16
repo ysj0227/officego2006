@@ -43,6 +43,7 @@
         android:layout_toEndOf="@id/iv_mark_image"
         android:ellipsize="end"
         android:maxLines="1"
+        android:textColorHint="@color/text_hint"
         android:textColor="@color/text_33"
         android:textSize="@dimen/sp_15"
         android:visibility="visible" />

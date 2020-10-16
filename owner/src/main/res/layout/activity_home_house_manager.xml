@@ -51,6 +51,7 @@
                 android:layout_below="@id/btn_base_service"
                 app:leftMarkShow="visible"
                 app:leftText="楼盘类型"
+                app:centerTextHint="请选择楼盘类型"
                 app:rightOtherImageViewShow="gone"
                 app:showDividerBottom="visible" />
 
@@ -191,10 +192,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sil_tier_height"
+                app:editTextHint="请填写物业公司名称"
+                app:editTextHintColor="@color/text_hint"
                 app:leftMarkShow="visible"
                 app:leftText="物业公司"
-                app:editTextHint="请填写物业公司名称"
-                app:editTextHintColor="@color/text_66_p50"
                 app:rightArrowShow="gone"
                 app:rightOtherImageViewShow="gone"
                 app:showCenterText="gone"

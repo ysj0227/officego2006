@@ -11,6 +11,7 @@ import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.widget.SettingItemLayout;
 import com.owner.adapter.HouseUniqueAdapter;
 import com.owner.adapter.JointCompanyAdapter;
+import com.owner.adapter.RecycleAdapter;
 import com.owner.home.contract.HouseContract;
 import com.owner.home.presenter.HousePresenter;
 import com.owner.identity.dialog.AreaDialog;
@@ -32,7 +33,7 @@ import java.util.List;
 @EActivity(resName = "activity_home_house_manager")
 public class AddBuildingActivity extends BaseMvpActivity<HousePresenter>
         implements HouseContract.View, YearDateDialog.SureClickListener,
-        AreaDialog.AreaSureListener, JointCompanyAdapter.JointCompanyListener {
+        AreaDialog.AreaSureListener {
     @ViewById(resName = "sil_complete_time")
     SettingItemLayout silCompleteTime;
     @ViewById(resName = "sil_recomplete_time")
@@ -47,8 +48,8 @@ public class AddBuildingActivity extends BaseMvpActivity<HousePresenter>
     private boolean isCompleteTime;//是否竣工时间
     private int district, business;//区域
 
-    private JointCompanyAdapter jointCompanyAdapter;
-    private List<JointCompanyBean> jointCompanyList = new ArrayList<>();//入住企业
+    private RecycleAdapter adapter;
+    private List<String> jointCompanyList = new ArrayList<String>();
 
     @AfterViews
     void init() {
@@ -66,10 +67,14 @@ public class AddBuildingActivity extends BaseMvpActivity<HousePresenter>
         rvHouseUnique.addItemDecoration(new SpaceItemDecoration(context, 3));
         //入住企业
         rvJoinCompany.setLayoutManager(new LinearLayoutManager(context));
-        jointCompanyList.add(new JointCompanyBean("", 0));
-        jointCompanyAdapter = new JointCompanyAdapter(context, jointCompanyList);
-        rvJoinCompany.setAdapter(jointCompanyAdapter);
-        jointCompanyAdapter.setListener(this);
+        jointCompanyList.add(0,"");
+        adapter = new RecycleAdapter(this, jointCompanyList);
+        rvJoinCompany.setAdapter(adapter);
+    }
+
+    @Click(resName = "sil_conditioned")
+    void conditionedOnClick() {
+//        adapter.addData(jointCompanyList.size());
     }
 
     @Click(resName = "sil_area")
@@ -115,16 +120,4 @@ public class AddBuildingActivity extends BaseMvpActivity<HousePresenter>
         silArea.setCenterText(area);
     }
 
-    @Override
-    public void addJointCompany(int pos, String contentText) {
-        jointCompanyList.get(pos).setCompanyText(contentText);
-        jointCompanyList.add(new JointCompanyBean("", 1));
-        jointCompanyAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void deleteJointCompany(int pos) {
-        jointCompanyList.remove(pos);
-        jointCompanyAdapter.notifyDataSetChanged();
-    }
 }

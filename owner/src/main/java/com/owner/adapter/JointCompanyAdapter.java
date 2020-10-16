@@ -14,6 +14,7 @@ import com.officego.commonlib.ViewHolder;
 import com.owner.R;
 import com.owner.identity.model.JointCompanyBean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -23,7 +24,7 @@ import java.util.List;
  **/
 public class JointCompanyAdapter extends CommonListAdapter<JointCompanyBean> {
     private Context context;
-    private List<JointCompanyBean> list;
+    private ArrayList<JointCompanyBean> list;
     private JointCompanyListener listener;
 
     public JointCompanyListener getListener() {
@@ -41,7 +42,7 @@ public class JointCompanyAdapter extends CommonListAdapter<JointCompanyBean> {
     }
 
     @SuppressLint("UseSparseArrays")
-    public JointCompanyAdapter(Context context, List<JointCompanyBean> list) {
+    public JointCompanyAdapter(Context context, ArrayList<JointCompanyBean> list) {
         super(context, R.layout.item_home_joint_company, list);
         this.context = context;
         this.list = list;

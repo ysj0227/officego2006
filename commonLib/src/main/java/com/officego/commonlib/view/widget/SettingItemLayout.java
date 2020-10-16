@@ -105,6 +105,15 @@ public class SettingItemLayout extends FrameLayout {
             tvContent.setVisibility(VISIBLE);
             tvContent.setText(centerContext);
         }
+        //中间提示颜色和文本
+        if (a.hasValue(R.styleable.SettingItemLayout_centerTextHint)) {
+            tvContent.setHint(a.getString(R.styleable.SettingItemLayout_centerTextHint));
+        }
+        if (a.hasValue(R.styleable.SettingItemLayout_centerTextHintColor)) {
+            int defaultEditTextColor = 0xFFD8D8D8;
+            tvContent.setHintTextColor(a.getColor(R.styleable.SettingItemLayout_centerTextHintColor, defaultEditTextColor));
+        }
+
 //        //文本是否显示
 //        int centerType = a.getInteger(R.styleable.SettingItemLayout_showCenterText, DIVIDER_VISIBLE);
 //        if (a.hasValue(R.styleable.SettingItemLayout_showCenterText)) {
@@ -136,7 +145,7 @@ public class SettingItemLayout extends FrameLayout {
         }
         //提示颜色和文本
         if (a.hasValue(R.styleable.SettingItemLayout_editTextHint)) {
-            editTextContent.setText(a.getString(R.styleable.SettingItemLayout_editTextHint));
+            editTextContent.setHint(a.getString(R.styleable.SettingItemLayout_editTextHint));
         }
         if (a.hasValue(R.styleable.SettingItemLayout_editTextHintColor)) {
             int defaultEditTextColor = 0xFFD8D8D8;

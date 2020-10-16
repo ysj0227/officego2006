@@ -14,7 +14,7 @@
         android:layout_marginTop="@dimen/dp_10"
         android:text="入住企业"
         android:textColor="@color/text_33"
-        android:textSize="@dimen/sp_16" />
+        android:textSize="@dimen/sp_15" />
 
     <ImageView
         android:id="@+id/iv_mark_image"
@@ -41,7 +41,7 @@
         android:ellipsize="end"
         android:singleLine="true"
         android:textColor="@color/text_33"
-        android:textSize="@dimen/sp_16"
+        android:textSize="@dimen/sp_15"
         tools:ignore="RelativeOverlap" />
 
     <ImageView
