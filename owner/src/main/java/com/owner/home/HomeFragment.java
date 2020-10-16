@@ -30,7 +30,6 @@ import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
 import com.owner.adapter.HomeAdapter;
 import com.owner.dialog.HomeMoreDialog;
-import com.owner.dialog.ServiceSelectedDialog;
 import com.owner.home.contract.HomeContract;
 import com.owner.home.presenter.HomePresenter;
 import com.owner.identity.SelectIdActivity_;
@@ -150,7 +149,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
 
     @Override
     public void itemEdit() {
-        HouseAddActivity_.intent(getContext()).start();
+        AddBuildingActivity_.intent(getContext()).start();
     }
 
     @Override

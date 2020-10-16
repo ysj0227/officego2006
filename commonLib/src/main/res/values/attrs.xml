@@ -49,9 +49,12 @@
         <attr name="leftText" /> <!-- 左边文字内容-->
         <attr name="leftTextSize" /><!-- 左边文字大小-->
         <attr name="leftTextColor" /><!-- 左边文字颜色-->
-        <attr name="centerText"/><!-- 右边文字内容-->
+        <attr name="centerText" /><!-- 右边文字内容-->
         <attr name="centerTextSize" format="dimension" /><!-- 右边文字大小-->
         <attr name="centerTextColor" format="color" /><!-- 右边文字颜色-->
+        <attr name="rightText" /> <!-- 右边文字颜色-->
+        <attr name="rightTextSize" />
+        <attr name="rightTextColor" />
         <attr name="editTextContent" format="string" /><!-- 中间编辑框-->
         <attr name="editTextSize" format="dimension" />
         <attr name="editTextColor" format="color" />

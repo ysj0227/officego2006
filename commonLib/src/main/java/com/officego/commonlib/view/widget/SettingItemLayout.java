@@ -33,6 +33,7 @@ public class SettingItemLayout extends FrameLayout {
     private TextView tvTitle;
     private ImageView ivMarkImage;
     private TextView tvContent;
+    private TextView tvRightText;
     private ClearableEditText editTextContent;
     private ImageView ivArrowRight;
     private ImageView ivOtherRight;
@@ -64,6 +65,7 @@ public class SettingItemLayout extends FrameLayout {
         editTextContent = findViewById(R.id.et_content);
         ivArrowRight = findViewById(R.id.iv_arrow_right);
         ivOtherRight = findViewById(R.id.iv_other_right);
+        tvRightText = findViewById(R.id.tv_right_text);
         vTopDivider = findViewById(R.id.top_divider);
         vBottomDivider = findViewById(R.id.bottom_divider);
     }
@@ -140,6 +142,7 @@ public class SettingItemLayout extends FrameLayout {
             int defaultEditTextColor = 0xFFD8D8D8;
             editTextContent.setHintTextColor(a.getColor(R.styleable.SettingItemLayout_editTextHintColor, defaultEditTextColor));
         }
+
         //是否显示编辑框
         int editTextType = a.getInteger(R.styleable.SettingItemLayout_showEditText, DIVIDER_GONE);
         if (a.hasValue(R.styleable.SettingItemLayout_showEditText)) {
@@ -147,6 +150,24 @@ public class SettingItemLayout extends FrameLayout {
             editTextContent.setVisibility(editTextType == DIVIDER_VISIBLE ? VISIBLE : GONE);
         } else {
             editTextContent.setVisibility(GONE);
+        }
+
+        //右侧文本
+        if (a.hasValue(R.styleable.SettingItemLayout_rightText)) {
+            tvRightText.setVisibility(VISIBLE);
+            String rightText = a.getString(R.styleable.SettingItemLayout_rightText);
+            float rightTextSize = a.getDimension(R.styleable.SettingItemLayout_rightTextSize, -1);
+            if (centerTextSize > 0) {
+                tvRightText.setTextSize(TypedValue.COMPLEX_UNIT_PX, rightTextSize);
+            }
+            if (!TextUtils.isEmpty(rightText)) {
+                tvRightText.setVisibility(VISIBLE);
+                tvRightText.setText(rightText);
+            } else {
+                tvRightText.setVisibility(GONE);
+            }
+            int defaultTextColor = 0xCC666666;
+            editTextContent.setTextColor(a.getColor(R.styleable.SettingItemLayout_rightTextColor, defaultTextColor));
         }
 
         //右侧箭头图片是否显示
@@ -157,7 +178,7 @@ public class SettingItemLayout extends FrameLayout {
         int rightOtherType = a.getInteger(R.styleable.SettingItemLayout_rightOtherImageViewShow, DIVIDER_GONE);
         if (a.hasValue(R.styleable.SettingItemLayout_rightOtherImageViewShow)) {
             ivOtherRight.setVisibility(rightOtherType == DIVIDER_VISIBLE ? VISIBLE : GONE);
-        }else {
+        } else {
             ivOtherRight.setVisibility(GONE);
         }
         //设置图片背景
@@ -211,6 +232,7 @@ public class SettingItemLayout extends FrameLayout {
         tvContent.setVisibility(VISIBLE);
         tvContent.setText(resId);
     }
+
     public void setCenterText(String resId) {
         tvContent.setVisibility(VISIBLE);
         tvContent.setText(resId);

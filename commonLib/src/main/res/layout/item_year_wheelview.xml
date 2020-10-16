@@ -18,7 +18,7 @@
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/dp_18"
             android:text="@string/sm_cancel"
-            android:textColor="@color/c_black"
+            android:textColor="@color/text_33"
             android:textSize="@dimen/sp_16" />
 
         <TextView
@@ -27,7 +27,7 @@
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
             android:text="年份"
-            android:textColor="@color/text_normal"
+            android:textColor="@color/text_33"
             android:textSize="@dimen/sp_16" />
 
         <TextView

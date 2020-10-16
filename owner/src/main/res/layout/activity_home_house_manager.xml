@@ -33,22 +33,60 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_60"
-                android:text="企业服务" />
+                android:text="企业服务"
+                android:visibility="gone" />
 
             <Button
                 android:id="@+id/btn_base_service"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/btn_company_service"
-                android:text="基础服务" />
+                android:text="基础服务"
+                android:visibility="gone" />
+
+            <com.officego.commonlib.view.widget.SettingItemLayout
+                android:id="@+id/sil_building_type"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/btn_base_service"
+                app:leftMarkShow="visible"
+                app:leftText="楼盘类型"
+                app:rightOtherImageViewShow="gone"
+                app:showDividerBottom="visible" />
+
+            <com.officego.commonlib.view.widget.SettingItemLayout
+                android:id="@+id/sil_garden_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sil_building_type"
+                app:leftMarkShow="visible"
+                app:leftText="园区名称"
+                app:rightArrowShow="gone"
+                app:rightOtherImageViewShow="gone"
+                app:showCenterText="gone"
+                app:showDividerBottom="visible"
+                app:showEditText="visible" />
+
+            <com.officego.commonlib.view.widget.SettingItemLayout
+                android:id="@+id/sil_no"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sil_garden_name"
+                app:leftMarkShow="visible"
+                app:leftText="楼号"
+                app:rightArrowShow="gone"
+                app:rightOtherImageViewShow="gone"
+                app:showCenterText="gone"
+                app:showDividerBottom="visible"
+                app:showEditText="visible" />
 
             <com.officego.commonlib.view.widget.SettingItemLayout
                 android:id="@+id/sil_area"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/btn_base_service"
+                android:layout_below="@id/sil_no"
                 app:leftMarkShow="visible"
-                app:leftText="区域"
+                app:leftText="所在区域"
                 app:rightOtherImageViewShow="gone"
                 app:showDividerBottom="visible" />
 
@@ -65,10 +103,24 @@
                 app:showEditText="visible" />
 
             <com.officego.commonlib.view.widget.SettingItemLayout
-                android:id="@+id/sil_complete_time"
+                android:id="@+id/sil_storey"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sil_address"
+                app:leftMarkShow="visible"
+                app:leftText="总楼层"
+                app:rightArrowShow="gone"
+                app:rightOtherImageViewShow="gone"
+                app:rightText="层"
+                app:showCenterText="gone"
+                app:showDividerBottom="visible"
+                app:showEditText="visible" />
+
+            <com.officego.commonlib.view.widget.SettingItemLayout
+                android:id="@+id/sil_complete_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sil_storey"
                 app:leftMarkShow="visible"
                 app:leftText="竣工时间"
                 app:rightArrowShow="gone"
@@ -93,10 +145,109 @@
                 app:showEditText="gone" />
 
             <com.officego.commonlib.view.widget.SettingItemLayout
-                android:id="@+id/sil_conditioned"
+                android:id="@+id/sil_gross_area"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sil_recomplete_time"
+                app:leftMarkShow="invisible"
+                app:leftText="建筑面积"
+                app:rightArrowShow="gone"
+                app:rightOtherImageViewShow="gone"
+                app:rightText="万m²"
+                app:showCenterText="gone"
+                app:showDividerBottom="visible"
+                app:showEditText="visible" />
+            <!--            -->
+            <com.officego.commonlib.view.widget.SettingItemLayout
+                android:id="@+id/sil_storey_height"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sil_gross_area"
+                app:leftMarkShow="visible"
+                app:leftText="净高"
+                app:rightArrowShow="gone"
+                app:rightOtherImageViewShow="gone"
+                app:rightText="米"
+                app:showCenterText="gone"
+                app:showDividerBottom="visible"
+                app:showEditText="visible" />
+
+            <com.officego.commonlib.view.widget.SettingItemLayout
+                android:id="@+id/sil_tier_height"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sil_storey_height"
+                app:leftMarkShow="invisible"
+                app:leftText="层高"
+                app:rightArrowShow="gone"
+                app:rightOtherImageViewShow="gone"
+                app:rightText="米"
+                app:showCenterText="gone"
+                app:showDividerBottom="visible"
+                app:showEditText="visible" />
+
+            <com.officego.commonlib.view.widget.SettingItemLayout
+                android:id="@+id/sil_estate"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sil_tier_height"
+                app:leftMarkShow="visible"
+                app:leftText="物业公司"
+                app:editTextHint="请填写物业公司名称"
+                app:editTextHintColor="@color/text_66_p50"
+                app:rightArrowShow="gone"
+                app:rightOtherImageViewShow="gone"
+                app:showCenterText="gone"
+                app:showDividerBottom="visible"
+                app:showEditText="visible" />
+
+            <com.officego.commonlib.view.widget.SettingItemLayout
+                android:id="@+id/sil_estate_fee"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sil_estate"
+                app:leftMarkShow="visible"
+                app:leftText="物业费"
+                app:rightArrowShow="gone"
+                app:rightOtherImageViewShow="gone"
+                app:rightText="元/㎡/月"
+                app:showCenterText="gone"
+                app:showDividerBottom="visible"
+                app:showEditText="visible" />
+
+            <com.officego.commonlib.view.widget.SettingItemLayout
+                android:id="@+id/sil_car_num"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sil_estate_fee"
+                app:leftMarkShow="visible"
+                app:leftText="车位数"
+                app:rightArrowShow="gone"
+                app:rightOtherImageViewShow="gone"
+                app:rightText="个"
+                app:showCenterText="gone"
+                app:showDividerBottom="visible"
+                app:showEditText="visible" />
+
+            <com.officego.commonlib.view.widget.SettingItemLayout
+                android:id="@+id/sil_car_fee"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sil_estate_fee"
+                app:leftMarkShow="invisible"
+                app:leftText="车位费"
+                app:rightArrowShow="gone"
+                app:rightOtherImageViewShow="gone"
+                app:rightText="元/月"
+                app:showCenterText="gone"
+                app:showDividerBottom="visible"
+                app:showEditText="visible" />
+
+            <com.officego.commonlib.view.widget.SettingItemLayout
+                android:id="@+id/sil_conditioned"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sil_car_fee"
                 app:centerText="中央空调"
                 app:leftMarkShow="visible"
                 app:leftText="空调类型"
@@ -104,27 +255,17 @@
                 app:showCenterText="visible"
                 app:showDividerBottom="visible" />
 
-            <com.officego.commonlib.view.widget.SettingItemLayout
-                android:id="@+id/sil_join_company"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_join_company"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/sil_recomplete_time"
-                app:editTextContent="企业"
-                app:leftMarkShow="visible"
-                app:leftText="入住企业"
-                app:rightArrowShow="gone"
-                app:rightImageBackground="@mipmap/ic_add_blue"
-                app:rightOtherImageViewShow="visible"
-                app:showCenterText="gone"
-                app:showDividerBottom="visible"
-                app:showEditText="visible" />
-
+                android:layout_below="@id/sil_conditioned" />
 
             <RelativeLayout
                 android:id="@+id/rl_net"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/sil_join_company"
+                android:layout_below="@id/rv_join_company"
                 android:layout_marginStart="@dimen/dp_16"
                 android:layout_marginTop="@dimen/dp_15"
                 android:layout_marginEnd="@dimen/dp_16">
@@ -134,7 +275,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="网络"
-                    android:textColor="@color/text_66"
+                    android:textColor="@color/text_33"
                     android:textSize="@dimen/sp_16" />
 
                 <CheckBox
@@ -193,7 +334,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="特色"
-                    android:textColor="@color/text_66"
+                    android:textColor="@color/text_33"
                     android:textSize="@dimen/sp_16" />
 
                 <androidx.recyclerview.widget.RecyclerView

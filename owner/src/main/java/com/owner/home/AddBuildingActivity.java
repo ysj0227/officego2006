@@ -1,6 +1,7 @@
 package com.owner.home;
 
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.officego.commonlib.base.BaseMvpActivity;
@@ -9,10 +10,11 @@ import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.widget.SettingItemLayout;
 import com.owner.adapter.HouseUniqueAdapter;
-import com.owner.dialog.ServiceSelectedDialog;
+import com.owner.adapter.JointCompanyAdapter;
 import com.owner.home.contract.HouseContract;
 import com.owner.home.presenter.HousePresenter;
 import com.owner.identity.dialog.AreaDialog;
+import com.owner.identity.model.JointCompanyBean;
 import com.owner.utils.SpaceItemDecoration;
 
 import org.androidannotations.annotations.AfterViews;
@@ -20,6 +22,7 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -27,21 +30,25 @@ import java.util.List;
  * Date 2020/10/15
  **/
 @EActivity(resName = "activity_home_house_manager")
-public class HouseAddActivity extends BaseMvpActivity<HousePresenter>
+public class AddBuildingActivity extends BaseMvpActivity<HousePresenter>
         implements HouseContract.View, YearDateDialog.SureClickListener,
-        AreaDialog.AreaSureListener{
+        AreaDialog.AreaSureListener, JointCompanyAdapter.JointCompanyListener {
     @ViewById(resName = "sil_complete_time")
     SettingItemLayout silCompleteTime;
     @ViewById(resName = "sil_recomplete_time")
     SettingItemLayout silReCompleteTime;
     @ViewById(resName = "sil_area")
     SettingItemLayout silArea;
-
     @ViewById(resName = "rv_house_characteristic")
     RecyclerView rvHouseUnique;
+    @ViewById(resName = "rv_join_company")
+    RecyclerView rvJoinCompany;
 
     private boolean isCompleteTime;//是否竣工时间
-    private int district, business;
+    private int district, business;//区域
+
+    private JointCompanyAdapter jointCompanyAdapter;
+    private List<JointCompanyBean> jointCompanyList = new ArrayList<>();//入住企业
 
     @AfterViews
     void init() {
@@ -53,24 +60,21 @@ public class HouseAddActivity extends BaseMvpActivity<HousePresenter>
     }
 
     private void initViews() {
+        //特色
         GridLayoutManager layoutManager = new GridLayoutManager(context, 3);
         rvHouseUnique.setLayoutManager(layoutManager);
         rvHouseUnique.addItemDecoration(new SpaceItemDecoration(context, 3));
+        //入住企业
+        rvJoinCompany.setLayoutManager(new LinearLayoutManager(context));
+        jointCompanyList.add(new JointCompanyBean("", 0));
+        jointCompanyAdapter = new JointCompanyAdapter(context, jointCompanyList);
+        rvJoinCompany.setAdapter(jointCompanyAdapter);
+        jointCompanyAdapter.setListener(this);
     }
 
     @Click(resName = "sil_area")
     void areaOnClick() {
         new AreaDialog(context, district, business).setListener(this);
-    }
-
-    @Click(resName = "btn_company_service")
-    void companyServiceOnClick() {
-        mPresenter.getCompanyServices();
-    }
-
-    @Click(resName = "btn_base_service")
-    void baseServiceOnClick() {
-        mPresenter.getBaseServices();
     }
 
     @Click(resName = "sil_complete_time")
@@ -85,16 +89,6 @@ public class HouseAddActivity extends BaseMvpActivity<HousePresenter>
         isCompleteTime = false;
         YearDateDialog dateDialog = new YearDateDialog(context);
         dateDialog.setSureListener(this);
-    }
-
-    @Override
-    public void baseServices(List<DirectoryBean.DataBean> data) {
-        new ServiceSelectedDialog(context, "基础服务", data);
-    }
-
-    @Override
-    public void companyServices(List<DirectoryBean.DataBean> data) {
-        new ServiceSelectedDialog(context, "企业服务", data);
     }
 
     @Override
@@ -119,5 +113,18 @@ public class HouseAddActivity extends BaseMvpActivity<HousePresenter>
     @Override
     public void AreaSure(String area, int district, int business) {
         silArea.setCenterText(area);
+    }
+
+    @Override
+    public void addJointCompany(int pos, String contentText) {
+        jointCompanyList.get(pos).setCompanyText(contentText);
+        jointCompanyList.add(new JointCompanyBean("", 1));
+        jointCompanyAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void deleteJointCompany(int pos) {
+        jointCompanyList.remove(pos);
+        jointCompanyAdapter.notifyDataSetChanged();
     }
 }

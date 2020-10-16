@@ -17,49 +17,6 @@ public class HousePresenter extends BasePresenter<HouseContract.View>
         implements HouseContract.Presenter {
     private final String TAG = this.getClass().getSimpleName();
 
-
-    @Override
-    public void getBaseServices() {
-        mView.showLoadingDialog();
-        OfficegoApi.getInstance().getBasicServices(new RetrofitCallback<List<DirectoryBean.DataBean>>() {
-            @Override
-            public void onSuccess(int code, String msg, List<DirectoryBean.DataBean> data) {
-                if (isViewAttached()) {
-                    mView.baseServices(data);
-                    mView.hideLoadingDialog();
-                }
-            }
-
-            @Override
-            public void onFail(int code, String msg, List<DirectoryBean.DataBean> data) {
-                if (isViewAttached()) {
-                    mView.hideLoadingDialog();
-                }
-            }
-        });
-    }
-
-    @Override
-    public void getCompanyServices() {
-        mView.showLoadingDialog();
-        OfficegoApi.getInstance().getCompanyService(new RetrofitCallback<List<DirectoryBean.DataBean>>() {
-            @Override
-            public void onSuccess(int code, String msg, List<DirectoryBean.DataBean> data) {
-                if (isViewAttached()) {
-                    mView.companyServices(data);
-                    mView.hideLoadingDialog();
-                }
-            }
-
-            @Override
-            public void onFail(int code, String msg, List<DirectoryBean.DataBean> data) {
-                if (isViewAttached()) {
-                    mView.hideLoadingDialog();
-                }
-            }
-        });
-    }
-
     @Override
     public void getHouseUnique() {
         mView.showLoadingDialog();

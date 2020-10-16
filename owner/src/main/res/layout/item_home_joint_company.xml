@@ -1,16 +1,9 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cl_container"
+    android:id="@+id/cl_joint_company"
     android:layout_width="match_parent"
     android:layout_height="@dimen/dp_60"
     android:background="@drawable/bg_common_list_item">
-
-    <View
-        android:id="@+id/top_divider"
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/common_divider"
-        android:visibility="gone" />
 
     <TextView
         android:id="@+id/tv_title"
@@ -19,8 +12,9 @@
         android:layout_centerVertical="true"
         android:layout_marginStart="@dimen/dp_16"
         android:layout_marginTop="@dimen/dp_10"
+        android:text="入住企业"
         android:textColor="@color/text_33"
-        android:textSize="@dimen/sp_15" />
+        android:textSize="@dimen/sp_16" />
 
     <ImageView
         android:id="@+id/iv_mark_image"
@@ -30,24 +24,10 @@
         android:layout_marginStart="@dimen/dp_3"
         android:layout_toEndOf="@id/tv_title"
         android:background="@mipmap/ic_mark"
-        android:visibility="visible"
+        android:visibility="invisible"
         tools:ignore="ContentDescription" />
 
-    <TextView
-        android:id="@+id/tv_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="@dimen/dp_10"
-        android:layout_marginTop="@dimen/dp_10"
-        android:layout_toEndOf="@id/iv_mark_image"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:textColor="@color/text_33"
-        android:textSize="@dimen/sp_15"
-        android:visibility="visible" />
-
-    <com.officego.commonlib.view.ClearableEditText
+    <EditText
         android:id="@+id/et_content"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
@@ -60,21 +40,9 @@
         android:background="@null"
         android:ellipsize="end"
         android:singleLine="true"
-        android:textColorHint="@color/text_66_p50"
         android:textColor="@color/text_33"
-        android:textSize="@dimen/sp_15"
+        android:textSize="@dimen/sp_16"
         tools:ignore="RelativeOverlap" />
-
-    <ImageView
-        android:id="@+id/iv_arrow_right"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="@dimen/dp_18"
-        android:background="@mipmap/ic_right_arrow_small_disable"
-        android:visibility="visible"
-        tools:ignore="ContentDescription" />
 
     <ImageView
         android:id="@+id/iv_other_right"
@@ -83,19 +51,7 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/dp_18"
-        android:visibility="gone"
-        tools:ignore="ContentDescription" />
-
-    <TextView
-        android:id="@+id/tv_right_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="@dimen/dp_18"
-        android:visibility="gone"
-        android:textColor="@color/text_66_p50"
-        android:textSize="@dimen/sp_15"
+        android:background="@mipmap/ic_add_blue"
         tools:ignore="ContentDescription" />
 
     <View
@@ -105,5 +61,4 @@
         android:layout_alignParentBottom="true"
         android:background="@color/common_divider"
         android:visibility="visible" />
-
 </RelativeLayout>
