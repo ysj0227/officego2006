@@ -11,11 +11,9 @@ import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.widget.SettingItemLayout;
 import com.owner.adapter.HouseUniqueAdapter;
 import com.owner.adapter.JointCompanyAdapter;
-import com.owner.adapter.RecycleAdapter;
 import com.owner.home.contract.HouseContract;
 import com.owner.home.presenter.HousePresenter;
 import com.owner.identity.dialog.AreaDialog;
-import com.owner.identity.model.JointCompanyBean;
 import com.owner.utils.SpaceItemDecoration;
 
 import org.androidannotations.annotations.AfterViews;
@@ -48,7 +46,7 @@ public class AddBuildingActivity extends BaseMvpActivity<HousePresenter>
     private boolean isCompleteTime;//是否竣工时间
     private int district, business;//区域
 
-    private RecycleAdapter adapter;
+    private JointCompanyAdapter adapter;
     private List<String> jointCompanyList = new ArrayList<String>();
 
     @AfterViews
@@ -68,7 +66,7 @@ public class AddBuildingActivity extends BaseMvpActivity<HousePresenter>
         //入住企业
         rvJoinCompany.setLayoutManager(new LinearLayoutManager(context));
         jointCompanyList.add(0,"");
-        adapter = new RecycleAdapter(this, jointCompanyList);
+        adapter = new JointCompanyAdapter(this, jointCompanyList);
         rvJoinCompany.setAdapter(adapter);
     }
 

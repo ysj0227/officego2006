@@ -1,79 +1,93 @@
 package com.owner.adapter;
 
-import android.annotation.SuppressLint;
+/**
+ * Created by shijie
+ * Date 2020/10/16
+ **/
+
 import android.content.Context;
-import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
-import com.officego.commonlib.CommonListAdapter;
-import com.officego.commonlib.ViewHolder;
+import androidx.annotation.NonNull;
+import androidx.recyclerview.widget.RecyclerView;
+
 import com.owner.R;
-import com.owner.identity.model.JointCompanyBean;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Created by shijie
- * Date 2020/10/15
- * 房源特色
- **/
-public class JointCompanyAdapter extends CommonListAdapter<JointCompanyBean> {
+ * Created by qzs on 2017/9/04.
+ */
+public class JointCompanyAdapter extends RecyclerView.Adapter<JointCompanyAdapter.MyViewHolder> {
     private Context context;
-    private ArrayList<JointCompanyBean> list;
-    private JointCompanyListener listener;
+    private List<String> list;
 
-    public JointCompanyListener getListener() {
-        return listener;
-    }
-
-    public void setListener(JointCompanyListener listener) {
-        this.listener = listener;
-    }
-
-    public interface JointCompanyListener {
-        void addJointCompany(int pos, String contentText);
-
-        void deleteJointCompany(int pos);
-    }
-
-    @SuppressLint("UseSparseArrays")
-    public JointCompanyAdapter(Context context, ArrayList<JointCompanyBean> list) {
-        super(context, R.layout.item_home_joint_company, list);
+    public JointCompanyAdapter(Context context, List<String> list) {
         this.context = context;
         this.list = list;
     }
 
+    @NonNull
     @Override
-    public void convert(ViewHolder holder, final JointCompanyBean bean) {
-        TextView tvTitle = holder.getView(R.id.tv_title);
-        EditText editText = holder.getView(R.id.et_content);
-        ImageView ivRightImage = holder.getView(R.id.iv_other_right);
-        tvTitle.setVisibility(holder.getAdapterPosition() == 0 ? View.VISIBLE : View.INVISIBLE);
-        ivRightImage.setOnClickListener(view -> {
-            if (listener != null) {
-                if (holder.getAdapterPosition() == list.size() - 1) {
-                    if (list.size() >= 5) {
-                        return;
-                    }
-                    if (TextUtils.isEmpty(editText.getText().toString())) {
-                        Toast.makeText(context, "请输入入住企业", Toast.LENGTH_SHORT).show();
-                        return;
-                    }
-                    listener.addJointCompany(holder.getAdapterPosition(), editText.getText().toString());
-                } else {
-                    listener.deleteJointCompany(holder.getAdapterPosition());
-                }
+    public MyViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
+        MyViewHolder holder = new MyViewHolder(LayoutInflater.from(context).inflate(R.layout.item_home_joint_company, parent, false));
+        return holder;
+    }
+
+    @Override
+    public void onBindViewHolder(MyViewHolder holder, final int position) {
+        holder.editText.setText(list.get(position));
+        holder.ivRightImage.setOnClickListener(v -> {
+            if (list.size() > 1 && holder.getAdapterPosition() < list.size() - 1) {
+                removeData(position);  //删除数据
+            }
+            if (holder.getAdapterPosition() == list.size() - 1 &&list.size() < 5) {
+                addData(list.size());//添加数据
             }
         });
-        if (holder.getAdapterPosition() == list.size() - 1) {
-            ivRightImage.setBackgroundResource(R.mipmap.ic_add_blue);
-        } else {
-            ivRightImage.setBackgroundResource(R.mipmap.ic_remove_blue);
+        holder.tvTitle.setVisibility(holder.getAdapterPosition() == 0 ? View.VISIBLE : View.INVISIBLE);
+        holder.ivRightImage.setBackgroundResource(holder.getAdapterPosition() == list.size() - 1
+                ? R.mipmap.ic_add_blue : R.mipmap.ic_remove_blue);
+    }
+
+    @Override
+    public int getItemCount() {
+        return list.size();
+    }
+
+    // 添加数据
+    private void addData(int position) {
+        list.add(position, "");
+        notifyItemInserted(position);
+        notifyDataSetChanged();
+    }
+
+    // 删除数据
+    private void removeData(int position) {
+        list.remove(position);
+        notifyItemRemoved(position);
+        notifyDataSetChanged();
+    }
+
+    /**
+     * ViewHolder的类，用于缓存控件
+     */
+    class MyViewHolder extends RecyclerView.ViewHolder {
+        TextView tvTitle;
+        EditText editText;
+        ImageView ivRightImage;
+
+        MyViewHolder(View view) {
+            super(view);
+            tvTitle = view.findViewById(R.id.tv_title);
+            editText = view.findViewById(R.id.et_content);
+            ivRightImage = view.findViewById(R.id.iv_other_right);
         }
     }
 }
+
