@@ -4,7 +4,7 @@
 
     <stroke
         android:width="@dimen/dp_1"
-        android:color="@color/text_disable" />
+        android:color="@color/text_hint" />
 
     <solid android:color="@color/transparent" />
 

@@ -104,6 +104,10 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
+        <activity
+            android:name=".home.AddHouseActivity_"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

@@ -1,61 +1,62 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cl_joint_company"
+    android:id="@+id/cl_floors"
     android:layout_width="match_parent"
     android:layout_height="@dimen/dp_60"
     android:background="@drawable/bg_common_list_item">
 
     <TextView
-        android:id="@+id/tv_title"
+        android:id="@+id/tv_no"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginStart="@dimen/dp_18"
         android:layout_marginTop="@dimen/dp_10"
-        android:text="入住企业"
-        android:textColor="@color/text_33"
+        android:text="第"
+        android:textColor="@color/text_hint"
         android:textSize="@dimen/sp_15" />
 
-    <ImageView
-        android:id="@+id/iv_mark_image"
-        android:layout_width="@dimen/dp_20"
-        android:layout_height="@dimen/dp_20"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="@dimen/dp_3"
-        android:layout_toEndOf="@id/tv_title"
-        android:background="@mipmap/ic_mark"
-        android:visibility="invisible"
-        tools:ignore="ContentDescription" />
-
     <EditText
-        android:id="@+id/et_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
+        android:id="@+id/et_floors"
+        android:layout_width="@dimen/dp_68"
+        android:layout_height="@dimen/dp_35"
         android:layout_centerVertical="true"
         android:layout_marginStart="@dimen/dp_10"
         android:layout_marginTop="@dimen/dp_10"
-        android:layout_marginEnd="@dimen/dp_50"
-        android:layout_toEndOf="@id/iv_mark_image"
-        android:gravity="center_vertical"
-        android:background="@null"
+        android:layout_toEndOf="@id/tv_no"
+        android:background="@drawable/edittext_edge_grey2"
         android:ellipsize="end"
+        android:gravity="center_vertical"
         android:singleLine="true"
         android:textColor="@color/text_33"
         android:textSize="@dimen/sp_15"
         tools:ignore="RelativeOverlap" />
 
-    <ImageView
-        android:id="@+id/iv_other_right"
-        android:layout_width="@dimen/dp_24"
-        android:layout_height="@dimen/dp_24"
+    <TextView
+        android:id="@+id/tv_to"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/dp_8"
+        android:layout_toEndOf="@id/et_floors"
+        android:text="层"
+        android:textColor="@color/text_hint"
+        android:textSize="@dimen/sp_15"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/tv_counts_floor"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/dp_18"
-        android:background="@mipmap/ic_add_blue"
+        android:text="共20层"
+        android:textColor="@color/text_hint"
+        android:textSize="@dimen/sp_15"
         tools:ignore="ContentDescription" />
 
     <View
-        android:id="@+id/bottom_divider"
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_alignParentBottom="true"

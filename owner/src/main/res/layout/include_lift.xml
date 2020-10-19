@@ -1,0 +1,158 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/cl_lift"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/bg_common_list_item">
+
+    <RelativeLayout
+        android:id="@+id/rl_customer_lift"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60">
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dp_18"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="电梯数"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_15" />
+
+        <ImageView
+            android:id="@+id/iv_mark_image"
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="@dimen/dp_20"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dp_3"
+            android:layout_toEndOf="@id/tv_title"
+            android:background="@mipmap/ic_mark"
+            android:visibility="visible"
+            tools:ignore="ContentDescription" />
+
+        <EditText
+            android:id="@+id/et_customer_lift"
+            android:layout_width="@dimen/dp_90"
+            android:layout_height="@dimen/dp_35"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_toEndOf="@id/iv_mark_image"
+            android:background="@drawable/edittext_edge_grey2"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_15"
+            tools:ignore="RelativeOverlap" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dp_18"
+            android:layout_toEndOf="@id/et_customer_lift"
+            android:text="（客梯）"
+            android:textColor="@color/text_hint"
+            android:textSize="@dimen/sp_15"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dp_18"
+            android:text="个"
+            android:textColor="@color/text_hint"
+            android:textSize="@dimen/sp_15"
+            tools:ignore="ContentDescription" />
+
+        <View
+            android:id="@+id/bottom_divider"
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_alignParentBottom="true"
+            android:background="@color/common_divider"
+            android:visibility="visible" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_passenger_lift"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_60"
+        android:layout_below="@id/rl_customer_lift">
+
+        <TextView
+            android:id="@+id/tv_title2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dp_18"
+            android:layout_marginTop="@dimen/dp_10"
+            android:text="电梯数"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_15"
+            android:visibility="invisible" />
+
+        <ImageView
+            android:id="@+id/iv_mark_image2"
+            android:layout_width="@dimen/dp_20"
+            android:layout_height="@dimen/dp_20"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dp_3"
+            android:layout_toEndOf="@id/tv_title2"
+            android:background="@mipmap/ic_mark"
+            android:visibility="invisible"
+            tools:ignore="ContentDescription" />
+
+        <EditText
+            android:id="@+id/et_passenger_lift"
+            android:layout_width="@dimen/dp_90"
+            android:layout_height="@dimen/dp_35"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_toEndOf="@id/iv_mark_image2"
+            android:background="@drawable/edittext_edge_grey2"
+            android:ellipsize="end"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_15"
+            tools:ignore="RelativeOverlap" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dp_18"
+            android:layout_toEndOf="@id/et_passenger_lift"
+            android:text="（货梯）"
+            android:textColor="@color/text_hint"
+            android:textSize="@dimen/sp_15"
+            tools:ignore="ContentDescription" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dp_18"
+            android:text="个"
+            android:textColor="@color/text_hint"
+            android:textSize="@dimen/sp_15"
+            tools:ignore="ContentDescription" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1px"
+            android:layout_alignParentBottom="true"
+            android:background="@color/common_divider"
+            android:visibility="visible" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

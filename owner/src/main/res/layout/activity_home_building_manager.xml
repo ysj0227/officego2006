@@ -17,7 +17,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:leftDefaultClickEnable="true"
         app:leftIcon="@drawable/ic_back_light"
-        app:titleText="添加办公室"
+        app:titleText="添加楼盘"
         app:titleTextColor="@color/white" />
 
     <androidx.core.widget.NestedScrollView
@@ -32,12 +32,39 @@
             android:layout_height="wrap_content">
 
             <com.officego.commonlib.view.widget.SettingItemLayout
-                android:id="@+id/sil_house_title"
+                android:id="@+id/sil_building_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:editTextHint="例：临地铁200㎡稀缺房源寻租"
-                app:leftMarkShow="invisible"
-                app:leftText="标题"
+                app:centerTextHint="请选择楼盘类型"
+                app:leftMarkShow="visible"
+                app:leftText="楼盘类型"
+                app:rightOtherImageViewShow="gone"
+                app:showDividerBottom="visible" />
+
+            <com.officego.commonlib.view.widget.SettingItemLayout
+                android:id="@+id/sil_garden_name"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sil_building_type"
+                app:editTextHint="请输入园区名称"
+                app:editTextHintColor="@color/text_hint"
+                app:leftMarkShow="visible"
+                app:leftText="园区名称"
+                app:rightArrowShow="gone"
+                app:rightOtherImageViewShow="gone"
+                app:showCenterText="gone"
+                app:showDividerBottom="visible"
+                app:showEditText="visible" />
+
+            <com.officego.commonlib.view.widget.SettingItemLayout
+                android:id="@+id/sil_no"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sil_garden_name"
+                app:editTextHint="请输入楼号"
+                app:editTextHintColor="@color/text_hint"
+                app:leftMarkShow="visible"
+                app:leftText="楼号"
                 app:rightArrowShow="gone"
                 app:rightOtherImageViewShow="gone"
                 app:showCenterText="gone"
@@ -48,77 +75,90 @@
                 android:id="@+id/sil_area"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/sil_house_title"
+                android:layout_below="@id/sil_no"
+                app:centerTextHint="请选择城市、区域与商圈"
                 app:leftMarkShow="visible"
-                app:leftText="面积"
-                app:rightArrowShow="gone"
+                app:leftText="所在区域"
                 app:rightOtherImageViewShow="gone"
-                app:rightText="m²"
-                app:showCenterText="gone"
-                app:showDividerBottom="visible"
-                app:showEditText="visible" />
-
-            <include
-                layout="@layout/include_set_seats"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/sil_area" />
+                app:showDividerBottom="visible" />
 
             <com.officego.commonlib.view.widget.SettingItemLayout
-                android:id="@+id/sil_rent_single"
+                android:id="@+id/sil_address"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/cl_seats"
+                android:layout_below="@id/sil_area"
+                app:editTextHint="请输入详细地址（2～100个字）"
+                app:editTextHintColor="@color/text_hint"
                 app:leftMarkShow="visible"
-                app:leftText="租金单价"
-                app:rightArrowShow="gone"
+                app:leftText="详细地址"
                 app:rightOtherImageViewShow="gone"
-                app:rightText="元/㎡/天"
                 app:showCenterText="gone"
                 app:showDividerBottom="visible"
                 app:showEditText="visible" />
 
             <com.officego.commonlib.view.widget.SettingItemLayout
-                android:id="@+id/sil_rent_sum"
+                android:id="@+id/sil_storey"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/sil_rent_single"
+                android:layout_below="@id/sil_address"
                 app:leftMarkShow="visible"
-                app:leftText="租金总价"
-                app:leftToArrowText="元/月    "
-                app:leftToArrowTextColor="@color/text_66_p50"
+                app:leftText="总楼层"
                 app:rightArrowShow="gone"
-                app:rightImageBackground="@mipmap/ic_unkonwn"
+                app:rightOtherImageViewShow="gone"
+                app:rightText="层"
+                app:showCenterText="gone"
+                app:showDividerBottom="visible"
+                app:showEditText="visible" />
+
+            <com.officego.commonlib.view.widget.SettingItemLayout
+                android:id="@+id/sil_complete_time"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sil_storey"
+                app:centerTextHint="请选择时间"
+                app:leftMarkShow="visible"
+                app:leftText="竣工时间"
+                app:rightArrowShow="gone"
+                app:rightImageBackground="@mipmap/ic_calender"
                 app:rightOtherImageViewShow="visible"
-                app:showCenterText="gone"
-                app:showDividerBottom="visible"
-                app:showEditText="visible" />
-
-            <com.officego.commonlib.view.widget.SettingItemLayout
-                android:id="@+id/sil_floor_no"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/sil_rent_sum"
-                app:leftMarkShow="visible"
-                app:leftText="所在楼层"
-                app:leftToArrowText="多层"
-                app:rightArrowShow="visible"
-                app:rightOtherImageViewShow="gone"
                 app:showCenterText="visible"
                 app:showDividerBottom="visible"
                 app:showEditText="gone" />
 
-            <include
-                layout="@layout/include_floor"
+            <com.officego.commonlib.view.widget.SettingItemLayout
+                android:id="@+id/sil_recomplete_time"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/sil_floor_no" />
+                android:layout_below="@id/sil_complete_time"
+                app:centerTextHint="请选择时间"
+                app:leftMarkShow="invisible"
+                app:leftText="翻新时间"
+                app:rightArrowShow="gone"
+                app:rightImageBackground="@mipmap/ic_calender"
+                app:rightOtherImageViewShow="visible"
+                app:showCenterText="visible"
+                app:showDividerBottom="visible"
+                app:showEditText="gone" />
 
+            <com.officego.commonlib.view.widget.SettingItemLayout
+                android:id="@+id/sil_gross_area"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sil_recomplete_time"
+                app:leftMarkShow="invisible"
+                app:leftText="建筑面积"
+                app:rightArrowShow="gone"
+                app:rightOtherImageViewShow="gone"
+                app:rightText="万m²"
+                app:showCenterText="gone"
+                app:showDividerBottom="visible"
+                app:showEditText="visible" />
+            <!--            -->
             <com.officego.commonlib.view.widget.SettingItemLayout
                 android:id="@+id/sil_storey_height"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/cl_floors"
+                android:layout_below="@id/sil_gross_area"
                 app:leftMarkShow="visible"
                 app:leftText="净高"
                 app:rightArrowShow="gone"
@@ -143,96 +183,115 @@
                 app:showEditText="visible" />
 
             <com.officego.commonlib.view.widget.SettingItemLayout
-                android:id="@+id/sil_rent_time"
+                android:id="@+id/sil_estate"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sil_tier_height"
+                app:editTextHint="请填写物业公司名称"
+                app:editTextHintColor="@color/text_hint"
                 app:leftMarkShow="visible"
-                app:leftText="最短租期"
+                app:leftText="物业公司"
                 app:rightArrowShow="gone"
                 app:rightOtherImageViewShow="gone"
-                app:rightText="年"
                 app:showCenterText="gone"
                 app:showDividerBottom="visible"
                 app:showEditText="visible" />
 
             <com.officego.commonlib.view.widget.SettingItemLayout
-                android:id="@+id/sil_free_rent"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/sil_rent_time"
-                app:leftMarkShow="visible"
-                app:leftText="免租期"
-                app:leftToArrowText="面议"
-                app:rightArrowShow="visible"
-                app:rightOtherImageViewShow="gone"
-                app:showCenterText="visible"
-                app:showDividerBottom="visible"
-                app:showEditText="gone" />
-
-            <com.officego.commonlib.view.widget.SettingItemLayout
                 android:id="@+id/sil_estate_fee"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/sil_free_rent"
+                android:layout_below="@id/sil_estate"
                 app:leftMarkShow="visible"
                 app:leftText="物业费"
+                app:rightArrowShow="gone"
+                app:rightOtherImageViewShow="gone"
+                app:rightText="元/㎡/月"
+                app:showCenterText="gone"
+                app:showDividerBottom="visible"
+                app:showEditText="visible" />
+
+            <com.officego.commonlib.view.widget.SettingItemLayout
+                android:id="@+id/sil_car_num"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sil_estate_fee"
+                app:leftMarkShow="visible"
+                app:leftText="车位数"
+                app:rightArrowShow="gone"
+                app:rightOtherImageViewShow="gone"
+                app:rightText="个"
+                app:showCenterText="gone"
+                app:showDividerBottom="visible"
+                app:showEditText="visible" />
+
+            <com.officego.commonlib.view.widget.SettingItemLayout
+                android:id="@+id/sil_car_fee"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sil_estate_fee"
+                app:leftMarkShow="invisible"
+                app:leftText="车位费"
                 app:rightArrowShow="gone"
                 app:rightOtherImageViewShow="gone"
                 app:rightText="元/月"
                 app:showCenterText="gone"
                 app:showDividerBottom="visible"
                 app:showEditText="visible" />
-            <!--装修类型-->
-            <include
-                layout="@layout/include_decoration_type"
+
+            <com.officego.commonlib.view.widget.SettingItemLayout
+                android:id="@+id/sil_conditioned"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/sil_free_rent" />
+                android:layout_below="@id/sil_car_fee"
+                app:centerText="中央空调"
+                app:leftMarkShow="visible"
+                app:leftText="空调类型"
+                app:rightOtherImageViewShow="gone"
+                app:showCenterText="visible"
+                app:showDividerBottom="visible" />
+
+            <com.officego.commonlib.view.widget.SettingItemLayout
+                android:id="@+id/sil_conditioned_fee"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sil_conditioned"
+                app:leftMarkShow="invisible"
+                app:leftText="空调费"
+                app:rightArrowShow="gone"
+                app:showCenterText="gone"
+                app:showDividerBottom="visible"
+                app:showEditText="visible" />
+
+            <include
+                layout="@layout/include_lift"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sil_conditioned_fee" />
+
+            <include
+                layout="@layout/include_net"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/cl_lift" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_join_company"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/rl_net" />
 
             <include
                 layout="@layout/include_descriptions"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_168"
-                android:layout_below="@id/cll_decoration" />
-
-            <RelativeLayout
-                android:id="@+id/rl_apartment_layout"
-                style="@style/marginLeftRight18"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/ctl_descriptions"
-                android:layout_marginTop="@dimen/dp_18">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_apartment_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:id="@+id/tv_apartment_tip"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/rv_apartment_layout"
-                    android:layout_marginTop="@dimen/dp_8"
-                    android:text="可上传9张图片，单张不大于10M，支持jpg、jpeg、png格式"
-                    android:textColor="@color/text_66_p50"
-                    android:textSize="@dimen/sp_12" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:layout_below="@id/tv_apartment_tip"
-                    android:layout_marginTop="@dimen/dp_18"
-                    android:background="@color/common_divider"
-                    android:visibility="visible" />
-            </RelativeLayout>
+                android:layout_below="@id/rv_join_company" />
 
             <RelativeLayout
                 android:id="@+id/rl_characteristic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/rl_apartment_layout"
+                android:layout_below="@id/ctl_descriptions"
                 android:layout_marginStart="@dimen/dp_18"
                 android:layout_marginTop="@dimen/dp_18"
                 android:layout_marginEnd="@dimen/dp_16">
@@ -241,7 +300,7 @@
                     android:id="@+id/tv_house_characteristic"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="办公室特色"
+                    android:text="楼盘特色"
                     android:textColor="@color/text_33"
                     android:textSize="@dimen/sp_15" />
 
@@ -277,7 +336,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/rl_characteristic" />
-
         </RelativeLayout>
 
     </androidx.core.widget.NestedScrollView>
@@ -317,8 +375,6 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btn_next" />
-
-
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView

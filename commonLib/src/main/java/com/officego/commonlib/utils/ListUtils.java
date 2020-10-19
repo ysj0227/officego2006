@@ -2,8 +2,6 @@ package com.officego.commonlib.utils;
 
 import android.text.TextUtils;
 
-import com.officego.commonlib.utils.DateTimeUtils;
-
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.List;
@@ -86,4 +84,12 @@ public class ListUtils {
         return list;
     }
 
+    public static List<String> rentList() {
+        List<String> list = new ArrayList<>();
+        list.add("面议");
+        for (int i = 1; i < 13; i++) {
+            list.add(i + "个月");
+        }
+        return list;
+    }
 }

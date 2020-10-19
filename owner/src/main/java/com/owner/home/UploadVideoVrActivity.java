@@ -1,5 +1,6 @@
 package com.owner.home;
 
+import android.app.AlertDialog;
 import android.content.ContentResolver;
 import android.content.Intent;
 import android.database.Cursor;
@@ -28,14 +29,21 @@ public class UploadVideoVrActivity extends BaseActivity {
         StatusBarUtils.setStatusBarFullTransparent(this);
     }
 
-    @Click(resName = "button2")
-    void localOnClick() {
-        selectVideo();
+    @Click(resName = "rl_upload")
+    void uploadVideoOnClick() {
+        selectedDialog();
     }
 
-    @Click(resName = "button3")
-    void recordOnClick() {
-        recordVideo();
+    private void selectedDialog() {
+        final String[] items = {"选择视频", "录制视频"};
+        new AlertDialog.Builder(UploadVideoVrActivity.this)
+                .setItems(items, (dialogInterface, i) -> {
+                    if (i == 0) {
+                        selectVideo();
+                    } else if (i == 1) {
+                        recordVideo();
+                    }
+                }).create().show();
     }
 
     //选择视频

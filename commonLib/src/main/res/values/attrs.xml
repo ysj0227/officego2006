@@ -54,6 +54,11 @@
         <attr name="centerTextHintColor" format="color" />
         <attr name="centerTextSize" format="dimension" /><!-- 右边文字大小-->
         <attr name="centerTextColor" format="color" /><!-- 右边文字颜色-->
+
+        <attr name="leftToArrowText" format="string"/><!-- 箭头左侧文字内容-->
+        <attr name="leftToArrowTextSize" format="dimension" /><!-- 箭头左侧文字大小-->
+        <attr name="leftToArrowTextColor" format="color" /><!-- 箭头左侧文字颜色-->
+
         <attr name="rightText" /> <!-- 右边文字颜色-->
         <attr name="rightTextSize" />
         <attr name="rightTextColor" />

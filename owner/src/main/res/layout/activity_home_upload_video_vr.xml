@@ -19,26 +19,145 @@
         app:titleText="上传视频"
         app:titleTextColor="@color/white" />
 
-    <Button
-        android:id="@+id/button2"
+    <TextView
+        android:id="@+id/tv_upload_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_50"
-        android:text="本地上传"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/dp_18"
+        android:layout_marginTop="@dimen/dp_19"
+        android:drawableEnd="@mipmap/ic_mark"
+        android:text="上传楼盘视频"
+        android:textColor="@color/text_33"
+        android:textSize="@dimen/sp_15"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title_bar"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toBottomOf="@id/title_bar" />
 
-    <Button
-        android:id="@+id/button3"
+    <TextView
+        android:id="@+id/tv_tip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="录制上传"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/dp_18"
+        android:layout_marginTop="@dimen/dp_6"
+        android:text="上传视频不大于100M，支持mp4、Mov格式"
+        android:textColor="@color/text_66_p50"
+        android:textSize="@dimen/sp_12"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_upload_title" />
+
+    <RelativeLayout
+        android:id="@+id/rl_upload"
+        style="@style/marginLeftRight18"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_242"
+        android:layout_marginTop="@dimen/dp_12"
+        android:background="@color/common_blue_normal"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/button2"
-        tools:ignore="MissingConstraints" />
+        app:layout_constraintTop_toBottomOf="@id/tv_tip">
 
+        <TextView
+            android:id="@+id/tv_go_upload"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:drawableTop="@mipmap/ic_video_start"
+            android:drawablePadding="@dimen/dp_4"
+            android:text="点击上传视频"
+            android:textColor="@color/common_blue_main" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_vr"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_18"
+        android:layout_marginTop="@dimen/dp_18"
+        android:text="VR全景展示"
+        android:textColor="@color/text_33"
+        android:textSize="@dimen/sp_15"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rl_upload" />
+
+    <TextView
+        android:id="@+id/tv_vr_example"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/dp_18"
+        android:text="查看样例"
+        android:textColor="@color/text_66_p50"
+        android:textSize="@dimen/sp_12"
+        app:layout_constraintBaseline_toBaselineOf="@id/tv_vr"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rl_upload" />
+
+    <com.officego.commonlib.view.ClearableEditText
+        android:id="@+id/et_vr"
+        style="@style/marginLeftRight18"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40"
+        android:layout_marginTop="@dimen/dp_12"
+        android:background="@drawable/edittext_edge_grey2"
+        android:gravity="center_vertical"
+        android:hint="请输入URL"
+        android:paddingStart="@dimen/dp_10"
+        android:textColor="@color/text_33"
+        android:textSize="@dimen/sp_15"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_vr" />
+
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ctl_btn"
+        style="@style/marginLeftRight18"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_20"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/btn_next"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_40"
+            android:background="@drawable/btn_common_bg_primary"
+            android:gravity="center"
+            android:text="@string/str_next"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_15"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btn_scan"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginTop="@dimen/dp_18"
+            android:background="@drawable/button_corners_edge_white"
+            android:text="在电脑上编辑"
+            android:textColor="@color/common_blue_main"
+            android:textSize="@dimen/sp_15"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_next" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <ImageView
+        android:layout_width="@dimen/dp_18"
+        android:layout_height="@dimen/dp_18"
+        android:layout_marginTop="@dimen/dp_8"
+        android:layout_marginEnd="@dimen/dp_16"
+        android:layout_marginBottom="@dimen/dp_48"
+        android:background="@mipmap/ic_small_delete_blue"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        tools:ignore="ContentDescription" />
 
 </androidx.constraintlayout.widget.ConstraintLayout>

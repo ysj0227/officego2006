@@ -1,24 +1,18 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/cl_container"
+    android:id="@+id/cl_seats"
     android:layout_width="match_parent"
     android:layout_height="@dimen/dp_60"
     android:background="@drawable/bg_common_list_item">
 
-    <View
-        android:id="@+id/top_divider"
-        android:layout_width="match_parent"
-        android:layout_height="1px"
-        android:background="@color/common_divider"
-        android:visibility="gone" />
-
     <TextView
-        android:id="@+id/tv_title"
+        android:id="@+id/tv_seat"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginStart="@dimen/dp_18"
         android:layout_marginTop="@dimen/dp_10"
+        android:text="可置工位"
         android:textColor="@color/text_33"
         android:textSize="@dimen/sp_15" />
 
@@ -28,95 +22,80 @@
         android:layout_height="@dimen/dp_20"
         android:layout_centerVertical="true"
         android:layout_marginStart="@dimen/dp_1"
-        android:layout_toEndOf="@id/tv_title"
+        android:layout_toEndOf="@id/tv_seat"
         android:background="@mipmap/ic_mark"
         android:visibility="visible"
         tools:ignore="ContentDescription" />
 
-    <TextView
-        android:id="@+id/tv_content"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
+    <EditText
+        android:id="@+id/et_seat_start"
+        android:layout_width="@dimen/dp_68"
+        android:layout_height="@dimen/dp_35"
         android:layout_centerVertical="true"
         android:layout_marginStart="@dimen/dp_10"
         android:layout_marginTop="@dimen/dp_10"
         android:layout_toEndOf="@id/iv_mark_image"
-        android:ellipsize="end"
-        android:maxLines="1"
-        android:textColor="@color/text_33"
-        android:textColorHint="@color/text_hint"
-        android:textSize="@dimen/sp_15"
-        android:visibility="visible" />
-
-    <com.officego.commonlib.view.ClearableEditText
-        android:id="@+id/et_content"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_centerVertical="true"
-        android:layout_marginStart="@dimen/dp_10"
-        android:layout_marginTop="@dimen/dp_10"
-        android:layout_marginEnd="@dimen/dp_50"
-        android:layout_toEndOf="@id/iv_mark_image"
-        android:background="@null"
+        android:background="@drawable/edittext_edge_grey2"
         android:ellipsize="end"
         android:gravity="center_vertical"
         android:singleLine="true"
         android:textColor="@color/text_33"
-        android:textColorHint="@color/text_66_p50"
         android:textSize="@dimen/sp_15"
         tools:ignore="RelativeOverlap" />
 
     <TextView
-        android:id="@+id/tv_left_to_arrow_text"
+        android:id="@+id/tv_to"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="@dimen/dp_40"
-        android:textColor="@color/text_66_p50"
+        android:layout_marginStart="@dimen/dp_8"
+        android:layout_marginEnd="@dimen/dp_8"
+        android:layout_toEndOf="@id/et_seat_start"
+        android:text="—"
+        android:textColor="@color/text_hint"
         android:textSize="@dimen/sp_15"
-        android:visibility="gone"
         tools:ignore="ContentDescription" />
 
-    <ImageView
-        android:id="@+id/iv_arrow_right"
+    <EditText
+        android:id="@+id/et_seat_end"
+        android:layout_width="@dimen/dp_68"
+        android:layout_height="@dimen/dp_35"
+        android:layout_centerVertical="true"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_toEndOf="@id/tv_to"
+        android:background="@drawable/edittext_edge_grey2"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:singleLine="true"
+        android:textColor="@color/text_33"
+        android:textSize="@dimen/sp_15"
+        tools:ignore="RelativeOverlap" />
+
+    <TextView
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
-        android:layout_marginEnd="@dimen/dp_18"
-        android:background="@mipmap/ic_right_arrow_small_disable"
-        android:visibility="gone"
+        android:layout_marginStart="@dimen/dp_13"
+        android:layout_toEndOf="@id/et_seat_end"
+        android:text="个"
+        android:textColor="@color/text_hint"
+        android:textSize="@dimen/sp_15"
         tools:ignore="ContentDescription" />
 
     <ImageView
-        android:id="@+id/iv_other_right"
+        android:id="@+id/iv_seat_tip"
         android:layout_width="@dimen/dp_22"
         android:layout_height="@dimen/dp_22"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/dp_18"
-        android:visibility="gone"
-        tools:ignore="ContentDescription" />
-
-    <TextView
-        android:id="@+id/tv_right_text"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="@dimen/dp_18"
-        android:textColor="@color/text_66_p50"
-        android:textSize="@dimen/sp_15"
-        android:visibility="gone"
+        android:background="@mipmap/ic_unkonwn"
         tools:ignore="ContentDescription" />
 
     <View
-        android:id="@+id/bottom_divider"
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_alignParentBottom="true"
         android:background="@color/common_divider"
         android:visibility="visible" />
-
 </RelativeLayout>

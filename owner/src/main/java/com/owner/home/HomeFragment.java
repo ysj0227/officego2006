@@ -2,6 +2,7 @@ package com.owner.home;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.content.Intent;
@@ -98,6 +99,20 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         } else {
             homeAdapter.notifyDataSetChanged();
         }
+    }
+
+    //添加
+    @Click(resName = "iv_add")
+    void addClick() {
+        final String[] items = {"楼盘", "楼盘_办公室", "网点", "独立办公室", "开放工位"};
+        new AlertDialog.Builder(mActivity)
+                .setItems(items, (dialogInterface, i) -> {
+                    if (i == 0) {
+                        AddBuildingActivity_.intent(mActivity).start();
+                    } else if (i == 1) {
+                        AddHouseActivity_.intent(mActivity).start();
+                    }
+                }).create().show();
     }
 
     //扫一扫

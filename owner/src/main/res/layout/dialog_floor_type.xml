@@ -2,7 +2,7 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dp_320"
+    android:layout_height="@dimen/dp_250"
     android:background="@drawable/bg_shape_white">
 
     <RelativeLayout
@@ -16,7 +16,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
-            android:text="更多操作"
+            android:text="所在楼层"
             android:textColor="@color/text_33"
             android:textSize="@dimen/sp_16" />
 
@@ -47,7 +47,7 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/tv_off"
+        android:id="@+id/tv_type1"
         style="@style/marginLeftRight20"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -56,35 +56,21 @@
         android:background="@drawable/line_bottom_gray"
         android:gravity="center"
         android:paddingBottom="@dimen/dp_15"
-        android:text="下架"
+        android:text="多层"
         android:textColor="@color/text_33"
         android:textSize="@dimen/sp_15" />
 
     <TextView
-        android:id="@+id/tv_delete"
+        android:id="@+id/tv_type2"
         style="@style/marginLeftRight20"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_off"
+        android:layout_below="@id/tv_type1"
         android:layout_marginTop="@dimen/dp_15"
         android:background="@drawable/line_bottom_gray"
         android:gravity="center"
         android:paddingBottom="@dimen/dp_15"
-        android:text="删除"
-        android:textColor="@color/text_33"
-        android:textSize="@dimen/sp_15" />
-
-    <TextView
-        android:id="@+id/tv_share"
-        style="@style/marginLeftRight20"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/tv_delete"
-        android:layout_marginTop="@dimen/dp_15"
-        android:background="@drawable/line_bottom_gray"
-        android:gravity="center"
-        android:paddingBottom="@dimen/dp_15"
-        android:text="分享"
+        android:text="单层"
         android:textColor="@color/text_33"
         android:textSize="@dimen/sp_15" />
 

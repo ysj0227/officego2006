@@ -1,0 +1,40 @@
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/cll_decoration"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/white">
+
+    <com.officego.commonlib.view.widget.SettingItemLayout
+        android:id="@+id/sil_decoration"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:leftMarkShow="visible"
+        app:leftText="装修程度"
+        app:rightArrowShow="gone"
+        app:rightOtherImageViewShow="gone"
+        app:showCenterText="gone"
+        app:showDividerBottom="gone"
+        app:showEditText="visible" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_decoration_type"
+        style="@style/marginLeftRight18"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sil_decoration"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/sil_decoration" />
+
+    <View
+        android:layout_width="0dp"
+        android:layout_height="1px"
+        android:layout_marginTop="@dimen/dp_18"
+        android:background="@color/common_divider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/rv_decoration_type" />
+</androidx.constraintlayout.widget.ConstraintLayout>
