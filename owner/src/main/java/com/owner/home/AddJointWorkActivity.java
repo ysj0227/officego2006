@@ -10,12 +10,15 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.view.widget.SettingItemLayout;
 import com.owner.R;
 import com.owner.adapter.HouseUniqueAdapter;
 import com.owner.adapter.JointCompanyAdapter;
+import com.owner.dialog.FloorTypeDialog;
 import com.owner.dialog.ServiceSelectedDialog;
 import com.owner.home.contract.JointWorkContract;
 import com.owner.home.presenter.JointWorkPresenter;
+import com.owner.identity.dialog.AreaDialog;
 import com.owner.utils.SpaceItemDecoration;
 
 import org.androidannotations.annotations.AfterViews;
@@ -32,7 +35,8 @@ import java.util.List;
  **/
 @EActivity(resName = "activity_home_jointwork_manager")
 public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
-        implements JointWorkContract.View {
+        implements JointWorkContract.View, FloorTypeDialog.FloorListener,
+        AreaDialog.AreaSureListener {
     @ViewById(resName = "iv_mark_image_lift")
     ImageView ivMarkImageLift;
     @ViewById(resName = "rv_house_characteristic")
@@ -43,6 +47,13 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
     RecyclerView rvBaseService;
     @ViewById(resName = "rv_join_company")
     RecyclerView rvJoinCompany;
+    @ViewById(resName = "sil_area")
+    SettingItemLayout silArea;
+    @ViewById(resName = "sil_floor_no")
+    SettingItemLayout silFloorNo;
+
+    //区域
+    private int district, business;
     //加入企业
     private JointCompanyAdapter adapter;
     private List<String> jointCompanyList = new ArrayList<String>();
@@ -76,6 +87,16 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
         UploadVideoVrActivity_.intent(context).start();
     }
 
+    @Click(resName = "sil_floor_no")
+    void floorNoOnClick() {
+        new FloorTypeDialog(context).setListener(this);
+    }
+
+    @Click(resName = "sil_area")
+    void areaOnClick() {
+        new AreaDialog(context, district, business).setListener(this);
+    }
+
     //service logo dialog
     @Click(resName = "iv_arrow_create")
     void serviceCompanyClick() {
@@ -102,5 +123,13 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
         new ServiceSelectedDialog(context, getString(R.string.str_title_create_service), data);
     }
 
+    @Override
+    public void sureFloor(String text) {
+        silFloorNo.setLeftToArrowText(text);
+    }
 
+    @Override
+    public void AreaSure(String area, int district, int business) {
+        silArea.setCenterText(area);
+    }
 }
