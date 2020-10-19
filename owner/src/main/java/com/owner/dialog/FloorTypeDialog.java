@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.owner.R;
 
@@ -18,6 +19,20 @@ import com.owner.R;
  **/
 public class FloorTypeDialog {
     private Context context;
+
+    public FloorListener getListener() {
+        return listener;
+    }
+
+    public void setListener(FloorListener listener) {
+        this.listener = listener;
+    }
+
+    private FloorListener listener;
+
+    public interface FloorListener {
+        void sureFloor(String text);
+    }
 
     public FloorTypeDialog(Context context) {
         this.context = context;
@@ -41,15 +56,23 @@ public class FloorTypeDialog {
         lp.width = width;
         lp.height = context.getResources().getDimensionPixelSize(R.dimen.dp_250);
         dialogWindow.setAttributes(lp);
-        handleLayout(viewLayout);
-        viewLayout.findViewById(R.id.btn_cancel).setOnClickListener(v -> dialog.dismiss());
-        viewLayout.findViewById(R.id.rl_exit).setOnClickListener(v -> dialog.dismiss());
+        handleLayout(viewLayout, dialog);
         dialog.setCancelable(true);
         dialog.show();
     }
 
-    private void handleLayout(View viewLayout) {
-//        TextView title = viewLayout.findViewById(R.id.tv_off);
-
+    private void handleLayout(View viewLayout, Dialog dialog) {
+        TextView tvType1 = viewLayout.findViewById(R.id.tv_type1);
+        TextView tvType2 = viewLayout.findViewById(R.id.tv_type2);
+        viewLayout.findViewById(R.id.btn_cancel).setOnClickListener(v -> dialog.dismiss());
+        viewLayout.findViewById(R.id.rl_exit).setOnClickListener(v -> dialog.dismiss());
+        tvType1.setOnClickListener(view -> {
+            listener.sureFloor(tvType1.getText().toString());
+            dialog.dismiss();
+        });
+        tvType2.setOnClickListener(view -> {
+            listener.sureFloor(tvType2.getText().toString());
+            dialog.dismiss();
+        });
     }
 }

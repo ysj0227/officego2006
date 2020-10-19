@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/rl_apartment_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.recyclerview.widget.RecyclerView
+        style="@style/marginLeftRight18"
+        android:id="@+id/rv_apartment_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_18" />
+
+    <TextView
+        style="@style/marginLeftRight18"
+        android:id="@+id/tv_apartment_tip"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rv_apartment_layout"
+        android:layout_marginTop="@dimen/dp_8"
+        android:text="可上传9张图片，单张不大于10M，支持jpg、jpeg、png格式"
+        android:textColor="@color/text_66_p50"
+        android:textSize="@dimen/sp_12" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_below="@id/tv_apartment_tip"
+        android:layout_marginTop="@dimen/dp_18"
+        android:background="@color/common_divider"
+        android:visibility="visible" />
+</RelativeLayout>

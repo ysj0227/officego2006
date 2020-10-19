@@ -196,37 +196,11 @@
                 android:layout_height="@dimen/dp_168"
                 android:layout_below="@id/cll_decoration" />
 
-            <RelativeLayout
-                android:id="@+id/rl_apartment_layout"
-                style="@style/marginLeftRight18"
+            <include
+                layout="@layout/include_apartment_layout"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/ctl_descriptions"
-                android:layout_marginTop="@dimen/dp_18">
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_apartment_layout"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content" />
-
-                <TextView
-                    android:id="@+id/tv_apartment_tip"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/rv_apartment_layout"
-                    android:layout_marginTop="@dimen/dp_8"
-                    android:text="可上传9张图片，单张不大于10M，支持jpg、jpeg、png格式"
-                    android:textColor="@color/text_66_p50"
-                    android:textSize="@dimen/sp_12" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:layout_below="@id/tv_apartment_tip"
-                    android:layout_marginTop="@dimen/dp_18"
-                    android:background="@color/common_divider"
-                    android:visibility="visible" />
-            </RelativeLayout>
+                android:layout_below="@id/ctl_descriptions" />
 
             <RelativeLayout
                 android:id="@+id/rl_characteristic"

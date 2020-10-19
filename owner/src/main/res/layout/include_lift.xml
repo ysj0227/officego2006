@@ -22,24 +22,25 @@
             android:textSize="@dimen/sp_15" />
 
         <ImageView
-            android:id="@+id/iv_mark_image"
+            android:id="@+id/iv_mark_image_lift"
             android:layout_width="@dimen/dp_20"
             android:layout_height="@dimen/dp_20"
             android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/dp_3"
+            android:layout_marginStart="@dimen/dp_1"
             android:layout_toEndOf="@id/tv_title"
             android:background="@mipmap/ic_mark"
             android:visibility="visible"
             tools:ignore="ContentDescription" />
 
         <EditText
+            android:paddingStart="@dimen/dp_3"
             android:id="@+id/et_customer_lift"
             android:layout_width="@dimen/dp_90"
             android:layout_height="@dimen/dp_35"
             android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/dp_10"
             android:layout_marginTop="@dimen/dp_10"
-            android:layout_toEndOf="@id/iv_mark_image"
+            android:layout_toEndOf="@id/iv_mark_image_lift"
             android:background="@drawable/edittext_edge_grey2"
             android:ellipsize="end"
             android:gravity="center_vertical"
@@ -102,13 +103,14 @@
             android:layout_width="@dimen/dp_20"
             android:layout_height="@dimen/dp_20"
             android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/dp_3"
+            android:layout_marginStart="@dimen/dp_1"
             android:layout_toEndOf="@id/tv_title2"
             android:background="@mipmap/ic_mark"
             android:visibility="invisible"
             tools:ignore="ContentDescription" />
 
         <EditText
+            android:paddingStart="@dimen/dp_3"
             android:id="@+id/et_passenger_lift"
             android:layout_width="@dimen/dp_90"
             android:layout_height="@dimen/dp_35"

@@ -69,10 +69,12 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
     void nextOnClick() {
         UploadVideoVrActivity_.intent(context).start();
     }
+
     @Click(resName = "sil_floor_no")
     void floorNoOnClick() {
         new FloorTypeDialog(context);
     }
+
     @Click(resName = "sil_free_rent")
     void freeRentOnClick() {
         new RentDialog(context).setSureListener(this);

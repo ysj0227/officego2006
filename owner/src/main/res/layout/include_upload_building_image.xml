@@ -6,11 +6,11 @@
     android:layout_height="wrap_content">
 
     <TextView
-        android:layout_marginStart="@dimen/dp_18"
         android:id="@+id/tv_upload_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/dp_18"
         android:layout_marginTop="@dimen/dp_14"
         android:drawableEnd="@mipmap/ic_mark"
         android:text="上传楼盘图片"
@@ -20,11 +20,11 @@
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
-        android:layout_marginStart="@dimen/dp_18"
         android:id="@+id/tv_tip"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/dp_18"
         android:layout_marginTop="@dimen/dp_6"
         android:text="可上传9张图片，单张不大于10M，支持jpg、jpeg、png格式"
         android:textColor="@color/text_66_p50"
@@ -33,8 +33,8 @@
         app:layout_constraintTop_toBottomOf="@id/tv_upload_title" />
 
     <androidx.recyclerview.widget.RecyclerView
-        style="@style/marginLeftRight18"
         android:id="@+id/rv_upload_image"
+        style="@style/marginLeftRight18"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_12"

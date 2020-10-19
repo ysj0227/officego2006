@@ -20,6 +20,7 @@ import com.bumptech.glide.Glide;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
 import com.officego.commonlib.common.model.DirectoryBean;
+import com.officego.commonlib.utils.CommonHelper;
 import com.owner.R;
 
 import java.util.HashMap;
@@ -107,23 +108,8 @@ public class ServiceSelectedDialog {
                 } else {
                     mMapLogo.remove(bean.getDictValue());
                 }
-                mStrLogo = getKey(mMapLogo);
+                mStrLogo = CommonHelper.getKey(mMapLogo);
             });
-        }
-
-        private String getKey(Map<Integer, String> map) {
-            StringBuilder key = new StringBuilder();
-            for (Map.Entry<Integer, String> entry : map.entrySet()) {
-                if (map.size() == 1) {
-                    key.append(entry.getKey());
-                } else {
-                    key.append(entry.getKey()).append(",");
-                }
-            }
-            if (map.size() > 1) {
-                key = key.replace(key.length() - 1, key.length(), "");
-            }
-            return key.toString();
         }
     }
 }

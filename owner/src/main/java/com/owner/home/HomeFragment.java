@@ -111,6 +111,12 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
                         AddBuildingActivity_.intent(mActivity).start();
                     } else if (i == 1) {
                         AddHouseActivity_.intent(mActivity).start();
+                    } else if (i == 2) {
+                        AddJointWorkActivity_.intent(mActivity).start();
+                    } else if (i == 3) {
+                        AddIndependentActivity_.intent(mActivity).start();
+                    } else {
+                        AddOpenSeatsActivity_.intent(mActivity).start();
                     }
                 }).create().show();
     }
@@ -142,7 +148,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
             }
             if (data.getIdentityType() == 2) {
                 // todo 网点管理 加载list
-
             } else {
                 // todo 楼盘管理 加载list
             }
