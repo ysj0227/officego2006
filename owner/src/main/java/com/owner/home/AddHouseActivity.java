@@ -1,5 +1,11 @@
 package com.owner.home;
 
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
+import android.widget.TextView;
+
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -30,9 +36,14 @@ import java.util.List;
  **/
 @EActivity(resName = "activity_home_house_manager")
 public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
-        implements HouseContract.View, RentDialog.SureClickListener {
-    @ViewById(resName = "sil_building_type")
-    SettingItemLayout silBuildingType;
+        implements HouseContract.View, RentDialog.SureClickListener,
+        FloorTypeDialog.FloorListener {
+    @ViewById(resName = "sil_area")
+    SettingItemLayout silArea;
+    @ViewById(resName = "sil_rent_single")
+    SettingItemLayout silRentSingle;
+    @ViewById(resName = "tv_rent_sum_tip")
+    TextView tvRentSumTip;
     @ViewById(resName = "sil_rent_sum")
     SettingItemLayout silRentSum;
     @ViewById(resName = "sil_floor_no")
@@ -44,6 +55,11 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
     RecyclerView rvHouseUnique;
     @ViewById(resName = "rv_decoration_type")
     RecyclerView rvDecorationType;
+    @ViewById(resName = "btn_scan")
+    Button btnScan;
+    @ViewById(resName = "iv_close_scan")
+    ImageView ivCloseScan;
+    private float rentCounts;//租金总价
 
     @AfterViews
     void init() {
@@ -51,6 +67,7 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
         mPresenter = new HousePresenter();
         mPresenter.attachView(this);
         initViews();
+        itemListener();
         mPresenter.getDecoratedType();
         mPresenter.getHouseUnique();
     }
@@ -71,9 +88,15 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
         UploadVideoVrActivity_.intent(context).start();
     }
 
+    @Click(resName = "iv_close_scan")
+    void closeScanOnClick() {
+        btnScan.setVisibility(View.GONE);
+        ivCloseScan.setVisibility(View.GONE);
+    }
+
     @Click(resName = "sil_floor_no")
     void floorNoOnClick() {
-        new FloorTypeDialog(context);
+        new FloorTypeDialog(context).setListener(this);
     }
 
     @Click(resName = "sil_free_rent")
@@ -84,7 +107,7 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
     @Click(resName = "iv_seat_tip")
     void seatOnClick() {
         CommonDialog dialog = new CommonDialog.Builder(this)
-                .setMessage("可置工位根据面积生成，可修改")
+                .setTitle("可置工位根据面积生成，可修改")
                 .setConfirmButton("我知道了", (dialog12, which) -> {
                     dialog12.dismiss();
                 }).create();
@@ -102,6 +125,26 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
         dialog.showWithOutTouchable(false);
     }
 
+    private void itemListener() {
+        silRentSum.getEditTextView().setOnFocusChangeListener((view, b) -> {
+            String area = silArea.getEditTextView().getText().toString();//整数
+            String rentSingle = silRentSingle.getEditTextView().getText().toString();//保留两位小数
+            if (!TextUtils.isEmpty(area) && !TextUtils.isEmpty(rentSingle)) {
+                if (b) {
+                    rentCounts = Integer.valueOf(rentSingle) * Float.valueOf(area) * 30;
+                    tvRentSumTip.setVisibility(View.VISIBLE);
+                    tvRentSumTip.setText("租金总价：" + rentCounts + "元/月");
+                } else {
+                    tvRentSumTip.setVisibility(View.GONE);
+                }
+            }
+        });
+        tvRentSumTip.setOnClickListener(view -> {
+            silRentSum.setCenterText(rentCounts + "");
+            tvRentSumTip.setVisibility(View.GONE);
+        });
+    }
+
     @Override
     public void houseUniqueSuccess(List<DirectoryBean.DataBean> data) {
         rvHouseUnique.setAdapter(new HouseUniqueAdapter(context, data));
@@ -115,5 +158,10 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
     @Override
     public void selectedRent(String str) {
         silFreeRent.setLeftToArrowText(str);
+    }
+
+    @Override
+    public void sureFloor(String text) {
+        silFloorNo.setLeftToArrowText(text);
     }
 }

@@ -56,7 +56,7 @@
             android:layout_marginEnd="@dimen/dp_18"
             android:layout_toEndOf="@id/et_customer_lift"
             android:text="（客梯）"
-            android:textColor="@color/text_hint"
+            android:textColor="@color/text_66_p50"
             android:textSize="@dimen/sp_15"
             tools:ignore="ContentDescription" />
 
@@ -67,7 +67,7 @@
             android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/dp_18"
             android:text="个"
-            android:textColor="@color/text_hint"
+            android:textColor="@color/text_66_p50"
             android:textSize="@dimen/sp_15"
             tools:ignore="ContentDescription" />
 
@@ -133,7 +133,7 @@
             android:layout_marginEnd="@dimen/dp_18"
             android:layout_toEndOf="@id/et_passenger_lift"
             android:text="（货梯）"
-            android:textColor="@color/text_hint"
+            android:textColor="@color/text_66_p50"
             android:textSize="@dimen/sp_15"
             tools:ignore="ContentDescription" />
 
@@ -144,7 +144,7 @@
             android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/dp_18"
             android:text="个"
-            android:textColor="@color/text_hint"
+            android:textColor="@color/text_66_p50"
             android:textSize="@dimen/sp_15"
             tools:ignore="ContentDescription" />
 

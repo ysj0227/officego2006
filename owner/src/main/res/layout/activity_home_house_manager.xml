@@ -72,8 +72,10 @@
                 app:leftMarkShow="visible"
                 app:leftText="租金单价"
                 app:rightArrowShow="gone"
+                app:editTextWidth="@dimen/dp_160"
                 app:rightOtherImageViewShow="gone"
                 app:rightText="元/㎡/天"
+                app:editTextInputType="numberDecimal"
                 app:showCenterText="gone"
                 app:showDividerBottom="visible"
                 app:showEditText="visible" />
@@ -85,6 +87,7 @@
                 android:layout_below="@id/sil_rent_single"
                 app:leftMarkShow="visible"
                 app:leftText="租金总价"
+                app:editTextWidth="@dimen/dp_160"
                 app:leftToArrowText="元/月    "
                 app:leftToArrowTextColor="@color/text_66_p50"
                 app:rightArrowShow="gone"
@@ -93,7 +96,9 @@
                 app:showCenterText="gone"
                 app:showDividerBottom="visible"
                 app:showEditText="visible" />
+
             <TextView
+                android:visibility="gone"
                 android:id="@+id/tv_rent_sum_tip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -101,9 +106,9 @@
                 android:layout_marginStart="@dimen/dp_120"
                 android:background="@drawable/text_label_blue"
                 android:padding="@dimen/dp_3"
-                android:text="租金总价：0.3元/月"
                 android:textColor="@color/common_blue_main"
                 android:textSize="@dimen/sp_13" />
+
             <com.officego.commonlib.view.widget.SettingItemLayout
                 android:id="@+id/sil_floor_no"
                 android:layout_width="match_parent"
@@ -111,7 +116,7 @@
                 android:layout_below="@id/sil_rent_sum"
                 app:leftMarkShow="visible"
                 app:leftText="所在楼层"
-                app:leftToArrowText="多层"
+                app:leftToArrowTextColor="@color/text_33"
                 app:rightArrowShow="visible"
                 app:rightOtherImageViewShow="gone"
                 app:showCenterText="visible"
@@ -174,6 +179,7 @@
                 app:leftMarkShow="visible"
                 app:leftText="免租期"
                 app:leftToArrowText="面议"
+                app:leftToArrowTextColor="@color/text_33"
                 app:rightArrowShow="visible"
                 app:rightOtherImageViewShow="gone"
                 app:showCenterText="visible"
@@ -212,49 +218,11 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/ctl_descriptions" />
 
-            <RelativeLayout
-                android:id="@+id/rl_characteristic"
+            <include
+                layout="@layout/include_characteristic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/rl_apartment_layout"
-                android:layout_marginStart="@dimen/dp_18"
-                android:layout_marginTop="@dimen/dp_18"
-                android:layout_marginEnd="@dimen/dp_16">
-
-                <TextView
-                    android:id="@+id/tv_house_characteristic"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="办公室特色"
-                    android:textColor="@color/text_33"
-                    android:textSize="@dimen/sp_15" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@id/tv_house_characteristic"
-                    android:layout_marginStart="@dimen/dp_5"
-                    android:layout_marginBottom="@dimen/dp_2"
-                    android:layout_toEndOf="@id/tv_house_characteristic"
-                    android:text="最多选择4项"
-                    android:textColor="@color/text_66_p50"
-                    android:textSize="@dimen/sp_12" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_house_characteristic"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_house_characteristic"
-                    android:layout_marginTop="@dimen/dp_18" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginTop="@dimen/dp_18"
-                    android:background="@color/common_divider"
-                    android:visibility="visible" />
-            </RelativeLayout>
+                android:layout_below="@id/rl_apartment_layout" />
 
             <include
                 layout="@layout/include_upload_building_image"
@@ -295,7 +263,7 @@
             android:layout_height="@dimen/dp_40"
             android:layout_marginTop="@dimen/dp_18"
             android:background="@drawable/button_corners_edge_white"
-            android:text="在电脑上编辑"
+            android:text="@string/str_goto_web_edit"
             android:textColor="@color/common_blue_main"
             android:textSize="@dimen/sp_15"
             app:layout_constraintEnd_toEndOf="parent"
@@ -306,6 +274,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
+        android:id="@+id/iv_close_scan"
         android:layout_width="@dimen/dp_18"
         android:layout_height="@dimen/dp_18"
         android:layout_alignParentEnd="true"

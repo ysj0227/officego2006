@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 
 import com.officego.commonlib.R;
 import com.officego.commonlib.utils.CommonHelper;
@@ -112,21 +113,16 @@ public class SettingItemLayout extends FrameLayout {
             tvContent.setHint(a.getString(R.styleable.SettingItemLayout_centerTextHint));
         }
         if (a.hasValue(R.styleable.SettingItemLayout_centerTextHintColor)) {
-            int defaultEditTextColor = 0xFFD8D8D8;
-            tvContent.setHintTextColor(a.getColor(R.styleable.SettingItemLayout_centerTextHintColor, defaultEditTextColor));
+            tvContent.setHintTextColor(a.getColor(R.styleable.SettingItemLayout_centerTextHintColor, ContextCompat.getColor(context, R.color.text_66_p50)));
         }
 
-//        //文本是否显示
-//        int centerType = a.getInteger(R.styleable.SettingItemLayout_showCenterText, DIVIDER_VISIBLE);
-//        if (a.hasValue(R.styleable.SettingItemLayout_showCenterText)) {
-//            tvContent.setVisibility(VISIBLE);
-//            editTextContent.setVisibility(GONE);
-//            tvContent.setVisibility(centerType == DIVIDER_VISIBLE ? VISIBLE : GONE);
-//        } else {
-//            tvContent.setVisibility(GONE);
-//        }
-
         //输入文本EditText
+        if (a.hasValue(R.styleable.SettingItemLayout_editTextWidth)) {
+            float width = a.getDimension(R.styleable.SettingItemLayout_editTextWidth, CommonHelper.dp2px(context, 120));
+            if (editTextContent != null) {
+                editTextContent.getLayoutParams().width = (int) width;
+            }
+        }
         String etContent = a.getString(R.styleable.SettingItemLayout_editTextContent);
         float editTextSize = a.getDimension(R.styleable.SettingItemLayout_editTextSize, -1);
         int inputType = a.getInt(R.styleable.SettingItemLayout_editTextInputType, EditorInfo.TYPE_NULL);
@@ -150,8 +146,7 @@ public class SettingItemLayout extends FrameLayout {
             editTextContent.setHint(a.getString(R.styleable.SettingItemLayout_editTextHint));
         }
         if (a.hasValue(R.styleable.SettingItemLayout_editTextHintColor)) {
-            int defaultEditTextColor = 0xFFD8D8D8;
-            editTextContent.setHintTextColor(a.getColor(R.styleable.SettingItemLayout_editTextHintColor, defaultEditTextColor));
+            editTextContent.setHintTextColor(a.getColor(R.styleable.SettingItemLayout_editTextHintColor, ContextCompat.getColor(context, R.color.text_66_p50)));
         }
 
         //是否显示编辑框
@@ -170,14 +165,16 @@ public class SettingItemLayout extends FrameLayout {
             if (centerTextSize > 0) {
                 tvLeftToArrowText.setTextSize(TypedValue.COMPLEX_UNIT_PX, rightTextSize);
             }
-            int defaultTextColor = 0xFF333333;
-            tvLeftToArrowText.setTextColor(a.getColor(R.styleable.SettingItemLayout_leftToArrowTextColor, defaultTextColor));
             if (!TextUtils.isEmpty(rightText)) {
                 tvLeftToArrowText.setVisibility(VISIBLE);
                 tvLeftToArrowText.setText(rightText);
             } else {
                 tvLeftToArrowText.setVisibility(GONE);
             }
+        }
+        if (a.hasValue(R.styleable.SettingItemLayout_leftToArrowTextColor)) {
+            int defaultTextColor = 0xFF333333;
+            tvLeftToArrowText.setTextColor(a.getColor(R.styleable.SettingItemLayout_leftToArrowTextColor, defaultTextColor));
         }
 
         //右侧文本
@@ -194,8 +191,7 @@ public class SettingItemLayout extends FrameLayout {
             } else {
                 tvRightText.setVisibility(GONE);
             }
-            int defaultTextColor = 0xCC666666;
-            tvRightText.setTextColor(a.getColor(R.styleable.SettingItemLayout_rightTextColor, defaultTextColor));
+            tvRightText.setTextColor(a.getColor(R.styleable.SettingItemLayout_rightTextColor, ContextCompat.getColor(context, R.color.text_66_p50)));
         }
 
         //右侧箭头图片是否显示

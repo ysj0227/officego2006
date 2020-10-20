@@ -36,6 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:editTextHint="请输入标题"
+                app:editTextHintColor="@color/text_66_p50"
                 app:leftMarkShow="invisible"
                 app:leftText="标题"
                 app:rightArrowShow="gone"
@@ -45,33 +46,18 @@
                 app:showEditText="visible" />
 
             <com.officego.commonlib.view.widget.SettingItemLayout
-                android:id="@+id/sil_hire"
+                android:id="@+id/sil_seats"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sil_title"
                 app:leftMarkShow="visible"
-                app:leftText="出租方式"
-                app:rightArrowShow="gone"
-                app:rightOtherImageViewShow="gone"
-                app:rightText="按工位出租"
-                app:showCenterText="gone"
-                app:showDividerBottom="visible"
-                app:showEditText="gone" />
-
-            <com.officego.commonlib.view.widget.SettingItemLayout
-                android:id="@+id/sil_seats"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/sil_hire"
                 app:leftText="工位数"
-                app:leftMarkShow="visible"
                 app:rightArrowShow="gone"
                 app:rightOtherImageViewShow="gone"
                 app:rightText="个"
                 app:showCenterText="gone"
                 app:showDividerBottom="visible"
                 app:showEditText="visible" />
-
 
             <com.officego.commonlib.view.widget.SettingItemLayout
                 android:id="@+id/sil_area"
@@ -92,6 +78,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sil_area"
+                app:editTextWidth="@dimen/dp_160"
                 app:leftMarkShow="visible"
                 app:leftText="租金"
                 app:rightArrowShow="gone"
@@ -108,7 +95,7 @@
                 android:layout_below="@id/sil_rent_single"
                 app:leftMarkShow="visible"
                 app:leftText="所在楼层"
-                app:leftToArrowText="多层"
+                app:leftToArrowTextColor="@color/text_33"
                 app:rightArrowShow="visible"
                 app:rightOtherImageViewShow="gone"
                 app:showCenterText="visible"
@@ -143,6 +130,7 @@
                 app:leftMarkShow="visible"
                 app:leftText="免租期"
                 app:leftToArrowText="面议"
+                app:leftToArrowTextColor="@color/text_33"
                 app:rightArrowShow="visible"
                 app:rightOtherImageViewShow="gone"
                 app:showCenterText="visible"
@@ -180,6 +168,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sil_car_num"
+                app:editTextWidth="@dimen/dp_160"
                 app:leftMarkShow="invisible"
                 app:leftText="车位费"
                 app:rightArrowShow="gone"
@@ -253,7 +242,7 @@
             android:layout_height="@dimen/dp_40"
             android:layout_marginTop="@dimen/dp_18"
             android:background="@drawable/button_corners_edge_white"
-            android:text="在电脑上编辑"
+            android:text="@string/str_goto_web_edit"
             android:textColor="@color/common_blue_main"
             android:textSize="@dimen/sp_15"
             app:layout_constraintEnd_toEndOf="parent"
@@ -262,6 +251,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
+        android:id="@+id/iv_close_scan"
         android:layout_width="@dimen/dp_18"
         android:layout_height="@dimen/dp_18"
         android:layout_alignParentEnd="true"

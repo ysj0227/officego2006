@@ -16,7 +16,7 @@
         app:layout_constraintTop_toTopOf="parent"
         app:leftDefaultClickEnable="true"
         app:leftIcon="@drawable/ic_back_light"
-        app:titleText="上传视频"
+        app:titleText="上传VR"
         app:titleTextColor="@color/white" />
 
     <TextView
@@ -30,6 +30,7 @@
         android:text="上传楼盘视频"
         android:textColor="@color/text_33"
         android:textSize="@dimen/sp_15"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/title_bar" />
 
@@ -43,6 +44,7 @@
         android:text="上传视频不大于100M，支持mp4、Mov格式"
         android:textColor="@color/text_66_p50"
         android:textSize="@dimen/sp_12"
+        android:visibility="gone"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_upload_title" />
 
@@ -53,6 +55,7 @@
         android:layout_height="@dimen/dp_242"
         android:layout_marginTop="@dimen/dp_12"
         android:background="@color/common_blue_normal"
+        android:visibility="gone"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/tv_tip">
@@ -126,7 +129,7 @@
             android:layout_height="@dimen/dp_40"
             android:background="@drawable/btn_common_bg_primary"
             android:gravity="center"
-            android:text="@string/str_next"
+            android:text="保存并发布"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_15"
             android:visibility="visible"
@@ -140,7 +143,7 @@
             android:layout_height="@dimen/dp_40"
             android:layout_marginTop="@dimen/dp_18"
             android:background="@drawable/button_corners_edge_white"
-            android:text="在电脑上编辑"
+            android:text="@string/str_goto_web_edit"
             android:textColor="@color/common_blue_main"
             android:textSize="@dimen/sp_15"
             app:layout_constraintEnd_toEndOf="parent"
@@ -150,6 +153,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
+        android:id="@+id/iv_close_scan"
         android:layout_width="@dimen/dp_18"
         android:layout_height="@dimen/dp_18"
         android:layout_marginTop="@dimen/dp_8"

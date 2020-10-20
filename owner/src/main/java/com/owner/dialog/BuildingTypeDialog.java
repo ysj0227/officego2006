@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.TextView;
 
 import com.owner.R;
 
@@ -19,9 +20,23 @@ import com.owner.R;
 public class BuildingTypeDialog {
     private Context context;
 
+    public BuildingTypeListener getListener() {
+        return listener;
+    }
+
+    public void setListener(BuildingTypeListener listener) {
+        this.listener = listener;
+    }
+
+    private BuildingTypeListener listener;
+
     public BuildingTypeDialog(Context context) {
         this.context = context;
         moreDialog(context);
+    }
+
+    public interface BuildingTypeListener {
+        void sureBuildingType(String type,boolean isOffice);
     }
 
     private void moreDialog(Context context) {
@@ -41,15 +56,28 @@ public class BuildingTypeDialog {
         lp.width = width;
         lp.height = context.getResources().getDimensionPixelSize(R.dimen.dp_320);
         dialogWindow.setAttributes(lp);
-        handleLayout(viewLayout);
-        viewLayout.findViewById(R.id.btn_cancel).setOnClickListener(v -> dialog.dismiss());
-        viewLayout.findViewById(R.id.rl_exit).setOnClickListener(v -> dialog.dismiss());
+        handleLayout(viewLayout, dialog);
         dialog.setCancelable(true);
         dialog.show();
     }
 
-    private void handleLayout(View viewLayout) {
-//        TextView title = viewLayout.findViewById(R.id.tv_off);
-
+    private void handleLayout(View viewLayout, Dialog dialog) {
+        TextView tvType1 = viewLayout.findViewById(R.id.tv_type1);
+        TextView tvType2 = viewLayout.findViewById(R.id.tv_type2);
+        TextView tvType3 = viewLayout.findViewById(R.id.tv_type3);
+        viewLayout.findViewById(R.id.btn_cancel).setOnClickListener(v -> dialog.dismiss());
+        viewLayout.findViewById(R.id.rl_exit).setOnClickListener(v -> dialog.dismiss());
+        tvType1.setOnClickListener(view -> {
+            listener.sureBuildingType(tvType1.getText().toString(),true);
+            dialog.dismiss();
+        });
+        tvType2.setOnClickListener(view -> {
+            listener.sureBuildingType(tvType2.getText().toString(),false);
+            dialog.dismiss();
+        });
+        tvType3.setOnClickListener(view -> {
+            listener.sureBuildingType(tvType3.getText().toString(),false);
+            dialog.dismiss();
+        });
     }
 }

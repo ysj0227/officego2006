@@ -1,6 +1,7 @@
 package com.owner.home;
 
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -14,6 +15,7 @@ import com.officego.commonlib.view.widget.SettingItemLayout;
 import com.owner.R;
 import com.owner.adapter.HouseUniqueAdapter;
 import com.owner.adapter.JointCompanyAdapter;
+import com.owner.dialog.ConditionedDialog;
 import com.owner.dialog.FloorTypeDialog;
 import com.owner.dialog.ServiceSelectedDialog;
 import com.owner.home.contract.JointWorkContract;
@@ -36,7 +38,7 @@ import java.util.List;
 @EActivity(resName = "activity_home_jointwork_manager")
 public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
         implements JointWorkContract.View, FloorTypeDialog.FloorListener,
-        AreaDialog.AreaSureListener {
+        AreaDialog.AreaSureListener, ConditionedDialog.ConditionedListener {
     @ViewById(resName = "iv_mark_image_lift")
     ImageView ivMarkImageLift;
     @ViewById(resName = "rv_house_characteristic")
@@ -51,7 +53,12 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
     SettingItemLayout silArea;
     @ViewById(resName = "sil_floor_no")
     SettingItemLayout silFloorNo;
-
+    @ViewById(resName = "sil_conditioned")
+    SettingItemLayout silConditioned;
+    @ViewById(resName = "btn_scan")
+    Button btnScan;
+    @ViewById(resName = "iv_close_scan")
+    ImageView ivCloseScan;
     //区域
     private int district, business;
     //加入企业
@@ -87,6 +94,12 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
         UploadVideoVrActivity_.intent(context).start();
     }
 
+    @Click(resName = "iv_close_scan")
+    void closeScanOnClick() {
+        btnScan.setVisibility(View.GONE);
+        ivCloseScan.setVisibility(View.GONE);
+    }
+
     @Click(resName = "sil_floor_no")
     void floorNoOnClick() {
         new FloorTypeDialog(context).setListener(this);
@@ -106,6 +119,11 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
     @Click(resName = "iv_arrow_base")
     void serviceBaseClick() {
         mPresenter.getBaseService();
+    }
+
+    @Click(resName = "sil_conditioned")
+    void conditionedOnClick() {
+        new ConditionedDialog(context).setListener(this);
     }
 
     @Override
@@ -131,5 +149,10 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
     @Override
     public void AreaSure(String area, int district, int business) {
         silArea.setCenterText(area);
+    }
+
+    @Override
+    public void sureConditioned(String string, int flag) {
+        silConditioned.setCenterText(string);
     }
 }

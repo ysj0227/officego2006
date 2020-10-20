@@ -13,7 +13,7 @@
         android:layout_marginStart="@dimen/dp_18"
         android:layout_marginTop="@dimen/dp_10"
         android:text="第"
-        android:textColor="@color/text_hint"
+        android:textColor="@color/text_66_p50"
         android:textSize="@dimen/sp_15" />
 
     <EditText
@@ -41,7 +41,7 @@
         android:layout_marginStart="@dimen/dp_8"
         android:layout_toEndOf="@id/et_floors"
         android:text="层"
-        android:textColor="@color/text_hint"
+        android:textColor="@color/text_66_p50"
         android:textSize="@dimen/sp_15"
         tools:ignore="ContentDescription" />
 
@@ -58,7 +58,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:text="总"
-            android:textColor="@color/text_hint"
+            android:textColor="@color/text_66_p50"
             android:textSize="@dimen/sp_15"
             tools:ignore="ContentDescription" />
 
@@ -87,7 +87,7 @@
             android:layout_marginStart="@dimen/dp_8"
             android:layout_toEndOf="@id/et_floors_count"
             android:text="层"
-            android:textColor="@color/text_hint"
+            android:textColor="@color/text_66_p50"
             android:textSize="@dimen/sp_15"
             tools:ignore="ContentDescription" />
 

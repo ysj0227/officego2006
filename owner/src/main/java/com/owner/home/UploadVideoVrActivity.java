@@ -8,6 +8,9 @@ import android.graphics.Bitmap;
 import android.media.ThumbnailUtils;
 import android.net.Uri;
 import android.provider.MediaStore;
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 
 import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.utils.StatusBarUtils;
@@ -15,6 +18,7 @@ import com.officego.commonlib.utils.StatusBarUtils;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.ViewById;
 
 import java.io.File;
 
@@ -24,6 +28,11 @@ import java.io.File;
  **/
 @EActivity(resName = "activity_home_upload_video_vr")
 public class UploadVideoVrActivity extends BaseActivity {
+    @ViewById(resName = "btn_scan")
+    Button btnScan;
+    @ViewById(resName = "iv_close_scan")
+    ImageView ivCloseScan;
+
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarFullTransparent(this);
@@ -32,6 +41,12 @@ public class UploadVideoVrActivity extends BaseActivity {
     @Click(resName = "rl_upload")
     void uploadVideoOnClick() {
         selectedDialog();
+    }
+
+    @Click(resName = "iv_close_scan")
+    void closeScanOnClick() {
+        btnScan.setVisibility(View.GONE);
+        ivCloseScan.setVisibility(View.GONE);
     }
 
     private void selectedDialog() {

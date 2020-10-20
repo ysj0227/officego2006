@@ -47,7 +47,7 @@
     </RelativeLayout>
 
     <TextView
-        android:id="@+id/tv_condition1"
+        android:id="@+id/tv_type1"
         style="@style/marginLeftRight20"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -61,11 +61,11 @@
         android:textSize="@dimen/sp_15" />
 
     <TextView
-        android:id="@+id/tv_condition2"
+        android:id="@+id/tv_type2"
         style="@style/marginLeftRight20"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_condition1"
+        android:layout_below="@id/tv_type1"
         android:layout_marginTop="@dimen/dp_15"
         android:background="@drawable/line_bottom_gray"
         android:gravity="center"
@@ -75,11 +75,11 @@
         android:textSize="@dimen/sp_15" />
 
     <TextView
-        android:id="@+id/tv_condition_no"
+        android:id="@+id/tv_type3"
         style="@style/marginLeftRight20"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tv_condition2"
+        android:layout_below="@id/tv_type2"
         android:layout_marginTop="@dimen/dp_15"
         android:background="@drawable/line_bottom_gray"
         android:gravity="center"

@@ -36,6 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:centerTextHint="请输入名称"
+                app:centerTextHintColor="@color/text_66_p50"
                 app:leftMarkShow="visible"
                 app:leftText="网点名称"
                 app:rightArrowShow="gone"
@@ -48,6 +49,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sil_joint_work_name"
                 app:centerTextHint="请选择城市、区域与商圈"
+                app:centerTextHintColor="@color/text_66_p50"
                 app:leftMarkShow="visible"
                 app:leftText="所在区域"
                 app:rightOtherImageViewShow="gone"
@@ -59,9 +61,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sil_area"
                 app:editTextHint="请输入详细地址（2～100个字）"
-                app:editTextHintColor="@color/text_hint"
+                app:editTextHintColor="@color/text_66_p50"
                 app:leftMarkShow="visible"
                 app:leftText="详细地址"
+                app:rightArrowShow="gone"
                 app:rightOtherImageViewShow="gone"
                 app:showCenterText="gone"
                 app:showDividerBottom="visible"
@@ -74,7 +77,7 @@
                 android:layout_below="@id/sil_address"
                 app:leftMarkShow="visible"
                 app:leftText="所在楼层"
-                app:leftToArrowText="多层"
+                app:leftToArrowTextColor="@color/text_33"
                 app:rightArrowShow="visible"
                 app:rightOtherImageViewShow="gone"
                 app:showCenterText="visible"
@@ -173,6 +176,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sil_car_num"
+                app:editTextWidth="@dimen/dp_160"
                 app:leftMarkShow="invisible"
                 app:leftText="车位费"
                 app:rightArrowShow="gone"
@@ -206,49 +210,11 @@
                 android:layout_height="@dimen/dp_168"
                 android:layout_below="@id/rv_join_company" />
 
-            <RelativeLayout
-                android:id="@+id/rl_characteristic"
+            <include
+                layout="@layout/include_characteristic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/ctl_descriptions"
-                android:layout_marginStart="@dimen/dp_18"
-                android:layout_marginTop="@dimen/dp_18"
-                android:layout_marginEnd="@dimen/dp_16">
-
-                <TextView
-                    android:id="@+id/tv_house_characteristic"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="共享办公特色"
-                    android:textColor="@color/text_33"
-                    android:textSize="@dimen/sp_15" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@id/tv_house_characteristic"
-                    android:layout_marginStart="@dimen/dp_5"
-                    android:layout_marginBottom="@dimen/dp_2"
-                    android:layout_toEndOf="@id/tv_house_characteristic"
-                    android:text="最多选择4项"
-                    android:textColor="@color/text_66_p50"
-                    android:textSize="@dimen/sp_12" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_house_characteristic"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_house_characteristic"
-                    android:layout_marginTop="@dimen/dp_18" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginTop="@dimen/dp_26"
-                    android:background="@color/common_divider"
-                    android:visibility="visible" />
-            </RelativeLayout>
+                android:layout_below="@id/ctl_descriptions" />
 
             <include
                 style="@style/marginLeftRight18"
@@ -295,7 +261,7 @@
             android:layout_height="@dimen/dp_40"
             android:layout_marginTop="@dimen/dp_18"
             android:background="@drawable/button_corners_edge_white"
-            android:text="在电脑上编辑"
+            android:text="@string/str_goto_web_edit"
             android:textColor="@color/common_blue_main"
             android:textSize="@dimen/sp_15"
             app:layout_constraintEnd_toEndOf="parent"
@@ -304,6 +270,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
+        android:id="@+id/iv_close_scan"
         android:layout_width="@dimen/dp_18"
         android:layout_height="@dimen/dp_18"
         android:layout_alignParentEnd="true"

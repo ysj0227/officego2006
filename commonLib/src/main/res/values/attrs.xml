@@ -62,6 +62,7 @@
         <attr name="rightText" /> <!-- 右边文字颜色-->
         <attr name="rightTextSize" />
         <attr name="rightTextColor" />
+        <attr name="editTextWidth" format="dimension" />
         <attr name="editTextContent" format="string" /><!-- 中间编辑框-->
         <attr name="editTextSize" format="dimension" />
         <attr name="editTextColor" format="color" />

@@ -36,6 +36,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:centerTextHint="请选择楼盘类型"
+                app:centerTextHintColor="@color/text_66_p50"
                 app:leftMarkShow="visible"
                 app:leftText="楼盘类型"
                 app:rightOtherImageViewShow="gone"
@@ -46,8 +47,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sil_building_type"
+                android:visibility="gone"
                 app:editTextHint="请输入园区名称"
-                app:editTextHintColor="@color/text_hint"
+                app:editTextHintColor="@color/text_66_p50"
                 app:leftMarkShow="visible"
                 app:leftText="园区名称"
                 app:rightArrowShow="gone"
@@ -61,8 +63,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sil_garden_name"
+                android:visibility="gone"
                 app:editTextHint="请输入楼号"
-                app:editTextHintColor="@color/text_hint"
+                app:editTextHintColor="@color/text_66_p50"
                 app:leftMarkShow="visible"
                 app:leftText="楼号"
                 app:rightArrowShow="gone"
@@ -77,6 +80,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sil_no"
                 app:centerTextHint="请选择城市、区域与商圈"
+                app:centerTextHintColor="@color/text_66_p50"
                 app:leftMarkShow="visible"
                 app:leftText="所在区域"
                 app:rightOtherImageViewShow="gone"
@@ -88,9 +92,10 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sil_area"
                 app:editTextHint="请输入详细地址（2～100个字）"
-                app:editTextHintColor="@color/text_hint"
+                app:editTextHintColor="@color/text_66_p50"
                 app:leftMarkShow="visible"
                 app:leftText="详细地址"
+                app:rightArrowShow="gone"
                 app:rightOtherImageViewShow="gone"
                 app:showCenterText="gone"
                 app:showDividerBottom="visible"
@@ -116,6 +121,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sil_storey"
                 app:centerTextHint="请选择时间"
+                app:centerTextHintColor="@color/text_66_p50"
                 app:leftMarkShow="visible"
                 app:leftText="竣工时间"
                 app:rightArrowShow="gone"
@@ -131,6 +137,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sil_complete_time"
                 app:centerTextHint="请选择时间"
+                app:centerTextHintColor="@color/text_66_p50"
                 app:leftMarkShow="invisible"
                 app:leftText="翻新时间"
                 app:rightArrowShow="gone"
@@ -145,6 +152,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sil_recomplete_time"
+                app:editTextWidth="@dimen/dp_160"
                 app:leftMarkShow="invisible"
                 app:leftText="建筑面积"
                 app:rightArrowShow="gone"
@@ -188,7 +196,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sil_tier_height"
                 app:editTextHint="请填写物业公司名称"
-                app:editTextHintColor="@color/text_hint"
+                app:editTextHintColor="@color/text_66_p50"
                 app:leftMarkShow="visible"
                 app:leftText="物业公司"
                 app:rightArrowShow="gone"
@@ -202,6 +210,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sil_estate"
+                app:editTextWidth="@dimen/dp_160"
                 app:leftMarkShow="visible"
                 app:leftText="物业费"
                 app:rightArrowShow="gone"
@@ -230,6 +239,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sil_estate_fee"
+                app:editTextWidth="@dimen/dp_160"
                 app:leftMarkShow="invisible"
                 app:leftText="车位费"
                 app:rightArrowShow="gone"
@@ -244,7 +254,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sil_car_fee"
-                app:centerText="中央空调"
                 app:leftMarkShow="visible"
                 app:leftText="空调类型"
                 app:rightOtherImageViewShow="gone"
@@ -259,9 +268,9 @@
                 app:leftMarkShow="invisible"
                 app:leftText="空调费"
                 app:rightArrowShow="gone"
-                app:showCenterText="gone"
+                app:showCenterText="visible"
                 app:showDividerBottom="visible"
-                app:showEditText="visible" />
+                app:showEditText="gone" />
 
             <include
                 layout="@layout/include_lift"
@@ -287,49 +296,11 @@
                 android:layout_height="@dimen/dp_168"
                 android:layout_below="@id/rv_join_company" />
 
-            <RelativeLayout
-                android:id="@+id/rl_characteristic"
+            <include
+                layout="@layout/include_characteristic"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/ctl_descriptions"
-                android:layout_marginStart="@dimen/dp_18"
-                android:layout_marginTop="@dimen/dp_18"
-                android:layout_marginEnd="@dimen/dp_16">
-
-                <TextView
-                    android:id="@+id/tv_house_characteristic"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="楼盘特色"
-                    android:textColor="@color/text_33"
-                    android:textSize="@dimen/sp_15" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignBottom="@id/tv_house_characteristic"
-                    android:layout_marginStart="@dimen/dp_5"
-                    android:layout_marginBottom="@dimen/dp_2"
-                    android:layout_toEndOf="@id/tv_house_characteristic"
-                    android:text="最多选择4项"
-                    android:textColor="@color/text_66_p50"
-                    android:textSize="@dimen/sp_12" />
-
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_house_characteristic"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_below="@id/tv_house_characteristic"
-                    android:layout_marginTop="@dimen/dp_18" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1px"
-                    android:layout_alignParentBottom="true"
-                    android:layout_marginTop="@dimen/dp_26"
-                    android:background="@color/common_divider"
-                    android:visibility="visible" />
-            </RelativeLayout>
+                android:layout_below="@id/ctl_descriptions" />
 
             <include
                 layout="@layout/include_upload_building_image"
@@ -369,7 +340,7 @@
             android:layout_height="@dimen/dp_40"
             android:layout_marginTop="@dimen/dp_18"
             android:background="@drawable/button_corners_edge_white"
-            android:text="在电脑上编辑"
+            android:text="@string/str_goto_web_edit"
             android:textColor="@color/common_blue_main"
             android:textSize="@dimen/sp_15"
             app:layout_constraintEnd_toEndOf="parent"
@@ -378,6 +349,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
+        android:id="@+id/iv_close_scan"
         android:layout_width="@dimen/dp_18"
         android:layout_height="@dimen/dp_18"
         android:layout_alignParentEnd="true"

@@ -1,5 +1,8 @@
 package com.owner.home;
 
+import android.view.View;
+import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.officego.commonlib.base.BaseActivity;
@@ -29,6 +32,10 @@ public class AddOpenSeatsActivity extends BaseActivity
     SettingItemLayout silFloorNo;
     @ViewById(resName = "sil_free_rent")
     SettingItemLayout silFreeRent;
+    @ViewById(resName = "btn_scan")
+    Button btnScan;
+    @ViewById(resName = "iv_close_scan")
+    ImageView ivCloseScan;
 
     @AfterViews
     void init() {
@@ -43,6 +50,12 @@ public class AddOpenSeatsActivity extends BaseActivity
     @Click(resName = "btn_next")
     void nextOnClick() {
         UploadVideoVrActivity_.intent(context).start();
+    }
+
+    @Click(resName = "iv_close_scan")
+    void closeScanOnClick() {
+        btnScan.setVisibility(View.GONE);
+        ivCloseScan.setVisibility(View.GONE);
     }
 
     @Click(resName = "sil_floor_no")
