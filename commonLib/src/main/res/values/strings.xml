@@ -172,4 +172,5 @@
     <string name="str_modify_mobile">修改手机号</string>
     <string name="str_history_contacts">历史联系人</string>
     <string name="str_protocol_service">服务协议</string>
+    <string name="str_text_year">年份</string>
 </resources>

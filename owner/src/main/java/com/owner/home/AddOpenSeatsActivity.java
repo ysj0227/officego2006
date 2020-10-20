@@ -6,6 +6,7 @@ import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.dialog.RentDialog;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.widget.SettingItemLayout;
+import com.owner.R;
 import com.owner.dialog.FloorTypeDialog;
 
 import org.androidannotations.annotations.AfterViews;
@@ -51,7 +52,7 @@ public class AddOpenSeatsActivity extends BaseActivity
 
     @Click(resName = "sil_free_rent")
     void freeRentOnClick() {
-        new RentDialog(context).setSureListener(this);
+        new RentDialog(context, getString(R.string.str_free_rent)).setSureListener(this);
     }
 
     @Override

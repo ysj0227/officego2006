@@ -3,6 +3,7 @@ package com.officego.commonlib.common.dialog;
 import android.app.Dialog;
 import android.content.Context;
 import android.nfc.Tag;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -28,9 +29,11 @@ import java.util.Date;
  **/
 public class YearDateDialog {
     private String year;
+    private String title;
     private SureClickListener sureListener;
 
-    public YearDateDialog(Context context) {
+    public YearDateDialog(Context context, String title) {
+        this.title = title;
         selectDateDialog(context);
     }
 
@@ -75,6 +78,10 @@ public class YearDateDialog {
         LoopView lvWheelYear = viewLayout.findViewById(R.id.lv_wheel_year);
         TextView cancel = viewLayout.findViewById(R.id.tv_cancel);
         TextView sure = viewLayout.findViewById(R.id.tv_sure);
+        TextView tvTitle = viewLayout.findViewById(R.id.tv_dialog_title);
+        if (!TextUtils.isEmpty(title)) {
+            tvTitle.setText(title);
+        }
         //不循环
         lvWheelYear.setNotLoop();
         //滚动监听
@@ -90,7 +97,7 @@ public class YearDateDialog {
         cancel.setOnClickListener(v -> dialog.dismiss());
         sure.setOnClickListener(v -> {
             dialog.dismiss();
-            this.sureListener.selectedDate(year+"年");
+            this.sureListener.selectedDate(year + "年");
         });
     }
 }

@@ -9,6 +9,7 @@ import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.commonlib.view.widget.SettingItemLayout;
+import com.owner.R;
 import com.owner.adapter.HouseDecorationAdapter;
 import com.owner.adapter.HouseUniqueAdapter;
 import com.owner.dialog.FloorTypeDialog;
@@ -77,7 +78,7 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
 
     @Click(resName = "sil_free_rent")
     void freeRentOnClick() {
-        new RentDialog(context).setSureListener(this);
+        new RentDialog(context, getString(R.string.str_free_rent)).setSureListener(this);
     }
 
     @Click(resName = "iv_seat_tip")

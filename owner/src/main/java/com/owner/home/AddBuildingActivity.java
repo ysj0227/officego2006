@@ -11,6 +11,7 @@ import com.officego.commonlib.common.dialog.YearDateDialog;
 import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.widget.SettingItemLayout;
+import com.owner.R;
 import com.owner.adapter.HouseUniqueAdapter;
 import com.owner.adapter.JointCompanyAdapter;
 import com.owner.adapter.UploadBuildingImageAdapter;
@@ -127,14 +128,14 @@ public class AddBuildingActivity extends BaseMvpActivity<BuildingPresenter>
     @Click(resName = "sil_complete_time")
     void completeTimeOnClick() {
         isCompleteTime = true;
-        YearDateDialog dateDialog = new YearDateDialog(context);
+        YearDateDialog dateDialog = new YearDateDialog(context, getString(R.string.str_text_year));
         dateDialog.setSureListener(this);
     }
 
     @Click(resName = "sil_recomplete_time")
     void reCompleteTimeOnClick() {
         isCompleteTime = false;
-        YearDateDialog dateDialog = new YearDateDialog(context);
+        YearDateDialog dateDialog = new YearDateDialog(context,getString(R.string.str_text_year));
         dateDialog.setSureListener(this);
     }
 

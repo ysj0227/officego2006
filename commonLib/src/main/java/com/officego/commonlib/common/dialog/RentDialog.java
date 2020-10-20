@@ -2,6 +2,7 @@ package com.officego.commonlib.common.dialog;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -21,9 +22,11 @@ import com.officego.commonlib.view.loopview.LoopView;
  **/
 public class RentDialog {
     private String text;
+    private String title;
     private SureClickListener sureListener;
 
-    public RentDialog(Context context) {
+    public RentDialog(Context context,String title) {
+        this.title=title;
         selectDateDialog(context);
     }
 
@@ -68,6 +71,10 @@ public class RentDialog {
         LoopView lvWheelYear = viewLayout.findViewById(R.id.lv_wheel_year);
         TextView cancel = viewLayout.findViewById(R.id.tv_cancel);
         TextView sure = viewLayout.findViewById(R.id.tv_sure);
+        TextView tvTitle = viewLayout.findViewById(R.id.tv_dialog_title);
+        if (!TextUtils.isEmpty(title)) {
+            tvTitle.setText(title);
+        }
         //不循环
         lvWheelYear.setNotLoop();
         //滚动监听
