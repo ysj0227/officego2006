@@ -1,24 +1,35 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/rl_apartment_layout"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
+    <!--    <androidx.recyclerview.widget.RecyclerView-->
+    <!--        style="@style/marginLeftRight18"-->
+    <!--        android:id="@+id/rv_apartment_layout"-->
+    <!--        android:layout_width="match_parent"-->
+    <!--        android:layout_height="wrap_content"-->
+    <!--        android:layout_marginTop="@dimen/dp_18" />-->
+    <!--    -->
+    <ImageView
+        android:id="@+id/iv_desc_image"
         style="@style/marginLeftRight18"
-        android:id="@+id/rv_apartment_layout"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_18" />
+        android:layout_width="@dimen/dp_100"
+        android:layout_height="@dimen/dp_100"
+        android:layout_marginTop="@dimen/dp_18"
+        android:background="@mipmap/ic_add_img"
+        android:scaleType="centerCrop"
+        tools:ignore="ContentDescription" />
 
     <TextView
-        style="@style/marginLeftRight18"
         android:id="@+id/tv_apartment_tip"
+        style="@style/marginLeftRight18"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@id/rv_apartment_layout"
+        android:layout_below="@id/iv_desc_image"
         android:layout_marginTop="@dimen/dp_8"
-        android:text="可上传9张图片，单张不大于10M，支持jpg、jpeg、png格式"
+        android:text="可上传1张图片，单张不大于10M，支持jpg、jpeg、png格式"
         android:textColor="@color/text_66_p50"
         android:textSize="@dimen/sp_12" />
 
