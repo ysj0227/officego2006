@@ -8,6 +8,8 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
+import com.officego.commonlib.common.dialog.WeChatShareDialog;
+import com.officego.commonlib.common.model.ShareBean;
 import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.view.RoundImageView;
 import com.owner.R;
@@ -35,8 +37,6 @@ public class HomeAdapter extends CommonListAdapter<String> {
     public interface HomeItemListener {
         void itemPublishStatus();
 
-        void itemShare();
-
         void itemEdit();
 
         void itemMore();
@@ -57,28 +57,17 @@ public class HomeAdapter extends CommonListAdapter<String> {
         RoundImageView ivHouse = holder.getView(R.id.iv_house);
         Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).
                 load("https://img.officego.com/building/1591868939785.jpg?x-oss-process=style/small").into(ivHouse);
-
     }
 
     private void onClick(ViewHolder holder) {
-        TextView tvPublishStatus= holder.getView(R.id.tv_publish_status);
-        TextView tvShare= holder.getView(R.id.tv_share);
+        TextView tvPublishStatus = holder.getView(R.id.tv_publish_status);
+        TextView tvShare = holder.getView(R.id.tv_share);
         TextView tvEdit = holder.getView(R.id.tv_edit);
         ImageView tvMore = holder.getView(R.id.tv_more);
         View.OnClickListener clickListener = view -> {
             int id = view.getId();
             if (id == R.id.tv_share) {
-//                String dec = mData.getHouse().getDecoration() + "\n" + mData.getHouse().getAddress();
-//                ShareBean bean = new ShareBean();
-//                bean.setbType(mData.getHouse().getBtype());
-//                bean.setId("buildingId=" + mData.getHouse().getBuildingId() + "&houseId=" + mData.getHouse().getId());
-//                bean.setHouseChild(true);
-//                bean.setTitle(mData.getHouse().getBuildingName());
-//                bean.setDes(dec);
-//                bean.setImgUrl(mData.getHouse().getMainPic());
-//                bean.setDetailsUrl(mData.getHouse().getMainPic());
-//                new WeChatShareDialog(context, bean);
-
+                share();
             } else if (id == R.id.tv_edit) {
                 if (listener != null) {
                     listener.itemEdit();
@@ -87,7 +76,7 @@ public class HomeAdapter extends CommonListAdapter<String> {
                 if (listener != null) {
                     listener.itemMore();
                 }
-            }else if (id == R.id.tv_publish_status) {
+            } else if (id == R.id.tv_publish_status) {
                 if (listener != null) {
                     listener.itemPublishStatus();
                 }
@@ -99,6 +88,17 @@ public class HomeAdapter extends CommonListAdapter<String> {
         tvMore.setOnClickListener(clickListener);
     }
 
+    private void share() {
+        ShareBean bean = new ShareBean();
+        bean.setbType(1);
+        bean.setId("buildingId=" + 1084 + "&houseId=" + 1088);
+        bean.setHouseChild(true);
+        bean.setTitle("AA");
+        bean.setDes("aa");
+        bean.setImgUrl("https://img.officego.com/building/1591868939785.jpg?x-oss-process=style/small");
+        bean.setDetailsUrl("https://img.officego.com/building/1591868939785.jpg?x-oss-process=style/small");
+        new WeChatShareDialog(context, bean);
+    }
 
 
 }

@@ -176,4 +176,14 @@
     <string name="str_history_contacts">历史联系人</string>
     <string name="str_protocol_service">服务协议</string>
     <string name="str_text_year">年份</string>
+    <!--微信-->
+    <string name="errcode_success">分享成功</string>
+    <string name="errcode_cancel">分享取消</string>
+    <string name="errcode_deny">发送被拒绝</string>
+    <string name="errcode_unsupported">不支持错误</string>
+    <string name="errcode_unknown">发送返回</string>
+    <string name="wx_not_install">您还未安装微信客户端</string>
+    <string name="wx_str_no_support_pay">当前微信版本不支持支付，请升级到新版本</string>
+    <string name="wx_version_no_support_timeline">当前微信版本不支持分享到朋友圈，请升级到新版本</string>
+    <string name="str_need_install_wx">请安装微信app</string>
 </resources>

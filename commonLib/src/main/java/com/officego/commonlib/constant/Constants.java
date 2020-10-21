@@ -2,6 +2,7 @@ package com.officego.commonlib.constant;
 
 import com.officego.commonlib.base.BaseApplication;
 import com.officego.commonlib.utils.CommonHelper;
+import com.tencent.mm.opensdk.openapi.IWXAPI;
 
 public class Constants {
     public static final String FILE_PROVIDER_AUTHORITY =
@@ -22,6 +23,8 @@ public class Constants {
     public static final int ERROR_CODE_7012 = 7012;//楼盘已经下架
     public static final int ERROR_CODE_7013 = 7013;//楼盘下的房源已经售完
     public static final int ERROR_CODE_7014 = 7014;//楼盘已删除
+    //第三方app和微信通信的openapi接口
+    public static IWXAPI WXapi;
 
     //微信
     public static final String APP_ID = "wx70ee9e90c1d62d83";//线上

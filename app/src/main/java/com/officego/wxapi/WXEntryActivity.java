@@ -45,7 +45,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
         //分享设置透明布局
         setContentView(R.layout.activity_wx_transparent);
         try {
-            MyApplication.WXapi.handleIntent(getIntent(), this);
+            Constants.WXapi.handleIntent(getIntent(), this);
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -73,7 +73,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     protected void onNewIntent(Intent intent) {
         super.onNewIntent(intent);
         setIntent(intent);
-        MyApplication.WXapi.handleIntent(intent, this);
+        Constants.WXapi.handleIntent(intent, this);
     }
 
     @Override
@@ -149,7 +149,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                 req.transaction = buildTransaction("webpage");
                 req.message = msg;
                 req.scene = mTargetScene == 0 ? SendMessageToWX.Req.WXSceneSession : SendMessageToWX.Req.WXSceneTimeline;
-                MyApplication.WXapi.sendReq(req);
+                Constants.WXapi.sendReq(req);
             }
 
             @Override
@@ -160,7 +160,7 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
                 req.transaction = buildTransaction("webpage");
                 req.message = msg;
                 req.scene = mTargetScene == 0 ? SendMessageToWX.Req.WXSceneSession : SendMessageToWX.Req.WXSceneTimeline;
-                MyApplication.WXapi.sendReq(req);
+                Constants.WXapi.sendReq(req);
             }
         });
     }

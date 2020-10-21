@@ -49,7 +49,7 @@ import com.officego.ui.adapter.BuildingInfoAdapter;
 import com.officego.ui.adapter.HouseItemAllAdapter;
 import com.officego.ui.adapter.IndependentAllChildAdapter;
 import com.officego.ui.dialog.PreImageDialog;
-import com.officego.ui.dialog.WeChatShareDialog;
+import com.officego.commonlib.common.dialog.WeChatShareDialog;
 import com.officego.ui.home.contract.BuildingDetailsContract;
 import com.officego.ui.home.model.BuildingConditionItem;
 import com.officego.ui.home.model.BuildingDetailsBean;

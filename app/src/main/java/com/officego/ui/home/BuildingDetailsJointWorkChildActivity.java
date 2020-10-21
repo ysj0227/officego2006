@@ -41,7 +41,7 @@ import com.officego.h5.WebViewVRActivity_;
 import com.officego.commonlib.common.model.ShareBean;
 import com.officego.ui.adapter.BuildingInfoAdapter;
 import com.officego.ui.dialog.PreImageDialog;
-import com.officego.ui.dialog.WeChatShareDialog;
+import com.officego.commonlib.common.dialog.WeChatShareDialog;
 import com.officego.ui.home.contract.BuildingDetailsChildJointWorkContract;
 import com.officego.ui.home.model.BuildingInfoBean;
 import com.officego.ui.home.model.ChatsBean;

@@ -1,6 +1,7 @@
-package com.officego.ui.dialog;
+package com.officego.commonlib.common.dialog;
 
 import android.app.Dialog;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageInfo;
@@ -12,12 +13,10 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 
-import com.officego.R;
-import com.officego.application.MyApplication;
+import com.officego.commonlib.R;
+import com.officego.commonlib.common.model.ShareBean;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.ToastUtils;
-import com.officego.commonlib.common.model.ShareBean;
-import com.officego.wxapi.WXEntryActivity;
 
 import java.util.List;
 
@@ -46,11 +45,19 @@ public class WeChatShareDialog {
             return;
         }
         //当前支持的版本
-        if (MyApplication.WXapi.getWXAppSupportAPI() >= com.tencent.mm.opensdk.constants.Build.TIMELINE_SUPPORTED_SDK_INT) {
-            Intent intent = new Intent(context, WXEntryActivity.class);
+        if (Constants.WXapi.getWXAppSupportAPI() >= com.tencent.mm.opensdk.constants.Build.TIMELINE_SUPPORTED_SDK_INT) {
+            ComponentName comp = new ComponentName(context, "com.officego.wxapi.WXEntryActivity");
+            Intent intent = new Intent();
             intent.putExtra(Constants.WX_TYPE, type);
             intent.putExtra(Constants.WX_DATA, bean);
+           // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            intent.setComponent(comp);
+            intent.setAction("android.intent.action.VIEW");
             context.startActivity(intent);
+//            Intent intent = new Intent(context, WXEntryActivity.class);
+//            intent.putExtra(Constants.WX_TYPE, type);
+//            intent.putExtra(Constants.WX_DATA, bean);
+//            context.startActivity(intent);
         } else {
             ToastUtils.toastForShort(context, R.string.wx_version_no_support_timeline);
         }

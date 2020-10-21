@@ -1,8 +1,6 @@
 package com.officego.application;
 
 import android.app.Activity;
-import android.app.Notification;
-import android.app.NotificationManager;
 import android.content.Intent;
 import android.os.Bundle;
 
@@ -10,8 +8,9 @@ import com.officego.MainActivity;
 import com.officego.commonlib.base.BaseApplication;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.DesktopCornerUtil;
-import com.tencent.mm.opensdk.openapi.IWXAPI;
 import com.tencent.mm.opensdk.openapi.WXAPIFactory;
+
+import static com.officego.commonlib.constant.Constants.WXapi;
 
 /**
  * Created by YangShiJie
@@ -25,8 +24,6 @@ public class MyApplication extends BaseApplication {
     private String lastVisibleActivityName;
     private Intent nextOnForegroundIntent;
     private boolean isMainActivityIsCreated;
-    //第三方app和微信通信的openapi接口
-    public static IWXAPI WXapi;
 
     @Override
     public void onCreate() {
@@ -36,7 +33,7 @@ public class MyApplication extends BaseApplication {
         createWXAPI();
         observeAppInBackground();
         //App图标未读数量
-        DesktopCornerUtil.init(this.getPackageName(),"com.officego.LaunchActivity",this);
+        DesktopCornerUtil.init(this.getPackageName(), "com.officego.LaunchActivity", this);
     }
 
     //初始化微信分享

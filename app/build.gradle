@@ -119,9 +119,6 @@ dependencies {
     implementation project(':owner')
     implementation project(':pushpermission')//推送手机设置权限
 
-//    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
-    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
-
     api "org.androidannotations:androidannotations-api:${AAVersion}"
     annotationProcessor "org.androidannotations:androidannotations:${AAVersion}"
 }

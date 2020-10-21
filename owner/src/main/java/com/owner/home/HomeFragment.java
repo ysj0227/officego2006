@@ -174,11 +174,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     }
 
     @Override
-    public void itemShare() {
-
-    }
-
-    @Override
     public void itemEdit() {
         AddBuildingActivity_.intent(getContext()).start();
     }

@@ -50,7 +50,7 @@ import com.officego.ui.home.presenter.BuildingDetailsChildPresenter;
 import com.officego.ui.message.ConversationActivity_;
 import com.officego.utils.ImageLoaderUtils;
 import com.officego.ui.dialog.PreImageDialog;
-import com.officego.ui.dialog.WeChatShareDialog;
+import com.officego.commonlib.common.dialog.WeChatShareDialog;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
