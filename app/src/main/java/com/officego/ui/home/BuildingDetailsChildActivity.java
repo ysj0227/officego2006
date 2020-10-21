@@ -40,7 +40,7 @@ import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.IVideoPlayer;
 import com.officego.commonlib.view.LabelsView;
 import com.officego.h5.WebViewVRActivity_;
-import com.officego.model.ShareBean;
+import com.officego.commonlib.common.model.ShareBean;
 import com.officego.ui.adapter.BuildingInfoAdapter;
 import com.officego.ui.home.contract.BuildingDetailsChildContract;
 import com.officego.ui.home.model.BuildingInfoBean;

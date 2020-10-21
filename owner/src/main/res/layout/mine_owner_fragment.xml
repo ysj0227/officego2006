@@ -8,6 +8,16 @@
     android:orientation="vertical">
 
     <ImageView
+        android:id="@+id/iv_scan"
+        android:layout_width="@dimen/dp_24"
+        android:layout_height="@dimen/dp_20"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="@dimen/dp_58"
+        android:layout_marginEnd="@dimen/dp_58"
+        android:background="@mipmap/ic_scan_white"
+        tools:ignore="ContentDescription" />
+
+    <ImageView
         android:id="@+id/iv_setting"
         android:layout_width="@dimen/dp_20"
         android:layout_height="@dimen/dp_20"
@@ -293,11 +303,11 @@
                     tools:ignore="ContentDescription" />
 
                 <TextView
-                    android:layout_marginStart="@dimen/dp_18"
-                    android:layout_toEndOf="@id/iv_switch"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/dp_18"
+                    android:layout_toEndOf="@id/iv_switch"
                     android:text="@string/str_switch_tenant"
                     android:textColor="@color/text_33"
                     android:textSize="@dimen/sp_15" />
@@ -316,6 +326,7 @@
                     android:layout_alignParentBottom="true"
                     android:background="@color/common_divider" />
             </RelativeLayout>
+
             <RelativeLayout
                 android:id="@+id/rl_about"
                 android:layout_width="wrap_content"

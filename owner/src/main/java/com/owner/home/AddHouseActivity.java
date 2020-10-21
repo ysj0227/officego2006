@@ -140,7 +140,7 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
             }
         });
         tvRentSumTip.setOnClickListener(view -> {
-            silRentSum.setCenterText(rentCounts + "");
+            silRentSum.setEditText(rentCounts + "");
             tvRentSumTip.setVisibility(View.GONE);
         });
     }

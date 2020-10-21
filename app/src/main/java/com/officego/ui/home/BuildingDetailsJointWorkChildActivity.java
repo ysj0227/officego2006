@@ -38,7 +38,7 @@ import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.IVideoPlayer;
 import com.officego.h5.WebViewVRActivity_;
-import com.officego.model.ShareBean;
+import com.officego.commonlib.common.model.ShareBean;
 import com.officego.ui.adapter.BuildingInfoAdapter;
 import com.officego.ui.dialog.PreImageDialog;
 import com.officego.ui.dialog.WeChatShareDialog;

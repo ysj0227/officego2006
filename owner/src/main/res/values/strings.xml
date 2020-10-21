@@ -151,5 +151,7 @@
     <string name="text_click_upload">点击上传</string>
     <string name="str_free_rent">免租期</string>
     <string name="str_goto_web_edit">在电脑上编辑</string>
+    <string name="str_expand">收起</string>
+    <string name="str_add">添加</string>
 
 </resources>

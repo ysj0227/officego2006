@@ -199,6 +199,7 @@ public class AddBuildingActivity extends BaseMvpActivity<BuildingPresenter>
     @Override
     public void sureConditioned(String string, int flag) {
         silConditioned.setCenterText(string);
+        silConditionedFee.setVisibility(View.VISIBLE);
         if (flag == 0) {
             silConditionedFee.setCenterText("包含在物业费内，加时另计");
         } else if (flag == 1) {

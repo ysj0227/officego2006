@@ -55,6 +55,8 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
     SettingItemLayout silFloorNo;
     @ViewById(resName = "sil_conditioned")
     SettingItemLayout silConditioned;
+    @ViewById(resName = "sil_conditioned_fee")
+    SettingItemLayout silConditionedFee;
     @ViewById(resName = "btn_scan")
     Button btnScan;
     @ViewById(resName = "iv_close_scan")
@@ -154,5 +156,13 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
     @Override
     public void sureConditioned(String string, int flag) {
         silConditioned.setCenterText(string);
+        silConditionedFee.setVisibility(View.VISIBLE);
+        if (flag == 0) {
+            silConditionedFee.setCenterText("包含在物业费内，加时另计");
+        } else if (flag == 1) {
+            silConditionedFee.setCenterText("按电表计费");
+        } else {
+            silConditionedFee.setCenterText("无");
+        }
     }
 }

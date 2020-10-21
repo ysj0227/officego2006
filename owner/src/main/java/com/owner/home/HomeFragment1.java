@@ -90,9 +90,7 @@ public class HomeFragment1 extends BaseMvpFragment<HomePresenter> implements Hom
     //扫一扫
     @Click(resName = "iv_scan")
     void scanClick() {
-//        scanDialog(getContext());
-//        new ServiceSelectedDialog(mActivity);
-        UploadVideoVrActivity_.intent(getContext()).start();
+        scanDialog(getContext());
     }
 
     /**

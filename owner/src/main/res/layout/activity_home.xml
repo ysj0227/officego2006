@@ -20,16 +20,37 @@
             android:layout_height="@dimen/dp_60"
             android:layout_alignParentBottom="true">
 
-            <ImageView
+
+            <RelativeLayout
                 android:id="@+id/iv_left_more"
-                android:layout_width="@dimen/dp_24"
-                android:layout_height="@dimen/dp_23"
-                android:layout_centerVertical="true"
+                android:layout_width="@dimen/dp_60"
+                android:layout_height="@dimen/dp_60">
+
+                <ImageView
+                    android:layout_width="@dimen/dp_20"
+                    android:layout_height="@dimen/dp_16"
+                    android:layout_centerVertical="true"
+                    android:layout_marginStart="@dimen/dp_18"
+                    android:background="@mipmap/ic_expland"
+                    android:visibility="visible"
+                    tools:ignore="ContentDescription" />
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/tv_expand"
+                android:layout_width="@dimen/dp_60"
+                android:layout_height="match_parent"
                 android:layout_marginStart="@dimen/dp_18"
-                android:background="@mipmap/ic_expland"
+                android:gravity="center_vertical"
+                android:text="@string/str_expand"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_16"
+                android:textStyle="bold"
+                android:visibility="gone"
                 tools:ignore="ContentDescription" />
 
             <TextView
+                android:id="@+id/tv_home_title"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -40,13 +61,13 @@
                 android:singleLine="true"
                 android:text="上海实业大厦"
                 android:textColor="@color/white"
-                android:textSize="@dimen/sp_18"
+                android:textSize="@dimen/sp_16"
                 android:textStyle="bold" />
 
             <ImageView
                 android:id="@+id/iv_add"
-                android:layout_width="@dimen/dp_26"
-                android:layout_height="@dimen/dp_26"
+                android:layout_width="@dimen/dp_20"
+                android:layout_height="@dimen/dp_20"
                 android:layout_alignParentEnd="true"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/dp_18"
@@ -65,19 +86,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/rl_title" />
-
-    <ImageView
-        android:id="@+id/iv_scan"
-        android:layout_width="@dimen/dp_34"
-        android:layout_height="@dimen/dp_34"
-        android:layout_marginEnd="@dimen/dp_16"
-        android:layout_marginBottom="@dimen/dp_20"
-        android:background="@mipmap/ic_scan_qr"
-        android:padding="@dimen/dp_10"
-        android:visibility="gone"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        tools:ignore="ContentDescription" />
 
     <TextView
         android:id="@+id/tv_no_data"

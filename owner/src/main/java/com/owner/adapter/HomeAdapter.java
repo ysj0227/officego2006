@@ -2,6 +2,7 @@ package com.owner.adapter;
 
 import android.content.Context;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -32,7 +33,9 @@ public class HomeAdapter extends CommonListAdapter<String> {
     private HomeItemListener listener;
 
     public interface HomeItemListener {
-        void itemPreview();
+        void itemPublishStatus();
+
+        void itemShare();
 
         void itemEdit();
 
@@ -58,15 +61,24 @@ public class HomeAdapter extends CommonListAdapter<String> {
     }
 
     private void onClick(ViewHolder holder) {
-        TextView tvPreview = holder.getView(R.id.tv_preview);
+        TextView tvPublishStatus= holder.getView(R.id.tv_publish_status);
+        TextView tvShare= holder.getView(R.id.tv_share);
         TextView tvEdit = holder.getView(R.id.tv_edit);
-        TextView tvMore = holder.getView(R.id.tv_more);
+        ImageView tvMore = holder.getView(R.id.tv_more);
         View.OnClickListener clickListener = view -> {
             int id = view.getId();
-            if (id == R.id.tv_preview) {
-                if (listener != null) {
-                    listener.itemPreview();
-                }
+            if (id == R.id.tv_share) {
+//                String dec = mData.getHouse().getDecoration() + "\n" + mData.getHouse().getAddress();
+//                ShareBean bean = new ShareBean();
+//                bean.setbType(mData.getHouse().getBtype());
+//                bean.setId("buildingId=" + mData.getHouse().getBuildingId() + "&houseId=" + mData.getHouse().getId());
+//                bean.setHouseChild(true);
+//                bean.setTitle(mData.getHouse().getBuildingName());
+//                bean.setDes(dec);
+//                bean.setImgUrl(mData.getHouse().getMainPic());
+//                bean.setDetailsUrl(mData.getHouse().getMainPic());
+//                new WeChatShareDialog(context, bean);
+
             } else if (id == R.id.tv_edit) {
                 if (listener != null) {
                     listener.itemEdit();
@@ -75,10 +87,18 @@ public class HomeAdapter extends CommonListAdapter<String> {
                 if (listener != null) {
                     listener.itemMore();
                 }
+            }else if (id == R.id.tv_publish_status) {
+                if (listener != null) {
+                    listener.itemPublishStatus();
+                }
             }
         };
-        tvPreview.setOnClickListener(clickListener);
+        tvPublishStatus.setOnClickListener(clickListener);
+        tvShare.setOnClickListener(clickListener);
         tvEdit.setOnClickListener(clickListener);
         tvMore.setOnClickListener(clickListener);
     }
+
+
+
 }

@@ -2,10 +2,13 @@ package com.owner.mine;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -37,6 +40,7 @@ import com.owner.mine.model.UserOwnerBean;
 import com.owner.mine.presenter.UserPresenter;
 import com.owner.rpc.OfficegoApi;
 import com.owner.utils.UnIdifyDialog;
+import com.owner.zxing.QRScanActivity;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -57,7 +61,6 @@ import static com.officego.commonlib.utils.PermissionUtils.REQ_PERMISSIONS_CAMER
 public class MineFragment extends BaseMvpFragment<UserPresenter>
         implements UserContract.View {
     private static final int REQUEST_CODE = 1000;
-    private static final int REQUEST_CODE_LOGOUT = 1009;
     private static final int REQUEST_CODE_IDENTITY = 1010;
     @ViewById(resName = "civ_avatar")
     CircleImage civAvatar;
@@ -197,6 +200,12 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         switchDialog();
     }
 
+    //扫一扫
+    @Click(resName = "iv_scan")
+    void scanClick() {
+        scanDialog(getContext());
+    }
+
     private void switchDialog() {
         CommonDialog dialog = new CommonDialog.Builder(mActivity)
                 .setTitle(R.string.are_you_sure_switch_tenant)
@@ -329,5 +338,24 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
             mPresenter.getUserInfo();
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+    //扫一扫
+    private void scanDialog(Context context) {
+        Dialog dialog = new Dialog(context, R.style.BottomDialog);
+        View inflate = LayoutInflater.from(context).inflate(R.layout.dialog_scan, null);
+        dialog.setContentView(inflate);
+        inflate.findViewById(R.id.btn_close).setOnClickListener(v -> dialog.dismiss());
+        inflate.findViewById(R.id.btn_app).setOnClickListener(v -> dialog.dismiss());
+        inflate.findViewById(R.id.btn_web).setOnClickListener(v -> {
+            if (!fragmentCheckSDCardCameraPermission()) {
+                return;
+            }
+            dialog.dismiss();
+            startActivity(new Intent(getActivity(), QRScanActivity.class));
+        });
+        dialog.setCancelable(true);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
     }
 }

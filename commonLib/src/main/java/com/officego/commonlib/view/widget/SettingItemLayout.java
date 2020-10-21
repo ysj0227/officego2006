@@ -270,4 +270,14 @@ public class SettingItemLayout extends FrameLayout {
         tvLeftToArrowText.setVisibility(VISIBLE);
         tvLeftToArrowText.setText(resId);
     }
+
+    public void setEditText(int resId) {
+        editTextContent.setVisibility(VISIBLE);
+        editTextContent.setText(resId);
+    }
+
+    public void setEditText(String resId) {
+        editTextContent.setVisibility(VISIBLE);
+        editTextContent.setText(resId);
+    }
 }
