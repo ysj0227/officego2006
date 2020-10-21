@@ -18,11 +18,11 @@
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
     <style name="SplashStyle" parent="AppTheme">
-        <!--<item name="android:windowDisablePreview">true</item>-->
+        <item name="android:windowDisablePreview">true</item>
         <item name="android:windowNoTitle">true</item>
         <item name="android:textAllCaps">false</item>
         <item name="windowActionBar">false</item>
 <!--        <item name="android:windowFullscreen">true</item>-->
-        <item name="android:windowBackground">@mipmap/ic_launch</item>
+        <item name="android:windowBackground">@mipmap/ic_launch_app</item>
     </style>
 </resources>
