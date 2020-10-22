@@ -17,6 +17,7 @@ import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.dialog.RentDialog;
 import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.commonlib.view.widget.SettingItemLayout;
@@ -88,6 +89,8 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
     @ViewById(resName = "iv_close_scan")
     ImageView ivCloseScan;
 
+    //记录上次面积
+    private String recordArea;
     //面积是否修改
     private boolean isFixArea;
     //租金总价
@@ -95,7 +98,7 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
     //特色
     private Map<Integer, String> uniqueMap;
     //装修类型
-    private Map<Integer, String> decorationMap;
+    private int decorationId;
 
     @AfterViews
     void init() {
@@ -193,8 +196,7 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
             }
         });
         //面积监听
-        String mArea = silArea.getEditTextView().getText().toString();
-        silArea.getEditTextView().addTextChangedListener(new MyTextWatcher(mArea));
+        silArea.getEditTextView().addTextChangedListener(new MyTextWatcher(recordArea));
     }
 
     @SuppressLint("SetTextI18n")
@@ -203,8 +205,9 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
         String seatEnd = etSeatEnd.getText().toString();
         String area = silArea.getEditTextView().getText().toString();
         if (isFixArea || (TextUtils.isEmpty(seatStart) && TextUtils.isEmpty(seatEnd))) {
-            etSeatStart.setText((Integer.valueOf(area) / 10) + "");
-            etSeatEnd.setText((Integer.valueOf(area) / 5) + "");
+            recordArea = silArea.getEditTextView().getText().toString();
+            etSeatStart.setText((Integer.valueOf(area) / 5) + "");
+            etSeatEnd.setText((Integer.valueOf(area) / 3) + "");
         }
     }
 
@@ -217,7 +220,7 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
 
     @Override
     public void decoratedTypeSuccess(List<DirectoryBean.DataBean> data) {
-        HouseDecorationAdapter decorationAdapter = new HouseDecorationAdapter(context, decorationMap, data);
+        HouseDecorationAdapter decorationAdapter = new HouseDecorationAdapter(context, decorationId, data);
         decorationAdapter.setListener(this);
         rvDecorationType.setAdapter(decorationAdapter);
     }
@@ -233,8 +236,8 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
     }
 
     @Override
-    public void decorationResult(Map<Integer, String> map) {
-        this.decorationMap = map;
+    public void decorationResult(int decId) {
+        this.decorationId = decId;
     }
 
     @Override
@@ -264,6 +267,7 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
             if (!TextUtils.equals(text, editable.toString())) {
                 isFixArea = true;
             }
+            LogCat.e(TAG, "11111111111111  text=" + text + "   edi=" + editable.toString());
         }
     }
 }

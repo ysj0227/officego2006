@@ -19,8 +19,7 @@ import java.util.Map;
  * 装修
  **/
 public class HouseDecorationAdapter extends CommonListAdapter<DirectoryBean.DataBean> {
-
-    private Map<Integer, String> map;
+    private int checkedPos = -1;
 
     public DecorationListener getListener() {
         return listener;
@@ -33,15 +32,16 @@ public class HouseDecorationAdapter extends CommonListAdapter<DirectoryBean.Data
     private DecorationListener listener;
 
     public interface DecorationListener {
-        void decorationResult(Map<Integer, String> map);
+        void decorationResult(int decId);
     }
 
     @SuppressLint("UseSparseArrays")
-    public HouseDecorationAdapter(Context context, Map<Integer, String> map, List<DirectoryBean.DataBean> list) {
+    public HouseDecorationAdapter(Context context, int decId, List<DirectoryBean.DataBean> list) {
         super(context, R.layout.item_house_type, list);
-        this.map = map;
-        if (this.map == null) {
-            this.map = new HashMap<>();
+        for (int i = 0; i < list.size(); i++) {
+            if (decId == list.get(i).getDictValue()) {
+                this.checkedPos = i;
+            }
         }
     }
 
@@ -49,23 +49,14 @@ public class HouseDecorationAdapter extends CommonListAdapter<DirectoryBean.Data
     public void convert(ViewHolder holder, final DirectoryBean.DataBean bean) {
         CheckBox cbType = holder.getView(R.id.cb_type);
         cbType.setText(bean.getDictCname());
-        if (map != null) {
-            cbType.setChecked(map.containsKey(bean.getDictValue()));
-        }
+        cbType.setChecked(holder.getAdapterPosition() == checkedPos);
         cbType.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                if (map.size() >= 1) {
-                    cbType.setChecked(false);
-                    return;
+                checkedPos = holder.getAdapterPosition();
+                if (listener != null) {
+                    listener.decorationResult(bean.getDictValue());
                 }
-                if (!map.containsKey(bean.getDictValue())) {
-                    map.put(bean.getDictValue(), bean.getDictCname());
-                }
-            } else {
-                map.remove(bean.getDictValue());
-            }
-            if (listener != null) {
-                listener.decorationResult(map);
+                notifyDataSetChanged();
             }
         });
     }

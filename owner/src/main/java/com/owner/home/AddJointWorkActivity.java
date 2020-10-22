@@ -41,7 +41,7 @@ import java.util.Map;
 @EActivity(resName = "activity_home_jointwork_manager")
 public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
         implements JointWorkContract.View, ServiceSelectedDialog.ServiceLogoListener,
-        FloorTypeDialog.FloorListener,
+        FloorTypeDialog.FloorListener, UniqueAdapter.UniqueListener,
         AreaDialog.AreaSureListener, ConditionedDialog.ConditionedListener {
 
     private final int serviceMeetingFlay = 0;
@@ -85,6 +85,8 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
     private Map<Integer, String> companyMap;
     //基础服务
     private Map<Integer, String> baseMap;
+    //特色
+    private Map<Integer, String> uniqueMap;
 
     @AfterViews
     void init() {
@@ -164,7 +166,9 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
 
     @Override
     public void houseUniqueSuccess(List<DirectoryBean.DataBean> data) {
-        rvHouseUnique.setAdapter(new UniqueAdapter(context, new HashMap<>(), data));
+        UniqueAdapter adapter = new UniqueAdapter(context, uniqueMap, data);
+        adapter.setListener(this);
+        rvHouseUnique.setAdapter(adapter);
     }
 
     @Override
@@ -184,7 +188,7 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
 
     @Override
     public void serviceLogoResult(int flay, Map<Integer, String> mapLogo, List<DirectoryBean.DataBean> list) {
-        String mStrLogo = CommonHelper.getKey(mapLogo);
+       // String mStrLogo = CommonHelper.getKey(mapLogo);
         if (flay == 0) {
             meetingMap = mapLogo;
             rvMeetingMatch.setAdapter(new ServiceLogoAdapter(context, list));
@@ -218,5 +222,10 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
         } else {
             silConditionedFee.setCenterText("无");
         }
+    }
+
+    @Override
+    public void uniqueResult(Map<Integer, String> uniqueMap) {
+        this.uniqueMap = uniqueMap;
     }
 }
