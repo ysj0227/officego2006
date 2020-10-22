@@ -9,9 +9,7 @@ import com.officego.commonlib.ViewHolder;
 import com.officego.commonlib.common.model.DirectoryBean;
 import com.owner.R;
 
-import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by shijie

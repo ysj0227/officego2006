@@ -17,7 +17,6 @@ import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.dialog.RentDialog;
 import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.commonlib.view.widget.SettingItemLayout;
@@ -204,10 +203,12 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
         String seatStart = etSeatStart.getText().toString();
         String seatEnd = etSeatEnd.getText().toString();
         String area = silArea.getEditTextView().getText().toString();
-        if (isFixArea || (TextUtils.isEmpty(seatStart) && TextUtils.isEmpty(seatEnd))) {
-            recordArea = silArea.getEditTextView().getText().toString();
-            etSeatStart.setText((Integer.valueOf(area) / 5) + "");
-            etSeatEnd.setText((Integer.valueOf(area) / 3) + "");
+        if (!TextUtils.isEmpty(area)) {
+            if (isFixArea || (TextUtils.isEmpty(seatStart) && TextUtils.isEmpty(seatEnd))) {
+                recordArea = silArea.getEditTextView().getText().toString();
+                etSeatStart.setText((Integer.valueOf(area) / 5) + "");
+                etSeatEnd.setText((Integer.valueOf(area) / 3) + "");
+            }
         }
     }
 
@@ -267,7 +268,6 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
             if (!TextUtils.equals(text, editable.toString())) {
                 isFixArea = true;
             }
-            LogCat.e(TAG, "11111111111111  text=" + text + "   edi=" + editable.toString());
         }
     }
 }
