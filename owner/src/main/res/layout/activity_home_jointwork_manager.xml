@@ -221,7 +221,7 @@
             <include
                 layout="@layout/include_descriptions"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_168"
+                android:layout_height="@dimen/dp_188"
                 android:layout_below="@id/rv_join_company" />
 
             <include

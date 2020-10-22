@@ -15,7 +15,7 @@
         android:textSize="@dimen/sp_15" />
 
     <CheckBox
-        android:id="@+id/rb_dx"
+        android:id="@+id/rb_telecom"
         android:layout_width="@dimen/dp_102"
         android:layout_height="@dimen/dp_38"
         android:layout_below="@+id/tv_net"
@@ -26,11 +26,11 @@
         android:button="@null"
         android:checked="false"
         android:gravity="center"
-        android:text="电信"
+        android:text="@string/str_china_telecom"
         android:textColor="@color/text_selector_blue_black" />
 
     <CheckBox
-        android:id="@+id/rb_lt"
+        android:id="@+id/rb_unicom"
         android:layout_width="@dimen/dp_102"
         android:layout_height="@dimen/dp_38"
         android:layout_below="@+id/tv_net"
@@ -41,11 +41,11 @@
         android:button="@null"
         android:checked="false"
         android:gravity="center"
-        android:text="联通"
+        android:text="@string/str_china_unicom"
         android:textColor="@color/text_selector_blue_black" />
 
     <CheckBox
-        android:id="@+id/rb_yd"
+        android:id="@+id/rb_mobile"
         android:layout_width="@dimen/dp_102"
         android:layout_height="@dimen/dp_38"
         android:layout_below="@+id/tv_net"
@@ -57,7 +57,7 @@
         android:button="@null"
         android:checked="false"
         android:gravity="center"
-        android:text="移动"
+        android:text="@string/str_china_mobile"
         android:textColor="@color/text_selector_blue_black" />
 
     <View

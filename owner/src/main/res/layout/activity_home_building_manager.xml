@@ -238,7 +238,7 @@
                 android:id="@+id/sil_car_fee"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/sil_estate_fee"
+                android:layout_below="@id/sil_car_num"
                 app:editTextWidth="@dimen/dp_160"
                 app:leftMarkShow="invisible"
                 app:leftText="车位费"
@@ -294,7 +294,7 @@
             <include
                 layout="@layout/include_descriptions"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_168"
+                android:layout_height="@dimen/dp_188"
                 android:layout_below="@id/rv_join_company" />
 
             <include

@@ -59,12 +59,12 @@ public class HomeAdapter extends CommonListAdapter<String> {
         Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).
                 load("https://img.officego.com/building/1591868939785.jpg?x-oss-process=style/small").into(ivHouse);
         holder.setText(R.id.tv_house_name, "北海道国际");
-        holder.setText(R.id.tv_area, 100 + "m2");
+        holder.setText(R.id.tv_area, 100 + "㎡");
         holder.setText(R.id.tv_price, "¥" + 10);
         int jointWorkType = 0;
         if (jointWorkType == 0) {
             ivFlay.setVisibility(View.VISIBLE);
-            ivFlay.setBackgroundResource(jointWorkType == 2 ? R.mipmap.ic_label_independent : R.mipmap.ic_label_independent);
+            ivFlay.setBackgroundResource(jointWorkType == 2 ? R.mipmap.ic_label_independent : R.mipmap.ic_label_open_seats);
         } else {
             ivFlay.setVisibility(View.GONE);
         }
@@ -110,5 +110,4 @@ public class HomeAdapter extends CommonListAdapter<String> {
         bean.setDetailsUrl("https://img.officego.com/building/1591868939785.jpg?x-oss-process=style/small");
         new WeChatShareDialog(context, bean);
     }
-
 }

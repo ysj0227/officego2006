@@ -33,7 +33,6 @@
             tools:ignore="ContentDescription" />
 
         <EditText
-            android:paddingStart="@dimen/dp_3"
             android:id="@+id/et_customer_lift"
             android:layout_width="@dimen/dp_90"
             android:layout_height="@dimen/dp_35"
@@ -44,10 +43,11 @@
             android:background="@drawable/edittext_edge_grey2"
             android:ellipsize="end"
             android:gravity="center_vertical"
+            android:paddingStart="@dimen/dp_3"
             android:singleLine="true"
             android:textColor="@color/text_33"
             android:textSize="@dimen/sp_15"
-            tools:ignore="RelativeOverlap" />
+            tools:ignore="RelativeOverlap,RtlSymmetry" />
 
         <TextView
             android:layout_width="wrap_content"
@@ -110,7 +110,6 @@
             tools:ignore="ContentDescription" />
 
         <EditText
-            android:paddingStart="@dimen/dp_3"
             android:id="@+id/et_passenger_lift"
             android:layout_width="@dimen/dp_90"
             android:layout_height="@dimen/dp_35"
@@ -121,10 +120,11 @@
             android:background="@drawable/edittext_edge_grey2"
             android:ellipsize="end"
             android:gravity="center_vertical"
+            android:paddingStart="@dimen/dp_3"
             android:singleLine="true"
             android:textColor="@color/text_33"
             android:textSize="@dimen/sp_15"
-            tools:ignore="RelativeOverlap" />
+            tools:ignore="RelativeOverlap,RtlSymmetry" />
 
         <TextView
             android:layout_width="wrap_content"

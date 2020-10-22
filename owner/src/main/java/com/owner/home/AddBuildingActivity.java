@@ -1,8 +1,11 @@
 package com.owner.home;
 
 import android.net.Uri;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -12,11 +15,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.dialog.YearDateDialog;
 import com.officego.commonlib.common.model.DirectoryBean;
+import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.utils.log.LogCat;
+import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.widget.SettingItemLayout;
 import com.owner.R;
-import com.owner.adapter.HouseUniqueAdapter;
 import com.owner.adapter.JointCompanyAdapter;
+import com.owner.adapter.UniqueAdapter;
 import com.owner.adapter.UploadBuildingImageAdapter;
 import com.owner.dialog.BuildingTypeDialog;
 import com.owner.dialog.ConditionedDialog;
@@ -33,6 +39,7 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by shijie
@@ -42,27 +49,64 @@ import java.util.List;
 public class AddBuildingActivity extends BaseMvpActivity<BuildingPresenter>
         implements BuildingContract.View, YearDateDialog.SureClickListener,
         AreaDialog.AreaSureListener, UploadBuildingImageAdapter.UploadImageListener,
-        BuildingTypeDialog.BuildingTypeListener, ConditionedDialog.ConditionedListener {
+        BuildingTypeDialog.BuildingTypeListener, ConditionedDialog.ConditionedListener,
+        UniqueAdapter.UniqueListener {
     @ViewById(resName = "sil_building_type")
     SettingItemLayout silBuildingType;
     @ViewById(resName = "sil_garden_name")
     SettingItemLayout silGardenName;
     @ViewById(resName = "sil_no")
     SettingItemLayout silNo;
+    @ViewById(resName = "sil_area")
+    SettingItemLayout silArea;
+    @ViewById(resName = "sil_address")
+    SettingItemLayout silAddress;
+    @ViewById(resName = "sil_storey")
+    SettingItemLayout silStorey;
     @ViewById(resName = "sil_complete_time")
     SettingItemLayout silCompleteTime;
     @ViewById(resName = "sil_recomplete_time")
     SettingItemLayout silReCompleteTime;
-    @ViewById(resName = "sil_area")
-    SettingItemLayout silArea;
+    @ViewById(resName = "sil_gross_area")
+    SettingItemLayout silGrossArea;
+    @ViewById(resName = "sil_storey_height")
+    SettingItemLayout silStoreyHeight;
+    @ViewById(resName = "sil_tier_height")
+    SettingItemLayout silTierHeight;
+    @ViewById(resName = "sil_estate")
+    SettingItemLayout silEstate;
+    @ViewById(resName = "sil_estate_fee")
+    SettingItemLayout silEstateFee;
+    @ViewById(resName = "sil_car_num")
+    SettingItemLayout silCarNum;
+    @ViewById(resName = "sil_car_fee")
+    SettingItemLayout silCarFee;
+    //空调
     @ViewById(resName = "sil_conditioned")
     SettingItemLayout silConditioned;
     @ViewById(resName = "sil_conditioned_fee")
     SettingItemLayout silConditionedFee;
+    //电梯
+    @ViewById(resName = "et_customer_lift")
+    EditText etCustomerLift;
+    @ViewById(resName = "et_passenger_lift")
+    EditText etPassengerLift;
+    //介绍
+    @ViewById(resName = "cet_desc_content")
+    ClearableEditText cetDescContent;
+    //特色
     @ViewById(resName = "rv_house_characteristic")
     RecyclerView rvHouseUnique;
+    //入住企业
     @ViewById(resName = "rv_join_company")
     RecyclerView rvJoinCompany;
+    //网络 电信 联通 移动
+    @ViewById(resName = "rb_telecom")
+    CheckBox rbTelecom;
+    @ViewById(resName = "rb_unicom")
+    CheckBox rbUnicom;
+    @ViewById(resName = "rb_mobile")
+    CheckBox rbMobile;
     //图片list
     @ViewById(resName = "rv_upload_image")
     RecyclerView rvUploadImage;
@@ -71,9 +115,13 @@ public class AddBuildingActivity extends BaseMvpActivity<BuildingPresenter>
     @ViewById(resName = "iv_close_scan")
     ImageView ivCloseScan;
 
-    private boolean isCompleteTime;//是否竣工时间
-    private int district, business;//区域
-
+    //是否竣工时间
+    private boolean isCompleteTime;
+    //区域
+    private int district, business;
+    //特色
+    private String uniqueTags;
+    private Map<Integer, String> uniqueMap;
     //加入企业
     private JointCompanyAdapter adapter;
     private List<String> jointCompanyList = new ArrayList<String>();
@@ -121,7 +169,28 @@ public class AddBuildingActivity extends BaseMvpActivity<BuildingPresenter>
 
     @Click(resName = "btn_next")
     void nextOnClick() {
-        UploadVideoVrActivity_.intent(context).start();
+        //网络
+        StringBuilder buffer = new StringBuilder();
+        if (rbTelecom.isChecked()) {
+            buffer.append(rbTelecom.getText().toString()).append(",");
+        }
+        if (rbUnicom.isChecked()) {
+            buffer.append(rbUnicom.getText().toString()).append(",");
+        }
+        if (rbMobile.isChecked()) {
+            buffer.append(rbMobile.getText().toString()).append(",");
+        }
+        String net = buffer.toString();
+        if (!TextUtils.isEmpty(net)) {
+            LogCat.e(TAG, "111111 net=" + buffer.toString().substring(0, buffer.toString().length() - 1));
+        }
+        LogCat.e(TAG, "111111 uniqueTags=" + uniqueTags);
+        //入住企业
+        for (int i = 0; i < jointCompanyList.size(); i++) {
+            LogCat.e(TAG, "111111 jointCompanyList=" + jointCompanyList.get(i));
+        }
+
+        //UploadVideoVrActivity_.intent(context).start();
     }
 
     @Click(resName = "iv_close_scan")
@@ -161,7 +230,9 @@ public class AddBuildingActivity extends BaseMvpActivity<BuildingPresenter>
 
     @Override
     public void houseUniqueSuccess(List<DirectoryBean.DataBean> data) {
-        rvHouseUnique.setAdapter(new HouseUniqueAdapter(context, data));
+        UniqueAdapter adapter = new UniqueAdapter(context,uniqueMap, data);
+        adapter.setListener(this);
+        rvHouseUnique.setAdapter(adapter);
     }
 
     @Override
@@ -182,6 +253,8 @@ public class AddBuildingActivity extends BaseMvpActivity<BuildingPresenter>
 
     @Override
     public void AreaSure(String area, int district, int business) {
+        this.district = district;
+        this.business = business;
         silArea.setCenterText(area);
     }
 
@@ -207,5 +280,11 @@ public class AddBuildingActivity extends BaseMvpActivity<BuildingPresenter>
         } else {
             silConditionedFee.setCenterText("无");
         }
+    }
+
+    @Override
+    public void uniqueText(Map<Integer, String> uniqueMap) {
+        this.uniqueMap = uniqueMap;
+        uniqueTags = CommonHelper.getKey(uniqueMap);
     }
 }

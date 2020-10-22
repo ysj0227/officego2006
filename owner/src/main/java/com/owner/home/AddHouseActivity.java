@@ -17,7 +17,7 @@ import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.commonlib.view.widget.SettingItemLayout;
 import com.owner.R;
 import com.owner.adapter.HouseDecorationAdapter;
-import com.owner.adapter.HouseUniqueAdapter;
+import com.owner.adapter.UniqueAdapter;
 import com.owner.dialog.FloorTypeDialog;
 import com.owner.home.contract.HouseContract;
 import com.owner.home.presenter.HousePresenter;
@@ -28,6 +28,7 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -147,7 +148,7 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
 
     @Override
     public void houseUniqueSuccess(List<DirectoryBean.DataBean> data) {
-        rvHouseUnique.setAdapter(new HouseUniqueAdapter(context, data));
+        rvHouseUnique.setAdapter(new UniqueAdapter(context,new HashMap<>(), data));
     }
 
     @Override

@@ -13,7 +13,7 @@ import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.widget.SettingItemLayout;
 import com.owner.R;
-import com.owner.adapter.HouseUniqueAdapter;
+import com.owner.adapter.UniqueAdapter;
 import com.owner.adapter.JointCompanyAdapter;
 import com.owner.dialog.ConditionedDialog;
 import com.owner.dialog.FloorTypeDialog;
@@ -29,6 +29,7 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 /**
@@ -130,7 +131,7 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
 
     @Override
     public void houseUniqueSuccess(List<DirectoryBean.DataBean> data) {
-        rvHouseUnique.setAdapter(new HouseUniqueAdapter(context, data));
+        rvHouseUnique.setAdapter(new UniqueAdapter(context,new HashMap<>(), data));
     }
 
     @Override

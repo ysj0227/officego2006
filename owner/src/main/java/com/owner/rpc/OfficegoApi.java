@@ -74,6 +74,7 @@ public class OfficegoApi {
     public void getUserMsg(RetrofitCallback<UserOwnerBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("channel", requestBody("2"));
         OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
                 .getUserMsg(map)
                 .enqueue(callback);

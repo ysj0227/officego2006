@@ -22,6 +22,7 @@ import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.update.VersionDialog;
 import com.officego.commonlib.utils.CommonHelper;
+import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.adapter.HomeAdapter;
@@ -84,10 +85,14 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         CommonHelper.setViewGroupLayoutParams(mActivity, rlTitle);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rvView.setLayoutManager(layoutManager);
-        test();
         if (!fragmentCheckSDCardCameraPermission()) {
             return;
         }
+        if (!NetworkUtils.isNetworkAvailable(mActivity)) {
+            netException();
+            return;
+        }
+        test();
         new VersionDialog(mActivity);
         mPresenter.getUserInfo();
     }
@@ -103,6 +108,12 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         } else {
             homeAdapter.notifyDataSetChanged();
         }
+    }
+
+    //网络异常重试
+    @Click(resName = "btn_again")
+    void netExceptionAgainClick() {
+        shortTip("再试一次");
     }
 
     @Click(resName = "iv_left_more")
