@@ -39,6 +39,27 @@ public class JointWorkPresenter extends BasePresenter<JointWorkContract.View>
     }
 
     @Override
+    public void getRoomMatching() {
+        mView.showLoadingDialog();
+        OfficegoApi.getInstance().roomMatchingService(new RetrofitCallback<List<DirectoryBean.DataBean>>() {
+            @Override
+            public void onSuccess(int code, String msg, List<DirectoryBean.DataBean> data) {
+                if (isViewAttached()) {
+                    mView.roomMatchingSuccess(data);
+                    mView.hideLoadingDialog();
+                }
+            }
+
+            @Override
+            public void onFail(int code, String msg, List<DirectoryBean.DataBean> data) {
+                if (isViewAttached()) {
+                    mView.hideLoadingDialog();
+                }
+            }
+        });
+    }
+
+    @Override
     public void getBaseService() {
         mView.showLoadingDialog();
         OfficegoApi.getInstance().getBasicServices(new RetrofitCallback<List<DirectoryBean.DataBean>>() {

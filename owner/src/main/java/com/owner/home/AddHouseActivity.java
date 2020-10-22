@@ -1,8 +1,12 @@
 package com.owner.home;
 
+import android.annotation.SuppressLint;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -13,6 +17,7 @@ import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.dialog.RentDialog;
 import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.commonlib.view.widget.SettingItemLayout;
 import com.owner.R;
@@ -26,10 +31,11 @@ import com.owner.utils.SpaceItemDecoration;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.FocusChange;
 import org.androidannotations.annotations.ViewById;
 
-import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by shijie
@@ -38,9 +44,16 @@ import java.util.List;
 @EActivity(resName = "activity_home_house_manager")
 public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
         implements HouseContract.View, RentDialog.SureClickListener,
-        FloorTypeDialog.FloorListener {
+        FloorTypeDialog.FloorListener, UniqueAdapter.UniqueListener,
+        HouseDecorationAdapter.DecorationListener {
+    @ViewById(resName = "sil_house_title")
+    SettingItemLayout silHouseTitle;
     @ViewById(resName = "sil_area")
     SettingItemLayout silArea;
+    @ViewById(resName = "et_seat_start")
+    EditText etSeatStart;
+    @ViewById(resName = "et_seat_end")
+    EditText etSeatEnd;
     @ViewById(resName = "sil_rent_single")
     SettingItemLayout silRentSingle;
     @ViewById(resName = "tv_rent_sum_tip")
@@ -49,18 +62,40 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
     SettingItemLayout silRentSum;
     @ViewById(resName = "sil_floor_no")
     SettingItemLayout silFloorNo;
+    //第几层 总楼层
+    @ViewById(resName = "et_floors")
+    EditText etFloors;
+    @ViewById(resName = "tv_counts_floor")
+    TextView tvCountsFloor;
+    //净高
+    @ViewById(resName = "sil_storey_height")
+    SettingItemLayout silStoreyHeight;
+    @ViewById(resName = "sil_tier_height")
+    SettingItemLayout silTierHeight;
+    @ViewById(resName = "sil_rent_time")
+    SettingItemLayout silRentTime;
     @ViewById(resName = "sil_free_rent")
     SettingItemLayout silFreeRent;
-
-    @ViewById(resName = "rv_house_characteristic")
-    RecyclerView rvHouseUnique;
+    //介绍
+    @ViewById(resName = "cet_desc_content")
+    ClearableEditText cetDescContent;
     @ViewById(resName = "rv_decoration_type")
     RecyclerView rvDecorationType;
+    @ViewById(resName = "rv_house_characteristic")
+    RecyclerView rvHouseUnique;
     @ViewById(resName = "btn_scan")
     Button btnScan;
     @ViewById(resName = "iv_close_scan")
     ImageView ivCloseScan;
-    private float rentCounts;//租金总价
+
+    //面积是否修改
+    private boolean isFixArea;
+    //租金总价
+    private float rentCounts;
+    //特色
+    private Map<Integer, String> uniqueMap;
+    //装修类型
+    private Map<Integer, String> decorationMap;
 
     @AfterViews
     void init() {
@@ -126,7 +161,24 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
         dialog.showWithOutTouchable(false);
     }
 
+    @FocusChange(resName = "et_seat_start")
+    void onStartSeatFocusChange(View view, boolean isFocus) {
+        if (isFocus) setSeats();
+    }
+
+    @FocusChange(resName = "et_seat_end")
+    void onEndSeatFocusChange(View view, boolean isFocus) {
+        if (isFocus) setSeats();
+    }
+
+    @Click(resName = "tv_rent_sum_tip")
+    void textRentSumTipOnClick() {
+        silRentSum.setEditText(rentCounts + "");
+        tvRentSumTip.setVisibility(View.GONE);
+    }
+
     private void itemListener() {
+        //租金总价
         silRentSum.getEditTextView().setOnFocusChangeListener((view, b) -> {
             String area = silArea.getEditTextView().getText().toString();//整数
             String rentSingle = silRentSingle.getEditTextView().getText().toString();//保留两位小数
@@ -140,20 +192,34 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
                 }
             }
         });
-        tvRentSumTip.setOnClickListener(view -> {
-            silRentSum.setEditText(rentCounts + "");
-            tvRentSumTip.setVisibility(View.GONE);
-        });
+        //面积监听
+        String mArea = silArea.getEditTextView().getText().toString();
+        silArea.getEditTextView().addTextChangedListener(new MyTextWatcher(mArea));
+    }
+
+    @SuppressLint("SetTextI18n")
+    private void setSeats() {
+        String seatStart = etSeatStart.getText().toString();
+        String seatEnd = etSeatEnd.getText().toString();
+        String area = silArea.getEditTextView().getText().toString();
+        if (isFixArea || (TextUtils.isEmpty(seatStart) && TextUtils.isEmpty(seatEnd))) {
+            etSeatStart.setText((Integer.valueOf(area) / 10) + "");
+            etSeatEnd.setText((Integer.valueOf(area) / 5) + "");
+        }
     }
 
     @Override
     public void houseUniqueSuccess(List<DirectoryBean.DataBean> data) {
-        rvHouseUnique.setAdapter(new UniqueAdapter(context,new HashMap<>(), data));
+        UniqueAdapter adapter = new UniqueAdapter(context, uniqueMap, data);
+        adapter.setListener(this);
+        rvHouseUnique.setAdapter(adapter);
     }
 
     @Override
     public void decoratedTypeSuccess(List<DirectoryBean.DataBean> data) {
-        rvDecorationType.setAdapter(new HouseDecorationAdapter(context, data));
+        HouseDecorationAdapter decorationAdapter = new HouseDecorationAdapter(context, decorationMap, data);
+        decorationAdapter.setListener(this);
+        rvDecorationType.setAdapter(decorationAdapter);
     }
 
     @Override
@@ -164,5 +230,40 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
     @Override
     public void sureFloor(String text) {
         silFloorNo.setLeftToArrowText(text);
+    }
+
+    @Override
+    public void decorationResult(Map<Integer, String> map) {
+        this.decorationMap = map;
+    }
+
+    @Override
+    public void uniqueResult(Map<Integer, String> uniqueMap) {
+        this.uniqueMap = uniqueMap;
+    }
+
+    private class MyTextWatcher implements TextWatcher {
+        private String text;
+
+        MyTextWatcher(String text) {
+            this.text = text;
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+            isFixArea = false;
+        }
+
+        @Override
+        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+        }
+
+        @Override
+        public void afterTextChanged(Editable editable) {
+            if (!TextUtils.equals(text, editable.toString())) {
+                isFixArea = true;
+            }
+        }
     }
 }

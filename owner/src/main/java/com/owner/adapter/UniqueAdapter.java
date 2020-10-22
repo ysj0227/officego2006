@@ -34,7 +34,7 @@ public class UniqueAdapter extends CommonListAdapter<DirectoryBean.DataBean> {
     private UniqueListener listener;
 
     public interface UniqueListener {
-        void uniqueText(Map<Integer, String> uniqueMap);
+        void uniqueResult(Map<Integer, String> uniqueMap);
     }
 
     @SuppressLint("UseSparseArrays")
@@ -66,7 +66,7 @@ public class UniqueAdapter extends CommonListAdapter<DirectoryBean.DataBean> {
                 map.remove(bean.getDictValue());
             }
             if (listener != null) {
-                listener.uniqueText(map);
+                listener.uniqueResult(map);
             }
         });
     }

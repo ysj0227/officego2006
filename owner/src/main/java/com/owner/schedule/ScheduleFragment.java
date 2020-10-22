@@ -77,11 +77,11 @@ public class ScheduleFragment extends BaseMvpFragment<ViewingDatePresenter>
         StatusBarUtils.setStatusBarFullTransparent(mActivity);
         mPresenter = new ViewingDatePresenter();
         mPresenter.attachView(this);
-        RelativeLayout rlTitle = mActivity.findViewById(R.id.rl_title);
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) rlTitle.getLayoutParams();
-        params.width = LinearLayout.LayoutParams.MATCH_PARENT;
-        params.height = CommonHelper.statusHeight(mActivity) + CommonHelper.dp2px(mActivity, 60);
-        rlTitle.setLayoutParams(params);
+//        RelativeLayout rlTitle = mActivity.findViewById(R.id.rl_title);
+//        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) rlTitle.getLayoutParams();
+//        params.width = LinearLayout.LayoutParams.MATCH_PARENT;
+//        params.height = CommonHelper.statusHeight(mActivity) + CommonHelper.dp2px(mActivity, 60);
+//        rlTitle.setLayoutParams(params);
         tvCurrentDate = mActivity.findViewById(R.id.tv_current_date);
         tvNoData = mActivity.findViewById(R.id.tv_no_data);
         monthPager = mActivity.findViewById(R.id.calendar_view);

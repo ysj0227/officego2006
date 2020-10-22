@@ -52,7 +52,6 @@
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/dp_18"
-        android:text="共20层"
         android:textColor="@color/text_66_p50"
         android:textSize="@dimen/sp_15"
         tools:ignore="ContentDescription" />

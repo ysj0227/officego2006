@@ -256,4 +256,17 @@ public class OfficegoApi {
                 .enqueue(callback);
     }
 
+    /**
+     * 会议室配套
+     *
+     * @param callback
+     */
+    public void roomMatchingService(RetrofitCallback<List<DirectoryBean.DataBean>> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("code", requestBody("roomMatchingUnique"));
+        OfficegoRetrofitClient.getInstance().create(DirectoryInterface.class)
+                .getDictionary(map)
+                .enqueue(callback);
+    }
+
 }

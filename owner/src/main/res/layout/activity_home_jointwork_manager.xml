@@ -158,24 +158,18 @@
                 app:showDividerBottom="visible"
                 app:showEditText="visible" />
 
-            <com.officego.commonlib.view.widget.SettingItemLayout
-                android:id="@+id/sil_meeting_resources"
+            <!--会议室配套-->
+            <include
+                layout="@layout/include_meeting_match"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/sil_contains_persons"
-                app:leftMarkShow="invisible"
-                app:leftText="会议室配套"
-                app:rightArrowShow="visible"
-                app:rightOtherImageViewShow="gone"
-                app:showCenterText="gone"
-                app:showDividerBottom="visible"
-                app:showEditText="gone" />
+                android:layout_height="@dimen/dp_60"
+                android:layout_below="@id/sil_meeting_room" />
 
             <com.officego.commonlib.view.widget.SettingItemLayout
                 android:id="@+id/sil_car_num"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/sil_meeting_resources"
+                android:layout_below="@id/rl_meeting_resources"
                 app:leftMarkShow="visible"
                 app:leftText="车位数"
                 app:rightArrowShow="gone"

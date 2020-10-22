@@ -1,0 +1,42 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/rl_meeting_resources"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_60"
+    android:background="@color/white">
+
+    <TextView
+        android:id="@+id/tv_room"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/dp_18"
+        android:text="会议室配套"
+        android:textColor="@color/text_33"
+        android:textSize="@dimen/sp_15" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_meeting_match"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_30"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/dp_15"
+        android:layout_marginEnd="@dimen/dp_40"
+        android:layout_toEndOf="@id/tv_room"
+        android:background="@color/white" />
+
+    <ImageView
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginEnd="@dimen/dp_18"
+        android:background="@mipmap/ic_right_arrow_small_disable"
+        tools:ignore="ContentDescription" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1px"
+        android:layout_alignParentBottom="true"
+        android:background="@color/common_divider" />
+</RelativeLayout>

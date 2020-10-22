@@ -105,7 +105,7 @@
             <include
                 layout="@layout/include_floor"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/dp_60"
                 android:layout_below="@id/sil_floor_no" />
 
             <com.officego.commonlib.view.widget.SettingItemLayout
@@ -154,9 +154,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sil_conditioned"
+                android:visibility="gone"
                 app:leftMarkShow="invisible"
                 app:leftText="空调费"
-                android:visibility="gone"
                 app:rightArrowShow="gone"
                 app:showCenterText="visible"
                 app:showDividerBottom="visible"

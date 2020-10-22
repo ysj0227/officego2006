@@ -230,7 +230,7 @@ public class AddBuildingActivity extends BaseMvpActivity<BuildingPresenter>
 
     @Override
     public void houseUniqueSuccess(List<DirectoryBean.DataBean> data) {
-        UniqueAdapter adapter = new UniqueAdapter(context,uniqueMap, data);
+        UniqueAdapter adapter = new UniqueAdapter(context, uniqueMap, data);
         adapter.setListener(this);
         rvHouseUnique.setAdapter(adapter);
     }
@@ -283,7 +283,7 @@ public class AddBuildingActivity extends BaseMvpActivity<BuildingPresenter>
     }
 
     @Override
-    public void uniqueText(Map<Integer, String> uniqueMap) {
+    public void uniqueResult(Map<Integer, String> uniqueMap) {
         this.uniqueMap = uniqueMap;
         uniqueTags = CommonHelper.getKey(uniqueMap);
     }

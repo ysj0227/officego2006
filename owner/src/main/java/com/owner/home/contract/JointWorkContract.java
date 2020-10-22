@@ -11,8 +11,9 @@ import java.util.List;
  **/
 public interface JointWorkContract {
     interface View extends BaseView {
-        //房源特色
         void houseUniqueSuccess(List<DirectoryBean.DataBean> data);
+
+        void roomMatchingSuccess(List<DirectoryBean.DataBean> data);
 
         void baseServiceSuccess(List<DirectoryBean.DataBean> data);
 
@@ -23,6 +24,8 @@ public interface JointWorkContract {
     interface Presenter {
 
         void getHouseUnique();
+
+        void getRoomMatching();
 
         void getBaseService();
 
