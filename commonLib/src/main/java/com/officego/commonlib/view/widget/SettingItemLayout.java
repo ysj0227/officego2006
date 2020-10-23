@@ -3,7 +3,9 @@ package com.officego.commonlib.view.widget;
 import android.content.Context;
 import android.content.res.TypedArray;
 import android.graphics.drawable.Drawable;
+import android.text.InputFilter;
 import android.text.TextUtils;
+import android.text.method.DigitsKeyListener;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.view.LayoutInflater;
@@ -22,6 +24,8 @@ import androidx.core.content.ContextCompat;
 import com.officego.commonlib.R;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.view.ClearableEditText;
+
+import java.util.Objects;
 
 /**
  * Created by shijie
@@ -156,6 +160,17 @@ public class SettingItemLayout extends FrameLayout {
             editTextContent.setVisibility(editTextType == DIVIDER_VISIBLE ? VISIBLE : GONE);
         } else {
             editTextContent.setVisibility(GONE);
+        }
+        //输入字数长度
+        if (a.hasValue(R.styleable.SettingItemLayout_editMaxLength)) {
+            editTextContent.setFilters(new InputFilter[]{
+                    new InputFilter.LengthFilter(a.getInt(R.styleable.SettingItemLayout_editMaxLength, Integer.MAX_VALUE))});
+        }
+        //设置输入字符显示
+        if (a.hasValue(R.styleable.SettingItemLayout_editDigits)) {
+            if (!TextUtils.isEmpty(a.getString(R.styleable.SettingItemLayout_editDigits))) {
+                editTextContent.setKeyListener(DigitsKeyListener.getInstance(Objects.requireNonNull(a.getString(R.styleable.SettingItemLayout_editDigits))));
+            }
         }
         //箭头左侧文本
         if (a.hasValue(R.styleable.SettingItemLayout_leftToArrowText)) {

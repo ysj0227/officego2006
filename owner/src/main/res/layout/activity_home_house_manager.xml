@@ -49,6 +49,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sil_house_title"
+                app:editDigits="0123456789."
+                app:editMaxLength="9"
                 app:leftMarkShow="visible"
                 app:leftText="面积"
                 app:rightArrowShow="gone"
@@ -69,13 +71,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/cl_seats"
+                app:editTextInputType="numberDecimal"
+                app:editTextWidth="@dimen/dp_160"
                 app:leftMarkShow="visible"
                 app:leftText="租金单价"
                 app:rightArrowShow="gone"
-                app:editTextWidth="@dimen/dp_160"
                 app:rightOtherImageViewShow="gone"
                 app:rightText="元/㎡/天"
-                app:editTextInputType="numberDecimal"
                 app:showCenterText="gone"
                 app:showDividerBottom="visible"
                 app:showEditText="visible" />
@@ -85,9 +87,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sil_rent_single"
+                app:editTextWidth="@dimen/dp_160"
                 app:leftMarkShow="visible"
                 app:leftText="租金总价"
-                app:editTextWidth="@dimen/dp_160"
                 app:leftToArrowText="元/月    "
                 app:leftToArrowTextColor="@color/text_66_p50"
                 app:rightArrowShow="gone"
@@ -98,7 +100,6 @@
                 app:showEditText="visible" />
 
             <TextView
-                android:visibility="gone"
                 android:id="@+id/tv_rent_sum_tip"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -107,7 +108,8 @@
                 android:background="@drawable/text_label_blue"
                 android:padding="@dimen/dp_3"
                 android:textColor="@color/common_blue_main"
-                android:textSize="@dimen/sp_13" />
+                android:textSize="@dimen/sp_13"
+                android:visibility="gone" />
 
             <com.officego.commonlib.view.widget.SettingItemLayout
                 android:id="@+id/sil_floor_no"
@@ -134,6 +136,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/cl_floors"
+                app:editDigits="12345678."
+                app:editMaxLength="3"
                 app:leftMarkShow="visible"
                 app:leftText="净高"
                 app:rightArrowShow="gone"
@@ -148,6 +152,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sil_storey_height"
+                app:editDigits="12345678."
+                app:editMaxLength="3"
                 app:leftMarkShow="invisible"
                 app:leftText="层高"
                 app:rightArrowShow="gone"
@@ -162,11 +168,13 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sil_tier_height"
+                app:editMaxLength="2"
+                app:editTextInputType="phone"
                 app:leftMarkShow="visible"
                 app:leftText="最短租期"
                 app:rightArrowShow="gone"
                 app:rightOtherImageViewShow="gone"
-                app:rightText="年"
+                app:rightText="月"
                 app:showCenterText="gone"
                 app:showDividerBottom="visible"
                 app:showEditText="visible" />

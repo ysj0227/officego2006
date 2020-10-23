@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.dialog.RentDialog;
 import com.officego.commonlib.common.model.DirectoryBean;
+import com.officego.commonlib.utils.EditInputFilter;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.dialog.CommonDialog;
@@ -26,6 +27,10 @@ import com.owner.adapter.UniqueAdapter;
 import com.owner.dialog.FloorTypeDialog;
 import com.owner.home.contract.HouseContract;
 import com.owner.home.presenter.HousePresenter;
+import com.owner.home.rule.AreaTextWatcher;
+import com.owner.home.rule.BuildingHouseAreaTextWatcher;
+import com.owner.home.rule.FloorHeightTextWatcher;
+import com.owner.home.rule.FloorNumTextWatcher;
 import com.owner.utils.SpaceItemDecoration;
 
 import org.androidannotations.annotations.AfterViews;
@@ -105,6 +110,7 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
         mPresenter = new HousePresenter();
         mPresenter.attachView(this);
         initViews();
+        initDigits();
         itemListener();
         mPresenter.getDecoratedType();
         mPresenter.getHouseUnique();
@@ -119,6 +125,20 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
         GridLayoutManager layoutManager1 = new GridLayoutManager(context, 3);
         rvDecorationType.setLayoutManager(layoutManager1);
         rvDecorationType.addItemDecoration(new SpaceItemDecoration(context, 3));
+    }
+
+    private void initDigits() {
+        //标题 长度最大25
+        EditInputFilter.setOfficeGoEditProhibitSpeChat(silHouseTitle.getEditTextView(), 25);
+        //面积 10-100000正数数字，保留2位小数，单位 M
+        silArea.getEditTextView().addTextChangedListener(new BuildingHouseAreaTextWatcher(context, silArea.getEditTextView()));
+        //净高 层高 0-8或一位小数
+        silStoreyHeight.getEditTextView().addTextChangedListener(new FloorHeightTextWatcher(silStoreyHeight.getEditTextView()));
+        silTierHeight.getEditTextView().addTextChangedListener(new FloorHeightTextWatcher(silTierHeight.getEditTextView()));
+        //最短租期
+        silRentTime.getEditTextView().addTextChangedListener(new FloorNumTextWatcher(context,
+                60, 2, silRentTime.getEditTextView()));
+
     }
 
     @Click(resName = "btn_next")
@@ -194,7 +214,12 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
                 }
             }
         });
-        //面积监听
+        //面积监听 是否修改过
+        silArea.getEditTextView().setOnFocusChangeListener((view, b) -> {
+            if (b) {
+                isFixArea = !TextUtils.equals(recordArea, silArea.getEditTextView().getText().toString());
+            }
+        });
         silArea.getEditTextView().addTextChangedListener(new MyTextWatcher(recordArea));
     }
 
@@ -260,7 +285,6 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
 
         @Override
         public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-
         }
 
         @Override

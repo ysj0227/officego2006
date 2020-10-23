@@ -78,8 +78,8 @@ public class ListUtils {
     public static List<String> yearSetList() {
         List<String> list = new ArrayList<>();
         int year = DateTimeUtils.getYear(Calendar.getInstance().getTime());
-        for (int i = 0; i < (year - 1984); i++) {
-            list.add((1985 + i) + "");
+        for (int i = 0; i < (year - 1979); i++) {
+            list.add((1980 + i) + "");
         }
         return list;
     }

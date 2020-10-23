@@ -55,7 +55,7 @@
                 app:rightArrowShow="gone"
                 app:editTextWidth="@dimen/dp_160"
                 app:rightOtherImageViewShow="gone"
-                app:rightText="元/位/天"
+                app:rightText="元/位/月"
                 app:showCenterText="gone"
                 app:showDividerBottom="visible"
                 app:showEditText="visible" />

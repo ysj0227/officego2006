@@ -16,6 +16,7 @@ import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.dialog.YearDateDialog;
 import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.commonlib.utils.CommonHelper;
+import com.officego.commonlib.utils.EditInputFilter;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.ClearableEditText;
@@ -28,6 +29,12 @@ import com.owner.dialog.BuildingTypeDialog;
 import com.owner.dialog.ConditionedDialog;
 import com.owner.home.contract.BuildingContract;
 import com.owner.home.presenter.BuildingPresenter;
+import com.owner.home.rule.AreaTextWatcher;
+import com.owner.home.rule.CarFeeTextWatcher;
+import com.owner.home.rule.EstateFeeTextWatcher;
+import com.owner.home.rule.FloorHeightTextWatcher;
+import com.owner.home.rule.FloorNumTextWatcher;
+import com.owner.home.rule.LiftTextWatcher;
 import com.owner.identity.dialog.AreaDialog;
 import com.owner.identity.model.ImageBean;
 import com.owner.utils.SpaceItemDecoration;
@@ -137,6 +144,7 @@ public class AddBuildingActivity extends BaseMvpActivity<BuildingPresenter>
         mPresenter = new BuildingPresenter();
         mPresenter.attachView(this);
         initViews();
+        initDigits();
         mPresenter.getHouseUnique();
     }
 
@@ -167,6 +175,27 @@ public class AddBuildingActivity extends BaseMvpActivity<BuildingPresenter>
         rvUploadImage.setAdapter(imageAdapter);
     }
 
+    private void initDigits() {
+        //园区名称 长度最大25
+        EditInputFilter.setOfficeGoEditProhibitSpeChat(silGardenName.getEditTextView(), 25);
+        //物业名称 长度最大20
+        EditInputFilter.setOfficeGoEditProhibitSpeChat(silEstate.getEditTextView(), 20);
+        //面积 0.1-1000正数数字，保留1位小数，单位“万  M²
+        silGrossArea.getEditTextView().addTextChangedListener(new AreaTextWatcher(context, silGrossArea.getEditTextView()));
+        //物业费 0-100之间正数，保留1位小数
+        silEstateFee.getEditTextView().addTextChangedListener(new EstateFeeTextWatcher(context, silEstateFee.getEditTextView()));
+        //净高 层高 0-8或一位小数
+        silStoreyHeight.getEditTextView().addTextChangedListener(new FloorHeightTextWatcher(silStoreyHeight.getEditTextView()));
+        silTierHeight.getEditTextView().addTextChangedListener(new FloorHeightTextWatcher(silTierHeight.getEditTextView()));
+        //总楼层0-150整数
+        silStorey.getEditTextView().addTextChangedListener(new FloorNumTextWatcher(context, 150,3,silStorey.getEditTextView()));
+        //车位费0-5000整数
+        silCarFee.getEditTextView().addTextChangedListener(new CarFeeTextWatcher(context, silCarFee.getEditTextView()));
+        //电梯0-20整数
+        etCustomerLift.addTextChangedListener(new LiftTextWatcher(context, etCustomerLift));
+        etPassengerLift.addTextChangedListener(new LiftTextWatcher(context, etPassengerLift));
+    }
+
     @Click(resName = "btn_next")
     void nextOnClick() {
         //网络
@@ -189,7 +218,6 @@ public class AddBuildingActivity extends BaseMvpActivity<BuildingPresenter>
         for (int i = 0; i < jointCompanyList.size(); i++) {
             LogCat.e(TAG, "111111 jointCompanyList=" + jointCompanyList.get(i));
         }
-
         //UploadVideoVrActivity_.intent(context).start();
     }
 
