@@ -6,10 +6,7 @@ package com.officego.commonlib.common.message;
  * Descriptions:
  **/
 
-import android.app.Activity;
-import android.content.ComponentName;
 import android.content.Context;
-import android.content.Intent;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.TextUtils;
@@ -20,8 +17,6 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.officego.commonlib.R;
-import com.officego.commonlib.common.model.utils.BundleUtils;
-import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.view.LabelsView;
 import com.officego.commonlib.view.RoundImageView;
 
@@ -31,6 +26,8 @@ import java.util.List;
 import io.rong.imkit.model.ProviderTag;
 import io.rong.imkit.model.UIMessage;
 import io.rong.imkit.widget.provider.IContainerItemProvider;
+
+import static com.officego.commonlib.common.model.utils.BundleUtils.gotoDetailsActivity;
 
 /**
  * PhoneInfo的布局
@@ -99,34 +96,6 @@ public class BuildingProvider extends IContainerItemProvider.MessageProvider<Bui
             if (0 == info.getHouseId()) return;
         }
         gotoDetailsActivity(context, info);
-    }
-
-    //插入消息点击进入详情
-    private void gotoDetailsActivity(Context context, BuildingInfo info) {
-        String pathClass = "com.officego.ui.home.";
-        ComponentName comp;
-        Intent intent = new Intent();
-        if (info.getIsBuildOrHouse() == 1) {//楼盘网点
-            if (Constants.TYPE_BUILDING == info.getBtype()) {
-                comp = new ComponentName(context, pathClass + "BuildingDetailsActivity_");
-            } else {
-                comp = new ComponentName(context, pathClass + "BuildingDetailsJointWorkActivity_");
-            }
-            intent.putExtra("conversationBuilding", BundleUtils.BuildingMessage(info.getBtype(), info.getBuildingId()));
-        } else {//房源
-            if (Constants.TYPE_BUILDING == info.getBtype()) {
-                comp = new ComponentName(context, pathClass + "BuildingDetailsChildActivity_");
-            } else {
-                comp = new ComponentName(context, pathClass + "BuildingDetailsJointWorkChildActivity_");
-            }
-            intent.putExtra("conversationHouse", BundleUtils.houseMessage(info.getBtype(), info.getHouseId()));
-        }
-        if (!(context instanceof Activity)) {
-            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        }
-        intent.setComponent(comp);
-        intent.setAction("android.intent.action.VIEW");
-        context.startActivity(intent);
     }
 
     class BuildingHolder {

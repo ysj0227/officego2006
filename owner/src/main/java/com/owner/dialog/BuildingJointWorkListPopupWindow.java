@@ -20,6 +20,8 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
+import com.officego.commonlib.common.model.utils.BundleUtils;
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.ToastUtils;
 import com.owner.R;
@@ -182,11 +184,14 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
             //预览
             ivPreview.setOnClickListener(view -> {
                 if (mUserData != null) {
+                    int btype;
                     if (mUserData.getIdentityType() == identityType) {
-                        ToastUtils.toastForShort(mContext,"预览");
+                        btype = Constants.TYPE_JOINTWORK;//网点
                     } else {
-                        ToastUtils.toastForShort(mContext,"预览");
+                        btype = Constants.TYPE_BUILDING;//楼盘 （个人，公司身份）
                     }
+                    //todo
+                    BundleUtils.ownerGotoDetailsActivity(mContext, true, btype, 8649);
                 }
             });
             //编辑

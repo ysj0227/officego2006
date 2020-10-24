@@ -10,6 +10,7 @@ import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
 import com.officego.commonlib.common.dialog.WeChatShareDialog;
 import com.officego.commonlib.common.model.ShareBean;
+import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.view.RoundImageView;
 import com.owner.R;
@@ -97,6 +98,14 @@ public class HomeAdapter extends CommonListAdapter<String> {
         tvShare.setOnClickListener(clickListener);
         tvEdit.setOnClickListener(clickListener);
         tvMore.setOnClickListener(clickListener);
+        //
+        holder.itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                //TODO
+                BundleUtils.ownerGotoDetailsActivity(mContext, false, 1, 17259);
+            }
+        });
     }
 
     private void share() {

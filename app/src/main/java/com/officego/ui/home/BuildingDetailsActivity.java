@@ -237,6 +237,8 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     //收藏取消
     @ViewById(R.id.tv_favorite)
     TextView tvFavorite;
+    @ViewById(R.id.rl_bottom_view)
+    RelativeLayout rlBottomView;
     //神策是否已读
     private boolean isRead;
     //同步进度
@@ -302,6 +304,13 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         mConditionBean = ConditionConfig.mConditionBean;
         if (BundleUtils.buildingBean(this) != null) {//聊天插入楼盘点击
             mBuildingBean = BundleUtils.buildingBean(this);
+        }
+        if (BundleUtils.ownerBuildingBean(this) != null) {//业主首页进入详情
+            mBuildingBean = BundleUtils.ownerBuildingBean(this);
+            rlBottomView.setVisibility(View.GONE);
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) nsvView.getLayoutParams();
+            params.bottomMargin = 10;
+            nsvView.setLayoutParams(params);
         }
         initIndependentBuildingRecView();
         buildingIntroduceInfo();

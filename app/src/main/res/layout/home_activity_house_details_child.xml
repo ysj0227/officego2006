@@ -128,6 +128,7 @@
         android:layout_height="@dimen/dp_86" />
 
     <RelativeLayout
+        android:id="@+id/rl_bottom_view"
         style="@style/marginLeftRight18"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

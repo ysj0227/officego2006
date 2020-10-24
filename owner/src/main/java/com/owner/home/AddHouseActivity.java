@@ -32,6 +32,7 @@ import com.owner.home.rule.FloorHeightTextWatcher;
 import com.owner.home.rule.IntegerTextWatcher;
 import com.owner.home.rule.RentSingleTextWatcher;
 import com.owner.home.rule.RentSumTextWatcher;
+import com.owner.home.rule.TextCountsWatcher;
 import com.owner.utils.SpaceItemDecoration;
 
 import org.androidannotations.annotations.AfterViews;
@@ -83,6 +84,8 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
     @ViewById(resName = "sil_free_rent")
     SettingItemLayout silFreeRent;
     //介绍
+    @ViewById(resName = "tv_counts")
+    TextView tvCounts;
     @ViewById(resName = "cet_desc_content")
     ClearableEditText cetDescContent;
     @ViewById(resName = "rv_decoration_type")
@@ -142,6 +145,8 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
         silRentSingle.getEditTextView().addTextChangedListener(new RentSingleTextWatcher(context, silRentSingle.getEditTextView()));
         //租金总价
         silRentSum.getEditTextView().addTextChangedListener(new RentSumTextWatcher(context, silRentSum.getEditTextView()));
+        //介绍
+        cetDescContent.addTextChangedListener(new TextCountsWatcher(tvCounts, cetDescContent));
     }
 
     @Click(resName = "btn_next")

@@ -19,6 +19,7 @@ import com.owner.home.rule.AreaTextWatcher;
 import com.owner.home.rule.CarFeeTextWatcher;
 import com.owner.home.rule.FloorHeightTextWatcher;
 import com.owner.home.rule.IntegerTextWatcher;
+import com.owner.home.rule.TextCountsWatcher;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -65,6 +66,8 @@ public class AddIndependentActivity extends BaseActivity
     @ViewById(resName = "sil_storey_height")
     SettingItemLayout silStoreyHeight;
     //介绍
+    @ViewById(resName = "tv_counts")
+    TextView tvCounts;
     @ViewById(resName = "cet_desc_content")
     ClearableEditText cetDescContent;
     //扫一扫
@@ -98,6 +101,8 @@ public class AddIndependentActivity extends BaseActivity
         silStoreyHeight.getEditTextView().addTextChangedListener(new FloorHeightTextWatcher(context, silStoreyHeight.getEditTextView()));
         //车位费0-5000整数
         silCarFee.getEditTextView().addTextChangedListener(new CarFeeTextWatcher(context, silCarFee.getEditTextView()));
+        //介绍
+        cetDescContent.addTextChangedListener(new TextCountsWatcher(tvCounts, cetDescContent));
     }
 
     @Click(resName = "btn_next")

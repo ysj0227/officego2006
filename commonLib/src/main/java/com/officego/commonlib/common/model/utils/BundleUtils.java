@@ -2,11 +2,14 @@ package com.officego.commonlib.common.model.utils;
 
 
 import android.app.Activity;
+import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
 
+import com.officego.commonlib.common.message.BuildingInfo;
 import com.officego.commonlib.common.model.BuildingIdBundleBean;
 import com.officego.commonlib.common.model.HouseIdBundleBean;
+import com.officego.commonlib.constant.Constants;
 
 /**
  * Created by YangShiJie
@@ -43,6 +46,7 @@ public class BundleUtils {
         return bean;
     }
 
+    //楼盘聊天插入消息获取
     public static BuildingIdBundleBean buildingBean(Activity context) {
         Intent intent = context.getIntent();
         if (intent != null && intent.hasExtra("conversationBuilding")) {
@@ -51,6 +55,7 @@ public class BundleUtils {
         return null;
     }
 
+    //房源聊天插入消息获取
     public static HouseIdBundleBean houseBean(Activity context) {
         Intent intent = context.getIntent();
         if (intent != null && intent.hasExtra("conversationHouse")) {
@@ -58,4 +63,79 @@ public class BundleUtils {
         }
         return null;
     }
+
+    //插入消息点击进入详情
+    public static void gotoDetailsActivity(Context context, BuildingInfo info) {
+        String pathClass = "com.officego.ui.home.";
+        ComponentName comp;
+        Intent intent = new Intent();
+        if (info.getIsBuildOrHouse() == 1) {//楼盘网点
+            if (Constants.TYPE_BUILDING == info.getBtype()) {
+                comp = new ComponentName(context, pathClass + "BuildingDetailsActivity_");
+            } else {
+                comp = new ComponentName(context, pathClass + "BuildingDetailsJointWorkActivity_");
+            }
+            intent.putExtra("conversationBuilding", BundleUtils.BuildingMessage(info.getBtype(), info.getBuildingId()));
+        } else {//房源
+            if (Constants.TYPE_BUILDING == info.getBtype()) {
+                comp = new ComponentName(context, pathClass + "BuildingDetailsChildActivity_");
+            } else {
+                comp = new ComponentName(context, pathClass + "BuildingDetailsJointWorkChildActivity_");
+            }
+            intent.putExtra("conversationHouse", BundleUtils.houseMessage(info.getBtype(), info.getHouseId()));
+        }
+        if (!(context instanceof Activity)) {
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        }
+        intent.setComponent(comp);
+        intent.setAction("android.intent.action.VIEW");
+        context.startActivity(intent);
+    }
+
+    //业主-首页进入详情********************************************
+    public static void ownerGotoDetailsActivity(Context context, boolean isBuildOrHouse, int btype, int id) {
+        String pathClass = "com.officego.ui.home.";
+        ComponentName comp;
+        Intent intent = new Intent();
+        if (isBuildOrHouse) {//楼盘网点
+            if (Constants.TYPE_BUILDING == btype) {
+                comp = new ComponentName(context, pathClass + "BuildingDetailsActivity_");
+            } else {
+                comp = new ComponentName(context, pathClass + "BuildingDetailsJointWorkActivity_");
+            }
+            intent.putExtra("ownerPreviewBuilding", BundleUtils.BuildingMessage(btype, id));//楼盘id
+        } else {//房源
+            if (Constants.TYPE_BUILDING == btype) {
+                comp = new ComponentName(context, pathClass + "BuildingDetailsChildActivity_");
+            } else {
+                comp = new ComponentName(context, pathClass + "BuildingDetailsJointWorkChildActivity_");
+            }
+            intent.putExtra("ownerPreviewHouse", BundleUtils.houseMessage(btype, id));//房源id
+        }
+        if (!(context instanceof Activity)) {
+            intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        }
+        intent.setComponent(comp);
+        intent.setAction("android.intent.action.VIEW");
+        context.startActivity(intent);
+    }
+
+    //业主首页进入详情
+    public static BuildingIdBundleBean ownerBuildingBean(Activity context) {
+        Intent intent = context.getIntent();
+        if (intent != null && intent.hasExtra("ownerPreviewBuilding")) {
+            return (BuildingIdBundleBean) intent.getSerializableExtra("ownerPreviewBuilding");
+        }
+        return null;
+    }
+
+    //业主首页进入详情
+    public static HouseIdBundleBean ownerHouseBean(Activity context) {
+        Intent intent = context.getIntent();
+        if (intent != null && intent.hasExtra("ownerPreviewHouse")) {
+            return (HouseIdBundleBean) intent.getSerializableExtra("ownerPreviewHouse");
+        }
+        return null;
+    }
+
 }

@@ -142,6 +142,8 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
     //收藏取消
     @ViewById(R.id.tv_favorite)
     TextView tvFavorite;
+    @ViewById(R.id.rl_bottom_view)
+    RelativeLayout rlBottomView;
     //视频图片切换
     @ViewById(R.id.rb_vr)
     RadioButton rbVr;
@@ -231,17 +233,23 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         if (BundleUtils.houseBean(this) != null) {//聊天插入楼盘点击
             mChildHouseBean = BundleUtils.houseBean(this);
         }
+        if (BundleUtils.ownerHouseBean(this) != null) {//业主首页进入详情
+            mChildHouseBean = BundleUtils.ownerHouseBean(this);
+            rlBottomView.setVisibility(View.GONE);
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) nsvView.getLayoutParams();
+            params.bottomMargin = 10;
+            nsvView.setLayoutParams(params);
+        }
         buildingIntroduceInfo();
         centerPlayIsShow(true);
         initVideo();
         nsvView.setOnScrollChangeListener(this);
         tvIndependentOffice.setVisibility(View.GONE);
         if (mChildHouseBean != null) {
-            LogCat.e(TAG, "111 getBtype=" + mChildHouseBean.getBtype() + " id=" + mChildHouseBean.getHouseId());
             mPresenter.getDetails(String.valueOf(mChildHouseBean.getBtype()), String.valueOf(mChildHouseBean.getHouseId()));
+            //神策
+            SensorsTrack.visitHouseDataPage(String.valueOf(mChildHouseBean.getHouseId()));
         }
-        //神策
-        SensorsTrack.visitHouseDataPage(String.valueOf(mChildHouseBean.getHouseId()));
     }
 
     private void setImageViewLayoutParams(Context context, View view) {
@@ -654,9 +662,10 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         super.onPause();
         //pauseVideo();
         //释放-防止预加载退出后台时继续播放
-        if (iVideoPlayer != null){
+        if (iVideoPlayer != null) {
             iVideoPlayer.release();
-        };
+        }
+        ;
     }
 
     //视频暂停

@@ -5,6 +5,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -28,6 +29,7 @@ import com.owner.home.rule.CarFeeTextWatcher;
 import com.owner.home.rule.FloorHeightTextWatcher;
 import com.owner.home.rule.IntegerTextWatcher;
 import com.owner.home.rule.LiftTextWatcher;
+import com.owner.home.rule.TextCountsWatcher;
 import com.owner.identity.dialog.AreaDialog;
 import com.owner.utils.SpaceItemDecoration;
 
@@ -84,6 +86,8 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
     @ViewById(resName = "et_passenger_lift")
     EditText etPassengerLift;
     //介绍
+    @ViewById(resName = "tv_counts")
+    TextView tvCounts;
     @ViewById(resName = "cet_desc_content")
     ClearableEditText cetDescContent;
     //特色
@@ -176,6 +180,9 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
         etPassengerLift.addTextChangedListener(new LiftTextWatcher(context, etPassengerLift));
         //会议室数量
         silMeetingRoom.getEditTextView().addTextChangedListener(new IntegerTextWatcher(context, 10, silMeetingRoom.getEditTextView()));
+
+        //介绍
+        cetDescContent.addTextChangedListener(new TextCountsWatcher(tvCounts, cetDescContent));
     }
 
     @Click(resName = "btn_next")

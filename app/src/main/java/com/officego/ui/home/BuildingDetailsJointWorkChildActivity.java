@@ -138,6 +138,8 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
     //收藏取消
     @ViewById(R.id.tv_favorite)
     TextView tvFavorite;
+    @ViewById(R.id.rl_bottom_view)
+    RelativeLayout rlBottomView;
     //视频图片切换
     @ViewById(R.id.rb_vr)
     RadioButton rbVr;
@@ -226,6 +228,13 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         if (BundleUtils.houseBean(this) != null) {//聊天插入楼盘点击
             mChildHouseBean = BundleUtils.houseBean(this);
         }
+        if (BundleUtils.ownerHouseBean(this) != null) {//业主首页进入详情
+            mChildHouseBean = BundleUtils.ownerHouseBean(this);
+            rlBottomView.setVisibility(View.GONE);
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) nsvView.getLayoutParams();
+            params.bottomMargin = 10;
+            nsvView.setLayoutParams(params);
+        }
         buildingIntroduceInfo();
         centerPlayIsShow(true);
         initVideo();
@@ -234,10 +243,9 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         rlCharacteristic.setVisibility(View.GONE);//网点无特色
         if (mChildHouseBean != null) {
             mPresenter.getDetails(String.valueOf(mChildHouseBean.getBtype()), String.valueOf(mChildHouseBean.getHouseId()));
+            //神策
+            SensorsTrack.visitHouseDataPage(String.valueOf(mChildHouseBean.getHouseId()));
         }
-        //神策
-        assert mChildHouseBean != null;
-        SensorsTrack.visitHouseDataPage(String.valueOf(mChildHouseBean.getHouseId()));
     }
 
     private void setImageViewLayoutParams(Context context, View view) {
