@@ -26,6 +26,7 @@ import com.owner.R;
 import com.owner.adapter.JointCompanyAdapter;
 import com.owner.adapter.UniqueAdapter;
 import com.owner.adapter.UploadBuildingImageAdapter;
+import com.owner.dialog.AreaDialog;
 import com.owner.dialog.BuildingTypeDialog;
 import com.owner.dialog.ConditionedDialog;
 import com.owner.home.contract.BuildingContract;
@@ -37,7 +38,6 @@ import com.owner.home.rule.FloorHeightTextWatcher;
 import com.owner.home.rule.IntegerTextWatcher;
 import com.owner.home.rule.LiftTextWatcher;
 import com.owner.home.rule.TextCountsWatcher;
-import com.owner.dialog.AreaDialog;
 import com.owner.identity.model.ImageBean;
 import com.owner.utils.SpaceItemDecoration;
 
@@ -184,7 +184,7 @@ public class AddBuildingActivity extends BaseMvpActivity<BuildingPresenter>
         EditInputFilter.setOfficeGoEditProhibitSpeChat(silGardenName.getEditTextView(), 25);
         //物业名称 长度最大20
         EditInputFilter.setOfficeGoEditProhibitSpeChat(silEstate.getEditTextView(), 20);
-        //面积 0.1-1000正数数字，保留1位小数，单位“万  M²
+        //面积 0.1-1000正数数字，保留1位小数，单位 万M²
         silGrossArea.getEditTextView().addTextChangedListener(new AreaTextWatcher(context, 1000, silGrossArea.getEditTextView()));
         //物业费 0-100之间正数，保留1位小数
         silEstateFee.getEditTextView().addTextChangedListener(new EstateFeeTextWatcher(context, silEstateFee.getEditTextView()));
@@ -195,12 +195,16 @@ public class AddBuildingActivity extends BaseMvpActivity<BuildingPresenter>
         silStorey.getEditTextView().addTextChangedListener(new IntegerTextWatcher(context, 150, silStorey.getEditTextView()));
         //车位费0-5000整数
         silCarFee.getEditTextView().addTextChangedListener(new CarFeeTextWatcher(context, silCarFee.getEditTextView()));
-        //电梯0-20整数
+        //电梯 货梯0-20整数
         etCustomerLift.addTextChangedListener(new LiftTextWatcher(context, etCustomerLift));
         etPassengerLift.addTextChangedListener(new LiftTextWatcher(context, etPassengerLift));
-
         //介绍
         cetDescContent.addTextChangedListener(new TextCountsWatcher(tvCounts, cetDescContent));
+    }
+
+    //扫一扫
+    @Click(resName = "iv_scan")
+    void scanClick() {
     }
 
     @Click(resName = "btn_next")
@@ -226,6 +230,81 @@ public class AddBuildingActivity extends BaseMvpActivity<BuildingPresenter>
             LogCat.e(TAG, "111111 jointCompanyList=" + jointCompanyList.get(i));
         }
         //UploadVideoVrActivity_.intent(context).start();
+        submit();
+    }
+
+    private void submit() {
+        String buildingName = silBuildingType.getContextView().getText().toString();
+        if (TextUtils.isEmpty(buildingName)) {
+            shortTip("请选择楼盘类型");
+            return;
+        }
+        String gardenName = silGardenName.getEditTextView().getText().toString();
+        if (TextUtils.isEmpty(gardenName)) {
+            shortTip("请输入园区名称");
+            return;
+        }
+        String gardenNo = silNo.getEditTextView().getText().toString();
+        if (TextUtils.isEmpty(gardenNo)) {
+            shortTip("请输入楼号");
+            return;
+        }
+        String buildingArea = silArea.getContextView().getText().toString();
+        if (TextUtils.isEmpty(buildingArea)) {
+            shortTip("请选择所在区域");
+            return;
+        }
+        String address = silAddress.getEditTextView().getText().toString();
+        if (TextUtils.isEmpty(address)) {
+            shortTip("请输入详细地址");
+            return;
+        }
+        String floorStorey = silStorey.getEditTextView().getText().toString();
+        if (TextUtils.isEmpty(floorStorey)) {
+            shortTip("请输入总楼层");
+            return;
+        }
+        String completeTime = silCompleteTime.getContextView().getText().toString();
+        if (TextUtils.isEmpty(completeTime)) {
+            shortTip("请选择竣工时间");
+            return;
+        }
+        String storeyHeight = silStoreyHeight.getEditTextView().getText().toString();
+        if (TextUtils.isEmpty(storeyHeight)) {
+            shortTip("请输入净高");
+            return;
+        }
+        String estate = silEstate.getEditTextView().getText().toString();
+        if (TextUtils.isEmpty(estate)) {
+            shortTip("请输入物业公司");
+            return;
+        }
+        String estateFee = silEstateFee.getEditTextView().getText().toString();
+        if (TextUtils.isEmpty(estateFee)) {
+            shortTip("请输入物业费");
+            return;
+        }
+        String carNum = silCarNum.getEditTextView().getText().toString();
+        if (TextUtils.isEmpty(carNum)) {
+            shortTip("请输入车位数");
+            return;
+        }
+        String conditioned = silConditioned.getContextView().getText().toString();
+        if (TextUtils.isEmpty(conditioned)) {
+            shortTip("请选择空调类型");
+            return;
+        }
+        String customerLift = etCustomerLift.getText().toString();
+        if (TextUtils.isEmpty(customerLift)) {
+            shortTip("请输入客梯数量");
+            return;
+        }
+        String passengerLift = etPassengerLift.getText().toString();
+        if (TextUtils.isEmpty(passengerLift)) {
+            shortTip("请输入货梯数量");
+            return;
+        }
+
     }
 
     @Click(resName = "iv_close_scan")
