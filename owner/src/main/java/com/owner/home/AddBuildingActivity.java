@@ -37,7 +37,7 @@ import com.owner.home.rule.FloorHeightTextWatcher;
 import com.owner.home.rule.IntegerTextWatcher;
 import com.owner.home.rule.LiftTextWatcher;
 import com.owner.home.rule.TextCountsWatcher;
-import com.owner.identity.dialog.AreaDialog;
+import com.owner.dialog.AreaDialog;
 import com.owner.identity.model.ImageBean;
 import com.owner.utils.SpaceItemDecoration;
 

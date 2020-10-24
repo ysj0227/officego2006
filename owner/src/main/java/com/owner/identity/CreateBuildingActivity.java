@@ -32,7 +32,7 @@ import com.officego.commonlib.view.TitleBarView;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
 import com.owner.identity.contract.CreateSubmitContract;
-import com.owner.identity.dialog.AreaDialog;
+import com.owner.dialog.AreaDialog;
 import com.owner.identity.model.GetIdentityInfoBean;
 import com.owner.identity.presenter.CreateSubmitPresenter;
 

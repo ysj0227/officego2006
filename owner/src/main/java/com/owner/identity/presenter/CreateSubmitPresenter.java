@@ -7,7 +7,6 @@ import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.log.LogCat;
 import com.owner.identity.contract.CreateSubmitContract;
-import com.owner.identity.dialog.AreaDialog;
 import com.owner.identity.model.BusinessCircleBean;
 import com.owner.identity.model.GetIdentityInfoBean;
 import com.owner.rpc.OfficegoApi;

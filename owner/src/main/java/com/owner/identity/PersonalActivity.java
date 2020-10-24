@@ -41,7 +41,7 @@ import com.owner.adapter.IdentityBuildingAdapter;
 import com.owner.adapter.PropertyOwnershipCertificateAdapter;
 import com.owner.adapter.RentalAgreementAdapter;
 import com.owner.identity.contract.PersonalContract;
-import com.owner.identity.dialog.SwitchRoleDialog;
+import com.owner.dialog.SwitchRoleDialog;
 import com.owner.identity.model.GetIdentityInfoBean;
 import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.model.ImageBean;

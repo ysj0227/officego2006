@@ -1,4 +1,4 @@
-package com.owner.identity.dialog;
+package com.owner.dialog;
 
 import android.app.Activity;
 
