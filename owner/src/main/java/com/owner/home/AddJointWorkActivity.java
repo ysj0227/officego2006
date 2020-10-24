@@ -2,6 +2,8 @@ package com.owner.home;
 
 import android.view.View;
 import android.widget.Button;
+import android.widget.CheckBox;
+import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -10,8 +12,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.model.DirectoryBean;
-import com.officego.commonlib.utils.CommonHelper;
+import com.officego.commonlib.utils.EditInputFilter;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.widget.SettingItemLayout;
 import com.owner.adapter.JointCompanyAdapter;
 import com.owner.adapter.ServiceLogoAdapter;
@@ -21,6 +24,10 @@ import com.owner.dialog.FloorTypeDialog;
 import com.owner.dialog.ServiceSelectedDialog;
 import com.owner.home.contract.JointWorkContract;
 import com.owner.home.presenter.JointWorkPresenter;
+import com.owner.home.rule.CarFeeTextWatcher;
+import com.owner.home.rule.FloorHeightTextWatcher;
+import com.owner.home.rule.IntegerTextWatcher;
+import com.owner.home.rule.LiftTextWatcher;
 import com.owner.identity.dialog.AreaDialog;
 import com.owner.utils.SpaceItemDecoration;
 
@@ -30,7 +37,6 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -48,27 +54,63 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
     private final int serviceCompanyFlay = 1;
     private final int serviceBaseFlay = 2;
 
-    @ViewById(resName = "iv_mark_image_lift")
-    ImageView ivMarkImageLift;
+    @ViewById(resName = "sil_joint_work_name")
+    SettingItemLayout silJointWorkName;
     @ViewById(resName = "sil_area")
     SettingItemLayout silArea;
+    @ViewById(resName = "sil_address")
+    SettingItemLayout silAddress;
     @ViewById(resName = "sil_floor_no")
     SettingItemLayout silFloorNo;
+    @ViewById(resName = "et_floors")
+    EditText etFloors;
+    @ViewById(resName = "et_floors_count")
+    EditText etFloorsCount;
+    @ViewById(resName = "sil_storey_height")
+    SettingItemLayout silStoreyHeight;
     @ViewById(resName = "sil_conditioned")
     SettingItemLayout silConditioned;
     @ViewById(resName = "sil_conditioned_fee")
     SettingItemLayout silConditionedFee;
-    //RecyclerView
+    @ViewById(resName = "sil_meeting_room")
+    SettingItemLayout silMeetingRoom;
+    @ViewById(resName = "sil_car_num")
+    SettingItemLayout silCarNum;
+    @ViewById(resName = "sil_car_fee")
+    SettingItemLayout silCarFee;
+    //电梯
+    @ViewById(resName = "et_customer_lift")
+    EditText etCustomerLift;
+    @ViewById(resName = "et_passenger_lift")
+    EditText etPassengerLift;
+    //介绍
+    @ViewById(resName = "cet_desc_content")
+    ClearableEditText cetDescContent;
+    //特色
+    @ViewById(resName = "rv_house_characteristic")
+    RecyclerView rvHouseUnique;
+    //入住企业
+    @ViewById(resName = "rv_join_company")
+    RecyclerView rvJoinCompany;
+    //网络 电信 联通 移动
+    @ViewById(resName = "rb_telecom")
+    CheckBox rbTelecom;
+    @ViewById(resName = "rb_unicom")
+    CheckBox rbUnicom;
+    @ViewById(resName = "rb_mobile")
+    CheckBox rbMobile;
+    //服务
     @ViewById(resName = "rv_meeting_match")
     RecyclerView rvMeetingMatch;
     @ViewById(resName = "rv_create_service")
     RecyclerView rvCompanyService;
     @ViewById(resName = "rv_base_service")
     RecyclerView rvBaseService;
-    @ViewById(resName = "rv_join_company")
-    RecyclerView rvJoinCompany;
-    @ViewById(resName = "rv_house_characteristic")
-    RecyclerView rvHouseUnique;
+    @ViewById(resName = "iv_mark_image_lift")
+    ImageView ivMarkImageLift;
+    //图片list
+    @ViewById(resName = "rv_upload_image")
+    RecyclerView rvUploadImage;
     //扫描
     @ViewById(resName = "btn_scan")
     Button btnScan;
@@ -94,6 +136,7 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
         mPresenter = new JointWorkPresenter();
         mPresenter.attachView(this);
         initViews();
+        initDigits();
         mPresenter.getHouseUnique();
     }
 
@@ -119,7 +162,20 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
         LinearLayoutManager lmHorizontal3 = new LinearLayoutManager(this);
         lmHorizontal3.setOrientation(LinearLayoutManager.HORIZONTAL);
         rvMeetingMatch.setLayoutManager(lmHorizontal3);
+    }
 
+    private void initDigits() {
+        // 园区名称 长度最大25
+        EditInputFilter.setOfficeGoEditProhibitSpeChat(silJointWorkName.getEditTextView(), 25);
+        //净高 层高 0-8或一位小数
+        silStoreyHeight.getEditTextView().addTextChangedListener(new FloorHeightTextWatcher(context,silStoreyHeight.getEditTextView()));
+        //车位费0-5000整数
+        silCarFee.getEditTextView().addTextChangedListener(new CarFeeTextWatcher(context, silCarFee.getEditTextView()));
+        //电梯0-20整数
+        etCustomerLift.addTextChangedListener(new LiftTextWatcher(context, etCustomerLift));
+        etPassengerLift.addTextChangedListener(new LiftTextWatcher(context, etPassengerLift));
+        //会议室数量
+        silMeetingRoom.getEditTextView().addTextChangedListener(new IntegerTextWatcher(context, 10, silMeetingRoom.getEditTextView()));
     }
 
     @Click(resName = "btn_next")
@@ -188,7 +244,7 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
 
     @Override
     public void serviceLogoResult(int flay, Map<Integer, String> mapLogo, List<DirectoryBean.DataBean> list) {
-       // String mStrLogo = CommonHelper.getKey(mapLogo);
+        // String mStrLogo = CommonHelper.getKey(mapLogo);
         if (flay == 0) {
             meetingMap = mapLogo;
             rvMeetingMatch.setAdapter(new ServiceLogoAdapter(context, list));

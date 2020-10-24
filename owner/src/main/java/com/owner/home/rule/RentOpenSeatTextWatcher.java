@@ -11,13 +11,13 @@ import com.officego.commonlib.utils.ToastUtils;
 /**
  * Created by shijie
  * Date 2020/10/23
- * 楼盘下 房源面积
+ * 开放工位
  **/
-public class RentSingleTextWatcher implements TextWatcher {
+public class RentOpenSeatTextWatcher implements TextWatcher {
     private EditText editText;
     private Context context;
 
-    public RentSingleTextWatcher(Context context, EditText editText) {
+    public RentOpenSeatTextWatcher(Context context, EditText editText) {
         this.context = context;
         this.editText = editText;
     }
@@ -39,14 +39,14 @@ public class RentSingleTextWatcher implements TextWatcher {
         }
         String temp = editable.toString();
         //首位为0
-//        if (temp.length() == 1 && TextUtils.equals("0", temp)) {
-//            editable.clear();
-//            return;
-//        }
-        if (!temp.contains(".") && temp.length() >= 2 && Integer.valueOf(temp) > 50) {
+        if (temp.length() == 1 && TextUtils.equals("0", temp)) {
+            editable.clear();
+            return;
+        }
+        if (!temp.contains(".") && temp.length() >= 5 && Integer.valueOf(temp) > 10000) {
             int index = editText.getSelectionStart();//获取光标位置
             editable.delete(index - 1, index);//删除后一位
-            ToastUtils.toastForShort(context, "只支持0.1-50正整数或保留2位小数");
+            ToastUtils.toastForShort(context, "请输入100-10000之间正整数");
             return;
         }
         //保留1位小数

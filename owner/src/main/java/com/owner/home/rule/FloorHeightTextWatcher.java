@@ -1,10 +1,12 @@
 package com.owner.home.rule;
 
+import android.content.Context;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
+import com.officego.commonlib.utils.ToastUtils;
 import com.officego.commonlib.utils.log.LogCat;
 
 /**
@@ -12,9 +14,11 @@ import com.officego.commonlib.utils.log.LogCat;
  * Date 2020/10/23
  **/
 public class FloorHeightTextWatcher implements TextWatcher {
+    private Context context;
     private EditText editText;
 
-    public FloorHeightTextWatcher(EditText editText) {
+    public FloorHeightTextWatcher(Context context,EditText editText) {
+        this.context=context;
         this.editText = editText;
     }
 
@@ -38,6 +42,7 @@ public class FloorHeightTextWatcher implements TextWatcher {
                 !TextUtils.equals(".", editable.toString().substring(1, 2))) {
             int index = editText.getSelectionStart();//获取光标位置
             editable.delete(index - 1, index);
+            ToastUtils.toastForShort(context, "请输入0-8之间的整数或一位小数");
             return;
         }
         //保留一位小数

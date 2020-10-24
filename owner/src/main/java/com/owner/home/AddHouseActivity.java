@@ -27,10 +27,11 @@ import com.owner.adapter.UniqueAdapter;
 import com.owner.dialog.FloorTypeDialog;
 import com.owner.home.contract.HouseContract;
 import com.owner.home.presenter.HousePresenter;
-import com.owner.home.rule.AreaTextWatcher;
 import com.owner.home.rule.BuildingHouseAreaTextWatcher;
 import com.owner.home.rule.FloorHeightTextWatcher;
-import com.owner.home.rule.FloorNumTextWatcher;
+import com.owner.home.rule.IntegerTextWatcher;
+import com.owner.home.rule.RentSingleTextWatcher;
+import com.owner.home.rule.RentSumTextWatcher;
 import com.owner.utils.SpaceItemDecoration;
 
 import org.androidannotations.annotations.AfterViews;
@@ -98,7 +99,7 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
     //面积是否修改
     private boolean isFixArea;
     //租金总价
-    private float rentCounts;
+    private int rentCounts;
     //特色
     private Map<Integer, String> uniqueMap;
     //装修类型
@@ -133,12 +134,14 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
         //面积 10-100000正数数字，保留2位小数，单位 M
         silArea.getEditTextView().addTextChangedListener(new BuildingHouseAreaTextWatcher(context, silArea.getEditTextView()));
         //净高 层高 0-8或一位小数
-        silStoreyHeight.getEditTextView().addTextChangedListener(new FloorHeightTextWatcher(silStoreyHeight.getEditTextView()));
-        silTierHeight.getEditTextView().addTextChangedListener(new FloorHeightTextWatcher(silTierHeight.getEditTextView()));
+        silStoreyHeight.getEditTextView().addTextChangedListener(new FloorHeightTextWatcher(context,silStoreyHeight.getEditTextView()));
+        silTierHeight.getEditTextView().addTextChangedListener(new FloorHeightTextWatcher(context,silTierHeight.getEditTextView()));
         //最短租期
-        silRentTime.getEditTextView().addTextChangedListener(new FloorNumTextWatcher(context,
-                60, 2, silRentTime.getEditTextView()));
-
+        silRentTime.getEditTextView().addTextChangedListener(new IntegerTextWatcher(context, 60, silRentTime.getEditTextView()));
+        //租金单价
+        silRentSingle.getEditTextView().addTextChangedListener(new RentSingleTextWatcher(context, silRentSingle.getEditTextView()));
+        //租金总价
+        silRentSum.getEditTextView().addTextChangedListener(new RentSumTextWatcher(context, silRentSum.getEditTextView()));
     }
 
     @Click(resName = "btn_next")
@@ -206,7 +209,7 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
             String rentSingle = silRentSingle.getEditTextView().getText().toString();//保留两位小数
             if (!TextUtils.isEmpty(area) && !TextUtils.isEmpty(rentSingle)) {
                 if (b) {
-                    rentCounts = Integer.valueOf(rentSingle) * Float.valueOf(area) * 30;
+                    rentCounts = (int) (Float.valueOf(rentSingle) * Float.valueOf(area) * 30);
                     tvRentSumTip.setVisibility(View.VISIBLE);
                     tvRentSumTip.setText("租金总价：" + rentCounts + "元/月");
                 } else {

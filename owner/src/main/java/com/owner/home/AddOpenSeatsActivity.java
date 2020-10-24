@@ -7,10 +7,16 @@ import android.widget.TextView;
 
 import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.dialog.RentDialog;
+import com.officego.commonlib.utils.EditInputFilter;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.widget.SettingItemLayout;
 import com.owner.R;
 import com.owner.dialog.FloorTypeDialog;
+import com.owner.home.rule.AreaTextWatcher;
+import com.owner.home.rule.CarFeeTextWatcher;
+import com.owner.home.rule.FloorHeightTextWatcher;
+import com.owner.home.rule.IntegerTextWatcher;
+import com.owner.home.rule.RentOpenSeatTextWatcher;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -26,10 +32,14 @@ public class AddOpenSeatsActivity extends BaseActivity
         implements RentDialog.SureClickListener, FloorTypeDialog.FloorListener {
     @ViewById(resName = "tv_upload_title")
     TextView tvUploadTitle;
-    @ViewById(resName = "sil_rent_sum")
-    SettingItemLayout silRentSum;
+    @ViewById(resName = "sil_seats")
+    SettingItemLayout silSeats;
+    @ViewById(resName = "sil_rent_single")
+    SettingItemLayout silRentSingle;
     @ViewById(resName = "sil_floor_no")
     SettingItemLayout silFloorNo;
+    @ViewById(resName = "sil_rent_time")
+    SettingItemLayout silRentTime;
     @ViewById(resName = "sil_free_rent")
     SettingItemLayout silFreeRent;
     @ViewById(resName = "btn_scan")
@@ -41,10 +51,20 @@ public class AddOpenSeatsActivity extends BaseActivity
     void init() {
         StatusBarUtils.setStatusBarFullTransparent(this);
         initViews();
+        initDigits();
     }
 
     private void initViews() {
         tvUploadTitle.setText("上传图片");
+    }
+
+    private void initDigits() {
+        //工位数0-200
+        silSeats.getEditTextView().addTextChangedListener(new IntegerTextWatcher(context, 200, silSeats.getEditTextView()));
+        //租金
+        silRentSingle.getEditTextView().addTextChangedListener(new RentOpenSeatTextWatcher(context, silRentSingle.getEditTextView()));
+        //最短租期
+        silRentTime.getEditTextView().addTextChangedListener(new IntegerTextWatcher(context, 60, silRentTime.getEditTextView()));
     }
 
     @Click(resName = "btn_next")

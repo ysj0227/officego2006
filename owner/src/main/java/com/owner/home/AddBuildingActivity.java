@@ -33,7 +33,7 @@ import com.owner.home.rule.AreaTextWatcher;
 import com.owner.home.rule.CarFeeTextWatcher;
 import com.owner.home.rule.EstateFeeTextWatcher;
 import com.owner.home.rule.FloorHeightTextWatcher;
-import com.owner.home.rule.FloorNumTextWatcher;
+import com.owner.home.rule.IntegerTextWatcher;
 import com.owner.home.rule.LiftTextWatcher;
 import com.owner.identity.dialog.AreaDialog;
 import com.owner.identity.model.ImageBean;
@@ -181,14 +181,14 @@ public class AddBuildingActivity extends BaseMvpActivity<BuildingPresenter>
         //物业名称 长度最大20
         EditInputFilter.setOfficeGoEditProhibitSpeChat(silEstate.getEditTextView(), 20);
         //面积 0.1-1000正数数字，保留1位小数，单位“万  M²
-        silGrossArea.getEditTextView().addTextChangedListener(new AreaTextWatcher(context, silGrossArea.getEditTextView()));
+        silGrossArea.getEditTextView().addTextChangedListener(new AreaTextWatcher(context,1000, silGrossArea.getEditTextView()));
         //物业费 0-100之间正数，保留1位小数
         silEstateFee.getEditTextView().addTextChangedListener(new EstateFeeTextWatcher(context, silEstateFee.getEditTextView()));
         //净高 层高 0-8或一位小数
-        silStoreyHeight.getEditTextView().addTextChangedListener(new FloorHeightTextWatcher(silStoreyHeight.getEditTextView()));
-        silTierHeight.getEditTextView().addTextChangedListener(new FloorHeightTextWatcher(silTierHeight.getEditTextView()));
+        silStoreyHeight.getEditTextView().addTextChangedListener(new FloorHeightTextWatcher(context,silStoreyHeight.getEditTextView()));
+        silTierHeight.getEditTextView().addTextChangedListener(new FloorHeightTextWatcher(context,silTierHeight.getEditTextView()));
         //总楼层0-150整数
-        silStorey.getEditTextView().addTextChangedListener(new FloorNumTextWatcher(context, 150,3,silStorey.getEditTextView()));
+        silStorey.getEditTextView().addTextChangedListener(new IntegerTextWatcher(context, 150, silStorey.getEditTextView()));
         //车位费0-5000整数
         silCarFee.getEditTextView().addTextChangedListener(new CarFeeTextWatcher(context, silCarFee.getEditTextView()));
         //电梯0-20整数

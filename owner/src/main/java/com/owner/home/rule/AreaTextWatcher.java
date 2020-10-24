@@ -13,12 +13,15 @@ import com.officego.commonlib.utils.ToastUtils;
  * Date 2020/10/23
  **/
 public class AreaTextWatcher implements TextWatcher {
-    private EditText editText;
     private Context context;
+    private int number, length;
+    private EditText editText;
 
-    public AreaTextWatcher(Context context, EditText editText) {
+    public AreaTextWatcher(Context context, int number, EditText editText) {
         this.context = context;
+        this.number = number;
         this.editText = editText;
+        length = String.valueOf(number).length();
     }
 
     @Override
@@ -43,10 +46,10 @@ public class AreaTextWatcher implements TextWatcher {
             return;
         }
         //4位大于1000
-        if (!temp.contains(".") && temp.length() >= 4 && Integer.valueOf(temp) > 1000) {
+        if (!temp.contains(".") && temp.length() >= length && Integer.valueOf(temp) > number) {
             int index = editText.getSelectionStart();//获取光标位置
             editable.delete(index - 1, index);//删除后一位
-            ToastUtils.toastForShort(context, "只支持0.1-1000正整数或保留1位小数");
+            ToastUtils.toastForShort(context, "只支持0.1-" + number + "正整数或保留1位小数");
             return;
         }
         //带小数 保留一位小数

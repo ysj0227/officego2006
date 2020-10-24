@@ -31,7 +31,7 @@
         android:singleLine="true"
         android:textColor="@color/text_33"
         android:textSize="@dimen/sp_15"
-        tools:ignore="RelativeOverlap" />
+        tools:ignore="RelativeOverlap,RtlSymmetry" />
 
     <TextView
         android:id="@+id/tv_to"

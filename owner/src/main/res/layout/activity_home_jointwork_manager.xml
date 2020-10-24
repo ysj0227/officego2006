@@ -35,13 +35,15 @@
                 android:id="@+id/sil_joint_work_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:centerTextHint="请输入名称"
-                app:centerTextHintColor="@color/text_66_p50"
+                app:editTextHint="请输入名称"
+                app:editTextHintColor="@color/text_66_p50"
                 app:leftMarkShow="visible"
                 app:leftText="网点名称"
                 app:rightArrowShow="gone"
                 app:rightOtherImageViewShow="gone"
-                app:showDividerBottom="visible" />
+                app:showCenterText="gone"
+                app:showDividerBottom="visible"
+                app:showEditText="visible" />
 
             <com.officego.commonlib.view.widget.SettingItemLayout
                 android:id="@+id/sil_area"
@@ -85,7 +87,7 @@
                 app:showEditText="gone" />
 
             <include
-                layout="@layout/include_joint_work_floor"
+                layout="@layout/include_floor_joint_work"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sil_floor_no" />
@@ -135,6 +137,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sil_conditioned_fee"
+                app:editMaxLength="2"
+                app:editTextInputType="phone"
                 app:leftMarkShow="visible"
                 app:leftText="会议室数量"
                 app:rightArrowShow="gone"

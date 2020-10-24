@@ -16,14 +16,14 @@ import java.util.regex.Pattern;
  * Date 2020/10/23
  * 楼层数
  **/
-public class FloorNumTextWatcher implements TextWatcher {
+public class IntegerTextWatcher implements TextWatcher {
     private int number, length; //这个值存储输入超过两位数时候显示的内容
     private EditText input;
     private Context context;
 
-    public FloorNumTextWatcher(Context context, int number, int length, EditText input) {
+    public IntegerTextWatcher(Context context, int number, EditText input) {
         this.number = number;
-        this.length = length;
+        this.length = String.valueOf(number).length();
         this.context = context;
         this.input = input;
     }
@@ -40,7 +40,18 @@ public class FloorNumTextWatcher implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable editable) {
+        if (editable == null) {
+            return;
+        }
         String words = editable.toString();
+        //会议室数量
+        if (number == 10) {
+            //首位为0
+            if (words.length() == 1 && TextUtils.equals("0", words)) {
+                editable.clear();
+                return;
+            }
+        }
         if (!TextUtils.isEmpty(words)) {
             if (words.length() >= length && Integer.valueOf(words) > number) {
                 int index = input.getSelectionStart();//获取光标位置
