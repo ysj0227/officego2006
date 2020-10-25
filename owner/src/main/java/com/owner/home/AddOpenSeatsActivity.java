@@ -1,20 +1,18 @@
 package com.owner.home;
 
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.dialog.RentDialog;
-import com.officego.commonlib.utils.EditInputFilter;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.widget.SettingItemLayout;
 import com.owner.R;
 import com.owner.dialog.FloorTypeDialog;
-import com.owner.home.rule.AreaTextWatcher;
-import com.owner.home.rule.CarFeeTextWatcher;
-import com.owner.home.rule.FloorHeightTextWatcher;
 import com.owner.home.rule.IntegerTextWatcher;
 import com.owner.home.rule.RentOpenSeatTextWatcher;
 
@@ -38,6 +36,11 @@ public class AddOpenSeatsActivity extends BaseActivity
     SettingItemLayout silRentSingle;
     @ViewById(resName = "sil_floor_no")
     SettingItemLayout silFloorNo;
+    //第几层 总楼层
+    @ViewById(resName = "et_floors")
+    EditText etFloors;
+    @ViewById(resName = "tv_counts_floor")
+    TextView tvCountsFloor;
     @ViewById(resName = "sil_rent_time")
     SettingItemLayout silRentTime;
     @ViewById(resName = "sil_free_rent")
@@ -69,7 +72,40 @@ public class AddOpenSeatsActivity extends BaseActivity
 
     @Click(resName = "btn_next")
     void nextOnClick() {
-        UploadVideoVrActivity_.intent(context).start();
+//        UploadVideoVrActivity_.intent(context).start();
+        submit();
+    }
+
+    private void submit() {
+        String seats = silSeats.getEditTextView().getText().toString();
+        if (TextUtils.isEmpty(seats)) {
+            shortTip("请输入工位数");
+            return;
+        }
+        String rentSingle = silRentSingle.getEditTextView().getText().toString();
+        if (TextUtils.isEmpty(rentSingle)) {
+            shortTip("请输入租金");
+            return;
+        }
+        if (Float.valueOf(rentSingle) < 100) {
+            shortTip("请输入100-10000租金");
+            return;
+        }
+        String floorNo = silFloorNo.getLeftToArrowTextView().getText().toString();
+        if (TextUtils.isEmpty(floorNo)) {
+            shortTip("请选择楼层");
+            return;
+        }
+        String floors = etFloors.getText().toString();
+        if (TextUtils.isEmpty(floors)) {
+            shortTip("请输入楼层");
+            return;
+        }
+        String rentTime = silRentTime.getEditTextView().getText().toString();
+        if (TextUtils.isEmpty(rentTime)) {
+            shortTip("请输入最短租期");
+            return;
+        }
     }
 
     @Click(resName = "iv_close_scan")

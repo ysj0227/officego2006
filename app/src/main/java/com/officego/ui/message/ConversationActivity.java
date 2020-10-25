@@ -26,12 +26,14 @@ import com.officego.commonlib.common.model.IdentitychattedMsgBean;
 import com.officego.commonlib.common.model.RongUserInfoBean;
 import com.officego.commonlib.common.rongcloud.RongCloudSetUserInfoUtils;
 import com.officego.commonlib.common.rongcloud.SendMessageManager;
+import com.officego.commonlib.common.rongcloud.kickDialog;
 import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.ToastUtils;
+import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.ui.message.contract.ConversationContract;
 import com.officego.ui.message.presenter.ConversationPresenter;
 
@@ -303,7 +305,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         }
         //聊天次数是否可以交换手机微信
         if (!isCanExchange) {
-            isOnClickExchangeContacts=true;
+            isOnClickExchangeContacts = true;
             mPresenter.exchangeContactsVerification(targetId);
             return;
         }
@@ -324,7 +326,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         }
         //聊天次数是否可以交换手机微信
         if (!isCanExchange) {
-            isOnClickExchangeContacts=true;
+            isOnClickExchangeContacts = true;
             mPresenter.exchangeContactsVerification(targetId);
             return;
         }
@@ -369,10 +371,25 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         ToastUtils.toastForShort(context, "暂未开放");
     }
 
+    @Override
+    protected void onResume() {
+        super.onResume();
+        if (TextUtils.isEmpty(SpUtils.getSignToken())) {
+            CommonDialog dialog = new CommonDialog.Builder(context)
+                    .setMessage("账号已退出，请重新登录")
+                    .setConfirmButton(com.officego.commonlib.R.string.str_login, (dialog12, which) -> {
+                        GotoActivityUtils.gotoLoginActivity(context);
+                        dialog12.dismiss();
+                    }).create();
+            dialog.showWithOutTouchable(false);
+            dialog.setCancelable(false);
+        }
+    }
 
     @Override
     public int[] getStickNotificationId() {
-        return new int[]{CommonNotifications.conversationPhoneAgree,
+        return new int[]{CommonNotifications.rongCloudkickDialog,
+                CommonNotifications.conversationPhoneAgree,
                 CommonNotifications.conversationPhoneReject,
                 CommonNotifications.conversationWeChatAgree,
                 CommonNotifications.conversationWeChatReject,
@@ -390,6 +407,10 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         super.didReceivedNotification(id, args);
         if (args == null) {
             return;
+        }
+        //踢出登录
+        if (id == CommonNotifications.rongCloudkickDialog) {
+            new kickDialog(context);
         }
         String dataMes = (String) args[0];//请求方
         if (id == CommonNotifications.conversationPhoneAgree) {

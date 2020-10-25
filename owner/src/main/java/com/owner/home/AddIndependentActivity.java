@@ -1,5 +1,6 @@
 package com.owner.home;
 
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -40,6 +41,8 @@ public class AddIndependentActivity extends BaseActivity
     SettingItemLayout silSeats;
     @ViewById(resName = "sil_area")
     SettingItemLayout silArea;
+    @ViewById(resName = "sil_rent_single")
+    SettingItemLayout silRentSingle;
     @ViewById(resName = "sil_floor_no")
     SettingItemLayout silFloorNo;
     @ViewById(resName = "sil_rent_sum")
@@ -107,7 +110,46 @@ public class AddIndependentActivity extends BaseActivity
 
     @Click(resName = "btn_next")
     void nextOnClick() {
-        UploadVideoVrActivity_.intent(context).start();
+//        UploadVideoVrActivity_.intent(context).start();
+        submit();
+    }
+
+    private void submit() {
+        String seats = silSeats.getEditTextView().getText().toString();
+        if (TextUtils.isEmpty(seats)) {
+            shortTip("请输入工位数");
+            return;
+        }
+        String rentSingle = silRentSingle.getEditTextView().getText().toString();
+        if (TextUtils.isEmpty(rentSingle)) {
+            shortTip("请输入租金");
+            return;
+        }
+        String floorNo = silFloorNo.getLeftToArrowTextView().getText().toString();
+        if (TextUtils.isEmpty(floorNo)) {
+            shortTip("请选择楼层");
+            return;
+        }
+        String floors = etFloors.getText().toString();
+        if (TextUtils.isEmpty(floors)) {
+            shortTip("请输入楼层");
+            return;
+        }
+        String rentTime = silRentTime.getEditTextView().getText().toString();
+        if (TextUtils.isEmpty(rentTime)) {
+            shortTip("请输入最短租期");
+            return;
+        }
+        String conditioned = silConditioned.getContextView().getText().toString();
+        if (TextUtils.isEmpty(conditioned)) {
+            shortTip("请选择空调类型");
+            return;
+        }
+        String storeyHeight = silStoreyHeight.getEditTextView().getText().toString();
+        if (TextUtils.isEmpty(storeyHeight)) {
+            shortTip("请输入净高");
+            return;
+        }
     }
 
     @Click(resName = "iv_close_scan")

@@ -137,8 +137,8 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
         //面积 10-100000正数数字，保留2位小数，单位 M
         silArea.getEditTextView().addTextChangedListener(new BuildingHouseAreaTextWatcher(context, silArea.getEditTextView()));
         //净高 层高 0-8或一位小数
-        silStoreyHeight.getEditTextView().addTextChangedListener(new FloorHeightTextWatcher(context,silStoreyHeight.getEditTextView()));
-        silTierHeight.getEditTextView().addTextChangedListener(new FloorHeightTextWatcher(context,silTierHeight.getEditTextView()));
+        silStoreyHeight.getEditTextView().addTextChangedListener(new FloorHeightTextWatcher(context, silStoreyHeight.getEditTextView()));
+        silTierHeight.getEditTextView().addTextChangedListener(new FloorHeightTextWatcher(context, silTierHeight.getEditTextView()));
         //最短租期
         silRentTime.getEditTextView().addTextChangedListener(new IntegerTextWatcher(context, 60, silRentTime.getEditTextView()));
         //租金单价
@@ -151,7 +151,60 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
 
     @Click(resName = "btn_next")
     void nextOnClick() {
-        UploadVideoVrActivity_.intent(context).start();
+//        UploadVideoVrActivity_.intent(context).start();
+        submit();
+    }
+
+    private void submit() {
+        String area = silArea.getEditTextView().getText().toString();
+        if (TextUtils.isEmpty(area)) {
+            shortTip("请输入面积");
+            return;
+        }
+        String minSeats = etSeatStart.getText().toString();
+        if (TextUtils.isEmpty(minSeats)) {
+            shortTip("请输入最小工位数");
+            return;
+        }
+        String maxSeats = etSeatEnd.getText().toString();
+        if (TextUtils.isEmpty(maxSeats)) {
+            shortTip("请输入最大工位数");
+            return;
+        }
+        String rentSingle = silRentSingle.getEditTextView().getText().toString();
+        if (TextUtils.isEmpty(rentSingle)) {
+            shortTip("请输入租金单价");
+            return;
+        }
+        String rentSum = silRentSum.getEditTextView().getText().toString();
+        if (TextUtils.isEmpty(rentSum)) {
+            shortTip("请输入租金总价");
+            return;
+        }
+        String floorNo = silFloorNo.getLeftToArrowTextView().getText().toString();
+        if (TextUtils.isEmpty(floorNo)) {
+            shortTip("请选择楼层");
+            return;
+        }
+        String floors = etFloors.getText().toString();
+        if (TextUtils.isEmpty(floors)) {
+            shortTip("请输入楼层");
+            return;
+        }
+        String storeyHeight = silStoreyHeight.getEditTextView().getText().toString();
+        if (TextUtils.isEmpty(storeyHeight)) {
+            shortTip("请输入净高");
+            return;
+        }
+        String rentTime = silRentTime.getEditTextView().getText().toString();
+        if (TextUtils.isEmpty(rentTime)) {
+            shortTip("请输入最短租期");
+            return;
+        }
+        if (decorationId == 0) {
+            shortTip("请选择装修程度");
+            return;
+        }
     }
 
     @Click(resName = "iv_close_scan")

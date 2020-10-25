@@ -1,5 +1,6 @@
 package com.owner.home;
 
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.CheckBox;
@@ -172,7 +173,7 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
         // 园区名称 长度最大25
         EditInputFilter.setOfficeGoEditProhibitSpeChat(silJointWorkName.getEditTextView(), 25);
         //净高 层高 0-8或一位小数
-        silStoreyHeight.getEditTextView().addTextChangedListener(new FloorHeightTextWatcher(context,silStoreyHeight.getEditTextView()));
+        silStoreyHeight.getEditTextView().addTextChangedListener(new FloorHeightTextWatcher(context, silStoreyHeight.getEditTextView()));
         //车位费0-5000整数
         silCarFee.getEditTextView().addTextChangedListener(new CarFeeTextWatcher(context, silCarFee.getEditTextView()));
         //电梯0-20整数
@@ -187,7 +188,56 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
 
     @Click(resName = "btn_next")
     void nextOnClick() {
-        UploadVideoVrActivity_.intent(context).start();
+//        UploadVideoVrActivity_.intent(context).start();
+        submit();
+    }
+
+    private void submit() {
+        String jointWorkName = silJointWorkName.getEditTextView().getText().toString();
+        if (TextUtils.isEmpty(jointWorkName)) {
+            shortTip("请输入网点名称");
+            return;
+        }
+        String buildingArea = silArea.getContextView().getText().toString();
+        if (TextUtils.isEmpty(buildingArea)) {
+            shortTip("请选择所在区域");
+            return;
+        }
+        String address = silAddress.getEditTextView().getText().toString();
+        if (TextUtils.isEmpty(address)) {
+            shortTip("请输入详细地址");
+            return;
+        }
+        String floorNo = silFloorNo.getLeftToArrowTextView().getText().toString();
+        if (TextUtils.isEmpty(floorNo)) {
+            shortTip("请选择所在楼层");
+            return;
+        }
+        String floors = etFloors.getText().toString();
+        if (TextUtils.isEmpty(floors)) {
+            shortTip("请输入第N层或第M-N层");
+            return;
+        }
+        String floorsCount = etFloorsCount.getText().toString();
+        if (TextUtils.isEmpty(floorsCount)) {
+            shortTip("请输入总楼层");
+            return;
+        }
+        String storeyHeight = silStoreyHeight.getEditTextView().getText().toString();
+        if (TextUtils.isEmpty(storeyHeight)) {
+            shortTip("请输入净高");
+            return;
+        }
+        String conditioned = silConditioned.getContextView().getText().toString();
+        if (TextUtils.isEmpty(conditioned)) {
+            shortTip("请选择空调类型");
+            return;
+        }
+        String meetingRoom = silMeetingRoom.getEditTextView().getText().toString();
+        if (TextUtils.isEmpty(meetingRoom)) {
+            shortTip("请输入会议室数量");
+            return;
+        }
     }
 
     @Click(resName = "iv_close_scan")
