@@ -112,11 +112,28 @@
                 app:showDividerBottom="visible"
                 app:showEditText="gone" />
 
+            <com.officego.commonlib.view.widget.SettingItemLayout
+                android:id="@+id/sil_storey_height"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/sil_free_rent"
+                app:editDigits="12345678."
+                app:editMaxLength="3"
+                app:editTextInputType="numberDecimal"
+                app:leftMarkShow="invisible"
+                app:leftText="净高"
+                app:rightArrowShow="gone"
+                app:rightOtherImageViewShow="gone"
+                app:rightText="米"
+                app:showCenterText="gone"
+                app:showDividerBottom="visible"
+                app:showEditText="visible" />
+
             <include
                 layout="@layout/include_upload_building_image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/sil_free_rent" />
+                android:layout_below="@id/sil_storey_height" />
         </RelativeLayout>
 
     </androidx.core.widget.NestedScrollView>

@@ -17,6 +17,7 @@ import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.widget.SettingItemLayout;
 import com.owner.R;
 import com.owner.dialog.FloorTypeDialog;
+import com.owner.home.rule.FloorHeightTextWatcher;
 import com.owner.home.rule.IntegerTextWatcher;
 import com.owner.home.rule.RentOpenSeatTextWatcher;
 import com.owner.zxing.QRScanActivity;
@@ -50,6 +51,8 @@ public class AddOpenSeatsActivity extends BaseActivity
     SettingItemLayout silRentTime;
     @ViewById(resName = "sil_free_rent")
     SettingItemLayout silFreeRent;
+    @ViewById(resName = "sil_storey_height")
+    SettingItemLayout silStoreyHeight;
     @ViewById(resName = "btn_scan")
     Button btnScan;
     @ViewById(resName = "iv_close_scan")
@@ -73,6 +76,8 @@ public class AddOpenSeatsActivity extends BaseActivity
         silRentSingle.getEditTextView().addTextChangedListener(new RentOpenSeatTextWatcher(context, silRentSingle.getEditTextView()));
         //最短租期
         silRentTime.getEditTextView().addTextChangedListener(new IntegerTextWatcher(context, 60, silRentTime.getEditTextView()));
+        //净高  0-8或一位小数
+        silStoreyHeight.getEditTextView().addTextChangedListener(new FloorHeightTextWatcher(context, silStoreyHeight.getEditTextView()));
     }
 
     @Click(resName = "btn_next")
