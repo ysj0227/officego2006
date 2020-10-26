@@ -15,16 +15,21 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.officego.commonlib.base.BaseMvpFragment;
 import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
+import com.officego.commonlib.common.model.owner.BuildingJointWorkBean;
+import com.officego.commonlib.common.model.owner.HouseBean;
 import com.officego.commonlib.update.VersionDialog;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.view.OnLoadMoreListener;
 import com.officego.commonlib.view.dialog.CommonDialog;
+import com.owner.R;
 import com.owner.adapter.HomeAdapter;
 import com.owner.dialog.BuildingJointWorkListPopupWindow;
 import com.owner.dialog.HomeMoreDialog;
@@ -52,7 +57,8 @@ import static com.officego.commonlib.utils.PermissionUtils.REQ_PERMISSIONS_CAMER
 @SuppressLint("NewApi")
 @EFragment(resName = "activity_home")
 public class HomeFragment extends BaseMvpFragment<HomePresenter>
-        implements HomeContract.View, HomeAdapter.HomeItemListener,
+        implements HomeContract.View, SwipeRefreshLayout.OnRefreshListener,
+        HomeAdapter.HomeItemListener,
         BuildingJointWorkListPopupWindow.HomePopupListener {
     @ViewById(resName = "rl_title")
     RelativeLayout rlTitle;
@@ -64,6 +70,8 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     TextView tvHomeTitle;
     @ViewById(resName = "iv_add")
     ImageView ivAdd;
+    @ViewById(resName = "bga_refresh")
+    SwipeRefreshLayout mSwipeRefreshLayout;
     @ViewById(resName = "rv_view")
     RecyclerView rvView;
     @ViewById(resName = "tv_no_data")
@@ -74,8 +82,15 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     Button btnAgain;
 
     private UserOwnerBean mUserData;
-    private List<String> list = new ArrayList<>();
+    //当前页码
+    private int pageNum = 1;
+    //list 是否有更多
+    private boolean hasMore;
     private HomeAdapter homeAdapter;
+    private List<HouseBean.DataBean> houseList = new ArrayList<>();
+
+    private BuildingJointWorkBean.PageBean.ListBean mData;
+    private int buildingId;
 
     @AfterViews
     void init() {
@@ -85,51 +100,48 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         CommonHelper.setViewGroupLayoutParams(mActivity, rlTitle);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rvView.setLayoutManager(layoutManager);
-        if (!fragmentCheckSDCardCameraPermission()) {
-            return;
-        }
+        initRefresh();
         if (!NetworkUtils.isNetworkAvailable(mActivity)) {
             netException();
             return;
         }
-        test();
         new VersionDialog(mActivity);
         mPresenter.getUserInfo();
+        fragmentCheckSDCardCameraPermission();
     }
 
-    private void test() {
-        for (int i = 0; i < 8; i++) {
-            list.add("");
-        }
-        if (homeAdapter == null) {
-            homeAdapter = new HomeAdapter(mActivity, list);
-            rvView.setAdapter(homeAdapter);
-            homeAdapter.setListener(this);
-        } else {
-            homeAdapter.notifyDataSetChanged();
-        }
+    @SuppressLint("ClickableViewAccessibility")
+    private void initRefresh() {
+        mSwipeRefreshLayout.setOnRefreshListener(this);
+        mSwipeRefreshLayout.setProgressViewOffset(true, -20, 100);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.common_blue_main_80a, R.color.common_blue_main);
+        rvView.addOnScrollListener(new OnLoadMoreListener() {
+            @Override
+            protected void onLoading(int countItem, int lastItem) {
+                if (mSwipeRefreshLayout.isRefreshing()) {
+                    mSwipeRefreshLayout.setRefreshing(false);
+                }
+                loadingMoreList();
+            }
+        });
+        //解决下拉刷新快速滑动crash
+        rvView.setOnTouchListener((view, motionEvent) ->
+                mSwipeRefreshLayout != null && mSwipeRefreshLayout.isRefreshing());
     }
 
     //网络异常重试
     @Click(resName = "btn_again")
     void netExceptionAgainClick() {
-        shortTip("再试一次");
+        mPresenter.getBuildingJointWorkList();
     }
 
+    //楼盘网点列表
     @Click(resName = "iv_left_more")
     void leftListClick() {
-        ivLeftMore.setVisibility(View.GONE);
-        tvHomeTitle.setVisibility(View.GONE);
-        ivAdd.setVisibility(View.GONE);
-        tvExpand.setVisibility(View.VISIBLE);
-        List<String> list = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            list.add("上海实业大厦");
-        }
-        new BuildingJointWorkListPopupWindow(mActivity, mUserData, rlTitle, list).setListener(this);
+        mPresenter.getBuildingJointWorkList();
     }
 
-    //添加
+    //添加房源
     @Click(resName = "iv_add")
     void addClick() {
         final String[] items = {"楼盘", "楼盘_办公室", "网点", "独立办公室", "开放工位"};
@@ -149,34 +161,33 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
                 }).create().show();
     }
 
-    /**
-     * 身份类型 0个人1企业2联合
-     * getAuditStatus 0待审核1审核通过2审核未通过 3过期(和2未通过一样处理)-1未认证
-     */
+    //楼盘网点列表
     @Override
-    public void userInfoSuccess(UserOwnerBean data) {
-        mUserData = data;
-        if (isIdentity(data)) {
-            if (data.getAuditStatus() == -1) { //未认证
-                SelectIdActivity_.intent(getContext()).start();
-            } else {
-                new UnIdifyDialog(mActivity, data);
-            }
-        } else {
-            if (data.getIdentityType() == 2) {
-                // todo 网点管理 加载list
-            } else {
-                // todo 楼盘管理 加载list
-            }
-        }
+    public void buildingJointWorkListSuccess(BuildingJointWorkBean data) {
+        ivLeftMore.setVisibility(View.GONE);
+        tvHomeTitle.setVisibility(View.GONE);
+        ivAdd.setVisibility(View.GONE);
+        tvExpand.setVisibility(View.VISIBLE);
+        new BuildingJointWorkListPopupWindow(mActivity, mUserData, rlTitle, data.getPage().getList()).setListener(this);
     }
 
-    // 0待审核1审核通过2审核未通过
-    private boolean isIdentity(UserOwnerBean mUserInfo) {
-        if (mUserInfo != null) {
-            return mUserInfo.getAuditStatus() != 0 && mUserInfo.getAuditStatus() != 1;
+    //房源列表
+    @Override
+    public void houseListSuccess(List<HouseBean.DataBean> data, boolean hasMore) {
+        if (data == null || pageNum == 1 && data.size() == 0) {
+            noData();
+            return;
         }
-        return false;
+        hasData();
+        this.hasMore = hasMore;
+        houseList.addAll(data);
+        if (homeAdapter == null) {
+            homeAdapter = new HomeAdapter(mActivity, buildingId, houseList);
+            rvView.setAdapter(homeAdapter);
+            homeAdapter.setListener(this);
+        } else {
+            homeAdapter.notifyDataSetChanged();
+        }
     }
 
     @Override
@@ -203,6 +214,57 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     }
 
     @Override
+    public void initHouseData(BuildingJointWorkBean.PageBean.ListBean bean) {
+        //TODO buildingId
+        tvHomeTitle.setText(bean.getBuildingName());
+        // buildingId = bean.getBuildingId().toString();
+        mData = bean;
+        getHouseList();
+    }
+
+    @Override
+    public void popupHouseList(BuildingJointWorkBean.PageBean.ListBean bean) {
+        //TODO buildingId
+        tvHomeTitle.setText(bean.getBuildingName());
+        //  buildingId = bean.getBuildingId().toString();
+        mData = bean;
+        getHouseList();
+    }
+
+    private void getHouseList() {
+        //mPresenter.getHouseList(buildingId, 0, pageNum, mData.getStatus());
+//        mPresenter.getHouseList(8649, 0, pageNum, mData.getStatus());
+        mPresenter.getHouseList(8635, 0, pageNum, mData.getStatus());
+    }
+
+    /**
+     * 身份类型 0个人1企业2联合
+     * getAuditStatus 0待审核1审核通过2审核未通过 3过期(和2未通过一样处理)-1未认证
+     */
+    @Override
+    public void userInfoSuccess(UserOwnerBean data) {
+        mUserData = data;
+        if (isIdentity(data)) {
+            if (data.getAuditStatus() == -1) { //未认证
+                SelectIdActivity_.intent(getContext()).start();
+            } else {
+                new UnIdifyDialog(mActivity, data);
+            }
+        } else {
+            //初始化房源数据
+            mPresenter.initHouseList();
+        }
+    }
+
+    // 0待审核1审核通过2审核未通过
+    private boolean isIdentity(UserOwnerBean mUserInfo) {
+        if (mUserInfo != null) {
+            return mUserInfo.getAuditStatus() != 0 && mUserInfo.getAuditStatus() != 1;
+        }
+        return false;
+    }
+
+    @Override
     public int[] getStickNotificationId() {
         return new int[]{CommonNotifications.ownerIdentityHandle};
     }
@@ -220,7 +282,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     private void noData() {
         tvNoData.setVisibility(View.VISIBLE);
         rlException.setVisibility(View.GONE);
-        list.clear();
+        houseList.clear();
         if (homeAdapter != null) {
             homeAdapter.notifyDataSetChanged();
         }
@@ -280,5 +342,28 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
             mPresenter.getUserInfo();
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+    }
+
+
+    //加载更多
+    private void loadingMoreList() {
+        if (NetworkUtils.isNetworkAvailable(mActivity) && hasMore) {
+            pageNum++;
+            getHouseList();
+        }
+    }
+
+    //开始下拉刷新
+    @Override
+    public void onRefresh() {
+        pageNum = 1;
+        houseList.clear();
+        homeAdapter.notifyDataSetChanged();
+        getHouseList();
+    }
+
+    @Override
+    public void endRefresh() {
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 }

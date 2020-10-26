@@ -9,6 +9,9 @@ import com.officego.commonlib.common.model.ExchangeContactsBean;
 import com.officego.commonlib.common.model.FirstChatBean;
 import com.officego.commonlib.common.model.IdentitychattedMsgBean;
 import com.officego.commonlib.common.model.RongUserInfoBean;
+import com.officego.commonlib.common.model.owner.BuildingJointWorkBean;
+import com.officego.commonlib.common.model.owner.HouseBean;
+import com.officego.commonlib.common.rpc.request.BuildingJointWorkInterface;
 import com.officego.commonlib.common.rpc.request.ChatInterface;
 import com.officego.commonlib.common.rpc.request.DirectoryInterface;
 import com.officego.commonlib.common.rpc.request.LicenceInterface;
@@ -268,5 +271,43 @@ public class OfficegoApi {
                 .getDictionary(map)
                 .enqueue(callback);
     }
+
+    //业主首页楼盘网点添加或编辑
+
+    /**
+     * 楼盘或网点列表
+     */
+    public void getBuildingJointWorkList(RetrofitCallback<BuildingJointWorkBean> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
+                .getBuildingJointWorkList(map)
+                .enqueue(callback);
+    }
+
+    /**
+     * 房源列表
+     * buildingId 	是 	int 	楼盘id
+     *
+     * isTemp 	是 	int 	是不是临时的楼盘；0不是，1是
+     * pageNo 	是 	int 	当前页
+     * pageSize 	是 	int 	每页条数
+     * isStatus 	否 	int 	0全部1发布2下架
+     * keyWord 	否 	String 	关键字
+     */
+    public void getHouseList(int buildingId, int isTemp, int pageNo, int isStatus,
+                             RetrofitCallback<List<HouseBean.DataBean>> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("buildingId", requestBody(buildingId + ""));
+        map.put("isTemp", requestBody(isTemp + ""));
+        map.put("pageNo", requestBody(pageNo + ""));
+        map.put("pageSize", requestBody("10"));
+        map.put("isStatus", requestBody(isStatus + ""));
+        OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
+                .getHouseList(map)
+                .enqueue(callback);
+    }
+
 
 }

@@ -7,6 +7,7 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationManagerCompat;
 import androidx.core.content.ContextCompat;
@@ -239,8 +240,27 @@ public class PermissionUtils {
         return true;
     }
 
-    public static boolean checkNotificationPermission(Context context) {
-        return NotificationManagerCompat.from(context).areNotificationsEnabled();
+    //checkSDCardCameraPermission()所需要的权限 onRequestPermissionsResult
+    public static void requestPermissions(Context context,int requestCode, @NonNull String[] permissions,
+                                    @NonNull int[] grantResults) {
+        switch (requestCode) {
+            case PermissionUtils.REQ_PERMISSIONS_CAMERA_STORAGE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    if (!FileUtils.isSDExist()) {
+                        ToastUtils.toastForShort(context, context.getString(R.string.str_no_sd));
+                    }
+                } else {
+                    ToastUtils.toastForShort(context, context.getString(R.string.str_please_open_camera));
+                }
+                break;
+            case PermissionUtils.REQ_PERMISSIONS_STORAGE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    //tod something
+                } else {
+                    ToastUtils.toastForShort(context, context.getString(R.string.str_please_open_sd));
+                }
+                break;
+            default:
+        }
     }
-
 }

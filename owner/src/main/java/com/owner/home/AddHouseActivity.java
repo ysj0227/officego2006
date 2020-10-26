@@ -1,6 +1,7 @@
 package com.owner.home;
 
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
@@ -10,6 +11,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -17,6 +19,7 @@ import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.dialog.RentDialog;
 import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.commonlib.utils.EditInputFilter;
+import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.dialog.CommonDialog;
@@ -34,6 +37,7 @@ import com.owner.home.rule.RentSingleTextWatcher;
 import com.owner.home.rule.RentSumTextWatcher;
 import com.owner.home.rule.TextCountsWatcher;
 import com.owner.utils.SpaceItemDecoration;
+import com.owner.zxing.QRScanActivity;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -213,6 +217,15 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
         ivCloseScan.setVisibility(View.GONE);
     }
 
+    //web 去编辑
+    @Click(resName = "btn_scan")
+    void toWebEditOnClick() {
+        if (!PermissionUtils.checkSDCardCameraPermission(this)) {
+            return;
+        }
+        startActivity(new Intent(context, QRScanActivity.class));
+    }
+
     @Click(resName = "sil_floor_no")
     void floorNoOnClick() {
         new FloorTypeDialog(context).setListener(this);
@@ -330,6 +343,13 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
     @Override
     public void uniqueResult(Map<Integer, String> uniqueMap) {
         this.uniqueMap = uniqueMap;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        PermissionUtils.requestPermissions(context, requestCode, permissions, grantResults);
     }
 
     private class MyTextWatcher implements TextWatcher {

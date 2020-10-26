@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.util.TypedValue;
-import android.view.MotionEvent;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.RelativeLayout;
@@ -28,7 +27,7 @@ import com.officego.ui.collect.contract.CollectedContract;
 import com.officego.ui.collect.model.CollectBuildingBean;
 import com.officego.ui.collect.model.CollectHouseBean;
 import com.officego.ui.collect.presenter.CollectedPresenter;
-import com.officego.ui.home.OnLoadMoreListener;
+import com.officego.commonlib.view.OnLoadMoreListener;
 import com.officego.ui.login.LoginActivity_;
 import com.officego.view.WrapContentLinearLayoutManager;
 

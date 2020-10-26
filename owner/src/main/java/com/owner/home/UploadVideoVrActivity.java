@@ -12,8 +12,12 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import androidx.annotation.NonNull;
+
 import com.officego.commonlib.base.BaseActivity;
+import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.owner.zxing.QRScanActivity;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -47,6 +51,15 @@ public class UploadVideoVrActivity extends BaseActivity {
     void closeScanOnClick() {
         btnScan.setVisibility(View.GONE);
         ivCloseScan.setVisibility(View.GONE);
+    }
+
+    //web 去编辑
+    @Click(resName = "btn_scan")
+    void toWebEditOnClick() {
+        if (!PermissionUtils.checkSDCardCameraPermission(this)) {
+            return;
+        }
+        startActivity(new Intent(context, QRScanActivity.class));
     }
 
     private void selectedDialog() {
@@ -183,5 +196,12 @@ public class UploadVideoVrActivity extends BaseActivity {
             cursor.close();
         }
         return res;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        PermissionUtils.requestPermissions(context, requestCode, permissions, grantResults);
     }
 }

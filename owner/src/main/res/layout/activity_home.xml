@@ -20,7 +20,6 @@
             android:layout_height="@dimen/dp_60"
             android:layout_alignParentBottom="true">
 
-
             <RelativeLayout
                 android:id="@+id/iv_left_more"
                 android:layout_width="@dimen/dp_60"
@@ -59,7 +58,6 @@
                 android:layout_marginRight="@dimen/dp_55"
                 android:ellipsize="end"
                 android:singleLine="true"
-                android:text="上海实业大厦"
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp_16"
                 android:textStyle="bold" />
@@ -76,16 +74,25 @@
         </RelativeLayout>
     </RelativeLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_view"
-        style="@style/marginLeftRight18"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/bga_refresh"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:paddingStart="@dimen/dp_18"
+        android:paddingEnd="@dimen/dp_18"
         android:paddingBottom="@dimen/dp_5"
+        android:visibility="visible"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rl_title" />
+        app:layout_constraintTop_toBottomOf="@+id/rl_title">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_view"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <TextView
         android:id="@+id/tv_no_data"

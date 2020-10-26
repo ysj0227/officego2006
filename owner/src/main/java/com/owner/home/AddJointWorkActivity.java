@@ -1,5 +1,6 @@
 package com.owner.home;
 
+import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -8,6 +9,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -15,12 +17,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.commonlib.utils.EditInputFilter;
+import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.widget.SettingItemLayout;
 import com.owner.adapter.JointCompanyAdapter;
 import com.owner.adapter.ServiceLogoAdapter;
 import com.owner.adapter.UniqueAdapter;
+import com.owner.dialog.AreaDialog;
 import com.owner.dialog.ConditionedDialog;
 import com.owner.dialog.FloorTypeDialog;
 import com.owner.dialog.ServiceSelectedDialog;
@@ -31,8 +35,8 @@ import com.owner.home.rule.FloorHeightTextWatcher;
 import com.owner.home.rule.IntegerTextWatcher;
 import com.owner.home.rule.LiftTextWatcher;
 import com.owner.home.rule.TextCountsWatcher;
-import com.owner.dialog.AreaDialog;
 import com.owner.utils.SpaceItemDecoration;
+import com.owner.zxing.QRScanActivity;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -246,6 +250,15 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
         ivCloseScan.setVisibility(View.GONE);
     }
 
+    //web 去编辑
+    @Click(resName = "btn_scan")
+    void toWebEditOnClick() {
+        if (!PermissionUtils.checkSDCardCameraPermission(this)) {
+            return;
+        }
+        startActivity(new Intent(context, QRScanActivity.class));
+    }
+
     @Click(resName = "sil_floor_no")
     void floorNoOnClick() {
         new FloorTypeDialog(context).setListener(this);
@@ -340,5 +353,12 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
     @Override
     public void uniqueResult(Map<Integer, String> uniqueMap) {
         this.uniqueMap = uniqueMap;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        PermissionUtils.requestPermissions(context, requestCode, permissions, grantResults);
     }
 }

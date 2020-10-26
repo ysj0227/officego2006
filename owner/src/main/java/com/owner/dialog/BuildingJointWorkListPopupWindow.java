@@ -20,10 +20,9 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
+import com.officego.commonlib.common.model.owner.BuildingJointWorkBean;
 import com.officego.commonlib.common.model.utils.BundleUtils;
-import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
-import com.officego.commonlib.utils.ToastUtils;
 import com.owner.R;
 import com.owner.home.AddBuildingActivity_;
 import com.owner.home.AddJointWorkActivity_;
@@ -40,7 +39,7 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
         View.OnTouchListener,
         PopupWindow.OnDismissListener {
     private Activity mContext;
-    private List<String> list;
+    private List<BuildingJointWorkBean.PageBean.ListBean> list;
     private UserOwnerBean mUserData;
     private int statusBarHeight, titleBarHeight;
     private final int identityType = 2;//0个人1企业2联合，网点
@@ -57,11 +56,13 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
 
     public interface HomePopupListener {
         void popupDismiss();
+
+        void popupHouseList(BuildingJointWorkBean.PageBean.ListBean bean);
     }
 
     @SuppressLint("ClickableViewAccessibility")
     public BuildingJointWorkListPopupWindow(Activity activity, UserOwnerBean mUserData, View topToPopupWindowView,
-                                            List<String> list) {
+                                            List<BuildingJointWorkBean.PageBean.ListBean> list) {
         super();
         this.mContext = activity;
         this.mUserData = mUserData;
@@ -145,53 +146,53 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
     }
 
     //房源特色
-    private class BuildingAdapter extends CommonListAdapter<String> {
+    private class BuildingAdapter extends CommonListAdapter<BuildingJointWorkBean.PageBean.ListBean> {
 
         @SuppressLint("UseSparseArrays")
-        BuildingAdapter(Context context, List<String> list) {
+        BuildingAdapter(Context context, List<BuildingJointWorkBean.PageBean.ListBean> list) {
             super(context, R.layout.item_popup_building_jointwork, list);
         }
 
         @Override
-        public void convert(ViewHolder holder, final String bean) {
+        public void convert(ViewHolder holder, final BuildingJointWorkBean.PageBean.ListBean bean) {
             ImageView ivStatus = holder.getView(R.id.iv_status);
             ImageView ivPreview = holder.getView(R.id.iv_preview);
             ImageView ivEdit = holder.getView(R.id.iv_edit);
             ImageView ivPoint = holder.getView(R.id.iv_point);
             TextView tvTitle = holder.getView(R.id.tv_title);
-            String name = bean;
-            if (!TextUtils.isEmpty(name) && name.length() > 12) {
-                tvTitle.setText(name.substring(0, 12) + "...");
+            String name = bean.getBuildingName();
+            if (!TextUtils.isEmpty(name) && name.length() > 13) {
+                tvTitle.setText(name.substring(0, 13) + "...");
             } else {
                 tvTitle.setText(name);
             }
-            if (holder.getAdapterPosition() == 1) {
-                ivPoint.setVisibility(View.VISIBLE);
-                ivStatus.setVisibility(View.VISIBLE);
-                ivStatus.setBackgroundResource(R.mipmap.ic_check_no);
-            } else if (holder.getAdapterPosition() == 2) {
-                ivPoint.setVisibility(View.VISIBLE);
-                ivStatus.setVisibility(View.VISIBLE);
-                ivStatus.setBackgroundResource(R.mipmap.ic_checking);
-            } else if (holder.getAdapterPosition() == 3) {
+            if (TextUtils.equals("%100", bean.getPerfect())) {
                 ivPoint.setVisibility(View.VISIBLE);
                 ivStatus.setVisibility(View.VISIBLE);
                 ivStatus.setBackgroundResource(R.mipmap.ic_complete_more_mes);
-            } else {
-                ivPoint.setVisibility(View.GONE);
-                ivStatus.setVisibility(View.GONE);
             }
+            // 0是正式的楼盘（认证通过），1是临时的楼盘（审核中的）
+//            if (holder.getAdapterPosition() == 1) {
+//                ivPoint.setVisibility(View.VISIBLE);
+//                ivStatus.setVisibility(View.VISIBLE);
+//                ivStatus.setBackgroundResource(R.mipmap.ic_check_no);
+//            } else if (holder.getAdapterPosition() == 2) {
+//                ivPoint.setVisibility(View.VISIBLE);
+//                ivStatus.setVisibility(View.VISIBLE);
+//                ivStatus.setBackgroundResource(R.mipmap.ic_checking);
+//            } else if (holder.getAdapterPosition() == 3) {
+//                ivPoint.setVisibility(View.VISIBLE);
+//                ivStatus.setVisibility(View.VISIBLE);
+//                ivStatus.setBackgroundResource(R.mipmap.ic_complete_more_mes);
+//            } else {
+//                ivPoint.setVisibility(View.GONE);
+//                ivStatus.setVisibility(View.GONE);
+//            }
             //预览
             ivPreview.setOnClickListener(view -> {
                 if (mUserData != null) {
-                    int btype;
-                    if (mUserData.getIdentityType() == identityType) {
-                        btype = Constants.TYPE_JOINTWORK;//网点
-                    } else {
-                        btype = Constants.TYPE_BUILDING;//楼盘 （个人，公司身份）
-                    }
-                    //todo
-                    BundleUtils.ownerGotoDetailsActivity(mContext, true, btype, 8649);
+                    BundleUtils.ownerGotoDetailsActivity(mContext, true,
+                            bean.getBtype(), Integer.valueOf(bean.getBuildingId().toString()));
                 }
             });
             //编辑
@@ -201,6 +202,11 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
                 } else {
                     AddJointWorkActivity_.intent(mContext).start();
                 }
+            });
+            //获取房源列表
+            holder.itemView.setOnClickListener(view -> {
+                dismiss();
+                listener.popupHouseList(bean);
             });
         }
     }

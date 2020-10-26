@@ -1,5 +1,6 @@
 package com.owner.home;
 
+import android.content.Intent;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -7,14 +8,18 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
+
 import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.dialog.RentDialog;
+import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.widget.SettingItemLayout;
 import com.owner.R;
 import com.owner.dialog.FloorTypeDialog;
 import com.owner.home.rule.IntegerTextWatcher;
 import com.owner.home.rule.RentOpenSeatTextWatcher;
+import com.owner.zxing.QRScanActivity;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -114,6 +119,15 @@ public class AddOpenSeatsActivity extends BaseActivity
         ivCloseScan.setVisibility(View.GONE);
     }
 
+    //web 去编辑
+    @Click(resName = "btn_scan")
+    void toWebEditOnClick() {
+        if (!PermissionUtils.checkSDCardCameraPermission(this)) {
+            return;
+        }
+        startActivity(new Intent(context, QRScanActivity.class));
+    }
+
     @Click(resName = "sil_floor_no")
     void floorNoOnClick() {
         new FloorTypeDialog(context).setListener(this);
@@ -133,4 +147,12 @@ public class AddOpenSeatsActivity extends BaseActivity
     public void sureFloor(String text) {
         silFloorNo.setLeftToArrowText(text);
     }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
+                                           @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        PermissionUtils.requestPermissions(context, requestCode, permissions, grantResults);
+    }
+
 }

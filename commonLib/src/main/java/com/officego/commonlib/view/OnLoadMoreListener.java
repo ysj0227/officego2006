@@ -1,4 +1,4 @@
-package com.officego.ui.home;
+package com.officego.commonlib.view;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
