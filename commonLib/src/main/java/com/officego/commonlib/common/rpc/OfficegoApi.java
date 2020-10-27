@@ -208,6 +208,32 @@ public class OfficegoApi {
     }
 
     /**
+     * 获取楼盘特色
+     *
+     * @param callback
+     */
+    public void getBuildingUnique(RetrofitCallback<List<DirectoryBean.DataBean>> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("code", requestBody("buildingUnique"));
+        OfficegoRetrofitClient.getInstance().create(DirectoryInterface.class)
+                .getDictionary(map)
+                .enqueue(callback);
+    }
+
+    /**
+     * 获取网点特色
+     *
+     * @param callback
+     */
+    public void getBranchUnique(RetrofitCallback<List<DirectoryBean.DataBean>> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("code", requestBody("branchUnique"));
+        OfficegoRetrofitClient.getInstance().create(DirectoryInterface.class)
+                .getDictionary(map)
+                .enqueue(callback);
+    }
+
+    /**
      * 获取房源特色
      *
      * @param callback
@@ -288,7 +314,7 @@ public class OfficegoApi {
     /**
      * 房源列表
      * buildingId 	是 	int 	楼盘id
-     *
+     * <p>
      * isTemp 	是 	int 	是不是临时的楼盘；0不是，1是
      * pageNo 	是 	int 	当前页
      * pageSize 	是 	int 	每页条数

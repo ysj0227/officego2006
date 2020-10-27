@@ -166,7 +166,7 @@ public class AddBuildingActivity extends BaseMvpActivity<BuildingPresenter>
         mPresenter.attachView(this);
         initViews();
         initDigits();
-        mPresenter.getHouseUnique();
+        mPresenter.getBuildingUnique();
     }
 
     private void initViews() {

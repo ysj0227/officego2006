@@ -173,7 +173,7 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
         mPresenter.attachView(this);
         initViews();
         initDigits();
-        mPresenter.getHouseUnique();
+        mPresenter.getBranchUnique();
     }
 
     private void initViews() {

@@ -18,9 +18,9 @@ public class JointWorkPresenter extends BasePresenter<JointWorkContract.View>
     private final String TAG = this.getClass().getSimpleName();
 
     @Override
-    public void getHouseUnique() {
+    public void getBranchUnique() {
         mView.showLoadingDialog();
-        OfficegoApi.getInstance().getHouseUnique(new RetrofitCallback<List<DirectoryBean.DataBean>>() {
+        OfficegoApi.getInstance().getBranchUnique(new RetrofitCallback<List<DirectoryBean.DataBean>>() {
             @Override
             public void onSuccess(int code, String msg, List<DirectoryBean.DataBean> data) {
                 if (isViewAttached()) {

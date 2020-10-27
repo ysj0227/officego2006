@@ -23,7 +23,7 @@ public interface JointWorkContract {
 
     interface Presenter {
 
-        void getHouseUnique();
+        void getBranchUnique();
 
         void getRoomMatching();
 

@@ -18,7 +18,7 @@ public interface BuildingContract {
 
     interface Presenter {
 
-        void getHouseUnique();
+        void getBuildingUnique();
 
     }
 }
