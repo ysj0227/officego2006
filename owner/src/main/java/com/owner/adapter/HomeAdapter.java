@@ -1,5 +1,6 @@
 package com.owner.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.View;
 import android.widget.ImageView;
@@ -43,7 +44,7 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
 
         void itemEdit();
 
-        void itemMore();
+        void itemMore(boolean isOpenSeats, boolean isPublish);
     }
 
     /**
@@ -57,21 +58,28 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
         this.context = context;
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void convert(ViewHolder holder, HouseBean.ListBean bean) {
         onClick(holder, bean);
         ImageView ivFlay = holder.getView(R.id.tv_type);
+        TextView tvArea = holder.getView(R.id.tv_area);
         RoundImageView ivHouse = holder.getView(R.id.iv_house);
         Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getMainPic()).into(ivHouse);
         holder.setText(R.id.tv_house_name, bean.getTitle());
-        holder.setText(R.id.tv_area, bean.getArea() + "㎡");
         holder.setText(R.id.tv_price, "¥" + bean.getMonthPrice());
         //楼盘下房源
         if (Constants.TYPE_BUILDING == bean.getBtype()) {
             ivFlay.setVisibility(View.GONE);
-        } else {//网点下房源 1是独立办公室，2是开放工位
+        } else {
+            //网点下房源 1是独立办公室，2是开放工位
             ivFlay.setVisibility(View.VISIBLE);
             ivFlay.setBackgroundResource(bean.getOfficeType() == 1 ? R.mipmap.ic_label_independent : R.mipmap.ic_label_open_seats);
+        }
+        if (Constants.TYPE_JOINTWORK == bean.getBtype() && bean.getOfficeType() == 2) {
+            tvArea.setText("共" + bean.getSeats() + "工位");
+        } else {
+            tvArea.setText(bean.getArea() + "㎡");
         }
     }
 
@@ -81,14 +89,21 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
         TextView tvShare = holder.getView(R.id.tv_share);
         TextView tvEdit = holder.getView(R.id.tv_edit);
         ImageView tvMore = holder.getView(R.id.tv_more);
-        //HouseStatus0未发布，1发布，2下架,3:待完善
+        //houseStatus0未发布，1发布，2下架,3:待完善
         ivFlagOff.setVisibility(bean.getHouseStatus() == 2 ? View.VISIBLE : View.GONE);
-        if (bean.getHouseStatus() == 0) {
-            tvPublishStatus.setText("发布");
-        } else if (bean.getHouseStatus() == 1) {
+        if (bean.getHouseStatus() == 1) {//1发布
             tvPublishStatus.setVisibility(View.GONE);
-        } else if (bean.getHouseStatus() == 2) {
-            tvPublishStatus.setText("已下架");
+        } else if (bean.getHouseStatus() == 2) {//2下架
+            tvPublishStatus.setVisibility(View.VISIBLE);
+            tvPublishStatus.setText("重新发布");
+        } else {//0未发布 3:待完善
+            tvPublishStatus.setVisibility(View.VISIBLE);
+            tvPublishStatus.setText("发布");
+        }
+        if (bean.getOfficeType() == 2 && bean.getHouseStatus() != 2) {
+            //开放工位是关闭
+            tvPublishStatus.setVisibility(View.VISIBLE);
+            tvPublishStatus.setText("关闭");
         }
         View.OnClickListener clickListener = view -> {
             int id = view.getId();
@@ -100,10 +115,11 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
                 }
             } else if (id == R.id.tv_more) {
                 if (listener != null) {
-                    listener.itemMore();
+                    listener.itemMore(bean.getOfficeType() == 2, bean.getHouseStatus() == 1);
                 }
             } else if (id == R.id.tv_publish_status) {
                 if (listener != null) {
+                    //如果是独立办公室是发布， 开放工位是关闭
                     listener.itemPublishStatus();
                 }
             }

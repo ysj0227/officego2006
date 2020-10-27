@@ -18,9 +18,13 @@ import com.owner.R;
  **/
 public class HomeMoreDialog {
     private Context context;
+    private boolean isOpenSeats;//是否开放工位
+    private boolean isPublish;//是否发布房源
 
-    public HomeMoreDialog(Context context) {
+    public HomeMoreDialog(Context context, boolean isOpenSeats, boolean isPublish) {
         this.context = context;
+        this.isOpenSeats = isOpenSeats;
+        this.isPublish = isPublish;
         moreDialog(context);
     }
 
@@ -49,7 +53,11 @@ public class HomeMoreDialog {
     }
 
     private void handleLayout(View viewLayout) {
-        TextView title = viewLayout.findViewById(R.id.tv_off);
-
+        TextView tvOff = viewLayout.findViewById(R.id.tv_off);
+        if (isOpenSeats) {
+            tvOff.setVisibility(View.GONE);
+        } else {
+            tvOff.setVisibility(isPublish ? View.VISIBLE : View.GONE);
+        }
     }
 }

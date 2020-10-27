@@ -201,8 +201,8 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     }
 
     @Override
-    public void itemMore() {
-        new HomeMoreDialog(mActivity);
+    public void itemMore(boolean isOpenSeats, boolean isPublish) {
+        new HomeMoreDialog(mActivity, isOpenSeats, isPublish);
     }
 
     @Override
