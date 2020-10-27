@@ -100,7 +100,7 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
             tvPublishStatus.setVisibility(View.VISIBLE);
             tvPublishStatus.setText("发布");
         }
-        if (bean.getOfficeType() == 2 && bean.getHouseStatus() != 2) {
+        if (bean.getBtype() == 2 && bean.getOfficeType() == 2 && bean.getHouseStatus() != 2) {
             //开放工位是关闭
             tvPublishStatus.setVisibility(View.VISIBLE);
             tvPublishStatus.setText("关闭");
@@ -115,7 +115,8 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
                 }
             } else if (id == R.id.tv_more) {
                 if (listener != null) {
-                    listener.itemMore(bean.getOfficeType() == 2, bean.getHouseStatus() == 1);
+                    boolean isOpenSeat = bean.getBtype() == 2 && bean.getOfficeType() == 2;
+                    listener.itemMore(isOpenSeat, bean.getHouseStatus() == 1);
                 }
             } else if (id == R.id.tv_publish_status) {
                 if (listener != null) {

@@ -31,6 +31,7 @@ import com.owner.dialog.FloorTypeDialog;
 import com.owner.home.contract.HouseContract;
 import com.owner.home.presenter.HousePresenter;
 import com.owner.home.rule.BuildingHouseAreaTextWatcher;
+import com.owner.home.rule.EstateFeeTextWatcher;
 import com.owner.home.rule.FloorHeightTextWatcher;
 import com.owner.home.rule.IntegerTextWatcher;
 import com.owner.home.rule.RentSingleTextWatcher;
@@ -87,6 +88,8 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
     SettingItemLayout silRentTime;
     @ViewById(resName = "sil_free_rent")
     SettingItemLayout silFreeRent;
+    @ViewById(resName = "sil_estate_fee")
+    SettingItemLayout silEstateFee;
     //介绍
     @ViewById(resName = "tv_counts")
     TextView tvCounts;
@@ -149,6 +152,8 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
         silRentSingle.getEditTextView().addTextChangedListener(new RentSingleTextWatcher(context, silRentSingle.getEditTextView()));
         //租金总价
         silRentSum.getEditTextView().addTextChangedListener(new RentSumTextWatcher(context, silRentSum.getEditTextView()));
+        //物业费 0-100000之间正数，保留1位小数
+        silEstateFee.getEditTextView().addTextChangedListener(new EstateFeeTextWatcher(context,100000, silEstateFee.getEditTextView()));
         //介绍
         cetDescContent.addTextChangedListener(new TextCountsWatcher(tvCounts, cetDescContent));
     }

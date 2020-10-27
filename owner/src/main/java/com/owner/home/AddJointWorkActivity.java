@@ -80,6 +80,8 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
     SettingItemLayout silConditionedFee;
     @ViewById(resName = "sil_meeting_room")
     SettingItemLayout silMeetingRoom;
+    @ViewById(resName = "sil_contains_persons")
+    SettingItemLayout silContainsPersons;
     @ViewById(resName = "sil_car_num")
     SettingItemLayout silCarNum;
     @ViewById(resName = "sil_car_fee")
@@ -185,6 +187,8 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
         etPassengerLift.addTextChangedListener(new LiftTextWatcher(context, etPassengerLift));
         //会议室数量
         silMeetingRoom.getEditTextView().addTextChangedListener(new IntegerTextWatcher(context, 10, silMeetingRoom.getEditTextView()));
+        //最多容纳人数
+        silContainsPersons.getEditTextView().addTextChangedListener(new IntegerTextWatcher(context, 10, silContainsPersons.getEditTextView()));
         //介绍
         cetDescContent.addTextChangedListener(new TextCountsWatcher(tvCounts, cetDescContent));
     }

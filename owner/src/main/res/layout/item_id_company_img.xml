@@ -23,5 +23,17 @@
         android:background="@mipmap/ic_small_delete_blue"
         tools:ignore="ContentDescription" />
 
+    <TextView
+        android:visibility="gone"
+        android:id="@+id/tv_set_first_image"
+        android:layout_width="@dimen/dp_100"
+        android:layout_height="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_85"
+        android:background="@color/common_blue_main_60a"
+        android:gravity="center"
+        android:text="设置为封面图"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_12" />
+
 </FrameLayout>
 

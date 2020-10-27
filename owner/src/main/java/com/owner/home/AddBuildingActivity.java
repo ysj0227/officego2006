@@ -206,7 +206,7 @@ public class AddBuildingActivity extends BaseMvpActivity<BuildingPresenter>
         //面积 0.1-1000正数数字，保留1位小数，单位 万M²
         silGrossArea.getEditTextView().addTextChangedListener(new AreaTextWatcher(context, 1000, silGrossArea.getEditTextView()));
         //物业费 0-100之间正数，保留1位小数
-        silEstateFee.getEditTextView().addTextChangedListener(new EstateFeeTextWatcher(context, silEstateFee.getEditTextView()));
+        silEstateFee.getEditTextView().addTextChangedListener(new EstateFeeTextWatcher(context, 100, silEstateFee.getEditTextView()));
         //净高 层高 0-8或一位小数
         silStoreyHeight.getEditTextView().addTextChangedListener(new FloorHeightTextWatcher(context, silStoreyHeight.getEditTextView()));
         silTierHeight.getEditTextView().addTextChangedListener(new FloorHeightTextWatcher(context, silTierHeight.getEditTextView()));
@@ -384,7 +384,15 @@ public class AddBuildingActivity extends BaseMvpActivity<BuildingPresenter>
     @Override
     public void sureBuildingType(String type, boolean isOffice) {
         silBuildingType.setCenterText(type);
-        silGardenName.setVisibility(isOffice ? View.GONE : View.VISIBLE);
+        silGardenName.setEditText("");
+        silGardenName.setVisibility(View.VISIBLE);
+        if (isOffice) {
+            silGardenName.setTitle("写字楼名称");
+            silGardenName.getEditTextView().setHint("请输入写字楼名称");
+        } else {
+            silGardenName.setTitle("园区名称");
+            silGardenName.getEditTextView().setHint("请输入园区名称");
+        }
         silNo.setVisibility(isOffice ? View.GONE : View.VISIBLE);
     }
 
@@ -415,6 +423,15 @@ public class AddBuildingActivity extends BaseMvpActivity<BuildingPresenter>
             uploadImageList.remove(position);
             imageAdapter.notifyDataSetChanged();
         }
+    }
+
+    //设置封面图
+    @Override
+    public void setFirstImage(int position) {
+        ImageBean imageBean = uploadImageList.get(0);
+        uploadImageList.set(0, uploadImageList.get(position));
+        uploadImageList.set(position, imageBean);
+        imageAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -471,13 +488,13 @@ public class AddBuildingActivity extends BaseMvpActivity<BuildingPresenter>
         ImageSelector.builder()
                 .useCamera(false) // 设置是否使用拍照
                 .setSingle(false)  //设置是否单选
-                .setMaxSelectCount(9 - uploadImageList.size())
+                .setMaxSelectCount(10 - uploadImageList.size())
                 .canPreview(true) //是否可以预览图片，默认为true
                 .start(this, REQUEST_GALLERY); // 打开相册
     }
 
     private boolean isOverLimit() {
-        if (uploadImageList.size() >= 9) {
+        if (uploadImageList.size() >= 10) {
             shortTip(R.string.tip_image_upload_overlimit);
             return true;
         }

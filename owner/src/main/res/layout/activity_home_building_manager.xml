@@ -48,7 +48,6 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sil_building_type"
                 android:visibility="gone"
-                app:editMaxLength="5"
                 app:editTextHint="请输入园区名称"
                 app:editTextHintColor="@color/text_66_p50"
                 app:leftMarkShow="visible"

@@ -5,6 +5,7 @@ import android.graphics.BitmapFactory;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.officego.commonlib.CommonListAdapter;
@@ -45,12 +46,15 @@ public class UploadBuildingImageAdapter extends CommonListAdapter<ImageBean> {
         void addUploadImage();
 
         void deleteUploadImage(ImageBean bean, int position);
+
+        void setFirstImage(int position);//设置封面图
     }
 
     @Override
     public void convert(ViewHolder holder, final ImageBean bean) {
         ImageView ivItem = holder.getView(R.id.iv_item);
         ImageView ivDelete = holder.getView(R.id.iv_delete);
+        TextView tvSetFirstImage = holder.getView(R.id.tv_set_first_image);
         if (bean.isNetImage()) {//网络图片
             Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getPath()).into(ivItem);
         } else {
@@ -59,14 +63,23 @@ public class UploadBuildingImageAdapter extends CommonListAdapter<ImageBean> {
         //删除
         ivDelete.setOnClickListener(v -> {
             if (!TextUtils.isEmpty(bean.getPath())) {
-                listener.deleteUploadImage(bean,holder.getAdapterPosition());
+                listener.deleteUploadImage(bean, holder.getAdapterPosition());
             }
         });
         if (list != null && list.size() > 0 && holder.getAdapterPosition() == list.size() - 1) {
+            //添加图片
             ivDelete.setVisibility(View.GONE);
             ivItem.setOnClickListener(v -> listener.addUploadImage());
         } else {
             ivDelete.setVisibility(View.VISIBLE);
+        }
+        //封面图
+        if (list != null && list.size() > 0 &&
+                (holder.getAdapterPosition() == 0 || holder.getAdapterPosition() == list.size() - 1)) {
+            tvSetFirstImage.setVisibility(View.GONE);
+        } else {
+            tvSetFirstImage.setVisibility(View.VISIBLE);
+            tvSetFirstImage.setOnClickListener(view -> listener.setFirstImage(holder.getAdapterPosition()));
         }
     }
 }

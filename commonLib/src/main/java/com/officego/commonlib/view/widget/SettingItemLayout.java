@@ -271,6 +271,16 @@ public class SettingItemLayout extends FrameLayout {
         return ivOtherRight;
     }
 
+    public void setTitle(int resId) {
+        tvTitle.setVisibility(VISIBLE);
+        tvTitle.setText(resId);
+    }
+
+    public void setTitle(String resId) {
+        tvTitle.setVisibility(VISIBLE);
+        tvTitle.setText(resId);
+    }
+
     public void setCenterText(int resId) {
         tvContent.setVisibility(VISIBLE);
         tvContent.setText(resId);

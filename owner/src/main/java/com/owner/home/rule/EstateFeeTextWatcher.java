@@ -15,11 +15,14 @@ import com.officego.commonlib.utils.ToastUtils;
  **/
 public class EstateFeeTextWatcher implements TextWatcher {
     private EditText editText;
+    private int number, length;
     private Context context;
 
-    public EstateFeeTextWatcher(Context context, EditText editText) {
+    public EstateFeeTextWatcher(Context context, int number, EditText editText) {
         this.context = context;
+        this.number = number;
         this.editText = editText;
+        length = String.valueOf(number).length();
     }
 
     @Override
@@ -42,10 +45,10 @@ public class EstateFeeTextWatcher implements TextWatcher {
             editable.clear();
             return;
         }
-        if (!temp.contains(".") && temp.length() >= 3 && Integer.valueOf(temp) > 100) {
+        if (!temp.contains(".") && temp.length() >= length && Integer.valueOf(temp) > number) {
             int index = editText.getSelectionStart();//获取光标位置
             editable.delete(index - 1, index);//删除小数点后一位
-            ToastUtils.toastForShort(context, "只支持0.1-100正整数或保留1位小数");
+            ToastUtils.toastForShort(context, "只支持0.1-" + number + "正整数或保留1位小数");
             return;
         }
         int posDot = temp.indexOf(".");//返回指定字符在此字符串中第一次出现处的索引

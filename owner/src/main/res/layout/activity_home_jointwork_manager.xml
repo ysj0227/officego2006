@@ -156,6 +156,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sil_meeting_room"
+                app:editMaxLength="2"
+                app:editTextInputType="phone"
                 app:leftMarkShow="invisible"
                 app:leftText="最多容纳人数"
                 app:rightArrowShow="gone"
@@ -170,7 +172,7 @@
                 layout="@layout/include_meeting_match"
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_60"
-                android:layout_below="@id/sil_meeting_room" />
+                android:layout_below="@id/sil_contains_persons" />
 
             <com.officego.commonlib.view.widget.SettingItemLayout
                 android:id="@+id/sil_car_num"
