@@ -206,8 +206,17 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     }
 
     @Override
-    public void itemEdit() {
-        AddBuildingActivity_.intent(getContext()).start();
+    public void itemEdit(HouseBean.ListBean bean) {
+        //编辑房源 独立办公室 开放工位
+        if (Constants.TYPE_BUILDING == bean.getBtype()) {
+            AddHouseActivity_.intent(getContext()).start();
+        } else {
+            if (bean.getOfficeType() == 2) {//2开放工位
+                AddOpenSeatsActivity_.intent(mActivity).start();
+            } else {//1独立办公室
+                AddIndependentActivity_.intent(mActivity).start();
+            }
+        }
     }
 
     @Override

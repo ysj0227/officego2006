@@ -36,11 +36,13 @@
         android:layout_marginTop="@dimen/dp_10"
         android:layout_marginEnd="@dimen/dp_50"
         android:layout_toEndOf="@id/iv_mark_image"
-        android:gravity="center_vertical"
         android:background="@null"
         android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:hint="请输入入住企业"
         android:singleLine="true"
         android:textColor="@color/text_33"
+        android:textColorHint="@color/text_66_p50"
         android:textSize="@dimen/sp_15"
         tools:ignore="RelativeOverlap" />
 

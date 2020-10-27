@@ -42,7 +42,7 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
     public interface HomeItemListener {
         void itemPublishStatus();
 
-        void itemEdit();
+        void itemEdit(HouseBean.ListBean bean);
 
         void itemMore(boolean isOpenSeats, boolean isPublish);
     }
@@ -111,11 +111,11 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
                 share(bean);
             } else if (id == R.id.tv_edit) {
                 if (listener != null) {
-                    listener.itemEdit();
+                    listener.itemEdit(bean);
                 }
             } else if (id == R.id.tv_more) {
                 if (listener != null) {
-                    boolean isOpenSeat=bean.getBtype() == 2 &&bean.getOfficeType() == 2;
+                    boolean isOpenSeat = bean.getBtype() == 2 && bean.getOfficeType() == 2;
                     listener.itemMore(isOpenSeat, bean.getHouseStatus() == 1);
                 }
             } else if (id == R.id.tv_publish_status) {
