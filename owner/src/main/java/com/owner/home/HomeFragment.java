@@ -87,9 +87,9 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     //list 是否有更多
     private boolean hasMore;
     private HomeAdapter homeAdapter;
-    private List<HouseBean.DataBean> houseList = new ArrayList<>();
+    private List<HouseBean.ListBean> houseList = new ArrayList<>();
 
-    private BuildingJointWorkBean.PageBean.ListBean mData;
+    private BuildingJointWorkBean.ListBean mData;
     private int buildingId;
 
     @AfterViews
@@ -168,12 +168,12 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         tvHomeTitle.setVisibility(View.GONE);
         ivAdd.setVisibility(View.GONE);
         tvExpand.setVisibility(View.VISIBLE);
-        new BuildingJointWorkListPopupWindow(mActivity, mUserData, rlTitle, data.getPage().getList()).setListener(this);
+        new BuildingJointWorkListPopupWindow(mActivity, mUserData, rlTitle, data.getList()).setListener(this);
     }
 
     //房源列表
     @Override
-    public void houseListSuccess(List<HouseBean.DataBean> data, boolean hasMore) {
+    public void houseListSuccess(List<HouseBean.ListBean> data, boolean hasMore) {
         if (data == null || pageNum == 1 && data.size() == 0) {
             noData();
             return;
@@ -214,54 +214,44 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     }
 
     @Override
-    public void initHouseData(BuildingJointWorkBean.PageBean.ListBean bean) {
-        //TODO buildingId
+    public void initHouseData(BuildingJointWorkBean.ListBean bean) {
         tvHomeTitle.setText(bean.getBuildingName());
-        // buildingId = bean.getBuildingId().toString();
+        buildingId = bean.getBuildingId();
         mData = bean;
         getHouseList();
     }
 
+    //左侧Popup选择
     @Override
-    public void popupHouseList(BuildingJointWorkBean.PageBean.ListBean bean) {
-        //TODO buildingId
+    public void popupHouseList(BuildingJointWorkBean.ListBean bean) {
         tvHomeTitle.setText(bean.getBuildingName());
-        //  buildingId = bean.getBuildingId().toString();
+        buildingId = bean.getBuildingId();
         mData = bean;
+        houseList.clear();
+        if (homeAdapter != null) {
+            homeAdapter.notifyDataSetChanged();
+        }
         getHouseList();
     }
 
     private void getHouseList() {
-        //mPresenter.getHouseList(buildingId, 0, pageNum, mData.getStatus());
-//        mPresenter.getHouseList(8649, 0, pageNum, mData.getStatus());
-        mPresenter.getHouseList(8635, 0, pageNum, mData.getStatus());
+        mPresenter.getHouseList(buildingId, mData.getIsTemp(), pageNum, mData.getStatus());
     }
 
     /**
      * 身份类型 0个人1企业2联合
-     * getAuditStatus 0待审核1审核通过2审核未通过 3过期(和2未通过一样处理)-1未认证
+     * auditStatus 0待审核1审核通过2审核未通过 3过期(和2未通过一样处理)-1未认证
      */
     @Override
     public void userInfoSuccess(UserOwnerBean data) {
         mUserData = data;
-        if (isIdentity(data)) {
-            if (data.getAuditStatus() == -1) { //未认证
-                SelectIdActivity_.intent(getContext()).start();
-            } else {
-                new UnIdifyDialog(mActivity, data);
-            }
+        if (data.getAuditStatus() == 0 || data.getAuditStatus() == 1) {
+            mPresenter.initHouseList();//初始化列表
+        } else if (data.getAuditStatus() == -1) {
+            SelectIdActivity_.intent(getContext()).start(); //未认证
         } else {
-            //初始化房源数据
-            mPresenter.initHouseList();
+            new UnIdifyDialog(mActivity, data);
         }
-    }
-
-    // 0待审核1审核通过2审核未通过
-    private boolean isIdentity(UserOwnerBean mUserInfo) {
-        if (mUserInfo != null) {
-            return mUserInfo.getAuditStatus() != 0 && mUserInfo.getAuditStatus() != 1;
-        }
-        return false;
     }
 
     @Override

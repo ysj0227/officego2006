@@ -23,9 +23,9 @@ import java.util.List;
  * Created by shijie
  * Date 2020/10/14
  **/
-public class HomeAdapter extends CommonListAdapter<HouseBean.DataBean> {
+public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
     private Context context;
-    private List<HouseBean.DataBean> list;
+    private List<HouseBean.ListBean> list;
     private int buildingId;
 
     public HomeItemListener getListener() {
@@ -50,7 +50,7 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.DataBean> {
      * @param context 上下文
      * @param list    列表数据
      */
-    public HomeAdapter(Context context, int buildingId, List<HouseBean.DataBean> list) {
+    public HomeAdapter(Context context, int buildingId, List<HouseBean.ListBean> list) {
         super(context, R.layout.item_building_manager, list);
         this.buildingId = buildingId;
         this.list = list;
@@ -58,12 +58,12 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.DataBean> {
     }
 
     @Override
-    public void convert(ViewHolder holder, HouseBean.DataBean bean) {
+    public void convert(ViewHolder holder, HouseBean.ListBean bean) {
         onClick(holder, bean);
         ImageView ivFlay = holder.getView(R.id.tv_type);
         RoundImageView ivHouse = holder.getView(R.id.iv_house);
         Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getMainPic()).into(ivHouse);
-        holder.setText(R.id.tv_house_name, bean.getBuildingName());
+        holder.setText(R.id.tv_house_name, bean.getTitle());
         holder.setText(R.id.tv_area, bean.getArea() + "㎡");
         holder.setText(R.id.tv_price, "¥" + bean.getMonthPrice());
         //楼盘下房源
@@ -75,7 +75,7 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.DataBean> {
         }
     }
 
-    private void onClick(ViewHolder holder, HouseBean.DataBean bean) {
+    private void onClick(ViewHolder holder, HouseBean.ListBean bean) {
         ImageView ivFlagOff = holder.getView(R.id.iv_flag_off);
         TextView tvPublishStatus = holder.getView(R.id.tv_publish_status);
         TextView tvShare = holder.getView(R.id.tv_share);
@@ -117,13 +117,13 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.DataBean> {
                 BundleUtils.ownerGotoDetailsActivity(mContext, false, bean.getBtype(), bean.getHouseId()));
     }
 
-    private void share(HouseBean.DataBean bn) {
+    private void share(HouseBean.ListBean bn) {
         String dec = bn.getDictCname();
         ShareBean bean = new ShareBean();
         bean.setbType(1);
         bean.setId("buildingId=" + buildingId + "&houseId=" + bn.getHouseId());
         bean.setHouseChild(true);
-        bean.setTitle(bn.getBuildingName());
+        bean.setTitle(bn.getTitle());
         bean.setDes(dec);
         bean.setImgUrl(bn.getMainPic());
         bean.setDetailsUrl(bn.getMainPic());

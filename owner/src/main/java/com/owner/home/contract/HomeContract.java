@@ -18,11 +18,11 @@ public interface HomeContract {
 
         void buildingJointWorkListSuccess(BuildingJointWorkBean data);
 
-        void houseListSuccess(List<HouseBean.DataBean> data, boolean hasMore);
+        void houseListSuccess(List<HouseBean.ListBean> data, boolean hasMore);
 
         void userInfoSuccess(UserOwnerBean data);
 
-        void initHouseData(BuildingJointWorkBean.PageBean.ListBean bean);
+        void initHouseData(BuildingJointWorkBean.ListBean bean);
     }
 
     interface Presenter {

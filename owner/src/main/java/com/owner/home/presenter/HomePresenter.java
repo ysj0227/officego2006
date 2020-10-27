@@ -50,18 +50,18 @@ public class HomePresenter extends BasePresenter<HomeContract.View>
     public void getHouseList(int buildingId, int isTemp, int pageNo, int isStatus) {
         mView.showLoadingDialog();
         com.officego.commonlib.common.rpc.OfficegoApi.getInstance().getHouseList(
-                buildingId, isTemp, pageNo, isStatus, new RetrofitCallback<List<HouseBean.DataBean>>() {
+                buildingId, isTemp, pageNo, isStatus, new RetrofitCallback<HouseBean>() {
                     @Override
-                    public void onSuccess(int code, String msg, List<HouseBean.DataBean> data) {
+                    public void onSuccess(int code, String msg, HouseBean data) {
                         if (isViewAttached()) {
                             mView.hideLoadingDialog();
-                            mView.houseListSuccess(data, data.size() >= 10);
+                            mView.houseListSuccess(data.getData(), data.getData().size() >= 10);
                             mView.endRefresh();
                         }
                     }
 
                     @Override
-                    public void onFail(int code, String msg, List<HouseBean.DataBean> data) {
+                    public void onFail(int code, String msg, HouseBean data) {
                         LogCat.e(TAG, "getUserInfo onFail code=" + code + "  msg=" + msg);
                         if (isViewAttached()) {
                             mView.hideLoadingDialog();
@@ -107,8 +107,8 @@ public class HomePresenter extends BasePresenter<HomeContract.View>
             public void onSuccess(int code, String msg, BuildingJointWorkBean data) {
                 if (isViewAttached()) {
                     //初始化楼盘网点第一条下的房源数据
-                    if (data.getPage().getList().size() > 0) {
-                        mView.initHouseData( data.getPage().getList().get(0));
+                    if (data.getList().size() > 0) {
+                        mView.initHouseData(data.getList().get(0));
                     }
                 }
             }

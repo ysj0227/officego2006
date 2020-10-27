@@ -10,18 +10,79 @@ import java.util.List;
  **/
 public class HouseBean {
 
-    @SerializedName("data")
-    private List<DataBean> data;
+    @SerializedName("total")
+    private int total;
+    @SerializedName("pageSize")
+    private int pageSize;
+    @SerializedName("totalPage")
+    private int totalPage;
+    @SerializedName("pageNo")
+    private int pageNo;
+    @SerializedName("prePage")
+    private int prePage;
+    @SerializedName("nextPage")
+    private int nextPage;
 
-    public List<DataBean> getData() {
-        return data;
+    public int getTotal() {
+        return total;
     }
 
-    public void setData(List<DataBean> data) {
-        this.data = data;
+    public void setTotal(int total) {
+        this.total = total;
     }
 
-    public static class DataBean {
+    public int getPageSize() {
+        return pageSize;
+    }
+
+    public void setPageSize(int pageSize) {
+        this.pageSize = pageSize;
+    }
+
+    public int getTotalPage() {
+        return totalPage;
+    }
+
+    public void setTotalPage(int totalPage) {
+        this.totalPage = totalPage;
+    }
+
+    public int getPageNo() {
+        return pageNo;
+    }
+
+    public void setPageNo(int pageNo) {
+        this.pageNo = pageNo;
+    }
+
+    public int getPrePage() {
+        return prePage;
+    }
+
+    public void setPrePage(int prePage) {
+        this.prePage = prePage;
+    }
+
+    public int getNextPage() {
+        return nextPage;
+    }
+
+    public void setNextPage(int nextPage) {
+        this.nextPage = nextPage;
+    }
+
+    @SerializedName("list")
+    private List<ListBean> list;
+
+    public List<ListBean> getData() {
+        return list;
+    }
+
+    public void setData(List<ListBean> data) {
+        this.list = data;
+    }
+
+    public static class ListBean {
         /**
          * area : 0
          * houseId : 17073
@@ -61,8 +122,8 @@ public class HouseBean {
         private String dictCname;
         @SerializedName("seats")
         private String seats;
-        @SerializedName("buildingName")
-        private String buildingName;
+        @SerializedName("title")
+        private String title;
         @SerializedName("monthPrice")
         private Object monthPrice;
         @SerializedName("mainPic")
@@ -158,12 +219,12 @@ public class HouseBean {
             this.seats = seats;
         }
 
-        public String getBuildingName() {
-            return buildingName;
+        public String getTitle() {
+            return title;
         }
 
-        public void setBuildingName(String buildingName) {
-            this.buildingName = buildingName;
+        public void setTitle(String title) {
+            this.title = title;
         }
 
         public Object getMonthPrice() {

@@ -39,7 +39,7 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
         View.OnTouchListener,
         PopupWindow.OnDismissListener {
     private Activity mContext;
-    private List<BuildingJointWorkBean.PageBean.ListBean> list;
+    private List<BuildingJointWorkBean.ListBean> list;
     private UserOwnerBean mUserData;
     private int statusBarHeight, titleBarHeight;
     private final int identityType = 2;//0个人1企业2联合，网点
@@ -57,12 +57,12 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
     public interface HomePopupListener {
         void popupDismiss();
 
-        void popupHouseList(BuildingJointWorkBean.PageBean.ListBean bean);
+        void popupHouseList(BuildingJointWorkBean.ListBean bean);
     }
 
     @SuppressLint("ClickableViewAccessibility")
     public BuildingJointWorkListPopupWindow(Activity activity, UserOwnerBean mUserData, View topToPopupWindowView,
-                                            List<BuildingJointWorkBean.PageBean.ListBean> list) {
+                                            List<BuildingJointWorkBean.ListBean> list) {
         super();
         this.mContext = activity;
         this.mUserData = mUserData;
@@ -146,15 +146,21 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
     }
 
     //房源特色
-    private class BuildingAdapter extends CommonListAdapter<BuildingJointWorkBean.PageBean.ListBean> {
+    private class BuildingAdapter extends CommonListAdapter<BuildingJointWorkBean.ListBean> {
 
         @SuppressLint("UseSparseArrays")
-        BuildingAdapter(Context context, List<BuildingJointWorkBean.PageBean.ListBean> list) {
+        BuildingAdapter(Context context, List<BuildingJointWorkBean.ListBean> list) {
             super(context, R.layout.item_popup_building_jointwork, list);
         }
 
+        /**
+         * "isEdit": 0,//是否可以编辑 为0时不可以编辑楼盘，为1时可以编辑楼盘
+         * "isTemp": 0,//0是正式的楼盘（认证通过），1是临时的楼盘（审核中的）
+         * "status": 2//-1:不是管理员 暂无权限编辑楼盘(临时楼盘),0: 下架(未发布),1: 上架(已发布) ;2:资料待完善 ,
+         * 3: 置顶推荐;4:已售完;5:删除;6待审核7已驳回 注意：（IsTemp为1时，status状态标记 1:待审核 -转6 ,2:已驳回 -转7 ）
+         */
         @Override
-        public void convert(ViewHolder holder, final BuildingJointWorkBean.PageBean.ListBean bean) {
+        public void convert(ViewHolder holder, final BuildingJointWorkBean.ListBean bean) {
             ImageView ivStatus = holder.getView(R.id.iv_status);
             ImageView ivPreview = holder.getView(R.id.iv_preview);
             ImageView ivEdit = holder.getView(R.id.iv_edit);
@@ -166,33 +172,27 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
             } else {
                 tvTitle.setText(name);
             }
-            if (TextUtils.equals("%100", bean.getPerfect())) {
+            if (2 == bean.getStatus()) {
                 ivPoint.setVisibility(View.VISIBLE);
                 ivStatus.setVisibility(View.VISIBLE);
                 ivStatus.setBackgroundResource(R.mipmap.ic_complete_more_mes);
+            } else if (6 == bean.getStatus() || 1 == bean.getIsTemp()) {
+                ivPoint.setVisibility(View.VISIBLE);
+                ivStatus.setVisibility(View.VISIBLE);
+                ivStatus.setBackgroundResource(R.mipmap.ic_checking);
+            } else if (7 == bean.getStatus()) {
+                ivPoint.setVisibility(View.VISIBLE);
+                ivStatus.setVisibility(View.VISIBLE);
+                ivStatus.setBackgroundResource(R.mipmap.ic_check_no);
+            } else {
+                ivPoint.setVisibility(View.GONE);
+                ivStatus.setVisibility(View.GONE);
             }
-            // 0是正式的楼盘（认证通过），1是临时的楼盘（审核中的）
-//            if (holder.getAdapterPosition() == 1) {
-//                ivPoint.setVisibility(View.VISIBLE);
-//                ivStatus.setVisibility(View.VISIBLE);
-//                ivStatus.setBackgroundResource(R.mipmap.ic_check_no);
-//            } else if (holder.getAdapterPosition() == 2) {
-//                ivPoint.setVisibility(View.VISIBLE);
-//                ivStatus.setVisibility(View.VISIBLE);
-//                ivStatus.setBackgroundResource(R.mipmap.ic_checking);
-//            } else if (holder.getAdapterPosition() == 3) {
-//                ivPoint.setVisibility(View.VISIBLE);
-//                ivStatus.setVisibility(View.VISIBLE);
-//                ivStatus.setBackgroundResource(R.mipmap.ic_complete_more_mes);
-//            } else {
-//                ivPoint.setVisibility(View.GONE);
-//                ivStatus.setVisibility(View.GONE);
-//            }
             //预览
             ivPreview.setOnClickListener(view -> {
                 if (mUserData != null) {
                     BundleUtils.ownerGotoDetailsActivity(mContext, true,
-                            bean.getBtype(), Integer.valueOf(bean.getBuildingId().toString()));
+                            bean.getBtype(), bean.getBuildingId());
                 }
             });
             //编辑

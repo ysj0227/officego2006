@@ -28,14 +28,14 @@ public interface BuildingJointWorkInterface {
      * 楼盘或网点列表
      */
     @Multipart
-    @POST(path + "building/getBuildingList")
+    @POST(path + "building/selectBuildingList")
     Call<BaseResponse<BuildingJointWorkBean>> getBuildingJointWorkList(@PartMap Map<String, RequestBody> params);
 
     /**
      * 房源列表
      */
     @Multipart
-    @POST(path + "house/getHouseList")
-    Call<BaseResponse<List<HouseBean.DataBean>>> getHouseList(@PartMap Map<String, RequestBody> params);
+    @POST(path + "house/selectHouseList")
+    Call<BaseResponse<HouseBean>> getHouseList(@PartMap Map<String, RequestBody> params);
 
 }

@@ -296,7 +296,7 @@ public class OfficegoApi {
      * keyWord 	否 	String 	关键字
      */
     public void getHouseList(int buildingId, int isTemp, int pageNo, int isStatus,
-                             RetrofitCallback<List<HouseBean.DataBean>> callback) {
+                             RetrofitCallback<HouseBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("buildingId", requestBody(buildingId + ""));
