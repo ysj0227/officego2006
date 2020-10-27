@@ -58,6 +58,12 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
         implements HouseContract.View, RentDialog.SureClickListener,
         FloorTypeDialog.FloorListener, UniqueAdapter.UniqueListener,
         HouseDecorationAdapter.DecorationListener {
+    @ViewById(resName = "tv_upload_title")
+    TextView tvUploadTitle;
+    @ViewById(resName = "tv_des_title")
+    TextView tvDesTitle;
+    @ViewById(resName = "tv_house_characteristic")
+    TextView tvHouseCharacteristic;
     @ViewById(resName = "sil_house_title")
     SettingItemLayout silHouseTitle;
     @ViewById(resName = "sil_area")
@@ -128,6 +134,9 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
     }
 
     private void initViews() {
+        tvUploadTitle.setText("上传办公室图片");
+        tvHouseCharacteristic.setText("办公室特色");
+        tvDesTitle.setText("户型格局介绍");
         //特色
         GridLayoutManager layoutManager = new GridLayoutManager(context, 3);
         rvHouseUnique.setLayoutManager(layoutManager);

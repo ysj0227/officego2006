@@ -23,6 +23,7 @@ import com.officego.commonlib.ViewHolder;
 import com.officego.commonlib.common.model.owner.BuildingJointWorkBean;
 import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.utils.CommonHelper;
+import com.officego.commonlib.utils.ToastUtils;
 import com.owner.R;
 import com.owner.home.AddBuildingActivity_;
 import com.owner.home.AddJointWorkActivity_;
@@ -138,19 +139,21 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
         //添加楼盘网点
         tvAdd.setOnClickListener(view -> {
             if (mUserData.getIdentityType() == identityType) {
-                AddBuildingActivity_.intent(mContext).start();
-            } else {
                 AddJointWorkActivity_.intent(mContext).start();
+            } else {
+                AddBuildingActivity_.intent(mContext).start();
             }
         });
     }
 
     //房源特色
     private class BuildingAdapter extends CommonListAdapter<BuildingJointWorkBean.ListBean> {
+        private Context context;
 
         @SuppressLint("UseSparseArrays")
         BuildingAdapter(Context context, List<BuildingJointWorkBean.ListBean> list) {
             super(context, R.layout.item_popup_building_jointwork, list);
+            this.context = context;
         }
 
         /**
@@ -166,6 +169,7 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
             ImageView ivEdit = holder.getView(R.id.iv_edit);
             ImageView ivPoint = holder.getView(R.id.iv_point);
             TextView tvTitle = holder.getView(R.id.tv_title);
+            ivEdit.setBackgroundResource(0 == bean.getIsEdit() ? R.mipmap.ic_edit_blue : R.mipmap.ic_edit_gray);
             String name = bean.getBuildingName();
             if (!TextUtils.isEmpty(name) && name.length() > 13) {
                 tvTitle.setText(name.substring(0, 13) + "...");
@@ -197,10 +201,14 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
             });
             //编辑
             ivEdit.setOnClickListener(view -> {
-                if (mUserData.getIdentityType() == identityType) {
-                    AddBuildingActivity_.intent(mContext).start();
+                if (0 == bean.getIsEdit()) {
+                    if (mUserData.getIdentityType() == identityType) {
+                        AddJointWorkActivity_.intent(mContext).start();
+                    } else {
+                        AddBuildingActivity_.intent(mContext).start();
+                    }
                 } else {
-                    AddJointWorkActivity_.intent(mContext).start();
+                    ToastUtils.toastForShort(context, "暂不可编辑");
                 }
             });
             //获取房源列表

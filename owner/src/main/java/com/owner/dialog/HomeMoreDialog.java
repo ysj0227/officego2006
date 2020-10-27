@@ -43,7 +43,11 @@ public class HomeMoreDialog {
         int width = dm.widthPixels;
         WindowManager.LayoutParams lp = dialogWindow.getAttributes();
         lp.width = width;
-        lp.height = context.getResources().getDimensionPixelSize(R.dimen.dp_260);
+        if (isOpenSeats) {
+            lp.height = context.getResources().getDimensionPixelSize(R.dimen.dp_200);
+        } else {
+            lp.height = context.getResources().getDimensionPixelSize(R.dimen.dp_260);
+        }
         dialogWindow.setAttributes(lp);
         handleLayout(viewLayout);
         viewLayout.findViewById(R.id.btn_cancel).setOnClickListener(v -> dialog.dismiss());

@@ -60,6 +60,10 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
     private final int serviceCompanyFlay = 1;
     private final int serviceBaseFlay = 2;
 
+    @ViewById(resName = "tv_upload_title")
+    TextView tvUploadTitle;
+    @ViewById(resName = "tv_house_characteristic")
+    TextView tvHouseCharacteristic;
     @ViewById(resName = "sil_joint_work_name")
     SettingItemLayout silJointWorkName;
     @ViewById(resName = "sil_area")
@@ -151,6 +155,8 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
     }
 
     private void initViews() {
+        tvUploadTitle.setText("上传网点图片");
+        tvHouseCharacteristic.setText("共享办公特色");
         ivMarkImageLift.setVisibility(View.INVISIBLE);
         //入住企业
         rvJoinCompany.setLayoutManager(new LinearLayoutManager(context));

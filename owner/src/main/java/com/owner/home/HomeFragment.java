@@ -2,7 +2,6 @@ package com.owner.home;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.text.TextUtils;
@@ -23,6 +22,7 @@ import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.model.owner.BuildingJointWorkBean;
 import com.officego.commonlib.common.model.owner.HouseBean;
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.update.VersionDialog;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
@@ -144,21 +144,31 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     //添加房源
     @Click(resName = "iv_add")
     void addClick() {
-        final String[] items = {"楼盘", "楼盘_办公室", "网点", "独立办公室", "开放工位"};
-        new AlertDialog.Builder(mActivity)
-                .setItems(items, (dialogInterface, i) -> {
-                    if (i == 0) {
-                        AddBuildingActivity_.intent(mActivity).start();
-                    } else if (i == 1) {
-                        AddHouseActivity_.intent(mActivity).start();
-                    } else if (i == 2) {
-                        AddJointWorkActivity_.intent(mActivity).start();
-                    } else if (i == 3) {
-                        AddIndependentActivity_.intent(mActivity).start();
-                    } else {
-                        AddOpenSeatsActivity_.intent(mActivity).start();
-                    }
-                }).create().show();
+//        final String[] items = {"楼盘", "楼盘_办公室", "网点", "独立办公室", "开放工位"};
+//        new AlertDialog.Builder(mActivity)
+//                .setItems(items, (dialogInterface, i) -> {
+//                    if (i == 0) {
+//                        AddBuildingActivity_.intent(mActivity).start();
+//                    } else if (i == 1) {
+//                        AddHouseActivity_.intent(mActivity).start();
+//                    } else if (i == 2) {
+//                        AddJointWorkActivity_.intent(mActivity).start();
+//                    } else if (i == 3) {
+//                        AddIndependentActivity_.intent(mActivity).start();
+//                    } else {
+//                        AddOpenSeatsActivity_.intent(mActivity).start();
+//                    }
+//                }).create().show();
+        gotoAddHouseActivity();
+    }
+
+    //添加房源
+    private void gotoAddHouseActivity() {
+        if (mUserData.getIdentityType() == Constants.TYPE_JOINTWORK) {
+            AddIndependentActivity_.intent(mActivity).start();
+        } else {
+            AddHouseActivity_.intent(mActivity).start();
+        }
     }
 
     //楼盘网点列表

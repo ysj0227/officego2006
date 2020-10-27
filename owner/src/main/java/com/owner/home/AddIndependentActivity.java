@@ -40,6 +40,10 @@ import org.androidannotations.annotations.ViewById;
 public class AddIndependentActivity extends BaseActivity
         implements RentDialog.SureClickListener,
         FloorTypeDialog.FloorListener, ConditionedDialog.ConditionedListener {
+    @ViewById(resName = "tv_upload_title")
+    TextView tvUploadTitle;
+    @ViewById(resName = "tv_des_title")
+    TextView tvDesTitle;
     @ViewById(resName = "sil_title")
     SettingItemLayout silTitle;
     @ViewById(resName = "sil_seats")
@@ -85,13 +89,17 @@ public class AddIndependentActivity extends BaseActivity
     ImageView ivCloseScan;
     @ViewById(resName = "iv_desc_image")
     ImageView ivDescImage;
-    @ViewById(resName = "tv_upload_title")
-    TextView tvUploadTitle;
 
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarFullTransparent(this);
+        initViews();
         initDigits();
+    }
+
+    private void initViews() {
+        tvUploadTitle.setText("上传办公室图片");
+        tvDesTitle.setText("户型格局介绍");
     }
 
     private void initDigits() {
@@ -162,6 +170,7 @@ public class AddIndependentActivity extends BaseActivity
         btnScan.setVisibility(View.GONE);
         ivCloseScan.setVisibility(View.GONE);
     }
+
     //web 去编辑
     @Click(resName = "btn_scan")
     void toWebEditOnClick() {
