@@ -25,6 +25,8 @@ public interface BuildingDetailsChildContract {
     interface Presenter {
         void getDetails(String btype, String houseId);
 
+        void getDetailsOwner(String btype, String houseId,int isTemp);
+
         void favoriteChild(String houseId, int flag);
         //找房东去聊天
         void gotoChat(String houseId);

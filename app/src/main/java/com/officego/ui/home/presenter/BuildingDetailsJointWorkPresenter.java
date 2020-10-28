@@ -58,6 +58,32 @@ public class BuildingDetailsJointWorkPresenter extends BasePresenter<BuildingDet
     }
 
     @Override
+    public void getBuildingDetailsOwner(String btype, String buildingId, int isTemp) {
+        mView.showLoadingDialog();
+        OfficegoApi.getInstance().getBuildingJointWorkDetailsOwner(btype, buildingId,isTemp, new RetrofitCallback<BuildingJointWorkBean>() {
+                    @Override
+                    public void onSuccess(int code, String msg, BuildingJointWorkBean data) {
+                        LogCat.e(TAG, "getBuildingDetails onSuccess =" + data);
+                        if (isViewAttached()) {
+                            mView.hideLoadingDialog();
+                            mView.BuildingJointWorkDetailsSuccess(data);
+                        }
+                    }
+
+                    @Override
+                    public void onFail(int code, String msg, BuildingJointWorkBean data) {
+                        LogCat.e(TAG, "getBuildingDetails onFail code=" + code + "  msg=" + msg);
+                        if (isViewAttached()) {
+                            mView.hideLoadingDialog();
+                            if (code == Constants.ERROR_CODE_7012 || code == Constants.ERROR_CODE_7013 || code == Constants.ERROR_CODE_7014) {
+                                mView.BuildingTakeOff(msg);
+                            }
+                        }
+                    }
+                });
+    }
+
+    @Override
     public void favorite(String buildingId, int flag) {
         mView.showLoadingDialog();
         OfficegoApi.getInstance().favorite(buildingId, flag, new RetrofitCallback<Object>() {

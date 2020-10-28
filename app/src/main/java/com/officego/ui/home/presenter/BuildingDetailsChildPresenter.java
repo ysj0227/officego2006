@@ -52,6 +52,30 @@ public class BuildingDetailsChildPresenter extends BasePresenter<BuildingDetails
     }
 
     @Override
+    public void getDetailsOwner(String btype, String houseId, int isTemp) {
+        if (!TextUtils.isEmpty(btype)) {
+            mView.showLoadingDialog();
+            OfficegoApi.getInstance().selectHousebyHouseIdOwner(btype, houseId,isTemp,
+                    new RetrofitCallback<HouseOfficeDetailsBean>() {
+                        @Override
+                        public void onSuccess(int code, String msg, HouseOfficeDetailsBean data) {
+                            if (isViewAttached()) {
+                                mView.hideLoadingDialog();
+                                mView.detailsSuccess(data);
+                            }
+                        }
+
+                        @Override
+                        public void onFail(int code, String msg, HouseOfficeDetailsBean data) {
+                            if (isViewAttached()) {
+                                mView.hideLoadingDialog();
+                            }
+                        }
+                    });
+        }
+    }
+
+    @Override
     public void favoriteChild(String houseId, int flag) {
         if (!TextUtils.isEmpty(houseId)) {
             mView.showLoadingDialog();

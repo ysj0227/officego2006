@@ -1,6 +1,7 @@
 package com.officego.ui.home;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Context;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
@@ -249,7 +250,12 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
 
     private void getDetails() {
         if (mChildHouseBean != null) {
-            mPresenter.getDetails(String.valueOf(mChildHouseBean.getBtype()), String.valueOf(mChildHouseBean.getHouseId()));
+            if (BundleUtils.ownerHouseBean(this) != null) {//业主首页进入详情
+                mPresenter.getDetailsOwner(String.valueOf(mChildHouseBean.getBtype()),
+                        String.valueOf(mChildHouseBean.getHouseId()),BundleUtils.ownerIsTemp((Activity) context));
+            }else {
+                mPresenter.getDetails(String.valueOf(mChildHouseBean.getBtype()), String.valueOf(mChildHouseBean.getHouseId()));
+            }
             SensorsTrack.visitHouseDataPage(String.valueOf(mChildHouseBean.getHouseId())); //神策
         }
     }

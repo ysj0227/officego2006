@@ -1,6 +1,7 @@
 package com.officego.ui.home;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.os.Handler;
 import android.os.Looper;
@@ -323,7 +324,8 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         mConditionBean = ConditionConfig.mConditionBean;
         if (BundleUtils.buildingBean(this) != null) {//聊天插入楼盘点击
             mBuildingBean = BundleUtils.buildingBean(this);
-        }if (BundleUtils.ownerBuildingBean(this) != null) {//业主首页进入详情
+        }
+        if (BundleUtils.ownerBuildingBean(this) != null) {//业主首页进入详情
             mBuildingBean = BundleUtils.ownerBuildingBean(this);
             rlBottomView.setVisibility(View.GONE);
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) nsvView.getLayoutParams();
@@ -354,12 +356,17 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     }
 
     private void getBuildingDetails() {
-        mPresenter.getBuildingDetails(String.valueOf(mBuildingBean.getBtype()), String.valueOf(mBuildingBean.getBuildingId()),
-                mConditionBean == null || TextUtils.isEmpty(mConditionBean.getAreaValue()) ? "" : mConditionBean.getAreaValue(),
-                mConditionBean == null || TextUtils.isEmpty(mConditionBean.getDayPrice()) ? "" : mConditionBean.getDayPrice(),
-                mConditionBean == null || TextUtils.isEmpty(mConditionBean.getDecoration()) ? "" : mConditionBean.getDecoration(),
-                mConditionBean == null || TextUtils.isEmpty(mConditionBean.getHouseTags()) ? "" : mConditionBean.getHouseTags(),
-                mConditionBean == null || TextUtils.isEmpty(mConditionBean.getSeatsValue()) ? "" : mConditionBean.getSeatsValue());
+        if (BundleUtils.ownerBuildingBean(this) != null) {//业主首页进入详情
+            mPresenter.getBuildingDetailsOwner(String.valueOf(mBuildingBean.getBtype()),
+                    String.valueOf(mBuildingBean.getBuildingId()), BundleUtils.ownerIsTemp((Activity) context));
+        } else {
+            mPresenter.getBuildingDetails(String.valueOf(mBuildingBean.getBtype()), String.valueOf(mBuildingBean.getBuildingId()),
+                    mConditionBean == null || TextUtils.isEmpty(mConditionBean.getAreaValue()) ? "" : mConditionBean.getAreaValue(),
+                    mConditionBean == null || TextUtils.isEmpty(mConditionBean.getDayPrice()) ? "" : mConditionBean.getDayPrice(),
+                    mConditionBean == null || TextUtils.isEmpty(mConditionBean.getDecoration()) ? "" : mConditionBean.getDecoration(),
+                    mConditionBean == null || TextUtils.isEmpty(mConditionBean.getHouseTags()) ? "" : mConditionBean.getHouseTags(),
+                    mConditionBean == null || TextUtils.isEmpty(mConditionBean.getSeatsValue()) ? "" : mConditionBean.getSeatsValue());
+        }
     }
 
     //初始化中间播放按钮显示
@@ -1135,7 +1142,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
                 ctlOpenWork.setVisibility(View.VISIBLE);
                 rlOpenWorkModel.setVisibility(View.VISIBLE);
                 tvOpenWorkModelText.setText("开放工位");
-                tvOpenWorkModelNum.setText(Html.fromHtml("<font color='#46C3C2'>" +data.getBuilding().getOpenStationMap().getSeats() + "</font>"+ "<font color='#CC666666'>工位</font>"));
+                tvOpenWorkModelNum.setText(Html.fromHtml("<font color='#46C3C2'>" + data.getBuilding().getOpenStationMap().getSeats() + "</font>" + "<font color='#CC666666'>工位</font>"));
                 tvOpenWorkModelNum.setTextSize(TypedValue.COMPLEX_UNIT_PX, CommonHelper.sp2px(context, 16));
                 tvMinMonth.setText(data.getBuilding().getOpenStationMap().getMinimumLease() + "个月起租");
                 tvOpenWorkModelPrice.setText(Html.fromHtml("<font color='#46C3C2'>¥" +

@@ -1,6 +1,7 @@
 package com.officego.ui.home;
 
 import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
@@ -335,12 +336,17 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     }
 
     private void getBuildingDetails() {
-        mPresenter.getBuildingDetails(String.valueOf(mBuildingBean.getBtype()), String.valueOf(mBuildingBean.getBuildingId()),
-                mConditionBean == null || TextUtils.isEmpty(mConditionBean.getAreaValue()) ? "" : mConditionBean.getAreaValue(),
-                mConditionBean == null || TextUtils.isEmpty(mConditionBean.getDayPrice()) ? "" : mConditionBean.getDayPrice(),
-                mConditionBean == null || TextUtils.isEmpty(mConditionBean.getDecoration()) ? "" : mConditionBean.getDecoration(),
-                mConditionBean == null || TextUtils.isEmpty(mConditionBean.getHouseTags()) ? "" : mConditionBean.getHouseTags(),
-                mConditionBean == null || TextUtils.isEmpty(mConditionBean.getSeatsValue()) ? "" : mConditionBean.getSeatsValue());
+        if (BundleUtils.ownerBuildingBean(this) != null) {//业主首页进入详情
+            mPresenter.getBuildingDetailsOwner(String.valueOf(mBuildingBean.getBtype()),
+                    String.valueOf(mBuildingBean.getBuildingId()), BundleUtils.ownerIsTemp((Activity) context));
+        } else {
+            mPresenter.getBuildingDetails(String.valueOf(mBuildingBean.getBtype()), String.valueOf(mBuildingBean.getBuildingId()),
+                    mConditionBean == null || TextUtils.isEmpty(mConditionBean.getAreaValue()) ? "" : mConditionBean.getAreaValue(),
+                    mConditionBean == null || TextUtils.isEmpty(mConditionBean.getDayPrice()) ? "" : mConditionBean.getDayPrice(),
+                    mConditionBean == null || TextUtils.isEmpty(mConditionBean.getDecoration()) ? "" : mConditionBean.getDecoration(),
+                    mConditionBean == null || TextUtils.isEmpty(mConditionBean.getHouseTags()) ? "" : mConditionBean.getHouseTags(),
+                    mConditionBean == null || TextUtils.isEmpty(mConditionBean.getSeatsValue()) ? "" : mConditionBean.getSeatsValue());
+        }
     }
 
     //初始化中间播放按钮显示
