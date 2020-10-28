@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.model.ChatHouseBean;
+import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.commonlib.common.model.RenterBean;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
@@ -24,7 +25,6 @@ import com.officego.rpc.request.SearchAreaInterface;
 import com.officego.rpc.request.SearchInterface;
 import com.officego.ui.collect.model.CollectBuildingBean;
 import com.officego.ui.collect.model.CollectHouseBean;
-import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.ui.home.model.BannerBean;
 import com.officego.ui.home.model.BuildingBean;
 import com.officego.ui.home.model.BuildingDetailsBean;
@@ -105,7 +105,7 @@ public class OfficegoApi {
     /**
      * 手机免密登录
      *
-     * @param mobile mobile
+     * @param mobile   mobile
      * @param callback callback
      */
     public void loginOnlyPhone(Context context, String mobile, RetrofitCallback<LoginBean> callback) {
@@ -248,7 +248,7 @@ public class OfficegoApi {
      */
     public void getBuildingList(int pageNo, String btype, String district, String business, String line,
                                 String nearbySubway, String area, String dayPrice, String seats, String decoration,
-                                String houseTags, String sort, String keyWord,String longitude, String latitude,
+                                String houseTags, String sort, String keyWord, String longitude, String latitude,
                                 RetrofitCallback<BuildingBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(""));
@@ -335,6 +335,35 @@ public class OfficegoApi {
                 .enqueue(callback);
     }
 
+    /**
+     * 业主 楼盘详情
+     */
+    public void getBuildingDetailsOwner(String btype, String buildingId, int isTemp,
+                                        RetrofitCallback<BuildingDetailsBean> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("buildingId", requestBody(buildingId));
+        map.put("btype", requestBody(btype));
+        map.put("isTemp", requestBody(isTemp + ""));
+        OfficegoRetrofitClient.getInstance().create(HomeInterface.class)
+                .getBuildingDetailsOwner(map)
+                .enqueue(callback);
+    }
+
+    /**
+     * 业主 网点详情
+     */
+    public void getBuildingJointWorkDetailsOwner(String btype, String buildingId, int isTemp,
+                                                 RetrofitCallback<BuildingJointWorkBean> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("btype", requestBody(btype));
+        map.put("buildingId", requestBody(buildingId));
+        map.put("isTemp", requestBody(isTemp + ""));
+        OfficegoRetrofitClient.getInstance().create(HomeInterface.class)
+                .getBuildingJointWorkDetailsOwner(map)
+                .enqueue(callback);
+    }
 
     /**
      * 收藏或取消
@@ -466,6 +495,19 @@ public class OfficegoApi {
                 .enqueue(callback);
     }
 
+    //业主端楼盘下房源详情
+    public void selectHousebyHouseIdOwner(String btype, String houseId, int isTemp,
+                                          RetrofitCallback<HouseOfficeDetailsBean> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("houseId", requestBody(houseId));
+        map.put("btype", requestBody(btype));
+        map.put("isTemp", requestBody(isTemp + ""));
+        OfficegoRetrofitClient.getInstance().create(HomeInterface.class)
+                .selectHousebyHouseIdOwner(map)
+                .enqueue(callback);
+    }
+
     /**
      * 共享办公|网点房源详情
      * houseId 	是 	int 	房源id
@@ -480,6 +522,19 @@ public class OfficegoApi {
         map.put("btype", requestBody(btype));
         OfficegoRetrofitClient.getInstance().create(HomeInterface.class)
                 .selectHousebyJointWorkHouseId(map)
+                .enqueue(callback);
+    }
+
+    //网点下房源详情
+    public void selectHousebyJointWorkHouseIdOwner(String btype, String houseId, int isTemp,
+                                                   RetrofitCallback<HouseOfficeDetailsJointWorkBean> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("houseId", requestBody(houseId));
+        map.put("btype", requestBody(btype));
+        map.put("isTemp", requestBody(isTemp + ""));
+        OfficegoRetrofitClient.getInstance().create(HomeInterface.class)
+                .selectHousebyJointWorkHouseIdOwner(map)
                 .enqueue(callback);
     }
 
@@ -766,4 +821,5 @@ public class OfficegoApi {
                 .switchId(map)
                 .enqueue(callback);
     }
+
 }

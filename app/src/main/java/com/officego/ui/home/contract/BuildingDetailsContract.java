@@ -38,6 +38,8 @@ public interface BuildingDetailsContract {
         void getBuildingDetails(String btype, String buildingId, String area, String dayPrice,
                                 String decoration, String houseTags, String seats);
 
+        void getBuildingDetailsOwner(String btype, String buildingId,int isTemp);
+
         void favorite(String buildingId, int flag);
 
         void getBuildingSelectList(int pageNo, String btype, String buildingId, String area, String dayPrice,

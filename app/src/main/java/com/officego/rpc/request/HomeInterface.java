@@ -87,4 +87,38 @@ public interface HomeInterface {
     Call<BaseResponse<HouseOfficeDetailsJointWorkBean>> selectHousebyJointWorkHouseId(@PartMap Map<String, RequestBody> params);
 
 
+    /**
+     * owner**********************************************
+     * 业主端详情接口****************************************
+     * ***************************************************
+     */
+
+    /**
+     * 楼盘详情
+     */
+    @Multipart
+    @POST(path + "building/getBuildingbyBuildingIdPreviewApp")
+    Call<BaseResponse<BuildingDetailsBean>> getBuildingDetailsOwner(@PartMap Map<String, RequestBody> params);
+
+    /**
+     * 网点详情
+     */
+    @Multipart
+    @POST(path + "building/getBuildingbyBuildingIdPreviewApp")
+    Call<BaseResponse<BuildingJointWorkBean>> getBuildingJointWorkDetailsOwner(@PartMap Map<String, RequestBody> params);
+
+    /**
+     * 楼盘下--房源详情
+     */
+    @Multipart
+    @POST(path + "house/getHousebyHouseIdPreviewApp")
+    Call<BaseResponse<HouseOfficeDetailsBean>> selectHousebyHouseIdOwner(@PartMap Map<String, RequestBody> params);
+
+    /**
+     * 网点下--房源详情
+     */
+    @Multipart
+    @POST(path + "house/getHousebyHouseIdPreviewApp")
+    Call<BaseResponse<HouseOfficeDetailsJointWorkBean>> selectHousebyJointWorkHouseIdOwner(@PartMap Map<String, RequestBody> params);
+
 }
