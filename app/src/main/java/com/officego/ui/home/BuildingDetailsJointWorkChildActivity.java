@@ -241,10 +241,13 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         nsvView.setOnScrollChangeListener(this);
         tvIndependentOffice.setVisibility(View.GONE);//独立办公室title
         rlCharacteristic.setVisibility(View.GONE);//网点无特色
+        getDetails();
+    }
+
+    private void getDetails() {
         if (mChildHouseBean != null) {
             mPresenter.getDetails(String.valueOf(mChildHouseBean.getBtype()), String.valueOf(mChildHouseBean.getHouseId()));
-            //神策
-            SensorsTrack.visitHouseDataPage(String.valueOf(mChildHouseBean.getHouseId()));
+            SensorsTrack.visitHouseDataPage(String.valueOf(mChildHouseBean.getHouseId())); //神策
         }
     }
 
@@ -272,8 +275,10 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         if (data == null) {
             return;
         }
-        tvTitle.setText(data.getHouse().getBranchesName());
-        tvBuildingName.setText(data.getHouse().getBranchesName());
+        String name = TextUtils.isEmpty(data.getHouse().getTitle())
+                ? data.getHouse().getBranchesName() : data.getHouse().getTitle();
+        tvTitle.setText(name);
+        tvBuildingName.setText(name);
         mData = data;
         showVrVideoImg(data);
         houseId = data.getHouse().getId() + "";

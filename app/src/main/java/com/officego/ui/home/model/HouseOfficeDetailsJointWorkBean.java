@@ -115,6 +115,8 @@ public class HouseOfficeDetailsJointWorkBean {
         private int buildingId;
         @SerializedName("buildingName")
         private String buildingName;
+        @SerializedName("title")
+        private String title;
         @SerializedName("basicInformation")
         private BasicInformationBean basicInformation;
         @SerializedName("businessDistrict")
@@ -143,6 +145,14 @@ public class HouseOfficeDetailsJointWorkBean {
         private List<String> nearbySubwayTime;
         @SerializedName("stationColours")
         private List<String> stationColours;
+
+        public String getTitle() {
+            return title;
+        }
+
+        public void setTitle(String title) {
+            this.title = title;
+        }
 
         public String getAddress() {
             return address;

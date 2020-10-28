@@ -134,7 +134,7 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
         tvMore.setOnClickListener(clickListener);
         //房源详情
         holder.itemView.setOnClickListener(view ->
-                BundleUtils.ownerGotoDetailsActivity(mContext, false, bean.getBtype(), bean.getHouseId()));
+                BundleUtils.ownerGotoDetailsActivity(mContext, false, bean.getBtype(), bean.getHouseId(),bean.getIsTemp()));
     }
 
     private void share(HouseBean.ListBean bn) {

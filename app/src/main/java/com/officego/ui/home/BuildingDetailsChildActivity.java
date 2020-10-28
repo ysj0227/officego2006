@@ -29,19 +29,20 @@ import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.dialog.WeChatShareDialog;
 import com.officego.commonlib.common.model.HouseIdBundleBean;
+import com.officego.commonlib.common.model.ShareBean;
 import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.IVideoPlayer;
 import com.officego.commonlib.view.LabelsView;
 import com.officego.h5.WebViewVRActivity_;
-import com.officego.commonlib.common.model.ShareBean;
 import com.officego.ui.adapter.BuildingInfoAdapter;
+import com.officego.ui.dialog.PreImageDialog;
 import com.officego.ui.home.contract.BuildingDetailsChildContract;
 import com.officego.ui.home.model.BuildingInfoBean;
 import com.officego.ui.home.model.ChatsBean;
@@ -49,8 +50,6 @@ import com.officego.ui.home.model.HouseOfficeDetailsBean;
 import com.officego.ui.home.presenter.BuildingDetailsChildPresenter;
 import com.officego.ui.message.ConversationActivity_;
 import com.officego.utils.ImageLoaderUtils;
-import com.officego.ui.dialog.PreImageDialog;
-import com.officego.commonlib.common.dialog.WeChatShareDialog;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -245,10 +244,13 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         initVideo();
         nsvView.setOnScrollChangeListener(this);
         tvIndependentOffice.setVisibility(View.GONE);
+        getDetails();
+    }
+
+    private void getDetails() {
         if (mChildHouseBean != null) {
             mPresenter.getDetails(String.valueOf(mChildHouseBean.getBtype()), String.valueOf(mChildHouseBean.getHouseId()));
-            //神策
-            SensorsTrack.visitHouseDataPage(String.valueOf(mChildHouseBean.getHouseId()));
+            SensorsTrack.visitHouseDataPage(String.valueOf(mChildHouseBean.getHouseId())); //神策
         }
     }
 
@@ -303,8 +305,10 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
     @SuppressLint("SetTextI18n")
     private void houseInfo(HouseOfficeDetailsBean data) {
         if (data.getHouse() != null) {
-            tvTitle.setText(data.getHouse().getBuildingName());
-            tvBuildingName.setText(data.getHouse().getBuildingName());
+            String name = TextUtils.isEmpty(data.getHouse().getTitle())
+                    ? data.getHouse().getBuildingName() : data.getHouse().getTitle();
+            tvTitle.setText(name);
+            tvBuildingName.setText(name);
             String seats;
             if (data.getHouse().getSimple() != null && data.getHouse().getSimple().contains(",")) {
                 String str1 = data.getHouse().getSimple().substring(0, data.getHouse().getSimple().indexOf(","));

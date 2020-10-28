@@ -195,8 +195,7 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
             //预览
             ivPreview.setOnClickListener(view -> {
                 if (mUserData != null) {
-                    BundleUtils.ownerGotoDetailsActivity(mContext, true,
-                            bean.getBtype(), bean.getBuildingId());
+                    BundleUtils.ownerGotoDetailsActivity(mContext, true, bean.getBtype(), bean.getBuildingId(),bean.getIsTemp());
                 }
             });
             //编辑

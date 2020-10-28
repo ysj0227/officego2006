@@ -434,7 +434,6 @@ public class OfficegoApi {
                                       String decoration, String houseTags, String seats, RetrofitCallback<BuildingDetailsChildBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
-//        map.put("token", requestBody(""));
         map.put("buildingId", requestBody(buildingId));
         map.put("btype", requestBody(btype));
         map.put("area", requestBody(area));
@@ -460,7 +459,6 @@ public class OfficegoApi {
                                      RetrofitCallback<HouseOfficeDetailsBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
-//        map.put("token", requestBody(""));
         map.put("houseId", requestBody(houseId));
         map.put("btype", requestBody(btype));
         OfficegoRetrofitClient.getInstance().create(HomeInterface.class)
@@ -478,7 +476,6 @@ public class OfficegoApi {
                                               RetrofitCallback<HouseOfficeDetailsJointWorkBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
-//        map.put("token", requestBody(""));
         map.put("houseId", requestBody(houseId));
         map.put("btype", requestBody(btype));
         OfficegoRetrofitClient.getInstance().create(HomeInterface.class)
