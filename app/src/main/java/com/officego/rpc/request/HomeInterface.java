@@ -57,7 +57,7 @@ public interface HomeInterface {
 
 
     /**
-     * 楼盘下列表
+     * 楼盘下房源列表
      * 表单形式
      *
      * @return
@@ -67,7 +67,7 @@ public interface HomeInterface {
     Call<BaseResponse<BuildingDetailsChildBean>> getBuildingSelectList(@PartMap Map<String, RequestBody> params);
 
     /**
-     * 楼盘房源详情
+     * 楼盘下房源详情
      * 表单形式
      *
      * @return
