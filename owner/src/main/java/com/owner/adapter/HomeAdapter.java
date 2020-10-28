@@ -15,6 +15,7 @@ import com.officego.commonlib.common.model.owner.HouseBean;
 import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.GlideUtils;
+import com.officego.commonlib.utils.ToastUtils;
 import com.officego.commonlib.view.RoundImageView;
 import com.owner.R;
 
@@ -27,7 +28,6 @@ import java.util.List;
 public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
     private Context context;
     private List<HouseBean.ListBean> list;
-    private int buildingId;
 
     public HomeItemListener getListener() {
         return listener;
@@ -40,20 +40,19 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
     private HomeItemListener listener;
 
     public interface HomeItemListener {
-        void itemPublishStatus();
+        void itemPublishStatus(int pos,HouseBean.ListBean bean, boolean isOpenSeats);
 
         void itemEdit(HouseBean.ListBean bean);
 
-        void itemMore(boolean isOpenSeats, boolean isPublish);
+        void itemMore(HouseBean.ListBean bean, int position);
     }
 
     /**
      * @param context 上下文
      * @param list    列表数据
      */
-    public HomeAdapter(Context context, int buildingId, List<HouseBean.ListBean> list) {
+    public HomeAdapter(Context context, List<HouseBean.ListBean> list) {
         super(context, R.layout.item_building_manager, list);
-        this.buildingId = buildingId;
         this.list = list;
         this.context = context;
     }
@@ -100,28 +99,32 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
             tvPublishStatus.setVisibility(View.VISIBLE);
             tvPublishStatus.setText("发布");
         }
-        if (bean.getBtype() == 2 && bean.getOfficeType() == 2 && bean.getHouseStatus() != 2) {
-            //开放工位是关闭
+        //是否是开放工位
+        boolean isOpenSeats = bean.getBtype() == 2 && bean.getOfficeType() == 2 && bean.getHouseStatus() != 2;
+        if (isOpenSeats) {//开放工位是关闭
             tvPublishStatus.setVisibility(View.VISIBLE);
             tvPublishStatus.setText("关闭");
         }
         View.OnClickListener clickListener = view -> {
             int id = view.getId();
             if (id == R.id.tv_share) {
-                share(bean);
+                if (bean.getHouseStatus() == 2) {
+                    ToastUtils.toastForShort(context, "房源已下架，请先上架后再分享");
+                } else {
+                    share(bean);
+                }
             } else if (id == R.id.tv_edit) {
                 if (listener != null) {
                     listener.itemEdit(bean);
                 }
             } else if (id == R.id.tv_more) {
                 if (listener != null) {
-                    boolean isOpenSeat = bean.getBtype() == 2 && bean.getOfficeType() == 2;
-                    listener.itemMore(isOpenSeat, bean.getHouseStatus() == 1);
+                    listener.itemMore(bean, holder.getAdapterPosition());
                 }
             } else if (id == R.id.tv_publish_status) {
                 if (listener != null) {
                     //如果是独立办公室是发布， 开放工位是关闭
-                    listener.itemPublishStatus();
+                    listener.itemPublishStatus(holder.getAdapterPosition(),bean, isOpenSeats);
                 }
             }
         };
@@ -138,7 +141,7 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
         String dec = bn.getDictCname();
         ShareBean bean = new ShareBean();
         bean.setbType(1);
-        bean.setId("buildingId=" + buildingId + "&houseId=" + bn.getHouseId());
+        bean.setId("buildingId=" + bn.getBuildingId() + "&houseId=" + bn.getHouseId());
         bean.setHouseChild(true);
         bean.setTitle(bn.getTitle());
         bean.setDes(dec);

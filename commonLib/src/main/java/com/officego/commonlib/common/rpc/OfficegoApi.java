@@ -329,11 +329,41 @@ public class OfficegoApi {
         map.put("isTemp", requestBody(isTemp + ""));
         map.put("pageNo", requestBody(pageNo + ""));
         map.put("pageSize", requestBody("10"));
-        map.put("isStatus", requestBody(isStatus + ""));
+//        map.put("isStatus", requestBody(isStatus + ""));
         OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
                 .getHouseList(map)
                 .enqueue(callback);
     }
 
+    /**
+     * 上下架
+     * houseId 	是 	Integer 	房源id
+     * isRelease 	是 	Integer 	1发布2下架
+     */
+    public void isPublishHouse(int houseId, int isRelease, int isTemp, RetrofitCallback<Object> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("houseId", requestBody(houseId + ""));
+        map.put("isRelease", requestBody(isRelease + ""));
+        map.put("isTemp", requestBody(isTemp + ""));
+        OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
+                .getHouseRelease(map)
+                .enqueue(callback);
+    }
+
+    /**
+     * 房源删除
+     * houseId 	    是 	Integer 	房源id
+     * isTemp 	是否为临时房源 0:不是 1:是
+     */
+    public void getHouseDelete(int houseId, int isTemp, RetrofitCallback<Object> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("houseId", requestBody(houseId + ""));
+        map.put("isTemp", requestBody(isTemp + ""));
+        OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
+                .getHouseDelete(map)
+                .enqueue(callback);
+    }
 
 }

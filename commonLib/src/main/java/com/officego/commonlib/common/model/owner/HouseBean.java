@@ -104,6 +104,8 @@ public class HouseBean {
         private Object area;
         @SerializedName("houseId")
         private int houseId;
+        @SerializedName("buildingId")
+        private int buildingId;
         @SerializedName("dayPrice")
         private Object dayPrice;
         @SerializedName("houseStatus")
@@ -130,6 +132,8 @@ public class HouseBean {
         private String mainPic;
         @SerializedName("officeType")
         private int officeType;
+        @SerializedName("isTemp")
+        private int isTemp;
 
         public Object getArea() {
             return area;
@@ -249,6 +253,22 @@ public class HouseBean {
 
         public void setOfficeType(int officeType) {
             this.officeType = officeType;
+        }
+
+        public int getIsTemp() {
+            return isTemp;
+        }
+
+        public void setIsTemp(int isTemp) {
+            this.isTemp = isTemp;
+        }
+
+        public int getBuildingId() {
+            return buildingId;
+        }
+
+        public void setBuildingId(int buildingId) {
+            this.buildingId = buildingId;
         }
     }
 }

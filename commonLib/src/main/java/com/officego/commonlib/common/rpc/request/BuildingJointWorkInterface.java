@@ -38,4 +38,18 @@ public interface BuildingJointWorkInterface {
     @POST(path + "house/selectHouseList")
     Call<BaseResponse<HouseBean>> getHouseList(@PartMap Map<String, RequestBody> params);
 
+    /**
+     * 上下架房源
+     */
+    @Multipart
+    @POST(path + "house/houseReleaseOrShelves")
+    Call<BaseResponse<Object>> getHouseRelease(@PartMap Map<String, RequestBody> params);
+
+    /**
+     * 房源删除
+     */
+    @Multipart
+    @POST(path + "house/houseDelete")
+    Call<BaseResponse<Object>> getHouseDelete(@PartMap Map<String, RequestBody> params);
+
 }

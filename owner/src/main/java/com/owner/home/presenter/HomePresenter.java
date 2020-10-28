@@ -10,8 +10,6 @@ import com.owner.home.contract.HomeContract;
 import com.owner.mine.model.UserOwnerBean;
 import com.owner.rpc.OfficegoApi;
 
-import java.util.List;
-
 /**
  * Created by YangShiJie
  * Data 2020/6/6.
@@ -123,5 +121,57 @@ public class HomePresenter extends BasePresenter<HomeContract.View>
                 }
             }
         });
+    }
+
+    @Override
+    public void isPublishHouse(int houseId, int isRelease, int isTemp) {
+        mView.showLoadingDialog();
+        com.officego.commonlib.common.rpc.OfficegoApi.getInstance().isPublishHouse(
+                houseId, isRelease, isTemp, new RetrofitCallback<Object>() {
+                    @Override
+                    public void onSuccess(int code, String msg, Object data) {
+                        if (isViewAttached()) {
+                            mView.hideLoadingDialog();
+                            mView.publishOrOffHouseSuccess(isRelease);
+                        }
+                    }
+
+                    @Override
+                    public void onFail(int code, String msg, Object data) {
+                        LogCat.e(TAG, "getUserInfo onFail code=" + code + "  msg=" + msg);
+                        if (isViewAttached()) {
+                            mView.hideLoadingDialog();
+                            if (code == Constants.DEFAULT_ERROR_CODE) {
+                                mView.shortTip(msg);
+                            }
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void houseDelete(int houseId, int isTemp) {
+        mView.showLoadingDialog();
+        com.officego.commonlib.common.rpc.OfficegoApi.getInstance().getHouseDelete(
+                houseId, isTemp, new RetrofitCallback<Object>() {
+                    @Override
+                    public void onSuccess(int code, String msg, Object data) {
+                        if (isViewAttached()) {
+                            mView.hideLoadingDialog();
+                            mView.houseDeleteSuccess();
+                        }
+                    }
+
+                    @Override
+                    public void onFail(int code, String msg, Object data) {
+                        LogCat.e(TAG, "getUserInfo onFail code=" + code + "  msg=" + msg);
+                        if (isViewAttached()) {
+                            mView.hideLoadingDialog();
+                            if (code == Constants.DEFAULT_ERROR_CODE) {
+                                mView.shortTip(msg);
+                            }
+                        }
+                    }
+                });
     }
 }

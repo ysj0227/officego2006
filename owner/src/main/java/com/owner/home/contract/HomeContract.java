@@ -23,16 +23,24 @@ public interface HomeContract {
         void userInfoSuccess(UserOwnerBean data);
 
         void initHouseData(BuildingJointWorkBean.ListBean bean);
+
+        void houseDeleteSuccess();
+
+        void publishOrOffHouseSuccess(int currentStatus);
     }
 
     interface Presenter {
-        //获取楼盘或网点列表
-        void getBuildingJointWorkList();
+
+        void getBuildingJointWorkList();    //获取楼盘或网点列表
 
         void getHouseList(int buildingId, int isTemp, int pageNo, int isStatus);
 
         void getUserInfo();
 
         void initHouseList();
+
+        void isPublishHouse(int houseId, int isRelease,int isTemp);//上下架发布
+
+        void houseDelete(int houseId, int isTemp);//删除房源
     }
 }

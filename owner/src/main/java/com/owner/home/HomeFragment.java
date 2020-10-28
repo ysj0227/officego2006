@@ -58,8 +58,10 @@ import static com.officego.commonlib.utils.PermissionUtils.REQ_PERMISSIONS_CAMER
 @EFragment(resName = "activity_home")
 public class HomeFragment extends BaseMvpFragment<HomePresenter>
         implements HomeContract.View, SwipeRefreshLayout.OnRefreshListener,
-        HomeAdapter.HomeItemListener,
+        HomeAdapter.HomeItemListener, HomeMoreDialog.HouseMoreListener,
         BuildingJointWorkListPopupWindow.HomePopupListener {
+    private static final int HOUSE_ON = 1;//1发布
+    private static final int HOUSE_OFF = 2;//2下架
     @ViewById(resName = "rl_title")
     RelativeLayout rlTitle;
     @ViewById(resName = "iv_left_more")
@@ -88,9 +90,11 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     private boolean hasMore;
     private HomeAdapter homeAdapter;
     private List<HouseBean.ListBean> houseList = new ArrayList<>();
-
+    //楼盘网点信息
     private BuildingJointWorkBean.ListBean mData;
     private int buildingId;
+    //更多dialog-删除，上架刷新
+    private int mPosition;
 
     @AfterViews
     void init() {
@@ -192,36 +196,12 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         this.hasMore = hasMore;
         houseList.addAll(data);
         if (homeAdapter == null) {
-            homeAdapter = new HomeAdapter(mActivity, buildingId, houseList);
+            homeAdapter = new HomeAdapter(mActivity, houseList);
             rvView.setAdapter(homeAdapter);
             homeAdapter.setListener(this);
         } else {
             homeAdapter.notifyDataSetChanged();
         }
-    }
-
-    @Override
-    public void itemPublishStatus() {
-
-    }
-
-    @Override
-    public void itemEdit(HouseBean.ListBean bean) {
-        //编辑房源 独立办公室 开放工位
-        if (Constants.TYPE_BUILDING == bean.getBtype()) {
-            AddHouseActivity_.intent(getContext()).start();
-        } else {
-            if (bean.getOfficeType() == 2) {//2开放工位
-                AddOpenSeatsActivity_.intent(mActivity).start();
-            } else {//1独立办公室
-                AddIndependentActivity_.intent(mActivity).start();
-            }
-        }
-    }
-
-    @Override
-    public void itemMore(boolean isOpenSeats, boolean isPublish) {
-        new HomeMoreDialog(mActivity, isOpenSeats, isPublish);
     }
 
     @Override
@@ -240,13 +220,79 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         getHouseList();
     }
 
+
+    @Override
+    public void itemEdit(HouseBean.ListBean bean) {
+        //编辑房源 独立办公室 开放工位
+        if (Constants.TYPE_BUILDING == bean.getBtype()) {
+            AddHouseActivity_.intent(getContext()).start();
+        } else {
+            if (bean.getOfficeType() == 2) {//2开放工位
+                AddOpenSeatsActivity_.intent(mActivity).start();
+            } else {//1独立办公室
+                AddIndependentActivity_.intent(mActivity).start();
+            }
+        }
+    }
+
+    /**
+     * 1发布2下架
+     * true开放工位（关闭-下架）false（去发布）
+     */
+    @Override
+    public void itemPublishStatus(int position, HouseBean.ListBean bean, boolean isOpenSeats) {
+        mPosition = position;
+        if (isOpenSeats) {
+            mPresenter.isPublishHouse(bean.getHouseId(), HOUSE_OFF, bean.getIsTemp());
+        } else {
+            mPresenter.isPublishHouse(bean.getHouseId(), HOUSE_ON, bean.getIsTemp());
+        }
+    }
+
+    @Override
+    public void itemMore(HouseBean.ListBean bean, int position) {
+        new HomeMoreDialog(mActivity, bean, position).setListener(this);
+    }
+
+    //更多dialog下架 删除房源
+    @Override
+    public void toMoreHouseManager(boolean isDeleteHouse, HouseBean.ListBean bean, int position) {
+        mPosition = position;
+        if (isDeleteHouse) {
+            mPresenter.houseDelete(bean.getHouseId(), bean.getIsTemp());
+        } else {
+            mPresenter.isPublishHouse(bean.getHouseId(), HOUSE_OFF, bean.getIsTemp());
+        }
+    }
+
+    //房源删除成功刷新
+    @Override
+    public void houseDeleteSuccess() {
+        if (houseList != null) {
+            houseList.remove(mPosition);
+            homeAdapter.notifyDataSetChanged();
+        }
+    }
+
+    //下架或发布成功刷新
+    @Override
+    public void publishOrOffHouseSuccess(int currentStatus) {
+        houseList.get(mPosition).setHouseStatus(currentStatus);
+        homeAdapter.notifyItemChanged(mPosition);
+    }
+
     //左侧Popup选择
     @Override
     public void popupHouseList(BuildingJointWorkBean.ListBean bean) {
         tvHomeTitle.setText(bean.getBuildingName());
         buildingId = bean.getBuildingId();
         mData = bean;
+        getRefreshHouseList();
+    }
+
+    private void getRefreshHouseList() {
         houseList.clear();
+        pageNum = 1;
         if (homeAdapter != null) {
             homeAdapter.notifyDataSetChanged();
         }
@@ -271,6 +317,25 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         } else {
             new UnIdifyDialog(mActivity, data);
         }
+    }
+
+    //加载更多
+    private void loadingMoreList() {
+        if (NetworkUtils.isNetworkAvailable(mActivity) && hasMore) {
+            pageNum++;
+            getHouseList();
+        }
+    }
+
+    //开始下拉刷新
+    @Override
+    public void onRefresh() {
+        getRefreshHouseList();
+    }
+
+    @Override
+    public void endRefresh() {
+        mSwipeRefreshLayout.setRefreshing(false);
     }
 
     @Override
@@ -353,26 +418,4 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 
-
-    //加载更多
-    private void loadingMoreList() {
-        if (NetworkUtils.isNetworkAvailable(mActivity) && hasMore) {
-            pageNum++;
-            getHouseList();
-        }
-    }
-
-    //开始下拉刷新
-    @Override
-    public void onRefresh() {
-        pageNum = 1;
-        houseList.clear();
-        homeAdapter.notifyDataSetChanged();
-        getHouseList();
-    }
-
-    @Override
-    public void endRefresh() {
-        mSwipeRefreshLayout.setRefreshing(false);
-    }
 }

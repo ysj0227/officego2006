@@ -10,7 +10,10 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.TextView;
 
+import com.officego.commonlib.common.model.owner.HouseBean;
 import com.owner.R;
+
+import java.util.TreeMap;
 
 /**
  * Created by shijie
@@ -18,13 +21,31 @@ import com.owner.R;
  **/
 public class HomeMoreDialog {
     private Context context;
+    private HouseBean.ListBean bean;
+    private int position;
     private boolean isOpenSeats;//是否开放工位
-    private boolean isPublish;//是否发布房源
+    private boolean isPublish;//是否上架发布
 
-    public HomeMoreDialog(Context context, boolean isOpenSeats, boolean isPublish) {
+    public HouseMoreListener getListener() {
+        return listener;
+    }
+
+    public void setListener(HouseMoreListener listener) {
+        this.listener = listener;
+    }
+
+    private HouseMoreListener listener;
+
+    public interface HouseMoreListener {
+        void toMoreHouseManager(boolean isDeleteHouse, HouseBean.ListBean bean, int position);
+    }
+
+    public HomeMoreDialog(Context context, HouseBean.ListBean bean, int position) {
         this.context = context;
-        this.isOpenSeats = isOpenSeats;
-        this.isPublish = isPublish;
+        this.bean = bean;
+        this.position = position;
+        isOpenSeats = (bean.getBtype() == 2 && bean.getOfficeType() == 2)||bean.getHouseStatus()==2; //0未发布，1发布，2下架,3:待完善
+        isPublish = bean.getHouseStatus() == 1;
         moreDialog(context);
     }
 
@@ -49,19 +70,28 @@ public class HomeMoreDialog {
             lp.height = context.getResources().getDimensionPixelSize(R.dimen.dp_260);
         }
         dialogWindow.setAttributes(lp);
-        handleLayout(viewLayout);
-        viewLayout.findViewById(R.id.btn_cancel).setOnClickListener(v -> dialog.dismiss());
-        viewLayout.findViewById(R.id.rl_exit).setOnClickListener(v -> dialog.dismiss());
+        handleLayout(viewLayout, dialog);
         dialog.setCancelable(true);
         dialog.show();
     }
 
-    private void handleLayout(View viewLayout) {
+    private void handleLayout(View viewLayout, Dialog dialog) {
+        viewLayout.findViewById(R.id.btn_cancel).setOnClickListener(v -> dialog.dismiss());
+        viewLayout.findViewById(R.id.rl_exit).setOnClickListener(v -> dialog.dismiss());
         TextView tvOff = viewLayout.findViewById(R.id.tv_off);
+        TextView tvDelete = viewLayout.findViewById(R.id.tv_delete);
         if (isOpenSeats) {
             tvOff.setVisibility(View.GONE);
         } else {
             tvOff.setVisibility(isPublish ? View.VISIBLE : View.GONE);
         }
+        tvOff.setOnClickListener(view -> {
+            dialog.dismiss();
+            listener.toMoreHouseManager(false, bean, position);
+        });
+        tvDelete.setOnClickListener(view -> {
+            dialog.dismiss();
+            listener.toMoreHouseManager(true, bean, position);
+        });
     }
 }
