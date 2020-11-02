@@ -185,11 +185,6 @@ public class AddIndependentActivity extends BaseActivity
             shortTip("请输入租金");
             return;
         }
-        String floorNo = silFloorNo.getLeftToArrowTextView().getText().toString();
-        if (TextUtils.isEmpty(floorNo)) {
-            shortTip("请选择楼层");
-            return;
-        }
         String floors = etFloors.getText().toString();
         if (TextUtils.isEmpty(floors)) {
             shortTip("请输入楼层");
@@ -227,10 +222,10 @@ public class AddIndependentActivity extends BaseActivity
         startActivity(new Intent(context, QRScanActivity.class));
     }
 
-    @Click(resName = "sil_floor_no")
-    void floorNoOnClick() {
-        new FloorTypeDialog(context).setListener(this);
-    }
+//    @Click(resName = "sil_floor_no")
+//    void floorNoOnClick() {
+//        new FloorTypeDialog(context).setListener(this);
+//    }
 
     @Click(resName = "sil_free_rent")
     void freeRentOnClick() {

@@ -2,6 +2,7 @@ package com.owner.home.contract;
 
 import com.officego.commonlib.base.BaseView;
 import com.officego.commonlib.common.model.DirectoryBean;
+import com.officego.commonlib.common.model.owner.BuildingEditBean;
 
 import java.util.List;
 
@@ -11,6 +12,8 @@ import java.util.List;
  **/
 public interface JointWorkContract {
     interface View extends BaseView {
+        void buildingEditSuccess(BuildingEditBean data);
+
         void houseUniqueSuccess(List<DirectoryBean.DataBean> data);
 
         void roomMatchingSuccess(List<DirectoryBean.DataBean> data);
@@ -18,10 +21,10 @@ public interface JointWorkContract {
         void baseServiceSuccess(List<DirectoryBean.DataBean> data);
 
         void companyServiceSuccess(List<DirectoryBean.DataBean> data);
-
     }
 
     interface Presenter {
+        void getBuildingEdit(int buildingId, int isTemp);
 
         void getBranchUnique();
 

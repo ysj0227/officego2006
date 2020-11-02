@@ -42,9 +42,9 @@ public class Constants {
     // 系统消息
     public final static String TYPE_SYSTEM = "3";
 
-    //broadcast action
-    public static final String BROADCAST_ACTION = "com.officego";
-    public static final String BROADCAST_STATUS = "1000";
+    //自定义类型业主楼盘管理
+    public static final int BUILDING_FLAG_ADD = 1;
+    public static final int BUILDING_FLAG_EDIT = 2;
 
     //h5 flags
     public final static int H5_HELP = 0;

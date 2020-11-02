@@ -101,7 +101,7 @@
                 android:layout_below="@id/sil_rent_single"
                 app:leftMarkShow="visible"
                 app:leftText="所在楼层"
-                app:leftToArrowText="单层"
+                app:leftToArrowText=""
                 app:leftToArrowTextColor="@color/text_33"
                 app:rightArrowShow="visible"
                 app:rightOtherImageViewShow="gone"

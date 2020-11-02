@@ -13,6 +13,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -20,8 +21,10 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
+import com.officego.commonlib.common.model.BuildingManagerBean;
 import com.officego.commonlib.common.model.owner.BuildingJointWorkBean;
 import com.officego.commonlib.common.model.utils.BundleUtils;
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.ToastUtils;
 import com.owner.R;
@@ -138,12 +141,16 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
         }
         //添加楼盘网点
         tvAdd.setOnClickListener(view -> {
-            if (mUserData.getIdentityType() == identityType) {
-                AddJointWorkActivity_.intent(mContext).start();
-            } else {
-                AddBuildingActivity_.intent(mContext).start();
-            }
+            gotoActivity(Constants.BUILDING_FLAG_ADD,new BuildingManagerBean(0,0));
         });
+    }
+
+    private void gotoActivity(int flag, BuildingManagerBean managerBean) {
+        if (mUserData.getIdentityType() == identityType) {
+            AddJointWorkActivity_.intent(mContext).buildingFlag(flag).buildingManagerBean(managerBean).start();
+        } else {
+            AddBuildingActivity_.intent(mContext).buildingFlag(flag).buildingManagerBean(managerBean).start();
+        }
     }
 
     //房源特色
@@ -157,7 +164,7 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
         }
 
         /**
-         * "isEdit": 0,//是否可以编辑 为0时不可以编辑楼盘，为1时可以编辑楼盘
+         * "isEdit": 0,//是否可以编辑 为0时不可以编辑楼盘，为1时编辑楼盘
          * "isTemp": 0,//0是正式的楼盘（认证通过），1是临时的楼盘（审核中的）
          * "status": 2//-1:不是管理员 暂无权限编辑楼盘(临时楼盘),0: 下架(未发布),1: 上架(已发布) ;2:资料待完善 ,
          * 3: 置顶推荐;4:已售完;5:删除;6待审核7已驳回 注意：（IsTemp为1时，status状态标记 1:待审核 -转6 ,2:已驳回 -转7 ）
@@ -167,9 +174,11 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
             ImageView ivStatus = holder.getView(R.id.iv_status);
             ImageView ivPreview = holder.getView(R.id.iv_preview);
             ImageView ivEdit = holder.getView(R.id.iv_edit);
+            RelativeLayout rlPreview = holder.getView(R.id.rl_preview);
+            RelativeLayout rlEdit = holder.getView(R.id.rl_edit);
             ImageView ivPoint = holder.getView(R.id.iv_point);
             TextView tvTitle = holder.getView(R.id.tv_title);
-            ivEdit.setBackgroundResource(0 == bean.getIsEdit() ? R.mipmap.ic_edit_blue : R.mipmap.ic_edit_gray);
+            ivEdit.setBackgroundResource(1 == bean.getIsEdit() ? R.mipmap.ic_edit_blue : R.mipmap.ic_edit_gray);
             String name = bean.getBuildingName();
             if (!TextUtils.isEmpty(name) && name.length() > 13) {
                 tvTitle.setText(name.substring(0, 13) + "...");
@@ -193,19 +202,15 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
                 ivStatus.setVisibility(View.GONE);
             }
             //预览
-            ivPreview.setOnClickListener(view -> {
+            rlPreview.setOnClickListener(view -> {
                 if (mUserData != null) {
-                    BundleUtils.ownerGotoDetailsActivity(mContext, true, bean.getBtype(), bean.getBuildingId(),bean.getIsTemp());
+                    BundleUtils.ownerGotoDetailsActivity(mContext, true, bean.getBtype(), bean.getBuildingId(), bean.getIsTemp());
                 }
             });
             //编辑
-            ivEdit.setOnClickListener(view -> {
-                if (0 == bean.getIsEdit()) {
-                    if (mUserData.getIdentityType() == identityType) {
-                        AddJointWorkActivity_.intent(mContext).start();
-                    } else {
-                        AddBuildingActivity_.intent(mContext).start();
-                    }
+            rlEdit.setOnClickListener(view -> {
+                if (1 == bean.getIsEdit()) {
+                    gotoActivity(Constants.BUILDING_FLAG_EDIT,new BuildingManagerBean(bean.getBuildingId(),bean.getIsTemp()));
                 } else {
                     ToastUtils.toastForShort(context, "暂不可编辑");
                 }

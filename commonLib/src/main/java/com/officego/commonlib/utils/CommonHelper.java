@@ -46,7 +46,9 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.text.DecimalFormat;
+import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.List;
 import java.util.Locale;
 import java.util.Map;
 import java.util.Objects;
@@ -562,5 +564,15 @@ public class CommonHelper {
             key = key.replace(key.length() - 1, key.length(), "");
         }
         return key.toString();
+    }
+
+    public static List<String> stringList(String str) {
+        List<String> result;
+        if (str.contains(",")) {
+            result = Arrays.asList(str.split(","));
+        } else {
+            result = Arrays.asList(str.split("，"));
+        }
+        return result;
     }
 }

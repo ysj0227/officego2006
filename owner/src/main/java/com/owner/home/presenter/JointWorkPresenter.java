@@ -2,7 +2,9 @@ package com.owner.home.presenter;
 
 import com.officego.commonlib.base.BasePresenter;
 import com.officego.commonlib.common.model.DirectoryBean;
+import com.officego.commonlib.common.model.owner.BuildingEditBean;
 import com.officego.commonlib.common.rpc.OfficegoApi;
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.owner.home.contract.JointWorkContract;
 
@@ -16,6 +18,30 @@ import java.util.List;
 public class JointWorkPresenter extends BasePresenter<JointWorkContract.View>
         implements JointWorkContract.Presenter {
     private final String TAG = this.getClass().getSimpleName();
+
+    @Override
+    public void getBuildingEdit(int buildingId, int isTemp) {
+        mView.showLoadingDialog();
+        OfficegoApi.getInstance().getBuildingEdit(buildingId, isTemp, new RetrofitCallback<BuildingEditBean>() {
+            @Override
+            public void onSuccess(int code, String msg, BuildingEditBean data) {
+                if (isViewAttached()) {
+                    mView.buildingEditSuccess(data);
+                    mView.hideLoadingDialog();
+                }
+            }
+
+            @Override
+            public void onFail(int code, String msg, BuildingEditBean data) {
+                if (isViewAttached()) {
+                    mView.hideLoadingDialog();
+                    if (code == Constants.DEFAULT_ERROR_CODE) {
+                        mView.shortTip(msg);
+                    }
+                }
+            }
+        });
+    }
 
     @Override
     public void getBranchUnique() {

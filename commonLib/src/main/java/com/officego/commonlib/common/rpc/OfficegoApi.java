@@ -9,6 +9,7 @@ import com.officego.commonlib.common.model.ExchangeContactsBean;
 import com.officego.commonlib.common.model.FirstChatBean;
 import com.officego.commonlib.common.model.IdentitychattedMsgBean;
 import com.officego.commonlib.common.model.RongUserInfoBean;
+import com.officego.commonlib.common.model.owner.BuildingEditBean;
 import com.officego.commonlib.common.model.owner.BuildingJointWorkBean;
 import com.officego.commonlib.common.model.owner.HouseBean;
 import com.officego.commonlib.common.rpc.request.BuildingJointWorkInterface;
@@ -365,5 +366,19 @@ public class OfficegoApi {
                 .getHouseDelete(map)
                 .enqueue(callback);
     }
+
+    /**
+     * 楼盘网点编辑
+     */
+    public void getBuildingEdit(int buildingId, int isTemp, RetrofitCallback<BuildingEditBean> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("buildingId", requestBody(buildingId + ""));
+        map.put("isTemp", requestBody(isTemp + ""));
+        OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
+                .getBuildingEdit(map)
+                .enqueue(callback);
+    }
+
 
 }

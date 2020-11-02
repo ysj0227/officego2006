@@ -1,5 +1,6 @@
 package com.owner.home;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -22,9 +23,12 @@ import com.donkingliang.imageselector.utils.ImageSelector;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.dialog.YearDateDialog;
+import com.officego.commonlib.common.model.BuildingManagerBean;
 import com.officego.commonlib.common.model.DirectoryBean;
+import com.officego.commonlib.common.model.owner.BuildingEditBean;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
+import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.commonlib.utils.EditInputFilter;
 import com.officego.commonlib.utils.FileHelper;
 import com.officego.commonlib.utils.FileUtils;
@@ -34,6 +38,7 @@ import com.officego.commonlib.utils.PhotoUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.ClearableEditText;
+import com.officego.commonlib.view.TitleBarView;
 import com.officego.commonlib.view.widget.SettingItemLayout;
 import com.owner.R;
 import com.owner.adapter.JointCompanyAdapter;
@@ -58,10 +63,14 @@ import com.owner.zxing.QRScanActivity;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -78,6 +87,9 @@ public class AddBuildingActivity extends BaseMvpActivity<BuildingPresenter>
         UniqueAdapter.UniqueListener {
     private static final int REQUEST_GALLERY = 0xa0;
     private static final int REQUEST_CAMERA = 0xa1;
+
+    @ViewById(resName = "title_bar")
+    TitleBarView titleBar;
     @ViewById(resName = "sil_building_type")
     SettingItemLayout silBuildingType;
     @ViewById(resName = "sil_garden_name")
@@ -144,11 +156,17 @@ public class AddBuildingActivity extends BaseMvpActivity<BuildingPresenter>
     @ViewById(resName = "iv_close_scan")
     ImageView ivCloseScan;
 
+    //是否添加还是编辑
+    @Extra
+    int buildingFlag;
+    @Extra
+    BuildingManagerBean buildingManagerBean;
     //是否竣工时间
     private boolean isCompleteTime;
     //区域
     private int district, business;
     //特色
+    private UniqueAdapter uniqueAdapter;
     private String uniqueTags;
     private Map<Integer, String> uniqueMap;
     //加入企业
@@ -166,10 +184,15 @@ public class AddBuildingActivity extends BaseMvpActivity<BuildingPresenter>
         mPresenter.attachView(this);
         initViews();
         initDigits();
-        mPresenter.getBuildingUnique();
+        if (buildingFlag == Constants.BUILDING_FLAG_EDIT) {
+            mPresenter.getBuildingEdit(buildingManagerBean.getBuildingId(), buildingManagerBean.getIsTemp());
+        } else {
+            mPresenter.getBuildingUnique();
+        }
     }
 
     private void initViews() {
+        titleBar.setAppTitle(buildingFlag == Constants.BUILDING_FLAG_ADD ? "添加楼盘" : "编辑楼盘");
         //特色
         GridLayoutManager layoutManager = new GridLayoutManager(context, 3);
         rvHouseUnique.setLayoutManager(layoutManager);
@@ -367,9 +390,106 @@ public class AddBuildingActivity extends BaseMvpActivity<BuildingPresenter>
 
     @Override
     public void houseUniqueSuccess(List<DirectoryBean.DataBean> data) {
-        UniqueAdapter adapter = new UniqueAdapter(context, uniqueMap, data);
-        adapter.setListener(this);
-        rvHouseUnique.setAdapter(adapter);
+        uniqueAdapter = new UniqueAdapter(context, uniqueMap, data);
+        uniqueAdapter.setListener(this);
+        rvHouseUnique.setAdapter(uniqueAdapter);
+    }
+
+    @SuppressLint("UseSparseArrays")
+    @Override
+    public void buildingEditSuccess(BuildingEditBean data) {
+        if (data == null) return;
+        if (data.getBuildingMsg() != null) {
+            //楼盘类型1写字楼 2商务园 3创意园 4共享空间 5公寓  6产业园
+            silGardenName.setVisibility(View.VISIBLE);
+            silGardenName.getEditTextView().setText(data.getBuildingMsg().getBuildingName());
+            if (data.getBuildingMsg().getBuildingType() == 1) {
+                silNo.setVisibility(View.GONE);
+                silGardenName.setTitle("写字楼名称");
+                silBuildingType.setCenterText("写字楼");
+            } else if (data.getBuildingMsg().getBuildingType() == 3) {
+                silNo.setVisibility(View.VISIBLE);
+                silGardenName.setTitle("园区名称");
+                silBuildingType.setCenterText("创意园");
+                silNo.getEditTextView().setText(data.getBuildingMsg().getBuildingNum());
+            } else if (data.getBuildingMsg().getBuildingType() == 6) {
+                silNo.setVisibility(View.VISIBLE);
+                silGardenName.setTitle("园区名称");
+                silBuildingType.setCenterText("产业园");
+                silNo.getEditTextView().setText(data.getBuildingMsg().getBuildingNum());
+            }
+            //区域
+            silArea.setCenterText(data.getAddress());
+            district = TextUtils.isEmpty(data.getBuildingMsg().getDistrictId()) ? 0 : Integer.valueOf(data.getBuildingMsg().getDistrictId());
+            business = TextUtils.isEmpty(data.getBuildingMsg().getBusinessDistrict()) ? 0 : Integer.valueOf(data.getBuildingMsg().getBusinessDistrict());
+            silAddress.getEditTextView().setText(data.getBuildingMsg().getAddress());
+            //总楼层
+            silStorey.getEditTextView().setText(data.getBuildingMsg().getTotalFloor());
+            //竣工翻新时间
+            silCompleteTime.setCenterText(DateTimeUtils.getYear(data.getBuildingMsg().getCreateTime()));
+            silReCompleteTime.setCenterText(DateTimeUtils.getYear(data.getBuildingMsg().getUpdateTime()));
+            //建筑面积
+            silGrossArea.getEditTextView().setText(data.getBuildingMsg().getConstructionArea());
+            //净高层高
+            silStoreyHeight.getEditTextView().setText(data.getBuildingMsg().getClearHeight());
+            silTierHeight.getEditTextView().setText(data.getBuildingMsg().getStoreyHeight());
+            //物业公司 物业费
+            silEstate.getEditTextView().setText(data.getBuildingMsg().getProperty());
+            silEstateFee.getEditTextView().setText(data.getBuildingMsg().getPropertyCosts());
+            //车位数 车位费
+            silCarNum.getEditTextView().setText(data.getBuildingMsg().getParkingSpace());
+            silCarFee.getEditTextView().setText(data.getBuildingMsg().getParkingSpaceRent());
+            //空调类型
+            String ariCondition = data.getBuildingMsg().getAirConditioning();
+            silConditioned.setCenterText(ariCondition);
+            silConditionedFee.setVisibility(View.VISIBLE);
+            if (ariCondition.contains("中央")) {
+                silConditionedFee.setCenterText("包含在物业费内，加时另计");
+            } else if (ariCondition.contains("独立")) {
+                silConditionedFee.setCenterText("按电表计费");
+            } else {
+                silConditionedFee.setCenterText("无");
+            }
+            //电梯数
+            etCustomerLift.setText(data.getBuildingMsg().getPassengerLift());
+            etPassengerLift.setText(data.getBuildingMsg().getCargoLift());
+            //网络
+            String internet = data.getBuildingMsg().getInternet();
+            if (internet.contains("电信")) {
+                rbTelecom.setChecked(true);
+            }
+            if (internet.contains("联通")) {
+                rbUnicom.setChecked(true);
+            }
+            if (internet.contains("移动")) {
+                rbMobile.setChecked(true);
+            }
+            //介绍
+            cetDescContent.setText(data.getBuildingMsg().getPromoteSlogan());
+            //入住企业
+            String settlementLicence = data.getBuildingMsg().getSettlementLicence();
+            if (!TextUtils.isEmpty(settlementLicence)) {
+                jointCompanyList.clear();
+                List<String> result = CommonHelper.stringList(settlementLicence);
+                for (int i = 0; i < result.size(); i++) {
+                    jointCompanyList.add(i, result.get(i));
+                }
+                adapter.notifyDataSetChanged();
+            }
+            //楼盘特色
+            String tags = data.getBuildingMsg().getTags();
+            if (!TextUtils.isEmpty(tags)) {
+                List<String> result = CommonHelper.stringList(tags);
+                uniqueMap = new HashMap<>();
+                for (int i = 0; i < result.size(); i++) {
+                    uniqueMap.put(Integer.valueOf(result.get(i)), "");
+                }
+            }
+            //特色get
+            mPresenter.getBuildingUnique();
+            //上传楼盘图片 TODO
+
+        }
     }
 
     @Override

@@ -1,12 +1,11 @@
 package com.officego.commonlib.common.rpc.request;
 
 
-import com.officego.commonlib.common.model.DirectoryBean;
+import com.officego.commonlib.common.model.owner.BuildingEditBean;
 import com.officego.commonlib.common.model.owner.BuildingJointWorkBean;
 import com.officego.commonlib.common.model.owner.HouseBean;
 import com.officego.commonlib.retrofit.BaseResponse;
 
-import java.util.List;
 import java.util.Map;
 
 import okhttp3.RequestBody;
@@ -51,5 +50,12 @@ public interface BuildingJointWorkInterface {
     @Multipart
     @POST(path + "house/houseDelete")
     Call<BaseResponse<Object>> getHouseDelete(@PartMap Map<String, RequestBody> params);
+
+    /**
+     * 楼盘，网点编辑
+     */
+    @Multipart
+    @POST(path + "building/getBuildingMsgByBuildingId")
+    Call<BaseResponse<BuildingEditBean>> getBuildingEdit(@PartMap Map<String, RequestBody> params);
 
 }

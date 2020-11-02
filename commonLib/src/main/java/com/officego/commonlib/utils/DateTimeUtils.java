@@ -1155,4 +1155,13 @@ public class DateTimeUtils {
         }
         return rightNow.getActualMaximum(Calendar.DAY_OF_MONTH);
     }
+
+    public static String getYear(long time) {
+        if (time == 0) {
+            return "";
+        }
+        Date date = new Date(time*1000);
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
+        return sdf.format(date)+"年";
+    }
 }

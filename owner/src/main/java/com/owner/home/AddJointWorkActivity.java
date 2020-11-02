@@ -1,5 +1,6 @@
 package com.owner.home;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -21,8 +22,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.donkingliang.imageselector.utils.ImageSelector;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.model.BuildingManagerBean;
 import com.officego.commonlib.common.model.DirectoryBean;
+import com.officego.commonlib.common.model.owner.BuildingEditBean;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.EditInputFilter;
 import com.officego.commonlib.utils.FileHelper;
 import com.officego.commonlib.utils.FileUtils;
@@ -31,6 +35,7 @@ import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.PhotoUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.ClearableEditText;
+import com.officego.commonlib.view.TitleBarView;
 import com.officego.commonlib.view.widget.SettingItemLayout;
 import com.owner.R;
 import com.owner.adapter.JointCompanyAdapter;
@@ -54,10 +59,12 @@ import com.owner.zxing.QRScanActivity;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -78,6 +85,8 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
     private static final int REQUEST_GALLERY = 0xa0;
     private static final int REQUEST_CAMERA = 0xa1;
 
+    @ViewById(resName = "title_bar")
+    TitleBarView titleBar;
     @ViewById(resName = "tv_upload_title")
     TextView tvUploadTitle;
     @ViewById(resName = "tv_house_characteristic")
@@ -148,6 +157,11 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
     Button btnScan;
     @ViewById(resName = "iv_close_scan")
     ImageView ivCloseScan;
+    //是否添加还是编辑
+    @Extra
+    int buildingFlag;
+    @Extra
+    BuildingManagerBean buildingManagerBean;
     //区域
     private int district, business;
     //加入企业
@@ -160,6 +174,7 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
     //基础服务
     private Map<Integer, String> baseMap;
     //特色
+    private UniqueAdapter uniqueAdapter;
     private Map<Integer, String> uniqueMap;
     //上传图片
     private List<ImageBean> uploadImageList = new ArrayList<>();
@@ -173,10 +188,15 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
         mPresenter.attachView(this);
         initViews();
         initDigits();
-        mPresenter.getBranchUnique();
+        if (buildingFlag == Constants.BUILDING_FLAG_EDIT) {
+            mPresenter.getBuildingEdit(buildingManagerBean.getBuildingId(), buildingManagerBean.getIsTemp());
+        }else {
+            mPresenter.getBranchUnique();
+        }
     }
 
     private void initViews() {
+        titleBar.setAppTitle(buildingFlag == Constants.BUILDING_FLAG_ADD ? "添加共享办公" : "编辑共享办公");
         tvUploadTitle.setText("上传网点图片");
         tvHouseCharacteristic.setText("共享办公特色");
         ivMarkImageLift.setVisibility(View.INVISIBLE);
@@ -338,11 +358,131 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
         new ConditionedDialog(context).setListener(this);
     }
 
+    @SuppressLint("SetTextI18n")
+    @Override
+    public void buildingEditSuccess(BuildingEditBean data) {
+        if (data == null) return;
+        if (data.getBuildingMsg() != null) {
+            //网点名称
+            silJointWorkName.getEditTextView().setText(data.getBuildingMsg().getBranchesName());
+            silArea.setCenterText(data.getAddress());
+            //区域
+            district = TextUtils.isEmpty(data.getBuildingMsg().getDistrictId()) ? 0 : Integer.valueOf(data.getBuildingMsg().getDistrictId());
+            business = TextUtils.isEmpty(data.getBuildingMsg().getBusinessDistrict()) ? 0 : Integer.valueOf(data.getBuildingMsg().getBusinessDistrict());
+            silAddress.getEditTextView().setText(data.getBuildingMsg().getAddress());
+            //所在楼层 1是单层2是多层
+            silFloorNo.setCenterText(TextUtils.equals("1", data.getBuildingMsg().getFloorType()) ? "单层" : "多层");
+            etFloors.setText(data.getBuildingMsg().getTotalFloor());
+            etFloorsCount.setText(data.getBuildingMsg().getBranchesTotalFloor());
+            //净高
+            silStoreyHeight.getEditTextView().setText(data.getBuildingMsg().getClearHeight());
+            //空调类型
+            String ariCondition = data.getBuildingMsg().getAirConditioning();
+            silConditioned.setCenterText(ariCondition);
+            silConditionedFee.setVisibility(View.VISIBLE);
+            if (ariCondition.contains("中央")) {
+                silConditionedFee.setCenterText("包含在物业费内，加时另计");
+            } else if (ariCondition.contains("独立")) {
+                silConditionedFee.setCenterText("按电表计费");
+            } else {
+                silConditionedFee.setCenterText("无");
+            }
+            //会议室数量
+            silMeetingRoom.getEditTextView().setText(data.getBuildingMsg().getConferenceNumber() + "");
+            //容纳人数
+            silContainsPersons.getEditTextView().setText(data.getBuildingMsg().getConferencePeopleNumber() + "");
+            //车位数 车位费
+            silCarNum.getEditTextView().setText(data.getBuildingMsg().getParkingSpace());
+            silCarFee.getEditTextView().setText(data.getBuildingMsg().getParkingSpaceRent());
+            //电梯数
+            etCustomerLift.setText(data.getBuildingMsg().getPassengerLift());
+            etPassengerLift.setText(data.getBuildingMsg().getCargoLift());
+            //网络
+            String internet = data.getBuildingMsg().getInternet();
+            if (internet.contains("电信")) {
+                rbTelecom.setChecked(true);
+            }
+            if (internet.contains("联通")) {
+                rbUnicom.setChecked(true);
+            }
+            if (internet.contains("移动")) {
+                rbMobile.setChecked(true);
+            }
+            //介绍
+            cetDescContent.setText(data.getBuildingMsg().getPromoteSlogan());
+            //入住企业
+            String settlementLicence = data.getBuildingMsg().getSettlementLicence();
+            if (!TextUtils.isEmpty(settlementLicence)) {
+                jointCompanyList.clear();
+                List<String> result = CommonHelper.stringList(settlementLicence);
+                for (int i = 0; i < result.size(); i++) {
+                    jointCompanyList.add(i, result.get(i));
+                }
+                adapter.notifyDataSetChanged();
+            }
+            //楼盘特色
+            String tags = data.getBuildingMsg().getTags();
+            if (!TextUtils.isEmpty(tags)) {
+                List<String> result = CommonHelper.stringList(tags);
+                uniqueMap = new HashMap<>();
+                for (int i = 0; i < result.size(); i++) {
+                    uniqueMap.put(Integer.valueOf(result.get(i)), "");
+                }
+            }
+            mPresenter.getBranchUnique();
+            //共享服务
+            services(data);
+        }
+
+    }
+
+    private void services(BuildingEditBean data){
+        meetingMap=new HashMap<>();
+        baseMap=new HashMap<>();
+        companyMap=new HashMap<>();
+        List<DirectoryBean.DataBean> meetingList=new ArrayList<>();
+        List<DirectoryBean.DataBean> companyList=new ArrayList<>();
+        List<DirectoryBean.DataBean> baseList=new ArrayList<>();
+        //企业服务
+        DirectoryBean.DataBean companyBean;
+        for (int i = 0; i <data.getCompanyService().size() ; i++) {
+            companyBean=new DirectoryBean.DataBean();
+            companyBean.setDictValue(data.getCompanyService().get(i).getDictValue());
+            companyBean.setDictImg(data.getCompanyService().get(i).getDictImg());
+            companyBean.setDictImgBlack(data.getCompanyService().get(i).getDictImgBlack());
+            companyList.add(companyBean);
+            companyMap.put(data.getCompanyService().get(i).getDictValue(),data.getCompanyService().get(i).getDictImg());
+        }
+        rvCompanyService.setAdapter(new ServiceLogoAdapter(context, companyList));
+        //基础服务
+        DirectoryBean.DataBean baseBean;
+        for (int i = 0; i <data.getBasicServices().size() ; i++) {
+            baseBean=new DirectoryBean.DataBean();
+            baseBean.setDictValue(data.getBasicServices().get(i).getDictValue());
+            baseBean.setDictImg(data.getBasicServices().get(i).getDictImg());
+            baseBean.setDictImgBlack(data.getBasicServices().get(i).getDictImgBlack());
+            baseList.add(baseBean);
+            baseMap.put(data.getBasicServices().get(i).getDictValue(),data.getBasicServices().get(i).getDictImg());
+        }
+        rvBaseService.setAdapter(new ServiceLogoAdapter(context, baseList));
+        //会议室配套
+        DirectoryBean.DataBean meetingBean;
+        for (int i = 0; i <data.getRoomMatching().size() ; i++) {
+            meetingBean=new DirectoryBean.DataBean();
+            meetingBean.setDictValue(data.getRoomMatching().get(i).getDictValue());
+            meetingBean.setDictImg(data.getRoomMatching().get(i).getDictImg());
+            meetingBean.setDictImgBlack(data.getRoomMatching().get(i).getDictImgBlack());
+            meetingList.add(meetingBean);
+            meetingMap.put(data.getRoomMatching().get(i).getDictValue(),data.getRoomMatching().get(i).getDictImg());
+        }
+        rvMeetingMatch.setAdapter(new ServiceLogoAdapter(context, meetingList));
+    }
+
     @Override
     public void houseUniqueSuccess(List<DirectoryBean.DataBean> data) {
-        UniqueAdapter adapter = new UniqueAdapter(context, uniqueMap, data);
-        adapter.setListener(this);
-        rvHouseUnique.setAdapter(adapter);
+        uniqueAdapter = new UniqueAdapter(context, uniqueMap, data);
+        uniqueAdapter.setListener(this);
+        rvHouseUnique.setAdapter(uniqueAdapter);
     }
 
     @Override
