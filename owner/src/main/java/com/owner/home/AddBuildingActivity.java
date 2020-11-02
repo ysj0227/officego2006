@@ -26,6 +26,7 @@ import com.officego.commonlib.common.dialog.YearDateDialog;
 import com.officego.commonlib.common.model.BuildingManagerBean;
 import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.commonlib.common.model.owner.BuildingEditBean;
+import com.officego.commonlib.common.model.owner.UploadImageBean;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.DateTimeUtils;
@@ -493,6 +494,12 @@ public class AddBuildingActivity extends BaseMvpActivity<BuildingPresenter>
     }
 
     @Override
+    public void uploadSuccess(UploadImageBean data) {
+        imageAdapter.notifyDataSetChanged();
+        shortTip("上传成功");
+    }
+
+    @Override
     public void selectedDate(String date) {
         if (isCompleteTime) {
             silCompleteTime.setCenterText(date);
@@ -628,15 +635,16 @@ public class AddBuildingActivity extends BaseMvpActivity<BuildingPresenter>
             if (requestCode == REQUEST_CAMERA) {//拍照
                 ImageUtils.isSaveCropImageView(localImagePath);//图片处理
                 uploadImageList.add(uploadImageList.size() - 1, new ImageBean(false, 0, localImagePath));
-                imageAdapter.notifyDataSetChanged();
+                //imageAdapter.notifyDataSetChanged();
             } else if (requestCode == REQUEST_GALLERY && data != null) {//相册
                 List<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
                 for (int i = 0; i < images.size(); i++) {
                     ImageUtils.isSaveCropImageView(images.get(i));//图片处理
                     uploadImageList.add(uploadImageList.size() - 1, new ImageBean(false, 0, images.get(i)));
                 }
-                imageAdapter.notifyDataSetChanged();
+                //imageAdapter.notifyDataSetChanged();
             }
+            mPresenter.uploadImage(uploadImageList);
         }
     }
 

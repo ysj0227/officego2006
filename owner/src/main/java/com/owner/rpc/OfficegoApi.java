@@ -5,6 +5,8 @@ import android.text.TextUtils;
 import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.model.QueryApplyLicenceBean;
+import com.officego.commonlib.common.model.owner.UploadImageBean;
+import com.officego.commonlib.common.rpc.request.BuildingJointWorkInterface;
 import com.officego.commonlib.common.rpc.request.LicenceInterface;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.owner.identity.model.ApplyJoinBean;
@@ -639,5 +641,27 @@ public class OfficegoApi {
                 .enqueue(callback);
     }
 
+
+    /**
+     * 上传图片
+     */
+    public void uploadImageUrl(List<ImageBean> mFilePath, RetrofitCallback<UploadImageBean> callback) {
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        builder.addFormDataPart("token", SpUtils.getSignToken());
+        if (mFilePath != null && mFilePath.size() > 0) {
+            RequestBody file;
+            boolean isNetImg;
+            for (int i = 0; i < mFilePath.size(); i++) {
+                isNetImg = mFilePath.get(i).isNetImage();
+                if (!isNetImg && i < mFilePath.size() - 1) {
+                    file = RequestBody.create(MediaType.parse("image/*"), new File(mFilePath.get(i).getPath()));
+                    builder.addFormDataPart("files", "owner_files" + i + ".png", file);
+                }
+            }
+        }
+        OfficegoRetrofitClient1.getInstance().create(BuildingJointWorkInterface.class)
+                .uploadResourcesUrl(builder.build())
+                .enqueue(callback);
+    }
 
 }

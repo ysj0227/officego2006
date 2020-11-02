@@ -379,6 +379,4 @@ public class OfficegoApi {
                 .getBuildingEdit(map)
                 .enqueue(callback);
     }
-
-
 }

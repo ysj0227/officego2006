@@ -190,7 +190,7 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
         initDigits();
         if (buildingFlag == Constants.BUILDING_FLAG_EDIT) {
             mPresenter.getBuildingEdit(buildingManagerBean.getBuildingId(), buildingManagerBean.getIsTemp());
-        }else {
+        } else {
             mPresenter.getBranchUnique();
         }
     }
@@ -432,50 +432,64 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
             mPresenter.getBranchUnique();
             //共享服务
             services(data);
+            //网点图片
+            showImage(data);
         }
 
     }
 
-    private void services(BuildingEditBean data){
-        meetingMap=new HashMap<>();
-        baseMap=new HashMap<>();
-        companyMap=new HashMap<>();
-        List<DirectoryBean.DataBean> meetingList=new ArrayList<>();
-        List<DirectoryBean.DataBean> companyList=new ArrayList<>();
-        List<DirectoryBean.DataBean> baseList=new ArrayList<>();
+    private void services(BuildingEditBean data) {
+        meetingMap = new HashMap<>();
+        baseMap = new HashMap<>();
+        companyMap = new HashMap<>();
+        List<DirectoryBean.DataBean> meetingList = new ArrayList<>();
+        List<DirectoryBean.DataBean> companyList = new ArrayList<>();
+        List<DirectoryBean.DataBean> baseList = new ArrayList<>();
         //企业服务
         DirectoryBean.DataBean companyBean;
-        for (int i = 0; i <data.getCompanyService().size() ; i++) {
-            companyBean=new DirectoryBean.DataBean();
+        for (int i = 0; i < data.getCompanyService().size(); i++) {
+            companyBean = new DirectoryBean.DataBean();
             companyBean.setDictValue(data.getCompanyService().get(i).getDictValue());
             companyBean.setDictImg(data.getCompanyService().get(i).getDictImg());
             companyBean.setDictImgBlack(data.getCompanyService().get(i).getDictImgBlack());
             companyList.add(companyBean);
-            companyMap.put(data.getCompanyService().get(i).getDictValue(),data.getCompanyService().get(i).getDictImg());
+            companyMap.put(data.getCompanyService().get(i).getDictValue(), data.getCompanyService().get(i).getDictImg());
         }
         rvCompanyService.setAdapter(new ServiceLogoAdapter(context, companyList));
         //基础服务
         DirectoryBean.DataBean baseBean;
-        for (int i = 0; i <data.getBasicServices().size() ; i++) {
-            baseBean=new DirectoryBean.DataBean();
+        for (int i = 0; i < data.getBasicServices().size(); i++) {
+            baseBean = new DirectoryBean.DataBean();
             baseBean.setDictValue(data.getBasicServices().get(i).getDictValue());
             baseBean.setDictImg(data.getBasicServices().get(i).getDictImg());
             baseBean.setDictImgBlack(data.getBasicServices().get(i).getDictImgBlack());
             baseList.add(baseBean);
-            baseMap.put(data.getBasicServices().get(i).getDictValue(),data.getBasicServices().get(i).getDictImg());
+            baseMap.put(data.getBasicServices().get(i).getDictValue(), data.getBasicServices().get(i).getDictImg());
         }
         rvBaseService.setAdapter(new ServiceLogoAdapter(context, baseList));
         //会议室配套
         DirectoryBean.DataBean meetingBean;
-        for (int i = 0; i <data.getRoomMatching().size() ; i++) {
-            meetingBean=new DirectoryBean.DataBean();
+        for (int i = 0; i < data.getRoomMatching().size(); i++) {
+            meetingBean = new DirectoryBean.DataBean();
             meetingBean.setDictValue(data.getRoomMatching().get(i).getDictValue());
             meetingBean.setDictImg(data.getRoomMatching().get(i).getDictImg());
             meetingBean.setDictImgBlack(data.getRoomMatching().get(i).getDictImgBlack());
             meetingList.add(meetingBean);
-            meetingMap.put(data.getRoomMatching().get(i).getDictValue(),data.getRoomMatching().get(i).getDictImg());
+            meetingMap.put(data.getRoomMatching().get(i).getDictValue(), data.getRoomMatching().get(i).getDictImg());
         }
         rvMeetingMatch.setAdapter(new ServiceLogoAdapter(context, meetingList));
+    }
+
+    //网点图片
+    private void showImage(BuildingEditBean data) {
+        //封面图
+        if (!TextUtils.isEmpty(data.getBuildingMsg().getMainPic())) {
+            uploadImageList.add(uploadImageList.size() - 1, new ImageBean(true, 0, data.getBuildingMsg().getMainPic()));
+        }
+        for (int i = 0; i < data.getBanner().size(); i++) {
+            uploadImageList.add(uploadImageList.size() - 1, new ImageBean(true, 0, data.getBanner().get(i).getImgUrl()));
+        }
+        imageAdapter.notifyDataSetChanged();
     }
 
     @Override
