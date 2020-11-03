@@ -29,6 +29,7 @@ import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.ToastUtils;
 import com.owner.R;
 import com.owner.home.AddBuildingActivity_;
+import com.owner.home.AddBuildingJointWorkActivity_;
 import com.owner.home.AddJointWorkActivity_;
 import com.owner.mine.model.UserOwnerBean;
 
@@ -141,15 +142,24 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
         }
         //添加楼盘网点
         tvAdd.setOnClickListener(view -> {
-            gotoActivity(Constants.BUILDING_FLAG_ADD,new BuildingManagerBean(0,0));
+            gotoAddActivity();
         });
     }
 
-    private void gotoActivity(int flag, BuildingManagerBean managerBean) {
+    private void gotoEditActivity(int flag, BuildingManagerBean managerBean) {
         if (mUserData.getIdentityType() == identityType) {
+            AddBuildingJointWorkActivity_.intent(mContext).start();
             AddJointWorkActivity_.intent(mContext).buildingFlag(flag).buildingManagerBean(managerBean).start();
         } else {
             AddBuildingActivity_.intent(mContext).buildingFlag(flag).buildingManagerBean(managerBean).start();
+        }
+    }
+
+    private void gotoAddActivity() {
+        if (mUserData.getIdentityType() == identityType) {
+            AddBuildingJointWorkActivity_.intent(mContext).flay(0).start();
+        } else {
+            AddBuildingJointWorkActivity_.intent(mContext).flay(1).start();
         }
     }
 
@@ -210,7 +220,7 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
             //编辑
             rlEdit.setOnClickListener(view -> {
                 if (1 == bean.getIsEdit()) {
-                    gotoActivity(Constants.BUILDING_FLAG_EDIT,new BuildingManagerBean(bean.getBuildingId(),bean.getIsTemp()));
+                    gotoEditActivity(Constants.BUILDING_FLAG_EDIT, new BuildingManagerBean(bean.getBuildingId(), bean.getIsTemp()));
                 } else {
                     ToastUtils.toastForShort(context, "暂不可编辑");
                 }

@@ -320,7 +320,7 @@ public class AddOpenSeatsActivity extends BaseMvpActivity<OpenSeatsPresenter>
             //工位
             silSeats.getEditTextView().setText(data.getHouseMsg().getSeats() + "");
             //租金
-            silRentSingle.getEditTextView().setText(data.getHouseMsg().getMonthPrice() + "");
+            silRentSingle.getEditTextView().setText(data.getHouseMsg().getDayPrice() + "");
             //楼层
             etFloors.setText(data.getHouseMsg().getFloor());
             tvCountsFloor.setText("总" + "" + "层");
