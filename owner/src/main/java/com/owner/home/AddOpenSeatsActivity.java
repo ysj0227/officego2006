@@ -22,6 +22,7 @@ import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.dialog.RentDialog;
 import com.officego.commonlib.common.model.BuildingManagerBean;
 import com.officego.commonlib.common.model.owner.HouseEditBean;
+import com.officego.commonlib.common.model.owner.UploadImageBean;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.FileHelper;
 import com.officego.commonlib.utils.FileUtils;
@@ -268,14 +269,14 @@ public class AddOpenSeatsActivity extends BaseMvpActivity<OpenSeatsPresenter>
             if (requestCode == REQUEST_CAMERA) {//拍照
                 ImageUtils.isSaveCropImageView(localImagePath);//图片处理
                 uploadImageList.add(uploadImageList.size() - 1, new ImageBean(false, 0, localImagePath));
-                imageAdapter.notifyDataSetChanged();
+                mPresenter.uploadImage(uploadImageList);
             } else if (requestCode == REQUEST_GALLERY && data != null) {//相册
                 List<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
                 for (int i = 0; i < images.size(); i++) {
                     ImageUtils.isSaveCropImageView(images.get(i));//图片处理
                     uploadImageList.add(uploadImageList.size() - 1, new ImageBean(false, 0, images.get(i)));
                 }
-                imageAdapter.notifyDataSetChanged();
+                mPresenter.uploadImage(uploadImageList);
             }
         }
     }
@@ -299,14 +300,8 @@ public class AddOpenSeatsActivity extends BaseMvpActivity<OpenSeatsPresenter>
         if (isFastClick(1200)) {
             return;
         }
-        //如果是网络图片
-        if (bean.isNetImage()) {
-            //删除网络图片成功 TODO
-            //mPresenter.deleteImage(true, bean.getId(), position);
-        } else {
-            uploadImageList.remove(position);
-            imageAdapter.notifyDataSetChanged();
-        }
+        uploadImageList.remove(position);
+        imageAdapter.notifyDataSetChanged();
     }
 
     //设置封面图
@@ -350,5 +345,19 @@ public class AddOpenSeatsActivity extends BaseMvpActivity<OpenSeatsPresenter>
             uploadImageList.add(uploadImageList.size() - 1, new ImageBean(true, 0, data.getBanner().get(i).getImgUrl()));
         }
         imageAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void uploadSuccess(UploadImageBean data) {
+        if (data != null && data.getUrls() != null && data.getUrls().size() > 0) {
+            int urlSize = data.getUrls().size();
+            ImageBean bean;
+            for (int i = 0; i < urlSize; i++) {
+                bean = new ImageBean(true, 0, data.getUrls().get(i).getUrl());
+                uploadImageList.set(uploadImageList.size() - 1 - urlSize + i, bean);
+            }
+            imageAdapter.notifyDataSetChanged();
+        }
+        shortTip("上传成功");
     }
 }

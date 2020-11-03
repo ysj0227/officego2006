@@ -228,7 +228,8 @@ public class AddBuildingActivity extends BaseMvpActivity<BuildingPresenter>
         //面积 0.1-1000正数数字，保留1位小数，单位 万M²
         silGrossArea.getEditTextView().addTextChangedListener(new AreaTextWatcher(context, 1000, silGrossArea.getEditTextView()));
         //物业费 0-100之间正数，保留1位小数
-        silEstateFee.getEditTextView().addTextChangedListener(new EstateFeeTextWatcher(context, 100, silEstateFee.getEditTextView()));
+//        silEstateFee.getEditTextView().addTextChangedListener(new EstateFeeTextWatcher(context, 100, silEstateFee.getEditTextView()));
+        silEstateFee.getEditTextView().addTextChangedListener(new EstateFeeTextWatcher(context, 10000, silEstateFee.getEditTextView()));
         //净高 层高 0-8或一位小数
         silStoreyHeight.getEditTextView().addTextChangedListener(new FloorHeightTextWatcher(context, silStoreyHeight.getEditTextView()));
         silTierHeight.getEditTextView().addTextChangedListener(new FloorHeightTextWatcher(context, silTierHeight.getEditTextView()));
@@ -246,27 +247,30 @@ public class AddBuildingActivity extends BaseMvpActivity<BuildingPresenter>
     @Click(resName = "btn_next")
     void nextOnClick() {
         //网络
-        StringBuilder buffer = new StringBuilder();
-        if (rbTelecom.isChecked()) {
-            buffer.append(rbTelecom.getText().toString()).append(",");
+//        StringBuilder buffer = new StringBuilder();
+//        if (rbTelecom.isChecked()) {
+//            buffer.append(rbTelecom.getText().toString()).append(",");
+//        }
+//        if (rbUnicom.isChecked()) {
+//            buffer.append(rbUnicom.getText().toString()).append(",");
+//        }
+//        if (rbMobile.isChecked()) {
+//            buffer.append(rbMobile.getText().toString()).append(",");
+//        }
+//        String net = buffer.toString();
+//        if (!TextUtils.isEmpty(net)) {
+//            LogCat.e(TAG, "111111 net=" + buffer.toString().substring(0, buffer.toString().length() - 1));
+//        }
+//        LogCat.e(TAG, "111111 uniqueTags=" + uniqueTags);
+//        //入住企业
+//        for (int i = 0; i < jointCompanyList.size(); i++) {
+//            LogCat.e(TAG, "111111 jointCompanyList=" + jointCompanyList.get(i));
+//        }
+//        submit();
+        for (int i = 0; i <uploadImageList.size() ; i++) {
+            LogCat.e(TAG,"11111111 ="+uploadImageList.get(i).getPath());
+
         }
-        if (rbUnicom.isChecked()) {
-            buffer.append(rbUnicom.getText().toString()).append(",");
-        }
-        if (rbMobile.isChecked()) {
-            buffer.append(rbMobile.getText().toString()).append(",");
-        }
-        String net = buffer.toString();
-        if (!TextUtils.isEmpty(net)) {
-            LogCat.e(TAG, "111111 net=" + buffer.toString().substring(0, buffer.toString().length() - 1));
-        }
-        LogCat.e(TAG, "111111 uniqueTags=" + uniqueTags);
-        //入住企业
-        for (int i = 0; i < jointCompanyList.size(); i++) {
-            LogCat.e(TAG, "111111 jointCompanyList=" + jointCompanyList.get(i));
-        }
-        //UploadVideoVrActivity_.intent(context).start();
-        submit();
     }
 
     private void submit() {
@@ -504,8 +508,16 @@ public class AddBuildingActivity extends BaseMvpActivity<BuildingPresenter>
 
     @Override
     public void uploadSuccess(UploadImageBean data) {
-        imageAdapter.notifyDataSetChanged();
-        shortTip("上传成功");
+        if (data != null && data.getUrls() != null && data.getUrls().size() > 0) {
+            int urlSize = data.getUrls().size();
+            ImageBean bean;
+            for (int i = 0; i < urlSize; i++) {
+                bean = new ImageBean(true, 0, data.getUrls().get(i).getUrl());
+                uploadImageList.set(uploadImageList.size() - 1 - urlSize + i, bean);
+            }
+            imageAdapter.notifyDataSetChanged();
+            shortTip("上传成功");
+        }
     }
 
     @Override
@@ -551,14 +563,8 @@ public class AddBuildingActivity extends BaseMvpActivity<BuildingPresenter>
         if (isFastClick(1200)) {
             return;
         }
-        //如果是网络图片
-        if (bean.isNetImage()) {
-            //删除网络图片成功 TODO
-            //mPresenter.deleteImage(true, bean.getId(), position);
-        } else {
-            uploadImageList.remove(position);
-            imageAdapter.notifyDataSetChanged();
-        }
+        uploadImageList.remove(position);
+        imageAdapter.notifyDataSetChanged();
     }
 
     //设置封面图
@@ -644,7 +650,6 @@ public class AddBuildingActivity extends BaseMvpActivity<BuildingPresenter>
             if (requestCode == REQUEST_CAMERA) {//拍照
                 ImageUtils.isSaveCropImageView(localImagePath);//图片处理
                 uploadImageList.add(uploadImageList.size() - 1, new ImageBean(false, 0, localImagePath));
-                //imageAdapter.notifyDataSetChanged();
                 mPresenter.uploadImage(uploadImageList);
             } else if (requestCode == REQUEST_GALLERY && data != null) {//相册
                 List<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
@@ -652,7 +657,6 @@ public class AddBuildingActivity extends BaseMvpActivity<BuildingPresenter>
                     ImageUtils.isSaveCropImageView(images.get(i));//图片处理
                     uploadImageList.add(uploadImageList.size() - 1, new ImageBean(false, 0, images.get(i)));
                 }
-                //imageAdapter.notifyDataSetChanged();
                 mPresenter.uploadImage(uploadImageList);
             }
         }

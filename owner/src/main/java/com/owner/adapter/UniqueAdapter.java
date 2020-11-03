@@ -8,6 +8,7 @@ import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
 import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.commonlib.utils.CommonHelper;
+import com.officego.commonlib.utils.ToastUtils;
 import com.owner.R;
 
 import java.util.HashMap;
@@ -20,7 +21,7 @@ import java.util.Map;
  * 特色
  **/
 public class UniqueAdapter extends CommonListAdapter<DirectoryBean.DataBean> {
-
+    private Context context;
     private Map<Integer, String> map;
 
     public UniqueListener getListener() {
@@ -40,6 +41,7 @@ public class UniqueAdapter extends CommonListAdapter<DirectoryBean.DataBean> {
     @SuppressLint("UseSparseArrays")
     public UniqueAdapter(Context context, Map<Integer, String> map, List<DirectoryBean.DataBean> list) {
         super(context, R.layout.item_house_type, list);
+        this.context = context;
         this.map = map;
         if (this.map == null) {
             this.map = new HashMap<>();
@@ -57,6 +59,7 @@ public class UniqueAdapter extends CommonListAdapter<DirectoryBean.DataBean> {
             if (isChecked) {
                 if (map.size() >= 4) {
                     cbType.setChecked(false);
+                    ToastUtils.toastForShort(context, "最多选择4项");
                     return;
                 }
                 if (!map.containsKey(bean.getDictValue())) {

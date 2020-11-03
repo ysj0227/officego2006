@@ -1,6 +1,7 @@
 package com.owner.rpc;
 
 import android.text.TextUtils;
+import android.widget.Toast;
 
 import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
@@ -641,9 +642,8 @@ public class OfficegoApi {
                 .enqueue(callback);
     }
 
-
     /**
-     * 上传图片
+     * 上传多张图片
      */
     public void uploadImageUrl(List<ImageBean> mFilePath, RetrofitCallback<UploadImageBean> callback) {
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
@@ -662,6 +662,21 @@ public class OfficegoApi {
         OfficegoRetrofitClient1.getInstance().create(BuildingJointWorkInterface.class)
                 .uploadResourcesUrl(builder.build())
                 .enqueue(callback);
+    }
+
+    /**
+     * 上传图片
+     */
+    public void uploadSingleImageUrl(String mFilePath, RetrofitCallback<UploadImageBean> callback) {
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        builder.addFormDataPart("token", SpUtils.getSignToken());
+        if (!TextUtils.isEmpty(mFilePath)) {
+            RequestBody file = RequestBody.create(MediaType.parse("image/*"), new File(mFilePath));
+            builder.addFormDataPart("files", "owner_files.png", file);
+            OfficegoRetrofitClient1.getInstance().create(BuildingJointWorkInterface.class)
+                    .uploadResourcesUrl(builder.build())
+                    .enqueue(callback);
+        }
     }
 
 }

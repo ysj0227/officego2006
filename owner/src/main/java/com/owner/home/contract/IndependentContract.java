@@ -3,6 +3,8 @@ package com.owner.home.contract;
 import com.officego.commonlib.base.BaseView;
 import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.commonlib.common.model.owner.HouseEditBean;
+import com.officego.commonlib.common.model.owner.UploadImageBean;
+import com.owner.identity.model.ImageBean;
 
 import java.util.List;
 
@@ -12,10 +14,18 @@ import java.util.List;
  **/
 public interface IndependentContract {
     interface View extends BaseView {
+
         void houseEditSuccess(HouseEditBean data);
+
+        //是否户型介绍上传  还是多图
+        void uploadSuccess(boolean isIntroduceLayout, UploadImageBean data);
     }
 
     interface Presenter {
         void getHouseEdit(int houseId, int isTemp);
+
+        void uploadImage(List<ImageBean> mFilePath);
+
+        void uploadSingleImage(String mFilePath);
     }
 }

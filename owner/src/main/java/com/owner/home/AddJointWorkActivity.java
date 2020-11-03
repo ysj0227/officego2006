@@ -517,7 +517,15 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
 
     @Override
     public void uploadSuccess(UploadImageBean data) {
-        imageAdapter.notifyDataSetChanged();
+        if (data != null && data.getUrls() != null && data.getUrls().size() > 0) {
+            int urlSize = data.getUrls().size();
+            ImageBean bean;
+            for (int i = 0; i < urlSize; i++) {
+                bean = new ImageBean(true, 0, data.getUrls().get(i).getUrl());
+                uploadImageList.set(uploadImageList.size() - 1 - urlSize + i, bean);
+            }
+            imageAdapter.notifyDataSetChanged();
+        }
         shortTip("上传成功");
     }
 
@@ -576,14 +584,8 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
         if (isFastClick(1200)) {
             return;
         }
-        //如果是网络图片
-        if (bean.isNetImage()) {
-            //删除网络图片成功 TODO
-            //mPresenter.deleteImage(true, bean.getId(), position);
-        } else {
-            uploadImageList.remove(position);
-            imageAdapter.notifyDataSetChanged();
-        }
+        uploadImageList.remove(position);
+        imageAdapter.notifyDataSetChanged();
     }
 
     //设置封面图
@@ -650,7 +652,6 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
             if (requestCode == REQUEST_CAMERA) {//拍照
                 ImageUtils.isSaveCropImageView(localImagePath);//图片处理
                 uploadImageList.add(uploadImageList.size() - 1, new ImageBean(false, 0, localImagePath));
-                //imageAdapter.notifyDataSetChanged();
                 mPresenter.uploadImage(uploadImageList);
             } else if (requestCode == REQUEST_GALLERY && data != null) {//相册
                 List<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
@@ -658,7 +659,6 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
                     ImageUtils.isSaveCropImageView(images.get(i));//图片处理
                     uploadImageList.add(uploadImageList.size() - 1, new ImageBean(false, 0, images.get(i)));
                 }
-                //imageAdapter.notifyDataSetChanged();
                 mPresenter.uploadImage(uploadImageList);
             }
         }

@@ -26,14 +26,13 @@ import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.dialog.RentDialog;
 import com.officego.commonlib.common.model.BuildingManagerBean;
 import com.officego.commonlib.common.model.DirectoryBean;
-import com.officego.commonlib.common.model.owner.BuildingEditBean;
 import com.officego.commonlib.common.model.owner.HouseEditBean;
+import com.officego.commonlib.common.model.owner.UploadImageBean;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.EditInputFilter;
 import com.officego.commonlib.utils.FileHelper;
 import com.officego.commonlib.utils.FileUtils;
-import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.utils.ImageUtils;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.PhotoUtils;
@@ -85,6 +84,8 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
         UploadBuildingImageAdapter.UploadImageListener {
     private static final int REQUEST_GALLERY = 0xa0;
     private static final int REQUEST_CAMERA = 0xa1;
+    private static final int TYPE_INTRODUCE = 1;
+    private static final int TYPE_BANNER = 2;
     @ViewById(resName = "title_bar")
     TitleBarView titleBar;
     @ViewById(resName = "tv_upload_title")
@@ -164,6 +165,10 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
     private List<ImageBean> uploadImageList = new ArrayList<>();
     private UploadBuildingImageAdapter imageAdapter;
     private String localImagePath;
+    //户型介绍图片
+    private String introduceImageUrl;
+    //图片上传类型
+    private int mUploadType;
 
     @AfterViews
     void init() {
@@ -343,6 +348,12 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
         tvRentSumTip.setVisibility(View.GONE);
     }
 
+    @Click(resName = "iv_desc_image")
+    void layoutIntroduceOnClick() {
+        mUploadType = TYPE_INTRODUCE;
+        selectedDialog();
+    }
+
     private void itemListener() {
         //租金总价
         silRentSum.getEditTextView().setOnFocusChangeListener((view, b) -> {
@@ -423,6 +434,7 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
             //介绍
             cetDescContent.setText(data.getHouseMsg().getUnitPatternRemark());
             //户型介绍图
+            introduceImageUrl = data.getHouseMsg().getUnitPatternImg();
             Glide.with(context).load(data.getHouseMsg().getUnitPatternImg()).into(ivDescImage);
             //办公室图片
             showImage(data);
@@ -457,6 +469,25 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
     }
 
     @Override
+    public void uploadSuccess(boolean isIntroduceLayout, UploadImageBean data) {
+        if (data != null && data.getUrls() != null && data.getUrls().size() > 0) {
+            int urlSize = data.getUrls().size();
+            if (isIntroduceLayout) {//户型介绍
+                introduceImageUrl = data.getUrls().get(0).getUrl();
+                Glide.with(context).load(introduceImageUrl).into(ivDescImage);
+            } else {//多图
+                ImageBean bean;
+                for (int i = 0; i < urlSize; i++) {
+                    bean = new ImageBean(true, 0, data.getUrls().get(i).getUrl());
+                    uploadImageList.set(uploadImageList.size() - 1 - urlSize + i, bean);
+                }
+                imageAdapter.notifyDataSetChanged();
+            }
+            shortTip("上传成功");
+        }
+    }
+
+    @Override
     public void selectedRent(String str) {
         silFreeRent.setLeftToArrowText(str);
     }
@@ -479,6 +510,7 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
     //图片上传
     @Override
     public void addUploadImage() {
+        mUploadType = TYPE_BANNER;
         selectedDialog();
     }
 
@@ -488,14 +520,8 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
         if (isFastClick(1200)) {
             return;
         }
-        //如果是网络图片
-        if (bean.isNetImage()) {
-            //删除网络图片成功 TODO
-            //mPresenter.deleteImage(true, bean.getId(), position);
-        } else {
-            uploadImageList.remove(position);
-            imageAdapter.notifyDataSetChanged();
-        }
+        uploadImageList.remove(position);
+        imageAdapter.notifyDataSetChanged();
     }
 
     //设置封面图
@@ -539,18 +565,28 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
     private void openGallery() {
         if (isOverLimit()) return;
         if (!PermissionUtils.checkStoragePermission(this)) return;
-        ImageSelector.builder()
-                .useCamera(false) // 设置是否使用拍照
-                .setSingle(false)  //设置是否单选
-                .setMaxSelectCount(10 - uploadImageList.size())
-                .canPreview(true) //是否可以预览图片，默认为true
-                .start(this, REQUEST_GALLERY); // 打开相册
+        if (TYPE_BANNER == mUploadType) {
+            ImageSelector.builder()
+                    .useCamera(false) // 设置是否使用拍照
+                    .setSingle(false)  //设置是否单选
+                    .setMaxSelectCount(10 - uploadImageList.size())
+                    .canPreview(true) //是否可以预览图片，默认为true
+                    .start(this, REQUEST_GALLERY); // 打开相册
+        } else {
+            ImageSelector.builder()
+                    .useCamera(false) // 设置是否使用拍照
+                    .setSingle(true)  //设置是否单选
+                    .canPreview(true) //是否可以预览图片，默认为true
+                    .start(this, REQUEST_GALLERY); // 打开相册
+        }
     }
 
     private boolean isOverLimit() {
-        if (uploadImageList.size() >= 10) {
-            shortTip(R.string.tip_image_upload_overlimit);
-            return true;
+        if (TYPE_BANNER == mUploadType) {
+            if (uploadImageList.size() >= 10) {
+                shortTip(R.string.tip_image_upload_overlimit);
+                return true;
+            }
         }
         return false;
     }
@@ -561,15 +597,23 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CAMERA) {//拍照
                 ImageUtils.isSaveCropImageView(localImagePath);//图片处理
-                uploadImageList.add(uploadImageList.size() - 1, new ImageBean(false, 0, localImagePath));
-                imageAdapter.notifyDataSetChanged();
+                if (TYPE_BANNER == mUploadType) {
+                    uploadImageList.add(uploadImageList.size() - 1, new ImageBean(false, 0, localImagePath));
+                    mPresenter.uploadImage(uploadImageList);
+                } else {
+                    mPresenter.uploadSingleImage(localImagePath);
+                }
             } else if (requestCode == REQUEST_GALLERY && data != null) {//相册
                 List<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
-                for (int i = 0; i < images.size(); i++) {
-                    ImageUtils.isSaveCropImageView(images.get(i));//图片处理
-                    uploadImageList.add(uploadImageList.size() - 1, new ImageBean(false, 0, images.get(i)));
+                if (TYPE_BANNER == mUploadType) {
+                    for (int i = 0; i < images.size(); i++) {
+                        ImageUtils.isSaveCropImageView(images.get(i));//图片处理
+                        uploadImageList.add(uploadImageList.size() - 1, new ImageBean(false, 0, images.get(i)));
+                    }
+                    mPresenter.uploadImage(uploadImageList);
+                } else {
+                    mPresenter.uploadSingleImage(images.get(0));//介绍图单张上传
                 }
-                imageAdapter.notifyDataSetChanged();
             }
         }
     }
