@@ -46,7 +46,6 @@ public class UploadAddImageAdapter extends CommonListAdapter<ImageBean> {
         void addUploadImage();
 
         void deleteUploadImage(ImageBean bean, int position);
-
     }
 
     @Override
