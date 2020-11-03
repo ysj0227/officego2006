@@ -1,5 +1,6 @@
 package com.owner.home;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -16,10 +17,13 @@ import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.donkingliang.imageselector.utils.ImageSelector;
-import com.officego.commonlib.base.BaseActivity;
+import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.dialog.RentDialog;
+import com.officego.commonlib.common.model.BuildingManagerBean;
+import com.officego.commonlib.common.model.owner.HouseEditBean;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.EditInputFilter;
 import com.officego.commonlib.utils.FileHelper;
@@ -29,11 +33,14 @@ import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.PhotoUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.ClearableEditText;
+import com.officego.commonlib.view.TitleBarView;
 import com.officego.commonlib.view.widget.SettingItemLayout;
 import com.owner.R;
 import com.owner.adapter.UploadBuildingImageAdapter;
 import com.owner.dialog.ConditionedDialog;
 import com.owner.dialog.FloorTypeDialog;
+import com.owner.home.contract.IndependentContract;
+import com.owner.home.presenter.IndependentPresenter;
 import com.owner.home.rule.AreaTextWatcher;
 import com.owner.home.rule.CarFeeTextWatcher;
 import com.owner.home.rule.FloorHeightTextWatcher;
@@ -45,6 +52,7 @@ import com.owner.zxing.QRScanActivity;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.File;
@@ -56,12 +64,14 @@ import java.util.List;
  * Date 2020/10/19
  **/
 @EActivity(resName = "activity_home_independent_manager")
-public class AddIndependentActivity extends BaseActivity
-        implements RentDialog.SureClickListener,
+public class AddIndependentActivity extends BaseMvpActivity<IndependentPresenter>
+        implements IndependentContract.View, RentDialog.SureClickListener,
         FloorTypeDialog.FloorListener, ConditionedDialog.ConditionedListener,
         UploadBuildingImageAdapter.UploadImageListener {
     private static final int REQUEST_GALLERY = 0xa0;
     private static final int REQUEST_CAMERA = 0xa1;
+    @ViewById(resName = "title_bar")
+    TitleBarView titleBar;
     @ViewById(resName = "tv_upload_title")
     TextView tvUploadTitle;
     @ViewById(resName = "tv_des_title")
@@ -76,8 +86,6 @@ public class AddIndependentActivity extends BaseActivity
     SettingItemLayout silRentSingle;
     @ViewById(resName = "sil_floor_no")
     SettingItemLayout silFloorNo;
-    @ViewById(resName = "sil_rent_sum")
-    SettingItemLayout silRentSum;
     //第几层 总楼层
     @ViewById(resName = "et_floors")
     EditText etFloors;
@@ -114,7 +122,11 @@ public class AddIndependentActivity extends BaseActivity
     ImageView ivCloseScan;
     @ViewById(resName = "iv_desc_image")
     ImageView ivDescImage;
-
+    //是否添加还是编辑
+    @Extra
+    int buildingFlag;
+    @Extra
+    BuildingManagerBean buildingManagerBean;
     //上传图片
     private List<ImageBean> uploadImageList = new ArrayList<>();
     private UploadBuildingImageAdapter imageAdapter;
@@ -123,11 +135,17 @@ public class AddIndependentActivity extends BaseActivity
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarFullTransparent(this);
+        mPresenter = new IndependentPresenter();
+        mPresenter.attachView(this);
         initViews();
         initDigits();
+        if (buildingFlag == Constants.BUILDING_FLAG_EDIT) {
+            mPresenter.getHouseEdit(buildingManagerBean.getBuildingId(), buildingManagerBean.getIsTemp());
+        }
     }
 
     private void initViews() {
+        titleBar.setAppTitle(buildingFlag == Constants.BUILDING_FLAG_ADD ? "添加独立办公室" : "编辑独立办公室");
         tvUploadTitle.setText("上传办公室图片");
         tvDesTitle.setText("户型格局介绍");
         //上传图片
@@ -170,7 +188,6 @@ public class AddIndependentActivity extends BaseActivity
 
     @Click(resName = "btn_next")
     void nextOnClick() {
-//        UploadVideoVrActivity_.intent(context).start();
         submit();
     }
 
@@ -221,11 +238,6 @@ public class AddIndependentActivity extends BaseActivity
         }
         startActivity(new Intent(context, QRScanActivity.class));
     }
-
-//    @Click(resName = "sil_floor_no")
-//    void floorNoOnClick() {
-//        new FloorTypeDialog(context).setListener(this);
-//    }
 
     @Click(resName = "sil_free_rent")
     void freeRentOnClick() {
@@ -364,4 +376,62 @@ public class AddIndependentActivity extends BaseActivity
         uploadImageList.set(position, imageBean);
         imageAdapter.notifyDataSetChanged();
     }
+
+    @SuppressLint("SetTextI18n")
+    @Override
+    public void houseEditSuccess(HouseEditBean data) {
+        if (data == null) return;
+        if (data.getHouseMsg() != null) {
+            //标题
+            silTitle.getEditTextView().setText(data.getHouseMsg().getTitle());
+            //工位
+            silSeats.getEditTextView().setText(data.getHouseMsg().getSeats() + "");
+            //面积
+            silArea.getEditTextView().setText(data.getHouseMsg().getArea() + "");
+            //租金
+            silRentSingle.getEditTextView().setText(data.getHouseMsg().getMonthPrice() + "");
+            //楼层
+            etFloors.setText(data.getHouseMsg().getFloor());
+            tvCountsFloor.setText("总" + "" + "层");
+            //租期
+            silRentTime.getEditTextView().setText(data.getHouseMsg().getMinimumLease());
+            silFreeRent.getEditTextView().setText(data.getHouseMsg().getRentFreePeriod());
+            //空调类型
+            String ariCondition = data.getHouseMsg().getConditioningType();
+            silConditioned.setCenterText(ariCondition);
+            silConditionedFee.setVisibility(View.VISIBLE);
+            if (ariCondition.contains("中央")) {
+                silConditionedFee.setCenterText("包含在物业费内，加时另计");
+            } else if (ariCondition.contains("独立")) {
+                silConditionedFee.setCenterText("按电表计费");
+            } else {
+                silConditionedFee.setCenterText("无");
+            }
+            //车位数 车位费
+//            silCarNum.setCenterText(data.getHouseMsg().getParkingSpace);
+//            silCarFee.setCenterText(data.getHouseMsg().getParkingSpaceRent());
+            //净高
+            silStoreyHeight.getEditTextView().setText(data.getHouseMsg().getClearHeight());
+            //介绍
+            cetDescContent.setText(data.getHouseMsg().getUnitPatternRemark());
+            //户型介绍图
+            Glide.with(context).load(data.getHouseMsg().getUnitPatternImg()).into(ivDescImage);
+            //办公室图片
+            showImage(data);
+        }
+    }
+
+    //办公室图片
+    private void showImage(HouseEditBean data) {
+        //封面图
+        if (!TextUtils.isEmpty(data.getHouseMsg().getMainPic())) {
+            uploadImageList.add(uploadImageList.size() - 1, new ImageBean(true, 0, data.getHouseMsg().getMainPic()));
+        }
+        //浏览图
+        for (int i = 0; i < data.getBanner().size(); i++) {
+            uploadImageList.add(uploadImageList.size() - 1, new ImageBean(true, 0, data.getBanner().get(i).getImgUrl()));
+        }
+        imageAdapter.notifyDataSetChanged();
+    }
+
 }

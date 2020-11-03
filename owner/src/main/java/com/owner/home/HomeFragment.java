@@ -20,6 +20,7 @@ import com.officego.commonlib.base.BaseMvpFragment;
 import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
+import com.officego.commonlib.common.model.BuildingManagerBean;
 import com.officego.commonlib.common.model.owner.BuildingJointWorkBean;
 import com.officego.commonlib.common.model.owner.HouseBean;
 import com.officego.commonlib.constant.Constants;
@@ -148,30 +149,44 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     //添加房源
     @Click(resName = "iv_add")
     void addClick() {
-//        final String[] items = {"楼盘", "楼盘_办公室", "网点", "独立办公室", "开放工位"};
-//        new AlertDialog.Builder(mActivity)
-//                .setItems(items, (dialogInterface, i) -> {
-//                    if (i == 0) {
-//                        AddBuildingActivity_.intent(mActivity).start();
-//                    } else if (i == 1) {
-//                        AddHouseActivity_.intent(mActivity).start();
-//                    } else if (i == 2) {
-//                        AddJointWorkActivity_.intent(mActivity).start();
-//                    } else if (i == 3) {
-//                        AddIndependentActivity_.intent(mActivity).start();
-//                    } else {
-//                        AddOpenSeatsActivity_.intent(mActivity).start();
-//                    }
-//                }).create().show();
-        gotoAddHouseActivity();
+        gotoAddHouseActivity(new BuildingManagerBean(0, 0));
     }
 
     //添加房源
-    private void gotoAddHouseActivity() {
+    private void gotoAddHouseActivity(BuildingManagerBean managerBean) {
         if (mUserData.getIdentityType() == Constants.TYPE_JOINTWORK) {
-            AddIndependentActivity_.intent(mActivity).start();
+            AddIndependentActivity_.intent(mActivity)
+                    .buildingFlag(Constants.BUILDING_FLAG_ADD)
+                    .buildingManagerBean(managerBean)
+                    .start();
         } else {
-            AddHouseActivity_.intent(mActivity).start();
+            AddHouseActivity_.intent(mActivity)
+                    .buildingFlag(Constants.BUILDING_FLAG_ADD)
+                    .buildingManagerBean(managerBean)
+                    .start();
+        }
+    }
+
+    //编辑房源
+    private void gotoEditHouseActivity(HouseBean.ListBean bean) {
+        if (Constants.TYPE_BUILDING == bean.getBtype()) {
+            //楼盘下房源
+            AddHouseActivity_.intent(mActivity)
+                    .buildingFlag(Constants.BUILDING_FLAG_EDIT)
+                    .buildingManagerBean(new BuildingManagerBean(bean.getHouseId(), bean.getIsTemp()))
+                    .start();
+        } else {
+            if (bean.getOfficeType() == 2) {//2开放工位
+                AddOpenSeatsActivity_.intent(mActivity)
+                        .buildingFlag(Constants.BUILDING_FLAG_EDIT)
+                        .buildingManagerBean(new BuildingManagerBean(bean.getHouseId(), bean.getIsTemp()))
+                        .start();
+            } else {//1独立办公室
+                AddIndependentActivity_.intent(mActivity)
+                        .buildingFlag(Constants.BUILDING_FLAG_EDIT)
+                        .buildingManagerBean(new BuildingManagerBean(bean.getHouseId(), bean.getIsTemp()))
+                        .start();
+            }
         }
     }
 
@@ -223,16 +238,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
 
     @Override
     public void itemEdit(HouseBean.ListBean bean) {
-        //编辑房源 独立办公室 开放工位
-        if (Constants.TYPE_BUILDING == bean.getBtype()) {
-            AddHouseActivity_.intent(getContext()).start();
-        } else {
-            if (bean.getOfficeType() == 2) {//2开放工位
-                AddOpenSeatsActivity_.intent(mActivity).start();
-            } else {//1独立办公室
-                AddIndependentActivity_.intent(mActivity).start();
-            }
-        }
+        gotoEditHouseActivity(bean);
     }
 
     /**

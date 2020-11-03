@@ -69,8 +69,6 @@ import org.androidannotations.annotations.ViewById;
 
 import java.io.File;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -469,9 +467,9 @@ public class AddBuildingActivity extends BaseMvpActivity<BuildingPresenter>
             cetDescContent.setText(data.getBuildingMsg().getPromoteSlogan());
             //入住企业
             String settlementLicence = data.getBuildingMsg().getSettlementLicence();
-            if (!TextUtils.isEmpty(settlementLicence)) {
+            List<String> result = CommonHelper.stringList(settlementLicence);
+            if (result != null) {
                 jointCompanyList.clear();
-                List<String> result = CommonHelper.stringList(settlementLicence);
                 for (int i = 0; i < result.size(); i++) {
                     jointCompanyList.add(i, result.get(i));
                 }
@@ -479,18 +477,29 @@ public class AddBuildingActivity extends BaseMvpActivity<BuildingPresenter>
             }
             //楼盘特色
             String tags = data.getBuildingMsg().getTags();
-            if (!TextUtils.isEmpty(tags)) {
-                List<String> result = CommonHelper.stringList(tags);
+            List<String> resultUt = CommonHelper.stringList(tags);
+            if (resultUt != null) {
                 uniqueMap = new HashMap<>();
-                for (int i = 0; i < result.size(); i++) {
-                    uniqueMap.put(Integer.valueOf(result.get(i)), "");
+                for (int i = 0; i < resultUt.size(); i++) {
+                    uniqueMap.put(Integer.valueOf(resultUt.get(i)), "");
                 }
             }
-            //特色get
             mPresenter.getBuildingUnique();
-            //上传楼盘图片 TODO
-
+            //楼盘图片
+            showImage(data);
         }
+    }
+
+    //网点图片
+    private void showImage(BuildingEditBean data) {
+        //封面图
+        if (!TextUtils.isEmpty(data.getBuildingMsg().getMainPic())) {
+            uploadImageList.add(uploadImageList.size() - 1, new ImageBean(true, 0, data.getBuildingMsg().getMainPic()));
+        }
+        for (int i = 0; i < data.getBanner().size(); i++) {
+            uploadImageList.add(uploadImageList.size() - 1, new ImageBean(true, 0, data.getBanner().get(i).getImgUrl()));
+        }
+        imageAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -636,6 +645,7 @@ public class AddBuildingActivity extends BaseMvpActivity<BuildingPresenter>
                 ImageUtils.isSaveCropImageView(localImagePath);//图片处理
                 uploadImageList.add(uploadImageList.size() - 1, new ImageBean(false, 0, localImagePath));
                 //imageAdapter.notifyDataSetChanged();
+                mPresenter.uploadImage(uploadImageList);
             } else if (requestCode == REQUEST_GALLERY && data != null) {//相册
                 List<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
                 for (int i = 0; i < images.size(); i++) {
@@ -643,8 +653,8 @@ public class AddBuildingActivity extends BaseMvpActivity<BuildingPresenter>
                     uploadImageList.add(uploadImageList.size() - 1, new ImageBean(false, 0, images.get(i)));
                 }
                 //imageAdapter.notifyDataSetChanged();
+                mPresenter.uploadImage(uploadImageList);
             }
-            mPresenter.uploadImage(uploadImageList);
         }
     }
 

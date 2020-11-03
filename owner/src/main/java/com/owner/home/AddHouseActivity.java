@@ -19,20 +19,27 @@ import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.donkingliang.imageselector.utils.ImageSelector;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.dialog.RentDialog;
+import com.officego.commonlib.common.model.BuildingManagerBean;
 import com.officego.commonlib.common.model.DirectoryBean;
+import com.officego.commonlib.common.model.owner.BuildingEditBean;
+import com.officego.commonlib.common.model.owner.HouseEditBean;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.EditInputFilter;
 import com.officego.commonlib.utils.FileHelper;
 import com.officego.commonlib.utils.FileUtils;
+import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.utils.ImageUtils;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.PhotoUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.ClearableEditText;
+import com.officego.commonlib.view.TitleBarView;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.commonlib.view.widget.SettingItemLayout;
 import com.owner.R;
@@ -56,11 +63,13 @@ import com.owner.zxing.QRScanActivity;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.FocusChange;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -76,6 +85,8 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
         UploadBuildingImageAdapter.UploadImageListener {
     private static final int REQUEST_GALLERY = 0xa0;
     private static final int REQUEST_CAMERA = 0xa1;
+    @ViewById(resName = "title_bar")
+    TitleBarView titleBar;
     @ViewById(resName = "tv_upload_title")
     TextView tvUploadTitle;
     @ViewById(resName = "tv_des_title")
@@ -123,6 +134,9 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
     RecyclerView rvDecorationType;
     @ViewById(resName = "rv_house_characteristic")
     RecyclerView rvHouseUnique;
+    //户型图
+    @ViewById(resName = "iv_desc_image")
+    ImageView ivDescImage;
     //图片list
     @ViewById(resName = "rv_upload_image")
     RecyclerView rvUploadImage;
@@ -130,6 +144,11 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
     Button btnScan;
     @ViewById(resName = "iv_close_scan")
     ImageView ivCloseScan;
+    //是否添加还是编辑
+    @Extra
+    int buildingFlag;
+    @Extra
+    BuildingManagerBean buildingManagerBean;
 
     //记录上次面积
     private String recordArea;
@@ -154,11 +173,16 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
         initViews();
         initDigits();
         itemListener();
-        mPresenter.getDecoratedType();
-        mPresenter.getHouseUnique();
+        if (buildingFlag == Constants.BUILDING_FLAG_EDIT) {
+            mPresenter.getHouseEdit(buildingManagerBean.getBuildingId(), buildingManagerBean.getIsTemp());
+        } else {
+            mPresenter.getDecoratedType();
+            mPresenter.getHouseUnique();
+        }
     }
 
     private void initViews() {
+        titleBar.setAppTitle(buildingFlag == Constants.BUILDING_FLAG_ADD ? "添加办公室" : "编辑办公室");
         tvUploadTitle.setText("上传办公室图片");
         tvHouseCharacteristic.setText("办公室特色");
         tvDesTitle.setText("户型格局介绍");
@@ -277,11 +301,6 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
         startActivity(new Intent(context, QRScanActivity.class));
     }
 
-//    @Click(resName = "sil_floor_no")
-//    void floorNoOnClick() {
-//        new FloorTypeDialog(context).setListener(this);
-//    }
-
     @Click(resName = "sil_free_rent")
     void freeRentOnClick() {
         new RentDialog(context, getString(R.string.str_free_rent)).setSureListener(this);
@@ -360,6 +379,67 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
                 etSeatEnd.setText((Integer.valueOf(area) / 3) + "");
             }
         }
+    }
+
+    @SuppressLint("SetTextI18n")
+    @Override
+    public void houseEditSuccess(HouseEditBean data) {
+        if (data == null) return;
+        if (data.getHouseMsg() != null) {
+            //标题
+            silHouseTitle.getEditTextView().setText(data.getHouseMsg().getTitle());
+            //面积
+            silArea.getEditTextView().setText(data.getHouseMsg().getArea() + "");
+            //工位
+            String seats = data.getHouseMsg().getSimple();
+            etSeatStart.setText(CommonHelper.minData(seats));
+            etSeatEnd.setText(CommonHelper.maxData(seats));
+            //租金单价总价
+            silRentSingle.getEditTextView().setText(data.getHouseMsg().getDayPrice() + "");
+            silRentSum.getEditTextView().setText(data.getHouseMsg().getMonthPrice() + "");
+            //楼层
+            etFloors.setText(data.getHouseMsg().getFloor());
+            tvCountsFloor.setText("总" + "" + "层");
+            //净高层高
+            silStoreyHeight.getEditTextView().setText(data.getHouseMsg().getClearHeight());
+            silTierHeight.getEditTextView().setText(data.getHouseMsg().getStoreyHeight());
+            //租期
+            silRentTime.getEditTextView().setText(data.getHouseMsg().getMinimumLease());
+            silFreeRent.getEditTextView().setText(data.getHouseMsg().getRentFreePeriod());
+            //物业费 0不包含，1包含
+            silEstateFee.getEditTextView().setText(data.getHouseMsg().getPropertyHouseCosts());
+            //装修类型 1毛坯房屋，2简装 ，3豪华，4标准，5精装，6不带窗口，7带家具，8带窗口
+            decorationId = data.getHouseMsg().getDecoration();
+            //特色
+            List<String> result = CommonHelper.stringList(data.getHouseMsg().getTags());
+            if (result != null) {
+                uniqueMap = new HashMap<>();
+                for (int i = 0; i < result.size(); i++) {
+                    uniqueMap.put(Integer.valueOf(result.get(i)), "");
+                }
+            }
+            mPresenter.getDecoratedType();
+            mPresenter.getHouseUnique();
+            //介绍
+            cetDescContent.setText(data.getHouseMsg().getUnitPatternRemark());
+            //户型介绍图
+            Glide.with(context).load(data.getHouseMsg().getUnitPatternImg()).into(ivDescImage);
+            //办公室图片
+            showImage(data);
+        }
+    }
+
+    //办公室图片
+    private void showImage(HouseEditBean data) {
+        //封面图
+        if (!TextUtils.isEmpty(data.getHouseMsg().getMainPic())) {
+            uploadImageList.add(uploadImageList.size() - 1, new ImageBean(true, 0, data.getHouseMsg().getMainPic()));
+        }
+        //浏览图
+        for (int i = 0; i < data.getBanner().size(); i++) {
+            uploadImageList.add(uploadImageList.size() - 1, new ImageBean(true, 0, data.getBanner().get(i).getImgUrl()));
+        }
+        imageAdapter.notifyDataSetChanged();
     }
 
     @Override

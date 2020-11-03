@@ -189,4 +189,5 @@
     <string name="str_china_telecom">电信</string>
     <string name="str_china_unicom">联通</string>
     <string name="str_china_mobile">移动</string>
+    <string name="str_save_publish">保存并发布</string>
 </resources>

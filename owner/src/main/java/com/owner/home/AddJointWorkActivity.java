@@ -25,6 +25,7 @@ import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.model.BuildingManagerBean;
 import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.commonlib.common.model.owner.BuildingEditBean;
+import com.officego.commonlib.common.model.owner.UploadImageBean;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.EditInputFilter;
@@ -371,7 +372,7 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
             business = TextUtils.isEmpty(data.getBuildingMsg().getBusinessDistrict()) ? 0 : Integer.valueOf(data.getBuildingMsg().getBusinessDistrict());
             silAddress.getEditTextView().setText(data.getBuildingMsg().getAddress());
             //所在楼层 1是单层2是多层
-            silFloorNo.setCenterText(TextUtils.equals("1", data.getBuildingMsg().getFloorType()) ? "单层" : "多层");
+            silFloorNo.setLeftToArrowText(TextUtils.equals("1", data.getBuildingMsg().getFloorType()) ? "单层" : "多层");
             etFloors.setText(data.getBuildingMsg().getTotalFloor());
             etFloorsCount.setText(data.getBuildingMsg().getBranchesTotalFloor());
             //净高
@@ -412,9 +413,9 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
             cetDescContent.setText(data.getBuildingMsg().getPromoteSlogan());
             //入住企业
             String settlementLicence = data.getBuildingMsg().getSettlementLicence();
-            if (!TextUtils.isEmpty(settlementLicence)) {
+            List<String> result = CommonHelper.stringList(settlementLicence);
+            if (result != null) {
                 jointCompanyList.clear();
-                List<String> result = CommonHelper.stringList(settlementLicence);
                 for (int i = 0; i < result.size(); i++) {
                     jointCompanyList.add(i, result.get(i));
                 }
@@ -422,11 +423,11 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
             }
             //楼盘特色
             String tags = data.getBuildingMsg().getTags();
-            if (!TextUtils.isEmpty(tags)) {
-                List<String> result = CommonHelper.stringList(tags);
+            List<String> resultUt = CommonHelper.stringList(tags);
+            if (resultUt != null) {
                 uniqueMap = new HashMap<>();
-                for (int i = 0; i < result.size(); i++) {
-                    uniqueMap.put(Integer.valueOf(result.get(i)), "");
+                for (int i = 0; i < resultUt.size(); i++) {
+                    uniqueMap.put(Integer.valueOf(resultUt.get(i)), "");
                 }
             }
             mPresenter.getBranchUnique();
@@ -435,9 +436,9 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
             //网点图片
             showImage(data);
         }
-
     }
 
+    //服务
     private void services(BuildingEditBean data) {
         meetingMap = new HashMap<>();
         baseMap = new HashMap<>();
@@ -512,6 +513,12 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
     @Override
     public void companyServiceSuccess(List<DirectoryBean.DataBean> data) {
         new ServiceSelectedDialog(context, serviceCompanyFlay, companyMap, data).setLogoListener(this);
+    }
+
+    @Override
+    public void uploadSuccess(UploadImageBean data) {
+        imageAdapter.notifyDataSetChanged();
+        shortTip("上传成功");
     }
 
     @Override
@@ -643,14 +650,16 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
             if (requestCode == REQUEST_CAMERA) {//拍照
                 ImageUtils.isSaveCropImageView(localImagePath);//图片处理
                 uploadImageList.add(uploadImageList.size() - 1, new ImageBean(false, 0, localImagePath));
-                imageAdapter.notifyDataSetChanged();
+                //imageAdapter.notifyDataSetChanged();
+                mPresenter.uploadImage(uploadImageList);
             } else if (requestCode == REQUEST_GALLERY && data != null) {//相册
                 List<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
                 for (int i = 0; i < images.size(); i++) {
                     ImageUtils.isSaveCropImageView(images.get(i));//图片处理
                     uploadImageList.add(uploadImageList.size() - 1, new ImageBean(false, 0, images.get(i)));
                 }
-                imageAdapter.notifyDataSetChanged();
+                //imageAdapter.notifyDataSetChanged();
+                mPresenter.uploadImage(uploadImageList);
             }
         }
     }

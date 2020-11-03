@@ -17,9 +17,11 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.donkingliang.imageselector.utils.ImageSelector;
-import com.officego.commonlib.base.BaseActivity;
+import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.dialog.RentDialog;
+import com.officego.commonlib.common.model.BuildingManagerBean;
+import com.officego.commonlib.common.model.owner.HouseEditBean;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.FileHelper;
 import com.officego.commonlib.utils.FileUtils;
@@ -27,10 +29,13 @@ import com.officego.commonlib.utils.ImageUtils;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.PhotoUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.view.TitleBarView;
 import com.officego.commonlib.view.widget.SettingItemLayout;
 import com.owner.R;
 import com.owner.adapter.UploadBuildingImageAdapter;
 import com.owner.dialog.FloorTypeDialog;
+import com.owner.home.contract.OpenSeatsContract;
+import com.owner.home.presenter.OpenSeatsPresenter;
 import com.owner.home.rule.FloorHeightTextWatcher;
 import com.owner.home.rule.IntegerTextWatcher;
 import com.owner.home.rule.RentOpenSeatTextWatcher;
@@ -40,6 +45,7 @@ import com.owner.zxing.QRScanActivity;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.File;
@@ -51,11 +57,13 @@ import java.util.List;
  * Date 2020/10/19
  **/
 @EActivity(resName = "activity_home_open_manager")
-public class AddOpenSeatsActivity extends BaseActivity
-        implements RentDialog.SureClickListener,
+public class AddOpenSeatsActivity extends BaseMvpActivity<OpenSeatsPresenter>
+        implements OpenSeatsContract.View, RentDialog.SureClickListener,
         FloorTypeDialog.FloorListener, UploadBuildingImageAdapter.UploadImageListener {
     private static final int REQUEST_GALLERY = 0xa0;
     private static final int REQUEST_CAMERA = 0xa1;
+    @ViewById(resName = "title_bar")
+    TitleBarView titleBar;
     @ViewById(resName = "tv_upload_title")
     TextView tvUploadTitle;
     @ViewById(resName = "sil_seats")
@@ -82,6 +90,11 @@ public class AddOpenSeatsActivity extends BaseActivity
     Button btnScan;
     @ViewById(resName = "iv_close_scan")
     ImageView ivCloseScan;
+    //是否添加还是编辑
+    @Extra
+    int buildingFlag;
+    @Extra
+    BuildingManagerBean buildingManagerBean;
     //上传图片
     private List<ImageBean> uploadImageList = new ArrayList<>();
     private UploadBuildingImageAdapter imageAdapter;
@@ -90,11 +103,17 @@ public class AddOpenSeatsActivity extends BaseActivity
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarFullTransparent(this);
+        mPresenter = new OpenSeatsPresenter();
+        mPresenter.attachView(this);
         initViews();
         initDigits();
+        if (buildingFlag == Constants.BUILDING_FLAG_EDIT) {
+            mPresenter.getHouseEdit(buildingManagerBean.getBuildingId(), buildingManagerBean.getIsTemp());
+        }
     }
 
     private void initViews() {
+        titleBar.setAppTitle(buildingFlag == Constants.BUILDING_FLAG_ADD ? "添加开放工位" : "编辑开放工位");
         tvUploadTitle.setText("上传图片");
         //上传图片
         GridLayoutManager layoutManager2 = new GridLayoutManager(context, 3);
@@ -128,7 +147,6 @@ public class AddOpenSeatsActivity extends BaseActivity
 
     @Click(resName = "btn_next")
     void nextOnClick() {
-//        UploadVideoVrActivity_.intent(context).start();
         submit();
     }
 
@@ -147,11 +165,7 @@ public class AddOpenSeatsActivity extends BaseActivity
             shortTip("请输入100-10000租金");
             return;
         }
-//        String floorNo = silFloorNo.getLeftToArrowTextView().getText().toString();
-//        if (TextUtils.isEmpty(floorNo)) {
-//            shortTip("请选择楼层");
-//            return;
-//        }
+
         String floors = etFloors.getText().toString();
         if (TextUtils.isEmpty(floors)) {
             shortTip("请输入楼层");
@@ -301,6 +315,40 @@ public class AddOpenSeatsActivity extends BaseActivity
         ImageBean imageBean = uploadImageList.get(0);
         uploadImageList.set(0, uploadImageList.get(position));
         uploadImageList.set(position, imageBean);
+        imageAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void houseEditSuccess(HouseEditBean data) {
+        if (data == null) return;
+        if (data.getHouseMsg() != null) {
+            //工位
+            silSeats.getEditTextView().setText(data.getHouseMsg().getSeats() + "");
+            //租金
+            silRentSingle.getEditTextView().setText(data.getHouseMsg().getMonthPrice() + "");
+            //楼层
+            etFloors.setText(data.getHouseMsg().getFloor());
+            tvCountsFloor.setText("总" + "" + "层");
+            //租期
+            silRentTime.getEditTextView().setText(data.getHouseMsg().getMinimumLease());
+            silFreeRent.getEditTextView().setText(data.getHouseMsg().getRentFreePeriod());
+            //净高
+            silStoreyHeight.getEditTextView().setText(data.getHouseMsg().getClearHeight());
+            //办公室图片
+            showImage(data);
+        }
+    }
+
+    //办公室图片
+    private void showImage(HouseEditBean data) {
+        //封面图
+        if (!TextUtils.isEmpty(data.getHouseMsg().getMainPic())) {
+            uploadImageList.add(uploadImageList.size() - 1, new ImageBean(true, 0, data.getHouseMsg().getMainPic()));
+        }
+        //浏览图
+        for (int i = 0; i < data.getBanner().size(); i++) {
+            uploadImageList.add(uploadImageList.size() - 1, new ImageBean(true, 0, data.getBanner().get(i).getImgUrl()));
+        }
         imageAdapter.notifyDataSetChanged();
     }
 }

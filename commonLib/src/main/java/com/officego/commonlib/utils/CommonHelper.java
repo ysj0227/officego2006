@@ -46,6 +46,7 @@ import java.net.InetAddress;
 import java.net.NetworkInterface;
 import java.net.SocketException;
 import java.text.DecimalFormat;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
 import java.util.List;
@@ -568,11 +569,42 @@ public class CommonHelper {
 
     public static List<String> stringList(String str) {
         List<String> result;
-        if (str.contains(",")) {
-            result = Arrays.asList(str.split(","));
+        if (!TextUtils.isEmpty(str)) {
+            if (str.contains(",")) {
+                result = Arrays.asList(str.split(","));
+            } else if (str.contains("，")) {
+                result = Arrays.asList(str.split("，"));
+            } else {
+                result = new ArrayList<>();
+                result.add(str);
+            }
         } else {
-            result = Arrays.asList(str.split("，"));
+            result = null;
         }
         return result;
+    }
+
+    public static String minData(String str) {
+        String data;
+        if (str.contains(",")) {
+            data = str.substring(0, str.indexOf(","));
+        } else if (str.contains("，")) {
+            data = str.substring(0, str.indexOf("，"));
+        } else {
+            data = "";
+        }
+        return data;
+    }
+
+    public static String maxData(String str) {
+        String data;
+        if (str.contains(",")) {
+            data = str.substring(str.indexOf(",") + 1);
+        } else if (str.contains("，")) {
+            data = str.substring(str.indexOf("，") + 1);
+        } else {
+            data = "";
+        }
+        return data;
     }
 }

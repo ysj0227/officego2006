@@ -4,6 +4,7 @@ package com.officego.commonlib.common.rpc.request;
 import com.officego.commonlib.common.model.owner.BuildingEditBean;
 import com.officego.commonlib.common.model.owner.BuildingJointWorkBean;
 import com.officego.commonlib.common.model.owner.HouseBean;
+import com.officego.commonlib.common.model.owner.HouseEditBean;
 import com.officego.commonlib.common.model.owner.UploadImageBean;
 import com.officego.commonlib.retrofit.BaseResponse;
 
@@ -59,6 +60,13 @@ public interface BuildingJointWorkInterface {
     @Multipart
     @POST(path + "building/getBuildingMsgByBuildingId")
     Call<BaseResponse<BuildingEditBean>> getBuildingEdit(@PartMap Map<String, RequestBody> params);
+
+    /**
+     * 房源编辑
+     */
+    @Multipart
+    @POST(path + "house/getHouseMsgByHouseId")
+    Call<BaseResponse<HouseEditBean>> getHouseEdit(@PartMap Map<String, RequestBody> params);
 
     /**
      * 上传图片

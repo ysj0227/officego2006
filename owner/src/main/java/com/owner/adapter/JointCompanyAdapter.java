@@ -14,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -30,6 +31,7 @@ import java.util.List;
 public class JointCompanyAdapter extends RecyclerView.Adapter<JointCompanyAdapter.MyViewHolder> {
     private Context context;
     private List<String> list;
+    private RelativeLayout.LayoutParams layoutParams;
 
     public JointCompanyAdapter(Context context, List<String> list) {
         this.context = context;
@@ -46,6 +48,19 @@ public class JointCompanyAdapter extends RecyclerView.Adapter<JointCompanyAdapte
     @Override
     public void onBindViewHolder(MyViewHolder holder, final int position) {
         holder.editText.setText(list.get(position));
+        holder.tvTitle.setVisibility(holder.getAdapterPosition() == 0 ? View.VISIBLE : View.INVISIBLE);
+        layoutParams= (RelativeLayout.LayoutParams) holder.ivRightImage.getLayoutParams();
+        if (holder.getAdapterPosition() == list.size() - 1){
+            layoutParams.width= (int) context.getResources().getDimension(R.dimen.dp_20);
+            layoutParams.height= (int) context.getResources().getDimension(R.dimen.dp_20);
+            holder.ivRightImage.setBackgroundResource(R.mipmap.ic_add_blue);
+        }else {
+            layoutParams.width= (int) context.getResources().getDimension(R.dimen.dp_18);
+            layoutParams.height= (int) context.getResources().getDimension(R.dimen.dp_16);
+            holder.ivRightImage.setBackgroundResource(R.mipmap.ic_remove_blue);
+        }
+        holder.ivRightImage.setLayoutParams(layoutParams);
+
         holder.ivRightImage.setOnClickListener(v -> {
             if (list.size() > 1 && holder.getAdapterPosition() < list.size() - 1) {
                 removeData(position);  //删除数据
@@ -58,9 +73,7 @@ public class JointCompanyAdapter extends RecyclerView.Adapter<JointCompanyAdapte
                 addData(list.size());//添加数据
             }
         });
-        holder.tvTitle.setVisibility(holder.getAdapterPosition() == 0 ? View.VISIBLE : View.INVISIBLE);
-        holder.ivRightImage.setBackgroundResource(holder.getAdapterPosition() == list.size() - 1
-                ? R.mipmap.ic_add_blue : R.mipmap.ic_remove_blue);
+
         holder.editText.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
