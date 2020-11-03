@@ -46,13 +46,17 @@ public class AreaTextWatcher implements TextWatcher {
             return;
         }
         //4位大于1000
-        if (!temp.contains(".") && temp.length() >= length && Integer.valueOf(temp) > number) {
-            int index = editText.getSelectionStart();//获取光标位置
-            editable.delete(index - 1, index);//删除后一位
-            if (temp.length() < 8) {
-                ToastUtils.toastForShort(context, "只支持0.1-" + number + "正整数或保留1位小数");
+        try {
+            if (!temp.contains(".") && temp.length() >= length && Integer.valueOf(temp) > number) {
+                int index = editText.getSelectionStart();//获取光标位置
+                editable.delete(index - 1, index);//删除后一位
+                if (temp.length() < 8) {
+                    ToastUtils.toastForShort(context, "只支持0.1-" + number + "正整数或保留1位小数");
+                }
+                return;
             }
-            return;
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         //带小数 保留一位小数
         int posDot = temp.indexOf(".");//返回指定字符在此字符串中第一次出现处的索引

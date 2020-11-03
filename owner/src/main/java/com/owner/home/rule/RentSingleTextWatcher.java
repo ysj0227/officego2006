@@ -38,16 +38,15 @@ public class RentSingleTextWatcher implements TextWatcher {
             return;
         }
         String temp = editable.toString();
-        //首位为0
-//        if (temp.length() == 1 && TextUtils.equals("0", temp)) {
-//            editable.clear();
-//            return;
-//        }
-        if (!temp.contains(".") && temp.length() >= 2 && Integer.valueOf(temp) > 50) {
-            int index = editText.getSelectionStart();//获取光标位置
-            editable.delete(index - 1, index);//删除后一位
-            ToastUtils.toastForShort(context, "只支持0.1-50正整数或保留2位小数");
-            return;
+        try {
+            if (!temp.contains(".") && temp.length() >= 2 && Integer.valueOf(temp) > 50) {
+                int index = editText.getSelectionStart();//获取光标位置
+                editable.delete(index - 1, index);//删除后一位
+                ToastUtils.toastForShort(context, "只支持0.1-50正整数或保留2位小数");
+                return;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         //保留1位小数
         int posDot = temp.indexOf(".");//返回指定字符在此字符串中第一次出现处的索引

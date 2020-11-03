@@ -228,8 +228,8 @@ public class AddBuildingActivity extends BaseMvpActivity<BuildingPresenter>
         //面积 0.1-1000正数数字，保留1位小数，单位 万M²
         silGrossArea.getEditTextView().addTextChangedListener(new AreaTextWatcher(context, 1000, silGrossArea.getEditTextView()));
         //物业费 0-100之间正数，保留1位小数
-//        silEstateFee.getEditTextView().addTextChangedListener(new EstateFeeTextWatcher(context, 100, silEstateFee.getEditTextView()));
-        silEstateFee.getEditTextView().addTextChangedListener(new EstateFeeTextWatcher(context, 10000, silEstateFee.getEditTextView()));
+        silEstateFee.getEditTextView().addTextChangedListener(new EstateFeeTextWatcher(context, 100, silEstateFee.getEditTextView()));
+//        silEstateFee.getEditTextView().addTextChangedListener(new EstateFeeTextWatcher(context, 10000, silEstateFee.getEditTextView()));
         //净高 层高 0-8或一位小数
         silStoreyHeight.getEditTextView().addTextChangedListener(new FloorHeightTextWatcher(context, silStoreyHeight.getEditTextView()));
         silTierHeight.getEditTextView().addTextChangedListener(new FloorHeightTextWatcher(context, silTierHeight.getEditTextView()));
