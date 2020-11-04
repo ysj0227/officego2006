@@ -48,15 +48,13 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sil_building_type"
                 android:visibility="gone"
-                app:editTextHint="请输入园区名称"
-                app:editTextHintColor="@color/text_66_p50"
                 app:leftMarkShow="visible"
                 app:leftText="园区名称"
                 app:rightArrowShow="gone"
                 app:rightOtherImageViewShow="gone"
-                app:showCenterText="gone"
+                app:showCenterText="visible"
                 app:showDividerBottom="visible"
-                app:showEditText="visible" />
+                app:showEditText="gone" />
 
             <com.officego.commonlib.view.widget.SettingItemLayout
                 android:id="@+id/sil_no"

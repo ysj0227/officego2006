@@ -100,7 +100,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".home.AddBuildingActivity_"
+            android:name=".home.EditBuildingActivity_"
             android:launchMode="singleTop"
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
@@ -109,7 +109,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".home.AddJointWorkActivity_"
+            android:name=".home.EditJointWorkActivity_"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity

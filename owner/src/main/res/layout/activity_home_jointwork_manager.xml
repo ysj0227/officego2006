@@ -35,15 +35,13 @@
                 android:id="@+id/sil_joint_work_name"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:editTextHint="请输入名称"
-                app:editTextHintColor="@color/text_66_p50"
                 app:leftMarkShow="visible"
                 app:leftText="网点名称"
                 app:rightArrowShow="gone"
                 app:rightOtherImageViewShow="gone"
-                app:showCenterText="gone"
+                app:showCenterText="visible"
                 app:showDividerBottom="visible"
-                app:showEditText="visible" />
+                app:showEditText="gone" />
 
             <com.officego.commonlib.view.widget.SettingItemLayout
                 android:id="@+id/sil_area"

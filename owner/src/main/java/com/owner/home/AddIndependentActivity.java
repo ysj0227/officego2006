@@ -269,7 +269,7 @@ public class AddIndependentActivity extends BaseMvpActivity<IndependentPresenter
     }
 
     @Override
-    public void sureFloor(String text) {
+    public void sureFloor(String text,String type) {
         silFloorNo.setLeftToArrowText(text);
     }
 

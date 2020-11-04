@@ -22,6 +22,8 @@ public interface BuildingContract {
 
         void uploadSuccess(UploadImageBean data);
 
+        void editSaveSuccess();
+
     }
 
     interface Presenter {
@@ -31,5 +33,13 @@ public interface BuildingContract {
         void getBuildingEdit(int buildingId, int isTemp);
 
         void uploadImage(List<ImageBean> mFilePath);
+
+        void saveEdit(int buildingId, int isTemp, int buildingType, String buildingNum,
+                      int districtId, int area, String address, String totalFloor,
+                      String completionTime, String refurbishedTime, String constructionArea,
+                      String clearHeight, String storeyHeight, String property, String propertyCosts,
+                      String parkingSpace, String ParkingSpaceRent, String airConditioning, String airConditioningFee,
+                      String passengerLift, String cargoLift, String buildingIntroduction,
+                      String internet, String settlementLicence,String tags ,String mainPic, String addImgUrl, String delImgUrl);
     }
 }

@@ -153,4 +153,43 @@ public class JointWorkPresenter extends BasePresenter<JointWorkContract.View>
         });
     }
 
+    @Override
+    public void saveEdit(int buildingId, int isTemp, int districtId, int area, String address,
+                         String floorType, String totalFloor, String branchesTotalFloor,
+                         String clearHeight, String airConditioning, String airConditioningFee,
+                         String conferenceNumber, String conferencePeopleNumber, String roomMatching,
+                         String parkingSpace, String ParkingSpaceRent,
+                         String passengerLift, String cargoLift, String buildingIntroduction,
+                         String internet, String settlementLicence, String tags,
+                         String corporateServices, String basicServices,
+                         String mainPic, String addImgUrl, String delImgUrl) {
+        mView.showLoadingDialog();
+        OfficegoApi.getInstance().jointWorkEditSave(buildingId, isTemp, districtId, area, address,
+                floorType, totalFloor, branchesTotalFloor,
+                clearHeight, airConditioning, airConditioningFee,
+                conferenceNumber, conferencePeopleNumber, roomMatching,
+                parkingSpace, ParkingSpaceRent,
+                passengerLift, cargoLift, buildingIntroduction,
+                internet, settlementLicence, tags,
+                corporateServices, basicServices, mainPic, addImgUrl, delImgUrl, new RetrofitCallback<Object>() {
+                    @Override
+                    public void onSuccess(int code, String msg, Object data) {
+                        if (isViewAttached()) {
+                            mView.editSaveSuccess();
+                            mView.hideLoadingDialog();
+                        }
+                    }
+
+                    @Override
+                    public void onFail(int code, String msg, Object data) {
+                        if (isViewAttached()) {
+                            mView.hideLoadingDialog();
+                            if (code == Constants.DEFAULT_ERROR_CODE) {
+                                mView.shortTip(msg);
+                            }
+                        }
+                    }
+                });
+    }
+
 }

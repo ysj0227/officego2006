@@ -74,4 +74,11 @@ public interface BuildingJointWorkInterface {
     @POST(path + "building/uploadResourcesUrl")
     Call<BaseResponse<UploadImageBean>> uploadResourcesUrl(@Body RequestBody body);
 
+    /**
+     * 楼盘编辑上传
+     */
+    @Multipart
+    @POST(path + "building/updateBuilding")
+    Call<BaseResponse<Object>> buildingEditSave(@PartMap Map<String, RequestBody> params);
+
 }

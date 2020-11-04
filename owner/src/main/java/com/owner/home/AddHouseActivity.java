@@ -493,7 +493,7 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
     }
 
     @Override
-    public void sureFloor(String text) {
+    public void sureFloor(String text,String type) {
         silFloorNo.setLeftToArrowText(text);
     }
 

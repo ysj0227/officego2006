@@ -4,18 +4,17 @@ import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
+import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
-import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.CircleImage;
-import com.officego.ui.home.BuildingDetailsActivity_;
-import com.officego.ui.home.BuildingDetailsJointWorkActivity_;
 import com.officego.ui.mine.contract.ViewingDateDetailsContract;
 import com.officego.ui.mine.model.ViewingDateDetailsBean;
 import com.officego.ui.mine.presenter.ViewingDateDetailsPresenter;
@@ -53,6 +52,9 @@ public class ViewingDateDetailActivity extends BaseMvpActivity<ViewingDateDetail
     TextView tvAddress;
     @ViewById(R.id.tv_bus)
     TextView tvBus;
+    @ViewById(R.id.iv_mobile)
+    ImageView ivMobile;
+
     @Extra
     int scheduleId;
     private String strStatus = "";
@@ -102,14 +104,19 @@ public class ViewingDateDetailActivity extends BaseMvpActivity<ViewingDateDetail
         int auditStatus = data.getBuilding().getAuditStatus();
         if (auditStatus == 0) {
             strStatus = "预约";
+            ivMobile.setVisibility(View.GONE);
         } else if (auditStatus == 1) {
             strStatus = "已预约";
+            ivMobile.setVisibility(View.VISIBLE);
         } else if (auditStatus == 2) {
             strStatus = "预约失败";
+            ivMobile.setVisibility(View.GONE);
         } else if (auditStatus == 3) {
             strStatus = "已完成";
+            ivMobile.setVisibility(View.VISIBLE);
         } else if (auditStatus == 4) {
             strStatus = "未看房";
+            ivMobile.setVisibility(View.GONE);
         }
         tvStatus.setText(strStatus);
         if (!TextUtils.isEmpty(data.getBuilding().getContact())) {

@@ -25,6 +25,8 @@ public interface JointWorkContract {
         void companyServiceSuccess(List<DirectoryBean.DataBean> data);
 
         void uploadSuccess(UploadImageBean data);
+
+        void editSaveSuccess();
     }
 
     interface Presenter {
@@ -39,5 +41,15 @@ public interface JointWorkContract {
         void getCompanyService();
 
         void uploadImage(List<ImageBean> mFilePath);
+
+        void saveEdit(int buildingId, int isTemp, int districtId, int area, String address,
+                      String floorType, String totalFloor, String branchesTotalFloor,
+                      String clearHeight, String airConditioning, String airConditioningFee,
+                      String conferenceNumber, String conferencePeopleNumber, String roomMatching,
+                      String parkingSpace, String ParkingSpaceRent,
+                      String passengerLift, String cargoLift, String buildingIntroduction,
+                      String internet, String settlementLicence, String tags,
+                      String corporateServices, String basicServices,
+                      String mainPic, String addImgUrl, String delImgUrl);
     }
 }

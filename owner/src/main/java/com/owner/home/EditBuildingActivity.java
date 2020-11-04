@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.donkingliang.imageselector.utils.ImageSelector;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.dialog.YearDateDialog;
 import com.officego.commonlib.common.model.BuildingManagerBean;
 import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.commonlib.common.model.owner.BuildingEditBean;
@@ -35,24 +36,27 @@ import com.officego.commonlib.utils.ImageUtils;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.PhotoUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.TitleBarView;
 import com.officego.commonlib.view.widget.SettingItemLayout;
 import com.owner.R;
 import com.owner.adapter.JointCompanyAdapter;
-import com.owner.adapter.ServiceLogoAdapter;
 import com.owner.adapter.UniqueAdapter;
 import com.owner.adapter.UploadBuildingImageAdapter;
 import com.owner.dialog.AreaDialog;
+import com.owner.dialog.BuildingTypeDialog;
 import com.owner.dialog.ConditionedDialog;
-import com.owner.dialog.FloorTypeDialog;
-import com.owner.dialog.ServiceSelectedDialog;
-import com.owner.home.contract.JointWorkContract;
-import com.owner.home.presenter.JointWorkPresenter;
+import com.owner.home.contract.BuildingContract;
+import com.owner.home.presenter.BuildingPresenter;
+import com.owner.home.rule.AreaTextWatcher;
+import com.owner.home.rule.CarFeeTextWatcher;
+import com.owner.home.rule.EstateFeeTextWatcher;
 import com.owner.home.rule.FloorHeightTextWatcher;
 import com.owner.home.rule.IntegerTextWatcher;
 import com.owner.home.rule.LiftTextWatcher;
 import com.owner.home.rule.TextCountsWatcher;
+import com.owner.home.utils.CommonUtils;
 import com.owner.identity.model.ImageBean;
 import com.owner.utils.SpaceItemDecoration;
 import com.owner.zxing.QRScanActivity;
@@ -69,55 +73,57 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+
 /**
  * Created by shijie
  * Date 2020/10/15
  **/
-@EActivity(resName = "activity_home_jointwork_manager")
-public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
-        implements JointWorkContract.View, ServiceSelectedDialog.ServiceLogoListener,
-        FloorTypeDialog.FloorListener, UniqueAdapter.UniqueListener,
+@EActivity(resName = "activity_home_building_manager")
+public class EditBuildingActivity extends BaseMvpActivity<BuildingPresenter>
+        implements BuildingContract.View, YearDateDialog.SureClickListener,
         AreaDialog.AreaSureListener, UploadBuildingImageAdapter.UploadImageListener,
-        ConditionedDialog.ConditionedListener {
-
-    private final int serviceMeetingFlay = 0;
-    private final int serviceCompanyFlay = 1;
-    private final int serviceBaseFlay = 2;
+        BuildingTypeDialog.BuildingTypeListener, ConditionedDialog.ConditionedListener,
+        UniqueAdapter.UniqueListener {
     private static final int REQUEST_GALLERY = 0xa0;
     private static final int REQUEST_CAMERA = 0xa1;
 
     @ViewById(resName = "title_bar")
     TitleBarView titleBar;
-    @ViewById(resName = "tv_upload_title")
-    TextView tvUploadTitle;
-    @ViewById(resName = "tv_house_characteristic")
-    TextView tvHouseCharacteristic;
-    @ViewById(resName = "sil_joint_work_name")
-    SettingItemLayout silJointWorkName;
+    @ViewById(resName = "sil_building_type")
+    SettingItemLayout silBuildingType;
+    @ViewById(resName = "sil_garden_name")
+    SettingItemLayout silGardenName;
+    @ViewById(resName = "sil_no")
+    SettingItemLayout silNo;
     @ViewById(resName = "sil_area")
     SettingItemLayout silArea;
     @ViewById(resName = "sil_address")
     SettingItemLayout silAddress;
-    @ViewById(resName = "sil_floor_no")
-    SettingItemLayout silFloorNo;
-    @ViewById(resName = "et_floors")
-    EditText etFloors;
-    @ViewById(resName = "et_floors_count")
-    EditText etFloorsCount;
+    @ViewById(resName = "sil_storey")
+    SettingItemLayout silStorey;
+    @ViewById(resName = "sil_complete_time")
+    SettingItemLayout silCompleteTime;
+    @ViewById(resName = "sil_recomplete_time")
+    SettingItemLayout silReCompleteTime;
+    @ViewById(resName = "sil_gross_area")
+    SettingItemLayout silGrossArea;
     @ViewById(resName = "sil_storey_height")
     SettingItemLayout silStoreyHeight;
-    @ViewById(resName = "sil_conditioned")
-    SettingItemLayout silConditioned;
-    @ViewById(resName = "sil_conditioned_fee")
-    SettingItemLayout silConditionedFee;
-    @ViewById(resName = "sil_meeting_room")
-    SettingItemLayout silMeetingRoom;
-    @ViewById(resName = "sil_contains_persons")
-    SettingItemLayout silContainsPersons;
+    @ViewById(resName = "sil_tier_height")
+    SettingItemLayout silTierHeight;
+    @ViewById(resName = "sil_estate")
+    SettingItemLayout silEstate;
+    @ViewById(resName = "sil_estate_fee")
+    SettingItemLayout silEstateFee;
     @ViewById(resName = "sil_car_num")
     SettingItemLayout silCarNum;
     @ViewById(resName = "sil_car_fee")
     SettingItemLayout silCarFee;
+    //空调
+    @ViewById(resName = "sil_conditioned")
+    SettingItemLayout silConditioned;
+    @ViewById(resName = "sil_conditioned_fee")
+    SettingItemLayout silConditionedFee;
     //电梯
     @ViewById(resName = "et_customer_lift")
     EditText etCustomerLift;
@@ -141,86 +147,59 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
     CheckBox rbUnicom;
     @ViewById(resName = "rb_mobile")
     CheckBox rbMobile;
-    //服务
-    @ViewById(resName = "rv_meeting_match")
-    RecyclerView rvMeetingMatch;
-    @ViewById(resName = "rv_create_service")
-    RecyclerView rvCompanyService;
-    @ViewById(resName = "rv_base_service")
-    RecyclerView rvBaseService;
-    @ViewById(resName = "iv_mark_image_lift")
-    ImageView ivMarkImageLift;
     //图片list
     @ViewById(resName = "rv_upload_image")
     RecyclerView rvUploadImage;
-    //扫描
     @ViewById(resName = "btn_scan")
     Button btnScan;
     @ViewById(resName = "iv_close_scan")
     ImageView ivCloseScan;
-    //是否添加还是编辑
-    @Extra
-    int buildingFlag;
+
+    //编辑
     @Extra
     BuildingManagerBean buildingManagerBean;
+    //是否竣工时间
+    private boolean isCompleteTime;
     //区域
     private int district, business;
-    //加入企业
-    private JointCompanyAdapter adapter;
-    private List<String> jointCompanyList = new ArrayList<String>();
-    //会议室配套
-    private Map<Integer, String> meetingMap;
-    //企业服务
-    private Map<Integer, String> companyMap;
-    //基础服务
-    private Map<Integer, String> baseMap;
     //特色
     private UniqueAdapter uniqueAdapter;
     private Map<Integer, String> uniqueMap;
+    //加入企业
+    private JointCompanyAdapter adapter;
+    private List<String> jointCompanyList = new ArrayList<String>();
     //上传图片
     private List<ImageBean> uploadImageList = new ArrayList<>();
     private UploadBuildingImageAdapter imageAdapter;
     private String localImagePath;
+    //删除的图片
+    private List<String> deleteList = new ArrayList<>();
+    //楼盘类型
+    private int mBuildingType;
+    //楼号
+    private String gardenNo = "";
 
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarFullTransparent(this);
-        mPresenter = new JointWorkPresenter();
+        mPresenter = new BuildingPresenter();
         mPresenter.attachView(this);
         initViews();
         initDigits();
-        if (buildingFlag == Constants.BUILDING_FLAG_EDIT) {
-            mPresenter.getBuildingEdit(buildingManagerBean.getBuildingId(), buildingManagerBean.getIsTemp());
-        } else {
-            mPresenter.getBranchUnique();
-        }
+        mPresenter.getBuildingEdit(buildingManagerBean.getBuildingId(), buildingManagerBean.getIsTemp());
     }
 
     private void initViews() {
-        titleBar.setAppTitle(buildingFlag == Constants.BUILDING_FLAG_ADD ? "添加共享办公" : "编辑共享办公");
-        tvUploadTitle.setText("上传网点图片");
-        tvHouseCharacteristic.setText("共享办公特色");
-        ivMarkImageLift.setVisibility(View.INVISIBLE);
+        titleBar.setAppTitle("编辑楼盘");
+        //特色
+        GridLayoutManager layoutManager = new GridLayoutManager(context, 3);
+        rvHouseUnique.setLayoutManager(layoutManager);
+        rvHouseUnique.addItemDecoration(new SpaceItemDecoration(context, 3));
         //入住企业
         rvJoinCompany.setLayoutManager(new LinearLayoutManager(context));
         jointCompanyList.add(0, "");
         adapter = new JointCompanyAdapter(this, jointCompanyList);
         rvJoinCompany.setAdapter(adapter);
-        //特色
-        GridLayoutManager layoutManager = new GridLayoutManager(context, 3);
-        rvHouseUnique.setLayoutManager(layoutManager);
-        rvHouseUnique.addItemDecoration(new SpaceItemDecoration(context, 3));
-        //服务
-        LinearLayoutManager lmHorizontal = new LinearLayoutManager(this);
-        lmHorizontal.setOrientation(LinearLayoutManager.HORIZONTAL);
-        rvCompanyService.setLayoutManager(lmHorizontal);
-        LinearLayoutManager lmHorizontal2 = new LinearLayoutManager(this);
-        lmHorizontal2.setOrientation(LinearLayoutManager.HORIZONTAL);
-        rvBaseService.setLayoutManager(lmHorizontal2);
-        //会议室配套
-        LinearLayoutManager lmHorizontal3 = new LinearLayoutManager(this);
-        lmHorizontal3.setOrientation(LinearLayoutManager.HORIZONTAL);
-        rvMeetingMatch.setLayoutManager(lmHorizontal3);
         //上传图片
         GridLayoutManager layoutManager2 = new GridLayoutManager(context, 3);
         layoutManager2.setSmoothScrollbarEnabled(true);
@@ -232,7 +211,7 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
 
     private void initData() {
         //初始化本地图路径
-        localImagePath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "addJointWorkPath.jpg";
+        localImagePath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "addBuildingPath.jpg";
         //初始化图片默认添加一个
         uploadImageList.add(new ImageBean(false, 0, ""));
         imageAdapter = new UploadBuildingImageAdapter(context, uploadImageList);
@@ -241,35 +220,50 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
     }
 
     private void initDigits() {
-        // 园区名称 长度最大25
-        EditInputFilter.setOfficeGoEditProhibitSpeChat(silJointWorkName.getEditTextView(), 25);
+        //园区名称 长度最大25
+        EditInputFilter.setOfficeGoEditProhibitSpeChat(silGardenName.getEditTextView(), 25);
+        //物业名称 长度最大20
+        EditInputFilter.setOfficeGoEditProhibitSpeChat(silEstate.getEditTextView(), 20);
+        //面积 0.1-1000正数数字，保留1位小数，单位 万M²
+        silGrossArea.getEditTextView().addTextChangedListener(new AreaTextWatcher(context, 1000, silGrossArea.getEditTextView()));
+        //物业费 0-100之间正数，保留1位小数
+        silEstateFee.getEditTextView().addTextChangedListener(new EstateFeeTextWatcher(context, 100, silEstateFee.getEditTextView()));
         //净高 层高 0-8或一位小数
         silStoreyHeight.getEditTextView().addTextChangedListener(new FloorHeightTextWatcher(context, silStoreyHeight.getEditTextView()));
-        //车位数 车位费
-        EditInputFilter.setOfficeGoEditProhibitSpeChat(silCarNum.getEditTextView(), 20);
-        EditInputFilter.setOfficeGoEditProhibitSpeChat(silCarFee.getEditTextView(), 20);
-        //电梯0-20整数
+        silTierHeight.getEditTextView().addTextChangedListener(new FloorHeightTextWatcher(context, silTierHeight.getEditTextView()));
+        //总楼层0-150整数
+        silStorey.getEditTextView().addTextChangedListener(new IntegerTextWatcher(context, 150, silStorey.getEditTextView()));
+        //车位费0-5000整数
+        silCarFee.getEditTextView().addTextChangedListener(new CarFeeTextWatcher(context, silCarFee.getEditTextView()));
+        //电梯 货梯0-20整数
         etCustomerLift.addTextChangedListener(new LiftTextWatcher(context, etCustomerLift));
         etPassengerLift.addTextChangedListener(new LiftTextWatcher(context, etPassengerLift));
-        //会议室数量
-        silMeetingRoom.getEditTextView().addTextChangedListener(new IntegerTextWatcher(context, 10, silMeetingRoom.getEditTextView()));
-        //最多容纳人数
-        silContainsPersons.getEditTextView().addTextChangedListener(new IntegerTextWatcher(context, 10, silContainsPersons.getEditTextView()));
         //介绍
         cetDescContent.addTextChangedListener(new TextCountsWatcher(tvCounts, cetDescContent));
     }
 
     @Click(resName = "btn_next")
     void nextOnClick() {
-//        UploadVideoVrActivity_.intent(context).start();
         submit();
     }
 
     private void submit() {
-        String jointWorkName = silJointWorkName.getEditTextView().getText().toString();
-        if (TextUtils.isEmpty(jointWorkName)) {
-            shortTip("请输入网点名称");
+        String buildingName = silBuildingType.getContextView().getText().toString();
+        if (TextUtils.isEmpty(buildingName)) {
+            shortTip("请选择楼盘类型");
             return;
+        }
+        String gardenName = silGardenName.getContextView().getText().toString();
+        if (TextUtils.isEmpty(gardenName)) {
+            shortTip("请输入名称");
+            return;
+        }
+        if (mBuildingType != 1) {
+            gardenNo = silNo.getEditTextView().getText().toString();
+            if (TextUtils.isEmpty(gardenNo)) {
+                shortTip("请输入楼号");
+                return;
+            }
         }
         String buildingArea = silArea.getContextView().getText().toString();
         if (TextUtils.isEmpty(buildingArea)) {
@@ -281,24 +275,34 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
             shortTip("请输入详细地址");
             return;
         }
-        String floorNo = silFloorNo.getLeftToArrowTextView().getText().toString();
-        if (TextUtils.isEmpty(floorNo)) {
-            shortTip("请选择所在楼层");
-            return;
-        }
-        String floors = etFloors.getText().toString();
-        if (TextUtils.isEmpty(floors)) {
-            shortTip("请输入第N层或第M-N层");
-            return;
-        }
-        String floorsCount = etFloorsCount.getText().toString();
-        if (TextUtils.isEmpty(floorsCount)) {
+        String floorStorey = silStorey.getEditTextView().getText().toString();
+        if (TextUtils.isEmpty(floorStorey)) {
             shortTip("请输入总楼层");
             return;
         }
-        String storeyHeight = silStoreyHeight.getEditTextView().getText().toString();
-        if (TextUtils.isEmpty(storeyHeight)) {
+        String completeTime = silCompleteTime.getContextView().getText().toString();
+        if (TextUtils.isEmpty(completeTime)) {
+            shortTip("请选择竣工时间");
+            return;
+        }
+        String clearHeight = silStoreyHeight.getEditTextView().getText().toString();
+        if (TextUtils.isEmpty(clearHeight)) {
             shortTip("请输入净高");
+            return;
+        }
+        String estate = silEstate.getEditTextView().getText().toString();
+        if (TextUtils.isEmpty(estate)) {
+            shortTip("请输入物业公司");
+            return;
+        }
+        String estateFee = silEstateFee.getEditTextView().getText().toString();
+        if (TextUtils.isEmpty(estateFee)) {
+            shortTip("请输入物业费");
+            return;
+        }
+        String carNum = silCarNum.getEditTextView().getText().toString();
+        if (TextUtils.isEmpty(carNum)) {
+            shortTip("请输入车位数");
             return;
         }
         String conditioned = silConditioned.getContextView().getText().toString();
@@ -306,11 +310,51 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
             shortTip("请选择空调类型");
             return;
         }
-        String meetingRoom = silMeetingRoom.getEditTextView().getText().toString();
-        if (TextUtils.isEmpty(meetingRoom)) {
-            shortTip("请输入会议室数量");
+        String customerLift = etCustomerLift.getText().toString();
+        if (TextUtils.isEmpty(customerLift)) {
+            shortTip("请输入客梯数量");
             return;
         }
+        String passengerLift = etPassengerLift.getText().toString();
+        if (TextUtils.isEmpty(passengerLift)) {
+            shortTip("请输入货梯数量");
+            return;
+        }
+        //网络
+        String net = CommonUtils.internet(rbTelecom, rbUnicom, rbMobile);
+        //入住企业
+        String addCompany = CommonUtils.company(jointCompanyList);
+        //特色
+        String uniqueTags = CommonHelper.getKey(uniqueMap);
+        //封面图片
+        String mainPic = uploadImageList.get(0).getPath();
+        //添加图片
+        String addImage = CommonUtils.addUploadImage(uploadImageList);
+        //删除图片
+        String deleteImage = CommonUtils.delUploadImage(deleteList);
+        //翻新
+        String refurbishedTime = silReCompleteTime.getContextView().getText().toString();
+        //建筑面积
+        String constructionArea = silGrossArea.getEditTextView().getText().toString();
+        //层高
+        String tireHeight = silTierHeight.getEditTextView().getText().toString();
+        //停车费
+        String carFee = silCarFee.getEditTextView().getText().toString();
+        //空调费
+        String conditionedFee = silConditionedFee.getContextView().getText().toString();
+        //介绍
+        String buildingIntroduction = cetDescContent.getText() == null ? "" : cetDescContent.getText().toString();
+//        LogCat.e(TAG, "111111 net=" + net);
+//        LogCat.e(TAG, "111111 addImage=" + addImage);
+//        LogCat.e(TAG, "111111 mainPic=" + mainPic);
+//        LogCat.e(TAG, "111111 jointCompanyList=" + addCompany);
+//        LogCat.e(TAG, "111111 uniqueTags=" + uniqueTags);
+//        LogCat.e(TAG, "111111 deleteImage=" + deleteImage);
+        mPresenter.saveEdit(buildingManagerBean.getBuildingId(), buildingManagerBean.getIsTemp(),
+                mBuildingType, gardenNo, district, business, address, floorStorey, completeTime, refurbishedTime,
+                constructionArea, clearHeight, tireHeight, estate, estateFee, carNum, carFee,
+                conditioned, conditionedFee, customerLift, passengerLift, buildingIntroduction, net,
+                addCompany, uniqueTags, mainPic, addImage, deleteImage);
     }
 
     @Click(resName = "iv_close_scan")
@@ -319,7 +363,6 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
         ivCloseScan.setVisibility(View.GONE);
     }
 
-    //web 去编辑
     @Click(resName = "btn_scan")
     void toWebEditOnClick() {
         if (!PermissionUtils.checkSDCardCameraPermission(this)) {
@@ -328,30 +371,9 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
         startActivity(new Intent(context, QRScanActivity.class));
     }
 
-    @Click(resName = "sil_floor_no")
-    void floorNoOnClick() {
-        new FloorTypeDialog(context).setListener(this);
-    }
-
-    @Click(resName = "sil_area")
-    void areaOnClick() {
-        new AreaDialog(context, district, business).setListener(this);
-    }
-
-    //service
-    @Click(resName = "rl_meeting_resources")
-    void serviceMeetingMatchClick() {
-        mPresenter.getRoomMatching();
-    }
-
-    @Click(resName = "iv_arrow_create")
-    void serviceCompanyClick() {
-        mPresenter.getCompanyService();
-    }
-
-    @Click(resName = "iv_arrow_base")
-    void serviceBaseClick() {
-        mPresenter.getBaseService();
+    @Click(resName = "sil_building_type")
+    void buildingTypeOnClick() {
+        new BuildingTypeDialog(context).setListener(this);
     }
 
     @Click(resName = "sil_conditioned")
@@ -359,24 +381,77 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
         new ConditionedDialog(context).setListener(this);
     }
 
-    @SuppressLint("SetTextI18n")
+    @Click(resName = "sil_area")
+    void areaOnClick() {
+        new AreaDialog(context, district, business).setListener(this);
+    }
+
+    @Click(resName = "sil_complete_time")
+    void completeTimeOnClick() {
+        isCompleteTime = true;
+        YearDateDialog dateDialog = new YearDateDialog(context, getString(R.string.str_text_year));
+        dateDialog.setSureListener(this);
+    }
+
+    @Click(resName = "sil_recomplete_time")
+    void reCompleteTimeOnClick() {
+        isCompleteTime = false;
+        YearDateDialog dateDialog = new YearDateDialog(context, getString(R.string.str_text_year));
+        dateDialog.setSureListener(this);
+    }
+
+    @Override
+    public void houseUniqueSuccess(List<DirectoryBean.DataBean> data) {
+        uniqueAdapter = new UniqueAdapter(context, uniqueMap, data);
+        uniqueAdapter.setListener(this);
+        rvHouseUnique.setAdapter(uniqueAdapter);
+    }
+
+    @SuppressLint("UseSparseArrays")
     @Override
     public void buildingEditSuccess(BuildingEditBean data) {
         if (data == null) return;
         if (data.getBuildingMsg() != null) {
-            //网点名称
-            silJointWorkName.getEditTextView().setText(data.getBuildingMsg().getBranchesName());
-            silArea.setCenterText(data.getAddress());
+            //楼盘类型1写字楼 2商务园 3创意园 4共享空间 5公寓  6产业园
+            silGardenName.setVisibility(View.VISIBLE);
+            silGardenName.setCenterText(data.getBuildingMsg().getBuildingName());
+            mBuildingType = data.getBuildingMsg().getBuildingType();
+            if (data.getBuildingMsg().getBuildingType() == 1) {
+                silNo.setVisibility(View.GONE);
+                silGardenName.setTitle("写字楼名称");
+                silBuildingType.setCenterText("写字楼");
+            } else if (data.getBuildingMsg().getBuildingType() == 3) {
+                silNo.setVisibility(View.VISIBLE);
+                silGardenName.setTitle("园区名称");
+                silBuildingType.setCenterText("创意园");
+                silNo.getEditTextView().setText(data.getBuildingMsg().getBuildingNum());
+            } else if (data.getBuildingMsg().getBuildingType() == 6) {
+                silNo.setVisibility(View.VISIBLE);
+                silGardenName.setTitle("园区名称");
+                silBuildingType.setCenterText("产业园");
+                silNo.getEditTextView().setText(data.getBuildingMsg().getBuildingNum());
+            }
             //区域
+            silArea.setCenterText(data.getAddress());
             district = TextUtils.isEmpty(data.getBuildingMsg().getDistrictId()) ? 0 : Integer.valueOf(data.getBuildingMsg().getDistrictId());
             business = TextUtils.isEmpty(data.getBuildingMsg().getBusinessDistrict()) ? 0 : Integer.valueOf(data.getBuildingMsg().getBusinessDistrict());
             silAddress.getEditTextView().setText(data.getBuildingMsg().getAddress());
-            //所在楼层 1是单层2是多层
-            silFloorNo.setLeftToArrowText(TextUtils.equals("1", data.getBuildingMsg().getFloorType()) ? "单层" : "多层");
-            etFloors.setText(data.getBuildingMsg().getTotalFloor());
-            etFloorsCount.setText(data.getBuildingMsg().getBranchesTotalFloor());
-            //净高
+            //总楼层
+            silStorey.getEditTextView().setText(data.getBuildingMsg().getTotalFloor());
+            //竣工翻新时间
+            silCompleteTime.setCenterText(data.getBuildingMsg().getCompletionTime());
+            silReCompleteTime.setCenterText(data.getBuildingMsg().getRefurbishedTime());
+            //建筑面积
+            silGrossArea.getEditTextView().setText(data.getBuildingMsg().getConstructionArea());
+            //净高层高
             silStoreyHeight.getEditTextView().setText(data.getBuildingMsg().getClearHeight());
+            silTierHeight.getEditTextView().setText(data.getBuildingMsg().getStoreyHeight());
+            //物业公司 物业费
+            silEstate.getEditTextView().setText(data.getBuildingMsg().getProperty());
+            silEstateFee.getEditTextView().setText(data.getBuildingMsg().getPropertyCosts());
+            //车位数 车位费
+            silCarNum.getEditTextView().setText(data.getBuildingMsg().getParkingSpace());
+            silCarFee.getEditTextView().setText(data.getBuildingMsg().getParkingSpaceRent());
             //空调类型
             String ariCondition = data.getBuildingMsg().getAirConditioning();
             silConditioned.setCenterText(ariCondition);
@@ -388,13 +463,6 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
             } else {
                 silConditionedFee.setCenterText("无");
             }
-            //会议室数量
-            silMeetingRoom.getEditTextView().setText(data.getBuildingMsg().getConferenceNumber() + "");
-            //容纳人数
-            silContainsPersons.getEditTextView().setText(data.getBuildingMsg().getConferencePeopleNumber() + "");
-            //车位数 车位费
-            silCarNum.getEditTextView().setText(data.getBuildingMsg().getParkingSpace());
-            silCarFee.getEditTextView().setText(data.getBuildingMsg().getParkingSpaceRent());
             //电梯数
             etCustomerLift.setText(data.getBuildingMsg().getPassengerLift());
             etPassengerLift.setText(data.getBuildingMsg().getCargoLift());
@@ -430,55 +498,10 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
                     uniqueMap.put(Integer.valueOf(resultUt.get(i)), "");
                 }
             }
-            mPresenter.getBranchUnique();
-            //共享服务
-            services(data);
-            //网点图片
+            mPresenter.getBuildingUnique();
+            //楼盘图片
             showImage(data);
         }
-    }
-
-    //服务
-    private void services(BuildingEditBean data) {
-        meetingMap = new HashMap<>();
-        baseMap = new HashMap<>();
-        companyMap = new HashMap<>();
-        List<DirectoryBean.DataBean> meetingList = new ArrayList<>();
-        List<DirectoryBean.DataBean> companyList = new ArrayList<>();
-        List<DirectoryBean.DataBean> baseList = new ArrayList<>();
-        //企业服务
-        DirectoryBean.DataBean companyBean;
-        for (int i = 0; i < data.getCompanyService().size(); i++) {
-            companyBean = new DirectoryBean.DataBean();
-            companyBean.setDictValue(data.getCompanyService().get(i).getDictValue());
-            companyBean.setDictImg(data.getCompanyService().get(i).getDictImg());
-            companyBean.setDictImgBlack(data.getCompanyService().get(i).getDictImgBlack());
-            companyList.add(companyBean);
-            companyMap.put(data.getCompanyService().get(i).getDictValue(), data.getCompanyService().get(i).getDictImg());
-        }
-        rvCompanyService.setAdapter(new ServiceLogoAdapter(context, companyList));
-        //基础服务
-        DirectoryBean.DataBean baseBean;
-        for (int i = 0; i < data.getBasicServices().size(); i++) {
-            baseBean = new DirectoryBean.DataBean();
-            baseBean.setDictValue(data.getBasicServices().get(i).getDictValue());
-            baseBean.setDictImg(data.getBasicServices().get(i).getDictImg());
-            baseBean.setDictImgBlack(data.getBasicServices().get(i).getDictImgBlack());
-            baseList.add(baseBean);
-            baseMap.put(data.getBasicServices().get(i).getDictValue(), data.getBasicServices().get(i).getDictImg());
-        }
-        rvBaseService.setAdapter(new ServiceLogoAdapter(context, baseList));
-        //会议室配套
-        DirectoryBean.DataBean meetingBean;
-        for (int i = 0; i < data.getRoomMatching().size(); i++) {
-            meetingBean = new DirectoryBean.DataBean();
-            meetingBean.setDictValue(data.getRoomMatching().get(i).getDictValue());
-            meetingBean.setDictImg(data.getRoomMatching().get(i).getDictImg());
-            meetingBean.setDictImgBlack(data.getRoomMatching().get(i).getDictImgBlack());
-            meetingList.add(meetingBean);
-            meetingMap.put(data.getRoomMatching().get(i).getDictValue(), data.getRoomMatching().get(i).getDictImg());
-        }
-        rvMeetingMatch.setAdapter(new ServiceLogoAdapter(context, meetingList));
     }
 
     //网点图片
@@ -494,28 +517,6 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
     }
 
     @Override
-    public void houseUniqueSuccess(List<DirectoryBean.DataBean> data) {
-        uniqueAdapter = new UniqueAdapter(context, uniqueMap, data);
-        uniqueAdapter.setListener(this);
-        rvHouseUnique.setAdapter(uniqueAdapter);
-    }
-
-    @Override
-    public void roomMatchingSuccess(List<DirectoryBean.DataBean> data) {
-        new ServiceSelectedDialog(context, serviceMeetingFlay, meetingMap, data).setLogoListener(this);
-    }
-
-    @Override
-    public void baseServiceSuccess(List<DirectoryBean.DataBean> data) {
-        new ServiceSelectedDialog(context, serviceBaseFlay, baseMap, data).setLogoListener(this);
-    }
-
-    @Override
-    public void companyServiceSuccess(List<DirectoryBean.DataBean> data) {
-        new ServiceSelectedDialog(context, serviceCompanyFlay, companyMap, data).setLogoListener(this);
-    }
-
-    @Override
     public void uploadSuccess(UploadImageBean data) {
         if (data != null && data.getUrls() != null && data.getUrls().size() > 0) {
             int urlSize = data.getUrls().size();
@@ -525,33 +526,69 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
                 uploadImageList.set(uploadImageList.size() - 1 - urlSize + i, bean);
             }
             imageAdapter.notifyDataSetChanged();
-        }
-        shortTip("上传成功");
-    }
-
-    @Override
-    public void serviceLogoResult(int flay, Map<Integer, String> mapLogo, List<DirectoryBean.DataBean> list) {
-        // String mStrLogo = CommonHelper.getKey(mapLogo);
-        if (flay == 0) {
-            meetingMap = mapLogo;
-            rvMeetingMatch.setAdapter(new ServiceLogoAdapter(context, list));
-        } else if (flay == 1) {
-            companyMap = mapLogo;
-            rvCompanyService.setAdapter(new ServiceLogoAdapter(context, list));
-        } else if (flay == 2) {
-            baseMap = mapLogo;
-            rvBaseService.setAdapter(new ServiceLogoAdapter(context, list));
+            shortTip("上传成功");
         }
     }
 
     @Override
-    public void sureFloor(String text) {
-        silFloorNo.setLeftToArrowText(text);
+    public void editSaveSuccess() {
+        finish();
+        UploadVideoVrActivity_.intent(context).start();
+    }
+
+    @Override
+    public void selectedDate(String date) {
+        if (isCompleteTime) {
+            silCompleteTime.setCenterText(date);
+        } else {
+            silReCompleteTime.setCenterText(date);
+        }
+    }
+
+    @Override
+    public void sureBuildingType(String type, boolean isOffice) {
+        silBuildingType.setCenterText(type);
+        //silGardenName.setEditText("");
+        silGardenName.setVisibility(View.VISIBLE);
+        if (isOffice) {
+            silGardenName.setTitle("写字楼名称");
+        } else {
+            silGardenName.setTitle("园区名称");
+        }
+        silNo.setVisibility(isOffice ? View.GONE : View.VISIBLE);
     }
 
     @Override
     public void AreaSure(String area, int district, int business) {
+        this.district = district;
+        this.business = business;
         silArea.setCenterText(area);
+    }
+
+    //图片上传
+    @Override
+    public void addUploadImage() {
+        selectedDialog();
+    }
+
+    //图片删除
+    @Override
+    public void deleteUploadImage(ImageBean bean, int position) {
+        if (isFastClick(1200)) {
+            return;
+        }
+        deleteList.add(uploadImageList.get(position).getPath());
+        uploadImageList.remove(position);
+        imageAdapter.notifyDataSetChanged();
+    }
+
+    //设置封面图
+    @Override
+    public void setFirstImage(int position) {
+        ImageBean imageBean = uploadImageList.get(0);
+        uploadImageList.set(0, uploadImageList.get(position));
+        uploadImageList.set(position, imageBean);
+        imageAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -570,31 +607,6 @@ public class AddJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
     @Override
     public void uniqueResult(Map<Integer, String> uniqueMap) {
         this.uniqueMap = uniqueMap;
-    }
-
-    //图片上传
-    @Override
-    public void addUploadImage() {
-        selectedDialog();
-    }
-
-    //图片删除
-    @Override
-    public void deleteUploadImage(ImageBean bean, int position) {
-        if (isFastClick(1200)) {
-            return;
-        }
-        uploadImageList.remove(position);
-        imageAdapter.notifyDataSetChanged();
-    }
-
-    //设置封面图
-    @Override
-    public void setFirstImage(int position) {
-        ImageBean imageBean = uploadImageList.get(0);
-        uploadImageList.set(0, uploadImageList.get(position));
-        uploadImageList.set(position, imageBean);
-        imageAdapter.notifyDataSetChanged();
     }
 
     private void selectedDialog() {

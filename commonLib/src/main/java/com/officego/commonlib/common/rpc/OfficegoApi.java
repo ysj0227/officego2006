@@ -380,6 +380,7 @@ public class OfficegoApi {
                 .getBuildingEdit(map)
                 .enqueue(callback);
     }
+
     /**
      * 房源编辑
      */
@@ -392,5 +393,130 @@ public class OfficegoApi {
                 .getHouseEdit(map)
                 .enqueue(callback);
     }
+
+    /**
+     * 楼盘编辑保存上传
+     * <p>
+     * buildingType 1写字楼 2商务园 3创意园 4共享空间 5公寓  6产业园
+     * buildingNum 	是 	string 	楼号
+     * districtId 	是 	number 	区域
+     * area 	是 	number 	商圈
+     * address 	是 	string 	地址
+     * totalFloor 	是 	string 	总楼层
+     * clearHeight 	是 	String 	净高
+     * storeyHeight 	否 	string 	层高
+     * ParkingSpaceRent 	否 	string 	车位租金
+     * propertyCosts 	是 	string 	物业费用
+     * parkingSpace 	是 	string 	车位数量
+     * tags 	否 	string 	标签,网点特色,多个用英文逗号隔开
+     * airConditioningFee 	是 	string 	空调费用
+     * passengerLift 	否 	number 	客梯
+     * cargoLift 	否 	number 	货梯
+     * |delImgUrl|否|String|英文逗号拼接的需要删除的url|
+     * |addImgUrl|是|String|英文逗号拼接的需要添加的url|
+     */
+    public void buildingEditSave(int buildingId, int isTemp, int buildingType, String buildingNum,
+                                 int districtId, int area, String address, String totalFloor,
+                                 String completionTime, String refurbishedTime, String constructionArea,
+                                 String clearHeight, String storeyHeight, String property, String propertyCosts,
+                                 String parkingSpace, String ParkingSpaceRent, String airConditioning, String airConditioningFee,
+                                 String passengerLift, String cargoLift, String buildingIntroduction,
+                                 String internet, String settlementLicence, String tags, String mainPic, String addImgUrl, String delImgUrl,
+                                 RetrofitCallback<Object> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("buildingId", requestBody(buildingId + ""));
+        map.put("isTemp", requestBody(isTemp + ""));
+        map.put("buildingType", requestBody(buildingType + ""));
+        if (buildingType != 1) {
+            map.put("buildingNum", requestBody(buildingNum + ""));
+        }
+        map.put("districtId", requestBody(districtId + ""));
+        map.put("area", requestBody(area + ""));
+        map.put("address", requestBody(address + ""));
+        map.put("totalFloor", requestBody(totalFloor + ""));
+        map.put("completionTime", requestBody(completionTime + ""));
+        map.put("refurbishedTime", requestBody(refurbishedTime + ""));
+        map.put("constructionArea", requestBody(constructionArea + ""));
+        map.put("clearHeight", requestBody(clearHeight + ""));
+        map.put("storeyHeight", requestBody(storeyHeight + ""));
+        map.put("property", requestBody(property + ""));
+        map.put("propertyCosts", requestBody(propertyCosts + ""));
+        map.put("parkingSpace", requestBody(parkingSpace + ""));
+        map.put("ParkingSpaceRent", requestBody(ParkingSpaceRent + ""));
+        map.put("airConditioning", requestBody(airConditioning + ""));
+        map.put("airConditioningFee", requestBody(airConditioningFee + ""));
+        map.put("passengerLift", requestBody(passengerLift + ""));
+        map.put("cargoLift", requestBody(cargoLift + ""));
+        map.put("buildingIntroduction", requestBody(buildingIntroduction + ""));
+        //网络
+        map.put("internet", requestBody(internet + ""));
+        //入住企业
+        map.put("settlementLicence", requestBody(settlementLicence + ""));
+        //特色
+        map.put("tags", requestBody(tags + ""));
+        //图片
+        map.put("mainPic", requestBody(mainPic + ""));
+        map.put("addImgUrl", requestBody(addImgUrl + ""));
+        map.put("delImgUrl", requestBody(delImgUrl + ""));
+        OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
+                .buildingEditSave(map)
+                .enqueue(callback);
+    }
+
+    /**
+     * 网点编辑保存
+     * floorType 网点的单层或多层（网点专属）1单层2多层
+     */
+    public void jointWorkEditSave(int buildingId, int isTemp, int districtId, int area, String address,
+                                  String floorType, String totalFloor, String branchesTotalFloor,
+                                  String clearHeight, String airConditioning, String airConditioningFee,
+                                  String conferenceNumber, String conferencePeopleNumber, String roomMatching,
+                                  String parkingSpace, String ParkingSpaceRent,
+                                  String passengerLift, String cargoLift, String buildingIntroduction,
+                                  String internet, String settlementLicence, String tags,
+                                  String corporateServices, String basicServices,
+                                  String mainPic, String addImgUrl, String delImgUrl,
+                                  RetrofitCallback<Object> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("buildingId", requestBody(buildingId + ""));
+        map.put("isTemp", requestBody(isTemp + ""));
+        map.put("districtId", requestBody(districtId + ""));
+        map.put("area", requestBody(area + ""));
+        map.put("address", requestBody(address + ""));
+        map.put("floorType", requestBody(floorType + ""));
+        map.put("totalFloor", requestBody(totalFloor + ""));
+        map.put("branchesTotalFloor", requestBody(branchesTotalFloor + ""));
+        map.put("clearHeight", requestBody(clearHeight + ""));
+        map.put("airConditioning", requestBody(airConditioning + ""));
+        map.put("airConditioningFee", requestBody(airConditioningFee + ""));
+        map.put("conferenceNumber", requestBody(conferenceNumber + ""));
+        map.put("conferencePeopleNumber", requestBody(conferencePeopleNumber + ""));
+        map.put("roomMatching", requestBody(roomMatching + ""));
+        map.put("parkingSpace", requestBody(parkingSpace + ""));
+        map.put("ParkingSpaceRent", requestBody(ParkingSpaceRent + ""));
+        map.put("passengerLift", requestBody(passengerLift + ""));
+        map.put("cargoLift", requestBody(cargoLift + ""));
+        //网络
+        map.put("internet", requestBody(internet + ""));
+        //入住企业
+        map.put("settlementLicence", requestBody(settlementLicence + ""));
+        //介绍
+        map.put("buildingIntroduction", requestBody(buildingIntroduction + ""));
+        //特色
+        map.put("tags", requestBody(tags + ""));
+        //服务：公司，基础
+        map.put("corporateServices", requestBody(corporateServices + ""));
+        map.put("basicServices", requestBody(basicServices + ""));
+        //图片
+        map.put("mainPic", requestBody(mainPic + ""));
+        map.put("addImgUrl", requestBody(addImgUrl + ""));
+        map.put("delImgUrl", requestBody(delImgUrl + ""));
+        OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
+                .buildingEditSave(map)
+                .enqueue(callback);
+    }
+
 
 }

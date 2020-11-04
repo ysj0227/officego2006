@@ -97,7 +97,7 @@ public class YearDateDialog {
         cancel.setOnClickListener(v -> dialog.dismiss());
         sure.setOnClickListener(v -> {
             dialog.dismiss();
-            this.sureListener.selectedDate(year + "年");
+            this.sureListener.selectedDate(year);
         });
     }
 }

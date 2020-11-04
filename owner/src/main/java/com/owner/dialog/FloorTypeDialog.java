@@ -31,7 +31,7 @@ public class FloorTypeDialog {
     private FloorListener listener;
 
     public interface FloorListener {
-        void sureFloor(String text);
+        void sureFloor(String text,String type);
     }
 
     public FloorTypeDialog(Context context) {
@@ -67,11 +67,11 @@ public class FloorTypeDialog {
         viewLayout.findViewById(R.id.btn_cancel).setOnClickListener(v -> dialog.dismiss());
         viewLayout.findViewById(R.id.rl_exit).setOnClickListener(v -> dialog.dismiss());
         tvType1.setOnClickListener(view -> {
-            listener.sureFloor(tvType1.getText().toString());
+            listener.sureFloor(tvType1.getText().toString(),"2");
             dialog.dismiss();
         });
         tvType2.setOnClickListener(view -> {
-            listener.sureFloor(tvType2.getText().toString());
+            listener.sureFloor(tvType2.getText().toString(),"1");
             dialog.dismiss();
         });
     }

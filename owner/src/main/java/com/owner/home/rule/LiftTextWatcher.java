@@ -36,10 +36,14 @@ public class LiftTextWatcher implements TextWatcher {
     public void afterTextChanged(Editable editable) {
         String words = editable.toString();
         if (!TextUtils.isEmpty(words)) {
-            if (words.length() >= 2 && Integer.valueOf(words) > 20) {
-                int index = input.getSelectionStart();//获取光标位置
-                editable.delete(index - 1, index);//删除小数点后一位
-                ToastUtils.toastForShort(context, "请输入0-20之间的整数");
+            try {
+                if (words.length() >= 2 && Integer.valueOf(words) > 20) {
+                    int index = input.getSelectionStart();//获取光标位置
+                    editable.delete(index - 1, index);//删除小数点后一位
+                    ToastUtils.toastForShort(context, "请输入0-20之间的整数");
+                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
     }

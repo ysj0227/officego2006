@@ -227,11 +227,19 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
     }
 
     //刷新用户信息
+    @SuppressLint("SetTextI18n")
     private void refreshChatUserInfo(ChatHouseBean data) {
         if (data.getChatted() != null) {
             mNikeName = data.getChatted().getNickname();
-            tvTitleName.setText(data.getChatted().getNickname());
-            tvJob.setText(data.getChatted().getJob());
+            String job = data.getChatted().getJob();
+            if (!TextUtils.isEmpty(mNikeName) && !TextUtils.isEmpty(job)) {
+                tvTitleName.setText(mNikeName + "|" + job);
+            } else if (TextUtils.isEmpty(mNikeName) && !TextUtils.isEmpty(job)) {
+                tvTitleName.setText(job);
+            } else if (!TextUtils.isEmpty(mNikeName) && TextUtils.isEmpty(job)) {
+                tvTitleName.setText(mNikeName);
+            }
+            tvJob.setText(data.getBuilding().getBuildingName());
             if (!TextUtils.isEmpty(targetId)) {
                 RongCloudSetUserInfoUtils.refreshUserInfoCache(targetId,
                         TextUtils.isEmpty(data.getChatted().getNickname()) ? "" : data.getChatted().getNickname(),
