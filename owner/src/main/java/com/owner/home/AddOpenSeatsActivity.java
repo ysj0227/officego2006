@@ -371,6 +371,5 @@ public class AddOpenSeatsActivity extends BaseMvpActivity<OpenSeatsPresenter>
     @Override
     public void editSaveSuccess() {
         finish();
-        UploadVideoVrActivity_.intent(context).start();
     }
 }

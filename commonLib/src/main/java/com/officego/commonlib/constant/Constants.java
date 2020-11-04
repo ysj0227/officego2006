@@ -45,6 +45,9 @@ public class Constants {
     //自定义类型业主楼盘管理
     public static final int BUILDING_FLAG_ADD = 1;
     public static final int BUILDING_FLAG_EDIT = 2;
+    //楼盘，房源
+    public static final int FLAG_BUILDING= 1000;
+    public static final int FLAG_HOUSE = 1001;
 
     //h5 flags
     public final static int H5_HELP = 0;

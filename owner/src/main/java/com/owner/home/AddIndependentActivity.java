@@ -508,6 +508,7 @@ public class AddIndependentActivity extends BaseMvpActivity<IndependentPresenter
     @Override
     public void editSaveSuccess() {
         finish();
-        UploadVideoVrActivity_.intent(context).start();
+        UploadVideoVrActivity_.intent(context).flay(Constants.FLAG_HOUSE).
+                buildingManagerBean(buildingManagerBean).start();
     }
 }

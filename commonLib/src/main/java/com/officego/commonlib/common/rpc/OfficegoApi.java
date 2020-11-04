@@ -608,9 +608,9 @@ public class OfficegoApi {
      * rentFreePeriod 	否 	String 	免租期
      */
     public void openSeatsEditSave(int id, int isTemp, String seats, String dayPrice,
-                                    String floor, String minimumLease, String rentFreePeriod,
-                                    String clearHeight, String mainPic, String addImgUrl, String delImgUrl,
-                                    RetrofitCallback<Object> callback) {
+                                  String floor, String minimumLease, String rentFreePeriod,
+                                  String clearHeight, String mainPic, String addImgUrl, String delImgUrl,
+                                  RetrofitCallback<Object> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("id", requestBody(id + ""));
@@ -629,4 +629,18 @@ public class OfficegoApi {
                 .houseEditSave(map)
                 .enqueue(callback);
     }
+
+    //楼盘保存发布带VR
+    public void buildingPublishVr(int buildingId, int isTemp, String vr,
+                                  RetrofitCallback<Object> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("buildingId", requestBody(buildingId + ""));
+        map.put("isTemp", requestBody(isTemp + ""));
+        map.put("vr", requestBody(vr + ""));
+        OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
+                .buildingPublishVr(map)
+                .enqueue(callback);
+    }
+
 }
