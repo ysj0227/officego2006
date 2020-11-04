@@ -17,6 +17,6 @@ public interface UploadVideoVrContract {
 
     interface Presenter {
 
-        void publishBuilding(int buildingId, int isTemp, String vr);
+        void publishBuilding(int flay,int buildingId, int isTemp, String vr);
     }
 }

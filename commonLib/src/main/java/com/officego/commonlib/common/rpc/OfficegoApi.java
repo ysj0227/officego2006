@@ -643,4 +643,17 @@ public class OfficegoApi {
                 .enqueue(callback);
     }
 
+    //房源保存发布带VR
+    public void housePublishVr(int houseId, int isTemp, String vr,
+                               RetrofitCallback<Object> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("houseId", requestBody(houseId + ""));
+        map.put("isTemp", requestBody(isTemp + ""));
+        map.put("vr", requestBody(vr + ""));
+        OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
+                .housePublishVr(map)
+                .enqueue(callback);
+    }
+
 }

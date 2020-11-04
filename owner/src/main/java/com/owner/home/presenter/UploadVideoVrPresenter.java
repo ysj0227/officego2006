@@ -15,26 +15,50 @@ public class UploadVideoVrPresenter extends BasePresenter<UploadVideoVrContract.
 
 
     @Override
-    public void publishBuilding(int buildingId, int isTemp, String vr) {
+    public void publishBuilding(int flay, int buildingId, int isTemp, String vr) {
         mView.showLoadingDialog();
-        OfficegoApi.getInstance().buildingPublishVr(buildingId, isTemp, vr,new RetrofitCallback<Object>() {
-            @Override
-            public void onSuccess(int code, String msg, Object data) {
-                if (isViewAttached()) {
-                    mView.publishSuccess();
-                    mView.hideLoadingDialog();
-                }
-            }
-
-            @Override
-            public void onFail(int code, String msg, Object data) {
-                if (isViewAttached()) {
-                    mView.hideLoadingDialog();
-                    if (code == Constants.DEFAULT_ERROR_CODE) {
-                        mView.shortTip(msg);
+        if (flay == Constants.FLAG_BUILDING) {
+            OfficegoApi.getInstance().buildingPublishVr(buildingId, isTemp, vr, new RetrofitCallback<Object>() {
+                @Override
+                public void onSuccess(int code, String msg, Object data) {
+                    if (isViewAttached()) {
+                        mView.shortTip("发布成功");
+                        mView.publishSuccess();
+                        mView.hideLoadingDialog();
                     }
                 }
-            }
-        });
+
+                @Override
+                public void onFail(int code, String msg, Object data) {
+                    if (isViewAttached()) {
+                        mView.hideLoadingDialog();
+                        if (code == Constants.DEFAULT_ERROR_CODE) {
+                            mView.shortTip(msg);
+                        }
+                    }
+                }
+            });
+        } else {
+            OfficegoApi.getInstance().housePublishVr(buildingId, isTemp, vr, new RetrofitCallback<Object>() {
+                @Override
+                public void onSuccess(int code, String msg, Object data) {
+                    if (isViewAttached()) {
+                        mView.shortTip("发布成功");
+                        mView.publishSuccess();
+                        mView.hideLoadingDialog();
+                    }
+                }
+
+                @Override
+                public void onFail(int code, String msg, Object data) {
+                    if (isViewAttached()) {
+                        mView.hideLoadingDialog();
+                        if (code == Constants.DEFAULT_ERROR_CODE) {
+                            mView.shortTip(msg);
+                        }
+                    }
+                }
+            });
+        }
     }
 }

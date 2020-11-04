@@ -7,7 +7,6 @@ import android.widget.ImageView;
 
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.model.BuildingManagerBean;
-import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.ClearableEditText;
@@ -49,12 +48,7 @@ public class UploadVideoVrActivity extends BaseMvpActivity<UploadVideoVrPresente
     @Click(resName = "btn_next")
     void publishOnClick() {
         String vr = etVr.getText() == null ? "" : etVr.getText().toString();
-        if (flay == Constants.FLAG_BUILDING) {
-            mPresenter.publishBuilding(buildingManagerBean.getBuildingId(), buildingManagerBean.getIsTemp(), vr);
-        }else {
-            //TODO
-        }
-
+        mPresenter.publishBuilding(flay,buildingManagerBean.getBuildingId(), buildingManagerBean.getIsTemp(), vr);
     }
 
     @Click(resName = "iv_close_scan")
@@ -75,6 +69,5 @@ public class UploadVideoVrActivity extends BaseMvpActivity<UploadVideoVrPresente
 
     @Override
     public void publishSuccess() {
-        shortTip("发布成功");
     }
 }
