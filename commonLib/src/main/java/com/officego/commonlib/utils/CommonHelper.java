@@ -585,6 +585,9 @@ public class CommonHelper {
     }
 
     public static String minData(String str) {
+        if (!TextUtils.isEmpty(str) && str.length() < 2) {
+            return "";
+        }
         String data;
         if (str.contains(",")) {
             data = str.substring(0, str.indexOf(","));
@@ -597,6 +600,9 @@ public class CommonHelper {
     }
 
     public static String maxData(String str) {
+        if (!TextUtils.isEmpty(str) && str.length() < 2) {
+            return "";
+        }
         String data;
         if (str.contains(",")) {
             data = str.substring(str.indexOf(",") + 1);

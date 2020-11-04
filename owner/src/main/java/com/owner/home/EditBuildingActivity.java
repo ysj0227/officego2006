@@ -36,7 +36,6 @@ import com.officego.commonlib.utils.ImageUtils;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.PhotoUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.TitleBarView;
 import com.officego.commonlib.view.widget.SettingItemLayout;
@@ -325,7 +324,7 @@ public class EditBuildingActivity extends BaseMvpActivity<BuildingPresenter>
         //入住企业
         String addCompany = CommonUtils.company(jointCompanyList);
         //特色
-        String uniqueTags = CommonHelper.getKey(uniqueMap);
+        String uniqueTags = uniqueMap == null || uniqueMap.size() == 0 ? "" : CommonHelper.getKey(uniqueMap);
         //封面图片
         String mainPic = uploadImageList.get(0).getPath();
         //添加图片
@@ -344,12 +343,6 @@ public class EditBuildingActivity extends BaseMvpActivity<BuildingPresenter>
         String conditionedFee = silConditionedFee.getContextView().getText().toString();
         //介绍
         String buildingIntroduction = cetDescContent.getText() == null ? "" : cetDescContent.getText().toString();
-//        LogCat.e(TAG, "111111 net=" + net);
-//        LogCat.e(TAG, "111111 addImage=" + addImage);
-//        LogCat.e(TAG, "111111 mainPic=" + mainPic);
-//        LogCat.e(TAG, "111111 jointCompanyList=" + addCompany);
-//        LogCat.e(TAG, "111111 uniqueTags=" + uniqueTags);
-//        LogCat.e(TAG, "111111 deleteImage=" + deleteImage);
         mPresenter.saveEdit(buildingManagerBean.getBuildingId(), buildingManagerBean.getIsTemp(),
                 mBuildingType, gardenNo, district, business, address, floorStorey, completeTime, refurbishedTime,
                 constructionArea, clearHeight, tireHeight, estate, estateFee, carNum, carFee,

@@ -27,6 +27,7 @@ public interface JointWorkContract {
         void uploadSuccess(UploadImageBean data);
 
         void editSaveSuccess();
+
     }
 
     interface Presenter {

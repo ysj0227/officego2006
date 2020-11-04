@@ -40,6 +40,7 @@ import com.owner.home.presenter.OpenSeatsPresenter;
 import com.owner.home.rule.FloorHeightTextWatcher;
 import com.owner.home.rule.IntegerTextWatcher;
 import com.owner.home.rule.RentOpenSeatTextWatcher;
+import com.owner.home.utils.CommonUtils;
 import com.owner.identity.model.ImageBean;
 import com.owner.zxing.QRScanActivity;
 
@@ -100,6 +101,8 @@ public class AddOpenSeatsActivity extends BaseMvpActivity<OpenSeatsPresenter>
     private List<ImageBean> uploadImageList = new ArrayList<>();
     private UploadBuildingImageAdapter imageAdapter;
     private String localImagePath;
+    //删除的图片
+    private List<String> deleteList = new ArrayList<>();
 
     @AfterViews
     void init() {
@@ -162,11 +165,10 @@ public class AddOpenSeatsActivity extends BaseMvpActivity<OpenSeatsPresenter>
             shortTip("请输入租金");
             return;
         }
-        if (Float.valueOf(rentSingle) < 100) {
-            shortTip("请输入100-10000租金");
-            return;
-        }
-
+//        if (Float.valueOf(rentSingle) < 100) {
+//            shortTip("请输入100-10000租金");
+//            return;
+//        }
         String floors = etFloors.getText().toString();
         if (TextUtils.isEmpty(floors)) {
             shortTip("请输入楼层");
@@ -177,6 +179,19 @@ public class AddOpenSeatsActivity extends BaseMvpActivity<OpenSeatsPresenter>
             shortTip("请输入最短租期");
             return;
         }
+        //净高
+        String clearHeight = silStoreyHeight.getEditTextView().getText().toString();
+        //免租期
+        String freeRent = silFreeRent.getLeftToArrowTextView().getText().toString();
+        //封面图片
+        String mainPic = uploadImageList.get(0).getPath();
+        //添加图片
+        String addImage = CommonUtils.addUploadImage(uploadImageList);
+        //删除图片
+        String deleteImage = CommonUtils.delUploadImage(deleteList);
+        mPresenter.saveEdit(buildingManagerBean.getBuildingId(), buildingManagerBean.getIsTemp(),
+                seats, rentSingle, floors, rentTime, freeRent,
+                clearHeight, mainPic, addImage, deleteImage);
     }
 
     @Click(resName = "iv_close_scan")
@@ -194,11 +209,6 @@ public class AddOpenSeatsActivity extends BaseMvpActivity<OpenSeatsPresenter>
         startActivity(new Intent(context, QRScanActivity.class));
     }
 
-//    @Click(resName = "sil_floor_no")
-//    void floorNoOnClick() {
-//        new FloorTypeDialog(context).setListener(this);
-//    }
-
     @Click(resName = "sil_free_rent")
     void freeRentOnClick() {
         new RentDialog(context, getString(R.string.str_free_rent)).setSureListener(this);
@@ -210,7 +220,7 @@ public class AddOpenSeatsActivity extends BaseMvpActivity<OpenSeatsPresenter>
     }
 
     @Override
-    public void sureFloor(String text,String type) {
+    public void sureFloor(String text, String type) {
         silFloorNo.setLeftToArrowText(text);
     }
 
@@ -300,6 +310,7 @@ public class AddOpenSeatsActivity extends BaseMvpActivity<OpenSeatsPresenter>
         if (isFastClick(1200)) {
             return;
         }
+        deleteList.add(uploadImageList.get(position).getPath());
         uploadImageList.remove(position);
         imageAdapter.notifyDataSetChanged();
     }
@@ -359,5 +370,11 @@ public class AddOpenSeatsActivity extends BaseMvpActivity<OpenSeatsPresenter>
             imageAdapter.notifyDataSetChanged();
         }
         shortTip("上传成功");
+    }
+
+    @Override
+    public void editSaveSuccess() {
+        finish();
+        UploadVideoVrActivity_.intent(context).start();
     }
 }

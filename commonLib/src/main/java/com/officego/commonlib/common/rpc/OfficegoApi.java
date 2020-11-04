@@ -518,5 +518,115 @@ public class OfficegoApi {
                 .enqueue(callback);
     }
 
+    /**
+     * 楼盘下房源编辑保存
+     * dayPrice 	否 	Double 	单价
+     * monthPrice 	否 	Double 	总价
+     * minimumLease 	否 	String 	最短租期
+     * rentFreePeriod 	否 	String 	免租期
+     */
+    public void houseEditSave(int id, int isTemp, String title, String area,
+                              String simple, String dayPrice, String monthPrice,
+                              String floor, String clearHeight, String storeyHeight,
+                              String minimumLease, String rentFreePeriod,
+                              String propertyHouseCosts, String decoration, String unitPatternRemark,
+                              String tags, String unitPatternImg,
+                              String mainPic, String addImgUrl, String delImgUrl,
+                              RetrofitCallback<Object> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("id", requestBody(id + ""));
+        map.put("isTemp", requestBody(isTemp + ""));
+        map.put("title", requestBody(title + ""));
+        map.put("area", requestBody(area + ""));
+        map.put("simple", requestBody(simple + ""));
+        map.put("dayPrice", requestBody(dayPrice + ""));
+        map.put("monthPrice", requestBody(monthPrice + ""));
+        map.put("floor", requestBody(floor + ""));//第几层
+        map.put("clearHeight", requestBody(clearHeight + ""));
+        map.put("storeyHeight", requestBody(storeyHeight + ""));
+        map.put("minimumLease", requestBody(minimumLease + ""));
+        map.put("rentFreePeriod", requestBody(rentFreePeriod + ""));
+        map.put("propertyHouseCosts", requestBody(propertyHouseCosts + ""));
+        map.put("decoration", requestBody(decoration + ""));
+        map.put("unitPatternRemark", requestBody(unitPatternRemark + ""));
+        map.put("tags", requestBody(tags + ""));
+        //图片
+        map.put("unitPatternImg", requestBody(unitPatternImg + ""));
+        map.put("mainPic", requestBody(mainPic + ""));
+        map.put("addImgUrl", requestBody(addImgUrl + ""));
+        map.put("delImgUrl", requestBody(delImgUrl + ""));
+        OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
+                .houseEditSave(map)
+                .enqueue(callback);
+    }
 
+    /**
+     * 独立办公室编辑保存
+     * dayPrice 	否 	Double 	单价
+     * monthPrice 	否 	Double 	总价
+     * minimumLease 	否 	String 	最短租期
+     * rentFreePeriod 	否 	String 	免租期
+     */
+    public void independentEditSave(int id, int isTemp, String title,
+                                    String seats, String area, String monthPrice,
+                                    String floor, String minimumLease, String rentFreePeriod,
+                                    String conditioningType, String conditioningTypeCost,
+                                    String clearHeight, String unitPatternRemark,
+                                    String unitPatternImg, String mainPic, String addImgUrl, String delImgUrl,
+                                    RetrofitCallback<Object> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("id", requestBody(id + ""));
+        map.put("isTemp", requestBody(isTemp + ""));
+        map.put("title", requestBody(title + ""));
+        map.put("seats", requestBody(seats + ""));
+        map.put("area", requestBody(area + ""));
+        map.put("monthPrice", requestBody(monthPrice + ""));
+        map.put("floor", requestBody(floor + ""));//第几层
+        map.put("minimumLease", requestBody(minimumLease + ""));
+        map.put("rentFreePeriod", requestBody(rentFreePeriod + ""));
+        map.put("conditioningType", requestBody(conditioningType + ""));
+        map.put("conditioningTypeCost", requestBody(conditioningTypeCost + ""));
+        map.put("clearHeight", requestBody(clearHeight + ""));
+        //图片
+        map.put("unitPatternRemark", requestBody(unitPatternRemark + ""));
+        map.put("unitPatternImg", requestBody(unitPatternImg + ""));
+        map.put("mainPic", requestBody(mainPic + ""));
+        map.put("addImgUrl", requestBody(addImgUrl + ""));
+        map.put("delImgUrl", requestBody(delImgUrl + ""));
+        OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
+                .houseEditSave(map)
+                .enqueue(callback);
+    }
+
+    /**
+     * 独立办公室编辑保存
+     * dayPrice 	否 	Double 	单价
+     * monthPrice 	否 	Double 	总价
+     * minimumLease 	否 	String 	最短租期
+     * rentFreePeriod 	否 	String 	免租期
+     */
+    public void openSeatsEditSave(int id, int isTemp, String seats, String dayPrice,
+                                    String floor, String minimumLease, String rentFreePeriod,
+                                    String clearHeight, String mainPic, String addImgUrl, String delImgUrl,
+                                    RetrofitCallback<Object> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("id", requestBody(id + ""));
+        map.put("isTemp", requestBody(isTemp + ""));
+        map.put("seats", requestBody(seats + ""));
+        map.put("dayPrice", requestBody(dayPrice + ""));
+        map.put("floor", requestBody(floor + ""));//第几层
+        map.put("minimumLease", requestBody(minimumLease + ""));
+        map.put("rentFreePeriod", requestBody(rentFreePeriod + ""));
+        map.put("clearHeight", requestBody(clearHeight + ""));
+        //图片
+        map.put("mainPic", requestBody(mainPic + ""));
+        map.put("addImgUrl", requestBody(addImgUrl + ""));
+        map.put("delImgUrl", requestBody(delImgUrl + ""));
+        OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
+                .houseEditSave(map)
+                .enqueue(callback);
+    }
 }

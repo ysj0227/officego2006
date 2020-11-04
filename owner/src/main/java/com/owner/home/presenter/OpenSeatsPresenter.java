@@ -6,7 +6,6 @@ import com.officego.commonlib.common.model.owner.UploadImageBean;
 import com.officego.commonlib.common.rpc.OfficegoApi;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
-import com.owner.home.contract.IndependentContract;
 import com.owner.home.contract.OpenSeatsContract;
 import com.owner.identity.model.ImageBean;
 
@@ -64,5 +63,34 @@ public class OpenSeatsPresenter extends BasePresenter<OpenSeatsContract.View>
                 }
             }
         });
+    }
+
+    @Override
+    public void saveEdit(int id, int isTemp, String seats, String dayPrice,
+                         String floor, String minimumLease, String rentFreePeriod,
+                         String clearHeight, String mainPic,
+                         String addImgUrl, String delImgUrl) {
+        mView.showLoadingDialog();
+        OfficegoApi.getInstance().openSeatsEditSave(id, isTemp, seats,
+                dayPrice, floor, minimumLease, rentFreePeriod, clearHeight,
+                mainPic, addImgUrl, delImgUrl, new RetrofitCallback<Object>() {
+                    @Override
+                    public void onSuccess(int code, String msg, Object data) {
+                        if (isViewAttached()) {
+                            mView.editSaveSuccess();
+                            mView.hideLoadingDialog();
+                        }
+                    }
+
+                    @Override
+                    public void onFail(int code, String msg, Object data) {
+                        if (isViewAttached()) {
+                            mView.hideLoadingDialog();
+                            if (code == Constants.DEFAULT_ERROR_CODE) {
+                                mView.shortTip(msg);
+                            }
+                        }
+                    }
+                });
     }
 }

@@ -88,4 +88,37 @@ public class IndependentPresenter extends BasePresenter<IndependentContract.View
             }
         });
     }
+
+    @Override
+    public void saveEdit(int id, int isTemp, String title, String seats,
+                         String area, String monthPrice, String floor,
+                         String minimumLease, String rentFreePeriod,
+                         String conditioningType, String conditioningTypeCost,
+                         String clearHeight, String unitPatternRemark,
+                         String unitPatternImg, String mainPic, String addImgUrl, String delImgUrl) {
+        mView.showLoadingDialog();
+        OfficegoApi.getInstance().independentEditSave(id, isTemp, title, seats,
+                area, monthPrice, floor, minimumLease, rentFreePeriod,
+                conditioningType, conditioningTypeCost,
+                clearHeight, unitPatternRemark,
+                unitPatternImg, mainPic, addImgUrl, delImgUrl, new RetrofitCallback<Object>() {
+                    @Override
+                    public void onSuccess(int code, String msg, Object data) {
+                        if (isViewAttached()) {
+                            mView.editSaveSuccess();
+                            mView.hideLoadingDialog();
+                        }
+                    }
+
+                    @Override
+                    public void onFail(int code, String msg, Object data) {
+                        if (isViewAttached()) {
+                            mView.hideLoadingDialog();
+                            if (code == Constants.DEFAULT_ERROR_CODE) {
+                                mView.shortTip(msg);
+                            }
+                        }
+                    }
+                });
+    }
 }

@@ -190,11 +190,11 @@ public class HouseEditBean {
         @SerializedName("area")
         private int area;
         @SerializedName("monthPrice")
-        private int monthPrice;
+        private Object monthPrice;
         @SerializedName("simple")
         private String simple;
         @SerializedName("dayPrice")
-        private int dayPrice;
+        private Object dayPrice;
         @SerializedName("floor")
         private String floor;
         @SerializedName("decoration")
@@ -328,11 +328,11 @@ public class HouseEditBean {
             this.area = area;
         }
 
-        public int getMonthPrice() {
+        public Object getMonthPrice() {
             return monthPrice;
         }
 
-        public void setMonthPrice(int monthPrice) {
+        public void setMonthPrice(Object monthPrice) {
             this.monthPrice = monthPrice;
         }
 
@@ -344,11 +344,11 @@ public class HouseEditBean {
             this.simple = simple;
         }
 
-        public int getDayPrice() {
+        public Object getDayPrice() {
             return dayPrice;
         }
 
-        public void setDayPrice(int dayPrice) {
+        public void setDayPrice(Object dayPrice) {
             this.dayPrice = dayPrice;
         }
 

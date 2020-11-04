@@ -16,11 +16,17 @@ public interface OpenSeatsContract {
         void houseEditSuccess(HouseEditBean data);
 
         void uploadSuccess(UploadImageBean data);
+
+        void editSaveSuccess();
     }
 
     interface Presenter {
         void getHouseEdit(int houseId, int isTemp);
 
         void uploadImage(List<ImageBean> mFilePath);
+
+        void saveEdit(int id, int isTemp, String seats, String dayPrice,
+                      String floor, String minimumLease, String rentFreePeriod,
+                      String clearHeight, String mainPic, String addImgUrl, String delImgUrl);
     }
 }

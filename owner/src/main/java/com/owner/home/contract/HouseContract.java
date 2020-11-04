@@ -26,6 +26,8 @@ public interface HouseContract {
         //是否户型介绍上传  还是多图
         void uploadSuccess(boolean isIntroduceLayout, UploadImageBean data);
 
+        void editSaveSuccess();
+
     }
 
     interface Presenter {
@@ -39,5 +41,13 @@ public interface HouseContract {
         void uploadImage(List<ImageBean> mFilePath);
 
         void uploadSingleImage(String mFilePath);
+
+        void saveEdit(int id, int isTemp, String title, String area,
+                      String seats, String dayPrice, String monthPrice,
+                      String floor, String clearHeight, String storeyHeight,
+                      String minimumLease, String rentFreePeriod,
+                      String propertyHouseCosts, String decoration, String unitPatternRemark,
+                      String tags, String unitPatternImg,
+                      String mainPic, String addImgUrl, String delImgUrl);
     }
 }

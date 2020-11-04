@@ -264,7 +264,7 @@ public class EditJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
     }
 
     private void submit() {
-        String jointWorkName = silJointWorkName.getEditTextView().getText().toString();
+        //String jointWorkName = silJointWorkName.getEditTextView().getText().toString();
         String buildingArea = silArea.getContextView().getText().toString();
         if (TextUtils.isEmpty(buildingArea)) {
             shortTip("请选择所在区域");
@@ -324,10 +324,10 @@ public class EditJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
         //入住企业
         String addCompany = CommonUtils.company(jointCompanyList);
         //特色
-        String uniqueTags = CommonHelper.getKey(uniqueMap);
+        String uniqueTags = uniqueMap == null || uniqueMap.size() == 0 ? "" : CommonHelper.getKey(uniqueMap);
         //服务
-        String companyService = CommonHelper.getKey(companyMap);
-        String baseService = CommonHelper.getKey(baseMap);
+        String companyService = companyMap == null || companyMap.size() == 0 ? "" : CommonHelper.getKey(companyMap);
+        String baseService = baseMap == null || baseMap.size() == 0 ? "" : CommonHelper.getKey(baseMap);
         //封面图片
         String mainPic = uploadImageList.get(0).getPath();
         //添加图片
@@ -337,8 +337,8 @@ public class EditJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
         mPresenter.saveEdit(buildingManagerBean.getBuildingId(), buildingManagerBean.getIsTemp(),
                 district, business, address, mFloorType, floors, floorsCount, storeyHeight,
                 conditioned, conditionedFee, meetingRoom, containsPersons, meetingMatch,
-                carNum, carFee, customerLift, passengerLift,buildingIntroduction,
-                net, addCompany, uniqueTags,companyService,
+                carNum, carFee, customerLift, passengerLift, buildingIntroduction,
+                net, addCompany, uniqueTags, companyService,
                 baseService, mainPic, addImage, deleteImage);
     }
 

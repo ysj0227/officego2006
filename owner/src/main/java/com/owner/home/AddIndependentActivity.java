@@ -47,6 +47,7 @@ import com.owner.home.rule.CarFeeTextWatcher;
 import com.owner.home.rule.FloorHeightTextWatcher;
 import com.owner.home.rule.IntegerTextWatcher;
 import com.owner.home.rule.TextCountsWatcher;
+import com.owner.home.utils.CommonUtils;
 import com.owner.identity.model.ImageBean;
 import com.owner.zxing.QRScanActivity;
 
@@ -135,6 +136,8 @@ public class AddIndependentActivity extends BaseMvpActivity<IndependentPresenter
     private List<ImageBean> uploadImageList = new ArrayList<>();
     private UploadBuildingImageAdapter imageAdapter;
     private String localImagePath;
+    //删除的图片
+    private List<String> deleteList = new ArrayList<>();
     //户型介绍图片
     private String introduceImageUrl;
     //图片上传类型
@@ -215,8 +218,8 @@ public class AddIndependentActivity extends BaseMvpActivity<IndependentPresenter
             shortTip("请输入楼层");
             return;
         }
-        String rentTime = silRentTime.getEditTextView().getText().toString();
-        if (TextUtils.isEmpty(rentTime)) {
+        String minimumLease = silRentTime.getEditTextView().getText().toString();
+        if (TextUtils.isEmpty(minimumLease)) {
             shortTip("请输入最短租期");
             return;
         }
@@ -230,6 +233,27 @@ public class AddIndependentActivity extends BaseMvpActivity<IndependentPresenter
             shortTip("请输入净高");
             return;
         }
+        String title = silTitle.getEditTextView().getText().toString();
+        //面积
+        String area = silArea.getEditTextView().getText().toString();
+        //净高
+        String clearHeight = silStoreyHeight.getEditTextView().getText().toString();
+        //免租期
+        String freeRent = silFreeRent.getLeftToArrowTextView().getText().toString();
+        //空调费
+        String conditionedFee = silConditionedFee.getContextView().getText().toString();
+        //介绍
+        String buildingIntroduction = cetDescContent.getText() == null ? "" : cetDescContent.getText().toString();
+        //封面图片
+        String mainPic = uploadImageList.get(0).getPath();
+        //添加图片
+        String addImage = CommonUtils.addUploadImage(uploadImageList);
+        //删除图片
+        String deleteImage = CommonUtils.delUploadImage(deleteList);
+        mPresenter.saveEdit(buildingManagerBean.getBuildingId(), buildingManagerBean.getIsTemp(), title,
+                seats, area, rentSingle, floors, minimumLease, freeRent,
+                conditioned, conditionedFee, clearHeight, buildingIntroduction,
+                introduceImageUrl, mainPic, addImage, deleteImage);
     }
 
     @Click(resName = "iv_close_scan")
@@ -269,7 +293,7 @@ public class AddIndependentActivity extends BaseMvpActivity<IndependentPresenter
     }
 
     @Override
-    public void sureFloor(String text,String type) {
+    public void sureFloor(String text, String type) {
         silFloorNo.setLeftToArrowText(text);
     }
 
@@ -391,6 +415,7 @@ public class AddIndependentActivity extends BaseMvpActivity<IndependentPresenter
         if (isFastClick(1200)) {
             return;
         }
+        deleteList.add(uploadImageList.get(position).getPath());
         uploadImageList.remove(position);
         imageAdapter.notifyDataSetChanged();
     }
@@ -478,5 +503,11 @@ public class AddIndependentActivity extends BaseMvpActivity<IndependentPresenter
             }
             shortTip("上传成功");
         }
+    }
+
+    @Override
+    public void editSaveSuccess() {
+        finish();
+        UploadVideoVrActivity_.intent(context).start();
     }
 }

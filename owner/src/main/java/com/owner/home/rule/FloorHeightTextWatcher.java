@@ -38,12 +38,16 @@ public class FloorHeightTextWatcher implements TextWatcher {
             return;
         }
         //只能输入一位整数，如果第二位是整数则删除
-        if (editable.toString().length() > 1 &&
-                !TextUtils.equals(".", editable.toString().substring(1, 2))) {
-            int index = editText.getSelectionStart();//获取光标位置
-            editable.delete(index - 1, index);
-            ToastUtils.toastForShort(context, "请输入0-8之间的整数或一位小数");
-            return;
+        try {
+            if (editable.toString().length() > 1 &&
+                    !TextUtils.equals(".", editable.toString().substring(1, 2))) {
+                int index = editText.getSelectionStart();//获取光标位置
+                editable.delete(index - 1, index);
+                ToastUtils.toastForShort(context, "请输入0-8之间的整数或一位小数");
+                return;
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         //保留一位小数
         String temp = editable.toString();

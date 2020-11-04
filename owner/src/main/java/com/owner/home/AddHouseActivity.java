@@ -37,6 +37,7 @@ import com.officego.commonlib.utils.ImageUtils;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.PhotoUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.TitleBarView;
 import com.officego.commonlib.view.dialog.CommonDialog;
@@ -55,6 +56,7 @@ import com.owner.home.rule.IntegerTextWatcher;
 import com.owner.home.rule.RentSingleTextWatcher;
 import com.owner.home.rule.RentSumTextWatcher;
 import com.owner.home.rule.TextCountsWatcher;
+import com.owner.home.utils.CommonUtils;
 import com.owner.identity.model.ImageBean;
 import com.owner.utils.SpaceItemDecoration;
 import com.owner.zxing.QRScanActivity;
@@ -169,6 +171,8 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
     private String introduceImageUrl;
     //图片上传类型
     private int mUploadType;
+    //删除的图片
+    private List<String> deleteList = new ArrayList<>();
 
     @AfterViews
     void init() {
@@ -240,7 +244,6 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
 
     @Click(resName = "btn_next")
     void nextOnClick() {
-//        UploadVideoVrActivity_.intent(context).start();
         submit();
     }
 
@@ -275,8 +278,8 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
             shortTip("请输入楼层");
             return;
         }
-        String storeyHeight = silStoreyHeight.getEditTextView().getText().toString();
-        if (TextUtils.isEmpty(storeyHeight)) {
+        String clearHeight = silStoreyHeight.getEditTextView().getText().toString();
+        if (TextUtils.isEmpty(clearHeight)) {
             shortTip("请输入净高");
             return;
         }
@@ -289,6 +292,29 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
             shortTip("请选择装修程度");
             return;
         }
+        String title = silHouseTitle.getEditTextView().getText().toString();
+        //工位
+        String simple = minSeats + "," + maxSeats;
+        //层高
+        String tireHeight = silTierHeight.getEditTextView().getText().toString();
+        //免租期
+        String freeRent = silFreeRent.getLeftToArrowTextView().getText().toString();
+        //物业费
+        String estateFee = silEstateFee.getEditTextView().getText().toString();
+        //介绍
+        String buildingIntroduction = cetDescContent.getText() == null ? "" : cetDescContent.getText().toString();
+        //特色
+        String uniqueTags = uniqueMap == null || uniqueMap.size() == 0 ? "" : CommonHelper.getKey(uniqueMap);
+        //封面图片
+        String mainPic = uploadImageList.get(0).getPath();
+        //添加图片
+        String addImage = CommonUtils.addUploadImage(uploadImageList);
+        //删除图片
+        String deleteImage = CommonUtils.delUploadImage(deleteList);
+        mPresenter.saveEdit(buildingManagerBean.getBuildingId(), buildingManagerBean.getIsTemp(), title,
+                area, simple, rentSingle, rentSum, floors, clearHeight, tireHeight,
+                rentTime, freeRent, estateFee, String.valueOf(decorationId), buildingIntroduction,
+                uniqueTags, introduceImageUrl, mainPic, addImage, deleteImage);
     }
 
     @Click(resName = "iv_close_scan")
@@ -488,12 +514,18 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
     }
 
     @Override
+    public void editSaveSuccess() {
+        finish();
+        UploadVideoVrActivity_.intent(context).start();
+    }
+
+    @Override
     public void selectedRent(String str) {
         silFreeRent.setLeftToArrowText(str);
     }
 
     @Override
-    public void sureFloor(String text,String type) {
+    public void sureFloor(String text, String type) {
         silFloorNo.setLeftToArrowText(text);
     }
 
@@ -520,6 +552,7 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
         if (isFastClick(1200)) {
             return;
         }
+        deleteList.add(uploadImageList.get(position).getPath());
         uploadImageList.remove(position);
         imageAdapter.notifyDataSetChanged();
     }

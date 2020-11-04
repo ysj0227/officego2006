@@ -44,7 +44,7 @@ public class HomeMoreDialog {
         this.context = context;
         this.bean = bean;
         this.position = position;
-        isOpenSeats = (bean.getBtype() == 2 && bean.getOfficeType() == 2)||bean.getHouseStatus()==2; //0未发布，1发布，2下架,3:待完善
+        isOpenSeats = (bean.getBtype() == 2 && bean.getOfficeType() == 2) || bean.getHouseStatus() == 2; //0未发布，1发布，2下架,3:待完善
         isPublish = bean.getHouseStatus() == 1;
         moreDialog(context);
     }
@@ -64,7 +64,7 @@ public class HomeMoreDialog {
         int width = dm.widthPixels;
         WindowManager.LayoutParams lp = dialogWindow.getAttributes();
         lp.width = width;
-        if (isOpenSeats) {
+        if (isOpenSeats || !isPublish) {
             lp.height = context.getResources().getDimensionPixelSize(R.dimen.dp_200);
         } else {
             lp.height = context.getResources().getDimensionPixelSize(R.dimen.dp_260);

@@ -40,7 +40,7 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
     private HomeItemListener listener;
 
     public interface HomeItemListener {
-        void itemPublishStatus(int pos,HouseBean.ListBean bean, boolean isOpenSeats);
+        void itemPublishStatus(int pos, HouseBean.ListBean bean, boolean isOpenSeats);
 
         void itemEdit(HouseBean.ListBean bean);
 
@@ -64,13 +64,18 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
         ImageView ivFlay = holder.getView(R.id.tv_type);
         TextView tvArea = holder.getView(R.id.tv_area);
         RoundImageView ivHouse = holder.getView(R.id.iv_house);
+        TextView tvUnit = holder.getView(R.id.tv_unit);
         Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getMainPic()).into(ivHouse);
         holder.setText(R.id.tv_house_name, bean.getTitle());
-        holder.setText(R.id.tv_price, "¥" + bean.getMonthPrice());
+
         //楼盘下房源
         if (Constants.TYPE_BUILDING == bean.getBtype()) {
             ivFlay.setVisibility(View.GONE);
+            holder.setText(R.id.tv_price, "¥" + bean.getDayPrice());
+            tvUnit.setText("/㎡/天起");
         } else {
+            holder.setText(R.id.tv_price, "¥" + bean.getMonthPrice());
+            tvUnit.setText("/位/月");
             //网点下房源 1是独立办公室，2是开放工位
             ivFlay.setVisibility(View.VISIBLE);
             ivFlay.setBackgroundResource(bean.getOfficeType() == 1 ? R.mipmap.ic_label_independent : R.mipmap.ic_label_open_seats);
@@ -124,7 +129,7 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
             } else if (id == R.id.tv_publish_status) {
                 if (listener != null) {
                     //如果是独立办公室是发布， 开放工位是关闭
-                    listener.itemPublishStatus(holder.getAdapterPosition(),bean, isOpenSeats);
+                    listener.itemPublishStatus(holder.getAdapterPosition(), bean, isOpenSeats);
                 }
             }
         };
@@ -134,7 +139,7 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
         tvMore.setOnClickListener(clickListener);
         //房源详情
         holder.itemView.setOnClickListener(view ->
-                BundleUtils.ownerGotoDetailsActivity(mContext, false, bean.getBtype(), bean.getHouseId(),bean.getIsTemp()));
+                BundleUtils.ownerGotoDetailsActivity(mContext, false, bean.getBtype(), bean.getHouseId(), bean.getIsTemp()));
     }
 
     private void share(HouseBean.ListBean bn) {
