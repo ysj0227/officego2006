@@ -447,7 +447,7 @@ public class AddIndependentActivity extends BaseMvpActivity<IndependentPresenter
             tvCountsFloor.setText("总" + "" + "层");
             //租期
             silRentTime.getEditTextView().setText(data.getHouseMsg().getMinimumLease());
-            silFreeRent.getEditTextView().setText(data.getHouseMsg().getRentFreePeriod());
+            silFreeRent.getLeftToArrowTextView().setText(data.getHouseMsg().getRentFreePeriod());
             //空调类型
             String ariCondition = data.getHouseMsg().getConditioningType();
             silConditioned.setCenterText(ariCondition);

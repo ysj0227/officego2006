@@ -442,7 +442,7 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
             silTierHeight.getEditTextView().setText(data.getHouseMsg().getStoreyHeight());
             //租期
             silRentTime.getEditTextView().setText(data.getHouseMsg().getMinimumLease());
-            silFreeRent.getEditTextView().setText(data.getHouseMsg().getRentFreePeriod());
+            silFreeRent.getLeftToArrowTextView().setText(data.getHouseMsg().getRentFreePeriod());
             //物业费 0不包含，1包含
             silEstateFee.getEditTextView().setText(data.getHouseMsg().getPropertyHouseCosts());
             //装修类型 1毛坯房屋，2简装 ，3豪华，4标准，5精装，6不带窗口，7带家具，8带窗口

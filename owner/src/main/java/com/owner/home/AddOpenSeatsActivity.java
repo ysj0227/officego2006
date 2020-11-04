@@ -165,10 +165,6 @@ public class AddOpenSeatsActivity extends BaseMvpActivity<OpenSeatsPresenter>
             shortTip("请输入租金");
             return;
         }
-//        if (Float.valueOf(rentSingle) < 100) {
-//            shortTip("请输入100-10000租金");
-//            return;
-//        }
         String floors = etFloors.getText().toString();
         if (TextUtils.isEmpty(floors)) {
             shortTip("请输入楼层");
@@ -337,7 +333,7 @@ public class AddOpenSeatsActivity extends BaseMvpActivity<OpenSeatsPresenter>
             tvCountsFloor.setText("总" + "" + "层");
             //租期
             silRentTime.getEditTextView().setText(data.getHouseMsg().getMinimumLease());
-            silFreeRent.getEditTextView().setText(data.getHouseMsg().getRentFreePeriod());
+            silFreeRent.getLeftToArrowTextView().setText(data.getHouseMsg().getRentFreePeriod());
             //净高
             silStoreyHeight.getEditTextView().setText(data.getHouseMsg().getClearHeight());
             //办公室图片

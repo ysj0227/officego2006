@@ -74,7 +74,7 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
             holder.setText(R.id.tv_price, "¥" + bean.getDayPrice());
             tvUnit.setText("/㎡/天起");
         } else {
-            holder.setText(R.id.tv_price, "¥" + bean.getMonthPrice());
+            holder.setText(R.id.tv_price, "¥" + (bean.getOfficeType() == 1 ? bean.getMonthPrice() : bean.getDayPrice()));
             tvUnit.setText("/位/月");
             //网点下房源 1是独立办公室，2是开放工位
             ivFlay.setVisibility(View.VISIBLE);
