@@ -69,5 +69,6 @@ public class UploadVideoVrActivity extends BaseMvpActivity<UploadVideoVrPresente
 
     @Override
     public void publishSuccess() {
+        finish();
     }
 }

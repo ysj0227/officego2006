@@ -7,6 +7,7 @@ import com.officego.commonlib.common.rpc.OfficegoApi;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.owner.home.contract.IndependentContract;
+import com.officego.commonlib.common.model.owner.AddHouseSuccessBean;
 import com.owner.identity.model.ImageBean;
 
 import java.util.List;
@@ -134,17 +135,17 @@ public class IndependentPresenter extends BasePresenter<IndependentContract.View
                 area, monthPrice, floor, minimumLease, rentFreePeriod,
                 conditioningType, conditioningTypeCost,
                 clearHeight, unitPatternRemark,
-                unitPatternImg, mainPic, addImgUrl, delImgUrl, new RetrofitCallback<Object>() {
+                unitPatternImg, mainPic, addImgUrl, delImgUrl, new RetrofitCallback<AddHouseSuccessBean>() {
                     @Override
-                    public void onSuccess(int code, String msg, Object data) {
+                    public void onSuccess(int code, String msg, AddHouseSuccessBean data) {
                         if (isViewAttached()) {
-                            mView.addHouseSuccess();
+                            mView.addHouseSuccess(data.getId());
                             mView.hideLoadingDialog();
                         }
                     }
 
                     @Override
-                    public void onFail(int code, String msg, Object data) {
+                    public void onFail(int code, String msg, AddHouseSuccessBean data) {
                         if (isViewAttached()) {
                             mView.hideLoadingDialog();
                             if (code == Constants.DEFAULT_ERROR_CODE) {

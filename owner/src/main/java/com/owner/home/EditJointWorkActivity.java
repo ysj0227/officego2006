@@ -264,7 +264,6 @@ public class EditJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
     }
 
     private void submit() {
-        //String jointWorkName = silJointWorkName.getEditTextView().getText().toString();
         String buildingArea = silArea.getContextView().getText().toString();
         if (TextUtils.isEmpty(buildingArea)) {
             shortTip("请选择所在区域");
@@ -560,13 +559,6 @@ public class EditJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
     }
 
     @Override
-    public void editSaveSuccess() {
-        finish();
-        UploadVideoVrActivity_.intent(context).flay(Constants.FLAG_BUILDING).
-                buildingManagerBean(buildingManagerBean).start();
-    }
-
-    @Override
     public void serviceLogoResult(int flay, Map<Integer, String> mapLogo, List<DirectoryBean.DataBean> list) {
         if (flay == 0) {
             meetingMap = mapLogo;
@@ -707,5 +699,12 @@ public class EditJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         PermissionUtils.requestPermissions(context, requestCode, permissions, grantResults);
+    }
+
+    @Override
+    public void editSaveSuccess() {
+        finish();
+        UploadVideoVrActivity_.intent(context).flay(Constants.FLAG_BUILDING).
+                buildingManagerBean(buildingManagerBean).start();
     }
 }

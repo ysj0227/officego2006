@@ -123,7 +123,7 @@ public class AddBuildingJointWorkActivity extends BaseMvpActivity<AddPresenter>
         silName.setTitle(flay == 0 ? "共享办公名称" : "楼盘名称");
         silName.getEditTextView().setHint(flay == 0 ? "请输入共享办公名称" : "请输入楼盘名称");
         silName.getEditTextView().setHintTextColor(ContextCompat.getColor(context, R.color.text_66_p50));
-        tvUploadTitle.setText(flay == 0 ? "上传共享办公图片" : "上传楼盘图片");
+        tvUploadTitle.setText(flay == 0 ? "上传共享办公图片" : "上传房产证");
         //搜索列表
         LinearLayoutManager buildingManager = new LinearLayoutManager(context);
         rvRecommendBuilding.setLayoutManager(buildingManager);

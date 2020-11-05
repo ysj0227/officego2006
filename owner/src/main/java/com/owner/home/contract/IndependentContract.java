@@ -21,7 +21,7 @@ public interface IndependentContract {
 
         void editSaveSuccess();
 
-        void addHouseSuccess();
+        void addHouseSuccess(String id);
     }
 
     interface Presenter {

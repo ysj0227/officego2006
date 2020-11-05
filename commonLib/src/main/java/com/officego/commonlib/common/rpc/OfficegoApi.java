@@ -9,6 +9,7 @@ import com.officego.commonlib.common.model.ExchangeContactsBean;
 import com.officego.commonlib.common.model.FirstChatBean;
 import com.officego.commonlib.common.model.IdentitychattedMsgBean;
 import com.officego.commonlib.common.model.RongUserInfoBean;
+import com.officego.commonlib.common.model.owner.AddHouseSuccessBean;
 import com.officego.commonlib.common.model.owner.BuildingEditBean;
 import com.officego.commonlib.common.model.owner.BuildingJointWorkBean;
 import com.officego.commonlib.common.model.owner.HouseBean;
@@ -576,7 +577,7 @@ public class OfficegoApi {
                                  String propertyHouseCosts, String decoration, String unitPatternRemark,
                                  String tags, String unitPatternImg,
                                  String mainPic, String addImgUrl, String delImgUrl,
-                                 RetrofitCallback<Object> callback) {
+                                 RetrofitCallback<AddHouseSuccessBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("buildingId", requestBody(buildingId + ""));
@@ -653,7 +654,7 @@ public class OfficegoApi {
                                     String conditioningType, String conditioningTypeCost,
                                     String clearHeight, String unitPatternRemark, String unitPatternImg,
                                     String mainPic, String addImgUrl, String delImgUrl,
-                                    RetrofitCallback<Object> callback) {
+                                    RetrofitCallback<AddHouseSuccessBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("buildingId", requestBody(buildingId + ""));
@@ -764,7 +765,7 @@ public class OfficegoApi {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("houseId", requestBody(houseId + ""));
-        map.put("isTemp", requestBody(isTemp + ""));
+        //map.put("isTemp", requestBody(isTemp + ""));
         map.put("vr", requestBody(vr + ""));
         OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
                 .housePublishVr(map)

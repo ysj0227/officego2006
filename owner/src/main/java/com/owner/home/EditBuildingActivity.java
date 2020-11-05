@@ -524,13 +524,6 @@ public class EditBuildingActivity extends BaseMvpActivity<BuildingPresenter>
     }
 
     @Override
-    public void editSaveSuccess() {
-        finish();
-        UploadVideoVrActivity_.intent(context).flay(Constants.FLAG_BUILDING).
-            buildingManagerBean(buildingManagerBean).start();
-    }
-
-    @Override
     public void selectedDate(String date) {
         if (isCompleteTime) {
             silCompleteTime.setCenterText(date);
@@ -675,5 +668,12 @@ public class EditBuildingActivity extends BaseMvpActivity<BuildingPresenter>
                                            @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         PermissionUtils.requestPermissions(context, requestCode, permissions, grantResults);
+    }
+
+    @Override
+    public void editSaveSuccess() {
+        finish();
+        UploadVideoVrActivity_.intent(context).flay(Constants.FLAG_BUILDING).
+                buildingManagerBean(buildingManagerBean).start();
     }
 }

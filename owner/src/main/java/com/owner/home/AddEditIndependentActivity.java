@@ -43,7 +43,6 @@ import com.owner.dialog.FloorTypeDialog;
 import com.owner.home.contract.IndependentContract;
 import com.owner.home.presenter.IndependentPresenter;
 import com.owner.home.rule.AreaTextWatcher;
-import com.owner.home.rule.CarFeeTextWatcher;
 import com.owner.home.rule.FloorHeightTextWatcher;
 import com.owner.home.rule.IntegerTextWatcher;
 import com.owner.home.rule.TextCountsWatcher;
@@ -106,10 +105,10 @@ public class AddEditIndependentActivity extends BaseMvpActivity<IndependentPrese
     SettingItemLayout silConditioned;
     @ViewById(resName = "sil_conditioned_fee")
     SettingItemLayout silConditionedFee;
-    @ViewById(resName = "sil_car_num")
-    SettingItemLayout silCarNum;
-    @ViewById(resName = "sil_car_fee")
-    SettingItemLayout silCarFee;
+    //    @ViewById(resName = "sil_car_num")
+//    SettingItemLayout silCarNum;
+//    @ViewById(resName = "sil_car_fee")
+//    SettingItemLayout silCarFee;
     @ViewById(resName = "sil_storey_height")
     SettingItemLayout silStoreyHeight;
     //介绍
@@ -192,7 +191,7 @@ public class AddEditIndependentActivity extends BaseMvpActivity<IndependentPrese
         //净高 层高 0-8或一位小数
         silStoreyHeight.getEditTextView().addTextChangedListener(new FloorHeightTextWatcher(context, silStoreyHeight.getEditTextView()));
         //车位费0-5000整数
-        silCarFee.getEditTextView().addTextChangedListener(new CarFeeTextWatcher(context, silCarFee.getEditTextView()));
+//        silCarFee.getEditTextView().addTextChangedListener(new CarFeeTextWatcher(context, silCarFee.getEditTextView()));
         //介绍
         cetDescContent.addTextChangedListener(new TextCountsWatcher(tvCounts, cetDescContent));
     }
@@ -228,11 +227,6 @@ public class AddEditIndependentActivity extends BaseMvpActivity<IndependentPrese
             shortTip("请选择空调类型");
             return;
         }
-        String storeyHeight = silStoreyHeight.getEditTextView().getText().toString();
-        if (TextUtils.isEmpty(storeyHeight)) {
-            shortTip("请输入净高");
-            return;
-        }
         String title = silTitle.getEditTextView().getText().toString();
         //面积
         String area = silArea.getEditTextView().getText().toString();
@@ -245,7 +239,7 @@ public class AddEditIndependentActivity extends BaseMvpActivity<IndependentPrese
         //介绍
         String buildingIntroduction = cetDescContent.getText() == null ? "" : cetDescContent.getText().toString();
         //封面图片
-        String mainPic = TextUtils.isEmpty(uploadImageList.get(0).getPath())?"":uploadImageList.get(0).getPath();
+        String mainPic = TextUtils.isEmpty(uploadImageList.get(0).getPath()) ? "" : uploadImageList.get(0).getPath();
         //添加图片
         String addImage = CommonUtils.addUploadImage(uploadImageList);
         //删除图片
@@ -257,7 +251,7 @@ public class AddEditIndependentActivity extends BaseMvpActivity<IndependentPrese
                     conditioned, conditionedFee, clearHeight, buildingIntroduction,
                     introduceImageUrl, mainPic, addImage, deleteImage);
         } else {//添加
-            mPresenter.addHouse(buildingManagerBean.getBuildingId(),buildingManagerBean.getIsTemp(), title,
+            mPresenter.addHouse(buildingManagerBean.getBuildingId(), buildingManagerBean.getIsTemp(), title,
                     seats, area, rentSingle, floors, minimumLease, freeRent,
                     conditioned, conditionedFee, clearHeight, buildingIntroduction,
                     introduceImageUrl, mainPic, addImage, deleteImage);
@@ -521,7 +515,11 @@ public class AddEditIndependentActivity extends BaseMvpActivity<IndependentPrese
     }
 
     @Override
-    public void addHouseSuccess() {
+    public void addHouseSuccess(String id) {
         shortTip("添加成功");
+        finish();
+        UploadVideoVrActivity_.intent(context).flay(Constants.FLAG_HOUSE).
+                buildingManagerBean(new BuildingManagerBean(Integer.valueOf(id), buildingManagerBean.getIsTemp())).start();
     }
+
 }

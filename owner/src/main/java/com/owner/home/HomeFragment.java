@@ -232,7 +232,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     public void initHouseData(BuildingJointWorkBean.ListBean bean) {
         tvHomeTitle.setText(bean.getBuildingName());
         buildingId = bean.getBuildingId();
-        isTemp=bean.getIsTemp();
+        isTemp = bean.getIsTemp();
         mData = bean;
         getHouseList();
     }
@@ -266,11 +266,18 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     @Override
     public void toMoreHouseManager(boolean isDeleteHouse, HouseBean.ListBean bean, int position) {
         mPosition = position;
-        if (isDeleteHouse) {
-            mPresenter.houseDelete(bean.getHouseId(), bean.getIsTemp());
-        } else {
-            mPresenter.isPublishHouse(bean.getHouseId(), HOUSE_OFF, bean.getIsTemp());
-        }
+        CommonDialog dialog = new CommonDialog.Builder(mActivity)
+                .setTitle("确定删除房源吗？")
+                .setCancelButton(R.string.sm_cancel)
+                .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
+                    dialog12.dismiss();
+                    if (isDeleteHouse) {
+                        mPresenter.houseDelete(bean.getHouseId(), bean.getIsTemp());
+                    } else {
+                        mPresenter.isPublishHouse(bean.getHouseId(), HOUSE_OFF, bean.getIsTemp());
+                    }
+                }).create();
+        dialog.showWithOutTouchable(false);
     }
 
     //房源删除成功刷新
@@ -294,7 +301,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     public void popupHouseList(BuildingJointWorkBean.ListBean bean) {
         tvHomeTitle.setText(bean.getBuildingName());
         buildingId = bean.getBuildingId();
-        isTemp=bean.getIsTemp();
+        isTemp = bean.getIsTemp();
         mData = bean;
         getRefreshHouseList();
     }

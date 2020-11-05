@@ -2,6 +2,7 @@ package com.owner.home.presenter;
 
 import com.officego.commonlib.base.BasePresenter;
 import com.officego.commonlib.common.model.DirectoryBean;
+import com.officego.commonlib.common.model.owner.AddHouseSuccessBean;
 import com.officego.commonlib.common.model.owner.HouseEditBean;
 import com.officego.commonlib.common.model.owner.UploadImageBean;
 import com.officego.commonlib.common.rpc.OfficegoApi;
@@ -182,17 +183,17 @@ public class HousePresenter extends BasePresenter<HouseContract.View>
                 floor, clearHeight, storeyHeight,
                 minimumLease, rentFreePeriod, propertyHouseCosts,
                 decoration, unitPatternRemark, tags,
-                unitPatternImg, mainPic, addImgUrl, delImgUrl, new RetrofitCallback<Object>() {
+                unitPatternImg, mainPic, addImgUrl, delImgUrl, new RetrofitCallback<AddHouseSuccessBean>() {
                     @Override
-                    public void onSuccess(int code, String msg, Object data) {
+                    public void onSuccess(int code, String msg, AddHouseSuccessBean data) {
                         if (isViewAttached()) {
-                            mView.addHouseSuccess();
+                            mView.addHouseSuccess(data.getId());
                             mView.hideLoadingDialog();
                         }
                     }
 
                     @Override
-                    public void onFail(int code, String msg, Object data) {
+                    public void onFail(int code, String msg, AddHouseSuccessBean data) {
                         if (isViewAttached()) {
                             mView.hideLoadingDialog();
                             if (code == Constants.DEFAULT_ERROR_CODE) {

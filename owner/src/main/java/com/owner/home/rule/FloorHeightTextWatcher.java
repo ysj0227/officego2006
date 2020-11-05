@@ -46,16 +46,17 @@ public class FloorHeightTextWatcher implements TextWatcher {
                 ToastUtils.toastForShort(context, "请输入0-8之间的整数或一位小数");
                 return;
             }
+            //保留一位小数
+            String temp = editable.toString();
+            int posDot = temp.indexOf(".");//返回指定字符在此字符串中第一次出现处的索引
+            int index = editText.getSelectionStart();//获取光标位置
+            //如果包含小数点
+            if (posDot >= 0 && temp.length() - 2 > posDot) {
+                editable.delete(index - 1, index);//删除小数点后一位
+            }
         } catch (Exception e) {
             e.printStackTrace();
         }
-        //保留一位小数
-        String temp = editable.toString();
-        int posDot = temp.indexOf(".");//返回指定字符在此字符串中第一次出现处的索引
-        int index = editText.getSelectionStart();//获取光标位置
-        //如果包含小数点
-        if (posDot >= 0 && temp.length() - 2 > posDot) {
-            editable.delete(index - 1, index);//删除小数点后一位
-        }
+
     }
 }

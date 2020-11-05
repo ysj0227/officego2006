@@ -1,6 +1,7 @@
 package com.officego.commonlib.common.rpc.request;
 
 
+import com.officego.commonlib.common.model.owner.AddHouseSuccessBean;
 import com.officego.commonlib.common.model.owner.BuildingEditBean;
 import com.officego.commonlib.common.model.owner.BuildingJointWorkBean;
 import com.officego.commonlib.common.model.owner.HouseBean;
@@ -93,7 +94,7 @@ public interface BuildingJointWorkInterface {
      */
     @Multipart
     @POST(path + "house/insertHouse")
-    Call<BaseResponse<Object>> houseAdd(@PartMap Map<String, RequestBody> params);
+    Call<BaseResponse<AddHouseSuccessBean>> houseAdd(@PartMap Map<String, RequestBody> params);
 
     /**
      * 楼盘添加

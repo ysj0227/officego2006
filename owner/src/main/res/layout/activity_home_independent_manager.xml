@@ -172,43 +172,43 @@
                 app:showDividerBottom="visible"
                 app:showEditText="gone" />
 
-            <com.officego.commonlib.view.widget.SettingItemLayout
-                android:id="@+id/sil_car_num"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/sil_conditioned_fee"
-                app:editMaxLength="20"
-                app:centerTextHint="例:地面车位100个，车库车位5个"
-                app:centerTextHintColor="@color/text_66_p50"
-                app:leftMarkShow="invisible"
-                app:leftText="车位数"
-                app:rightArrowShow="gone"
-                app:rightOtherImageViewShow="gone"
-                app:showCenterText="visible"
-                app:showDividerBottom="visible"
-                app:showEditText="gone" />
+<!--            <com.officego.commonlib.view.widget.SettingItemLayout-->
+<!--                android:id="@+id/sil_car_num"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_below="@id/sil_conditioned_fee"-->
+<!--                app:editMaxLength="20"-->
+<!--                app:centerTextHint="例:地面车位100个，车库车位5个"-->
+<!--                app:centerTextHintColor="@color/text_66_p50"-->
+<!--                app:leftMarkShow="invisible"-->
+<!--                app:leftText="车位数"-->
+<!--                app:rightArrowShow="gone"-->
+<!--                app:rightOtherImageViewShow="gone"-->
+<!--                app:showCenterText="visible"-->
+<!--                app:showDividerBottom="visible"-->
+<!--                app:showEditText="gone" />-->
 
-            <com.officego.commonlib.view.widget.SettingItemLayout
-                android:id="@+id/sil_car_fee"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@id/sil_car_num"
-                app:editMaxLength="20"
-                app:centerTextHint="车位费 元/月"
-                app:centerTextHintColor="@color/text_66_p50"
-                app:leftMarkShow="invisible"
-                app:leftText="车位费"
-                app:rightArrowShow="gone"
-                app:rightOtherImageViewShow="gone"
-                app:showCenterText="visible"
-                app:showDividerBottom="visible"
-                app:showEditText="gone" />
+<!--            <com.officego.commonlib.view.widget.SettingItemLayout-->
+<!--                android:id="@+id/sil_car_fee"-->
+<!--                android:layout_width="match_parent"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_below="@id/sil_car_num"-->
+<!--                app:editMaxLength="20"-->
+<!--                app:centerTextHint="车位费 元/月"-->
+<!--                app:centerTextHintColor="@color/text_66_p50"-->
+<!--                app:leftMarkShow="invisible"-->
+<!--                app:leftText="车位费"-->
+<!--                app:rightArrowShow="gone"-->
+<!--                app:rightOtherImageViewShow="gone"-->
+<!--                app:showCenterText="visible"-->
+<!--                app:showDividerBottom="visible"-->
+<!--                app:showEditText="gone" />-->
 
             <com.officego.commonlib.view.widget.SettingItemLayout
                 android:id="@+id/sil_storey_height"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/sil_car_fee"
+                android:layout_below="@id/sil_conditioned_fee"
                 app:editDigits="12345678."
                 app:editMaxLength="3"
                 app:editTextInputType="numberDecimal"

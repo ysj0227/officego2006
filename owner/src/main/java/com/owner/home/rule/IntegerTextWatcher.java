@@ -8,9 +8,6 @@ import android.widget.EditText;
 
 import com.officego.commonlib.utils.ToastUtils;
 
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
-
 /**
  * Created by shijie
  * Date 2020/10/23
@@ -52,12 +49,16 @@ public class IntegerTextWatcher implements TextWatcher {
                 return;
             }
         }
-        if (!TextUtils.isEmpty(words)) {
-            if (words.length() >= length && Integer.valueOf(words) > number) {
-                int index = input.getSelectionStart();//获取光标位置
-                editable.delete(index - 1, index);//删除小数点后一位
-                ToastUtils.toastForShort(context, "请输入0-" + number + "之间的整数");
+        try {
+            if (!TextUtils.isEmpty(words)) {
+                if (words.length() >= length && Integer.valueOf(words) > number) {
+                    int index = input.getSelectionStart();//获取光标位置
+                    editable.delete(index - 1, index);//删除小数点后一位
+                    ToastUtils.toastForShort(context, "请输入0-" + number + "之间的整数");
+                }
             }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }
