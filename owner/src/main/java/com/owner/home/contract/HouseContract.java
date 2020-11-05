@@ -28,6 +28,7 @@ public interface HouseContract {
 
         void editSaveSuccess();
 
+        void addHouseSuccess();
     }
 
     interface Presenter {
@@ -43,6 +44,14 @@ public interface HouseContract {
         void uploadSingleImage(String mFilePath);
 
         void saveEdit(int id, int isTemp, String title, String area,
+                      String seats, String dayPrice, String monthPrice,
+                      String floor, String clearHeight, String storeyHeight,
+                      String minimumLease, String rentFreePeriod,
+                      String propertyHouseCosts, String decoration, String unitPatternRemark,
+                      String tags, String unitPatternImg,
+                      String mainPic, String addImgUrl, String delImgUrl);
+
+        void addHouse(int buildingId, int isTemp,String title, String area,
                       String seats, String dayPrice, String monthPrice,
                       String floor, String clearHeight, String storeyHeight,
                       String minimumLease, String rentFreePeriod,

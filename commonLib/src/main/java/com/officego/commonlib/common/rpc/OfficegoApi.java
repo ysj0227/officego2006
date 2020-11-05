@@ -561,6 +561,50 @@ public class OfficegoApi {
                 .enqueue(callback);
     }
 
+
+    /**
+     * 楼盘下房源添加
+     * dayPrice 	否 	Double 	单价
+     * monthPrice 	否 	Double 	总价
+     * minimumLease 	否 	String 	最短租期
+     * rentFreePeriod 	否 	String 	免租期
+     */
+    public void addBuildingHouse(int buildingId, int isTemp, String title, String area,
+                                 String simple, String dayPrice, String monthPrice,
+                                 String floor, String clearHeight, String storeyHeight,
+                                 String minimumLease, String rentFreePeriod,
+                                 String propertyHouseCosts, String decoration, String unitPatternRemark,
+                                 String tags, String unitPatternImg,
+                                 String mainPic, String addImgUrl, String delImgUrl,
+                                 RetrofitCallback<Object> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("buildingId", requestBody(buildingId + ""));
+        map.put("isTemp", requestBody(isTemp + ""));
+        map.put("title", requestBody(title + ""));
+        map.put("area", requestBody(area + ""));
+        map.put("simple", requestBody(simple + ""));
+        map.put("dayPrice", requestBody(dayPrice + ""));
+        map.put("monthPrice", requestBody(monthPrice + ""));
+        map.put("floor", requestBody(floor + ""));//第几层
+        map.put("clearHeight", requestBody(clearHeight + ""));
+        map.put("storeyHeight", requestBody(storeyHeight + ""));
+        map.put("minimumLease", requestBody(minimumLease + ""));
+        map.put("rentFreePeriod", requestBody(rentFreePeriod + ""));
+        map.put("propertyHouseCosts", requestBody(propertyHouseCosts + ""));
+        map.put("decoration", requestBody(decoration + ""));
+        map.put("unitPatternRemark", requestBody(unitPatternRemark + ""));
+        map.put("tags", requestBody(tags + ""));
+        //图片
+        map.put("unitPatternImg", requestBody(unitPatternImg + ""));
+        map.put("mainPic", requestBody(mainPic + ""));
+        map.put("addImgUrl", requestBody(addImgUrl + ""));
+        map.put("delImgUrl", requestBody(delImgUrl + ""));
+        OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
+                .houseAdd(map)
+                .enqueue(callback);
+    }
+
     /**
      * 独立办公室编辑保存
      * dayPrice 	否 	Double 	单价
@@ -601,7 +645,44 @@ public class OfficegoApi {
     }
 
     /**
-     * 独立办公室编辑保存
+     * 添加独立办公室
+     * officeType 办公类型为网点下房源时需要传递的必选参数1是独立办公室，2是开放工位
+     */
+    public void addIndependentHouse(int buildingId, int isTemp, String title, String seats, String area, String monthPrice,
+                                    String floor, String minimumLease, String rentFreePeriod,
+                                    String conditioningType, String conditioningTypeCost,
+                                    String clearHeight, String unitPatternRemark, String unitPatternImg,
+                                    String mainPic, String addImgUrl, String delImgUrl,
+                                    RetrofitCallback<Object> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("buildingId", requestBody(buildingId + ""));
+        map.put("isTemp", requestBody(isTemp + ""));
+        map.put("officeType", requestBody("1"));
+        map.put("title", requestBody(title + ""));
+        map.put("seats", requestBody(seats + ""));
+        map.put("area", requestBody(area + ""));
+        map.put("monthPrice", requestBody(monthPrice + ""));
+        map.put("floor", requestBody(floor + ""));//第几层
+        map.put("minimumLease", requestBody(minimumLease + ""));
+        map.put("rentFreePeriod", requestBody(rentFreePeriod + ""));
+        map.put("conditioningType", requestBody(conditioningType + ""));
+        map.put("conditioningTypeCost", requestBody(conditioningTypeCost + ""));
+        map.put("clearHeight", requestBody(clearHeight + ""));
+        //图片
+        map.put("unitPatternRemark", requestBody(unitPatternRemark + ""));
+        map.put("unitPatternImg", requestBody(unitPatternImg + ""));
+        map.put("mainPic", requestBody(mainPic + ""));
+        map.put("addImgUrl", requestBody(addImgUrl + ""));
+        map.put("delImgUrl", requestBody(delImgUrl + ""));
+        OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
+                .houseAdd(map)
+                .enqueue(callback);
+    }
+
+
+    /**
+     * 开放工位编辑保存
      * dayPrice 	否 	Double 	单价
      * monthPrice 	否 	Double 	总价
      * minimumLease 	否 	String 	最短租期
@@ -629,6 +710,40 @@ public class OfficegoApi {
                 .houseEditSave(map)
                 .enqueue(callback);
     }
+
+    /**
+     * 添加楼盘网点
+     * token 	是 	string 	用户名
+     * buildingName 	是 	string 	楼名称
+     * districtId 	是 	number 	区域
+     * businessDistrict 	是 	number 	商圈
+     * address 	是 	string 	地址
+     * mainPic 	是 	string 	封面图url
+     * premisesPermit 	否 	string 	房产证url 英文逗号拼接
+     * btype 	是 	int 	1楼盘2网点
+     * buildingId 如果是关联的楼盘或是网点传
+     */
+    public void addBuilding(int btype, String buildingName, int districtId,
+                            int businessDistrict, String address, String mainPic,
+                            String premisesPermit, int buildingId,
+                            RetrofitCallback<Object> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("btype", requestBody(btype + ""));
+        map.put("buildingName", requestBody(buildingName + ""));
+        map.put("mainPic", requestBody(mainPic + ""));
+        map.put("buildingCardTemp", requestBody(premisesPermit + ""));
+        if (districtId != 0 || buildingId != 0) {
+            map.put("districtId", requestBody(districtId + ""));
+            map.put("businessDistrict", requestBody(businessDistrict + ""));
+            map.put("address", requestBody(address + ""));
+            map.put("buildingId", requestBody(buildingId + ""));
+        }
+        OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
+                .buildingAdd(map)
+                .enqueue(callback);
+    }
+
 
     //楼盘保存发布带VR
     public void buildingPublishVr(int buildingId, int isTemp, String vr,

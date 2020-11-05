@@ -20,6 +20,8 @@ public interface IndependentContract {
         void uploadSuccess(boolean isIntroduceLayout, UploadImageBean data);
 
         void editSaveSuccess();
+
+        void addHouseSuccess();
     }
 
     interface Presenter {
@@ -30,6 +32,13 @@ public interface IndependentContract {
         void uploadSingleImage(String mFilePath);
 
         void saveEdit(int id, int isTemp, String title,
+                      String seats, String area, String monthPrice,
+                      String floor, String minimumLease, String rentFreePeriod,
+                      String conditioningType, String conditioningTypeCost,
+                      String clearHeight, String unitPatternRemark,
+                      String unitPatternImg, String mainPic, String addImgUrl, String delImgUrl);
+
+        void addHouse(int buildingId, int isTemp,String title,
                       String seats, String area, String monthPrice,
                       String floor, String minimumLease, String rentFreePeriod,
                       String conditioningType, String conditioningTypeCost,

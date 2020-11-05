@@ -66,7 +66,7 @@ import java.util.List;
  * Date 2020/10/19
  **/
 @EActivity(resName = "activity_home_independent_manager")
-public class AddIndependentActivity extends BaseMvpActivity<IndependentPresenter>
+public class AddEditIndependentActivity extends BaseMvpActivity<IndependentPresenter>
         implements IndependentContract.View, RentDialog.SureClickListener,
         FloorTypeDialog.FloorListener, ConditionedDialog.ConditionedListener,
         UploadBuildingImageAdapter.UploadImageListener {
@@ -245,15 +245,23 @@ public class AddIndependentActivity extends BaseMvpActivity<IndependentPresenter
         //介绍
         String buildingIntroduction = cetDescContent.getText() == null ? "" : cetDescContent.getText().toString();
         //封面图片
-        String mainPic = uploadImageList.get(0).getPath();
+        String mainPic = TextUtils.isEmpty(uploadImageList.get(0).getPath())?"":uploadImageList.get(0).getPath();
         //添加图片
         String addImage = CommonUtils.addUploadImage(uploadImageList);
         //删除图片
         String deleteImage = CommonUtils.delUploadImage(deleteList);
-        mPresenter.saveEdit(buildingManagerBean.getBuildingId(), buildingManagerBean.getIsTemp(), title,
-                seats, area, rentSingle, floors, minimumLease, freeRent,
-                conditioned, conditionedFee, clearHeight, buildingIntroduction,
-                introduceImageUrl, mainPic, addImage, deleteImage);
+
+        if (buildingFlag == Constants.BUILDING_FLAG_EDIT) {//编辑
+            mPresenter.saveEdit(buildingManagerBean.getBuildingId(), buildingManagerBean.getIsTemp(), title,
+                    seats, area, rentSingle, floors, minimumLease, freeRent,
+                    conditioned, conditionedFee, clearHeight, buildingIntroduction,
+                    introduceImageUrl, mainPic, addImage, deleteImage);
+        } else {//添加
+            mPresenter.addHouse(buildingManagerBean.getBuildingId(),buildingManagerBean.getIsTemp(), title,
+                    seats, area, rentSingle, floors, minimumLease, freeRent,
+                    conditioned, conditionedFee, clearHeight, buildingIntroduction,
+                    introduceImageUrl, mainPic, addImage, deleteImage);
+        }
     }
 
     @Click(resName = "iv_close_scan")
@@ -510,5 +518,10 @@ public class AddIndependentActivity extends BaseMvpActivity<IndependentPresenter
         finish();
         UploadVideoVrActivity_.intent(context).flay(Constants.FLAG_HOUSE).
                 buildingManagerBean(buildingManagerBean).start();
+    }
+
+    @Override
+    public void addHouseSuccess() {
+        shortTip("添加成功");
     }
 }

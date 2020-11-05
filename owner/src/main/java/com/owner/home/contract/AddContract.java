@@ -1,8 +1,8 @@
 package com.owner.home.contract;
 
 import com.officego.commonlib.base.BaseView;
-import com.officego.commonlib.common.model.owner.HouseEditBean;
 import com.officego.commonlib.common.model.owner.UploadImageBean;
+import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.model.ImageBean;
 
 import java.util.List;
@@ -16,6 +16,10 @@ public interface AddContract {
 
         //是否户型介绍上传  还是多图
         void uploadSuccess(boolean isIntroduceLayout, UploadImageBean data);
+
+        void searchBuildingSuccess(List<IdentityBuildingBean.DataBean> data);
+
+        void addSuccess();
     }
 
     interface Presenter {
@@ -23,5 +27,11 @@ public interface AddContract {
         void uploadImage(List<ImageBean> mFilePath);
 
         void uploadSingleImage(String mFilePath);
+
+        void searchBuilding(String keywords);
+
+        void addBuilding(int btype, String buildingName, int districtId,
+                         int businessDistrict, String address, String mainPic,
+                         String premisesPermit, int buildingId);
     }
 }

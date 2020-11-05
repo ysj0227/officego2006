@@ -168,4 +168,38 @@ public class HousePresenter extends BasePresenter<HouseContract.View>
                     }
                 });
     }
+
+    @Override
+    public void addHouse(int buildingId, int isTemp, String title, String area, String simple,
+                         String dayPrice, String monthPrice, String floor, String clearHeight,
+                         String storeyHeight, String minimumLease, String rentFreePeriod,
+                         String propertyHouseCosts, String decoration, String unitPatternRemark,
+                         String tags, String unitPatternImg, String mainPic,
+                         String addImgUrl, String delImgUrl) {
+        mView.showLoadingDialog();
+        OfficegoApi.getInstance().addBuildingHouse(buildingId, isTemp, title, area,
+                simple, dayPrice, monthPrice,
+                floor, clearHeight, storeyHeight,
+                minimumLease, rentFreePeriod, propertyHouseCosts,
+                decoration, unitPatternRemark, tags,
+                unitPatternImg, mainPic, addImgUrl, delImgUrl, new RetrofitCallback<Object>() {
+                    @Override
+                    public void onSuccess(int code, String msg, Object data) {
+                        if (isViewAttached()) {
+                            mView.addHouseSuccess();
+                            mView.hideLoadingDialog();
+                        }
+                    }
+
+                    @Override
+                    public void onFail(int code, String msg, Object data) {
+                        if (isViewAttached()) {
+                            mView.hideLoadingDialog();
+                            if (code == Constants.DEFAULT_ERROR_CODE) {
+                                mView.shortTip(msg);
+                            }
+                        }
+                    }
+                });
+    }
 }

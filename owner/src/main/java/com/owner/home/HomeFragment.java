@@ -94,6 +94,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     //楼盘网点信息
     private BuildingJointWorkBean.ListBean mData;
     private int buildingId;
+    private int isTemp;
     //更多dialog-删除，上架刷新
     private int mPosition;
 
@@ -149,18 +150,18 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     //添加房源
     @Click(resName = "iv_add")
     void addClick() {
-        gotoAddHouseActivity(new BuildingManagerBean(0, 0));
+        gotoAddHouseActivity(new BuildingManagerBean(buildingId, isTemp));
     }
 
     //添加房源
     private void gotoAddHouseActivity(BuildingManagerBean managerBean) {
         if (mUserData.getIdentityType() == Constants.TYPE_JOINTWORK) {
-            AddIndependentActivity_.intent(mActivity)
+            AddEditIndependentActivity_.intent(mActivity)
                     .buildingFlag(Constants.BUILDING_FLAG_ADD)
                     .buildingManagerBean(managerBean)
                     .start();
         } else {
-            AddHouseActivity_.intent(mActivity)
+            AddEditHouseActivity_.intent(mActivity)
                     .buildingFlag(Constants.BUILDING_FLAG_ADD)
                     .buildingManagerBean(managerBean)
                     .start();
@@ -171,18 +172,18 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     private void gotoEditHouseActivity(HouseBean.ListBean bean) {
         if (Constants.TYPE_BUILDING == bean.getBtype()) {
             //楼盘下房源
-            AddHouseActivity_.intent(mActivity)
+            AddEditHouseActivity_.intent(mActivity)
                     .buildingFlag(Constants.BUILDING_FLAG_EDIT)
                     .buildingManagerBean(new BuildingManagerBean(bean.getHouseId(), bean.getIsTemp()))
                     .start();
         } else {
             if (bean.getOfficeType() == 2) {//2开放工位
-                AddOpenSeatsActivity_.intent(mActivity)
+                EditOpenSeatsActivity_.intent(mActivity)
                         .buildingFlag(Constants.BUILDING_FLAG_EDIT)
                         .buildingManagerBean(new BuildingManagerBean(bean.getHouseId(), bean.getIsTemp()))
                         .start();
             } else {//1独立办公室
-                AddIndependentActivity_.intent(mActivity)
+                AddEditIndependentActivity_.intent(mActivity)
                         .buildingFlag(Constants.BUILDING_FLAG_EDIT)
                         .buildingManagerBean(new BuildingManagerBean(bean.getHouseId(), bean.getIsTemp()))
                         .start();
@@ -231,6 +232,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     public void initHouseData(BuildingJointWorkBean.ListBean bean) {
         tvHomeTitle.setText(bean.getBuildingName());
         buildingId = bean.getBuildingId();
+        isTemp=bean.getIsTemp();
         mData = bean;
         getHouseList();
     }
@@ -292,6 +294,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     public void popupHouseList(BuildingJointWorkBean.ListBean bean) {
         tvHomeTitle.setText(bean.getBuildingName());
         buildingId = bean.getBuildingId();
+        isTemp=bean.getIsTemp();
         mData = bean;
         getRefreshHouseList();
     }

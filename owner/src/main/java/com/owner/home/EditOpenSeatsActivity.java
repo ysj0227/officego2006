@@ -59,7 +59,7 @@ import java.util.List;
  * Date 2020/10/19
  **/
 @EActivity(resName = "activity_home_open_manager")
-public class AddOpenSeatsActivity extends BaseMvpActivity<OpenSeatsPresenter>
+public class EditOpenSeatsActivity extends BaseMvpActivity<OpenSeatsPresenter>
         implements OpenSeatsContract.View, RentDialog.SureClickListener,
         FloorTypeDialog.FloorListener, UploadBuildingImageAdapter.UploadImageListener {
     private static final int REQUEST_GALLERY = 0xa0;

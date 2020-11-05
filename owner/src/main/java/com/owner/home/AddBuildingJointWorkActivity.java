@@ -4,6 +4,9 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
+import android.text.Editable;
+import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -13,6 +16,7 @@ import androidx.annotation.NonNull;
 import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
+import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
@@ -30,11 +34,15 @@ import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.TitleBarView;
 import com.officego.commonlib.view.widget.SettingItemLayout;
 import com.owner.R;
+import com.owner.adapter.IdentityBuildingAdapter;
 import com.owner.adapter.UploadAddImageAdapter;
 import com.owner.dialog.AreaDialog;
 import com.owner.home.contract.AddContract;
 import com.owner.home.presenter.AddPresenter;
+import com.owner.home.utils.CommonUtils;
+import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.model.ImageBean;
+import com.owner.utils.CommUtils;
 import com.owner.zxing.QRScanActivity;
 
 import org.androidannotations.annotations.AfterViews;
@@ -54,6 +62,7 @@ import java.util.List;
 @EActivity(resName = "activity_home_add_manager")
 public class AddBuildingJointWorkActivity extends BaseMvpActivity<AddPresenter>
         implements AddContract.View, AreaDialog.AreaSureListener,
+        IdentityBuildingAdapter.IdentityBuildingListener,
         UploadAddImageAdapter.UploadImageListener {
     private static final int REQUEST_GALLERY = 0xa0;
     private static final int REQUEST_CAMERA = 0xa1;
@@ -79,6 +88,8 @@ public class AddBuildingJointWorkActivity extends BaseMvpActivity<AddPresenter>
     ImageView ivCloseScan;
     @ViewById(resName = "tv_upload_title")
     TextView tvUploadTitle;
+    @ViewById(resName = "rv_recommend_building")
+    RecyclerView rvRecommendBuilding;
 
     @Extra
     int flay;
@@ -92,6 +103,12 @@ public class AddBuildingJointWorkActivity extends BaseMvpActivity<AddPresenter>
     private String introduceImageUrl;
     //图片上传类型
     private int mUploadType;
+    //搜索
+    private IdentityBuildingAdapter buildingAdapter;
+    private List<IdentityBuildingBean.DataBean> mList = new ArrayList<>();
+    //是否关联的楼
+    private boolean isCreateBuilding;
+    private int mBuildingId;
 
     @AfterViews
     void init() {
@@ -107,6 +124,9 @@ public class AddBuildingJointWorkActivity extends BaseMvpActivity<AddPresenter>
         silName.getEditTextView().setHint(flay == 0 ? "请输入共享办公名称" : "请输入楼盘名称");
         silName.getEditTextView().setHintTextColor(ContextCompat.getColor(context, R.color.text_66_p50));
         tvUploadTitle.setText(flay == 0 ? "上传共享办公图片" : "上传楼盘图片");
+        //搜索列表
+        LinearLayoutManager buildingManager = new LinearLayoutManager(context);
+        rvRecommendBuilding.setLayoutManager(buildingManager);
         //上传图片
         GridLayoutManager layoutManager2 = new GridLayoutManager(context, 3);
         layoutManager2.setSmoothScrollbarEnabled(true);
@@ -114,6 +134,7 @@ public class AddBuildingJointWorkActivity extends BaseMvpActivity<AddPresenter>
         rvUploadImage.setLayoutManager(layoutManager2);
         rvUploadImage.setNestedScrollingEnabled(false);
         initData();
+        searchBuilding();
     }
 
     private void initData() {
@@ -140,7 +161,9 @@ public class AddBuildingJointWorkActivity extends BaseMvpActivity<AddPresenter>
 
     @Click(resName = "sil_area")
     void areaOnClick() {
-        new AreaDialog(context, district, business).setListener(this);
+        if (isCreateBuilding) {
+            new AreaDialog(context, district, business).setListener(this);
+        }
     }
 
     @Click(resName = "btn_scan")
@@ -149,6 +172,40 @@ public class AddBuildingJointWorkActivity extends BaseMvpActivity<AddPresenter>
             return;
         }
         startActivity(new Intent(context, QRScanActivity.class));
+    }
+
+    @Click(resName = "btn_next")
+    void saveOnClick() {
+        String name = silName.getEditTextView().getText().toString();
+        if (TextUtils.isEmpty(name)) {
+            shortTip("请输入名称");
+            return;
+        }
+        String address = "";
+        if (isCreateBuilding) {
+            String buildingArea = silArea.getContextView().getText().toString();
+            if (TextUtils.isEmpty(buildingArea)) {
+                shortTip("请选择所在区域");
+                return;
+            }
+            address = silAddress.getEditTextView().getText().toString();
+            if (TextUtils.isEmpty(address)) {
+                shortTip("请输入详细地址");
+                return;
+            }
+            if (TextUtils.isEmpty(introduceImageUrl)) {
+                shortTip("请上传封面图");
+                return;
+            }
+        }
+        if (uploadImageList == null || uploadImageList.size() <= 1) {
+            shortTip("请上传房产证");
+            return;
+        }
+        //添加图片
+        String addImage = CommonUtils.addAllUploadImage(uploadImageList);
+        mPresenter.addBuilding(flay == 0 ? Constants.TYPE_JOINTWORK : Constants.TYPE_BUILDING,
+                name, district, business, address, introduceImageUrl, addImage, mBuildingId);
     }
 
     //图片上传
@@ -284,5 +341,65 @@ public class AddBuildingJointWorkActivity extends BaseMvpActivity<AddPresenter>
         this.district = district;
         this.business = business;
         silArea.setCenterText(area);
+    }
+
+    //search
+    private void searchBuilding() {
+        silName.getEditTextView().addTextChangedListener(new TextWatcher() {
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
+
+            }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                rvRecommendBuilding.setVisibility(TextUtils.isEmpty(s.toString()) ? View.GONE : View.VISIBLE);
+                mPresenter.searchBuilding(s.toString());
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) {
+
+            }
+        });
+    }
+
+    @Override
+    public void searchBuildingSuccess(List<IdentityBuildingBean.DataBean> data) {
+        mList.clear();
+        mList.addAll(data);
+        mList.add(data.size(), new IdentityBuildingBean.DataBean());
+        if (buildingAdapter == null) {
+            buildingAdapter = new IdentityBuildingAdapter(context, mList, false);
+            buildingAdapter.setListener(this);
+            rvRecommendBuilding.setAdapter(buildingAdapter);
+            return;
+        }
+        buildingAdapter.setData(mList);
+        buildingAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void addSuccess() {
+        finish();
+        shortTip("添加成功");
+    }
+
+    @Override
+    public void associateBuilding(IdentityBuildingBean.DataBean bean, boolean isCreate) {
+//        district = TextUtils.isEmpty(bean.getDistrict()) ? 0 : Integer.valueOf(bean.getDistrict());
+//        business = TextUtils.isEmpty(bean.getBusiness()) ? 0 : Integer.valueOf(bean.getBusiness());
+        isCreateBuilding = isCreate;
+        if (!isCreate) {
+            CommUtils.showHtmlView(silName.getEditTextView(), bean.getBuildingName());
+            CommUtils.showHtmlTextView(silArea.getContextView(), bean.getDistrict());
+            CommUtils.showHtmlTextView(silAddress.getEditTextView(), bean.getAddress());
+            introduceImageUrl = bean.getMainPic();
+            mBuildingId = bean.getBid();
+        }
+        silAddress.getEditTextView().setEnabled(isCreate);
+        rvRecommendBuilding.setVisibility(View.GONE);
+        tvSetFirstImage.setVisibility(isCreate ? View.VISIBLE : View.GONE);
+        ivDescImage.setVisibility(isCreate ? View.VISIBLE : View.GONE);
     }
 }

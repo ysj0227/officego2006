@@ -37,7 +37,6 @@ import com.officego.commonlib.utils.ImageUtils;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.PhotoUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.TitleBarView;
 import com.officego.commonlib.view.dialog.CommonDialog;
@@ -79,7 +78,7 @@ import java.util.Map;
  * Date 2020/10/15
  **/
 @EActivity(resName = "activity_home_house_manager")
-public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
+public class AddEditHouseActivity extends BaseMvpActivity<HousePresenter>
         implements HouseContract.View, RentDialog.SureClickListener,
         FloorTypeDialog.FloorListener, UniqueAdapter.UniqueListener,
         HouseDecorationAdapter.DecorationListener,
@@ -306,15 +305,23 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
         //特色
         String uniqueTags = uniqueMap == null || uniqueMap.size() == 0 ? "" : CommonHelper.getKey(uniqueMap);
         //封面图片
-        String mainPic = uploadImageList.get(0).getPath();
+        String mainPic = TextUtils.isEmpty(uploadImageList.get(0).getPath()) ? "" : uploadImageList.get(0).getPath();
         //添加图片
         String addImage = CommonUtils.addUploadImage(uploadImageList);
         //删除图片
         String deleteImage = CommonUtils.delUploadImage(deleteList);
-        mPresenter.saveEdit(buildingManagerBean.getBuildingId(), buildingManagerBean.getIsTemp(), title,
-                area, simple, rentSingle, rentSum, floors, clearHeight, tireHeight,
-                rentTime, freeRent, estateFee, String.valueOf(decorationId), buildingIntroduction,
-                uniqueTags, introduceImageUrl, mainPic, addImage, deleteImage);
+
+        if (buildingFlag == Constants.BUILDING_FLAG_EDIT) {//编辑
+            mPresenter.saveEdit(buildingManagerBean.getBuildingId(), buildingManagerBean.getIsTemp(), title,
+                    area, simple, rentSingle, rentSum, floors, clearHeight, tireHeight,
+                    rentTime, freeRent, estateFee, String.valueOf(decorationId), buildingIntroduction,
+                    uniqueTags, introduceImageUrl, mainPic, addImage, deleteImage);
+        } else {//添加
+            mPresenter.addHouse(buildingManagerBean.getBuildingId(), buildingManagerBean.getIsTemp(),title,
+                    area, simple, rentSingle, rentSum, floors, clearHeight, tireHeight,
+                    rentTime, freeRent, estateFee, String.valueOf(decorationId), buildingIntroduction,
+                    uniqueTags, introduceImageUrl, mainPic, addImage, deleteImage);
+        }
     }
 
     @Click(resName = "iv_close_scan")
@@ -518,6 +525,11 @@ public class AddHouseActivity extends BaseMvpActivity<HousePresenter>
         finish();
         UploadVideoVrActivity_.intent(context).flay(Constants.FLAG_HOUSE).
                 buildingManagerBean(buildingManagerBean).start();
+    }
+
+    @Override
+    public void addHouseSuccess() {
+        shortTip("添加成功");
     }
 
     @Override

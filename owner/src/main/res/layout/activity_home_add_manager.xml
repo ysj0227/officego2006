@@ -45,6 +45,7 @@
                 app:showDividerBottom="visible"
                 app:showEditText="visible" />
 
+
             <com.officego.commonlib.view.widget.SettingItemLayout
                 android:id="@+id/sil_area"
                 android:layout_width="match_parent"
@@ -154,4 +155,14 @@
         android:layout_marginBottom="@dimen/dp_48"
         android:background="@mipmap/ic_small_delete_blue"
         tools:ignore="ContentDescription" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_recommend_building"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@id/title_bar"
+        android:layout_marginTop="@dimen/dp_60"
+        android:background="@color/common_divider"
+        android:paddingLeft="@dimen/dp_18"
+        android:paddingRight="@dimen/dp_18" />
 </RelativeLayout>

@@ -47,9 +47,23 @@ public class CommonUtils {
     //添加上传图片
     public static String addUploadImage(List<ImageBean> uploadImageList) {
         StringBuilder addImageBuffer = new StringBuilder();
-        if (uploadImageList.size() > 1) {
+        if (uploadImageList.size() > 2) {
             for (int i = 0; i < uploadImageList.size(); i++) {
                 if (i > 0 && i < uploadImageList.size() - 1) {
+                    addImageBuffer.append(uploadImageList.get(i).getPath()).append(",");
+                }
+            }
+            return addImageBuffer.toString().substring(0, addImageBuffer.toString().length() - 1);
+        }
+        return "";
+    }
+
+    //添加上传图片
+    public static String addAllUploadImage(List<ImageBean> uploadImageList) {
+        StringBuilder addImageBuffer = new StringBuilder();
+        if (uploadImageList.size() > 1) {
+            for (int i = 0; i < uploadImageList.size(); i++) {
+                if (i < uploadImageList.size() - 1) {
                     addImageBuffer.append(uploadImageList.get(i).getPath()).append(",");
                 }
             }

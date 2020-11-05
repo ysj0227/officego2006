@@ -89,6 +89,21 @@ public interface BuildingJointWorkInterface {
     Call<BaseResponse<Object>> houseEditSave(@PartMap Map<String, RequestBody> params);
 
     /**
+     * 房源添加
+     */
+    @Multipart
+    @POST(path + "house/insertHouse")
+    Call<BaseResponse<Object>> houseAdd(@PartMap Map<String, RequestBody> params);
+
+    /**
+     * 楼盘添加
+     */
+    @Multipart
+    @POST(path + "building/insertBuilding")
+    Call<BaseResponse<Object>> buildingAdd(@PartMap Map<String, RequestBody> params);
+
+
+    /**
      * 楼盘发布上传VR
      */
     @Multipart

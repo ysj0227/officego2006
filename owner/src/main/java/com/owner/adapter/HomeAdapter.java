@@ -138,8 +138,14 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
         tvEdit.setOnClickListener(clickListener);
         tvMore.setOnClickListener(clickListener);
         //房源详情
-        holder.itemView.setOnClickListener(view ->
-                BundleUtils.ownerGotoDetailsActivity(mContext, false, bean.getBtype(), bean.getHouseId(), bean.getIsTemp()));
+        holder.itemView.setOnClickListener(view -> {
+                    if (Constants.TYPE_JOINTWORK == bean.getBtype() && bean.getOfficeType() == 2) {
+                        return;
+                    }
+                    BundleUtils.ownerGotoDetailsActivity(mContext, false,
+                            bean.getBtype(), bean.getHouseId(), bean.getIsTemp());
+                }
+        );
     }
 
     private void share(HouseBean.ListBean bn) {

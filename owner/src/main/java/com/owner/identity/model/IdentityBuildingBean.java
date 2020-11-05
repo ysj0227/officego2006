@@ -48,6 +48,8 @@ public class IdentityBuildingBean {
         private Object dayPrice;
         @SerializedName("buildType")
         private int buildType;
+        @SerializedName("mainPic")
+        private String mainPic;
 
         public int getBid() {
             return bid;
@@ -103,6 +105,14 @@ public class IdentityBuildingBean {
 
         public void setBuildType(int buildType) {
             this.buildType = buildType;
+        }
+
+        public String getMainPic() {
+            return mainPic;
+        }
+
+        public void setMainPic(String mainPic) {
+            this.mainPic = mainPic;
         }
     }
 }

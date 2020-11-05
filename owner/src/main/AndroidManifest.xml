@@ -105,7 +105,7 @@
             android:screenOrientation="portrait"
             android:windowSoftInputMode="stateHidden|adjustResize" />
         <activity
-            android:name=".home.AddHouseActivity_"
+            android:name=".home.AddEditHouseActivity_"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
@@ -113,11 +113,11 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".home.AddIndependentActivity_"
+            android:name=".home.AddEditIndependentActivity_"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".home.AddOpenSeatsActivity_"
+            android:name=".home.EditOpenSeatsActivity_"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
