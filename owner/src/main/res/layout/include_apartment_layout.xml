@@ -22,6 +22,15 @@
         android:scaleType="centerCrop"
         tools:ignore="ContentDescription" />
 
+    <ImageView
+        android:id="@+id/iv_delete"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_18"
+        android:layout_marginStart="@dimen/dp_105"
+        android:background="@mipmap/ic_small_delete_blue"
+        tools:ignore="ContentDescription" />
+
     <TextView
         android:id="@+id/tv_apartment_tip"
         style="@style/marginLeftRight18"

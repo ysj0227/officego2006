@@ -475,7 +475,12 @@ public class EditBuildingActivity extends BaseMvpActivity<BuildingPresenter>
                 rbMobile.setChecked(true);
             }
             //介绍
-            cetDescContent.setText(data.getBuildingMsg().getPromoteSlogan());
+            String des = data.getBuildingMsg().getPromoteSlogan();
+            if (!TextUtils.isEmpty(des) && des.length() > 100) {
+                cetDescContent.setText(des.substring(0, 96) + "...");
+            } else {
+                cetDescContent.setText(des);
+            }
             //入住企业
             String settlementLicence = data.getBuildingMsg().getSettlementLicence();
             List<String> result = CommonHelper.stringList(settlementLicence);

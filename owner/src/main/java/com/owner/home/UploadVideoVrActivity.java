@@ -1,6 +1,7 @@
 package com.owner.home;
 
 import android.content.Intent;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
@@ -48,7 +49,11 @@ public class UploadVideoVrActivity extends BaseMvpActivity<UploadVideoVrPresente
     @Click(resName = "btn_next")
     void publishOnClick() {
         String vr = etVr.getText() == null ? "" : etVr.getText().toString();
-        mPresenter.publishBuilding(flay,buildingManagerBean.getBuildingId(), buildingManagerBean.getIsTemp(), vr);
+        if (!TextUtils.isEmpty(vr) && !vr.contains("http")) {
+            shortTip("请输入正确的VR链接");
+            return;
+        }
+        mPresenter.publishBuilding(flay, buildingManagerBean.getBuildingId(), buildingManagerBean.getIsTemp(), vr);
     }
 
     @Click(resName = "iv_close_scan")

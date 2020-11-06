@@ -124,8 +124,11 @@ public class AddEditIndependentActivity extends BaseMvpActivity<IndependentPrese
     Button btnScan;
     @ViewById(resName = "iv_close_scan")
     ImageView ivCloseScan;
+    //介绍图
     @ViewById(resName = "iv_desc_image")
     ImageView ivDescImage;
+    @ViewById(resName = "iv_delete")
+    ImageView ivDelete;
     //是否添加还是编辑
     @Extra
     int buildingFlag;
@@ -291,6 +294,12 @@ public class AddEditIndependentActivity extends BaseMvpActivity<IndependentPrese
     void layoutIntroduceOnClick() {
         mUploadType = TYPE_INTRODUCE;
         selectedDialog();
+    }
+
+    @Click(resName = "iv_delete")
+    void delIntroduceOnClick() {
+        introduceImageUrl = "";
+        Glide.with(context).load(R.mipmap.ic_add_img).into(ivDescImage);
     }
 
     @Override
@@ -465,13 +474,15 @@ public class AddEditIndependentActivity extends BaseMvpActivity<IndependentPrese
             } else {
                 silConditionedFee.setCenterText("无");
             }
-            //车位数 车位费
-//            silCarNum.setCenterText(data.getHouseMsg().getParkingSpace);
-//            silCarFee.setCenterText(data.getHouseMsg().getParkingSpaceRent());
             //净高
             silStoreyHeight.getEditTextView().setText(data.getHouseMsg().getClearHeight());
             //介绍
-            cetDescContent.setText(data.getHouseMsg().getUnitPatternRemark());
+            String des = data.getHouseMsg().getUnitPatternRemark();
+            if (!TextUtils.isEmpty(des) && des.length() > 100) {
+                cetDescContent.setText(des.substring(0, 96) + "...");
+            } else {
+                cetDescContent.setText(des);
+            }
             //户型介绍图
             Glide.with(context).load(data.getHouseMsg().getUnitPatternImg()).into(ivDescImage);
             //办公室图片

@@ -139,6 +139,8 @@ public class AddEditHouseActivity extends BaseMvpActivity<HousePresenter>
     //户型图
     @ViewById(resName = "iv_desc_image")
     ImageView ivDescImage;
+     @ViewById(resName = "iv_delete")
+    ImageView ivDelete;
     //图片list
     @ViewById(resName = "rv_upload_image")
     RecyclerView rvUploadImage;
@@ -390,6 +392,11 @@ public class AddEditHouseActivity extends BaseMvpActivity<HousePresenter>
         mUploadType = TYPE_INTRODUCE;
         selectedDialog();
     }
+    @Click(resName = "iv_delete")
+    void delIntroduceOnClick() {
+        introduceImageUrl="";
+        Glide.with(context).load(R.mipmap.ic_add_img).into(ivDescImage);
+    }
 
     private void itemListener() {
         //租金总价
@@ -469,7 +476,12 @@ public class AddEditHouseActivity extends BaseMvpActivity<HousePresenter>
             mPresenter.getDecoratedType();
             mPresenter.getHouseUnique();
             //介绍
-            cetDescContent.setText(data.getHouseMsg().getUnitPatternRemark());
+            String des = data.getHouseMsg().getUnitPatternRemark();
+            if (!TextUtils.isEmpty(des) && des.length() > 100) {
+                cetDescContent.setText(des.substring(0, 96) + "...");
+            } else {
+                cetDescContent.setText(des);
+            }
             //户型介绍图
             introduceImageUrl = data.getHouseMsg().getUnitPatternImg();
             Glide.with(context).load(data.getHouseMsg().getUnitPatternImg()).into(ivDescImage);
