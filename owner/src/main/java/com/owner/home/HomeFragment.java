@@ -171,29 +171,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         }
     }
 
-    //编辑房源
-    private void gotoEditHouseActivity(HouseBean.ListBean bean) {
-        if (Constants.TYPE_BUILDING == bean.getBtype()) {
-            //楼盘下房源
-            AddEditHouseActivity_.intent(mActivity)
-                    .buildingFlag(Constants.BUILDING_FLAG_EDIT)
-                    .buildingManagerBean(new BuildingManagerBean(bean.getHouseId(), bean.getIsTemp()))
-                    .start();
-        } else {
-            if (bean.getOfficeType() == 2) {//2开放工位
-                EditOpenSeatsActivity_.intent(mActivity)
-                        .buildingFlag(Constants.BUILDING_FLAG_EDIT)
-                        .buildingManagerBean(new BuildingManagerBean(bean.getHouseId(), bean.getIsTemp()))
-                        .start();
-            } else {//1独立办公室
-                AddEditIndependentActivity_.intent(mActivity)
-                        .buildingFlag(Constants.BUILDING_FLAG_EDIT)
-                        .buildingManagerBean(new BuildingManagerBean(bean.getHouseId(), bean.getIsTemp()))
-                        .start();
-            }
-        }
-    }
-
     //楼盘网点列表
     @Override
     public void buildingJointWorkListSuccess(BuildingJointWorkBean data) {
@@ -239,12 +216,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         isTemp = bean.getIsTemp();
         mData = bean;
         getHouseList();
-    }
-
-
-    @Override
-    public void itemEdit(HouseBean.ListBean bean) {
-        gotoEditHouseActivity(bean);
     }
 
     /**
@@ -351,6 +322,10 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     //开始下拉刷新
     @Override
     public void onRefresh() {
+        if (!NetworkUtils.isNetworkAvailable(mActivity)) {
+            netException();
+            return;
+        }
         getRefreshHouseList();
     }
 
@@ -377,7 +352,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
                     popupWindow.dismiss();
                 }
                 mPresenter.getBuildingJointWorkList();
-            }else if (id == CommonNotifications.updateHouseSuccess) {
+            } else if (id == CommonNotifications.updateHouseSuccess) {
                 getRefreshHouseList();
             }
         }
@@ -447,5 +422,4 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         }
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
-
 }

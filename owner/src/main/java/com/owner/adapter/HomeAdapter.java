@@ -10,6 +10,7 @@ import com.bumptech.glide.Glide;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
 import com.officego.commonlib.common.dialog.WeChatShareDialog;
+import com.officego.commonlib.common.model.BuildingManagerBean;
 import com.officego.commonlib.common.model.ShareBean;
 import com.officego.commonlib.common.model.owner.HouseBean;
 import com.officego.commonlib.common.model.utils.BundleUtils;
@@ -18,6 +19,9 @@ import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.utils.ToastUtils;
 import com.officego.commonlib.view.RoundImageView;
 import com.owner.R;
+import com.owner.home.AddEditHouseActivity_;
+import com.owner.home.AddEditIndependentActivity_;
+import com.owner.home.EditOpenSeatsActivity_;
 
 import java.util.List;
 
@@ -42,8 +46,6 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
     public interface HomeItemListener {
         void itemPublishStatus(int pos, HouseBean.ListBean bean, boolean isOpenSeats);
 
-        void itemEdit(HouseBean.ListBean bean);
-
         void itemMore(HouseBean.ListBean bean, int position);
     }
 
@@ -67,7 +69,6 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
         TextView tvUnit = holder.getView(R.id.tv_unit);
         Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getMainPic()).into(ivHouse);
         holder.setText(R.id.tv_house_name, bean.getTitle());
-
         //楼盘下房源
         if (Constants.TYPE_BUILDING == bean.getBtype()) {
             ivFlay.setVisibility(View.GONE);
@@ -119,16 +120,13 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
                     share(bean);
                 }
             } else if (id == R.id.tv_edit) {
-                if (listener != null) {
-                    listener.itemEdit(bean);
-                }
+                gotoEditHouseActivity(bean);
             } else if (id == R.id.tv_more) {
                 if (listener != null) {
                     listener.itemMore(bean, holder.getAdapterPosition());
                 }
             } else if (id == R.id.tv_publish_status) {
-                if (listener != null) {
-                    //如果是独立办公室是发布， 开放工位是关闭
+                if (listener != null) { //如果是独立办公室是发布， 开放工位是关闭
                     listener.itemPublishStatus(holder.getAdapterPosition(), bean, isOpenSeats);
                 }
             }
@@ -146,6 +144,29 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
                             bean.getBtype(), bean.getHouseId(), bean.getIsTemp());
                 }
         );
+    }
+
+    //编辑房源
+    private void gotoEditHouseActivity(HouseBean.ListBean bean) {
+        if (Constants.TYPE_BUILDING == bean.getBtype()) {
+            //楼盘下房源
+            AddEditHouseActivity_.intent(context)
+                    .buildingFlag(Constants.BUILDING_FLAG_EDIT)
+                    .buildingManagerBean(new BuildingManagerBean(bean.getHouseId(), bean.getIsTemp()))
+                    .start();
+        } else {
+            if (bean.getOfficeType() == 2) {//2开放工位
+                EditOpenSeatsActivity_.intent(context)
+                        .buildingFlag(Constants.BUILDING_FLAG_EDIT)
+                        .buildingManagerBean(new BuildingManagerBean(bean.getHouseId(), bean.getIsTemp()))
+                        .start();
+            } else {//1独立办公室
+                AddEditIndependentActivity_.intent(context)
+                        .buildingFlag(Constants.BUILDING_FLAG_EDIT)
+                        .buildingManagerBean(new BuildingManagerBean(bean.getHouseId(), bean.getIsTemp()))
+                        .start();
+            }
+        }
     }
 
     private void share(HouseBean.ListBean bn) {
