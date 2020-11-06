@@ -36,7 +36,7 @@ public class BuildingTypeDialog {
     }
 
     public interface BuildingTypeListener {
-        void sureBuildingType(String type,boolean isOffice);
+        void sureBuildingType(String type,int buildingType,boolean isOffice);
     }
 
     private void moreDialog(Context context) {
@@ -68,15 +68,15 @@ public class BuildingTypeDialog {
         viewLayout.findViewById(R.id.btn_cancel).setOnClickListener(v -> dialog.dismiss());
         viewLayout.findViewById(R.id.rl_exit).setOnClickListener(v -> dialog.dismiss());
         tvType1.setOnClickListener(view -> {
-            listener.sureBuildingType(tvType1.getText().toString(),true);
+            listener.sureBuildingType(tvType1.getText().toString(),1,true);
             dialog.dismiss();
         });
         tvType2.setOnClickListener(view -> {
-            listener.sureBuildingType(tvType2.getText().toString(),false);
+            listener.sureBuildingType(tvType2.getText().toString(),3,false);
             dialog.dismiss();
         });
         tvType3.setOnClickListener(view -> {
-            listener.sureBuildingType(tvType3.getText().toString(),false);
+            listener.sureBuildingType(tvType3.getText().toString(),6,false);
             dialog.dismiss();
         });
     }

@@ -269,6 +269,10 @@ public class EditBuildingActivity extends BaseMvpActivity<BuildingPresenter>
             shortTip("请选择所在区域");
             return;
         }
+        if (district == 0 || business == 0) {
+            shortTip("请选择完整的区域");
+            return;
+        }
         String address = silAddress.getEditTextView().getText().toString();
         if (TextUtils.isEmpty(address)) {
             shortTip("请输入详细地址");
@@ -280,9 +284,16 @@ public class EditBuildingActivity extends BaseMvpActivity<BuildingPresenter>
             return;
         }
         String completeTime = silCompleteTime.getContextView().getText().toString();
+        String refurbishedTime = silReCompleteTime.getContextView().getText().toString();
         if (TextUtils.isEmpty(completeTime)) {
             shortTip("请选择竣工时间");
             return;
+        }
+        if (!TextUtils.isEmpty(completeTime) && !TextUtils.isEmpty(refurbishedTime)) {
+            if (Integer.valueOf(completeTime) > Integer.valueOf(refurbishedTime)) {
+                shortTip("竣工时间不能大于翻新时间");
+                return;
+            }
         }
         String clearHeight = silStoreyHeight.getEditTextView().getText().toString();
         if (TextUtils.isEmpty(clearHeight)) {
@@ -335,8 +346,6 @@ public class EditBuildingActivity extends BaseMvpActivity<BuildingPresenter>
         String addImage = CommonUtils.addUploadImage(uploadImageList);
         //删除图片
         String deleteImage = CommonUtils.delUploadImage(deleteList);
-        //翻新
-        String refurbishedTime = silReCompleteTime.getContextView().getText().toString();
         //建筑面积
         String constructionArea = silGrossArea.getEditTextView().getText().toString();
         //层高
@@ -542,16 +551,16 @@ public class EditBuildingActivity extends BaseMvpActivity<BuildingPresenter>
     }
 
     @Override
-    public void sureBuildingType(String type, boolean isOffice) {
+    public void sureBuildingType(String type,int buildingType, boolean isOffice) {
+        silNo.setVisibility(isOffice ? View.GONE : View.VISIBLE);
+        mBuildingType=buildingType;
         silBuildingType.setCenterText(type);
-        //silGardenName.setEditText("");
         silGardenName.setVisibility(View.VISIBLE);
         if (isOffice) {
             silGardenName.setTitle("写字楼名称");
         } else {
             silGardenName.setTitle("园区名称");
         }
-        silNo.setVisibility(isOffice ? View.GONE : View.VISIBLE);
     }
 
     @Override
@@ -660,14 +669,14 @@ public class EditBuildingActivity extends BaseMvpActivity<BuildingPresenter>
             if (requestCode == REQUEST_CAMERA) {//拍照
                 ImageUtils.isSaveCropImageView(localImagePath);//图片处理
                 uploadImageList.add(uploadImageList.size() - 1, new ImageBean(false, 0, localImagePath));
-                mPresenter.uploadImage(Constants.TYPE_IMAGE_BUILDING,uploadImageList);
+                mPresenter.uploadImage(Constants.TYPE_IMAGE_BUILDING, uploadImageList);
             } else if (requestCode == REQUEST_GALLERY && data != null) {//相册
                 List<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
                 for (int i = 0; i < images.size(); i++) {
                     ImageUtils.isSaveCropImageView(images.get(i));//图片处理
                     uploadImageList.add(uploadImageList.size() - 1, new ImageBean(false, 0, images.get(i)));
                 }
-                mPresenter.uploadImage(Constants.TYPE_IMAGE_BUILDING,uploadImageList);
+                mPresenter.uploadImage(Constants.TYPE_IMAGE_BUILDING, uploadImageList);
             }
         }
     }

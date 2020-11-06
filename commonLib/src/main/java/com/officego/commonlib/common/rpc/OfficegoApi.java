@@ -435,7 +435,7 @@ public class OfficegoApi {
             map.put("buildingNum", requestBody(buildingNum + ""));
         }
         map.put("districtId", requestBody(districtId + ""));
-        map.put("area", requestBody(area + ""));
+        map.put("businessDistrict", requestBody(area + ""));
         map.put("address", requestBody(address + ""));
         map.put("totalFloor", requestBody(totalFloor + ""));
         map.put("completionTime", requestBody(completionTime + ""));
@@ -486,7 +486,7 @@ public class OfficegoApi {
         map.put("buildingId", requestBody(buildingId + ""));
         map.put("isTemp", requestBody(isTemp + ""));
         map.put("districtId", requestBody(districtId + ""));
-        map.put("area", requestBody(area + ""));
+        map.put("businessDistrict", requestBody(area + ""));
         map.put("address", requestBody(address + ""));
         map.put("floorType", requestBody(floorType + ""));
         map.put("totalFloor", requestBody(totalFloor + ""));

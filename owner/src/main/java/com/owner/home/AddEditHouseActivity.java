@@ -155,6 +155,8 @@ public class AddEditHouseActivity extends BaseMvpActivity<HousePresenter>
     BuildingManagerBean buildingManagerBean;
     //记录上次面积
     private String recordArea;
+    //是否第一次进入
+    private boolean isInitArea;
     //面积是否修改
     private boolean isFixArea;
     //租金总价
@@ -413,12 +415,6 @@ public class AddEditHouseActivity extends BaseMvpActivity<HousePresenter>
             }
         });
         //面积监听 是否修改过
-        silArea.getEditTextView().setOnFocusChangeListener((view, b) -> {
-            if (b) {
-                isFixArea = !TextUtils.equals(recordArea, silArea.getEditTextView().getText().toString());
-            }
-        });
-        silArea.getEditTextView().addTextChangedListener(new MyTextWatcher(recordArea));
     }
 
     @SuppressLint("SetTextI18n")
@@ -427,7 +423,7 @@ public class AddEditHouseActivity extends BaseMvpActivity<HousePresenter>
         String seatEnd = etSeatEnd.getText().toString();
         String area = silArea.getEditTextView().getText().toString();
         if (!TextUtils.isEmpty(area)) {
-            if (isFixArea || (TextUtils.isEmpty(seatStart) && TextUtils.isEmpty(seatEnd))) {
+            if (TextUtils.isEmpty(seatStart) && TextUtils.isEmpty(seatEnd)) {
                 recordArea = silArea.getEditTextView().getText().toString();
                 etSeatStart.setText((Integer.valueOf(area) / 5) + "");
                 etSeatEnd.setText((Integer.valueOf(area) / 3) + "");
@@ -673,6 +669,7 @@ public class AddEditHouseActivity extends BaseMvpActivity<HousePresenter>
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         PermissionUtils.requestPermissions(context, requestCode, permissions, grantResults);
     }
+
     @Override
     public void editSaveSuccess() {
         finish();
@@ -706,9 +703,7 @@ public class AddEditHouseActivity extends BaseMvpActivity<HousePresenter>
 
         @Override
         public void afterTextChanged(Editable editable) {
-            if (!TextUtils.equals(text, editable.toString())) {
-                isFixArea = true;
-            }
+            isFixArea = !TextUtils.equals(recordArea, editable.toString());
         }
     }
 }
