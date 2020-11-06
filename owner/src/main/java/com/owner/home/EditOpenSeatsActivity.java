@@ -175,6 +175,10 @@ public class EditOpenSeatsActivity extends BaseMvpActivity<OpenSeatsPresenter>
             shortTip("请输入最短租期");
             return;
         }
+        if (uploadImageList == null || uploadImageList.size() <= 1) {
+            shortTip("请上传图片");
+            return;
+        }
         //净高
         String clearHeight = silStoreyHeight.getEditTextView().getText().toString();
         //免租期

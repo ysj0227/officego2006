@@ -304,6 +304,10 @@ public class EditJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
             shortTip("请输入会议室数量");
             return;
         }
+        if (uploadImageList == null || uploadImageList.size() <= 1) {
+            shortTip("请上传网点图片");
+            return;
+        }
         //空调费
         String conditionedFee = silConditionedFee.getContextView().getText().toString();
         //介绍

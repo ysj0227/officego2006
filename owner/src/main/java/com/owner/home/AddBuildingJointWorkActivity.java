@@ -34,7 +34,7 @@ import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.TitleBarView;
 import com.officego.commonlib.view.widget.SettingItemLayout;
 import com.owner.R;
-import com.owner.adapter.IdentityBuildingAdapter;
+import com.owner.adapter.SearchBuildingAdapter;
 import com.owner.adapter.UploadAddImageAdapter;
 import com.owner.dialog.AreaDialog;
 import com.owner.home.contract.AddContract;
@@ -62,7 +62,7 @@ import java.util.List;
 @EActivity(resName = "activity_home_add_manager")
 public class AddBuildingJointWorkActivity extends BaseMvpActivity<AddPresenter>
         implements AddContract.View, AreaDialog.AreaSureListener,
-        IdentityBuildingAdapter.IdentityBuildingListener,
+        SearchBuildingAdapter.IdentityBuildingListener,
         UploadAddImageAdapter.UploadImageListener {
     private static final int REQUEST_GALLERY = 0xa0;
     private static final int REQUEST_CAMERA = 0xa1;
@@ -104,7 +104,7 @@ public class AddBuildingJointWorkActivity extends BaseMvpActivity<AddPresenter>
     //图片上传类型
     private int mUploadType;
     //搜索
-    private IdentityBuildingAdapter buildingAdapter;
+    private SearchBuildingAdapter buildingAdapter;
     private List<IdentityBuildingBean.DataBean> mList = new ArrayList<>();
     //是否关联的楼
     private boolean isCreateBuilding;
@@ -119,11 +119,11 @@ public class AddBuildingJointWorkActivity extends BaseMvpActivity<AddPresenter>
     }
 
     private void initViews() {
-        titleBar.setAppTitle(flay == 0 ? "添加共享办公" : "添加楼盘");
-        silName.setTitle(flay == 0 ? "共享办公名称" : "楼盘名称");
-        silName.getEditTextView().setHint(flay == 0 ? "请输入共享办公名称" : "请输入楼盘名称");
+        titleBar.setAppTitle(flay == 0 ? "添加网点" : "添加楼盘");
+        silName.setTitle(flay == 0 ? "网点名称" : "楼盘名称");
+        silName.getEditTextView().setHint(flay == 0 ? "请输入网点名称" : "请输入楼盘名称");
         silName.getEditTextView().setHintTextColor(ContextCompat.getColor(context, R.color.text_66_p50));
-        tvUploadTitle.setText(flay == 0 ? "上传共享办公图片" : "上传房产证");
+        tvUploadTitle.setText("上传房产证");
         //搜索列表
         LinearLayoutManager buildingManager = new LinearLayoutManager(context);
         rvRecommendBuilding.setLayoutManager(buildingManager);
@@ -353,8 +353,8 @@ public class AddBuildingJointWorkActivity extends BaseMvpActivity<AddPresenter>
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                rvRecommendBuilding.setVisibility(TextUtils.isEmpty(s.toString()) ? View.GONE : View.VISIBLE);
-                mPresenter.searchBuilding(s.toString());
+                rvRecommendBuilding.setVisibility(View.VISIBLE);
+                mPresenter.searchBuilding(flay, s.toString());
             }
 
             @Override
@@ -370,7 +370,7 @@ public class AddBuildingJointWorkActivity extends BaseMvpActivity<AddPresenter>
         mList.addAll(data);
         mList.add(data.size(), new IdentityBuildingBean.DataBean());
         if (buildingAdapter == null) {
-            buildingAdapter = new IdentityBuildingAdapter(context, mList, false);
+            buildingAdapter = new SearchBuildingAdapter(context, mList, flay == 0);
             buildingAdapter.setListener(this);
             rvRecommendBuilding.setAdapter(buildingAdapter);
             return;
@@ -387,8 +387,6 @@ public class AddBuildingJointWorkActivity extends BaseMvpActivity<AddPresenter>
 
     @Override
     public void associateBuilding(IdentityBuildingBean.DataBean bean, boolean isCreate) {
-//        district = TextUtils.isEmpty(bean.getDistrict()) ? 0 : Integer.valueOf(bean.getDistrict());
-//        business = TextUtils.isEmpty(bean.getBusiness()) ? 0 : Integer.valueOf(bean.getBusiness());
         isCreateBuilding = isCreate;
         if (!isCreate) {
             CommUtils.showHtmlView(silName.getEditTextView(), bean.getBuildingName());

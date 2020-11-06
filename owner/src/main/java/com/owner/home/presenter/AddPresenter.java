@@ -67,20 +67,37 @@ public class AddPresenter extends BasePresenter<AddContract.View>
     }
 
     @Override
-    public void searchBuilding(String keyword) {
-        OfficegoApi.getInstance().searchListBuild(keyword, new RetrofitCallback<List<IdentityBuildingBean.DataBean>>() {
-            @Override
-            public void onSuccess(int code, String msg, List<IdentityBuildingBean.DataBean> data) {
-                if (isViewAttached()) {
-                    mView.searchBuildingSuccess(data);
+    public void searchBuilding(int flag,String keyword) {
+        if (flag==0){
+            OfficegoApi.getInstance().searchListBranch2(keyword, new RetrofitCallback<List<IdentityBuildingBean.DataBean>>() {
+                @Override
+                public void onSuccess(int code, String msg, List<IdentityBuildingBean.DataBean> data) {
+                    if (isViewAttached()) {
+                        mView.searchBuildingSuccess(data);
+                    }
                 }
-            }
 
-            @Override
-            public void onFail(int code, String msg, List<IdentityBuildingBean.DataBean> data) {
+                @Override
+                public void onFail(int code, String msg, List<IdentityBuildingBean.DataBean> data) {
 
-            }
-        });
+                }
+            });
+        }else {
+            OfficegoApi.getInstance().searchListBuild(keyword, new RetrofitCallback<List<IdentityBuildingBean.DataBean>>() {
+                @Override
+                public void onSuccess(int code, String msg, List<IdentityBuildingBean.DataBean> data) {
+                    if (isViewAttached()) {
+                        mView.searchBuildingSuccess(data);
+                    }
+                }
+
+                @Override
+                public void onFail(int code, String msg, List<IdentityBuildingBean.DataBean> data) {
+
+                }
+            });
+        }
+
     }
 
     @Override

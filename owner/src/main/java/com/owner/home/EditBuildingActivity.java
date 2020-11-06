@@ -319,6 +319,10 @@ public class EditBuildingActivity extends BaseMvpActivity<BuildingPresenter>
             shortTip("请输入货梯数量");
             return;
         }
+        if (uploadImageList == null || uploadImageList.size() <= 1) {
+            shortTip("请上传楼盘图片");
+            return;
+        }
         //网络
         String net = CommonUtils.internet(rbTelecom, rbUnicom, rbMobile);
         //入住企业

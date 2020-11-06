@@ -28,7 +28,7 @@ public interface AddContract {
 
         void uploadSingleImage(String mFilePath);
 
-        void searchBuilding(String keywords);
+        void searchBuilding(int buildingType,String keywords);
 
         void addBuilding(int btype, String buildingName, int districtId,
                          int businessDistrict, String address, String mainPic,

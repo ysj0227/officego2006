@@ -227,6 +227,10 @@ public class AddEditIndependentActivity extends BaseMvpActivity<IndependentPrese
             shortTip("请选择空调类型");
             return;
         }
+        if (uploadImageList == null || uploadImageList.size() <= 1) {
+            shortTip("请上传房源图片");
+            return;
+        }
         String title = silTitle.getEditTextView().getText().toString();
         //面积
         String area = silArea.getEditTextView().getText().toString();

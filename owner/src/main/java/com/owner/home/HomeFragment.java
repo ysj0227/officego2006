@@ -266,18 +266,18 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     @Override
     public void toMoreHouseManager(boolean isDeleteHouse, HouseBean.ListBean bean, int position) {
         mPosition = position;
-        CommonDialog dialog = new CommonDialog.Builder(mActivity)
-                .setTitle("确定删除房源吗？")
-                .setCancelButton(R.string.sm_cancel)
-                .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
-                    dialog12.dismiss();
-                    if (isDeleteHouse) {
+        if (isDeleteHouse) {
+            CommonDialog dialog = new CommonDialog.Builder(mActivity)
+                    .setTitle("确定删除房源吗？")
+                    .setCancelButton(R.string.sm_cancel)
+                    .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
+                        dialog12.dismiss();
                         mPresenter.houseDelete(bean.getHouseId(), bean.getIsTemp());
-                    } else {
-                        mPresenter.isPublishHouse(bean.getHouseId(), HOUSE_OFF, bean.getIsTemp());
-                    }
-                }).create();
-        dialog.showWithOutTouchable(false);
+                    }).create();
+            dialog.showWithOutTouchable(false);
+        } else {
+            mPresenter.isPublishHouse(bean.getHouseId(), HOUSE_OFF, bean.getIsTemp());
+        }
     }
 
     //房源删除成功刷新
@@ -289,9 +289,10 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         }
     }
 
-    //下架或发布成功刷新
+    //下架或发布成功刷新 1发布2下架
     @Override
     public void publishOrOffHouseSuccess(int currentStatus) {
+        shortTip(currentStatus == 1 ? "房源已发布" : "房源已下架");
         houseList.get(mPosition).setHouseStatus(currentStatus);
         homeAdapter.notifyItemChanged(mPosition);
     }

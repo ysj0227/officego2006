@@ -154,9 +154,9 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
     }
 
     private void gotoAddActivity() {
-        if (mUserData.getIdentityType() == identityType) {
+        if (mUserData.getIdentityType() == identityType) {//网点
             AddBuildingJointWorkActivity_.intent(mContext).flay(0).start();
-        } else {
+        } else {//添加楼盘
             AddBuildingJointWorkActivity_.intent(mContext).flay(1).start();
         }
     }

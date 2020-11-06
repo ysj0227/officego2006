@@ -291,6 +291,10 @@ public class AddEditHouseActivity extends BaseMvpActivity<HousePresenter>
             shortTip("请选择装修程度");
             return;
         }
+        if (uploadImageList == null || uploadImageList.size() <= 1) {
+            shortTip("请上传房源图片");
+            return;
+        }
         String title = silHouseTitle.getEditTextView().getText().toString();
         //工位
         String simple = minSeats + "," + maxSeats;

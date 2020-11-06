@@ -49,6 +49,12 @@ public interface IdentitySearchInterface {
     @Multipart
     @POST(path + "esearch/searchListBranch")
     Call<BaseResponse<List<IdentityJointWorkBean.DataBean>>> searchListBranch(@PartMap Map<String, RequestBody> params);
+ /**
+     * 搜索网点
+     */
+    @Multipart
+    @POST(path + "esearch/searchListBranch")
+    Call<BaseResponse<List<IdentityBuildingBean.DataBean>>> searchListBranch2(@PartMap Map<String, RequestBody> params);
 
 
     /**

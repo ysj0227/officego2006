@@ -235,6 +235,19 @@ public class OfficegoApi {
     }
 
     /**
+     * 搜索网点
+     */
+    public void searchListBranch2(String keywords,
+                                 RetrofitCallback<List<IdentityBuildingBean.DataBean>> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("keywords", requestBody(keywords));
+        OfficegoRetrofitClient.getInstance().create(IdentitySearchInterface.class)
+                .searchListBranch2(map)
+                .enqueue(callback);
+    }
+
+    /**
      * 认证公司，网点id信息
      */
     public void selectApplyLicence(int identityType, int id,
