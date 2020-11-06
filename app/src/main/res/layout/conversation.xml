@@ -31,21 +31,38 @@
             android:layout_centerInParent="true"
             android:gravity="center">
 
-            <TextView
-                android:id="@+id/tv_title_name"
+            <RelativeLayout
+                android:id="@+id/rl_name"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:ellipsize="end"
-                android:maxLength="16"
-                android:textColor="@color/white"
-                android:textSize="@dimen/sp_15" />
+                android:layout_centerHorizontal="true">
+
+                <TextView
+                    android:id="@+id/tv_title_name"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:maxLength="16"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_15" />
+
+                <TextView
+                    android:id="@+id/tv_job"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_alignBottom="@id/tv_title_name"
+                    android:layout_toEndOf="@id/tv_title_name"
+                    android:ellipsize="end"
+                    android:maxLength="16"
+                    android:textColor="@color/white"
+                    android:textSize="@dimen/sp_12" />
+            </RelativeLayout>
 
             <TextView
-                android:id="@+id/tv_job"
+                android:id="@+id/tv_building"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/tv_title_name"
+                android:layout_below="@id/rl_name"
                 android:layout_centerHorizontal="true"
                 android:ellipsize="end"
                 android:maxLength="20"

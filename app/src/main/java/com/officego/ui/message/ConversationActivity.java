@@ -58,7 +58,7 @@ import io.rong.imlib.model.Message;
 public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         implements ConversationContract.View, RongIM.OnSendMessageListener {
     private ConstraintLayout ctlChat;
-    private TextView tvTitleName, tvJob;
+    private TextView tvTitleName, tvJob, tvBuilding;
     private TextView tvTip;
     private RelativeLayout rlTip;
     private ImageView ivMobile, ivWx;
@@ -84,6 +84,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         ctlChat = findViewById(R.id.ctl_chat);
         tvTitleName = findViewById(R.id.tv_title_name);
         tvJob = findViewById(R.id.tv_job);
+        tvBuilding = findViewById(R.id.tv_building);
         rlTip = findViewById(R.id.rl_tip);
         tvTip = findViewById(R.id.tv_tip);
         ivMobile = findViewById(R.id.iv_mobile);
@@ -233,13 +234,14 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             mNikeName = data.getChatted().getNickname();
             String job = data.getChatted().getJob();
             if (!TextUtils.isEmpty(mNikeName) && !TextUtils.isEmpty(job)) {
-                tvTitleName.setText(mNikeName + "|" + job);
+                tvTitleName.setText(mNikeName);
+                tvJob.setText(" | " + job);
             } else if (TextUtils.isEmpty(mNikeName) && !TextUtils.isEmpty(job)) {
-                tvTitleName.setText(job);
+                tvJob.setText(" | " + job);
             } else if (!TextUtils.isEmpty(mNikeName) && TextUtils.isEmpty(job)) {
                 tvTitleName.setText(mNikeName);
             }
-            tvJob.setText(data.getBuilding().getBuildingName());
+            tvBuilding.setText(data.getBuilding().getBuildingName());
             if (!TextUtils.isEmpty(targetId)) {
                 RongCloudSetUserInfoUtils.refreshUserInfoCache(targetId,
                         TextUtils.isEmpty(data.getChatted().getNickname()) ? "" : data.getChatted().getNickname(),
