@@ -11,9 +11,8 @@ import android.view.WindowManager;
 import android.widget.TextView;
 
 import com.officego.commonlib.common.model.owner.HouseBean;
+import com.officego.commonlib.utils.ToastUtils;
 import com.owner.R;
-
-import java.util.TreeMap;
 
 /**
  * Created by shijie
@@ -91,6 +90,10 @@ public class HomeMoreDialog {
         });
         tvDelete.setOnClickListener(view -> {
             dialog.dismiss();
+            if (isOpenSeats) {
+                ToastUtils.toastForShort(context, "开放工位不支持删除");
+                return;
+            }
             listener.toMoreHouseManager(true, bean, position);
         });
     }

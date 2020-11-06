@@ -153,7 +153,11 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     //添加房源
     @Click(resName = "iv_add")
     void addClick() {
-        gotoAddHouseActivity(new BuildingManagerBean(buildingId, isTemp));
+        if (mData != null && mData.getIsTemp() == 0 && mData.getStatus() == 1) {
+            gotoAddHouseActivity(new BuildingManagerBean(buildingId, isTemp));
+        } else {
+            shortTip("审核中，不能添加房源");
+        }
     }
 
     //添加房源
