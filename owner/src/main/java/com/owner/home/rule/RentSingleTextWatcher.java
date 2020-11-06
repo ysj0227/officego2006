@@ -2,7 +2,6 @@ package com.owner.home.rule;
 
 import android.content.Context;
 import android.text.Editable;
-import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.widget.EditText;
 
@@ -42,7 +41,7 @@ public class RentSingleTextWatcher implements TextWatcher {
             if (!temp.contains(".") && temp.length() >= 2 && Integer.valueOf(temp) > 50) {
                 int index = editText.getSelectionStart();//获取光标位置
                 editable.delete(index - 1, index);//删除后一位
-                ToastUtils.toastForShort(context, "只支持0.1-50正整数或保留2位小数");
+                ToastUtils.toastForShort(context, "只支持0.1-50正整数,保留2位小数");
                 return;
             }
             //保留1位小数
@@ -50,6 +49,7 @@ public class RentSingleTextWatcher implements TextWatcher {
             int index = editText.getSelectionStart();//获取光标位置
             if (posDot >= 0 && temp.length() - 2 > posDot) {
                 editable.delete(index - 1, index);//删除小数点后一位
+                ToastUtils.toastForShort(context, "只支持0.1-50正整数,保留2位小数");
             }
         } catch (Exception e) {
             e.printStackTrace();

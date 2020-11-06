@@ -153,7 +153,6 @@ public class AddEditHouseActivity extends BaseMvpActivity<HousePresenter>
     int buildingFlag;
     @Extra
     BuildingManagerBean buildingManagerBean;
-
     //记录上次面积
     private String recordArea;
     //面积是否修改
@@ -336,7 +335,6 @@ public class AddEditHouseActivity extends BaseMvpActivity<HousePresenter>
         ivCloseScan.setVisibility(View.GONE);
     }
 
-    //web 去编辑
     @Click(resName = "btn_scan")
     void toWebEditOnClick() {
         if (!PermissionUtils.checkSDCardCameraPermission(this)) {
@@ -675,7 +673,6 @@ public class AddEditHouseActivity extends BaseMvpActivity<HousePresenter>
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         PermissionUtils.requestPermissions(context, requestCode, permissions, grantResults);
     }
-
     @Override
     public void editSaveSuccess() {
         finish();
@@ -690,7 +687,6 @@ public class AddEditHouseActivity extends BaseMvpActivity<HousePresenter>
         UploadVideoVrActivity_.intent(context).flay(Constants.FLAG_HOUSE).
                 buildingManagerBean(new BuildingManagerBean(Integer.valueOf(id), buildingManagerBean.getIsTemp())).start();
     }
-
 
     private class MyTextWatcher implements TextWatcher {
         private String text;

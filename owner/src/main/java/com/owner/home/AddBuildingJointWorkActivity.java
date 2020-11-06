@@ -23,8 +23,10 @@ import com.bumptech.glide.Glide;
 import com.donkingliang.imageselector.utils.ImageSelector;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.model.owner.UploadImageBean;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.utils.FileHelper;
 import com.officego.commonlib.utils.FileUtils;
 import com.officego.commonlib.utils.ImageUtils;
@@ -291,9 +293,9 @@ public class AddBuildingJointWorkActivity extends BaseMvpActivity<AddPresenter>
                 ImageUtils.isSaveCropImageView(localImagePath);//图片处理
                 if (TYPE_BANNER == mUploadType) {
                     uploadImageList.add(uploadImageList.size() - 1, new ImageBean(false, 0, localImagePath));
-                    mPresenter.uploadImage(Constants.TYPE_IMAGE_BUILDING,uploadImageList);
+                    mPresenter.uploadImage(Constants.TYPE_IMAGE_BUILDING, uploadImageList);
                 } else {
-                    mPresenter.uploadSingleImage(Constants.TYPE_IMAGE_BUILDING,localImagePath);
+                    mPresenter.uploadSingleImage(Constants.TYPE_IMAGE_BUILDING, localImagePath);
                 }
             } else if (requestCode == REQUEST_GALLERY && data != null) {//相册
                 List<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
@@ -302,9 +304,9 @@ public class AddBuildingJointWorkActivity extends BaseMvpActivity<AddPresenter>
                         ImageUtils.isSaveCropImageView(images.get(i));//图片处理
                         uploadImageList.add(uploadImageList.size() - 1, new ImageBean(false, 0, images.get(i)));
                     }
-                    mPresenter.uploadImage(Constants.TYPE_IMAGE_BUILDING,uploadImageList);
+                    mPresenter.uploadImage(Constants.TYPE_IMAGE_BUILDING, uploadImageList);
                 } else {
-                    mPresenter.uploadSingleImage(Constants.TYPE_IMAGE_BUILDING,images.get(0));//介绍图单张上传
+                    mPresenter.uploadSingleImage(Constants.TYPE_IMAGE_BUILDING, images.get(0));//介绍图单张上传
                 }
             }
         }
@@ -383,6 +385,8 @@ public class AddBuildingJointWorkActivity extends BaseMvpActivity<AddPresenter>
     public void addSuccess() {
         finish();
         shortTip("添加成功");
+        BaseNotification.newInstance().postNotificationName(
+                CommonNotifications.updateBuildingSuccess, "updateBuildingSuccess");
     }
 
     @Override

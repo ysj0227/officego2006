@@ -49,7 +49,7 @@ public class EstateFeeTextWatcher implements TextWatcher {
             if (!temp.contains(".") && temp.length() >= length && Integer.valueOf(temp) > number) {
                 int index = editText.getSelectionStart();//获取光标位置
                 editable.delete(index - 1, index);
-                ToastUtils.toastForShort(context, "只支持0.1-" + number + "正整数或保留1位小数");
+                ToastUtils.toastForShort(context, "只支持0.1-" + number + "之间正数，保留1位小数");
                 return;
             }
             int posDot = temp.indexOf(".");//返回指定字符在此字符串中第一次出现处的索引

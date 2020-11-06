@@ -35,6 +35,7 @@ public class CommonNotifications {
     public static final int loginIn = totalEvents++;
     public static final int loginOut = totalEvents++;
 
-    //初始化获取定位，刷新
-    public static final int locationRefresh = totalEvents++;
+    //楼盘网点添加成功
+    public static final int updateBuildingSuccess = totalEvents++;
+    public static final int updateHouseSuccess = totalEvents++;
 }

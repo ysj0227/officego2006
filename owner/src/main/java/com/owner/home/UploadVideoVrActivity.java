@@ -7,10 +7,13 @@ import android.widget.Button;
 import android.widget.ImageView;
 
 import com.officego.commonlib.base.BaseMvpActivity;
+import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.model.BuildingManagerBean;
+import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.ClearableEditText;
+import com.officego.commonlib.view.TitleBarView;
 import com.owner.home.contract.UploadVideoVrContract;
 import com.owner.home.presenter.UploadVideoVrPresenter;
 import com.owner.zxing.QRScanActivity;
@@ -28,6 +31,8 @@ import org.androidannotations.annotations.ViewById;
 @EActivity(resName = "activity_home_upload_video_vr")
 public class UploadVideoVrActivity extends BaseMvpActivity<UploadVideoVrPresenter>
         implements UploadVideoVrContract.View {
+    @ViewById(resName = "title_bar")
+    TitleBarView titleBar;
     @ViewById(resName = "btn_scan")
     Button btnScan;
     @ViewById(resName = "iv_close_scan")
@@ -44,6 +49,7 @@ public class UploadVideoVrActivity extends BaseMvpActivity<UploadVideoVrPresente
         StatusBarUtils.setStatusBarFullTransparent(this);
         mPresenter = new UploadVideoVrPresenter();
         mPresenter.attachView(this);
+        titleBar.getLeftImg().setOnClickListener(view -> onBackPressed());
     }
 
     @Click(resName = "btn_next")
@@ -75,5 +81,18 @@ public class UploadVideoVrActivity extends BaseMvpActivity<UploadVideoVrPresente
     @Override
     public void publishSuccess() {
         finish();
+        notificationUpdateHouse();
     }
+
+    @Override
+    public void onBackPressed() {
+        notificationUpdateHouse();
+        super.onBackPressed();
+    }
+
+    private void notificationUpdateHouse() {
+        BaseNotification.newInstance().postNotificationName(
+                CommonNotifications.updateHouseSuccess, "updateHouseSuccess");
+    }
+
 }

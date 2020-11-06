@@ -51,7 +51,7 @@ public class AreaTextWatcher implements TextWatcher {
                 int index = editText.getSelectionStart();//获取光标位置
                 editable.delete(index - 1, index);//删除后一位
                 if (temp.length() < 8) {
-                    ToastUtils.toastForShort(context, "只支持0.1-" + number + "正整数或保留1位小数");
+                    ToastUtils.toastForShort(context, "只支持0.1-" + number + "正数数字，保留1位小数");
                 }
                 return;
             }

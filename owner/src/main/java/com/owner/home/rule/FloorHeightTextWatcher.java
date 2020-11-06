@@ -42,7 +42,7 @@ public class FloorHeightTextWatcher implements TextWatcher {
             if (m.length() == 1 && !m.contains(".")) {
                 if (TextUtils.equals("9", m)) {
                     editText.setText("");
-                    ToastUtils.toastForShort(context, "请输入0-8之间的整数或一位小数");
+                    ToastUtils.toastForShort(context, "仅支持1-8之间正数，保留1位小数");
                     return;
                 }
             }
@@ -50,7 +50,7 @@ public class FloorHeightTextWatcher implements TextWatcher {
                     !TextUtils.equals(".", editable.toString().substring(1, 2))) {
                 int index = editText.getSelectionStart();//获取光标位置
                 editable.delete(index - 1, index);
-                ToastUtils.toastForShort(context, "请输入0-8之间的正整数或一位小数");
+                ToastUtils.toastForShort(context, "仅支持1-8之间正数，保留1位小数");
                 return;
             }
             //保留一位小数

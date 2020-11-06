@@ -84,7 +84,10 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     @ViewById(resName = "btn_again")
     Button btnAgain;
 
+    //用户信息
     private UserOwnerBean mUserData;
+    //楼盘网点列表pop
+    private BuildingJointWorkListPopupWindow popupWindow = null;
     //当前页码
     private int pageNum = 1;
     //list 是否有更多
@@ -198,7 +201,8 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         tvHomeTitle.setVisibility(View.GONE);
         ivAdd.setVisibility(View.GONE);
         tvExpand.setVisibility(View.VISIBLE);
-        new BuildingJointWorkListPopupWindow(mActivity, mUserData, rlTitle, data.getList()).setListener(this);
+        popupWindow = new BuildingJointWorkListPopupWindow(mActivity, mUserData, rlTitle, data.getList());
+        popupWindow.setListener(this);
     }
 
     //房源列表
@@ -357,7 +361,9 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
 
     @Override
     public int[] getStickNotificationId() {
-        return new int[]{CommonNotifications.ownerIdentityHandle};
+        return new int[]{CommonNotifications.ownerIdentityHandle,
+                CommonNotifications.updateBuildingSuccess,
+                CommonNotifications.updateHouseSuccess};
     }
 
     @Override
@@ -366,6 +372,13 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         if (args != null) {
             if (id == CommonNotifications.ownerIdentityHandle) {
                 mPresenter.getUserInfo();
+            } else if (id == CommonNotifications.updateBuildingSuccess) {
+                if (popupWindow != null) {
+                    popupWindow.dismiss();
+                }
+                mPresenter.getBuildingJointWorkList();
+            }else if (id == CommonNotifications.updateHouseSuccess) {
+                getRefreshHouseList();
             }
         }
     }

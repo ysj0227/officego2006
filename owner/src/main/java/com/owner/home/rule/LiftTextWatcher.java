@@ -40,7 +40,7 @@ public class LiftTextWatcher implements TextWatcher {
                 if (words.length() >= 2 && Integer.valueOf(words) > 20) {
                     int index = input.getSelectionStart();//获取光标位置
                     editable.delete(index - 1, index);//删除小数点后一位
-                    ToastUtils.toastForShort(context, "请输入0-20之间的整数");
+                    ToastUtils.toastForShort(context, "仅支持0-20数字");
                 }
             } catch (Exception e) {
                 e.printStackTrace();

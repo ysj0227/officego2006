@@ -45,14 +45,14 @@ public class CarFeeTextWatcher implements TextWatcher {
                 if (!words.contains(".") && words.length() >= 4 && Integer.valueOf(words) > 5000) {
                     int index = input.getSelectionStart();//获取光标位置
                     editable.delete(index - 1, index);//删除小数点后一位
-                    ToastUtils.toastForShort(context, "请输入0-5000之间的整数");
+                    ToastUtils.toastForShort(context, "只支持0.1-5000正数数字，保留1位小数");
                     return;
                 }
                 if (words.contains(".") && words.length() >= 4) {
                     if (Integer.valueOf(words.replace(".", "")) > 5000) {
                         int index = input.getSelectionStart();//获取光标位置
                         editable.delete(index - 1, index);//删除小数点后一位
-                        ToastUtils.toastForShort(context, "请输入0-5000之间的整数");
+                        ToastUtils.toastForShort(context, "只支持0.1-5000正数数字，保留1位小数");
                     }
                 }
             }
