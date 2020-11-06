@@ -54,7 +54,7 @@ public class IntegerTextWatcher implements TextWatcher {
                 if (words.length() >= length && Integer.valueOf(words) > number) {
                     int index = input.getSelectionStart();//获取光标位置
                     editable.delete(index - 1, index);//删除小数点后一位
-                    ToastUtils.toastForShort(context, "请输入0-" + number + "之间的整数");
+                    ToastUtils.toastForShort(context, "请输入0-" + number + "之间的正整数");
                 }
             }
         } catch (Exception e) {

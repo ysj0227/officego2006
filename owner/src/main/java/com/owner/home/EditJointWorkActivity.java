@@ -253,7 +253,7 @@ public class EditJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
         //会议室数量
         silMeetingRoom.getEditTextView().addTextChangedListener(new IntegerTextWatcher(context, 10, silMeetingRoom.getEditTextView()));
         //最多容纳人数
-        silContainsPersons.getEditTextView().addTextChangedListener(new IntegerTextWatcher(context, 10, silContainsPersons.getEditTextView()));
+        silContainsPersons.getEditTextView().addTextChangedListener(new IntegerTextWatcher(context, 50, silContainsPersons.getEditTextView()));
         //介绍
         cetDescContent.addTextChangedListener(new TextCountsWatcher(tvCounts, cetDescContent));
     }

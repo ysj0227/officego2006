@@ -7,7 +7,6 @@ import android.text.TextWatcher;
 import android.widget.EditText;
 
 import com.officego.commonlib.utils.ToastUtils;
-import com.officego.commonlib.utils.log.LogCat;
 
 /**
  * Created by shijie
@@ -17,8 +16,8 @@ public class FloorHeightTextWatcher implements TextWatcher {
     private Context context;
     private EditText editText;
 
-    public FloorHeightTextWatcher(Context context,EditText editText) {
-        this.context=context;
+    public FloorHeightTextWatcher(Context context, EditText editText) {
+        this.context = context;
         this.editText = editText;
     }
 
@@ -39,11 +38,19 @@ public class FloorHeightTextWatcher implements TextWatcher {
         }
         //只能输入一位整数，如果第二位是整数则删除
         try {
+            String m = editable.toString();
+            if (m.length() == 1 && !m.contains(".")) {
+                if (TextUtils.equals("9", m)) {
+                    editText.setText("");
+                    ToastUtils.toastForShort(context, "请输入0-8之间的整数或一位小数");
+                    return;
+                }
+            }
             if (editable.toString().length() > 1 &&
                     !TextUtils.equals(".", editable.toString().substring(1, 2))) {
                 int index = editText.getSelectionStart();//获取光标位置
                 editable.delete(index - 1, index);
-                ToastUtils.toastForShort(context, "请输入0-8之间的整数或一位小数");
+                ToastUtils.toastForShort(context, "请输入0-8之间的正整数或一位小数");
                 return;
             }
             //保留一位小数

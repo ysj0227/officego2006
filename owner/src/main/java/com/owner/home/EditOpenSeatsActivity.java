@@ -4,6 +4,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
+import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -145,6 +146,9 @@ public class EditOpenSeatsActivity extends BaseMvpActivity<OpenSeatsPresenter>
         silRentSingle.getEditTextView().addTextChangedListener(new RentOpenSeatTextWatcher(context, silRentSingle.getEditTextView()));
         //最短租期
         silRentTime.getEditTextView().addTextChangedListener(new IntegerTextWatcher(context, 60, silRentTime.getEditTextView()));
+        //楼层
+        etFloors.setInputType(InputType.TYPE_CLASS_NUMBER);
+        etFloors.addTextChangedListener(new IntegerTextWatcher(context, 150, etFloors));
         //净高  0-8或一位小数
         silStoreyHeight.getEditTextView().addTextChangedListener(new FloorHeightTextWatcher(context, silStoreyHeight.getEditTextView()));
     }
