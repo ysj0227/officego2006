@@ -283,14 +283,14 @@ public class EditOpenSeatsActivity extends BaseMvpActivity<OpenSeatsPresenter>
             if (requestCode == REQUEST_CAMERA) {//拍照
                 ImageUtils.isSaveCropImageView(localImagePath);//图片处理
                 uploadImageList.add(uploadImageList.size() - 1, new ImageBean(false, 0, localImagePath));
-                mPresenter.uploadImage(uploadImageList);
+                mPresenter.uploadImage(Constants.TYPE_IMAGE_HOUSE,uploadImageList);
             } else if (requestCode == REQUEST_GALLERY && data != null) {//相册
                 List<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
                 for (int i = 0; i < images.size(); i++) {
                     ImageUtils.isSaveCropImageView(images.get(i));//图片处理
                     uploadImageList.add(uploadImageList.size() - 1, new ImageBean(false, 0, images.get(i)));
                 }
-                mPresenter.uploadImage(uploadImageList);
+                mPresenter.uploadImage(Constants.TYPE_IMAGE_HOUSE,uploadImageList);
             }
         }
     }

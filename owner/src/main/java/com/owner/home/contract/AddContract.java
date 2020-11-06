@@ -24,9 +24,9 @@ public interface AddContract {
 
     interface Presenter {
 
-        void uploadImage(List<ImageBean> mFilePath);
+        void uploadImage(int type,List<ImageBean> mFilePath);
 
-        void uploadSingleImage(String mFilePath);
+        void uploadSingleImage(int type,String mFilePath);
 
         void searchBuilding(int buildingType,String keywords);
 

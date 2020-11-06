@@ -43,9 +43,9 @@ public class IndependentPresenter extends BasePresenter<IndependentContract.View
     }
 
     @Override
-    public void uploadImage(List<ImageBean> mFilePath) {
+    public void uploadImage(int type,List<ImageBean> mFilePath) {
         mView.showLoadingDialog();
-        com.owner.rpc.OfficegoApi.getInstance().uploadImageUrl(mFilePath, new RetrofitCallback<UploadImageBean>() {
+        com.owner.rpc.OfficegoApi.getInstance().uploadImageUrl(type,mFilePath, new RetrofitCallback<UploadImageBean>() {
             @Override
             public void onSuccess(int code, String msg, UploadImageBean data) {
                 if (isViewAttached()) {
@@ -67,9 +67,9 @@ public class IndependentPresenter extends BasePresenter<IndependentContract.View
     }
 
     @Override
-    public void uploadSingleImage(String mFilePath) {
+    public void uploadSingleImage(int type,String mFilePath) {
         mView.showLoadingDialog();
-        com.owner.rpc.OfficegoApi.getInstance().uploadSingleImageUrl(mFilePath, new RetrofitCallback<UploadImageBean>() {
+        com.owner.rpc.OfficegoApi.getInstance().uploadSingleImageUrl(type,mFilePath, new RetrofitCallback<UploadImageBean>() {
             @Override
             public void onSuccess(int code, String msg, UploadImageBean data) {
                 if (isViewAttached()) {

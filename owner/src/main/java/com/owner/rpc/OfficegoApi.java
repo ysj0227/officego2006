@@ -238,7 +238,7 @@ public class OfficegoApi {
      * 搜索网点
      */
     public void searchListBranch2(String keywords,
-                                 RetrofitCallback<List<IdentityBuildingBean.DataBean>> callback) {
+                                  RetrofitCallback<List<IdentityBuildingBean.DataBean>> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("keywords", requestBody(keywords));
@@ -658,9 +658,10 @@ public class OfficegoApi {
     /**
      * 上传多张图片
      */
-    public void uploadImageUrl(List<ImageBean> mFilePath, RetrofitCallback<UploadImageBean> callback) {
+    public void uploadImageUrl(int type, List<ImageBean> mFilePath, RetrofitCallback<UploadImageBean> callback) {
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("token", SpUtils.getSignToken());
+        builder.addFormDataPart("filedirType", type + "");
         if (mFilePath != null && mFilePath.size() > 0) {
             RequestBody file;
             boolean isNetImg;
@@ -680,9 +681,10 @@ public class OfficegoApi {
     /**
      * 上传图片
      */
-    public void uploadSingleImageUrl(String mFilePath, RetrofitCallback<UploadImageBean> callback) {
+    public void uploadSingleImageUrl(int type,String mFilePath, RetrofitCallback<UploadImageBean> callback) {
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("token", SpUtils.getSignToken());
+        builder.addFormDataPart("filedirType", type + "");
         if (!TextUtils.isEmpty(mFilePath)) {
             RequestBody file = RequestBody.create(MediaType.parse("image/*"), new File(mFilePath));
             builder.addFormDataPart("files", "owner_files.png", file);

@@ -139,7 +139,7 @@ public class AddEditHouseActivity extends BaseMvpActivity<HousePresenter>
     //户型图
     @ViewById(resName = "iv_desc_image")
     ImageView ivDescImage;
-     @ViewById(resName = "iv_delete")
+    @ViewById(resName = "iv_delete")
     ImageView ivDelete;
     //图片list
     @ViewById(resName = "rv_upload_image")
@@ -392,9 +392,10 @@ public class AddEditHouseActivity extends BaseMvpActivity<HousePresenter>
         mUploadType = TYPE_INTRODUCE;
         selectedDialog();
     }
+
     @Click(resName = "iv_delete")
     void delIntroduceOnClick() {
-        introduceImageUrl="";
+        introduceImageUrl = "";
         Glide.with(context).load(R.mipmap.ic_add_img).into(ivDescImage);
     }
 
@@ -649,9 +650,9 @@ public class AddEditHouseActivity extends BaseMvpActivity<HousePresenter>
                 ImageUtils.isSaveCropImageView(localImagePath);//图片处理
                 if (TYPE_BANNER == mUploadType) {
                     uploadImageList.add(uploadImageList.size() - 1, new ImageBean(false, 0, localImagePath));
-                    mPresenter.uploadImage(uploadImageList);
+                    mPresenter.uploadImage(Constants.TYPE_IMAGE_HOUSE, uploadImageList);
                 } else {
-                    mPresenter.uploadSingleImage(localImagePath);
+                    mPresenter.uploadSingleImage(Constants.TYPE_IMAGE_HOUSE, localImagePath);
                 }
             } else if (requestCode == REQUEST_GALLERY && data != null) {//相册
                 List<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
@@ -660,9 +661,9 @@ public class AddEditHouseActivity extends BaseMvpActivity<HousePresenter>
                         ImageUtils.isSaveCropImageView(images.get(i));//图片处理
                         uploadImageList.add(uploadImageList.size() - 1, new ImageBean(false, 0, images.get(i)));
                     }
-                    mPresenter.uploadImage(uploadImageList);
+                    mPresenter.uploadImage(Constants.TYPE_IMAGE_HOUSE, uploadImageList);
                 } else {
-                    mPresenter.uploadSingleImage(images.get(0));//介绍图单张上传
+                    mPresenter.uploadSingleImage(Constants.TYPE_IMAGE_HOUSE, images.get(0));//介绍图单张上传
                 }
             }
         }

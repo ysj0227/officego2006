@@ -35,12 +35,29 @@ public class CarFeeTextWatcher implements TextWatcher {
     @Override
     public void afterTextChanged(Editable editable) {
         String words = editable.toString();
-        if (!TextUtils.isEmpty(words)) {
-            if (words.length() >= 4 && Integer.valueOf(words) > 5000) {
-                int index = input.getSelectionStart();//获取光标位置
-                editable.delete(index - 1, index);//删除小数点后一位
-                ToastUtils.toastForShort(context, "请输入0-5000之间的整数");
+
+        try {
+            if (words.length() == 1 && (TextUtils.equals(".", words))) {
+                editable.clear();
+                return;
             }
+            if (!TextUtils.isEmpty(words)) {
+                if (!words.contains(".") && words.length() >= 4 && Integer.valueOf(words) > 5000) {
+                    int index = input.getSelectionStart();//获取光标位置
+                    editable.delete(index - 1, index);//删除小数点后一位
+                    ToastUtils.toastForShort(context, "请输入0-5000之间的整数");
+                    return;
+                }
+                if (words.contains(".") && words.length() >= 4) {
+                    if (Integer.valueOf(words.replace(".", "")) > 5000) {
+                        int index = input.getSelectionStart();//获取光标位置
+                        editable.delete(index - 1, index);//删除小数点后一位
+                        ToastUtils.toastForShort(context, "请输入0-5000之间的整数");
+                    }
+                }
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
     }
 }

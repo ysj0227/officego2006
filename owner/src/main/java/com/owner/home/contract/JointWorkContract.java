@@ -41,7 +41,7 @@ public interface JointWorkContract {
 
         void getCompanyService();
 
-        void uploadImage(List<ImageBean> mFilePath);
+        void uploadImage(int type,List<ImageBean> mFilePath);
 
         void saveEdit(int buildingId, int isTemp, int districtId, int area, String address,
                       String floorType, String totalFloor, String branchesTotalFloor,

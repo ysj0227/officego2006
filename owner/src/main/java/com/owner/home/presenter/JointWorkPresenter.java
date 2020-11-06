@@ -130,9 +130,9 @@ public class JointWorkPresenter extends BasePresenter<JointWorkContract.View>
     }
 
     @Override
-    public void uploadImage(List<ImageBean> mFilePath) {
+    public void uploadImage(int type,List<ImageBean> mFilePath) {
         mView.showLoadingDialog();
-        com.owner.rpc.OfficegoApi.getInstance().uploadImageUrl(mFilePath, new RetrofitCallback<UploadImageBean>() {
+        com.owner.rpc.OfficegoApi.getInstance().uploadImageUrl(type,mFilePath, new RetrofitCallback<UploadImageBean>() {
             @Override
             public void onSuccess(int code, String msg, UploadImageBean data) {
                 if (isViewAttached()) {

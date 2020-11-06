@@ -32,7 +32,7 @@ public interface BuildingContract {
 
         void getBuildingEdit(int buildingId, int isTemp);
 
-        void uploadImage(List<ImageBean> mFilePath);
+        void uploadImage(int type,List<ImageBean> mFilePath);
 
         void saveEdit(int buildingId, int isTemp, int buildingType, String buildingNum,
                       int districtId, int area, String address, String totalFloor,

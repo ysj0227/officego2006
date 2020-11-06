@@ -39,9 +39,9 @@ public interface HouseContract {
 
         void getHouseEdit(int houseId, int isTemp);
 
-        void uploadImage(List<ImageBean> mFilePath);
+        void uploadImage(int type,List<ImageBean> mFilePath);
 
-        void uploadSingleImage(String mFilePath);
+        void uploadSingleImage(int type,String mFilePath);
 
         void saveEdit(int id, int isTemp, String title, String area,
                       String seats, String dayPrice, String monthPrice,

@@ -291,9 +291,9 @@ public class AddBuildingJointWorkActivity extends BaseMvpActivity<AddPresenter>
                 ImageUtils.isSaveCropImageView(localImagePath);//图片处理
                 if (TYPE_BANNER == mUploadType) {
                     uploadImageList.add(uploadImageList.size() - 1, new ImageBean(false, 0, localImagePath));
-                    mPresenter.uploadImage(uploadImageList);
+                    mPresenter.uploadImage(Constants.TYPE_IMAGE_BUILDING,uploadImageList);
                 } else {
-                    mPresenter.uploadSingleImage(localImagePath);
+                    mPresenter.uploadSingleImage(Constants.TYPE_IMAGE_BUILDING,localImagePath);
                 }
             } else if (requestCode == REQUEST_GALLERY && data != null) {//相册
                 List<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
@@ -302,9 +302,9 @@ public class AddBuildingJointWorkActivity extends BaseMvpActivity<AddPresenter>
                         ImageUtils.isSaveCropImageView(images.get(i));//图片处理
                         uploadImageList.add(uploadImageList.size() - 1, new ImageBean(false, 0, images.get(i)));
                     }
-                    mPresenter.uploadImage(uploadImageList);
+                    mPresenter.uploadImage(Constants.TYPE_IMAGE_BUILDING,uploadImageList);
                 } else {
-                    mPresenter.uploadSingleImage(images.get(0));//介绍图单张上传
+                    mPresenter.uploadSingleImage(Constants.TYPE_IMAGE_BUILDING,images.get(0));//介绍图单张上传
                 }
             }
         }

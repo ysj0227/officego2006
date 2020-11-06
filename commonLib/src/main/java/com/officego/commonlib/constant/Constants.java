@@ -46,7 +46,7 @@ public class Constants {
     public static final int BUILDING_FLAG_ADD = 1;
     public static final int BUILDING_FLAG_EDIT = 2;
     //楼盘，房源
-    public static final int FLAG_BUILDING= 1000;
+    public static final int FLAG_BUILDING = 1000;
     public static final int FLAG_HOUSE = 1001;
 
     //h5 flags
@@ -93,5 +93,9 @@ public class Constants {
     //经纬度高德地图
     public static String LONGITUDE = "";
     public static String LATITUDE = "";
-    public static int firstLocation;
+
+    //上传图片类型 1楼图片2视频3房源图片
+    public final static int TYPE_IMAGE_DEF = 0;
+    public final static int TYPE_IMAGE_BUILDING = 1;
+    public final static int TYPE_IMAGE_HOUSE = 3;
 }
