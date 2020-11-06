@@ -392,7 +392,11 @@ public class AddBuildingJointWorkActivity extends BaseMvpActivity<AddPresenter>
     @Override
     public void associateBuilding(IdentityBuildingBean.DataBean bean, boolean isCreate) {
         isCreateBuilding = isCreate;
-        if (!isCreate) {
+        if (isCreate) {
+            mBuildingId=0;
+            silArea.getContextView().setText("");
+            silAddress.getEditTextView().setText("");
+        }else {
             CommUtils.showHtmlView(silName.getEditTextView(), bean.getBuildingName());
             CommUtils.showHtmlTextView(silArea.getContextView(), bean.getDistrict());
             CommUtils.showHtmlTextView(silAddress.getEditTextView(), bean.getAddress());
