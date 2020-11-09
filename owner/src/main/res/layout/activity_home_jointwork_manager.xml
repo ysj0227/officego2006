@@ -88,7 +88,7 @@
             <include
                 layout="@layout/include_floor_joint_work"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="@dimen/dp_56"
                 android:layout_below="@id/sil_floor_no" />
 
             <com.officego.commonlib.view.widget.SettingItemLayout

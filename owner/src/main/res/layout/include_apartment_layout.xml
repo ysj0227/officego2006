@@ -5,13 +5,6 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <!--    <androidx.recyclerview.widget.RecyclerView-->
-    <!--        style="@style/marginLeftRight18"-->
-    <!--        android:id="@+id/rv_apartment_layout"-->
-    <!--        android:layout_width="match_parent"-->
-    <!--        android:layout_height="wrap_content"-->
-    <!--        android:layout_marginTop="@dimen/dp_18" />-->
-    <!--    -->
     <ImageView
         android:id="@+id/iv_desc_image"
         style="@style/marginLeftRight18"
@@ -43,6 +36,7 @@
         android:textSize="@dimen/sp_12" />
 
     <View
+        style="@style/marginLeftRight18"
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_below="@id/tv_apartment_tip"

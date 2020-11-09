@@ -8,7 +8,7 @@
     <RelativeLayout
         android:id="@+id/rl_customer_lift"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_60">
+        android:layout_height="@dimen/dp_56">
 
         <TextView
             android:id="@+id/tv_title"
@@ -73,6 +73,7 @@
             tools:ignore="ContentDescription" />
 
         <View
+            style="@style/marginLeftRight18"
             android:id="@+id/bottom_divider"
             android:layout_width="match_parent"
             android:layout_height="1px"
@@ -84,7 +85,7 @@
     <RelativeLayout
         android:id="@+id/rl_passenger_lift"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_60"
+        android:layout_height="@dimen/dp_56"
         android:layout_below="@id/rl_customer_lift">
 
         <TextView
@@ -151,6 +152,7 @@
             tools:ignore="ContentDescription" />
 
         <View
+            style="@style/marginLeftRight18"
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_alignParentBottom="true"

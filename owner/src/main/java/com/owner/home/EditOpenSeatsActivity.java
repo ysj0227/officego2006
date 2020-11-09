@@ -20,11 +20,13 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.donkingliang.imageselector.utils.ImageSelector;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.dialog.RentDialog;
 import com.officego.commonlib.common.model.BuildingManagerBean;
 import com.officego.commonlib.common.model.owner.HouseEditBean;
 import com.officego.commonlib.common.model.owner.UploadImageBean;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.utils.FileHelper;
 import com.officego.commonlib.utils.FileUtils;
 import com.officego.commonlib.utils.ImageUtils;
@@ -379,5 +381,7 @@ public class EditOpenSeatsActivity extends BaseMvpActivity<OpenSeatsPresenter>
     @Override
     public void editSaveSuccess() {
         finish();
+        BaseNotification.newInstance().postNotificationName(
+                CommonNotifications.updateHouseSuccess, "updateHouseSuccess");
     }
 }

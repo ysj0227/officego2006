@@ -79,7 +79,7 @@ public class SettingItemLayout extends FrameLayout {
 
     private void setupAttrs(Context context, AttributeSet attrs) {
         final TypedArray a = context.obtainStyledAttributes(attrs, R.styleable.SettingItemLayout);
-        float height = a.getDimension(R.styleable.SettingItemLayout_parentHeight, CommonHelper.dp2px(context, 60));
+        float height = a.getDimension(R.styleable.SettingItemLayout_parentHeight, CommonHelper.dp2px(context, 56));
         if (rlContainer != null) {
             rlContainer.getLayoutParams().height = (int) height;
         }

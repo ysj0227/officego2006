@@ -47,6 +47,7 @@
         app:layout_constraintEnd_toEndOf="parent" />
 
     <View
+        style="@style/marginLeftRight18"
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:background="@color/common_divider"

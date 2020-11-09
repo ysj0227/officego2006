@@ -5,9 +5,7 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
-import android.text.Editable;
 import android.text.TextUtils;
-import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -155,10 +153,6 @@ public class AddEditHouseActivity extends BaseMvpActivity<HousePresenter>
     BuildingManagerBean buildingManagerBean;
     //记录上次面积
     private String recordArea;
-    //是否第一次进入
-    private boolean isInitArea;
-    //面积是否修改
-    private boolean isFixArea;
     //租金总价
     private int rentCounts;
     //特色
@@ -683,27 +677,5 @@ public class AddEditHouseActivity extends BaseMvpActivity<HousePresenter>
         finish();
         UploadVideoVrActivity_.intent(context).flay(Constants.FLAG_HOUSE).
                 buildingManagerBean(new BuildingManagerBean(Integer.valueOf(id), buildingManagerBean.getIsTemp())).start();
-    }
-
-    private class MyTextWatcher implements TextWatcher {
-        private String text;
-
-        MyTextWatcher(String text) {
-            this.text = text;
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-            isFixArea = false;
-        }
-
-        @Override
-        public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
-        }
-
-        @Override
-        public void afterTextChanged(Editable editable) {
-            isFixArea = !TextUtils.equals(recordArea, editable.toString());
-        }
     }
 }

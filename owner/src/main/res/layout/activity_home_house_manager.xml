@@ -63,7 +63,7 @@
             <include
                 layout="@layout/include_set_seats"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_60"
+                android:layout_height="@dimen/dp_56"
                 android:layout_below="@id/sil_area" />
 
             <com.officego.commonlib.view.widget.SettingItemLayout

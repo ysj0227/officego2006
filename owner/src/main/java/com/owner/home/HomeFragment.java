@@ -215,10 +215,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
 
     @Override
     public void initHouseData(BuildingJointWorkBean.ListBean bean) {
-        tvHomeTitle.setText(bean.getBuildingName());
-        buildingId = bean.getBuildingId();
-        isTemp = bean.getIsTemp();
-        mData = bean;
+        currentBuildingMessage(bean);
         getHouseList();
     }
 
@@ -279,10 +276,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     //左侧Popup选择
     @Override
     public void popupHouseList(BuildingJointWorkBean.ListBean bean) {
-        tvHomeTitle.setText(bean.getBuildingName());
-        buildingId = bean.getBuildingId();
-        isTemp = bean.getIsTemp();
-        mData = bean;
+        currentBuildingMessage(bean);
         getRefreshHouseList();
     }
 
@@ -293,6 +287,13 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
             homeAdapter.notifyDataSetChanged();
         }
         getHouseList();
+    }
+    //获取当前楼盘的信息
+    private void currentBuildingMessage(BuildingJointWorkBean.ListBean bean){
+        tvHomeTitle.setText(bean.getBuildingName());
+        buildingId = bean.getBuildingId();
+        isTemp = bean.getIsTemp();
+        mData = bean;
     }
 
     private void getHouseList() {

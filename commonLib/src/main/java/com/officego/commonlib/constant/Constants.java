@@ -98,4 +98,6 @@ public class Constants {
     public final static int TYPE_IMAGE_DEF = 0;
     public final static int TYPE_IMAGE_BUILDING = 1;
     public final static int TYPE_IMAGE_HOUSE = 3;
+    //总楼层
+    public static String FLOOR_COUNTS = "";
 }

@@ -2,7 +2,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cl_seats"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dp_60"
+    android:layout_height="@dimen/dp_56"
     android:background="@drawable/bg_common_list_item">
 
     <TextView
@@ -86,8 +86,8 @@
 
     <ImageView
         android:id="@+id/iv_seat_tip"
-        android:layout_width="@dimen/dp_22"
-        android:layout_height="@dimen/dp_22"
+        android:layout_width="@dimen/dp_18"
+        android:layout_height="@dimen/dp_18"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/dp_18"
@@ -95,6 +95,7 @@
         tools:ignore="ContentDescription" />
 
     <View
+        style="@style/marginLeftRight18"
         android:layout_width="match_parent"
         android:layout_height="1px"
         android:layout_alignParentBottom="true"

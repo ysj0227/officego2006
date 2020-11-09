@@ -2,10 +2,11 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cl_container"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dp_60"
+    android:layout_height="@dimen/dp_56"
     android:background="@drawable/bg_common_list_item">
 
     <View
+        style="@style/marginLeftRight18"
         android:id="@+id/top_divider"
         android:layout_width="match_parent"
         android:layout_height="1px"
@@ -20,7 +21,7 @@
         android:layout_marginStart="@dimen/dp_18"
         android:layout_marginTop="@dimen/dp_10"
         android:textColor="@color/text_33"
-        android:textSize="@dimen/sp_15" />
+        android:textSize="@dimen/sp_14" />
 
     <ImageView
         android:id="@+id/iv_mark_image"
@@ -45,7 +46,7 @@
         android:maxLines="1"
         android:textColor="@color/text_33"
         android:textColorHint="@color/text_hint"
-        android:textSize="@dimen/sp_15"
+        android:textSize="@dimen/sp_14"
         android:visibility="visible" />
 
     <com.officego.commonlib.view.ClearableEditText
@@ -63,7 +64,7 @@
         android:singleLine="true"
         android:textColor="@color/text_33"
         android:textColorHint="@color/text_66_p50"
-        android:textSize="@dimen/sp_15"
+        android:textSize="@dimen/sp_14"
         tools:ignore="RelativeOverlap" />
 
     <TextView
@@ -74,7 +75,7 @@
         android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/dp_40"
         android:textColor="@color/text_66_p50"
-        android:textSize="@dimen/sp_15"
+        android:textSize="@dimen/sp_14"
         android:visibility="gone"
         tools:ignore="ContentDescription" />
 
@@ -91,8 +92,8 @@
 
     <ImageView
         android:id="@+id/iv_other_right"
-        android:layout_width="@dimen/dp_22"
-        android:layout_height="@dimen/dp_22"
+        android:layout_width="@dimen/dp_18"
+        android:layout_height="@dimen/dp_18"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/dp_18"
@@ -107,11 +108,12 @@
         android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/dp_18"
         android:textColor="@color/text_66_p50"
-        android:textSize="@dimen/sp_15"
+        android:textSize="@dimen/sp_14"
         android:visibility="gone"
         tools:ignore="ContentDescription" />
 
     <View
+        style="@style/marginLeftRight18"
         android:id="@+id/bottom_divider"
         android:layout_width="match_parent"
         android:layout_height="1px"
