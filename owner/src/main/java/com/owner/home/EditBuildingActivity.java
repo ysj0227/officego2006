@@ -178,6 +178,8 @@ public class EditBuildingActivity extends BaseMvpActivity<BuildingPresenter>
     private int mBuildingType;
     //楼号
     private String gardenNo = "";
+    //vr url
+    private String vrUrl = "";
 
     @AfterViews
     void init() {
@@ -420,6 +422,10 @@ public class EditBuildingActivity extends BaseMvpActivity<BuildingPresenter>
     public void buildingEditSuccess(BuildingEditBean data) {
         if (data == null) return;
         if (data.getBuildingMsg() != null) {
+            //vr
+            if (data.getVr() != null && data.getVr().size() > 0) {
+                vrUrl = data.getVr().get(0).getImgUrl();
+            }
             //楼盘类型1写字楼 2商务园 3创意园 4共享空间 5公寓  6产业园
             silGardenName.setVisibility(View.VISIBLE);
             silGardenName.setCenterText(data.getBuildingMsg().getBuildingName());
@@ -694,6 +700,6 @@ public class EditBuildingActivity extends BaseMvpActivity<BuildingPresenter>
     public void editSaveSuccess() {
         finish();
         UploadVideoVrActivity_.intent(context).flay(Constants.FLAG_BUILDING).
-                buildingManagerBean(buildingManagerBean).start();
+                buildingManagerBean(buildingManagerBean).vrUrl(vrUrl).start();
     }
 }

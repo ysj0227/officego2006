@@ -185,6 +185,8 @@ public class EditJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
     private List<String> deleteList = new ArrayList<>();
     //楼层-单，多
     private String mFloorType;
+    //vr url
+    private String vrUrl="";
 
     @AfterViews
     void init() {
@@ -398,6 +400,10 @@ public class EditJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
     public void buildingEditSuccess(BuildingEditBean data) {
         if (data == null) return;
         if (data.getBuildingMsg() != null) {
+            //vr
+            if (data.getVr() != null && data.getVr().size() > 0) {
+                vrUrl = data.getVr().get(0).getImgUrl();
+            }
             //网点名称
             silJointWorkName.setCenterText(data.getBuildingMsg().getBranchesName());
             silArea.setCenterText(data.getAddress());
@@ -716,6 +722,6 @@ public class EditJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
     public void editSaveSuccess() {
         finish();
         UploadVideoVrActivity_.intent(context).flay(Constants.FLAG_BUILDING).
-                buildingManagerBean(buildingManagerBean).start();
+                buildingManagerBean(buildingManagerBean).vrUrl(vrUrl).start();
     }
 }

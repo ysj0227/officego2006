@@ -146,6 +146,8 @@ public class AddEditIndependentActivity extends BaseMvpActivity<IndependentPrese
     private String introduceImageUrl;
     //图片上传类型
     private int mUploadType;
+    //vr url
+    private String vrUrl="";
 
     @AfterViews
     void init() {
@@ -453,6 +455,10 @@ public class AddEditIndependentActivity extends BaseMvpActivity<IndependentPrese
     public void houseEditSuccess(HouseEditBean data) {
         if (data == null) return;
         if (data.getHouseMsg() != null) {
+            //vr
+            if (data.getVr() != null && data.getVr().size() > 0) {
+                vrUrl = data.getVr().get(0).getImgUrl();
+            }
             //标题
             silTitle.getEditTextView().setText(data.getHouseMsg().getTitle());
             //工位
@@ -532,15 +538,17 @@ public class AddEditIndependentActivity extends BaseMvpActivity<IndependentPrese
     public void editSaveSuccess() {
         finish();
         UploadVideoVrActivity_.intent(context).flay(Constants.FLAG_HOUSE).
-                buildingManagerBean(buildingManagerBean).start();
+                buildingManagerBean(buildingManagerBean).vrUrl(vrUrl).start();
     }
 
     @Override
     public void addHouseSuccess(String id) {
         shortTip("添加成功");
         finish();
-        UploadVideoVrActivity_.intent(context).flay(Constants.FLAG_HOUSE).
-                buildingManagerBean(new BuildingManagerBean(Integer.valueOf(id), buildingManagerBean.getIsTemp())).start();
+        UploadVideoVrActivity_.intent(context)
+                .flay(Constants.FLAG_HOUSE)
+                .buildingManagerBean(new BuildingManagerBean(Integer.valueOf(id), buildingManagerBean.getIsTemp()))
+                .vrUrl(vrUrl).start();
     }
 
 }

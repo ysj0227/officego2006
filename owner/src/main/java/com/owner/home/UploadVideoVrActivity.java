@@ -42,6 +42,8 @@ public class UploadVideoVrActivity extends BaseMvpActivity<UploadVideoVrPresente
     @Extra
     int flay;
     @Extra
+    String vrUrl;
+    @Extra
     BuildingManagerBean buildingManagerBean;
 
     @AfterViews
@@ -50,6 +52,7 @@ public class UploadVideoVrActivity extends BaseMvpActivity<UploadVideoVrPresente
         mPresenter = new UploadVideoVrPresenter();
         mPresenter.attachView(this);
         titleBar.getLeftImg().setOnClickListener(view -> onBackPressed());
+        etVr.setText(vrUrl);
     }
 
     @Click(resName = "btn_next")
