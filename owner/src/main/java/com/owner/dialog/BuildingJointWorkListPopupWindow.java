@@ -193,20 +193,20 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
             } else {
                 tvTitle.setText(name);
             }
+            ivPoint.setVisibility(View.GONE);
             if (2 == bean.getStatus()) {
-                ivPoint.setVisibility(View.VISIBLE);
+//                ivPoint.setVisibility(View.VISIBLE);
                 ivStatus.setVisibility(View.VISIBLE);
                 ivStatus.setBackgroundResource(R.mipmap.ic_complete_more_mes);
             } else if (7 == bean.getStatus()) {
-                ivPoint.setVisibility(View.VISIBLE);
+//                ivPoint.setVisibility(View.VISIBLE);
                 ivStatus.setVisibility(View.VISIBLE);
                 ivStatus.setBackgroundResource(R.mipmap.ic_check_no);
             } else if (6 == bean.getStatus() || 1 == bean.getIsTemp()) {
-                ivPoint.setVisibility(View.VISIBLE);
+//                ivPoint.setVisibility(View.VISIBLE);
                 ivStatus.setVisibility(View.VISIBLE);
                 ivStatus.setBackgroundResource(R.mipmap.ic_checking);
             } else {
-                ivPoint.setVisibility(View.GONE);
                 ivStatus.setVisibility(View.GONE);
             }
             //预览
