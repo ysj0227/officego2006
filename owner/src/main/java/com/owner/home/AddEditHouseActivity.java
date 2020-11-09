@@ -443,7 +443,9 @@ public class AddEditHouseActivity extends BaseMvpActivity<HousePresenter>
             silRentSum.getEditTextView().setText(data.getHouseMsg().getMonthPrice() + "");
             //楼层
             etFloors.setText(data.getHouseMsg().getFloor());
-            tvCountsFloor.setText("总" + "" + "层");
+            if (!TextUtils.isEmpty(Constants.FLOOR_COUNTS)){
+                tvCountsFloor.setText("总" + Constants.FLOOR_COUNTS + "层");
+            }
             //净高层高
             silStoreyHeight.getEditTextView().setText(data.getHouseMsg().getClearHeight());
             silTierHeight.getEditTextView().setText(data.getHouseMsg().getStoreyHeight());

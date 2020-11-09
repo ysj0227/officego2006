@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:id="@+id/ctl_descriptions"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dp_188"
+    android:layout_height="wrap_content"
     android:orientation="vertical">
 
     <TextView
@@ -23,13 +23,14 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_8"
-        android:layout_marginBottom="@dimen/dp_30"
         android:background="@null"
         android:hint="简单描述该楼盘的房型格局，清晰的图片或VR能够吸引更多客户的关注"
         android:paddingLeft="@dimen/dp_18"
         android:paddingRight="@dimen/dp_18"
+        android:scrollbars="vertical"
         android:textColor="@color/text_66"
         android:textSize="@dimen/sp_14"
+        android:gravity="top|left"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/tv_des_title" />
@@ -44,6 +45,7 @@
         android:textColor="@color/text_66_p50"
         android:textSize="@dimen/sp_14"
         app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/cet_desc_content"
         app:layout_constraintEnd_toEndOf="parent" />
 
     <View

@@ -74,10 +74,58 @@
         </RelativeLayout>
     </RelativeLayout>
 
+    <RelativeLayout
+        android:id="@+id/rl_rv_record"
+        style="@style/marginLeftRight18"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_50"
+        android:layout_marginTop="@dimen/dp_8"
+        android:background="@drawable/bg_shape_white12"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rl_title">
+
+        <ImageView
+            android:id="@+id/iv_vr"
+            android:layout_width="@dimen/dp_26"
+            android:layout_height="@dimen/dp_24"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dp_8"
+            android:background="@mipmap/ic_vr_record" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_toEndOf="@id/iv_vr"
+            android:text="现在预约，即可享受优惠！"
+            android:textColor="@color/text_66"
+            android:textSize="@dimen/sp_14" />
+
+        <Button
+            android:id="@+id/btn_vr_record"
+            android:layout_width="@dimen/dp_80"
+            android:layout_height="@dimen/dp_30"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/dp_8"
+            android:background="@drawable/btn_common_bg_primary"
+            android:gravity="center"
+            android:text="预约VR录制"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_12"
+            android:visibility="visible"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+    </RelativeLayout>
+
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/bga_refresh"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginTop="@dimen/dp_2"
         android:paddingStart="@dimen/dp_18"
         android:paddingEnd="@dimen/dp_18"
         android:paddingBottom="@dimen/dp_5"
@@ -85,7 +133,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rl_title">
+        app:layout_constraintTop_toBottomOf="@+id/rl_rv_record">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_view"

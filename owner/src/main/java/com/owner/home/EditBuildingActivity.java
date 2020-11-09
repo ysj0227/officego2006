@@ -484,7 +484,7 @@ public class EditBuildingActivity extends BaseMvpActivity<BuildingPresenter>
                 rbMobile.setChecked(true);
             }
             //介绍
-            String des = data.getBuildingMsg().getPromoteSlogan();
+            String des = data.getBuildingMsg().getBuildingIntroduction();
             if (!TextUtils.isEmpty(des) && des.length() > 100) {
                 cetDescContent.setText(des.substring(0, 96) + "...");
             } else {

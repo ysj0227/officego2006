@@ -117,6 +117,10 @@ public class BuildingJointWorkBean {
         private int buildingId;
         @SerializedName("status")
         private int status;
+        @SerializedName("isAddHouse")
+        private boolean isAddHouse;
+        @SerializedName("totalFloor")
+        private String totalFloor;
 
         public String getBuildingName() {
             return buildingName;
@@ -172,6 +176,22 @@ public class BuildingJointWorkBean {
 
         public void setStatus(int status) {
             this.status = status;
+        }
+
+        public boolean isAddHouse() {
+            return isAddHouse;
+        }
+
+        public void setAddHouse(boolean addHouse) {
+            isAddHouse = addHouse;
+        }
+
+        public String getTotalFloor() {
+            return totalFloor;
+        }
+
+        public void setTotalFloor(String totalFloor) {
+            this.totalFloor = totalFloor;
         }
     }
 }

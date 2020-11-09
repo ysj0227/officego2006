@@ -49,7 +49,7 @@
                 android:layout_below="@id/sil_building_type"
                 android:visibility="gone"
                 app:leftMarkShow="visible"
-                app:leftText="园区名称"
+                app:leftText="楼盘名称"
                 app:rightArrowShow="gone"
                 app:rightOtherImageViewShow="gone"
                 app:showCenterText="visible"
@@ -311,7 +311,7 @@
             <include
                 layout="@layout/include_descriptions"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_188"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/rv_join_company" />
 
             <include

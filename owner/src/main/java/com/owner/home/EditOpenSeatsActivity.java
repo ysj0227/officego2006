@@ -1,5 +1,6 @@
 package com.owner.home;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -330,6 +331,7 @@ public class EditOpenSeatsActivity extends BaseMvpActivity<OpenSeatsPresenter>
         imageAdapter.notifyDataSetChanged();
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void houseEditSuccess(HouseEditBean data) {
         if (data == null) return;
@@ -340,7 +342,9 @@ public class EditOpenSeatsActivity extends BaseMvpActivity<OpenSeatsPresenter>
             silRentSingle.getEditTextView().setText(data.getHouseMsg().getDayPrice() + "");
             //楼层
             etFloors.setText(data.getHouseMsg().getFloor());
-            tvCountsFloor.setText("总" + "" + "层");
+            if (!TextUtils.isEmpty(Constants.FLOOR_COUNTS)){
+                tvCountsFloor.setText("总" + Constants.FLOOR_COUNTS + "层");
+            }
             //租期
             silRentTime.getEditTextView().setText(data.getHouseMsg().getMinimumLease());
             silFreeRent.getLeftToArrowTextView().setText(data.getHouseMsg().getRentFreePeriod());

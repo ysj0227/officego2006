@@ -19,6 +19,7 @@ public class AppConfig extends BaseConfig {
     public static String H5_REGISTER = "";//注册协议
     public static String H5_QA = "";//常见问题
     public static String H5_STAFF_LIST = "";//员工管理
+    public static String H5_VR_RECORD = "";//VR录制
 
     public static String H5_OWNER_BUILDINGlIST = "";//房源管理
     public static String H5_OWNER_HOUSElIST = "";// 网点管理
@@ -63,6 +64,8 @@ public class AppConfig extends BaseConfig {
         H5_OWNER_HOUSElIST = APP_URL_MAIN + "owner/branchList.html";
         //员工管理
         H5_STAFF_LIST = APP_URL_MAIN + "owner/staffList.html";
+        //VR录制
+        H5_STAFF_LIST = APP_URL_MAIN + "owner/vr.html";
         //融云IM test
         RC_APPKEY = "kj7swf8oknm02";
         RC_APPSECRET = "OF78PpILjjRk4";
@@ -90,6 +93,8 @@ public class AppConfig extends BaseConfig {
         H5_OWNER_HOUSElIST = APP_URL_MAIN + "owner/branchList.html";
         //员工管理
         H5_STAFF_LIST = APP_URL_MAIN + "owner/staffList.html";
+        //VR录制
+        H5_STAFF_LIST = APP_URL_MAIN + "owner/vr.html";
         //融云IM release
         RC_APPKEY = "qf3d5gbjq94mh";
         RC_APPSECRET = "xtDkNCjJse";

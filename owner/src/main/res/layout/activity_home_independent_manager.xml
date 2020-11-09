@@ -224,7 +224,7 @@
             <include
                 layout="@layout/include_descriptions"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_188"
+                android:layout_height="wrap_content"
                 android:layout_below="@id/sil_storey_height" />
 
             <include

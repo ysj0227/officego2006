@@ -461,7 +461,9 @@ public class AddEditIndependentActivity extends BaseMvpActivity<IndependentPrese
             silRentSingle.getEditTextView().setText(data.getHouseMsg().getMonthPrice() + "");
             //楼层
             etFloors.setText(data.getHouseMsg().getFloor());
-            tvCountsFloor.setText("总" + "" + "层");
+            if (!TextUtils.isEmpty(Constants.FLOOR_COUNTS)){
+                tvCountsFloor.setText("总" + Constants.FLOOR_COUNTS + "层");
+            }
             //租期
             silRentTime.getEditTextView().setText(data.getHouseMsg().getMinimumLease());
             silFreeRent.getLeftToArrowTextView().setText(data.getHouseMsg().getRentFreePeriod());

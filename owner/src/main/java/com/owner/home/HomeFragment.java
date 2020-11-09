@@ -34,6 +34,7 @@ import com.owner.R;
 import com.owner.adapter.HomeAdapter;
 import com.owner.dialog.BuildingJointWorkListPopupWindow;
 import com.owner.dialog.HomeMoreDialog;
+import com.owner.h5.WebViewActivity_;
 import com.owner.home.contract.HomeContract;
 import com.owner.home.presenter.HomePresenter;
 import com.owner.identity.SelectIdActivity_;
@@ -138,6 +139,12 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
                 mSwipeRefreshLayout != null && mSwipeRefreshLayout.isRefreshing());
     }
 
+    //预约vr录制
+    @Click(resName = "btn_vr_record")
+    void vrRecordClick() {
+        WebViewActivity_.intent(mActivity).flags(Constants.H5_VR_RECORD).start();
+    }
+
     //网络异常重试
     @Click(resName = "btn_again")
     void netExceptionAgainClick() {
@@ -153,10 +160,8 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     //添加房源
     @Click(resName = "iv_add")
     void addClick() {
-        if (mData != null && mData.getIsTemp() == 0 && mData.getStatus() == 1) {
+        if (mData != null) {
             gotoAddHouseActivity(new BuildingManagerBean(buildingId, isTemp));
-        } else {
-            shortTip("审核中，不能添加房源");
         }
     }
 
@@ -288,8 +293,11 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         }
         getHouseList();
     }
+
     //获取当前楼盘的信息
-    private void currentBuildingMessage(BuildingJointWorkBean.ListBean bean){
+    private void currentBuildingMessage(BuildingJointWorkBean.ListBean bean) {
+        Constants.FLOOR_COUNTS=bean.getTotalFloor();
+        ivAdd.setVisibility(bean.isAddHouse() ? View.VISIBLE : View.GONE);
         tvHomeTitle.setText(bean.getBuildingName());
         buildingId = bean.getBuildingId();
         isTemp = bean.getIsTemp();

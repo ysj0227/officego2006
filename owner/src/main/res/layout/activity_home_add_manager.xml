@@ -122,7 +122,7 @@
             android:layout_height="@dimen/dp_40"
             android:background="@drawable/btn_common_bg_primary"
             android:gravity="center"
-            android:text="@string/str_save"
+            android:text="@string/str_confirm_add"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_15"
             android:visibility="visible"
