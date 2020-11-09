@@ -38,6 +38,7 @@ import com.officego.commonlib.view.TitleBarView;
 import com.officego.commonlib.view.widget.SettingItemLayout;
 import com.owner.R;
 import com.owner.adapter.UploadBuildingImageAdapter;
+import com.owner.dialog.ExitConfirmDialog;
 import com.owner.dialog.FloorTypeDialog;
 import com.owner.home.contract.OpenSeatsContract;
 import com.owner.home.presenter.OpenSeatsPresenter;
@@ -121,6 +122,7 @@ public class EditOpenSeatsActivity extends BaseMvpActivity<OpenSeatsPresenter>
     }
 
     private void initViews() {
+        titleBar.getLeftImg().setOnClickListener(view -> new ExitConfirmDialog(this));
         titleBar.setAppTitle(buildingFlag == Constants.BUILDING_FLAG_ADD ? "添加开放工位" : "编辑开放工位");
         tvUploadTitle.setText("上传图片");
         //上传图片

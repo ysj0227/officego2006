@@ -43,6 +43,7 @@ import com.owner.R;
 import com.owner.adapter.HouseDecorationAdapter;
 import com.owner.adapter.UniqueAdapter;
 import com.owner.adapter.UploadBuildingImageAdapter;
+import com.owner.dialog.ExitConfirmDialog;
 import com.owner.dialog.FloorTypeDialog;
 import com.owner.home.contract.HouseContract;
 import com.owner.home.presenter.HousePresenter;
@@ -187,6 +188,7 @@ public class AddEditHouseActivity extends BaseMvpActivity<HousePresenter>
     }
 
     private void initViews() {
+        titleBar.getLeftImg().setOnClickListener(view -> new ExitConfirmDialog(this));
         titleBar.setAppTitle(buildingFlag == Constants.BUILDING_FLAG_ADD ? "添加办公室" : "编辑办公室");
         tvUploadTitle.setText("上传办公室图片");
         tvHouseCharacteristic.setText("办公室特色");

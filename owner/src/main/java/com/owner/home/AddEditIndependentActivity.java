@@ -40,6 +40,7 @@ import com.officego.commonlib.view.widget.SettingItemLayout;
 import com.owner.R;
 import com.owner.adapter.UploadBuildingImageAdapter;
 import com.owner.dialog.ConditionedDialog;
+import com.owner.dialog.ExitConfirmDialog;
 import com.owner.dialog.FloorTypeDialog;
 import com.owner.home.contract.IndependentContract;
 import com.owner.home.presenter.IndependentPresenter;
@@ -159,6 +160,7 @@ public class AddEditIndependentActivity extends BaseMvpActivity<IndependentPrese
     }
 
     private void initViews() {
+        titleBar.getLeftImg().setOnClickListener(view -> new ExitConfirmDialog(this));
         titleBar.setAppTitle(buildingFlag == Constants.BUILDING_FLAG_ADD ? "添加独立办公室" : "编辑独立办公室");
         tvUploadTitle.setText("上传办公室图片");
         tvDesTitle.setText("户型格局介绍");

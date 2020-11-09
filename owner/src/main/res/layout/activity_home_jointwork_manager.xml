@@ -180,6 +180,7 @@
                 app:leftMarkShow="invisible"
                 app:leftText="车位数"
                 app:rightArrowShow="gone"
+                app:editMaxLength="32"
                 app:rightOtherImageViewShow="gone"
                 app:rightText="个"
                 app:showCenterText="gone"

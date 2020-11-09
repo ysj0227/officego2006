@@ -45,6 +45,7 @@ import com.owner.adapter.UniqueAdapter;
 import com.owner.adapter.UploadBuildingImageAdapter;
 import com.owner.dialog.AreaDialog;
 import com.owner.dialog.ConditionedDialog;
+import com.owner.dialog.ExitConfirmDialog;
 import com.owner.dialog.FloorTypeDialog;
 import com.owner.dialog.ServiceSelectedDialog;
 import com.owner.home.contract.JointWorkContract;
@@ -196,6 +197,7 @@ public class EditJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
     }
 
     private void initViews() {
+        titleBar.getLeftImg().setOnClickListener(view -> new ExitConfirmDialog(this));
         titleBar.setAppTitle("编辑共享办公");
         tvUploadTitle.setText("上传网点图片");
         tvHouseCharacteristic.setText("共享办公特色");

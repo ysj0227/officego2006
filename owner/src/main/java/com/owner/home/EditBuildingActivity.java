@@ -46,6 +46,7 @@ import com.owner.adapter.UploadBuildingImageAdapter;
 import com.owner.dialog.AreaDialog;
 import com.owner.dialog.BuildingTypeDialog;
 import com.owner.dialog.ConditionedDialog;
+import com.owner.dialog.ExitConfirmDialog;
 import com.owner.home.contract.BuildingContract;
 import com.owner.home.presenter.BuildingPresenter;
 import com.owner.home.rule.AreaTextWatcher;
@@ -189,6 +190,7 @@ public class EditBuildingActivity extends BaseMvpActivity<BuildingPresenter>
     }
 
     private void initViews() {
+        titleBar.getLeftImg().setOnClickListener(view -> new ExitConfirmDialog(this));
         titleBar.setAppTitle("编辑楼盘");
         //特色
         GridLayoutManager layoutManager = new GridLayoutManager(context, 3);
@@ -551,9 +553,9 @@ public class EditBuildingActivity extends BaseMvpActivity<BuildingPresenter>
     }
 
     @Override
-    public void sureBuildingType(String type,int buildingType, boolean isOffice) {
+    public void sureBuildingType(String type, int buildingType, boolean isOffice) {
         silNo.setVisibility(isOffice ? View.GONE : View.VISIBLE);
-        mBuildingType=buildingType;
+        mBuildingType = buildingType;
         silBuildingType.setCenterText(type);
         silGardenName.setVisibility(View.VISIBLE);
         if (isOffice) {
