@@ -311,6 +311,8 @@ public class OfficegoApi {
     public void getBuildingJointWorkList(RetrofitCallback<BuildingJointWorkBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("pageNo", requestBody("1"));
+        map.put("pageSize", requestBody("99999"));
         OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
                 .getBuildingJointWorkList(map)
                 .enqueue(callback);
