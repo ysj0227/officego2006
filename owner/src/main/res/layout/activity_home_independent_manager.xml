@@ -210,7 +210,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sil_conditioned_fee"
-                app:editDigits="12345678."
+                app:editDigits="0123456789."
                 app:editMaxLength="3"
                 app:editTextInputType="numberDecimal"
                 app:leftMarkShow="invisible"
