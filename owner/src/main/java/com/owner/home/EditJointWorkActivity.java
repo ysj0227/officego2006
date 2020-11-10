@@ -186,7 +186,7 @@ public class EditJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
     //楼层-单，多
     private String mFloorType;
     //vr url
-    private String vrUrl="";
+    private String vrUrl = "";
 
     @AfterViews
     void init() {
@@ -260,6 +260,8 @@ public class EditJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
         silContainsPersons.getEditTextView().addTextChangedListener(new IntegerTextWatcher(context, 50, silContainsPersons.getEditTextView()));
         //介绍
         cetDescContent.addTextChangedListener(new TextCountsWatcher(tvCounts, cetDescContent));
+        //总楼层0-150
+        etFloorsCount.addTextChangedListener(new IntegerTextWatcher(context, 150, etFloorsCount));
     }
 
     @Click(resName = "btn_next")
@@ -285,7 +287,7 @@ public class EditJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
         }
         String floors = etFloors.getText().toString();
         if (TextUtils.isEmpty(floors)) {
-            shortTip("请输入第N层或第M-N层");
+            shortTip("请输入所在楼层");
             return;
         }
         String floorsCount = etFloorsCount.getText().toString();
@@ -306,6 +308,10 @@ public class EditJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
         String meetingRoom = silMeetingRoom.getEditTextView().getText().toString();
         if (TextUtils.isEmpty(meetingRoom)) {
             shortTip("请输入会议室数量");
+            return;
+        }
+        if (!TextUtils.isEmpty(meetingRoom) && TextUtils.equals("0", meetingRoom)) {
+            shortTip("会议室数量不能为0");
             return;
         }
         if (uploadImageList == null || uploadImageList.size() <= 1) {
@@ -430,9 +436,11 @@ public class EditJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
                 silConditionedFee.setCenterText("无");
             }
             //会议室数量
-            silMeetingRoom.getEditTextView().setText(data.getBuildingMsg().getConferenceNumber() + "");
+            silMeetingRoom.getEditTextView().setText(data.getBuildingMsg().getConferenceNumber() == 0 ? "" :
+                    String.valueOf(data.getBuildingMsg().getConferenceNumber()));
             //容纳人数
-            silContainsPersons.getEditTextView().setText(data.getBuildingMsg().getConferencePeopleNumber() + "");
+            silContainsPersons.getEditTextView().setText(data.getBuildingMsg().getConferencePeopleNumber() == 0 ? "" :
+                    String.valueOf(data.getBuildingMsg().getConferencePeopleNumber()));
             //车位数 车位费
             silCarNum.getEditTextView().setText(data.getBuildingMsg().getParkingSpace());
             silCarFee.getEditTextView().setText(data.getBuildingMsg().getParkingSpaceRent());

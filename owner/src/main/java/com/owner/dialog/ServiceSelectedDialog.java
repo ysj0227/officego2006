@@ -92,9 +92,9 @@ public class ServiceSelectedDialog {
         if (mTitleFlay == 0) {
             title.setText("会议室配套");
         } else if (mTitleFlay == 1) {
-            title.setText(context.getString(R.string.str_title_base_sservice));
-        } else if (mTitleFlay == 2) {
             title.setText(context.getString(R.string.str_title_create_service));
+        } else if (mTitleFlay == 2) {
+            title.setText(context.getString(R.string.str_title_base_sservice));
         }
         RecyclerView rvService = viewLayout.findViewById(R.id.rv_service);
         rvService.setLayoutManager(new GridLayoutManager(context, 2));
