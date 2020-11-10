@@ -56,7 +56,7 @@ public class OfficeGoPushMessageReceiver extends PushMessageReceiver {
                 return true;
             }
             return false;
-        } else if (pushType == PushType.XIAOMI || pushType == PushType.VIVO) {
+        } else if (pushType == PushType.XIAOMI || pushType == PushType.VIVO || pushType == PushType.OPPO) {
             //跳转系统消息
             pushMIClick(context, targetId);
             return isGotoConversion;
