@@ -75,7 +75,8 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
             holder.setText(R.id.tv_price, "¥" + bean.getDayPrice());
             tvUnit.setText("/㎡/天起");
         } else {
-            holder.setText(R.id.tv_price, "¥" + (bean.getOfficeType() == 1 ? bean.getMonthPrice() : bean.getDayPrice()));
+//            holder.setText(R.id.tv_price, "¥" + (bean.getOfficeType() == 1 ? bean.getMonthPrice() : bean.getDayPrice()));
+            holder.setText(R.id.tv_price, "¥" + bean.getDayPrice());
             tvUnit.setText("/位/月");
             //网点下房源 1是独立办公室，2是开放工位
             ivFlay.setVisibility(View.VISIBLE);
@@ -126,7 +127,7 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
                     listener.itemMore(bean, holder.getAdapterPosition());
                 }
             } else if (id == R.id.tv_publish_status) {
-                if (listener != null) { //如果是独立办公室是发布， 开放工位是关闭
+                if (listener != null) {//如果是独立办公室是发布， 开放工位是关闭
                     listener.itemPublishStatus(holder.getAdapterPosition(), bean, isOpenSeats);
                 }
             }

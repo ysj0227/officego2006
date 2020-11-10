@@ -102,6 +102,7 @@
                 app:leftMarkShow="visible"
                 app:leftText="所在楼层"
                 app:leftToArrowText=""
+                android:visibility="gone"
                 app:leftToArrowTextColor="@color/text_33"
                 app:rightArrowShow="visible"
                 app:rightOtherImageViewShow="gone"
@@ -112,7 +113,7 @@
             <include
                 layout="@layout/include_floor"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_60"
+                android:layout_height="@dimen/dp_56"
                 android:layout_below="@id/sil_floor_no" />
 
             <com.officego.commonlib.view.widget.SettingItemLayout

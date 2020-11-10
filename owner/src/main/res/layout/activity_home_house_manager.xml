@@ -115,6 +115,7 @@
                 android:visibility="gone" />
 
             <com.officego.commonlib.view.widget.SettingItemLayout
+                android:visibility="gone"
                 android:id="@+id/sil_floor_no"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -132,7 +133,7 @@
             <include
                 layout="@layout/include_floor"
                 android:layout_width="match_parent"
-                android:layout_height="@dimen/dp_60"
+                android:layout_height="@dimen/dp_56"
                 android:layout_below="@id/sil_floor_no" />
 
             <com.officego.commonlib.view.widget.SettingItemLayout
@@ -140,7 +141,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/cl_floors"
-                app:editDigits="12345678."
+                app:editDigits="0123456789."
                 app:editMaxLength="3"
                 app:leftMarkShow="visible"
                 app:leftText="净高"
@@ -156,7 +157,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sil_storey_height"
-                app:editDigits="12345678."
+                app:editDigits="0123456789."
                 app:editMaxLength="3"
                 app:leftMarkShow="invisible"
                 app:leftText="层高"

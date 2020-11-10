@@ -10,6 +10,7 @@ import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -62,8 +63,8 @@ import java.util.List;
  * Created by shijie
  * Date 2020/11/3
  **/
-@EActivity(resName = "activity_home_add_manager")
-public class AddBuildingJointWorkActivity extends BaseMvpActivity<AddPresenter>
+@EActivity(resName = "activity_home_reject_manager")
+public class RejectBuildingJointWorkActivity extends BaseMvpActivity<AddPresenter>
         implements AddContract.View, AreaDialog.AreaSureListener,
         SearchBuildingAdapter.IdentityBuildingListener,
         UploadAddImageAdapter.UploadImageListener {
@@ -73,6 +74,10 @@ public class AddBuildingJointWorkActivity extends BaseMvpActivity<AddPresenter>
     private static final int TYPE_BANNER = 2;
     @ViewById(resName = "title_bar")
     TitleBarView titleBar;
+    @ViewById(resName = "rl_reason")
+    RelativeLayout rlReason;
+    @ViewById(resName = "tv_reason")
+    TextView tvReason;
     @ViewById(resName = "sil_name")
     SettingItemLayout silName;
     @ViewById(resName = "sil_area")
@@ -96,6 +101,8 @@ public class AddBuildingJointWorkActivity extends BaseMvpActivity<AddPresenter>
 
     @Extra
     int flay;
+    @Extra
+    int buildingId;
     //区域
     private int district, business;
     //上传图片
@@ -111,7 +118,7 @@ public class AddBuildingJointWorkActivity extends BaseMvpActivity<AddPresenter>
     private List<IdentityBuildingBean.DataBean> mList = new ArrayList<>();
     //是否关联的楼
     private boolean isCreateBuilding;
-    private int mBuildingId;
+    private int mBuildId;
 
     @AfterViews
     void init() {
@@ -119,14 +126,20 @@ public class AddBuildingJointWorkActivity extends BaseMvpActivity<AddPresenter>
         mPresenter = new AddPresenter();
         mPresenter.attachView(this);
         initViews();
+        mPresenter.rejectBuildingMsg(buildingId);
     }
 
     private void initViews() {
-        titleBar.setAppTitle(flay == 0 ? "添加网点" : "添加楼盘");
+        titleBar.setAppTitle(flay == 0 ? "重新认证" : "重新认证");
         silName.setTitle(flay == 0 ? "网点名称" : "楼盘名称");
         silName.getEditTextView().setHint(flay == 0 ? "请输入网点名称" : "请输入楼盘名称");
         silName.getEditTextView().setHintTextColor(ContextCompat.getColor(context, R.color.text_66_p50));
         tvUploadTitle.setText("上传房产证");
+        //位置
+        int reasonHeight = rlReason.getLayoutParams().height;
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) rvRecommendBuilding.getLayoutParams();
+        params.topMargin = (int) (reasonHeight + context.getResources().getDimension(R.dimen.dp_106));
+        rvRecommendBuilding.setLayoutParams(params);
         //搜索列表
         LinearLayoutManager buildingManager = new LinearLayoutManager(context);
         rvRecommendBuilding.setLayoutManager(buildingManager);
@@ -184,18 +197,17 @@ public class AddBuildingJointWorkActivity extends BaseMvpActivity<AddPresenter>
             shortTip("请输入名称");
             return;
         }
-        String address = "";
+        String buildingArea = silArea.getContextView().getText().toString();
+        if (TextUtils.isEmpty(buildingArea)) {
+            shortTip("请选择所在区域");
+            return;
+        }
+        String address = silAddress.getEditTextView().getText().toString();
+        if (TextUtils.isEmpty(address)) {
+            shortTip("请输入详细地址");
+            return;
+        }
         if (isCreateBuilding) {
-            String buildingArea = silArea.getContextView().getText().toString();
-            if (TextUtils.isEmpty(buildingArea)) {
-                shortTip("请选择所在区域");
-                return;
-            }
-            address = silAddress.getEditTextView().getText().toString();
-            if (TextUtils.isEmpty(address)) {
-                shortTip("请输入详细地址");
-                return;
-            }
             if (TextUtils.isEmpty(introduceImageUrl)) {
                 shortTip("请上传封面图");
                 return;
@@ -207,8 +219,8 @@ public class AddBuildingJointWorkActivity extends BaseMvpActivity<AddPresenter>
         }
         //添加图片
         String addImage = CommonUtils.addAllUploadImage(uploadImageList);
-        mPresenter.addBuilding(flay == 0 ? Constants.TYPE_JOINTWORK : Constants.TYPE_BUILDING,
-                name, district, business, address, introduceImageUrl, addImage, mBuildingId);
+        mPresenter.addRejectBuilding(flay == 0 ? Constants.TYPE_JOINTWORK : Constants.TYPE_BUILDING,
+                name, district, business, address, introduceImageUrl, addImage, mBuildId, buildingId);
     }
 
     //图片上传
@@ -386,29 +398,44 @@ public class AddBuildingJointWorkActivity extends BaseMvpActivity<AddPresenter>
     @Override
     public void addSuccess() {
         finish();
-        shortTip("添加成功");
+        shortTip("提交成功");
         BaseNotification.newInstance().postNotificationName(
                 CommonNotifications.updateBuildingSuccess, "updateBuildingSuccess");
     }
 
     @Override
     public void rejectBuildingResultSuccess(RejectBuildingBean data) {
-
+        tvReason.setText("驳回原因：" + data.getRemark());
+        silName.getEditTextView().setText(data.getBuildingName());
+        silArea.setCenterText(data.getBusinessDistrict());
+        silAddress.getEditTextView().setText(data.getAddress());
+        //封面图
+        if (!TextUtils.isEmpty(data.getMainPic())) {
+            introduceImageUrl = data.getMainPic();
+            Glide.with(context).load(introduceImageUrl).into(ivDescImage);
+        }
+        //产证
+        for (int i = 0; i < data.getBuildingCardTemp().size(); i++) {
+            String path = data.getBuildingCardTemp().get(i).getImgUrl();
+            uploadImageList.add(uploadImageList.size() - 1, new ImageBean(true, 0, path));
+        }
+        imageAdapter.notifyDataSetChanged();
+        rvRecommendBuilding.setVisibility(View.GONE);
     }
 
     @Override
     public void associateBuilding(IdentityBuildingBean.DataBean bean, boolean isCreate) {
         isCreateBuilding = isCreate;
         if (isCreate) {
-            mBuildingId=0;
+            mBuildId = 0;
             silArea.getContextView().setText("");
             silAddress.getEditTextView().setText("");
-        }else {
+        } else {
             CommUtils.showHtmlView(silName.getEditTextView(), bean.getBuildingName());
             CommUtils.showHtmlTextView(silArea.getContextView(), bean.getDistrict());
             CommUtils.showHtmlTextView(silAddress.getEditTextView(), bean.getAddress());
             introduceImageUrl = bean.getMainPic();
-            mBuildingId = bean.getBid();
+            mBuildId = bean.getBid();
         }
         silAddress.getEditTextView().setEnabled(isCreate);
         rvRecommendBuilding.setVisibility(View.GONE);

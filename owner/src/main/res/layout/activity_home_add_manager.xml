@@ -131,7 +131,6 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <Button
-            android:visibility="gone"
             android:id="@+id/btn_scan"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_40"
@@ -140,13 +139,13 @@
             android:text="@string/str_goto_web_edit"
             android:textColor="@color/common_blue_main"
             android:textSize="@dimen/sp_15"
+            android:visibility="gone"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@id/btn_next" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
-        android:visibility="gone"
         android:id="@+id/iv_close_scan"
         android:layout_width="@dimen/dp_18"
         android:layout_height="@dimen/dp_18"
@@ -156,6 +155,7 @@
         android:layout_marginEnd="@dimen/dp_16"
         android:layout_marginBottom="@dimen/dp_48"
         android:background="@mipmap/ic_small_delete_blue"
+        android:visibility="gone"
         tools:ignore="ContentDescription" />
 
     <androidx.recyclerview.widget.RecyclerView

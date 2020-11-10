@@ -16,6 +16,7 @@ import com.officego.commonlib.common.model.owner.BuildingEditBean;
 import com.officego.commonlib.common.model.owner.BuildingJointWorkBean;
 import com.officego.commonlib.common.model.owner.HouseBean;
 import com.officego.commonlib.common.model.owner.HouseEditBean;
+import com.officego.commonlib.common.model.owner.RejectBuildingBean;
 import com.officego.commonlib.common.rpc.request.BuildingJointWorkInterface;
 import com.officego.commonlib.common.rpc.request.ChatInterface;
 import com.officego.commonlib.common.rpc.request.DirectoryInterface;
@@ -557,7 +558,7 @@ public class OfficegoApi {
         map.put("unitPatternRemark", requestBody(unitPatternRemark + ""));
         map.put("tags", requestBody(tags + ""));
         //图片
-        if (!TextUtils.isEmpty(unitPatternImg)){
+        if (!TextUtils.isEmpty(unitPatternImg)) {
             map.put("unitPatternImg", requestBody(unitPatternImg + ""));
         }
         map.put("mainPic", requestBody(mainPic + ""));
@@ -603,7 +604,7 @@ public class OfficegoApi {
         map.put("unitPatternRemark", requestBody(unitPatternRemark + ""));
         map.put("tags", requestBody(tags + ""));
         //图片
-        if (!TextUtils.isEmpty(unitPatternImg)){
+        if (!TextUtils.isEmpty(unitPatternImg)) {
             map.put("unitPatternImg", requestBody(unitPatternImg + ""));
         }
         map.put("mainPic", requestBody(mainPic + ""));
@@ -644,7 +645,7 @@ public class OfficegoApi {
         map.put("clearHeight", requestBody(clearHeight + ""));
         //图片
         map.put("unitPatternRemark", requestBody(unitPatternRemark + ""));
-        if (!TextUtils.isEmpty(unitPatternImg)){
+        if (!TextUtils.isEmpty(unitPatternImg)) {
             map.put("unitPatternImg", requestBody(unitPatternImg + ""));
         }
         map.put("mainPic", requestBody(mainPic + ""));
@@ -682,7 +683,7 @@ public class OfficegoApi {
         map.put("clearHeight", requestBody(clearHeight + ""));
         //图片
         map.put("unitPatternRemark", requestBody(unitPatternRemark + ""));
-        if (!TextUtils.isEmpty(unitPatternImg)){
+        if (!TextUtils.isEmpty(unitPatternImg)) {
             map.put("unitPatternImg", requestBody(unitPatternImg + ""));
         }
         map.put("mainPic", requestBody(mainPic + ""));
@@ -738,7 +739,7 @@ public class OfficegoApi {
      */
     public void addBuilding(int btype, String buildingName, int districtId,
                             int businessDistrict, String address, String mainPic,
-                            String premisesPermit, int buildingId,
+                            String premisesPermit, int buildId,
                             RetrofitCallback<Object> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
@@ -746,14 +747,47 @@ public class OfficegoApi {
         map.put("buildingName", requestBody(buildingName + ""));
         map.put("mainPic", requestBody(mainPic + ""));
         map.put("buildingCardTemp", requestBody(premisesPermit + ""));
-        if (districtId != 0 || buildingId != 0) {
+        if (districtId != 0 || buildId != 0) {
             map.put("districtId", requestBody(districtId + ""));
             map.put("businessDistrict", requestBody(businessDistrict + ""));
             map.put("address", requestBody(address + ""));
-            map.put("buildingId", requestBody(buildingId + ""));
+            map.put("buildId", requestBody(buildId + ""));
         }
         OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
                 .buildingAdd(map)
+                .enqueue(callback);
+    }
+
+    //驳回重新添加
+    public void rejectReAddBuilding(int btype,String buildingName, int districtId,
+                                    int businessDistrict, String address, String mainPic,
+                                    String premisesPermit, int buildId,int buildingId,
+                                    RetrofitCallback<Object> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("btype", requestBody(btype + ""));
+        map.put("buildingName", requestBody(buildingName + ""));
+        map.put("mainPic", requestBody(mainPic + ""));
+        map.put("buildingCardTemp", requestBody(premisesPermit + ""));
+        if (districtId != 0 || buildId != 0) {
+            map.put("districtId", requestBody(districtId + ""));
+            map.put("businessDistrict", requestBody(businessDistrict + ""));
+            map.put("address", requestBody(address + ""));
+            map.put("buildId", requestBody(buildId + ""));
+        }
+        map.put("buildingId", requestBody(buildingId + ""));
+        OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
+                .buildingAdd(map)
+                .enqueue(callback);
+    }
+
+    //楼盘网点驳回回显
+    public void rejectBuildingMsg(int buildingId, RetrofitCallback<RejectBuildingBean> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("buildingId", requestBody(buildingId + ""));
+        OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
+                .buildingRejectMsg(map)
                 .enqueue(callback);
     }
 
@@ -783,5 +817,4 @@ public class OfficegoApi {
                 .housePublishVr(map)
                 .enqueue(callback);
     }
-
 }

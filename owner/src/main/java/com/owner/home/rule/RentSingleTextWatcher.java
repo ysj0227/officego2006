@@ -47,7 +47,7 @@ public class RentSingleTextWatcher implements TextWatcher {
             //保留1位小数
             int posDot = temp.indexOf(".");//返回指定字符在此字符串中第一次出现处的索引
             int index = editText.getSelectionStart();//获取光标位置
-            if (posDot >= 0 && temp.length() - 2 > posDot) {
+            if (posDot >= 0 && temp.length() - 3 > posDot) {
                 editable.delete(index - 1, index);//删除小数点后一位
                 ToastUtils.toastForShort(context, "只支持0.1-50正整数,保留2位小数");
             }

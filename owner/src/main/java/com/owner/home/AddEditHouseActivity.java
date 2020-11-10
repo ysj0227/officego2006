@@ -195,6 +195,9 @@ public class AddEditHouseActivity extends BaseMvpActivity<HousePresenter>
         tvUploadTitle.setText("上传办公室图片");
         tvHouseCharacteristic.setText("办公室特色");
         tvDesTitle.setText("户型格局介绍");
+        if (!TextUtils.isEmpty(Constants.FLOOR_COUNTS)){
+            tvCountsFloor.setText("总" + Constants.FLOOR_COUNTS + "层");
+        }
         //特色
         GridLayoutManager layoutManager = new GridLayoutManager(context, 3);
         rvHouseUnique.setLayoutManager(layoutManager);
@@ -412,7 +415,6 @@ public class AddEditHouseActivity extends BaseMvpActivity<HousePresenter>
                 }
             }
         });
-        //面积监听 是否修改过
     }
 
     @SuppressLint("SetTextI18n")
@@ -423,8 +425,8 @@ public class AddEditHouseActivity extends BaseMvpActivity<HousePresenter>
         if (!TextUtils.isEmpty(area)) {
             if (TextUtils.isEmpty(seatStart) && TextUtils.isEmpty(seatEnd)) {
                 recordArea = silArea.getEditTextView().getText().toString();
-                etSeatStart.setText((Integer.valueOf(area) / 5) + "");
-                etSeatEnd.setText((Integer.valueOf(area) / 3) + "");
+                etSeatStart.setText((int)(Float.valueOf(area) / 5) + "");
+                etSeatEnd.setText((int)(Float.valueOf(area) / 3) + "");
             }
         }
     }
@@ -451,9 +453,6 @@ public class AddEditHouseActivity extends BaseMvpActivity<HousePresenter>
             silRentSum.getEditTextView().setText(data.getHouseMsg().getMonthPrice() + "");
             //楼层
             etFloors.setText(data.getHouseMsg().getFloor());
-            if (!TextUtils.isEmpty(Constants.FLOOR_COUNTS)){
-                tvCountsFloor.setText("总" + Constants.FLOOR_COUNTS + "层");
-            }
             //净高层高
             silStoreyHeight.getEditTextView().setText(data.getHouseMsg().getClearHeight());
             silTierHeight.getEditTextView().setText(data.getHouseMsg().getStoreyHeight());

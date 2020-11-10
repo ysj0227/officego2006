@@ -6,6 +6,7 @@ import com.officego.commonlib.common.model.owner.BuildingEditBean;
 import com.officego.commonlib.common.model.owner.BuildingJointWorkBean;
 import com.officego.commonlib.common.model.owner.HouseBean;
 import com.officego.commonlib.common.model.owner.HouseEditBean;
+import com.officego.commonlib.common.model.owner.RejectBuildingBean;
 import com.officego.commonlib.common.model.owner.UploadImageBean;
 import com.officego.commonlib.retrofit.BaseResponse;
 
@@ -102,6 +103,13 @@ public interface BuildingJointWorkInterface {
     @Multipart
     @POST(path + "building/insertBuilding")
     Call<BaseResponse<Object>> buildingAdd(@PartMap Map<String, RequestBody> params);
+
+    /**
+     *楼盘网点驳回回显
+     */
+    @Multipart
+    @POST(path + "building/getBuildingTempById")
+    Call<BaseResponse<RejectBuildingBean>> buildingRejectMsg(@PartMap Map<String, RequestBody> params);
 
 
     /**

@@ -2,23 +2,36 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/cl_floors"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dp_60"
+    android:layout_height="@dimen/dp_56"
     android:background="@drawable/bg_common_list_item">
+
+    <TextView
+        android:id="@+id/tv_floor_title"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/dp_18"
+        android:layout_marginTop="@dimen/dp_10"
+        android:drawableEnd="@mipmap/ic_mark"
+        android:text="所在楼层"
+        android:textColor="@color/text_33"
+        android:textSize="@dimen/sp_14" />
 
     <TextView
         android:id="@+id/tv_no"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"
-        android:layout_marginStart="@dimen/dp_18"
+        android:layout_marginStart="@dimen/dp_10"
         android:layout_marginTop="@dimen/dp_10"
+        android:layout_toEndOf="@+id/tv_floor_title"
         android:text="第"
         android:textColor="@color/text_66_p50"
-        android:textSize="@dimen/sp_15" />
+        android:textSize="@dimen/sp_14" />
 
     <EditText
         android:id="@+id/et_floors"
-        android:layout_width="@dimen/dp_145"
+        android:layout_width="@dimen/dp_120"
         android:layout_height="@dimen/dp_35"
         android:layout_centerVertical="true"
         android:layout_marginStart="@dimen/dp_10"
@@ -30,7 +43,7 @@
         android:paddingStart="@dimen/dp_5"
         android:singleLine="true"
         android:textColor="@color/text_33"
-        android:textSize="@dimen/sp_15"
+        android:textSize="@dimen/sp_14"
         tools:ignore="RelativeOverlap,RtlSymmetry" />
 
     <TextView
@@ -42,7 +55,7 @@
         android:layout_toEndOf="@id/et_floors"
         android:text="层"
         android:textColor="@color/text_66_p50"
-        android:textSize="@dimen/sp_15"
+        android:textSize="@dimen/sp_14"
         tools:ignore="ContentDescription" />
 
     <TextView
@@ -53,7 +66,7 @@
         android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/dp_18"
         android:textColor="@color/text_66_p50"
-        android:textSize="@dimen/sp_15"
+        android:textSize="@dimen/sp_14"
         tools:ignore="ContentDescription" />
 
     <View

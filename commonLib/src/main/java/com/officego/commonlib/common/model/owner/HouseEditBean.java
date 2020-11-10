@@ -188,7 +188,7 @@ public class HouseEditBean {
         @SerializedName("buildingId")
         private int buildingId;
         @SerializedName("area")
-        private int area;
+        private Object area;
         @SerializedName("monthPrice")
         private Object monthPrice;
         @SerializedName("simple")
@@ -320,11 +320,11 @@ public class HouseEditBean {
             this.buildingId = buildingId;
         }
 
-        public int getArea() {
+        public Object getArea() {
             return area;
         }
 
-        public void setArea(int area) {
+        public void setArea(Object area) {
             this.area = area;
         }
 

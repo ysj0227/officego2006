@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -30,6 +31,7 @@ import com.owner.R;
 import com.owner.home.AddBuildingJointWorkActivity_;
 import com.owner.home.EditBuildingActivity_;
 import com.owner.home.EditJointWorkActivity_;
+import com.owner.home.RejectBuildingJointWorkActivity_;
 import com.owner.mine.model.UserOwnerBean;
 
 import java.util.List;
@@ -180,10 +182,10 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
         @Override
         public void convert(ViewHolder holder, final BuildingJointWorkBean.ListBean bean) {
             ImageView ivStatus = holder.getView(R.id.iv_status);
-            ImageView ivPreview = holder.getView(R.id.iv_preview);
             ImageView ivEdit = holder.getView(R.id.iv_edit);
             RelativeLayout rlPreview = holder.getView(R.id.rl_preview);
             RelativeLayout rlEdit = holder.getView(R.id.rl_edit);
+            Button btnReject = holder.getView(R.id.btn_reject);
             ImageView ivPoint = holder.getView(R.id.iv_point);
             TextView tvTitle = holder.getView(R.id.tv_title);
             ivEdit.setBackgroundResource(1 == bean.getIsEdit() ? R.mipmap.ic_edit_blue : R.mipmap.ic_edit_gray);
@@ -195,18 +197,27 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
             }
             ivPoint.setVisibility(View.GONE);
             if (2 == bean.getStatus()) {
-//                ivPoint.setVisibility(View.VISIBLE);
+                rlPreview.setVisibility(View.VISIBLE);
+                rlEdit.setVisibility(View.VISIBLE);
+                btnReject.setVisibility(View.GONE);
                 ivStatus.setVisibility(View.VISIBLE);
                 ivStatus.setBackgroundResource(R.mipmap.ic_complete_more_mes);
             } else if (7 == bean.getStatus()) {
-//                ivPoint.setVisibility(View.VISIBLE);
+                rlPreview.setVisibility(View.GONE);
+                rlEdit.setVisibility(View.GONE);
+                btnReject.setVisibility(View.VISIBLE);
                 ivStatus.setVisibility(View.VISIBLE);
                 ivStatus.setBackgroundResource(R.mipmap.ic_check_no);
             } else if (6 == bean.getStatus() || 1 == bean.getIsTemp()) {
-//                ivPoint.setVisibility(View.VISIBLE);
+                rlPreview.setVisibility(View.VISIBLE);
+                rlEdit.setVisibility(View.VISIBLE);
+                btnReject.setVisibility(View.GONE);
                 ivStatus.setVisibility(View.VISIBLE);
                 ivStatus.setBackgroundResource(R.mipmap.ic_checking);
             } else {
+                rlPreview.setVisibility(View.VISIBLE);
+                rlEdit.setVisibility(View.VISIBLE);
+                btnReject.setVisibility(View.GONE);
                 ivStatus.setVisibility(View.GONE);
             }
             //预览
@@ -223,10 +234,18 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
                     ToastUtils.toastForShort(context, "暂不可编辑");
                 }
             });
-            //获取房源列表
+            //房源列表
             holder.itemView.setOnClickListener(view -> {
                 dismiss();
                 listener.popupHouseList(bean);
+            });
+            //驳回
+            btnReject.setOnClickListener(view -> {
+                if (mUserData.getIdentityType() == identityType) {//网点
+                    RejectBuildingJointWorkActivity_.intent(mContext).flay(0).buildingId(bean.getBuildingId()).start();
+                } else {
+                    RejectBuildingJointWorkActivity_.intent(mContext).flay(1).buildingId(bean.getBuildingId()).start();
+                }
             });
         }
     }

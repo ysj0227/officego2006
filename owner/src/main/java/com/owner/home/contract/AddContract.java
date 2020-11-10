@@ -1,6 +1,7 @@
 package com.owner.home.contract;
 
 import com.officego.commonlib.base.BaseView;
+import com.officego.commonlib.common.model.owner.RejectBuildingBean;
 import com.officego.commonlib.common.model.owner.UploadImageBean;
 import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.model.ImageBean;
@@ -20,18 +21,26 @@ public interface AddContract {
         void searchBuildingSuccess(List<IdentityBuildingBean.DataBean> data);
 
         void addSuccess();
+
+        void rejectBuildingResultSuccess(RejectBuildingBean data);
     }
 
     interface Presenter {
 
-        void uploadImage(int type,List<ImageBean> mFilePath);
+        void uploadImage(int type, List<ImageBean> mFilePath);
 
-        void uploadSingleImage(int type,String mFilePath);
+        void uploadSingleImage(int type, String mFilePath);
 
-        void searchBuilding(int buildingType,String keywords);
+        void searchBuilding(int buildingType, String keywords);
+
+        void rejectBuildingMsg(int buildingId);
 
         void addBuilding(int btype, String buildingName, int districtId,
                          int businessDistrict, String address, String mainPic,
-                         String premisesPermit, int buildingId);
+                         String premisesPermit, int buildId);
+
+        void addRejectBuilding(int btype, String buildingName, int districtId,
+                               int businessDistrict, String address, String mainPic,
+                               String premisesPermit, int buildId, int buildingId);
     }
 }
