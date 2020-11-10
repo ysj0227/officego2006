@@ -106,10 +106,10 @@
             android:screenOrientation="portrait">
             <intent-filter>
                 <!-- web或js打开本地APP 协议部分，自定义设置 -->
-<!--                <data-->
-<!--                    android:host="officego"-->
-<!--                    android:path="/app"-->
-<!--                    android:scheme="url" />-->
+                <!--                <data-->
+                <!--                    android:host="officego"-->
+                <!--                    android:path="/app"-->
+                <!--                    android:scheme="url" />-->
                 <action android:name="android.intent.action.VIEW" />
 
                 <category android:name="android.intent.category.DEFAULT" />
@@ -426,21 +426,21 @@
         <!-- vivo 配置结束 < -->
 
         <!-- oppo 配置开始 < -->
-        <!--        <service-->
-        <!--            android:name="com.heytap.mcssdk.PushService"-->
-        <!--            android:permission="com.coloros.mcs.permission.SEND_MCS_MESSAGE">-->
-        <!--            <intent-filter>-->
-        <!--                <action android:name="com.coloros.mcs.action.RECEIVE_MCS_MESSAGE"/>-->
-        <!--            </intent-filter>-->
-        <!--        </service>-->
+        <service
+            android:name="com.heytap.mcssdk.PushService"
+            android:permission="com.coloros.mcs.permission.SEND_MCS_MESSAGE">
+            <intent-filter>
+                <action android:name="com.coloros.mcs.action.RECEIVE_MCS_MESSAGE" />
+            </intent-filter>
+        </service>
 
-        <!--        <service-->
-        <!--            android:name="com.heytap.mcssdk.AppPushService"-->
-        <!--            android:permission="com.heytap.mcs.permission.SEND_MCS_MESSAGE">-->
-        <!--            <intent-filter>-->
-        <!--                <action android:name="com.heytap.mcs.action.RECEIVE_MCS_MESSAGE"/>-->
-        <!--            </intent-filter>-->
-        <!--        </service>-->
+        <service
+            android:name="com.heytap.mcssdk.AppPushService"
+            android:permission="com.heytap.mcs.permission.SEND_MCS_MESSAGE">
+            <intent-filter>
+                <action android:name="com.heytap.mcs.action.RECEIVE_MCS_MESSAGE" />
+            </intent-filter>
+        </service>
         <!-- oppo 配置结束 < -->
 
         <!--        高德 -->
