@@ -121,7 +121,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/cl_floors"
-                app:editMaxLength="2"
                 app:editTextInputType="phone"
                 app:leftMarkShow="visible"
                 app:leftText="最短租期"

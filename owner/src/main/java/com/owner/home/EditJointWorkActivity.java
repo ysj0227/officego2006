@@ -607,6 +607,8 @@ public class EditJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
 
     @Override
     public void AreaSure(String area, int district, int business) {
+        this.district = district;
+        this.business = business;
         silArea.setCenterText(area);
     }
 

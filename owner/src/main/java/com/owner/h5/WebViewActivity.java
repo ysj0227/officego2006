@@ -76,11 +76,10 @@ public class WebViewActivity extends BaseActivity {
             loadWebView(AppConfig.H5_ABOUT_US + chanel());
         } else if (flags == Constants.H5_ROLE) {
             titleBar.getAppTitle().setText(getString(R.string.str_title_role));
-            loadWebView(AppConfig.H5_STAFF_LIST + chanel());
+            loadWebView(AppConfig.H5_STAFF_LIST + chanelHelp());
         } else if (flags == Constants.H5_VR_RECORD) {
             titleBar.getAppTitle().setText(getString(R.string.str_title_vr_record));
             loadWebView(AppConfig.H5_VR_RECORD + chanelHelp());
-//            loadWebView("https://m.officego.com/owner/vr.html" + chanelHelp());
         }
     }
 
