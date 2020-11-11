@@ -106,12 +106,15 @@ public class CollectWorkOfficeAdapter extends CommonListAdapter<CollectHouseBean
         holder.itemView.setOnClickListener(v -> {
             int isFailed = bean.isIsfailure();
             if (isFailed == 1 || isFailed == 2 || isFailed == 3) {
+                if (bean.getId()==0){
+                    return;
+                }
                 if (Constants.TYPE_BUILDING == bean.getBtype()) {
                     BuildingDetailsChildActivity_.intent(context)
-                            .mChildHouseBean(BundleUtils.houseMessage(bean.getBtype(), bean.getId())).start();
+                            .mChildHouseBean(BundleUtils.houseMessage(Constants.TYPE_BUILDING, bean.getId())).start();
                 } else {
                     BuildingDetailsJointWorkChildActivity_.intent(context)
-                            .mChildHouseBean(BundleUtils.houseMessage(bean.getBtype(), bean.getId())).start();
+                            .mChildHouseBean(BundleUtils.houseMessage(Constants.TYPE_JOINTWORK, bean.getId())).start();
                 }
             } else {
                 dialog(isFailed);

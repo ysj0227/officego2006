@@ -152,8 +152,8 @@ public class EditOpenSeatsActivity extends BaseMvpActivity<OpenSeatsPresenter>
         //最短租期
         silRentTime.getEditTextView().addTextChangedListener(new IntegerTextWatcher(context, 60, silRentTime.getEditTextView()));
         //楼层
-        etFloors.setInputType(InputType.TYPE_CLASS_NUMBER);
-        etFloors.addTextChangedListener(new IntegerTextWatcher(context, 150, etFloors));
+//        etFloors.setInputType(InputType.TYPE_CLASS_NUMBER);
+//        etFloors.addTextChangedListener(new IntegerTextWatcher(context, 150, etFloors));
         //净高  0-8或一位小数
         silStoreyHeight.getEditTextView().addTextChangedListener(new FloorHeightTextWatcher(context, silStoreyHeight.getEditTextView()));
     }

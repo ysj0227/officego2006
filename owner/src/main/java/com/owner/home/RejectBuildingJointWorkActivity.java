@@ -1,5 +1,6 @@
 package com.owner.home;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -403,12 +404,15 @@ public class RejectBuildingJointWorkActivity extends BaseMvpActivity<AddPresente
                 CommonNotifications.updateBuildingSuccess, "updateBuildingSuccess");
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void rejectBuildingResultSuccess(RejectBuildingBean data) {
+        isCreateBuilding = data.getBuildId() == 0;//0创建的 1关联的
         tvReason.setText("驳回原因：" + data.getRemark());
         silName.getEditTextView().setText(data.getBuildingName());
-        silArea.setCenterText(data.getBusinessDistrict());
         silAddress.getEditTextView().setText(data.getAddress());
+        silAddress.getEditTextView().setEnabled(data.getBuildId() == 0);
+        tvSetFirstImage.setVisibility(data.getBuildId() == 0 ? View.VISIBLE : View.GONE);
         //封面图
         if (!TextUtils.isEmpty(data.getMainPic())) {
             introduceImageUrl = data.getMainPic();
@@ -420,7 +424,14 @@ public class RejectBuildingJointWorkActivity extends BaseMvpActivity<AddPresente
             uploadImageList.add(uploadImageList.size() - 1, new ImageBean(true, 0, path));
         }
         imageAdapter.notifyDataSetChanged();
+        //获取区域名称
+        mPresenter.getDistrictList(data.getDistrictId(), data.getBusinessDistrict());
         rvRecommendBuilding.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void districtListSuccess(String str, String districtName, String businessName) {
+        silArea.setCenterText(str);
     }
 
     @Override

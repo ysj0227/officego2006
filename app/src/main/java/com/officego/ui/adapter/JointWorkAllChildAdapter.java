@@ -11,13 +11,13 @@ import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
+import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
+import com.officego.commonlib.utils.GlideUtils;
+import com.officego.commonlib.view.RoundImageView;
 import com.officego.ui.home.BuildingDetailsJointWorkChildActivity_;
 import com.officego.ui.home.model.BuildingDetailsChildBean;
-import com.officego.commonlib.common.model.utils.BundleUtils;
-import com.officego.commonlib.view.RoundImageView;
-import com.officego.commonlib.utils.GlideUtils;
 
 import java.util.List;
 
@@ -49,15 +49,17 @@ public class JointWorkAllChildAdapter extends CommonListAdapter<BuildingDetailsC
         Glide.with(context).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getMainPic()).into(ivItemListChild);
         tvItemListChildCenterUp.setVisibility(View.INVISIBLE);
         tvItemListChildCenterDown.setVisibility(View.INVISIBLE);
-        tvItemListChildLeftUp.setText(Html.fromHtml("<font color='#46C3C2'>" + bean.getSeats() + "</font>"+ "<font color='#CC666666'>人间</font>"));
+        tvItemListChildLeftUp.setText(Html.fromHtml("<font color='#46C3C2'>" + bean.getSeats() + "</font>" + "<font color='#CC666666'>人间</font>"));
         tvItemListChildRightUp.setText(Html.fromHtml("<font color='#46C3C2'>¥" + bean.getMonthPrice() + "</font>/月"));
         tvItemListChildLeftUp.setTextSize(TypedValue.COMPLEX_UNIT_PX, CommonHelper.sp2px(context, 15));
 
-        tvItemListChildLeftDown.setText(CommonHelper.bigDecimal(bean.getArea().toString(), true)  + "㎡");
+        tvItemListChildLeftDown.setText(CommonHelper.bigDecimal(bean.getArea().toString(), true) + "㎡");
         tvItemListChildRightDown.setText(Html.fromHtml("<font color='#46C3C2'>¥" + bean.getDayPrice() + "</font>/位/月"));
         holder.itemView.setOnClickListener(v -> {
-            BuildingDetailsJointWorkChildActivity_.intent(context)
-                    .mChildHouseBean(BundleUtils.houseMessage(Constants.TYPE_JOINTWORK, bean.getId())).start();
+            if (bean.getId() != 0) {
+                BuildingDetailsJointWorkChildActivity_.intent(context)
+                        .mChildHouseBean(BundleUtils.houseMessage(Constants.TYPE_JOINTWORK, bean.getId())).start();
+            }
         });
     }
 }

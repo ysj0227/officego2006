@@ -397,6 +397,11 @@ public class AddBuildingJointWorkActivity extends BaseMvpActivity<AddPresenter>
     }
 
     @Override
+    public void districtListSuccess(String str, String districtName, String businessName) {
+
+    }
+
+    @Override
     public void associateBuilding(IdentityBuildingBean.DataBean bean, boolean isCreate) {
         isCreateBuilding = isCreate;
         if (isCreate) {

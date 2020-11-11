@@ -3,8 +3,6 @@ package com.owner.schedule;
 import android.annotation.SuppressLint;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.LinearLayout;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -22,7 +20,6 @@ import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.date.CustomDayView;
 import com.officego.commonlib.common.date.ThemeDayView;
-import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.dialog.CommonDialog;
@@ -334,11 +331,11 @@ public class ScheduleFragment extends BaseMvpFragment<ViewingDatePresenter>
         HashMap<String, String> markData = new HashMap<>();
         for (int i = 0; i < data.size(); i++) {
             if (data.get(i).getDay().substring(5, 6).contains("0")) {
-                StringBuffer sb = new StringBuffer(data.get(i).getDay());
+                StringBuilder sb = new StringBuilder(data.get(i).getDay());
                 sb.replace(5, 6, "");
                 String bb = sb.toString();
                 if (bb.substring(7, 8).contains("0")) {
-                    StringBuffer sb1 = new StringBuffer(bb);
+                    StringBuilder sb1 = new StringBuilder(bb);
                     sb1.replace(7, 8, "");
                     markData.put(sb1.toString(), "0");
                 } else {
@@ -346,7 +343,7 @@ public class ScheduleFragment extends BaseMvpFragment<ViewingDatePresenter>
                 }
             } else {
                 if (data.get(i).getDay().substring(8, 9).contains("0")) {
-                    StringBuffer sb = new StringBuffer(data.get(i).getDay());
+                    StringBuilder sb = new StringBuilder(data.get(i).getDay());
                     sb.replace(8, 9, "");
                     markData.put(sb.toString(), "0");
                 } else {
@@ -354,11 +351,13 @@ public class ScheduleFragment extends BaseMvpFragment<ViewingDatePresenter>
                 }
             }
         }
-        calendarAdapter.setMarkData(markData);
-        //TODO 是否首次刷新 ，此时刷新选择上一月下一月，日历异常
-        if (isFirstGetListData) {
-            calendarAdapter.notifyDataChanged();
-            isFirstGetListData = false;
+        if (calendarAdapter != null) {
+            calendarAdapter.setMarkData(markData);
+            //TODO 是否首次刷新 ，此时刷新选择上一月下一月，日历异常
+            if (isFirstGetListData) {
+                calendarAdapter.notifyDataChanged();
+                isFirstGetListData = false;
+            }
         }
     }
 
@@ -374,7 +373,7 @@ public class ScheduleFragment extends BaseMvpFragment<ViewingDatePresenter>
         hasData();
         calendarMarks(data); //标记
         //获取当天日期显示最近的一天数据
-        viewingDateAllList = data;
+        viewingDateAllList.addAll(data);
         selectedDayDataList(mCurrentDayDate);
 //        selectedDayDataList(viewingDateAllList.get(0).getDay());
     }

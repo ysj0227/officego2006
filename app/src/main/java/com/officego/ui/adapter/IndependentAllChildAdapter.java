@@ -62,8 +62,10 @@ public class IndependentAllChildAdapter extends CommonListAdapter<BuildingDetail
         tvItemListChildRightDown.setText(bean.getFloor() + "楼");
 
         holder.itemView.setOnClickListener(v -> {
-            BuildingDetailsChildActivity_.intent(context)
-                    .mChildHouseBean(BundleUtils.houseMessage(Constants.TYPE_BUILDING, bean.getId())).start();
+            if (bean.getId()!=0){
+                BuildingDetailsChildActivity_.intent(context)
+                        .mChildHouseBean(BundleUtils.houseMessage(Constants.TYPE_BUILDING, bean.getId())).start();
+            }
         });
     }
 }

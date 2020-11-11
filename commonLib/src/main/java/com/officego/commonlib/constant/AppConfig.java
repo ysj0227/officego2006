@@ -65,7 +65,7 @@ public class AppConfig extends BaseConfig {
         //员工管理
         H5_STAFF_LIST = APP_URL_MAIN + "owner/staffList.html";
         //VR录制
-        H5_STAFF_LIST = APP_URL_MAIN + "owner/vr.html";
+        H5_VR_RECORD = APP_URL_MAIN + "owner/vr.html";
         //融云IM test
         RC_APPKEY = "kj7swf8oknm02";
         RC_APPSECRET = "OF78PpILjjRk4";
@@ -94,7 +94,7 @@ public class AppConfig extends BaseConfig {
         //员工管理
         H5_STAFF_LIST = APP_URL_MAIN + "owner/staffList.html";
         //VR录制
-        H5_STAFF_LIST = APP_URL_MAIN + "owner/vr.html";
+        H5_VR_RECORD = APP_URL_MAIN + "owner/vr.html";
         //融云IM release
         RC_APPKEY = "qf3d5gbjq94mh";
         RC_APPSECRET = "xtDkNCjJse";

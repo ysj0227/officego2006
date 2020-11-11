@@ -26,12 +26,16 @@ public class RejectBuildingBean {
     private String buildingName;
     @SerializedName("businessDistrict")
     private String businessDistrict;
+    @SerializedName("districtId")
+    private String districtId;
     @SerializedName("mainPic")
     private String mainPic;
     @SerializedName("buildingCardTemp")
     private List<BuildingCardTempBean> buildingCardTemp;
     @SerializedName("remark")
     private String remark;
+    @SerializedName("buildId")
+    private int buildId;
 
     public List<BuildingCardTempBean> getBuildingCardTemp() {
         return buildingCardTemp;
@@ -66,6 +70,14 @@ public class RejectBuildingBean {
         this.businessDistrict = businessDistrict;
     }
 
+    public String getDistrictId() {
+        return districtId;
+    }
+
+    public void setDistrictId(String districtId) {
+        this.districtId = districtId;
+    }
+
     public String getMainPic() {
         return mainPic;
     }
@@ -74,13 +86,20 @@ public class RejectBuildingBean {
         this.mainPic = mainPic;
     }
 
-
     public String getRemark() {
         return remark;
     }
 
     public void setRemark(String remark) {
         this.remark = remark;
+    }
+
+    public int getBuildId() {
+        return buildId;
+    }
+
+    public void setBuildId(int buildId) {
+        this.buildId = buildId;
     }
 
     public static class BuildingCardTempBean {

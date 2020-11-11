@@ -34,30 +34,20 @@ public class CarFeeTextWatcher implements TextWatcher {
 
     @Override
     public void afterTextChanged(Editable editable) {
+        if (editable == null) {
+            return;
+        }
         String words = editable.toString();
-
-        try {
-            if (words.length() == 1 && (TextUtils.equals(".", words))) {
-                editable.clear();
-                return;
-            }
-            if (!TextUtils.isEmpty(words)) {
-                if (!words.contains(".") && words.length() >= 4 && Integer.valueOf(words) > 5000) {
+        if (!TextUtils.isEmpty(words)) {
+            try {
+                if (words.length() > 3 && Integer.valueOf(words) > 5000) {
                     int index = input.getSelectionStart();//获取光标位置
                     editable.delete(index - 1, index);//删除小数点后一位
-                    ToastUtils.toastForShort(context, "只支持0.1-5000正数数字，保留1位小数");
-                    return;
+                    ToastUtils.toastForShort(context, "仅支持0-5000正整数");
                 }
-                if (words.contains(".") && words.length() >= 4) {
-                    if (Integer.valueOf(words.replace(".", "")) > 5000) {
-                        int index = input.getSelectionStart();//获取光标位置
-                        editable.delete(index - 1, index);//删除小数点后一位
-                        ToastUtils.toastForShort(context, "只支持0.1-5000正数数字，保留1位小数");
-                    }
-                }
+            } catch (Exception e) {
+                e.printStackTrace();
             }
-        } catch (Exception e) {
-            e.printStackTrace();
         }
     }
 }

@@ -31,7 +31,7 @@
 
     <EditText
         android:id="@+id/et_floors"
-        android:layout_width="@dimen/dp_120"
+        android:layout_width="@dimen/dp_125"
         android:layout_height="@dimen/dp_35"
         android:layout_centerVertical="true"
         android:layout_marginStart="@dimen/dp_10"
@@ -40,6 +40,7 @@
         android:background="@drawable/edittext_edge_grey2"
         android:ellipsize="end"
         android:gravity="center"
+        android:maxLength="32"
         android:paddingStart="@dimen/dp_5"
         android:singleLine="true"
         android:textColor="@color/text_33"

@@ -50,6 +50,7 @@ import com.owner.dialog.FloorTypeDialog;
 import com.owner.dialog.ServiceSelectedDialog;
 import com.owner.home.contract.JointWorkContract;
 import com.owner.home.presenter.JointWorkPresenter;
+import com.owner.home.rule.CarFeeTextWatcher;
 import com.owner.home.rule.FloorHeightTextWatcher;
 import com.owner.home.rule.IntegerTextWatcher;
 import com.owner.home.rule.LiftTextWatcher;
@@ -250,7 +251,8 @@ public class EditJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
         silStoreyHeight.getEditTextView().addTextChangedListener(new FloorHeightTextWatcher(context, silStoreyHeight.getEditTextView()));
         //车位数 车位费
         EditInputFilter.setOfficeGoEditProhibitSpeChat(silCarNum.getEditTextView(), 20);
-        EditInputFilter.setOfficeGoEditProhibitSpeChat(silCarFee.getEditTextView(), 20);
+        //车位费0-5000整数
+        silCarFee.getEditTextView().addTextChangedListener(new CarFeeTextWatcher(context, silCarFee.getEditTextView()));
         //电梯0-20整数
         etCustomerLift.addTextChangedListener(new LiftTextWatcher(context, etCustomerLift));
         etPassengerLift.addTextChangedListener(new LiftTextWatcher(context, etPassengerLift));

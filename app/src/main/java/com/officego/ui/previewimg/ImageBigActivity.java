@@ -33,31 +33,33 @@ public class ImageBigActivity extends BaseActivity {
     ArrayList<String> imagesUrl;
     @Extra
     int current;
-//    private String imgUrl;
+
     @AfterViews
     void init() {
-        pagerAdapter = new PageAdapter(imagesUrl, getApplicationContext());
-        viewPager.setAdapter(pagerAdapter);
-        viewPager.setCurrentItem(current);
-        page.setText(String.format(Locale.getDefault(), "%d/%d", current + 1, imagesUrl.size()));
-        viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
-            @Override
-            public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
-//                imgUrl = imagesUrl.get(position);
-            }
+        if (imagesUrl != null && imagesUrl.size() > 0) {
+            pagerAdapter = new PageAdapter(imagesUrl, context);
+            viewPager.setAdapter(pagerAdapter);
+            viewPager.setCurrentItem(current);
+            page.setText(String.format(Locale.getDefault(), "%d/%d", current + 1, imagesUrl.size()));
+            viewPager.addOnPageChangeListener(new ViewPager.OnPageChangeListener() {
+                @Override
+                public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
+                }
 
-            @Override
-            public void onPageSelected(int position) {
-                current = position;
-                page.setText(String.format(Locale.getDefault(), "%d/%d", current + 1, imagesUrl.size()));
-            }
+                @Override
+                public void onPageSelected(int position) {
+                    current = position;
+                    page.setText(String.format(Locale.getDefault(), "%d/%d", current + 1, imagesUrl.size()));
+                }
 
-            @Override
-            public void onPageScrollStateChanged(int state) {
+                @Override
+                public void onPageScrollStateChanged(int state) {
 
-            }
-        });
+                }
+            });
+        }
     }
+
     @Click(R.id.iv_back)
     void backClick() {
         finish();

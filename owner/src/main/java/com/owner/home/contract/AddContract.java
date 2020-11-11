@@ -23,6 +23,8 @@ public interface AddContract {
         void addSuccess();
 
         void rejectBuildingResultSuccess(RejectBuildingBean data);
+
+        void districtListSuccess(String str,String districtName,String businessName );
     }
 
     interface Presenter {
@@ -34,6 +36,8 @@ public interface AddContract {
         void searchBuilding(int buildingType, String keywords);
 
         void rejectBuildingMsg(int buildingId);
+
+        void getDistrictList(String district,String business);
 
         void addBuilding(int btype, String buildingName, int districtId,
                          int businessDistrict, String address, String mainPic,

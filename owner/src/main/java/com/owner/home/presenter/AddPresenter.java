@@ -1,11 +1,14 @@
 package com.owner.home.presenter;
 
+import android.text.TextUtils;
+
 import com.officego.commonlib.base.BasePresenter;
 import com.officego.commonlib.common.model.owner.RejectBuildingBean;
 import com.officego.commonlib.common.model.owner.UploadImageBean;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.owner.home.contract.AddContract;
+import com.owner.identity.model.BusinessCircleBean;
 import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.model.ImageBean;
 import com.owner.rpc.OfficegoApi;
@@ -120,6 +123,47 @@ public class AddPresenter extends BasePresenter<AddContract.View>
                         mView.shortTip(msg);
                     }
                 }
+            }
+        });
+    }
+
+    @Override
+    public void getDistrictList(String district, String business) {
+        mView.showLoadingDialog();
+        OfficegoApi.getInstance().getDistrictList(new RetrofitCallback<List<BusinessCircleBean.DataBean>>() {
+            @Override
+            public void onSuccess(int code, String msg, List<BusinessCircleBean.DataBean> data) {
+                if (isViewAttached()) {
+                    mView.hideLoadingDialog();
+                    StringBuilder stringBuffer = new StringBuilder("上海市");
+                    if (!TextUtils.isEmpty(district)) {
+                        //区域
+                        for (int i = 0; i < data.size(); i++) {
+                            if (Integer.valueOf(district) == data.get(i).getDistrictID()) {
+                                stringBuffer.append(data.get(i).getDistrict());
+                                if (!TextUtils.isEmpty(business)) {
+                                    //商圈
+                                    for (int j = 0; j < data.get(i).getList().size(); j++) {
+                                        if (Integer.valueOf(business) == data.get(i).getList().get(j).getId()) {
+                                            stringBuffer.append(data.get(i).getList().get(j).getArea());
+                                            mView.districtListSuccess(stringBuffer.toString(),
+                                                    data.get(i).getDistrict(),
+                                                    data.get(i).getList().get(j).getArea());
+                                            return;
+                                        }
+                                    }
+                                } else {
+                                    mView.districtListSuccess(stringBuffer.toString(), data.get(i).getDistrict(), "");
+                                    return;
+                                }
+                            }
+                        }
+                    }
+                }
+            }
+
+            @Override
+            public void onFail(int code, String msg, List<BusinessCircleBean.DataBean> data) {
             }
         });
     }

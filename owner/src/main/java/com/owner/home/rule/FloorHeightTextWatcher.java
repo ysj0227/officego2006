@@ -64,6 +64,5 @@ public class FloorHeightTextWatcher implements TextWatcher {
         } catch (Exception e) {
             e.printStackTrace();
         }
-
     }
 }
