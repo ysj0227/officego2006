@@ -410,8 +410,8 @@ public class AddBuildingJointWorkActivity extends BaseMvpActivity<AddPresenter>
             silAddress.getEditTextView().setText("");
         }else {
             CommUtils.showHtmlView(silName.getEditTextView(), bean.getBuildingName());
-            CommUtils.showHtmlTextView(silArea.getContextView(), bean.getDistrict());
             CommUtils.showHtmlTextView(silAddress.getEditTextView(), bean.getAddress());
+            silArea.setCenterText(bean.getDistrict()+bean.getBusiness());
             introduceImageUrl = bean.getMainPic();
             mBuildingId = bean.getBid();
         }

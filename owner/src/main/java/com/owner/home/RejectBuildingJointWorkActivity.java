@@ -444,8 +444,8 @@ public class RejectBuildingJointWorkActivity extends BaseMvpActivity<AddPresente
             silAddress.getEditTextView().setText("");
         } else {
             CommUtils.showHtmlView(silName.getEditTextView(), bean.getBuildingName());
-            CommUtils.showHtmlTextView(silArea.getContextView(), bean.getDistrict());
             CommUtils.showHtmlTextView(silAddress.getEditTextView(), bean.getAddress());
+            silArea.setCenterText(bean.getDistrict()+bean.getBusiness());
             introduceImageUrl = bean.getMainPic();
             mBuildId = bean.getBid();
         }
