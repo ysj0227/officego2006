@@ -75,7 +75,6 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
             holder.setText(R.id.tv_price, "¥" + bean.getDayPrice());
             tvUnit.setText("/㎡/天起");
         } else {
-//            holder.setText(R.id.tv_price, "¥" + (bean.getOfficeType() == 1 ? bean.getMonthPrice() : bean.getDayPrice()));
             holder.setText(R.id.tv_price, "¥" + bean.getDayPrice());
             tvUnit.setText("/位/月");
             //网点下房源 1是独立办公室，2是开放工位
@@ -98,7 +97,7 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
         //houseStatus0未发布，1发布，2下架,3:待完善
         ivFlagOff.setVisibility(bean.getHouseStatus() == 2 ? View.VISIBLE : View.GONE);
         //是否是开放工位
-        boolean isOpenSeats = bean.getBtype() == 2 && bean.getOfficeType() == 2 && bean.getHouseStatus() != 2;
+        boolean isOpenSeats = bean.getBtype() == 2 && bean.getOfficeType() == 2 && bean.getHouseStatus() == 1;
         if (bean.getHouseStatus() == 1) {//1发布
             tvPublishStatus.setVisibility(View.GONE);
         } else if (bean.getHouseStatus() == 2) {//2下架
@@ -108,10 +107,11 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
             tvPublishStatus.setVisibility(View.VISIBLE);
             tvPublishStatus.setText("发布");
         }
-        if (isOpenSeats) {//开放工位是关闭
+        if (bean.getOfficeType() == 2) {//开放工位
             tvPublishStatus.setVisibility(View.VISIBLE);
-            tvPublishStatus.setText("关闭");
+            tvPublishStatus.setText(isOpenSeats ? "关闭" : "重新发布");
         }
+
         View.OnClickListener clickListener = view -> {
             int id = view.getId();
             if (id == R.id.tv_share) {
