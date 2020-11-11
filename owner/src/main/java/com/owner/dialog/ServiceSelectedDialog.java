@@ -43,10 +43,6 @@ public class ServiceSelectedDialog {
     private Map<Integer, String> mMapLogo;
     private List<DirectoryBean.DataBean> selectList = new ArrayList<>();
 
-    public ServiceLogoListener getLogoListener() {
-        return logoListener;
-    }
-
     public void setLogoListener(ServiceLogoListener logoListener) {
         this.logoListener = logoListener;
     }
@@ -81,12 +77,12 @@ public class ServiceSelectedDialog {
         lp.height = context.getResources().getDimensionPixelSize(R.dimen.dp_400);
         dialogWindow.setAttributes(lp);
         handleLayout(viewLayout, dialog);
-        dialog.setCancelable(true);
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
         dialog.show();
     }
 
     private void handleLayout(View viewLayout, Dialog dialog) {
-        viewLayout.findViewById(R.id.rl_exit).setOnClickListener(v -> dialog.dismiss());
         TextView title = viewLayout.findViewById(R.id.tv_title);
         Button sure = viewLayout.findViewById(R.id.btn_sure);
         if (mTitleFlay == 0) {
@@ -99,6 +95,13 @@ public class ServiceSelectedDialog {
         RecyclerView rvService = viewLayout.findViewById(R.id.rv_service);
         rvService.setLayoutManager(new GridLayoutManager(context, 2));
         rvService.setAdapter(new ServiceAdapter(context, list));
+        //取消
+        viewLayout.findViewById(R.id.rl_exit).setOnClickListener(v -> {
+            if (logoListener != null) {
+                dialog.dismiss();
+                logoListener.serviceLogoResult(mTitleFlay, mMapLogo, selectList);
+            }
+        });
         //确定
         sure.setOnClickListener(view -> {
             if (logoListener != null) {
@@ -109,7 +112,6 @@ public class ServiceSelectedDialog {
     }
 
     class ServiceAdapter extends CommonListAdapter<DirectoryBean.DataBean> {
-
         private Context context;
 
         @SuppressLint("UseSparseArrays")
@@ -129,7 +131,9 @@ public class ServiceSelectedDialog {
             cbName.setText(bean.getDictCname());
             if (mMapLogo != null) {
                 cbName.setChecked(mMapLogo.containsKey(bean.getDictValue()));
-                if (mMapLogo.containsKey(bean.getDictValue())) selectList.add(bean);
+                if (mMapLogo.containsKey(bean.getDictValue())) {
+                    selectList.add(bean);
+                }
             }
             cbName.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (isChecked) {
