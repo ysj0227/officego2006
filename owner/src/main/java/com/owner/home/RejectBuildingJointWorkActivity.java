@@ -407,12 +407,13 @@ public class RejectBuildingJointWorkActivity extends BaseMvpActivity<AddPresente
     @SuppressLint("SetTextI18n")
     @Override
     public void rejectBuildingResultSuccess(RejectBuildingBean data) {
-        isCreateBuilding = data.getBuildId() == 0;//0创建的 1关联的
+        boolean isBuildId = TextUtils.isEmpty(data.getBuildId()) || TextUtils.equals("0", data.getBuildId());
+        isCreateBuilding = isBuildId;//0创建的 1关联的
         tvReason.setText("驳回原因：" + data.getRemark());
         silName.getEditTextView().setText(data.getBuildingName());
         silAddress.getEditTextView().setText(data.getAddress());
-        silAddress.getEditTextView().setEnabled(data.getBuildId() == 0);
-        tvSetFirstImage.setVisibility(data.getBuildId() == 0 ? View.VISIBLE : View.GONE);
+        silAddress.getEditTextView().setEnabled(isBuildId);
+        tvSetFirstImage.setVisibility(isBuildId ? View.VISIBLE : View.GONE);
         //封面图
         if (!TextUtils.isEmpty(data.getMainPic())) {
             introduceImageUrl = data.getMainPic();

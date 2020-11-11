@@ -35,7 +35,7 @@ public class RejectBuildingBean {
     @SerializedName("remark")
     private String remark;
     @SerializedName("buildId")
-    private int buildId;
+    private String buildId;
 
     public List<BuildingCardTempBean> getBuildingCardTemp() {
         return buildingCardTemp;
@@ -94,11 +94,11 @@ public class RejectBuildingBean {
         this.remark = remark;
     }
 
-    public int getBuildId() {
+    public String getBuildId() {
         return buildId;
     }
 
-    public void setBuildId(int buildId) {
+    public void setBuildId(String buildId) {
         this.buildId = buildId;
     }
 
