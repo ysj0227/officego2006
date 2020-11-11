@@ -38,9 +38,9 @@ public class FloorHeightTextWatcher implements TextWatcher {
         }
         //只能输入一位整数，如果第二位是整数则删除
         try {
-            String m = editable.toString();
-            if (m.length() == 1 && !m.contains(".")) {
-                if (TextUtils.equals("9", m)) {
+            String temp = editable.toString();
+            if (temp.length() == 1 && !temp.contains(".")) {
+                if (TextUtils.equals("9", temp)) {
                     editText.setText("");
                     ToastUtils.toastForShort(context, "仅支持1-8之间正数，保留1位小数");
                     return;
@@ -53,11 +53,8 @@ public class FloorHeightTextWatcher implements TextWatcher {
                 ToastUtils.toastForShort(context, "仅支持1-8之间正数，保留1位小数");
                 return;
             }
-            //保留一位小数
-            String temp = editable.toString();
             int posDot = temp.indexOf(".");//返回指定字符在此字符串中第一次出现处的索引
             int index = editText.getSelectionStart();//获取光标位置
-            //如果包含小数点
             if (posDot >= 0 && temp.length() - 2 > posDot) {
                 editable.delete(index - 1, index);//删除小数点后一位
             }

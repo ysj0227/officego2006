@@ -108,8 +108,11 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
             tvPublishStatus.setText("发布");
         }
         if (bean.getOfficeType() == 2) {//开放工位
+            tvShare.setVisibility(View.GONE);
             tvPublishStatus.setVisibility(View.VISIBLE);
             tvPublishStatus.setText(isOpenSeats ? "关闭" : "重新发布");
+        }else {
+            tvShare.setVisibility(View.VISIBLE);
         }
 
         View.OnClickListener clickListener = view -> {
