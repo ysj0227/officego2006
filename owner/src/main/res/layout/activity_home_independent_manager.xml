@@ -68,7 +68,7 @@
                 android:layout_below="@id/sil_seats"
                 app:editMaxLength="7"
                 app:editTextInputType="numberDecimal"
-                app:leftMarkShow="invisible"
+                app:leftMarkShow="visible"
                 app:leftText="面积"
                 app:rightArrowShow="gone"
                 app:rightOtherImageViewShow="gone"

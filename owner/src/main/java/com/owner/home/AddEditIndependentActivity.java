@@ -5,7 +5,6 @@ import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
-import android.text.InputType;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -219,6 +218,11 @@ public class AddEditIndependentActivity extends BaseMvpActivity<IndependentPrese
             shortTip("请输入工位数");
             return;
         }
+        String area = silArea.getEditTextView().getText().toString();
+        if (TextUtils.isEmpty(area)) {
+            shortTip("请输入面积");
+            return;
+        }
         String rentSingle = silRentSingle.getEditTextView().getText().toString();
         if (TextUtils.isEmpty(rentSingle)) {
             shortTip("请输入租金");
@@ -244,8 +248,6 @@ public class AddEditIndependentActivity extends BaseMvpActivity<IndependentPrese
             return;
         }
         String title = silTitle.getEditTextView().getText().toString();
-        //面积
-        String area = silArea.getEditTextView().getText().toString();
         //净高
         String clearHeight = silStoreyHeight.getEditTextView().getText().toString();
         //免租期
