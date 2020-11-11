@@ -95,7 +95,7 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
         TextView tvEdit = holder.getView(R.id.tv_edit);
         ImageView tvMore = holder.getView(R.id.tv_more);
         //houseStatus0未发布，1发布，2下架,3:待完善
-        ivFlagOff.setVisibility(bean.getHouseStatus() == 2 ? View.VISIBLE : View.GONE);
+        ivFlagOff.setVisibility(bean.getHouseStatus() != 1 ? View.VISIBLE : View.GONE);
         //是否是开放工位
         boolean isOpenSeats = bean.getBtype() == 2 && bean.getOfficeType() == 2 && bean.getHouseStatus() == 1;
         if (bean.getHouseStatus() == 1) {//1发布

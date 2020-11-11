@@ -75,8 +75,6 @@ public class RejectBuildingJointWorkActivity extends BaseMvpActivity<AddPresente
     private static final int TYPE_BANNER = 2;
     @ViewById(resName = "title_bar")
     TitleBarView titleBar;
-    @ViewById(resName = "rl_reason")
-    RelativeLayout rlReason;
     @ViewById(resName = "tv_reason")
     TextView tvReason;
     @ViewById(resName = "sil_name")
@@ -136,11 +134,6 @@ public class RejectBuildingJointWorkActivity extends BaseMvpActivity<AddPresente
         silName.getEditTextView().setHint(flay == 0 ? "请输入网点名称" : "请输入楼盘名称");
         silName.getEditTextView().setHintTextColor(ContextCompat.getColor(context, R.color.text_66_p50));
         tvUploadTitle.setText("上传房产证");
-        //位置
-        int reasonHeight = rlReason.getLayoutParams().height;
-        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) rvRecommendBuilding.getLayoutParams();
-        params.topMargin = (int) (reasonHeight + context.getResources().getDimension(R.dimen.dp_106));
-        rvRecommendBuilding.setLayoutParams(params);
         //搜索列表
         LinearLayoutManager buildingManager = new LinearLayoutManager(context);
         rvRecommendBuilding.setLayoutManager(buildingManager);
@@ -152,6 +145,16 @@ public class RejectBuildingJointWorkActivity extends BaseMvpActivity<AddPresente
         rvUploadImage.setNestedScrollingEnabled(false);
         initData();
         searchBuilding();
+    }
+
+    //位置
+    private void setRecyclerViewTopMargin() {
+        tvReason.post(() -> {
+            int reasonHeight = tvReason.getHeight();
+            RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) rvRecommendBuilding.getLayoutParams();
+            params.topMargin = (int) (reasonHeight + context.getResources().getDimension(R.dimen.dp_56));
+            rvRecommendBuilding.setLayoutParams(params);
+        });
     }
 
     private void initData() {
@@ -407,9 +410,11 @@ public class RejectBuildingJointWorkActivity extends BaseMvpActivity<AddPresente
     @SuppressLint("SetTextI18n")
     @Override
     public void rejectBuildingResultSuccess(RejectBuildingBean data) {
+        //0或空创建的 1关联的
         boolean isBuildId = TextUtils.isEmpty(data.getBuildId()) || TextUtils.equals("0", data.getBuildId());
-        isCreateBuilding = isBuildId;//0创建的 1关联的
+        isCreateBuilding = isBuildId;
         tvReason.setText("驳回原因：" + data.getRemark());
+        setRecyclerViewTopMargin();
         silName.getEditTextView().setText(data.getBuildingName());
         silAddress.getEditTextView().setText(data.getAddress());
         silAddress.getEditTextView().setEnabled(isBuildId);
@@ -425,7 +430,6 @@ public class RejectBuildingJointWorkActivity extends BaseMvpActivity<AddPresente
             uploadImageList.add(uploadImageList.size() - 1, new ImageBean(true, 0, path));
         }
         imageAdapter.notifyDataSetChanged();
-        //获取区域名称
         mPresenter.getDistrictList(data.getDistrictId(), data.getBusinessDistrict());
         rvRecommendBuilding.setVisibility(View.GONE);
     }
@@ -445,7 +449,7 @@ public class RejectBuildingJointWorkActivity extends BaseMvpActivity<AddPresente
         } else {
             CommUtils.showHtmlView(silName.getEditTextView(), bean.getBuildingName());
             CommUtils.showHtmlTextView(silAddress.getEditTextView(), bean.getAddress());
-            silArea.setCenterText(bean.getDistrict()+bean.getBusiness());
+            silArea.setCenterText(bean.getDistrict() + bean.getBusiness());
             introduceImageUrl = bean.getMainPic();
             mBuildId = bean.getBid();
         }

@@ -35,7 +35,7 @@
                 android:id="@+id/sil_seats"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:editTextInputType="phone"
+                app:editDigits="0123456789"
                 app:leftMarkShow="visible"
                 app:leftText="工位数"
                 app:rightArrowShow="gone"

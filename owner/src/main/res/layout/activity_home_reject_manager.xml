@@ -17,31 +17,25 @@
         app:titleText="添加楼盘"
         app:titleTextColor="@color/white" />
 
-    <RelativeLayout
-        android:id="@+id/rl_reason"
+    <TextView
+        android:id="@+id/tv_reason"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/title_bar"
         android:background="@color/common_blue_main_20a"
+        android:paddingLeft="@dimen/dp_18"
         android:paddingTop="@dimen/dp_10"
-        android:paddingBottom="@dimen/dp_10">
-
-        <TextView
-            android:id="@+id/tv_reason"
-            style="@style/marginLeftRight18"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:textColor="@color/caution_primary"
-            android:textSize="@dimen/sp_14" />
-
-    </RelativeLayout>
+        android:paddingRight="@dimen/dp_18"
+        android:paddingBottom="@dimen/dp_10"
+        android:textColor="@color/caution_primary"
+        android:textSize="@dimen/sp_14" />
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nsv_view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@id/ctl_btn"
-        android:layout_below="@id/rl_reason">
+        android:layout_below="@id/tv_reason">
 
         <RelativeLayout
             android:layout_width="match_parent"
