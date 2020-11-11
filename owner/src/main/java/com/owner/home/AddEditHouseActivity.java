@@ -675,7 +675,6 @@ public class AddEditHouseActivity extends BaseMvpActivity<HousePresenter>
 
     @Override
     public void editSaveSuccess() {
-        finish();
         UploadVideoVrActivity_.intent(context).flay(Constants.FLAG_HOUSE).
                 buildingManagerBean(buildingManagerBean).vrUrl(vrUrl).start();
     }
@@ -683,7 +682,6 @@ public class AddEditHouseActivity extends BaseMvpActivity<HousePresenter>
     @Override
     public void addHouseSuccess(String id) {
         shortTip("添加成功");
-        finish();
         UploadVideoVrActivity_.intent(context)
                 .flay(Constants.FLAG_HOUSE)
                 .buildingManagerBean(new BuildingManagerBean(Integer.valueOf(id), buildingManagerBean.getIsTemp()))

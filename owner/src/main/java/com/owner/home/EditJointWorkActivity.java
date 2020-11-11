@@ -732,7 +732,6 @@ public class EditJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
 
     @Override
     public void editSaveSuccess() {
-        finish();
         UploadVideoVrActivity_.intent(context).flay(Constants.FLAG_BUILDING).
                 buildingManagerBean(buildingManagerBean).vrUrl(vrUrl).start();
     }

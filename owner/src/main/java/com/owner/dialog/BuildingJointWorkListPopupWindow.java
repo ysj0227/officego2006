@@ -230,8 +230,6 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
             rlEdit.setOnClickListener(view -> {
                 if (1 == bean.getIsEdit()) {
                     gotoEditActivity(new BuildingManagerBean(bean.getBuildingId(), bean.getIsTemp()));
-                } else {
-                    ToastUtils.toastForShort(context, "暂不可编辑");
                 }
             });
             //房源列表
