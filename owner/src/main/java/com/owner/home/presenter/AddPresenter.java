@@ -147,13 +147,13 @@ public class AddPresenter extends BasePresenter<AddContract.View>
                                         if (Integer.valueOf(business) == data.get(i).getList().get(j).getId()) {
                                             stringBuffer.append(data.get(i).getList().get(j).getArea());
                                             mView.districtListSuccess(stringBuffer.toString(),
-                                                    data.get(i).getDistrict(),
-                                                    data.get(i).getList().get(j).getArea());
+                                                    data.get(i).getDistrictID(),
+                                                    data.get(i).getList().get(j).getId());
                                             return;
                                         }
                                     }
                                 } else {
-                                    mView.districtListSuccess(stringBuffer.toString(), data.get(i).getDistrict(), "");
+                                    mView.districtListSuccess(stringBuffer.toString(), data.get(i).getDistrictID(), 0);
                                     return;
                                 }
                             }

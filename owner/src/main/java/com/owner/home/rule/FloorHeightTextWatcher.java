@@ -39,15 +39,26 @@ public class FloorHeightTextWatcher implements TextWatcher {
         //只能输入一位整数，如果第二位是整数则删除
         try {
             String temp = editable.toString();
-            if (temp.length() == 1 && !temp.contains(".")) {
-                if (TextUtils.equals("9", temp)) {
+            if (temp.length() == 1) {
+                if (TextUtils.equals("9", temp) || temp.contains(".")) {
                     editText.setText("");
                     ToastUtils.toastForShort(context, "仅支持1-8之间正数，保留1位小数");
                     return;
                 }
             }
-            if (editable.toString().length() > 1 &&
-                    !TextUtils.equals(".", editable.toString().substring(1, 2))) {
+            if (temp.length() == 2 && TextUtils.equals("8", temp.substring(0, 1))) {
+                int index = editText.getSelectionStart();
+                editable.delete(index - 1, index);
+                ToastUtils.toastForShort(context, "仅支持1-8之间正数，保留1位小数");
+                return;
+            }
+            if (temp.length() == 2 && !TextUtils.equals(".", temp.substring(1, 2))) {
+                int index = editText.getSelectionStart();//获取光标位置
+                editable.delete(index - 1, index);
+                ToastUtils.toastForShort(context, "仅支持1-8之间正数，保留1位小数");
+                return;
+            }
+            if (temp.length() == 3 && TextUtils.equals(".", temp.substring(1, 2)) && TextUtils.equals(".", temp.substring(2, 3))) {
                 int index = editText.getSelectionStart();//获取光标位置
                 editable.delete(index - 1, index);
                 ToastUtils.toastForShort(context, "仅支持1-8之间正数，保留1位小数");
@@ -57,6 +68,7 @@ public class FloorHeightTextWatcher implements TextWatcher {
             int index = editText.getSelectionStart();//获取光标位置
             if (posDot >= 0 && temp.length() - 2 > posDot) {
                 editable.delete(index - 1, index);//删除小数点后一位
+                ToastUtils.toastForShort(context, "仅支持1-8之间正数，保留1位小数");
             }
         } catch (Exception e) {
             e.printStackTrace();

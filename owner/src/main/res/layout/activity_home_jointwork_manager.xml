@@ -15,7 +15,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:leftDefaultClickEnable="true"
+        app:leftDefaultClickEnable="false"
         app:leftIcon="@drawable/ic_back_light"
         app:titleText="添加共享办公"
         app:titleTextColor="@color/white" />

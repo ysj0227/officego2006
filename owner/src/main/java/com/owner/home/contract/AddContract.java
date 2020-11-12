@@ -24,7 +24,7 @@ public interface AddContract {
 
         void rejectBuildingResultSuccess(RejectBuildingBean data);
 
-        void districtListSuccess(String str,String districtName,String businessName );
+        void districtListSuccess(String str,int districtId,int businessId );
     }
 
     interface Presenter {

@@ -41,6 +41,7 @@
             android:layout_marginTop="@dimen/dp_10"
             android:layout_toEndOf="@id/iv_mark_image_lift"
             android:background="@drawable/edittext_edge_grey2"
+            android:digits="0123456789"
             android:ellipsize="end"
             android:gravity="center"
             android:inputType="phone"
@@ -73,8 +74,8 @@
             tools:ignore="ContentDescription" />
 
         <View
-            style="@style/marginLeftRight18"
             android:id="@+id/bottom_divider"
+            style="@style/marginLeftRight18"
             android:layout_width="match_parent"
             android:layout_height="1px"
             android:layout_alignParentBottom="true"
@@ -120,6 +121,7 @@
             android:layout_marginTop="@dimen/dp_10"
             android:layout_toEndOf="@id/iv_mark_image2"
             android:background="@drawable/edittext_edge_grey2"
+            android:digits="0123456789"
             android:ellipsize="end"
             android:gravity="center"
             android:inputType="phone"

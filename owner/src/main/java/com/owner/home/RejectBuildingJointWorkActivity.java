@@ -36,6 +36,7 @@ import com.officego.commonlib.utils.ImageUtils;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.PhotoUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.TitleBarView;
 import com.officego.commonlib.view.widget.SettingItemLayout;
 import com.owner.R;
@@ -413,14 +414,15 @@ public class RejectBuildingJointWorkActivity extends BaseMvpActivity<AddPresente
         //0或空创建的 1关联的
         boolean isBuildId = TextUtils.isEmpty(data.getBuildId()) || TextUtils.equals("0", data.getBuildId());
         isCreateBuilding = isBuildId;
-        tvReason.setText("驳回原因：" + data.getRemark());
+        tvReason.setText("驳回原因：" + (TextUtils.isEmpty(data.getRemark()) ? "无" : data.getRemark()));
         setRecyclerViewTopMargin();
         silName.getEditTextView().setText(data.getBuildingName());
         silAddress.getEditTextView().setText(data.getAddress());
         silAddress.getEditTextView().setEnabled(isBuildId);
         tvSetFirstImage.setVisibility(isBuildId ? View.VISIBLE : View.GONE);
+        ivDescImage.setVisibility(isBuildId ? View.VISIBLE : View.GONE);
         //封面图
-        if (!TextUtils.isEmpty(data.getMainPic())) {
+        if (isBuildId && !TextUtils.isEmpty(data.getMainPic())) {
             introduceImageUrl = data.getMainPic();
             Glide.with(context).load(introduceImageUrl).into(ivDescImage);
         }
@@ -435,7 +437,9 @@ public class RejectBuildingJointWorkActivity extends BaseMvpActivity<AddPresente
     }
 
     @Override
-    public void districtListSuccess(String str, String districtName, String businessName) {
+    public void districtListSuccess(String str, int districtId, int businessId) {
+        district = districtId;
+        business = businessId;
         silArea.setCenterText(str);
     }
 

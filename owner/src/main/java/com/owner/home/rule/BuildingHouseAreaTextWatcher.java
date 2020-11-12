@@ -50,6 +50,12 @@ public class BuildingHouseAreaTextWatcher implements TextWatcher {
                 ToastUtils.toastForShort(context, "只支持10-100000正整数或保留2位小数");
                 return;
             }
+            if (temp.length() > 6 && TextUtils.equals(temp.substring(0, 6), "100000")) {
+                int index = editText.getSelectionStart();//获取光标位置
+                editable.delete(index - 1, index);//删除后一位
+                ToastUtils.toastForShort(context, "只支持10-100000正整数或保留2位小数");
+                return;
+            }
             //保留2位小数
             int posDot = temp.indexOf(".");//返回指定字符在此字符串中第一次出现处的索引
             int index = editText.getSelectionStart();//获取光标位置

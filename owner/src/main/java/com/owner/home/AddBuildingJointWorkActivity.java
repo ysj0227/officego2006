@@ -397,7 +397,7 @@ public class AddBuildingJointWorkActivity extends BaseMvpActivity<AddPresenter>
     }
 
     @Override
-    public void districtListSuccess(String str, String districtName, String businessName) {
+    public void districtListSuccess(String str, int districtId, int businessId) {
 
     }
 

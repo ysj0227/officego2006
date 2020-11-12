@@ -51,8 +51,14 @@ public class AreaTextWatcher implements TextWatcher {
                 int index = editText.getSelectionStart();//获取光标位置
                 editable.delete(index - 1, index);//删除后一位
                 if (temp.length() < 8) {
-                    ToastUtils.toastForShort(context, "只支持0.1-" + number + "正数数字，保留1位小数");
+                    tip();
                 }
+                return;
+            }
+            if (temp.length() > length && TextUtils.equals(temp.substring(0, length), number + "")) {
+                int index = editText.getSelectionStart();//获取光标位置
+                editable.delete(index - 1, index);//删除后一位
+                tip();
                 return;
             }
             //带小数 保留一位小数
@@ -60,10 +66,14 @@ public class AreaTextWatcher implements TextWatcher {
             int index = editText.getSelectionStart();//获取光标位置
             if (posDot >= 0 && temp.length() - 2 > posDot) {
                 editable.delete(index - 1, index);//删除小数点后一位
-                ToastUtils.toastForShort(context, "只支持0.1-" + number + "正数数字，保留1位小数");
+                tip();
             }
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    private void tip() {
+        ToastUtils.toastForShort(context, "只支持0.1-" + number + "正数数字，保留1位小数");
     }
 }

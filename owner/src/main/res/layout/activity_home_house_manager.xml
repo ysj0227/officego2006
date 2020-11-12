@@ -15,7 +15,7 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:leftDefaultClickEnable="true"
+        app:leftDefaultClickEnable="false"
         app:leftIcon="@drawable/ic_back_light"
         app:titleText="添加办公室"
         app:titleTextColor="@color/white" />
@@ -49,7 +49,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sil_house_title"
-                app:editDigits="0123456789."
+                app:editTextInputType="numberDecimal"
                 app:editMaxLength="9"
                 app:leftMarkShow="visible"
                 app:leftText="面积"
