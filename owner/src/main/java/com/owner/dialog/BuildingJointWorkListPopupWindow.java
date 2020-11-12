@@ -179,6 +179,7 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
          * "status": 2//-1:不是管理员 暂无权限编辑楼盘(临时楼盘),0: 下架(未发布),1: 上架(已发布) ;2:资料待完善 ,
          * 3: 置顶推荐;4:已售完;5:删除;6待审核7已驳回 注意：（IsTemp为1时，status状态标记 1:待审核 -转6 ,2:已驳回 -转7 ）
          */
+        @SuppressLint("SetTextI18n")
         @Override
         public void convert(ViewHolder holder, final BuildingJointWorkBean.ListBean bean) {
             ImageView ivStatus = holder.getView(R.id.iv_status);
@@ -223,7 +224,8 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
             //预览
             rlPreview.setOnClickListener(view -> {
                 if (mUserData != null) {
-                    BundleUtils.ownerGotoDetailsActivity(mContext, true, bean.getBtype(), bean.getBuildingId(), bean.getIsTemp());
+                    BundleUtils.ownerGotoDetailsActivity(mContext, false,true,
+                            bean.getBtype(), bean.getBuildingId(), bean.getIsTemp());
                 }
             });
             //编辑

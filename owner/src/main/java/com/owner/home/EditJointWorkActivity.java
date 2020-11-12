@@ -64,6 +64,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.File;
@@ -88,6 +89,7 @@ public class EditJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
     private final int serviceBaseFlay = 2;
     private static final int REQUEST_GALLERY = 0xa0;
     private static final int REQUEST_CAMERA = 0xa1;
+    private static final int REQUEST_SAVE_PUBLISH = 11000;
 
     @ViewById(resName = "title_bar")
     TitleBarView titleBar;
@@ -719,6 +721,8 @@ public class EditJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
                     uploadImageList.add(uploadImageList.size() - 1, new ImageBean(false, 0, images.get(i)));
                 }
                 mPresenter.uploadImage(Constants.TYPE_IMAGE_BUILDING, uploadImageList);
+            } else if (requestCode == REQUEST_SAVE_PUBLISH) {
+                finish();
             }
         }
     }
@@ -732,7 +736,9 @@ public class EditJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
 
     @Override
     public void editSaveSuccess() {
-        UploadVideoVrActivity_.intent(context).flay(Constants.FLAG_BUILDING).
-                buildingManagerBean(buildingManagerBean).vrUrl(vrUrl).start();
+        UploadVideoVrActivity_.intent(context)
+                .flay(Constants.FLAG_BUILDING)
+                .buildingManagerBean(buildingManagerBean)
+                .vrUrl(vrUrl).startForResult(REQUEST_SAVE_PUBLISH);
     }
 }

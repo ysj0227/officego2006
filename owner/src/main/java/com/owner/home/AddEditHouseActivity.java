@@ -86,6 +86,7 @@ public class AddEditHouseActivity extends BaseMvpActivity<HousePresenter>
     private static final int REQUEST_CAMERA = 0xa1;
     private static final int TYPE_INTRODUCE = 1;
     private static final int TYPE_BANNER = 2;
+    private static final int REQUEST_SAVE_PUBLISH = 11000;
     @ViewById(resName = "title_bar")
     TitleBarView titleBar;
     @ViewById(resName = "tv_upload_title")
@@ -662,6 +663,8 @@ public class AddEditHouseActivity extends BaseMvpActivity<HousePresenter>
                 } else {
                     mPresenter.uploadSingleImage(Constants.TYPE_IMAGE_HOUSE, images.get(0));//介绍图单张上传
                 }
+            } else if (requestCode == REQUEST_SAVE_PUBLISH) {
+                finish();
             }
         }
     }
@@ -675,8 +678,10 @@ public class AddEditHouseActivity extends BaseMvpActivity<HousePresenter>
 
     @Override
     public void editSaveSuccess() {
-        UploadVideoVrActivity_.intent(context).flay(Constants.FLAG_HOUSE).
-                buildingManagerBean(buildingManagerBean).vrUrl(vrUrl).start();
+        UploadVideoVrActivity_.intent(context)
+                .flay(Constants.FLAG_HOUSE)
+                .buildingManagerBean(buildingManagerBean)
+                .vrUrl(vrUrl).startForResult(REQUEST_SAVE_PUBLISH);
     }
 
     @Override
@@ -686,6 +691,6 @@ public class AddEditHouseActivity extends BaseMvpActivity<HousePresenter>
         UploadVideoVrActivity_.intent(context)
                 .flay(Constants.FLAG_HOUSE)
                 .buildingManagerBean(new BuildingManagerBean(Integer.valueOf(id), buildingManagerBean.getIsTemp()))
-                .vrUrl(vrUrl).start();
+                .vrUrl(vrUrl).startForResult(REQUEST_SAVE_PUBLISH);
     }
 }

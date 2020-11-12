@@ -94,6 +94,8 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
     TextView tvTitle;
     @ViewById(R.id.ll_title)
     LinearLayout llTitle;
+    @ViewById(R.id.btn_share)
+    LinearLayout btnShare;
     //banner
     @ViewById(R.id.banner_image)
     Banner bannerImage;
@@ -235,6 +237,9 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) nsvView.getLayoutParams();
             params.bottomMargin = 10;
             nsvView.setLayoutParams(params);
+            if (BundleUtils.ownerIsOff(this)){
+                btnShare.setVisibility(View.GONE);
+            }
         }
         buildingIntroduceInfo();
         centerPlayIsShow(true);

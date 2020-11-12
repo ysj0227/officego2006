@@ -83,8 +83,10 @@ public class UploadVideoVrActivity extends BaseMvpActivity<UploadVideoVrPresente
 
     @Override
     public void publishSuccess() {
-        finish();
         notificationUpdateHouse();
+        Intent intent = getIntent();
+        setResult(RESULT_OK, intent);
+        finish();
     }
 
     @Override
@@ -97,5 +99,4 @@ public class UploadVideoVrActivity extends BaseMvpActivity<UploadVideoVrPresente
         BaseNotification.newInstance().postNotificationName(
                 CommonNotifications.updateHouseSuccess, "updateHouseSuccess");
     }
-
 }

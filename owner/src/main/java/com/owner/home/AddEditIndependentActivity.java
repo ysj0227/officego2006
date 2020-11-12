@@ -74,6 +74,7 @@ public class AddEditIndependentActivity extends BaseMvpActivity<IndependentPrese
     private static final int REQUEST_CAMERA = 0xa1;
     private static final int TYPE_INTRODUCE = 1;
     private static final int TYPE_BANNER = 2;
+    private static final int REQUEST_SAVE_PUBLISH = 11000;
 
     @ViewById(resName = "title_bar")
     TitleBarView titleBar;
@@ -106,10 +107,6 @@ public class AddEditIndependentActivity extends BaseMvpActivity<IndependentPrese
     SettingItemLayout silConditioned;
     @ViewById(resName = "sil_conditioned_fee")
     SettingItemLayout silConditionedFee;
-    //    @ViewById(resName = "sil_car_num")
-//    SettingItemLayout silCarNum;
-//    @ViewById(resName = "sil_car_fee")
-//    SettingItemLayout silCarFee;
     @ViewById(resName = "sil_storey_height")
     SettingItemLayout silStoreyHeight;
     //介绍
@@ -146,7 +143,7 @@ public class AddEditIndependentActivity extends BaseMvpActivity<IndependentPrese
     //图片上传类型
     private int mUploadType;
     //vr url
-    private String vrUrl="";
+    private String vrUrl = "";
 
     @AfterViews
     void init() {
@@ -165,7 +162,7 @@ public class AddEditIndependentActivity extends BaseMvpActivity<IndependentPrese
         titleBar.setAppTitle(buildingFlag == Constants.BUILDING_FLAG_ADD ? "添加独立办公室" : "编辑独立办公室");
         tvUploadTitle.setText("上传办公室图片");
         tvDesTitle.setText("户型格局介绍");
-        if (!TextUtils.isEmpty(Constants.FLOOR_COUNTS)){
+        if (!TextUtils.isEmpty(Constants.FLOOR_COUNTS)) {
             tvCountsFloor.setText("总" + Constants.FLOOR_COUNTS + "层");
         }
         //上传图片
@@ -241,7 +238,7 @@ public class AddEditIndependentActivity extends BaseMvpActivity<IndependentPrese
             return;
         }
         if (uploadImageList == null || uploadImageList.size() <= 1) {
-            shortTip("请上传房源图片");
+            shortTip("请上传办公室图片");
             return;
         }
         String title = silTitle.getEditTextView().getText().toString();
@@ -279,7 +276,6 @@ public class AddEditIndependentActivity extends BaseMvpActivity<IndependentPrese
         ivCloseScan.setVisibility(View.GONE);
     }
 
-    //web 去编辑
     @Click(resName = "btn_scan")
     void toWebEditOnClick() {
         if (!PermissionUtils.checkSDCardCameraPermission(this)) {
@@ -414,6 +410,8 @@ public class AddEditIndependentActivity extends BaseMvpActivity<IndependentPrese
                 } else {
                     mPresenter.uploadSingleImage(Constants.TYPE_IMAGE_HOUSE, images.get(0));//介绍图单张上传
                 }
+            } else if (requestCode == REQUEST_SAVE_PUBLISH) {
+                finish();
             }
         }
     }
@@ -535,8 +533,10 @@ public class AddEditIndependentActivity extends BaseMvpActivity<IndependentPrese
 
     @Override
     public void editSaveSuccess() {
-        UploadVideoVrActivity_.intent(context).flay(Constants.FLAG_HOUSE).
-                buildingManagerBean(buildingManagerBean).vrUrl(vrUrl).start();
+        UploadVideoVrActivity_.intent(context)
+                .flay(Constants.FLAG_HOUSE)
+                .buildingManagerBean(buildingManagerBean)
+                .vrUrl(vrUrl).startForResult(REQUEST_SAVE_PUBLISH);
     }
 
     @Override
@@ -546,7 +546,7 @@ public class AddEditIndependentActivity extends BaseMvpActivity<IndependentPrese
         UploadVideoVrActivity_.intent(context)
                 .flay(Constants.FLAG_HOUSE)
                 .buildingManagerBean(new BuildingManagerBean(Integer.valueOf(id), buildingManagerBean.getIsTemp()))
-                .vrUrl(vrUrl).start();
+                .vrUrl(vrUrl).startForResult(REQUEST_SAVE_PUBLISH);
     }
 
 }

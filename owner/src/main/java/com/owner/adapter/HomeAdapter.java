@@ -88,16 +88,18 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
         }
     }
 
+    //houseStatus0未发布，1发布，2下架,3:待完善
     private void onClick(ViewHolder holder, HouseBean.ListBean bean) {
         ImageView ivFlagOff = holder.getView(R.id.iv_flag_off);
         TextView tvPublishStatus = holder.getView(R.id.tv_publish_status);
         TextView tvShare = holder.getView(R.id.tv_share);
         TextView tvEdit = holder.getView(R.id.tv_edit);
         ImageView tvMore = holder.getView(R.id.tv_more);
-        //houseStatus0未发布，1发布，2下架,3:待完善
-        ivFlagOff.setVisibility(bean.getHouseStatus() != 1 ? View.VISIBLE : View.GONE);
-        //是否是开放工位
+        //分享
+        tvShare.setVisibility(bean.getBtype() == 2 && bean.getOfficeType() == 2 ? View.GONE : View.VISIBLE);
+        //开放工位
         boolean isOpenSeats = bean.getBtype() == 2 && bean.getOfficeType() == 2 && bean.getHouseStatus() == 1;
+
         if (bean.getHouseStatus() == 1) {//1发布
             tvPublishStatus.setVisibility(View.GONE);
         } else if (bean.getHouseStatus() == 2) {//2下架
@@ -107,12 +109,13 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
             tvPublishStatus.setVisibility(View.VISIBLE);
             tvPublishStatus.setText("发布");
         }
-        if (bean.getOfficeType() == 2) {//开放工位
-            tvShare.setVisibility(View.GONE);
+        //开放工位
+        if (bean.getBtype() == 2 && bean.getOfficeType() == 2) {
             tvPublishStatus.setVisibility(View.VISIBLE);
             tvPublishStatus.setText(isOpenSeats ? "关闭" : "重新发布");
-        }else {
-            tvShare.setVisibility(View.VISIBLE);
+            ivFlagOff.setVisibility(isOpenSeats ? View.GONE : View.VISIBLE);
+        } else {
+            ivFlagOff.setVisibility(bean.getHouseStatus() == 2 ? View.VISIBLE : View.GONE);
         }
 
         View.OnClickListener clickListener = view -> {
@@ -120,6 +123,8 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
             if (id == R.id.tv_share) {
                 if (bean.getHouseStatus() == 2) {
                     ToastUtils.toastForShort(context, "房源已下架，请先上架后再分享");
+                } else if (bean.getHouseStatus() == 0 || bean.getHouseStatus() == 3) {
+                    ToastUtils.toastForShort(context, "房源未发布，请先发布后再分享");
                 } else {
                     share(bean);
                 }
@@ -139,15 +144,16 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
         tvShare.setOnClickListener(clickListener);
         tvEdit.setOnClickListener(clickListener);
         tvMore.setOnClickListener(clickListener);
-        //房源详情
-        holder.itemView.setOnClickListener(view -> {
-                    if (Constants.TYPE_JOINTWORK == bean.getBtype() && bean.getOfficeType() == 2) {
-                        return;
-                    }
-                    BundleUtils.ownerGotoDetailsActivity(mContext, false,
-                            bean.getBtype(), bean.getHouseId(), bean.getIsTemp());
-                }
-        );
+        holder.itemView.setOnClickListener(view -> gotoDetailsActivity(bean));
+    }
+
+    //房源详情
+    private void gotoDetailsActivity(HouseBean.ListBean bean) {
+        if (Constants.TYPE_JOINTWORK == bean.getBtype() && bean.getOfficeType() == 2) {
+            return;
+        }
+        BundleUtils.ownerGotoDetailsActivity(mContext, bean.getHouseStatus() !=1, false,
+                bean.getBtype(), bean.getHouseId(), bean.getIsTemp());
     }
 
     //编辑房源

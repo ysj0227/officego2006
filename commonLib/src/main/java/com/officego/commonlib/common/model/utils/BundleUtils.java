@@ -93,7 +93,8 @@ public class BundleUtils {
     }
 
     //业主-首页进入详情********************************************
-    public static void ownerGotoDetailsActivity(Context context, boolean isBuildOrHouse, int btype, int id, int isTemp) {
+    //boolean isOff 是否下架
+    public static void ownerGotoDetailsActivity(Context context, boolean isOff, boolean isBuildOrHouse, int btype, int id, int isTemp) {
         String pathClass = "com.officego.ui.home.";
         ComponentName comp;
         Intent intent = new Intent();
@@ -113,6 +114,7 @@ public class BundleUtils {
             intent.putExtra("ownerPreviewHouse", BundleUtils.houseMessage(btype, id));//房源id
         }
         intent.putExtra("ownerIsTemp", isTemp);//业主进入楼盘详情参数
+        intent.putExtra("isOff", isOff);//是否下架
         if (!(context instanceof Activity)) {
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         }
@@ -146,5 +148,13 @@ public class BundleUtils {
             return intent.getIntExtra("ownerIsTemp", 0);
         }
         return 0;
+    } //业主首页进入详情使用的 isTemp 0正式1临时
+
+    public static boolean ownerIsOff(Activity context) {
+        Intent intent = context.getIntent();
+        if (intent != null && intent.hasExtra("isOff")) {
+            return intent.getBooleanExtra("isOff", false);
+        }
+        return false;
     }
 }
