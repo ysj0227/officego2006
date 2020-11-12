@@ -63,7 +63,6 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
-import org.androidannotations.annotations.FocusChange;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.File;
@@ -172,7 +171,7 @@ public class AddEditHouseActivity extends BaseMvpActivity<HousePresenter>
     //删除的图片
     private List<String> deleteList = new ArrayList<>();
     //vr url
-    private String vrUrl="";
+    private String vrUrl = "";
 
     @AfterViews
     void init() {
@@ -196,7 +195,7 @@ public class AddEditHouseActivity extends BaseMvpActivity<HousePresenter>
         tvUploadTitle.setText("上传办公室图片");
         tvHouseCharacteristic.setText("办公室特色");
         tvDesTitle.setText("户型格局介绍");
-        if (!TextUtils.isEmpty(Constants.FLOOR_COUNTS)){
+        if (!TextUtils.isEmpty(Constants.FLOOR_COUNTS)) {
             tvCountsFloor.setText("总" + Constants.FLOOR_COUNTS + "层");
         }
         //特色
@@ -373,15 +372,15 @@ public class AddEditHouseActivity extends BaseMvpActivity<HousePresenter>
         dialog.showWithOutTouchable(false);
     }
 
-    @FocusChange(resName = "et_seat_start")
-    void onStartSeatFocusChange(View view, boolean isFocus) {
-        if (isFocus) setSeats();
-    }
-
-    @FocusChange(resName = "et_seat_end")
-    void onEndSeatFocusChange(View view, boolean isFocus) {
-        if (isFocus) setSeats();
-    }
+//    @FocusChange(resName = "et_seat_start")
+//    void onStartSeatFocusChange(View view, boolean isFocus) {
+//        if (isFocus) setSeats();
+//    }
+//
+//    @FocusChange(resName = "et_seat_end")
+//    void onEndSeatFocusChange(View view, boolean isFocus) {
+//        if (isFocus) setSeats();
+//    }
 
     @Click(resName = "tv_rent_sum_tip")
     void textRentSumTipOnClick() {
@@ -402,6 +401,12 @@ public class AddEditHouseActivity extends BaseMvpActivity<HousePresenter>
     }
 
     private void itemListener() {
+        //面积
+        silArea.getEditTextView().setOnFocusChangeListener((view, b) -> {
+            if (!b) {
+                setSeats();
+            }
+        });
         //租金总价
         silRentSum.getEditTextView().setOnFocusChangeListener((view, b) -> {
             String area = silArea.getEditTextView().getText().toString();//整数
@@ -420,15 +425,11 @@ public class AddEditHouseActivity extends BaseMvpActivity<HousePresenter>
 
     @SuppressLint("SetTextI18n")
     private void setSeats() {
-        String seatStart = etSeatStart.getText().toString();
-        String seatEnd = etSeatEnd.getText().toString();
         String area = silArea.getEditTextView().getText().toString();
         if (!TextUtils.isEmpty(area)) {
-            if (TextUtils.isEmpty(seatStart) && TextUtils.isEmpty(seatEnd)) {
-                recordArea = silArea.getEditTextView().getText().toString();
-                etSeatStart.setText((int)(Float.valueOf(area) / 5) + "");
-                etSeatEnd.setText((int)(Float.valueOf(area) / 3) + "");
-            }
+            recordArea = silArea.getEditTextView().getText().toString();
+            etSeatStart.setText((int) (Float.valueOf(area) / 5) + "");
+            etSeatEnd.setText((int) (Float.valueOf(area) / 3) + "");
         }
     }
 
