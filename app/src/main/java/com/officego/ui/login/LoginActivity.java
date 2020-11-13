@@ -1,17 +1,12 @@
 package com.officego.ui.login;
 
 import android.annotation.SuppressLint;
-import android.app.Dialog;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.text.Html;
 import android.text.TextUtils;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.Window;
-import android.view.WindowManager;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -26,7 +21,6 @@ import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.sensors.SensorsTrack;
-import com.officego.commonlib.constant.AppConfig;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NotificationUtil;
@@ -35,7 +29,9 @@ import com.officego.commonlib.utils.RegexUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.ClearableEditText;
+import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.h5.WebViewActivity_;
+import com.officego.ui.dialog.TestLoginDialog;
 import com.officego.ui.login.contract.LoginContract;
 import com.officego.ui.login.presenter.LoginPresenter;
 import com.officego.utils.MonitorEditTextUtils;
@@ -50,6 +46,10 @@ import org.androidannotations.annotations.ViewById;
 import java.util.Locale;
 import java.util.Objects;
 
+import cn.jiguang.verifysdk.api.AuthPageEventListener;
+import cn.jiguang.verifysdk.api.JVerificationInterface;
+import cn.jiguang.verifysdk.api.LoginSettings;
+import cn.jiguang.verifysdk.api.VerifyListener;
 import io.rong.pushperm.ResultCallback;
 import io.rong.pushperm.RongPushPremissionsCheckHelper;
 
@@ -158,6 +158,10 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
      */
     @Click(R.id.btn_login_no_password)
     void loginNoPasswordClick() {
+        loginOnlyPhone();
+    }
+
+    private void loginOnlyPhone() {
         if (isFastClick(1500)) {
             return;
         }
@@ -165,22 +169,51 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         SensorsTrack.login();
         //手机权限
         if (PermissionUtils.checkPhonePermission(this)) {
-            loginOnlyPhone();
-        }
-    }
-
-    private void loginOnlyPhone() {
-        if (!TextUtils.isEmpty(CommonHelper.getPhoneNum(context))) {
-            mPresenter.loginOnlyPhone(CommonHelper.getPhoneNum(context));
-        } else {
-            shortTip(R.string.str_cannot_get_mine_phone_use_sms);
+            if (!TextUtils.isEmpty(CommonHelper.getPhoneNum(context))) {
+                mPresenter.loginOnlyPhone(CommonHelper.getPhoneNum(context));
+            } else {
+                shortTip(R.string.str_cannot_get_mine_phone_use_sms);
+            }
         }
     }
 
     @Click(R.id.btn_test)
     void testClick() {
-        testDialog(context);
+        new TestLoginDialog(context,mPresenter);
+//        authLogin();
     }
+
+    //sdk集成页面
+//    private void authLogin() {
+//        showLoadingDialog();
+//        LoginSettings settings = new LoginSettings();
+//        settings.setAutoFinish(true);//设置登录完成后是否自动关闭授权页
+//        settings.setTimeout(15 * 1000);//设置超时时间，单位毫秒。 合法范围（0，30000],范围以外默认设置为10000
+//        settings.setAuthPageEventListener(new AuthPageEventListener() {
+//            @Override
+//            public void onEvent(int cmd, String msg) {
+//                LogCat.e(TAG, "cmd=" + cmd + "  msg=" + msg);
+//                //do something...
+//            }
+//        });//设置授权页事件监听
+//        JVerificationInterface.loginAuth(context, settings, new VerifyListener() {
+//            @Override
+//            public void onResult(int code, String content, String operator) {
+//                hideLoadingDialog();
+//                if (code == 6000) {
+//                    CommonDialog dialog = new CommonDialog.Builder(context)
+//                            .setTitle("code=" + code + ", token=" + content + " ,operator=" + operator)
+//                            .setConfirmButton("我知道了", (dialog12, which) -> {
+//                                dialog12.dismiss();
+//                            }).create();
+//                    dialog.showWithOutTouchable(true);
+//                    LogCat.e(TAG, "1111111 code=" + code + ", token=" + content + " ,operator=" + operator);
+//                } else {
+//                    LogCat.e(TAG, "code=" + code + ", message=" + content);
+//                }
+//            }
+//        });
+//    }
 
     @Click(R.id.tv_get_code)
     void getCodeClick() {
@@ -273,7 +306,6 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         tvGetCode.setClickable(true);
     }
 
-    //倒计时函数
     private class MyCountDownTimer extends CountDownTimer {
         MyCountDownTimer(long millisInFuture, long countDownInterval) {
             super(millisInFuture, countDownInterval);
@@ -344,36 +376,4 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         });
     }
 
-    /**
-     * 测试登录
-     */
-    public void testDialog(Context context) {
-        Dialog dialog = new Dialog(context, R.style.BottomDialog);
-        View viewLayout = LayoutInflater.from(context).inflate(R.layout.dialog_test_login, null);
-        dialog.setContentView(viewLayout);
-        Window dialogWindow = dialog.getWindow();
-        if (dialogWindow != null) {
-            WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-            lp.width = 900;
-            dialogWindow.setAttributes(lp);
-            ClearableEditText cetInfact = viewLayout.findViewById(R.id.cet_infact);
-            ClearableEditText cetUrl = viewLayout.findViewById(R.id.cet_url);
-            ClearableEditText cetTest = viewLayout.findViewById(R.id.cet_test);
-            ClearableEditText cetCode = viewLayout.findViewById(R.id.cet_code);
-
-            Button btnGo = viewLayout.findViewById(R.id.btn_go);
-            btnGo.setOnClickListener(v -> {
-                if (!TextUtils.isEmpty(cetInfact.getText().toString().trim())) {
-                    AppConfig.APP_URL = cetInfact.getText().toString().trim() + "/";
-                }
-                if (!TextUtils.isEmpty(cetUrl.getText().toString().trim())) {
-                    AppConfig.APP_URL_MAIN = cetUrl.getText().toString().trim() + "/";
-                }
-                mPresenter.login(cetTest.getText().toString().trim(), cetCode.getText().toString().trim());
-                dialog.dismiss();
-            });
-            dialog.setCancelable(true);
-            dialog.show();
-        }
-    }
 }

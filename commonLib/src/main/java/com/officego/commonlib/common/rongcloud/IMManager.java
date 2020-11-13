@@ -87,8 +87,7 @@ public class IMManager {
         initSendReceiveMessageListener();
         //初始化接收消息监听
         initReceiveMessageWrapperListener();
-        // 缓存连接
-//        cacheConnectIM();
+
     }
 
     //融云推送
@@ -189,13 +188,11 @@ public class IMManager {
      * 初始化已读回执类型
      */
     private void initReadReceiptConversation() {
-        // 将私聊，群组加入消息已读回执
-        Conversation.ConversationType[] types = new Conversation.ConversationType[]{
-                Conversation.ConversationType.PRIVATE,
-                Conversation.ConversationType.GROUP,
-                Conversation.ConversationType.ENCRYPTED
+        Conversation.ConversationType[] types = new Conversation.ConversationType[] {
+                Conversation.ConversationType.PRIVATE
         };
         RongIM.getInstance().setReadReceiptConversationTypeList(types);
+
     }
 
     /**

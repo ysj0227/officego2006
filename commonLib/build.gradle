@@ -154,6 +154,7 @@ dependencies {
     api 'com.huawei.android.hms:push:2.6.1.301'
 
     //vivo push libs
+
     //oppo push libs
 
     // 神策Sensors Analytics SDK 依赖
@@ -172,5 +173,7 @@ dependencies {
 
     //    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
     api 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
-
+//    //jpush 一键登录
+//    api files('libs/jcore-android-2.5.5.jar')
+//    api files('libs/jverification-android-not_support_dynamic-release-2.6.7.jar')
 }

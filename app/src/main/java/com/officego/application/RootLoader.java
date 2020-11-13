@@ -40,6 +40,8 @@ public class RootLoader {
     public void init() {
         String env = Utils.getMetaValue(context, "ENV_DATA", AppConfig.ENV_TEST);
         new AppConfig().init(context, env);
+        //JPush一键登录
+//        quickLogin();
         //create file
         FileHelper.getInstance();
         handleSSLHandshake();
@@ -83,9 +85,20 @@ public class RootLoader {
         SensorsTrack.dynamicSuperProperties();
     }
 
-    /**
-     * Glide加载https部分失败，设置信任证书
-     */
+    //JPush一键登录
+//    private void quickLogin() {
+//        JVerificationInterface.setDebugMode(true);
+//        final long start = System.currentTimeMillis();
+//        JVerificationInterface.init(context, new RequestCallback<String>() {
+//            @Override
+//            public void onResult(int code, String result) {
+//                LogCat.d("RootLoader", "[JPush init] code = " + code + " result = " +
+//                        result + " consists = " + (System.currentTimeMillis() - start));
+//            }
+//        });
+//    }
+
+    //Glide加载https部分失败，设置信任证书
     private void handleSSLHandshake() {
         try {
             TrustManager[] trustAllCerts = new TrustManager[]{new X509TrustManager() {
