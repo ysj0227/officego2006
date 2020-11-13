@@ -179,7 +179,6 @@ public class IMManager {
                         //connectIM(token, callback);
                     }
                 }
-
             }
         });
     }
@@ -192,7 +191,6 @@ public class IMManager {
                 Conversation.ConversationType.PRIVATE
         };
         RongIM.getInstance().setReadReceiptConversationTypeList(types);
-
     }
 
     /**
