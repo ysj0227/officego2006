@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/common_divider">
@@ -15,112 +14,11 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <RelativeLayout
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_60"
-            android:layout_alignParentBottom="true">
+        <include layout="@layout/include_owner_home_title" />
 
-            <RelativeLayout
-                android:id="@+id/iv_left_more"
-                android:layout_width="@dimen/dp_60"
-                android:layout_height="@dimen/dp_60">
-
-                <ImageView
-                    android:layout_width="@dimen/dp_20"
-                    android:layout_height="@dimen/dp_16"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/dp_18"
-                    android:background="@mipmap/ic_expland"
-                    android:visibility="visible"
-                    tools:ignore="ContentDescription" />
-            </RelativeLayout>
-
-            <TextView
-                android:id="@+id/tv_expand"
-                android:layout_width="@dimen/dp_60"
-                android:layout_height="match_parent"
-                android:layout_marginStart="@dimen/dp_18"
-                android:gravity="center_vertical"
-                android:text="@string/str_expand"
-                android:textColor="@color/white"
-                android:textSize="@dimen/sp_16"
-                android:textStyle="bold"
-                android:visibility="gone"
-                tools:ignore="ContentDescription" />
-
-            <TextView
-                android:id="@+id/tv_home_title"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:layout_centerVertical="true"
-                android:layout_marginLeft="@dimen/dp_55"
-                android:layout_marginRight="@dimen/dp_55"
-                android:ellipsize="end"
-                android:singleLine="true"
-                android:textColor="@color/white"
-                android:textSize="@dimen/sp_16"
-                android:textStyle="bold" />
-
-            <ImageView
-                android:visibility="gone"
-                android:id="@+id/iv_add"
-                android:layout_width="@dimen/dp_20"
-                android:layout_height="@dimen/dp_20"
-                android:layout_alignParentEnd="true"
-                android:layout_centerVertical="true"
-                android:layout_marginEnd="@dimen/dp_18"
-                android:background="@mipmap/ic_add_white"
-                tools:ignore="ContentDescription" />
-        </RelativeLayout>
     </RelativeLayout>
 
-    <RelativeLayout
-        android:id="@+id/rl_rv_record"
-        style="@style/marginLeftRight18"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/dp_50"
-        android:layout_marginTop="@dimen/dp_8"
-        android:background="@drawable/bg_shape_white12"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/rl_title">
-
-        <ImageView
-            android:id="@+id/iv_vr"
-            android:layout_width="@dimen/dp_26"
-            android:layout_height="@dimen/dp_24"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/dp_8"
-            android:background="@mipmap/ic_vr_record" />
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/dp_10"
-            android:layout_toEndOf="@id/iv_vr"
-            android:text="现在预约，即可享受优惠！"
-            android:textColor="@color/text_66"
-            android:textSize="@dimen/sp_14" />
-
-        <Button
-            android:id="@+id/btn_vr_record"
-            android:layout_width="@dimen/dp_80"
-            android:layout_height="@dimen/dp_30"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="@dimen/dp_8"
-            android:background="@drawable/btn_common_bg_primary"
-            android:gravity="center"
-            android:text="预约VR录制"
-            android:textColor="@color/white"
-            android:textSize="@dimen/sp_12"
-            android:visibility="visible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-    </RelativeLayout>
+    <include layout="@layout/include_owner_vr_record" />
 
     <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
         android:id="@+id/bga_refresh"
@@ -142,6 +40,39 @@
             android:layout_height="wrap_content" />
 
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <include layout="@layout/include_owner_to_identity" />
+
+    <RelativeLayout
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:background="@color/text_f7"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/rl_title">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_identity_step"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+
+        <TextView
+            android:id="@+id/tv_reject_reason"
+            style="@style/marginLeftRight18"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/rv_identity_step"
+            android:layout_centerVertical="true"
+            android:background="@color/text_ea"
+            android:gravity="center_vertical"
+            android:paddingStart="@dimen/dp_10"
+            android:paddingTop="@dimen/dp_12"
+            android:paddingBottom="@dimen/dp_12"
+            android:textColor="@color/caution_primary"
+            android:textSize="@dimen/sp_13"
+            android:visibility="gone" />
+    </RelativeLayout>
 
     <TextView
         android:id="@+id/tv_no_data"

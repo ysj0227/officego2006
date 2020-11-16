@@ -32,8 +32,11 @@ import com.officego.commonlib.view.OnLoadMoreListener;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
 import com.owner.adapter.HomeAdapter;
+import com.owner.adapter.IdentityStatusAdapter;
 import com.owner.dialog.BuildingJointWorkListPopupWindow;
 import com.owner.dialog.HomeMoreDialog;
+import com.owner.dialog.HouseLeadDialog;
+import com.owner.dialog.IdentityStepDialog;
 import com.owner.h5.WebViewActivity_;
 import com.owner.home.contract.HomeContract;
 import com.owner.home.presenter.HomePresenter;
@@ -78,6 +81,8 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     SwipeRefreshLayout mSwipeRefreshLayout;
     @ViewById(resName = "rv_view")
     RecyclerView rvView;
+    @ViewById(resName = "rv_identity_step")
+    RecyclerView rvIdentityStep;
     @ViewById(resName = "tv_no_data")
     TextView tvNoData;
     @ViewById(resName = "rl_exception")
@@ -107,17 +112,34 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         mPresenter = new HomePresenter();
         mPresenter.attachView(this);
         StatusBarUtils.setStatusBarFullTransparent(mActivity);
+        initViews();
+        initRefresh();
+        if (NetworkUtils.isNetworkAvailable(mActivity)) {
+            new VersionDialog(mActivity);
+            mPresenter.getUserInfo();
+            fragmentCheckSDCardCameraPermission();
+            new IdentityStepDialog(mActivity);
+//            new HouseLeadDialog(mActivity);
+//            checkStatusOk();
+        } else {
+            netException();
+        }
+    }
+
+    private void initViews() {
         CommonHelper.setViewGroupLayoutParams(mActivity, rlTitle);
         LinearLayoutManager layoutManager = new LinearLayoutManager(getContext());
         rvView.setLayoutManager(layoutManager);
-        initRefresh();
-        if (!NetworkUtils.isNetworkAvailable(mActivity)) {
-            netException();
-            return;
+        LinearLayoutManager layoutManager1 = new LinearLayoutManager(getContext());
+        rvIdentityStep.setLayoutManager(layoutManager1);
+    }
+    private void checkStatusOk(){
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < 3; i++) {
+            list.add("");
         }
-        new VersionDialog(mActivity);
-        mPresenter.getUserInfo();
-        fragmentCheckSDCardCameraPermission();
+        IdentityStatusAdapter statusAdapter = new IdentityStatusAdapter(mActivity, list,2);
+        rvIdentityStep.setAdapter(statusAdapter);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -216,7 +238,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         tvHomeTitle.setVisibility(View.VISIBLE);
         ivAdd.setVisibility(View.VISIBLE);
         tvExpand.setVisibility(View.GONE);
-        if (mData!=null){
+        if (mData != null) {
             ivAdd.setVisibility(mData.isAddHouse() ? View.VISIBLE : View.GONE);
         }
     }
@@ -299,7 +321,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
 
     //获取当前楼盘的信息
     private void currentBuildingMessage(BuildingJointWorkBean.ListBean bean) {
-        Constants.FLOOR_COUNTS=bean.getTotalFloor();
+        Constants.FLOOR_COUNTS = bean.getTotalFloor();
         ivAdd.setVisibility(bean.isAddHouse() ? View.VISIBLE : View.GONE);
         tvHomeTitle.setText(bean.getBuildingName());
         buildingId = bean.getBuildingId();

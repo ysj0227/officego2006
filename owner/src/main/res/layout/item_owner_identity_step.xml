@@ -1,0 +1,72 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/rl_status"
+        android:layout_width="@dimen/dp_26"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_18">
+
+        <ImageView
+            android:id="@+id/iv_line_up"
+            android:layout_width="@dimen/dp_25"
+            android:layout_height="@dimen/dp_25"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/bg_dash_blue"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/iv_status"
+            android:layout_width="@dimen/dp_26"
+            android:layout_height="@dimen/dp_26"
+            android:layout_below="@id/iv_line_up"
+            android:background="@mipmap/ic_identity_ok"
+            tools:ignore="ContentDescription" />
+
+        <ImageView
+            android:id="@+id/iv_line_bottom"
+            android:layout_width="@dimen/dp_25"
+            android:layout_height="@dimen/dp_25"
+            android:layout_below="@id/iv_status"
+            android:layout_centerHorizontal="true"
+            android:background="@drawable/bg_dash_blue"
+            tools:ignore="ContentDescription" />
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/tv_status"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_12"
+        android:layout_marginTop="@dimen/dp_22"
+        android:layout_toEndOf="@id/rl_status"
+        android:textColor="@color/text_33"
+        android:textSize="@dimen/sp_14" />
+
+    <TextView
+        android:id="@+id/tv_date"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_status"
+        android:layout_marginStart="@dimen/dp_12"
+        android:layout_toEndOf="@id/rl_status"
+        android:textColor="@color/text_66_p50"
+        android:textSize="@dimen/sp_12" />
+
+    <Button
+        android:id="@+id/btn_identity"
+        style="@style/BtnBigEdgeTransparent"
+        android:layout_width="@dimen/dp_65"
+        android:layout_height="@dimen/dp_25"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="@dimen/dp_28"
+        android:text="重新认证"
+        android:textColor="@color/common_blue_main"
+        android:textSize="@dimen/sp_12"
+        android:visibility="gone" />
+
+</RelativeLayout>

@@ -26,6 +26,7 @@
     <color name="text_75">#757575</color>          <!--hint-->
     <color name="text_f2">#f2f2f2</color>          <!--hint-->
     <color name="text_e5">#E5E9EF</color>          <!--hint-->
+    <color name="text_ea">#FFEAEA</color>          <!--hint-->
     <color name="divider_gray">#DCE2EB</color>          <!--hint-->
     <color name="pop_background">#99000000</color>          <!--透明度-->
     <!--其他通用-->

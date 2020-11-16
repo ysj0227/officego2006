@@ -29,7 +29,6 @@ import com.officego.commonlib.utils.RegexUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.ClearableEditText;
-import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.h5.WebViewActivity_;
 import com.officego.ui.dialog.TestLoginDialog;
 import com.officego.ui.login.contract.LoginContract;
@@ -46,10 +45,6 @@ import org.androidannotations.annotations.ViewById;
 import java.util.Locale;
 import java.util.Objects;
 
-import cn.jiguang.verifysdk.api.AuthPageEventListener;
-import cn.jiguang.verifysdk.api.JVerificationInterface;
-import cn.jiguang.verifysdk.api.LoginSettings;
-import cn.jiguang.verifysdk.api.VerifyListener;
 import io.rong.pushperm.ResultCallback;
 import io.rong.pushperm.RongPushPremissionsCheckHelper;
 
