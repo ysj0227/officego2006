@@ -43,7 +43,7 @@ public class HomeMoreDialog {
         this.context = context;
         this.bean = bean;
         this.position = position;
-        isOpenSeats = (bean.getBtype() == 2 && bean.getOfficeType() == 2) || bean.getHouseStatus() == 2; //0未发布，1发布，2下架,3:待完善
+        isOpenSeats = bean.getBtype() == 2 && bean.getOfficeType() == 2; //0未发布，1发布，2下架,3:待完善
         isPublish = bean.getHouseStatus() == 1;
         moreDialog(context);
     }
@@ -79,10 +79,10 @@ public class HomeMoreDialog {
         viewLayout.findViewById(R.id.rl_exit).setOnClickListener(v -> dialog.dismiss());
         TextView tvOff = viewLayout.findViewById(R.id.tv_off);
         TextView tvDelete = viewLayout.findViewById(R.id.tv_delete);
-        if (isOpenSeats) {
+        if (isOpenSeats || !isPublish) {
             tvOff.setVisibility(View.GONE);
         } else {
-            tvOff.setVisibility(isPublish ? View.VISIBLE : View.GONE);
+            tvOff.setVisibility(View.VISIBLE);
         }
         tvOff.setOnClickListener(view -> {
             dialog.dismiss();
