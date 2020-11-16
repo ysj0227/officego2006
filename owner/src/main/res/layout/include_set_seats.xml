@@ -14,12 +14,12 @@
         android:layout_marginTop="@dimen/dp_10"
         android:text="可置工位"
         android:textColor="@color/text_33"
-        android:textSize="@dimen/sp_15" />
+        android:textSize="@dimen/sp_14" />
 
     <ImageView
         android:id="@+id/iv_mark_image"
-        android:layout_width="@dimen/dp_20"
-        android:layout_height="@dimen/dp_20"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_centerVertical="true"
         android:layout_marginStart="@dimen/dp_1"
         android:layout_toEndOf="@id/tv_seat"
@@ -41,7 +41,7 @@
         android:inputType="phone"
         android:singleLine="true"
         android:textColor="@color/text_33"
-        android:textSize="@dimen/sp_15"
+        android:textSize="@dimen/sp_14"
         tools:ignore="RelativeOverlap" />
 
     <TextView
@@ -54,7 +54,7 @@
         android:layout_toEndOf="@id/et_seat_start"
         android:text="—"
         android:textColor="@color/text_hint"
-        android:textSize="@dimen/sp_15"
+        android:textSize="@dimen/sp_14"
         tools:ignore="ContentDescription" />
 
     <EditText
@@ -70,7 +70,7 @@
         android:inputType="phone"
         android:singleLine="true"
         android:textColor="@color/text_33"
-        android:textSize="@dimen/sp_15"
+        android:textSize="@dimen/sp_14"
         tools:ignore="RelativeOverlap" />
 
     <TextView
@@ -81,7 +81,7 @@
         android:layout_toEndOf="@id/et_seat_end"
         android:text="个"
         android:textColor="@color/text_hint"
-        android:textSize="@dimen/sp_15"
+        android:textSize="@dimen/sp_14"
         tools:ignore="ContentDescription" />
 
     <ImageView

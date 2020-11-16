@@ -216,6 +216,9 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         tvHomeTitle.setVisibility(View.VISIBLE);
         ivAdd.setVisibility(View.VISIBLE);
         tvExpand.setVisibility(View.GONE);
+        if (mData!=null){
+            ivAdd.setVisibility(mData.isAddHouse() ? View.VISIBLE : View.GONE);
+        }
     }
 
     @Override
