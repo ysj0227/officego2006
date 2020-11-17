@@ -17,6 +17,7 @@ import androidx.annotation.NonNull;
 import androidx.viewpager.widget.PagerAdapter;
 import androidx.viewpager.widget.ViewPager;
 
+import com.officego.commonlib.common.SpUtils;
 import com.owner.R;
 
 /**
@@ -24,19 +25,34 @@ import com.owner.R;
  * Date 2020/10/15
  * 业主认证
  **/
-public class IdentityStepDialog {
+public class IdentityViewPagerDialog {
     private Context context;
     private SparseArray<View> mPageCache = new SparseArray<>();
     private final int mCount = 4;//page数量
     private TextView tvTitle;
     private RadioButton point1, point2, point3, point4;
 
-    public IdentityStepDialog(Context context) {
+    private IdentityViewPagerListener listener;
+
+    public interface IdentityViewPagerListener {
+        void toIdentity();
+    }
+
+    public IdentityViewPagerListener getListener() {
+        return listener;
+    }
+
+    public void setListener(IdentityViewPagerListener listener) {
+        this.listener = listener;
+    }
+
+    public IdentityViewPagerDialog(Context context) {
         this.context = context;
         dialog(context);
     }
 
     private void dialog(Context context) {
+        SpUtils.saveToIdentity();//去认证标志
         Dialog dialog = new Dialog(context, R.style.BottomDialog);
         View viewLayout = LayoutInflater.from(context).inflate(R.layout.dialog_home_identity, null);
         dialog.setContentView(viewLayout);
@@ -59,7 +75,13 @@ public class IdentityStepDialog {
         point3 = viewLayout.findViewById(R.id.point3);
         point4 = viewLayout.findViewById(R.id.point4);
         Button btnIdentity = viewLayout.findViewById(R.id.btn_identity);
-
+        //去认证
+        btnIdentity.setOnClickListener(view -> {
+            if (listener != null) {
+                listener.toIdentity();
+                dialog.dismiss();
+            }
+        });
         mPager.setAdapter(new ViewPagerAdapter(context));
         mPager.addOnPageChangeListener(new OnViewPageChangeListener());
         point1.setChecked(true);

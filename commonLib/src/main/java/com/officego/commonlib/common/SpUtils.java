@@ -31,6 +31,10 @@ public class SpUtils {
     private static final String AGREE_PROTOCOL = PACKAGE_NAME + "AGREE_PROTOCOL";
     //是否去网页编辑
     private static final String EDIT_TO_WEB = PACKAGE_NAME + "EDIT_TO_WEB";
+    //去认证dialog
+    private static final String TO_IDENTITY = PACKAGE_NAME + "TO_IDENTITY";
+    //审核成功添加房源引导
+    private static final String IDENTITY_HOUSE_LEAD = PACKAGE_NAME + "IDENTITY_HOUSE_LEAD";
 
     private static SharedPreferences getSharedPreference() {
         return SharedManager.getSharedPreference(BaseApplication.getContext());
@@ -44,6 +48,8 @@ public class SpUtils {
         SpUtils.saveRongToken(data.getRongyuntoken());
         SpUtils.saveHeaderImg(data.getAvatar());
         SpUtils.saveNickName(data.getNickName());
+        //业主重新登录或切换身份
+        clearToIdentity();
     }
 
     //clear用户登录信息
@@ -55,6 +61,7 @@ public class SpUtils {
         SharedManager.clearValue(BaseApplication.getContext(), HEADER_IMG);
         SharedManager.clearValue(BaseApplication.getContext(), NICK_NAME);
         SharedManager.clearValue(BaseApplication.getContext(), CANCEL_UPDATE);
+        SharedManager.clearValue(BaseApplication.getContext(), TO_IDENTITY);
         //融云断开连接
         RongIM.getInstance().disconnect();
     }
@@ -168,4 +175,25 @@ public class SpUtils {
         return SharedManager.getValue(BaseApplication.getContext(), AGREE_PROTOCOL);
     }
 
+    //去认证
+    public static void saveToIdentity() {
+        SharedManager.putValue(BaseApplication.getContext(), TO_IDENTITY, "Y");
+    }
+
+    public static String getToIdentity() {
+        return SharedManager.getValue(BaseApplication.getContext(), TO_IDENTITY);
+    }
+
+    public static void clearToIdentity() {
+        SharedManager.clearValue(BaseApplication.getContext(), TO_IDENTITY);
+    }
+
+    //添加房源引导
+    public static void saveHouseLead() {
+        SharedManager.putValue(BaseApplication.getContext(), IDENTITY_HOUSE_LEAD, "Y");
+    }
+
+    public static String getHouseLead() {
+        return SharedManager.getValue(BaseApplication.getContext(), IDENTITY_HOUSE_LEAD);
+    }
 }

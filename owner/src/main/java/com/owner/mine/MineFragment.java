@@ -33,13 +33,10 @@ import com.officego.commonlib.view.CircleImage;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
 import com.owner.h5.WebViewActivity_;
-import com.owner.identity.IdentityCancelActivity_;
-import com.owner.identity.SelectIdActivity_;
 import com.owner.mine.contract.UserContract;
 import com.owner.mine.model.UserOwnerBean;
 import com.owner.mine.presenter.UserPresenter;
 import com.owner.rpc.OfficegoApi;
-import com.owner.utils.UnIdifyDialog;
 import com.owner.zxing.QRScanActivity;
 
 import org.androidannotations.annotations.AfterViews;
@@ -70,9 +67,6 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
     TextView tvAccount;
     @ViewById(resName = "tv_idify")
     TextView tvIdify;
-    @ViewById(resName = "rl_role")
-    RelativeLayout rlRole;
-
     private UserOwnerBean mUserInfo;
 
     @AfterViews
@@ -131,16 +125,6 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
             mPresenter.getUserInfo();
             return;
         }
-        //auditStatus 0 审核中 |authority 0可以撤销(普通员工) 1不能撤销(管理员)
-        if (mUserInfo.getAuditStatus() == 0 && mUserInfo.getAuthority() == 0) {
-            IdentityCancelActivity_.intent(mActivity)
-                    .startForResult(REQUEST_CODE_IDENTITY);
-            return;
-        }
-        if (isIdentity()) {
-            new UnIdifyDialog(mActivity, mUserInfo);
-            return;
-        }
         MineMessageActivity_.intent(mActivity).mUserInfo(mUserInfo).startForResult(REQUEST_CODE);
     }
 
@@ -160,11 +144,6 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
                 Glide.with(mActivity).load(avatarUrl).into(civAvatar);
             }
         }
-    }
-
-    @Click(resName = "rl_role")
-    void roleClick() {
-        WebViewActivity_.intent(mActivity).flags(Constants.H5_ROLE).start();
     }
 
     @Click(resName = "rl_help")
@@ -265,29 +244,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
                         data.getProprietorCompany() :
                         data.getProprietorCompany() + "·" + data.getProprietorJob());
             }
-            if (isIdentity()) {
-                if (data.getAuditStatus() == -1) {//未认证
-                    SelectIdActivity_.intent(getContext()).start();
-                } else {
-                    new UnIdifyDialog(mActivity, mUserInfo);
-                }
-            }
-            //1企业2联合 &&管理员显示员工管理  权职0普通员工1管理员 -1无
-            if ((data.getIdentityType() == 1 || data.getIdentityType() == 2)
-                    && data.getAuthority() == 1 && data.getAuditStatus() == 1) {
-                rlRole.setVisibility(View.VISIBLE);
-            } else {
-                rlRole.setVisibility(View.GONE);
-            }
         }
-    }
-
-    // 0待审核 1审核通过 2审核未通过 3过期(和2未通过一样处理) -1 未认证
-    private boolean isIdentity() {
-        if (mUserInfo != null) {
-            return mUserInfo.getAuditStatus() != 0 && mUserInfo.getAuditStatus() != 1;
-        }
-        return false;
     }
 
     @Override

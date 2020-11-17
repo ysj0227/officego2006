@@ -80,6 +80,8 @@ public class MainOwnerActivity extends BaseActivity implements RadioGroup.OnChec
         rg_tab_bar.setOnCheckedChangeListener(this);
         rb_3.setText(R.string.str_tab_schedule);
         //初始化第一个选中
+        TABLE_BAR_POSITION = 0;
+
         Intent intent = getIntent();
         if (TABLE_BAR_POSITION == 1) {
             rb_2.setChecked(true);

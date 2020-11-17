@@ -36,13 +36,11 @@ import com.owner.adapter.IdentityStatusAdapter;
 import com.owner.dialog.BuildingJointWorkListPopupWindow;
 import com.owner.dialog.HomeMoreDialog;
 import com.owner.dialog.HouseLeadDialog;
-import com.owner.dialog.IdentityStepDialog;
+import com.owner.dialog.IdentityViewPagerDialog;
 import com.owner.h5.WebViewActivity_;
 import com.owner.home.contract.HomeContract;
 import com.owner.home.presenter.HomePresenter;
-import com.owner.identity.SelectIdActivity_;
 import com.owner.mine.model.UserOwnerBean;
-import com.owner.utils.UnIdifyDialog;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -64,7 +62,8 @@ import static com.officego.commonlib.utils.PermissionUtils.REQ_PERMISSIONS_CAMER
 public class HomeFragment extends BaseMvpFragment<HomePresenter>
         implements HomeContract.View, SwipeRefreshLayout.OnRefreshListener,
         HomeAdapter.HomeItemListener, HomeMoreDialog.HouseMoreListener,
-        BuildingJointWorkListPopupWindow.HomePopupListener {
+        BuildingJointWorkListPopupWindow.HomePopupListener,
+        IdentityViewPagerDialog.IdentityViewPagerListener {
     private static final int HOUSE_ON = 1;//1发布
     private static final int HOUSE_OFF = 2;//2下架
     @ViewById(resName = "rl_title")
@@ -81,15 +80,25 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     SwipeRefreshLayout mSwipeRefreshLayout;
     @ViewById(resName = "rv_view")
     RecyclerView rvView;
+    //未认证
+    @ViewById(resName = "rl_to_identity")
+    RelativeLayout rlToIdentity;
+    @ViewById(resName = "btn_identity")
+    Button btnIdentity;
+    //认证状态流程
+    @ViewById(resName = "rl_check_status")
+    RelativeLayout rlCheckStatus;
     @ViewById(resName = "rv_identity_step")
     RecyclerView rvIdentityStep;
+    @ViewById(resName = "tv_reject_reason")
+    TextView tvRejectReason;
+    //无数据
     @ViewById(resName = "tv_no_data")
     TextView tvNoData;
     @ViewById(resName = "rl_exception")
     RelativeLayout rlException;
     @ViewById(resName = "btn_again")
     Button btnAgain;
-
     //用户信息
     private UserOwnerBean mUserData;
     //楼盘网点列表pop
@@ -118,9 +127,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
             new VersionDialog(mActivity);
             mPresenter.getUserInfo();
             fragmentCheckSDCardCameraPermission();
-            new IdentityStepDialog(mActivity);
-//            new HouseLeadDialog(mActivity);
-//            checkStatusOk();
         } else {
             netException();
         }
@@ -133,12 +139,14 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         LinearLayoutManager layoutManager1 = new LinearLayoutManager(getContext());
         rvIdentityStep.setLayoutManager(layoutManager1);
     }
-    private void checkStatusOk(){
+
+    //认证流程
+    private void checkStatusOk(BuildingJointWorkBean.ListBean mData) {
         List<String> list = new ArrayList<>();
         for (int i = 0; i < 3; i++) {
             list.add("");
         }
-        IdentityStatusAdapter statusAdapter = new IdentityStatusAdapter(mActivity, list,2);
+        IdentityStatusAdapter statusAdapter = new IdentityStatusAdapter(mActivity, list, mData);
         rvIdentityStep.setAdapter(statusAdapter);
     }
 
@@ -167,6 +175,17 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         WebViewActivity_.intent(mActivity).flags(Constants.H5_VR_RECORD).start();
     }
 
+    //去认证
+    @Click(resName = "btn_identity")
+    void toIdentityClick() {
+        shortTip("去认证");
+    }
+
+    @Override
+    public void toIdentity() {
+        shortTip("去认证");
+    }
+
     //网络异常重试
     @Click(resName = "btn_again")
     void netExceptionAgainClick() {
@@ -176,6 +195,10 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     //楼盘网点列表
     @Click(resName = "iv_left_more")
     void leftListClick() {
+        if (mUserData != null && mUserData.getAuditStatus() == -1) {//未认证
+            shortTip("请先认证");
+            return;
+        }
         mPresenter.getBuildingJointWorkList();
     }
 
@@ -216,7 +239,16 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     //房源列表
     @Override
     public void houseListSuccess(List<HouseBean.ListBean> data, boolean hasMore) {
-        if (data == null || pageNum == 1 && data.size() == 0) {
+        if (data == null || (pageNum == 1 && data.size() == 0)) {
+            //认证通过显示引导和认证通过状态步骤。
+            identityDoingView();
+            checkStatusOk(mData);//1审核通过
+            if (TextUtils.isEmpty(SpUtils.getHouseLead())) {
+                new HouseLeadDialog(mActivity);//引导-我知道了
+            }
+            return;
+        }
+        if (pageNum > 1 && data.size() == 0) {
             noData();
             return;
         }
@@ -304,10 +336,21 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     }
 
     //左侧Popup选择
+    //0: 下架(未发布),1: 上架(已发布) ;2:资料待完善  3: 置顶推荐;4:已售完;5:删除;6待审核7已驳回
     @Override
     public void popupHouseList(BuildingJointWorkBean.ListBean bean) {
         currentBuildingMessage(bean);
-        getRefreshHouseList();
+        if (bean.getIsTemp() == 0) {
+            getRefreshHouseList();//房源列表
+        } else {
+            if (6 == bean.getStatus()) { //6待审核
+                identityDoingView();
+                checkStatusOk(mData);
+            } else if (7 == bean.getStatus()) {//7已驳回
+                identityRejectView();
+                checkStatusOk(mData);
+            }
+        }
     }
 
     private void getRefreshHouseList() {
@@ -340,12 +383,10 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     @Override
     public void userInfoSuccess(UserOwnerBean data) {
         mUserData = data;
-        if (data.getAuditStatus() == 0 || data.getAuditStatus() == 1) {
-            mPresenter.initHouseList();//初始化列表
-        } else if (data.getAuditStatus() == -1) {
-            SelectIdActivity_.intent(getContext()).start(); //未认证
+        if (data.getAuditStatus() == -1) {//未认证
+            cannotIdentity();
         } else {
-            new UnIdifyDialog(mActivity, data);
+            mPresenter.initHouseList();//初始化列表
         }
     }
 
@@ -409,12 +450,49 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         tvNoData.setVisibility(View.GONE);
         rlException.setVisibility(View.GONE);
         rvView.setVisibility(View.VISIBLE);
+        rlToIdentity.setVisibility(View.GONE);
+        rlCheckStatus.setVisibility(View.GONE);
+        tvRejectReason.setVisibility(View.GONE);
     }
 
     private void netException() {
         tvNoData.setVisibility(View.GONE);
         rlException.setVisibility(View.VISIBLE);
         rvView.setVisibility(View.GONE);
+        rlToIdentity.setVisibility(View.GONE);
+        rlCheckStatus.setVisibility(View.GONE);
+        tvRejectReason.setVisibility(View.GONE);
+    }
+
+    private void cannotIdentity() {
+        rlToIdentity.setVisibility(View.VISIBLE);
+        rlCheckStatus.setVisibility(View.GONE);
+        tvNoData.setVisibility(View.GONE);
+        rlException.setVisibility(View.GONE);
+        rvView.setVisibility(View.GONE);
+        tvRejectReason.setVisibility(View.GONE);
+        if (TextUtils.isEmpty(SpUtils.getToIdentity())) {
+            new IdentityViewPagerDialog(mActivity).setListener(this);//未认证dialog
+        }
+    }
+
+    //认证中或通过
+    private void identityDoingView() {
+        rlToIdentity.setVisibility(View.GONE);
+        rlCheckStatus.setVisibility(View.VISIBLE);
+        tvNoData.setVisibility(View.GONE);
+        rlException.setVisibility(View.GONE);
+        rvView.setVisibility(View.GONE);
+        tvRejectReason.setVisibility(View.GONE);
+    }
+
+    private void identityRejectView() {
+        rlToIdentity.setVisibility(View.GONE);
+        rlCheckStatus.setVisibility(View.VISIBLE);
+        tvNoData.setVisibility(View.GONE);
+        rlException.setVisibility(View.GONE);
+        rvView.setVisibility(View.GONE);
+        tvRejectReason.setVisibility(View.VISIBLE);//驳回原因
     }
 
     @Override

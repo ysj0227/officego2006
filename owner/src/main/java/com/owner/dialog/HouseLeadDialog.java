@@ -10,6 +10,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.Button;
 
+import com.officego.commonlib.common.SpUtils;
 import com.owner.R;
 
 /**
@@ -24,6 +25,7 @@ public class HouseLeadDialog {
     }
 
     private void serviceDialog(Context context) {
+        SpUtils.saveHouseLead();
         Dialog dialog = new Dialog(context, R.style.BottomDialog);
         View viewLayout = LayoutInflater.from(context).inflate(R.layout.dialog_house_lead, null);
         //将布局设置给Dialog

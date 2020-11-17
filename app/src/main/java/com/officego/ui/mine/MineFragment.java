@@ -53,7 +53,6 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         implements UserContract.View {
     private static final int REQUEST_CODE = 1000;
     private static final int REQUEST_CODE_LOGOUT = 1009;
-    private static final int REQUEST_CODE_LOGIN = 1010;
     @ViewById(R.id.civ_avatar)
     CircleImage civAvatar;
     @ViewById(R.id.tv_name)

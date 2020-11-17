@@ -26,12 +26,10 @@ import com.officego.commonlib.common.model.BuildingManagerBean;
 import com.officego.commonlib.common.model.owner.BuildingJointWorkBean;
 import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.utils.CommonHelper;
-import com.officego.commonlib.utils.ToastUtils;
 import com.owner.R;
 import com.owner.home.AddBuildingJointWorkActivity_;
 import com.owner.home.EditBuildingActivity_;
 import com.owner.home.EditJointWorkActivity_;
-import com.owner.home.RejectBuildingJointWorkActivity_;
 import com.owner.mine.model.UserOwnerBean;
 
 import java.util.List;
@@ -200,25 +198,21 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
             if (2 == bean.getStatus()) {
                 rlPreview.setVisibility(View.VISIBLE);
                 rlEdit.setVisibility(View.VISIBLE);
-                btnReject.setVisibility(View.GONE);
                 ivStatus.setVisibility(View.VISIBLE);
                 ivStatus.setBackgroundResource(R.mipmap.ic_complete_more_mes);
             } else if (7 == bean.getStatus()) {
                 rlPreview.setVisibility(View.GONE);
                 rlEdit.setVisibility(View.GONE);
-                btnReject.setVisibility(View.VISIBLE);
                 ivStatus.setVisibility(View.VISIBLE);
                 ivStatus.setBackgroundResource(R.mipmap.ic_check_no);
-            } else if (6 == bean.getStatus() || 1 == bean.getIsTemp()) {
+            } else if (6 == bean.getStatus()) {
                 rlPreview.setVisibility(View.VISIBLE);
                 rlEdit.setVisibility(View.VISIBLE);
-                btnReject.setVisibility(View.GONE);
                 ivStatus.setVisibility(View.VISIBLE);
                 ivStatus.setBackgroundResource(R.mipmap.ic_checking);
             } else {
                 rlPreview.setVisibility(View.VISIBLE);
                 rlEdit.setVisibility(View.VISIBLE);
-                btnReject.setVisibility(View.GONE);
                 ivStatus.setVisibility(View.GONE);
             }
             //预览
@@ -238,14 +232,6 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
             holder.itemView.setOnClickListener(view -> {
                 dismiss();
                 listener.popupHouseList(bean);
-            });
-            //驳回
-            btnReject.setOnClickListener(view -> {
-                if (mUserData.getIdentityType() == identityType) {//网点
-                    RejectBuildingJointWorkActivity_.intent(mContext).flay(0).buildingId(bean.getBuildingId()).start();
-                } else {
-                    RejectBuildingJointWorkActivity_.intent(mContext).flay(1).buildingId(bean.getBuildingId()).start();
-                }
             });
         }
     }

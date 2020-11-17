@@ -9,7 +9,10 @@ import android.widget.TextView;
 
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
+import com.officego.commonlib.common.model.owner.BuildingJointWorkBean;
+import com.officego.commonlib.constant.Constants;
 import com.owner.R;
+import com.owner.home.RejectBuildingJointWorkActivity_;
 
 import java.util.List;
 
@@ -20,18 +23,22 @@ import java.util.List;
 public class IdentityStatusAdapter extends CommonListAdapter<String> {
     private Context context;
     private List<String> list;
-    private int status; //0,1,2   审核中  审核通过  审核驳回
+    private BuildingJointWorkBean.ListBean mData;
+    private final int STATUS_ING = 6; //审核中
+    private final int STATUS_OK = 1;//审核通过
+    private final int STATUS_OK_COMPLETE = 2;//资料待完善
+    private final int STATUS_NO = 7;//审核驳回
 
     /**
      * @param context 上下文
      * @param list    列表数据
      */
-    public IdentityStatusAdapter(Context context, List<String> list, int status) {
+    public IdentityStatusAdapter(Context context, List<String> list, BuildingJointWorkBean.ListBean mData) {
 
         super(context, R.layout.item_owner_identity_step, list);
         this.context = context;
         this.list = list;
-        this.status = status;
+        this.mData = mData;
     }
 
     @SuppressLint("SetTextI18n")
@@ -53,15 +60,19 @@ public class IdentityStatusAdapter extends CommonListAdapter<String> {
         } else if (holder.getAdapterPosition() == 1) {
             ivLineUp.setVisibility(View.VISIBLE);
             ivLineBottom.setVisibility(View.VISIBLE);
-            if (status == 0) {
+            if (mData.getStatus() == STATUS_ING) {
                 tvStatus.setText("审核中");
                 ivLineBottom.setBackgroundResource(R.drawable.bg_dash_gray);
                 ivStatus.setBackgroundResource(R.mipmap.ic_identity_checking);
-            } else if (status == 1) {
+            } else if (mData.getStatus() == STATUS_OK ) {
                 tvStatus.setText("审核");
                 ivLineBottom.setBackgroundResource(R.drawable.bg_dash_gray);
                 ivStatus.setBackgroundResource(R.mipmap.ic_identity_ok);
-            } else if (status == 2) {
+            } else if (mData.getStatus() == STATUS_NO) {
+                tvStatus.setText("审核");
+                ivLineBottom.setBackgroundResource(R.drawable.bg_dash_gray);
+                ivStatus.setBackgroundResource(R.mipmap.ic_identity_ok);
+            }else {
                 tvStatus.setText("审核");
                 ivLineBottom.setBackgroundResource(R.drawable.bg_dash_gray);
                 ivStatus.setBackgroundResource(R.mipmap.ic_identity_ok);
@@ -69,23 +80,35 @@ public class IdentityStatusAdapter extends CommonListAdapter<String> {
         } else if (holder.getAdapterPosition() == 2) {
             ivLineUp.setVisibility(View.VISIBLE);
             ivLineBottom.setVisibility(View.INVISIBLE);
-            if (status == 0) {
+            if (mData.getStatus() == STATUS_ING) {
                 tvStatus.setText("审核通过");
                 btnIdentity.setVisibility(View.GONE);
                 ivLineUp.setBackgroundResource(R.drawable.bg_dash_gray);
                 ivStatus.setBackgroundResource(R.mipmap.ic_identity_ok_gray);
-            } else if (status == 1) {
+            } else if (mData.getStatus() == STATUS_OK) {
                 tvStatus.setText("审核通过");
                 btnIdentity.setVisibility(View.GONE);
                 ivLineUp.setBackgroundResource(R.drawable.bg_dash_blue);
                 ivStatus.setBackgroundResource(R.mipmap.ic_identity_ok);
-            } else if (status == 2) {
+            } else if (mData.getStatus() == STATUS_NO) {
                 tvStatus.setText("认证未通过");
                 btnIdentity.setVisibility(View.VISIBLE);
                 ivLineUp.setBackgroundResource(R.drawable.bg_dash_blue);
                 ivStatus.setBackgroundResource(R.mipmap.ic_identity_no);
+            }else {
+                tvStatus.setText("审核通过");
+                btnIdentity.setVisibility(View.GONE);
+                ivLineUp.setBackgroundResource(R.drawable.bg_dash_blue);
+                ivStatus.setBackgroundResource(R.mipmap.ic_identity_ok);
             }
         }
+        //驳回重新认证
+        btnIdentity.setOnClickListener(view -> {
+            if (Constants.TYPE_JOINTWORK == mData.getBtype()) {//网点
+                RejectBuildingJointWorkActivity_.intent(mContext).flay(0).buildingId(mData.getBuildingId()).start();
+            } else {
+                RejectBuildingJointWorkActivity_.intent(mContext).flay(1).buildingId(mData.getBuildingId()).start();
+            }
+        });
     }
-
 }
