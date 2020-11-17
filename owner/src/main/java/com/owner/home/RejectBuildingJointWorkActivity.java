@@ -36,7 +36,6 @@ import com.officego.commonlib.utils.ImageUtils;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.PhotoUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.TitleBarView;
 import com.officego.commonlib.view.widget.SettingItemLayout;
 import com.owner.R;
@@ -413,6 +412,9 @@ public class RejectBuildingJointWorkActivity extends BaseMvpActivity<AddPresente
     public void rejectBuildingResultSuccess(RejectBuildingBean data) {
         //0或空创建的 1关联的
         boolean isBuildId = TextUtils.isEmpty(data.getBuildId()) || TextUtils.equals("0", data.getBuildId());
+        if (!TextUtils.isEmpty(data.getBuildId())){
+            mBuildId=Integer.valueOf(data.getBuildId());
+        }
         isCreateBuilding = isBuildId;
         tvReason.setText("驳回原因：" + (TextUtils.isEmpty(data.getRemark()) ? "无" : data.getRemark()));
         setRecyclerViewTopMargin();
@@ -422,7 +424,7 @@ public class RejectBuildingJointWorkActivity extends BaseMvpActivity<AddPresente
         tvSetFirstImage.setVisibility(isBuildId ? View.VISIBLE : View.GONE);
         ivDescImage.setVisibility(isBuildId ? View.VISIBLE : View.GONE);
         //封面图
-        if (isBuildId && !TextUtils.isEmpty(data.getMainPic())) {
+        if (!TextUtils.isEmpty(data.getMainPic())) {
             introduceImageUrl = data.getMainPic();
             Glide.with(context).load(introduceImageUrl).into(ivDescImage);
         }

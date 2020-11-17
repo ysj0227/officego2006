@@ -1,0 +1,85 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_upload_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="上传身份证"
+        android:textColor="@color/text_33"
+        android:textSize="@dimen/sp_14" />
+
+    <TextView
+        android:id="@+id/tv_tip_upload_id"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_upload_id"
+        android:layout_marginTop="@dimen/dp_6"
+        android:text="请上传个人身份证正反面，不可遮挡关键信息"
+        android:textColor="@color/text_66_p50"
+        android:textSize="@dimen/sp_12" />
+
+    <LinearLayout
+        android:id="@+id/ll_upload_id_image"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_tip_upload_id">
+
+        <RelativeLayout
+            android:id="@+id/rl_image_front"
+            android:layout_width="@dimen/dp_154"
+            android:layout_height="@dimen/dp_115"
+            android:layout_marginTop="@dimen/dp_16"
+            android:layout_weight="1">
+
+            <com.officego.commonlib.view.RoundImageView
+                android:id="@+id/riv_image_front"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/common_blue_normal"
+                android:scaleType="centerCrop" />
+
+            <TextView
+                android:id="@+id/tv_upload_front"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:drawableTop="@mipmap/ic_idcard_img"
+                android:drawablePadding="@dimen/dp_6"
+                android:text="上传身份证人像面"
+                android:textColor="@color/common_blue_main"
+                android:textSize="@dimen/sp_13" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_image_back"
+            android:layout_width="@dimen/dp_154"
+            android:layout_height="@dimen/dp_115"
+            android:layout_marginLeft="@dimen/dp_18"
+            android:layout_marginTop="@dimen/dp_16"
+            android:layout_weight="1">
+
+            <com.officego.commonlib.view.RoundImageView
+                android:id="@+id/riv_image_back"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@color/common_blue_normal"
+                android:scaleType="centerCrop" />
+
+            <TextView
+                android:id="@+id/tv_upload_back"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:drawableTop="@mipmap/ic_idcard_img"
+                android:drawablePadding="@dimen/dp_6"
+                android:text="上传身份证国徽面"
+                android:textColor="@color/common_blue_main"
+                android:textSize="@dimen/sp_13" />
+        </RelativeLayout>
+
+    </LinearLayout>
+
+</RelativeLayout>

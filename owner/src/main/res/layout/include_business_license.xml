@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <TextView
+        android:id="@+id/tv_text_business_license"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_14"
+        android:text="上传营业执照"
+        android:textColor="@color/text_33"
+        android:textSize="@dimen/sp_14" />
+
+    <TextView
+        android:id="@+id/tv_tip_business_license"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_text_business_license"
+        android:layout_marginTop="@dimen/dp_6"
+        android:text="请确保上传与房产证上权利人名称相同的公司营业执照"
+        android:textColor="@color/text_66_p50"
+        android:textSize="@dimen/sp_12" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_business_licensee"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_tip_business_license"
+        android:layout_marginTop="@dimen/dp_12"
+        android:nestedScrollingEnabled="false" />
+
+</RelativeLayout>

@@ -40,6 +40,7 @@ import com.owner.dialog.IdentityViewPagerDialog;
 import com.owner.h5.WebViewActivity_;
 import com.owner.home.contract.HomeContract;
 import com.owner.home.presenter.HomePresenter;
+import com.owner.identity2.OwnerIdentityActivity_;
 import com.owner.mine.model.UserOwnerBean;
 
 import org.androidannotations.annotations.AfterViews;
@@ -178,12 +179,17 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     //去认证
     @Click(resName = "btn_identity")
     void toIdentityClick() {
-        shortTip("去认证");
+        toIdentityActivity();
     }
 
+    //去认证
     @Override
     public void toIdentity() {
-        shortTip("去认证");
+        toIdentityActivity();
+    }
+
+    private void toIdentityActivity() {
+        OwnerIdentityActivity_.intent(mActivity).start();
     }
 
     //网络异常重试
