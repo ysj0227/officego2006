@@ -1,0 +1,192 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/text_f7">
+
+    <com.officego.commonlib.view.TitleBarView
+        android:id="@+id/title_bar"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/c_white"
+        app:dividerShow="true"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent"
+        app:leftDefaultClickEnable="false"
+        app:leftIcon="@drawable/ic_back_dark"
+        app:titleText="创建楼盘/网点"
+        app:titleTextColor="@color/text_33" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        android:paddingBottom="@dimen/dp_20"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/title_bar">
+
+
+        <com.officego.commonlib.view.widget.SettingItemLayout
+            android:id="@+id/sil_name"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent"
+            app:leftMarkShow="visible"
+            app:leftText="楼盘/网点"
+            app:rightArrowShow="gone"
+            app:rightOtherImageViewShow="gone"
+            app:showCenterText="gone"
+            app:showDividerBottom="visible"
+            app:showEditText="visible" />
+
+        <RelativeLayout
+            android:id="@+id/rl_building_type"
+            style="@style/marginLeftRight18"
+            android:layout_width="0dp"
+            android:layout_height="@dimen/dp_56"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sil_name">
+
+            <TextView
+                android:id="@+id/tv_type_text"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:drawableEnd="@mipmap/ic_mark"
+                android:text="选择类型"
+                android:textColor="@color/text_33"
+                android:textSize="@dimen/sp_14" />
+
+            <RadioGroup
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toRightOf="@id/tv_type_text"
+                android:orientation="horizontal">
+
+                <RadioButton
+                    android:id="@+id/rb_building"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="楼盘/园区"
+                    android:textColor="@color/text_33"
+                    android:textSize="@dimen/sp_14" />
+
+                <RadioButton
+                    android:id="@+id/rb_joint_work"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="@dimen/dp_10"
+                    android:text="共享办公"
+                    android:textColor="@color/text_33"
+                    android:textSize="@dimen/sp_14" />
+            </RadioGroup>
+
+            <View
+                android:id="@+id/bottom_divider"
+                android:layout_width="match_parent"
+                android:layout_height="1px"
+                android:layout_alignParentBottom="true"
+                android:background="@color/common_divider"
+                android:visibility="visible" />
+        </RelativeLayout>
+
+        <com.officego.commonlib.view.widget.SettingItemLayout
+            android:id="@+id/sil_area"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            app:centerTextHint="请选择城市、区域与商圈"
+            app:centerTextHintColor="@color/text_66_p50"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/rl_building_type"
+            app:leftMarkShow="visible"
+            app:leftText="所在区域"
+            app:rightOtherImageViewShow="gone"
+            app:showDividerBottom="visible" />
+
+        <com.officego.commonlib.view.widget.SettingItemLayout
+            android:id="@+id/sil_address"
+            android:layout_width="0dp"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/sil_area"
+            app:editMaxLength="100"
+            app:editTextHint="请输入详细地址（2～100个字）"
+            app:editTextHintColor="@color/text_66_p50"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sil_area"
+            app:leftMarkShow="visible"
+            app:leftText="详细地址"
+            app:rightArrowShow="gone"
+            app:rightOtherImageViewShow="gone"
+            app:showCenterText="gone"
+            app:showDividerBottom="visible"
+            app:showEditText="visible" />
+
+        <TextView
+            android:id="@+id/tv_upload_text"
+            style="@style/marginLeftRight18"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="@dimen/dp_20"
+            android:drawableEnd="@mipmap/ic_mark"
+            android:text="上传封面图"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_14"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/sil_address" />
+
+        <TextView
+            style="@style/marginLeftRight18"
+            android:id="@+id/tv_tip_upload_text"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_6"
+            android:text="请上传楼盘外立面照片"
+            android:textColor="@color/text_66_p50"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/tv_upload_text" />
+
+        <ImageView
+            android:id="@+id/iv_image"
+            style="@style/marginLeftRight18"
+            android:layout_width="@dimen/dp_100"
+            android:layout_height="@dimen/dp_100"
+            android:layout_marginTop="@dimen/dp_15"
+            android:background="@mipmap/ic_add_img"
+            android:scaleType="centerCrop"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@+id/tv_tip_upload_text"
+            tools:ignore="ContentDescription" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <LinearLayout
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="wrap_content"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <Button
+            android:id="@+id/btn_save"
+            style="@style/BtnBigOrange"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginBottom="@dimen/dp_20"
+            android:text="确认创建" />
+    </LinearLayout>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

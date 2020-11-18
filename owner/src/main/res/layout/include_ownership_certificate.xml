@@ -3,10 +3,21 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
 
+    <ImageView
+        android:visibility="gone"
+        android:layout_marginStart="@dimen/dp_1"
+        android:id="@+id/iv_reject_ownership_certificate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@id/tv_text_property_ownership_certificate"
+        android:layout_alignBottom="@id/rv_property_ownership_certificate"
+        android:background="@mipmap/ic_reject_bg" />
+
     <TextView
         android:id="@+id/tv_text_property_ownership_certificate"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="@dimen/dp_18"
         android:layout_marginTop="@dimen/dp_14"
         android:text="上传房产证"
         android:textColor="@color/text_33"
@@ -17,6 +28,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_text_property_ownership_certificate"
+        android:layout_marginLeft="@dimen/dp_18"
         android:layout_marginTop="@dimen/dp_6"
         android:text="请确保所上传的产证信息包含权属人及楼盘名称等信息"
         android:textColor="@color/text_66_p50"
@@ -24,7 +36,8 @@
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_property_ownership_certificate"
-        android:layout_width="wrap_content"
+        style="@style/marginLeftRight18"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_tip_property_ownership_certificate"
         android:layout_marginTop="@dimen/dp_12"

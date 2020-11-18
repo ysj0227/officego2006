@@ -132,6 +132,10 @@
             android:name=".identity2.OwnerIdentityActivity_"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".identity2.OwnerCreateBuildingActivity_"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>
