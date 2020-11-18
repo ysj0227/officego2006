@@ -27,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_text_additional_info"
-        android:layout_marginLeft="@dimen/dp_18"
+        android:layout_marginStart="@dimen/dp_18"
         android:layout_marginTop="@dimen/dp_6"
         android:text="请上传以公司为主体的房屋租赁协议或其他相关材料"
         android:textColor="@color/text_66_p50"

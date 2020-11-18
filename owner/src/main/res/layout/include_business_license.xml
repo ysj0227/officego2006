@@ -37,7 +37,7 @@
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_business_licensee"
         style="@style/marginLeftRight18"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_tip_business_license"
         android:layout_marginTop="@dimen/dp_12"
