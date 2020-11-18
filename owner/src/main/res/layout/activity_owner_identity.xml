@@ -37,21 +37,21 @@
                 android:id="@+id/rl_reason"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:background="@color/text_ea"
-                android:visibility="gone">
+                android:background="@color/text_ea">
 
                 <TextView
+                    android:ellipsize="end"
                     android:id="@+id/tv_reject_reason"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_centerVertical="true"
                     android:layout_marginStart="@dimen/dp_18"
                     android:layout_marginEnd="@dimen/dp_45"
-                    android:ellipsize="end"
                     android:gravity="center_vertical"
                     android:paddingTop="@dimen/dp_12"
-                    android:paddingBottom="@dimen/dp_12"
                     android:singleLine="true"
+                    android:paddingBottom="@dimen/dp_12"
+                    android:text="驳回原因：等候阑珊处看到二二偶尔热瓦当饭吃持续出现在是采购商的是个慈祥在"
                     android:textColor="@color/caution_primary"
                     android:textSize="@dimen/sp_13" />
 
