@@ -1,7 +1,6 @@
 package com.owner.rpc;
 
 import android.text.TextUtils;
-import android.widget.Toast;
 
 import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
@@ -679,9 +678,28 @@ public class OfficegoApi {
     }
 
     /**
+     * 上传多张图片  新认证
+     */
+    public void uploadImage(int type, List<String> mFilePath, RetrofitCallback<UploadImageBean> callback) {
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        builder.addFormDataPart("token", SpUtils.getSignToken());
+        builder.addFormDataPart("filedirType", type + "");
+        if (mFilePath != null && mFilePath.size() > 0) {
+            RequestBody file;
+            for (int i = 0; i < mFilePath.size(); i++) {
+                file = RequestBody.create(MediaType.parse("image/*"), new File(mFilePath.get(i)));
+                builder.addFormDataPart("files", ("files"+type) + i + ".png", file);
+            }
+        }
+        OfficegoRetrofitClient1.getInstance().create(BuildingJointWorkInterface.class)
+                .uploadResourcesUrl(builder.build())
+                .enqueue(callback);
+    }
+
+    /**
      * 上传图片
      */
-    public void uploadSingleImageUrl(int type,String mFilePath, RetrofitCallback<UploadImageBean> callback) {
+    public void uploadSingleImageUrl(int type, String mFilePath, RetrofitCallback<UploadImageBean> callback) {
         MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
         builder.addFormDataPart("token", SpUtils.getSignToken());
         builder.addFormDataPart("filedirType", type + "");

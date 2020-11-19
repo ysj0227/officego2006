@@ -23,6 +23,7 @@ public class Constants {
     public static final int ERROR_CODE_7012 = 7012;//楼盘已经下架
     public static final int ERROR_CODE_7013 = 7013;//楼盘下的房源已经售完
     public static final int ERROR_CODE_7014 = 7014;//楼盘已删除
+    public static final int ERROR_CODE_6028= 6028;//图片尺寸太大,宽高不能超过4096px
     //第三方app和微信通信的openapi接口
     public static IWXAPI WXapi;
 

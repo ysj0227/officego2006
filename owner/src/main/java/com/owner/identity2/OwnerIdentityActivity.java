@@ -1,8 +1,8 @@
 package com.owner.identity2;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
@@ -14,14 +14,17 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.donkingliang.imageselector.utils.ImageSelector;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.model.owner.UploadImageBean;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.FileHelper;
 import com.officego.commonlib.utils.FileUtils;
@@ -31,6 +34,7 @@ import com.officego.commonlib.utils.PhotoUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.RoundImageView;
 import com.officego.commonlib.view.TitleBarView;
+import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.commonlib.view.widget.SettingItemLayout;
 import com.owner.R;
 import com.owner.adapter.SearchAdapter;
@@ -93,6 +97,12 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
     RecyclerView rvRecommendBuilding;
     @ViewById(resName = "btn_upload")
     Button btnUpload;
+    @ViewById(resName = "tv_text_business_license")
+    TextView tvTextBusinessLicense;
+    @ViewById(resName = "tv_tip_business_license")
+    TextView tvTipBusinessLicense;
+    @ViewById(resName = "tv_tip_additional_info")
+    TextView tvTipAdditionalInfo;
     @ViewById(resName = "include_business_license")
     View includeBusinessLicense;
     @ViewById(resName = "include_owner_personal_id")
@@ -116,6 +126,8 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
     RoundImageView rivImageBack;
     @ViewById(resName = "tv_upload_back")
     TextView tvUploadBack;
+    //驳回
+
 
     //是否展开
     private boolean isSpread;
@@ -146,7 +158,7 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
         //搜索列表
         LinearLayoutManager buildingManager = new LinearLayoutManager(context);
         rvRecommendBuilding.setLayoutManager(buildingManager);
-        SearchBuildingTextWatcher textWatcher=new SearchBuildingTextWatcher();
+        SearchBuildingTextWatcher textWatcher = new SearchBuildingTextWatcher();
         textWatcher.setListener(this);
         cetName.addTextChangedListener(textWatcher);
         //上传产证图片
@@ -238,13 +250,34 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
         idCardDialog(false);
     }
 
+    @Click(resName = "btn_upload")
+    void submitClick() {
+        submitIdentitySuccessDialog(this);
+    }
+
+    //认证提交成功
+    private void submitIdentitySuccessDialog(Activity activity) {
+        CommonDialog dialog = new CommonDialog.Builder(activity)
+                .setTitle("提交成功")
+                .setMessage("我们会在1-2个工作日完成审核")
+                .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
+                    //TODO
+                    dialog12.dismiss();
+                }).create();
+        dialog.showWithOutTouchable(false);
+        dialog.setCancelable(false);
+    }
+
     @Override
     public void sureType(String text, int type) {
         //1公司 2个人（自定义参数）
         silSelectType.setCenterText(text);
         includeBusinessLicense.setVisibility(type == 1 ? View.VISIBLE : View.GONE);
         includeOwnerPersonalId.setVisibility(type == 1 ? View.GONE : View.VISIBLE);
+        tvTipAdditionalInfo.setText(type == 1 ? "请上传以公司为主体的房屋租赁协议或其他相关材料" :
+                "请上传以个人为主体的房屋租赁协议或其他相关材料");
     }
+
     //搜索楼盘网点
     @Override
     public void searchBuilding(String str) {
@@ -321,12 +354,18 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
             silSelectType.setVisibility(View.VISIBLE);
             includeBusinessLicense.setVisibility(View.VISIBLE);
             includeOwnerPersonalId.setVisibility(View.GONE);
+            tvTextBusinessLicense.setText("上传营业执照");
+            tvTipBusinessLicense.setText("请确保上传与房产证上权利人名称相同的公司营业执照");
+            tvTipAdditionalInfo.setText("请上传以公司为主体的房屋租赁协议或其他相关材料");
         } else {
             tvBuildingFlay.setText("网点");
             tvBuildingFlay.setBackgroundResource(com.officego.commonlib.R.drawable.label_corners_solid_purple);
             silSelectType.setVisibility(View.GONE);
             includeBusinessLicense.setVisibility(View.VISIBLE);
             includeOwnerPersonalId.setVisibility(View.GONE);
+            tvTextBusinessLicense.setText("上传共享办公营业执照");
+            tvTipBusinessLicense.setText("请确保上传的共享办公营业执照清晰可辨识");
+            tvTipAdditionalInfo.setText("请上传以共享办公为主体的房屋租赁协议或其他相关材料");
         }
     }
 
@@ -354,6 +393,40 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
             listAdditionalInfo.remove(position);
             addiAdapter.notifyDataSetChanged();
         }
+    }
+
+    //上传图片成功
+    @Override
+    public void uploadSuccess(int imageType, UploadImageBean data) {
+        if (data != null && data.getUrls() != null && data.getUrls().size() > 0) {
+            int urlSize = data.getUrls().size();
+            if (TYPE_CER == imageType) {//房产证
+                addListImage(urlSize, data, listCertificate, cerAdapter);
+            } else if (TYPE_LICE == imageType) { //营业执照
+                addListImage(urlSize, data, listBusinessLice, liceAdapter);
+            } else if (TYPE_ADDI == imageType) {//补充材料
+                addListImage(urlSize, data, listAdditionalInfo, addiAdapter);
+            } else if (TYPE_IDCARD_FRONT == imageType) {//身份证正面
+                Glide.with(context).load(data.getUrls().get(0).getUrl()).into(rivImageFront);
+                tvUploadFront.setText(getString(R.string.str_re_upload));
+                tvUploadFront.setTextColor(ContextCompat.getColor(context, R.color.white));
+            } else if (TYPE_IDCARD_BACK == imageType) {//身份证反面
+                Glide.with(context).load(data.getUrls().get(0).getUrl()).into(rivImageBack);
+                tvUploadBack.setText(getString(R.string.str_re_upload));
+                tvUploadBack.setTextColor(ContextCompat.getColor(context, R.color.white));
+            }
+            shortTip("上传成功");
+        }
+    }
+
+    //上传成功添加列表图片
+    private void addListImage(int urlSize, UploadImageBean data, List<ImageBean> list, UploadImageAdapter adapter) {
+        ImageBean bean;
+        for (int i = 0; i < urlSize; i++) {
+            bean = new ImageBean(true, 0, data.getUrls().get(i).getUrl());
+            list.add(list.size() - 1, bean);
+        }
+        adapter.notifyDataSetChanged();
     }
 
     //身份证照片
@@ -479,59 +552,54 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
             final String path = IDCardCamera.getImagePath(data);
             if (!TextUtils.isEmpty(path)) {
                 if (requestCode == IDCardCamera.TYPE_IDCARD_FRONT) { //身份证正面
-                    localIdCardFrontPath = path;
-                    rivImageFront.setImageBitmap(BitmapFactory.decodeFile(path));
+                    uploadSingleImage(TYPE_IDCARD_FRONT, path);
                 } else if (requestCode == IDCardCamera.TYPE_IDCARD_BACK) {  //身份证反面
-                    localIdCardBackPath = path;
-                    rivImageBack.setImageBitmap(BitmapFactory.decodeFile(path));
+                    uploadSingleImage(TYPE_IDCARD_BACK, path);
                 }
             }
         }
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CAMERA) {//拍照
                 if (TYPE_CER == mUploadType) {//房产证
-                    ImageUtils.isSaveCropImageView(localCerPath);
-                    listCertificate.add(listCertificate.size() - 1, new ImageBean(false, 0, localCerPath));
-                    cerAdapter.notifyDataSetChanged();
+                    uploadSingleImage(TYPE_CER, localCerPath);
                 } else if (TYPE_LICE == mUploadType) {//营业执照
-                    ImageUtils.isSaveCropImageView(localLicePath);
-                    listBusinessLice.add(listBusinessLice.size() - 1, new ImageBean(false, 0, localLicePath));
-                    liceAdapter.notifyDataSetChanged();
+                    uploadSingleImage(TYPE_LICE, localLicePath);
                 } else if (TYPE_ADDI == mUploadType) {//补充材料
-                    ImageUtils.isSaveCropImageView(localAddiPath);
-                    listAdditionalInfo.add(listAdditionalInfo.size() - 1, new ImageBean(false, 0, localAddiPath));
-                    addiAdapter.notifyDataSetChanged();
+                    uploadSingleImage(TYPE_ADDI, localAddiPath);
                 }
-
             } else if (requestCode == REQUEST_GALLERY && data != null) {//相册
                 List<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
                 if (TYPE_CER == mUploadType) {//房产证
-                    for (int i = 0; i < images.size(); i++) {
-                        ImageUtils.isSaveCropImageView(images.get(i));
-                        listCertificate.add(listCertificate.size() - 1, new ImageBean(false, 0, images.get(i)));
-                    }
-                    cerAdapter.notifyDataSetChanged();
+                    uploadMultiImage(TYPE_CER, images);
                 } else if (TYPE_LICE == mUploadType) {//营业执照
-                    for (int i = 0; i < images.size(); i++) {
-                        ImageUtils.isSaveCropImageView(images.get(i));
-                        listBusinessLice.add(listBusinessLice.size() - 1, new ImageBean(false, 0, images.get(i)));
-                    }
-                    liceAdapter.notifyDataSetChanged();
+                    uploadMultiImage(TYPE_LICE, images);
                 } else if (TYPE_ADDI == mUploadType) {//补充材料
-                    for (int i = 0; i < images.size(); i++) {
-                        ImageUtils.isSaveCropImageView(images.get(i));
-                        listAdditionalInfo.add(listAdditionalInfo.size() - 1, new ImageBean(false, 0, images.get(i)));
-                    }
-                    addiAdapter.notifyDataSetChanged();
+                    uploadMultiImage(TYPE_ADDI, images);
                 } else if (TYPE_IDCARD_FRONT == mUploadType) {//身份证正面--相册
-                    localIdCardFrontPath = images.get(0);
-                    rivImageFront.setImageBitmap(BitmapFactory.decodeFile(images.get(0)));
+                    uploadSingleImage(TYPE_IDCARD_FRONT, images.get(0));
                 } else if (TYPE_IDCARD_BACK == mUploadType) {//身份证反面--相册
-                    localIdCardBackPath = images.get(0);
-                    rivImageBack.setImageBitmap(BitmapFactory.decodeFile(images.get(0)));
+                    uploadSingleImage(TYPE_IDCARD_BACK, images.get(0));
                 }
             }
         }
+    }
+
+    //单张图片处理
+    private void uploadSingleImage(int type, String path) {
+        ImageUtils.isSaveCropImageView(path);
+        List<String> stringList = new ArrayList<>();
+        stringList.add(path);
+        mPresenter.uploadImage(type, stringList);
+    }
+
+    //多张图片处理
+    private void uploadMultiImage(int type, List<String> images) {
+        List<String> imagesNew = new ArrayList<>();
+        for (int i = 0; i < images.size(); i++) {
+            ImageUtils.isSaveCropImageView(images.get(i));
+            imagesNew.add(images.get(i));
+        }
+        mPresenter.uploadImage(type, imagesNew);
     }
 
     @Override

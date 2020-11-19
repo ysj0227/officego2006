@@ -147,5 +147,6 @@
     <string name="str_confirm_add">确认添加</string>
     <string name="str_save_next">保存，下一步</string>
     <string name="str_go_to_identity">去认证</string>
+    <string name="str_re_upload">重新上传</string>
 
 </resources>
