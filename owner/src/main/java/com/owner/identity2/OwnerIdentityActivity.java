@@ -2,14 +2,15 @@ package com.owner.identity2;
 
 import android.app.AlertDialog;
 import android.content.Intent;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
-import android.text.Editable;
-import android.text.TextWatcher;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -28,18 +29,19 @@ import com.officego.commonlib.utils.ImageUtils;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.PhotoUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.view.RoundImageView;
 import com.officego.commonlib.view.TitleBarView;
 import com.officego.commonlib.view.widget.SettingItemLayout;
 import com.owner.R;
 import com.owner.adapter.SearchAdapter;
-import com.owner.adapter.UploadCertImageAdapter;
-import com.owner.adapter.UploadLiceImageAdapter;
+import com.owner.adapter.UploadImageAdapter;
 import com.owner.dialog.IdentityTypeDialog;
 import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.model.ImageBean;
 import com.owner.identity2.contract.IdentityContract;
 import com.owner.identity2.presenter.IdentityPresenter;
 import com.owner.utils.CommUtils;
+import com.wildma.idcardcamera.camera.IDCardCamera;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -58,9 +60,9 @@ import java.util.List;
  **/
 @EActivity(resName = "activity_owner_identity")
 public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
-        implements IdentityContract.View, IdentityTypeDialog.IdentityTypeListener,
-        SearchAdapter.IdentityBuildingListener, UploadCertImageAdapter.UploadCertListener,
-        UploadLiceImageAdapter.UploadCertListener {
+        implements IdentityContract.View, SearchBuildingTextWatcher.SearchListener,
+        IdentityTypeDialog.IdentityTypeListener,
+        SearchAdapter.IdentityBuildingListener, UploadImageAdapter.UploadListener {
     private static final int REQUEST_GALLERY = 0xa0;
     private static final int REQUEST_CAMERA = 0xa1;
     private static final int REQUEST_CREATE_BUILDING = 0xa3;
@@ -68,7 +70,7 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
     private static final int TYPE_IDCARD_BACK = 2;
     private static final int TYPE_CER = 3;//产证
     private static final int TYPE_LICE = 4;//营业执照
-    private static final int TYPE_REN = 5;//补充材料
+    private static final int TYPE_ADDI = 5;//补充材料
     @ViewById(resName = "title_bar")
     TitleBarView titleBar;
     @ViewById(resName = "tv_reject_reason")
@@ -100,7 +102,20 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
     @ViewById(resName = "rv_business_licensee")
     RecyclerView rvBusinessLicensee;
     @ViewById(resName = "rv_additional_info")
-    RecyclerView rvRenlInfo;
+    RecyclerView rvAddiInfo;
+    //身份证
+    @ViewById(resName = "rl_image_front")
+    RelativeLayout rlImageFront;
+    @ViewById(resName = "rl_image_back")
+    RelativeLayout rlImageBack;
+    @ViewById(resName = "riv_image_front")
+    RoundImageView rivImageFront;
+    @ViewById(resName = "tv_upload_front")
+    TextView tvUploadFront;
+    @ViewById(resName = "riv_image_back")
+    RoundImageView rivImageBack;
+    @ViewById(resName = "tv_upload_back")
+    TextView tvUploadBack;
 
     //是否展开
     private boolean isSpread;
@@ -110,13 +125,13 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
     //上传类型
     private int mUploadType;
     //本地路径
-    private String localIdCardFrontPath, localIdCardBackPath, localCerPath, localLicePath, localRenPath;
+    private String localIdCardFrontPath, localIdCardBackPath, localCerPath, localLicePath, localAddiPath;
     private Uri localPhotoUri;
     //上传图片
     private List<ImageBean> listCertificate = new ArrayList<>();
     private List<ImageBean> listBusinessLice = new ArrayList<>();
-    private UploadCertImageAdapter cerAdapter;
-    private UploadLiceImageAdapter liceAdapter;
+    private List<ImageBean> listAdditionalInfo = new ArrayList<>();
+    private UploadImageAdapter cerAdapter, liceAdapter, addiAdapter;
 
     @AfterViews
     void init() {
@@ -131,7 +146,9 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
         //搜索列表
         LinearLayoutManager buildingManager = new LinearLayoutManager(context);
         rvRecommendBuilding.setLayoutManager(buildingManager);
-        searchBuilding();
+        SearchBuildingTextWatcher textWatcher=new SearchBuildingTextWatcher();
+        textWatcher.setListener(this);
+        cetName.addTextChangedListener(textWatcher);
         //上传产证图片
         GridLayoutManager layoutManager1 = new GridLayoutManager(context, 3);
         layoutManager1.setSmoothScrollbarEnabled(true);
@@ -144,6 +161,12 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
         layoutManager2.setAutoMeasureEnabled(true);
         rvBusinessLicensee.setLayoutManager(layoutManager2);
         rvBusinessLicensee.setNestedScrollingEnabled(false);
+        //补充材料
+        GridLayoutManager layoutManager3 = new GridLayoutManager(context, 3);
+        layoutManager3.setSmoothScrollbarEnabled(true);
+        layoutManager3.setAutoMeasureEnabled(true);
+        rvAddiInfo.setLayoutManager(layoutManager3);
+        rvAddiInfo.setNestedScrollingEnabled(false);
     }
 
     private void initData() {
@@ -151,7 +174,7 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
         localCerPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "localCerPath.jpg";
         //初始化图片默认添加一个
         listCertificate.add(new ImageBean(false, 0, ""));
-        cerAdapter = new UploadCertImageAdapter(context, listCertificate);
+        cerAdapter = new UploadImageAdapter(context, TYPE_CER, listCertificate);
         cerAdapter.setListener(this);
         rvCertificate.setAdapter(cerAdapter);
 
@@ -159,9 +182,17 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
         localLicePath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "localLicePath.jpg";
         //初始化图片默认添加一个
         listBusinessLice.add(new ImageBean(false, 0, ""));
-        liceAdapter = new UploadLiceImageAdapter(context, listBusinessLice);
+        liceAdapter = new UploadImageAdapter(context, TYPE_LICE, listBusinessLice);
         liceAdapter.setListener(this);
         rvBusinessLicensee.setAdapter(liceAdapter);
+
+        //初始化本地图路径 补充材料
+        localAddiPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "localAddiPath.jpg";
+        //初始化图片默认添加一个
+        listAdditionalInfo.add(new ImageBean(false, 0, ""));
+        addiAdapter = new UploadImageAdapter(context, TYPE_ADDI, listAdditionalInfo);
+        addiAdapter.setListener(this);
+        rvAddiInfo.setAdapter(addiAdapter);
     }
 
     @Click(resName = "iv_expand")
@@ -195,6 +226,18 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
         hideSearchListView();
     }
 
+    @Click(resName = "rl_image_front")
+    void idFrontClick() {
+        mUploadType = TYPE_IDCARD_FRONT;
+        idCardDialog(true);
+    }
+
+    @Click(resName = "rl_image_back")
+    void idBackClick() {
+        mUploadType = TYPE_IDCARD_BACK;
+        idCardDialog(false);
+    }
+
     @Override
     public void sureType(String text, int type) {
         //1公司 2个人（自定义参数）
@@ -202,26 +245,11 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
         includeBusinessLicense.setVisibility(type == 1 ? View.VISIBLE : View.GONE);
         includeOwnerPersonalId.setVisibility(type == 1 ? View.GONE : View.VISIBLE);
     }
-
-    //search
-    private void searchBuilding() {
-        cetName.addTextChangedListener(new TextWatcher() {
-            @Override
-            public void beforeTextChanged(CharSequence s, int start, int count, int after) {
-
-            }
-
-            @Override
-            public void onTextChanged(CharSequence s, int start, int before, int count) {
-                showSearchListView();
-                mPresenter.searchBuilding(s.toString());
-            }
-
-            @Override
-            public void afterTextChanged(Editable s) {
-
-            }
-        });
+    //搜索楼盘网点
+    @Override
+    public void searchBuilding(String str) {
+        showSearchListView();
+        mPresenter.searchBuilding(str);
     }
 
     @Override
@@ -302,30 +330,47 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
         }
     }
 
-    //房产证
     @Override
-    public void addCertImage() {
-        mUploadType = TYPE_CER;
+    public void addImage(int imageType) {
+        if (TYPE_CER == imageType) {//房产证
+            mUploadType = TYPE_CER;
+        } else if (TYPE_LICE == imageType) { //营业执照
+            mUploadType = TYPE_LICE;
+        } else if (TYPE_ADDI == imageType) {//补充材料
+            mUploadType = TYPE_ADDI;
+        }
         selectedDialog();
     }
 
     @Override
-    public void deleteCertImage(ImageBean bean, int position) {
-        listCertificate.remove(position);
-        cerAdapter.notifyDataSetChanged();
+    public void deleteImage(int imageType, ImageBean bean, int position) {
+        if (TYPE_CER == imageType) {//房产证
+            listCertificate.remove(position);
+            cerAdapter.notifyDataSetChanged();
+        } else if (TYPE_LICE == imageType) { //营业执照
+            listBusinessLice.remove(position);
+            liceAdapter.notifyDataSetChanged();
+        } else if (TYPE_ADDI == imageType) {//补充材料
+            listAdditionalInfo.remove(position);
+            addiAdapter.notifyDataSetChanged();
+        }
     }
 
-    //营业执照
-    @Override
-    public void addLiceImage() {
-        mUploadType = TYPE_LICE;
-        selectedDialog();
-    }
-
-    @Override
-    public void deleteLiceImage(ImageBean bean, int position) {
-        listBusinessLice.remove(position);
-        liceAdapter.notifyDataSetChanged();
+    //身份证照片
+    private void idCardDialog(boolean isFront) {
+        final String[] items = {"拍照", "从相册选择"};
+        new AlertDialog.Builder(OwnerIdentityActivity.this)
+                .setItems(items, (dialogInterface, i) -> {
+                    if (i == 0) {
+                        if (isFront) {
+                            IDCardCamera.create(OwnerIdentityActivity.this).openCamera(IDCardCamera.TYPE_IDCARD_FRONT);
+                        } else {
+                            IDCardCamera.create(OwnerIdentityActivity.this).openCamera(IDCardCamera.TYPE_IDCARD_BACK);
+                        }
+                    } else if (i == 1) {
+                        openGallery();
+                    }
+                }).create().show();
     }
 
     //房产认证拍照，相册
@@ -358,6 +403,9 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
         } else if (TYPE_LICE == mUploadType) {
             localLicePath = FileHelper.SDCARD_CACHE_IMAGE_PATH + System.currentTimeMillis() + "businessLice.jpg";
             fileUri = new File(localLicePath);
+        } else if (TYPE_ADDI == mUploadType) {
+            localAddiPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + System.currentTimeMillis() + "additionalInfo.jpg";
+            fileUri = new File(localAddiPath);
         }
         localPhotoUri = Uri.fromFile(fileUri);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -378,6 +426,11 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
                 shortTip(R.string.tip_image_upload_overlimit);
                 return true;
             }
+        } else if (TYPE_ADDI == mUploadType) {//补充材料
+            if (listAdditionalInfo.size() >= 10) {
+                shortTip(R.string.tip_image_upload_overlimit);
+                return true;
+            }
         }
         return false;
     }
@@ -388,6 +441,8 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
             num = 10 - listCertificate.size();
         } else if (TYPE_LICE == mUploadType) {//营业执照
             num = 10 - listBusinessLice.size();
+        } else if (TYPE_ADDI == mUploadType) {//补充材料
+            num = 10 - listAdditionalInfo.size();
         } else {
             num = 10;
         }
@@ -399,7 +454,7 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
             return;
         }
         //是否上传房产证
-        if (TYPE_CER == mUploadType || TYPE_LICE == mUploadType) {
+        if (TYPE_CER == mUploadType || TYPE_LICE == mUploadType || TYPE_ADDI == mUploadType) {
             if (isOverLimit()) return;
             ImageSelector.builder()
                     .useCamera(false) // 设置是否使用拍照
@@ -419,6 +474,19 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
     @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+        if (resultCode == IDCardCamera.RESULT_CODE) {//身份证拍照
+            //获取图片路径，显示图片
+            final String path = IDCardCamera.getImagePath(data);
+            if (!TextUtils.isEmpty(path)) {
+                if (requestCode == IDCardCamera.TYPE_IDCARD_FRONT) { //身份证正面
+                    localIdCardFrontPath = path;
+                    rivImageFront.setImageBitmap(BitmapFactory.decodeFile(path));
+                } else if (requestCode == IDCardCamera.TYPE_IDCARD_BACK) {  //身份证反面
+                    localIdCardBackPath = path;
+                    rivImageBack.setImageBitmap(BitmapFactory.decodeFile(path));
+                }
+            }
+        }
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CAMERA) {//拍照
                 if (TYPE_CER == mUploadType) {//房产证
@@ -429,6 +497,10 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
                     ImageUtils.isSaveCropImageView(localLicePath);
                     listBusinessLice.add(listBusinessLice.size() - 1, new ImageBean(false, 0, localLicePath));
                     liceAdapter.notifyDataSetChanged();
+                } else if (TYPE_ADDI == mUploadType) {//补充材料
+                    ImageUtils.isSaveCropImageView(localAddiPath);
+                    listAdditionalInfo.add(listAdditionalInfo.size() - 1, new ImageBean(false, 0, localAddiPath));
+                    addiAdapter.notifyDataSetChanged();
                 }
 
             } else if (requestCode == REQUEST_GALLERY && data != null) {//相册
@@ -445,6 +517,18 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
                         listBusinessLice.add(listBusinessLice.size() - 1, new ImageBean(false, 0, images.get(i)));
                     }
                     liceAdapter.notifyDataSetChanged();
+                } else if (TYPE_ADDI == mUploadType) {//补充材料
+                    for (int i = 0; i < images.size(); i++) {
+                        ImageUtils.isSaveCropImageView(images.get(i));
+                        listAdditionalInfo.add(listAdditionalInfo.size() - 1, new ImageBean(false, 0, images.get(i)));
+                    }
+                    addiAdapter.notifyDataSetChanged();
+                } else if (TYPE_IDCARD_FRONT == mUploadType) {//身份证正面--相册
+                    localIdCardFrontPath = images.get(0);
+                    rivImageFront.setImageBitmap(BitmapFactory.decodeFile(images.get(0)));
+                } else if (TYPE_IDCARD_BACK == mUploadType) {//身份证反面--相册
+                    localIdCardBackPath = images.get(0);
+                    rivImageBack.setImageBitmap(BitmapFactory.decodeFile(images.get(0)));
                 }
             }
         }

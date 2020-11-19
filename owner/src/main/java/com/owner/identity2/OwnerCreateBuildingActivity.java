@@ -87,6 +87,7 @@ public class OwnerCreateBuildingActivity extends BaseActivity implements
 
     private void initViews() {
         silName.getEditTextView().setText(inputText);
+        silName.getEditTextView().setSelection(TextUtils.isEmpty(inputText) ? 0 : inputText.length());
     }
 
     @Click(resName = "sil_area")

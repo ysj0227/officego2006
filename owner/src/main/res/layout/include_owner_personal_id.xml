@@ -17,7 +17,7 @@
         android:id="@+id/tv_upload_id"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginLeft="@dimen/dp_18"
+        android:layout_marginStart="@dimen/dp_18"
         android:text="上传身份证"
         android:textColor="@color/text_33"
         android:textSize="@dimen/sp_14" />
@@ -27,7 +27,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_upload_id"
-        android:layout_marginLeft="@dimen/dp_18"
+        android:layout_marginStart="@dimen/dp_18"
         android:layout_marginTop="@dimen/dp_6"
         android:text="请上传个人身份证正反面，不可遮挡关键信息"
         android:textColor="@color/text_66_p50"
@@ -70,7 +70,7 @@
             android:id="@+id/rl_image_back"
             android:layout_width="@dimen/dp_154"
             android:layout_height="@dimen/dp_115"
-            android:layout_marginLeft="@dimen/dp_18"
+            android:layout_marginStart="@dimen/dp_18"
             android:layout_marginTop="@dimen/dp_16"
             android:layout_weight="1">
 

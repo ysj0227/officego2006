@@ -21,31 +21,33 @@ import java.util.List;
  * Data 2020/7/13.
  * Descriptions:
  **/
-public class UploadLiceImageAdapter extends CommonListAdapter<ImageBean> {
+public class UploadImageAdapter extends CommonListAdapter<ImageBean> {
 
-    private List<ImageBean> list;
     private Context context;
+    private int type;
+    private List<ImageBean> list;
 
-    public UploadCertListener getListener() {
+    public UploadListener getListener() {
         return listener;
     }
 
-    public void setListener(UploadCertListener listener) {
+    public void setListener(UploadListener listener) {
         this.listener = listener;
     }
 
-    private UploadCertListener listener;
+    private UploadListener listener;
 
-    public UploadLiceImageAdapter(Context context, List<ImageBean> list) {
+    public UploadImageAdapter(Context context, int type,List<ImageBean> list) {
         super(context, R.layout.item_id_company_img, list);
-        this.list = list;
         this.context = context;
+        this.type=type;
+        this.list = list;
     }
 
-    public interface UploadCertListener {
-        void addLiceImage();
+    public interface UploadListener {
+        void addImage(int imageType);
 
-        void deleteLiceImage(ImageBean bean, int position);
+        void deleteImage(int imageType,ImageBean bean, int position);
     }
 
     @Override
@@ -62,13 +64,13 @@ public class UploadLiceImageAdapter extends CommonListAdapter<ImageBean> {
         //删除
         ivDelete.setOnClickListener(v -> {
             if (!TextUtils.isEmpty(bean.getPath())) {
-                listener.deleteLiceImage(bean, holder.getAdapterPosition());
+                listener.deleteImage(type,bean, holder.getAdapterPosition());
             }
         });
         if (list != null && list.size() > 0 && holder.getAdapterPosition() == list.size() - 1) {
             //添加图片
             ivDelete.setVisibility(View.GONE);
-            ivItem.setOnClickListener(v -> listener.addLiceImage());
+            ivItem.setOnClickListener(v -> listener.addImage(type));
         } else {
             ivDelete.setVisibility(View.VISIBLE);
         }

@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -83,7 +84,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     RecyclerView rvView;
     //未认证
     @ViewById(resName = "rl_to_identity")
-    RelativeLayout rlToIdentity;
+    NestedScrollView rlToIdentity;
     @ViewById(resName = "btn_identity")
     Button btnIdentity;
     //认证状态流程
