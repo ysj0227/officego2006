@@ -2,7 +2,6 @@ package com.owner.identity2;
 
 import android.app.AlertDialog;
 import android.content.Intent;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
@@ -11,11 +10,14 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
+import com.bumptech.glide.Glide;
 import com.donkingliang.imageselector.utils.ImageSelector;
-import com.officego.commonlib.base.BaseActivity;
+import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.model.owner.UploadImageBean;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.FileHelper;
 import com.officego.commonlib.utils.FileUtils;
@@ -30,6 +32,8 @@ import com.officego.commonlib.view.widget.SettingItemLayout;
 import com.owner.R;
 import com.owner.dialog.AreaDialog;
 import com.owner.identity.RequestPermissionsResult;
+import com.owner.identity2.contract.CreateBuildingContract;
+import com.owner.identity2.presenter.CreateBuildingPresenter;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -45,8 +49,9 @@ import java.util.List;
  * Date 2020/11/18
  **/
 @EActivity(resName = "activity_create_building_jointwork")
-public class OwnerCreateBuildingActivity extends BaseActivity implements
-        AreaDialog.AreaSureListener, RequestPermissionsResult.PermissionsListener {
+public class OwnerCreateBuildingActivity extends BaseMvpActivity<CreateBuildingPresenter>
+        implements CreateBuildingContract.View, AreaDialog.AreaSureListener,
+        RequestPermissionsResult.PermissionsListener {
     private static final int REQUEST_GALLERY = 0xa0;
     private static final int REQUEST_CAMERA = 0xa1;
     @ViewById(resName = "title_bar")
@@ -75,12 +80,12 @@ public class OwnerCreateBuildingActivity extends BaseActivity implements
     private String localBuildingPath;
     private Uri localPhotoUri;
     private String name, address;
-    //是否从相机拍照或相册选择了图片
-    private boolean isTakePhotoOrGallery;
 
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarColor(this);
+        mPresenter = new CreateBuildingPresenter();
+        mPresenter.attachView(this);
         titleBar.getLeftImg().setOnClickListener(view -> onBackPressed());
         initViews();
     }
@@ -192,21 +197,31 @@ public class OwnerCreateBuildingActivity extends BaseActivity implements
     }
 
     @Override
+    public void uploadSuccess(UploadImageBean data) {
+        if (data != null && data.getUrls() != null && data.getUrls().size() > 0) {
+            Glide.with(context).load(data.getUrls().get(0).getUrl()).into(ivImage);
+            shortTip("上传成功");
+        }
+    }
+
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == RESULT_OK) {
             if (requestCode == REQUEST_CAMERA) {//拍照
-                isTakePhotoOrGallery = true;
-                ImageUtils.isSaveCropImageView(localBuildingPath);//图片处理
-                ivImage.setImageBitmap(BitmapFactory.decodeFile(localBuildingPath));
+                uploadSingleImage(localBuildingPath);
             } else if (requestCode == REQUEST_GALLERY && data != null) {//相册
-                isTakePhotoOrGallery = true;
                 List<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
                 localBuildingPath = images.get(0);
-                ImageUtils.isSaveCropImageView(localBuildingPath);//图片处理
-                ivImage.setImageBitmap(BitmapFactory.decodeFile(images.get(0)));
+                uploadSingleImage(localBuildingPath);
             }
         }
+    }
+
+    //单张图片处理
+    private void uploadSingleImage(String path) {
+        ImageUtils.isSaveCropImageView(path);
+        mPresenter.uploadImage(path);
     }
 
     @Override
@@ -225,4 +240,5 @@ public class OwnerCreateBuildingActivity extends BaseActivity implements
     public void gotoOpenGallery() {
         openGallery();
     }
+
 }

@@ -24,8 +24,10 @@ import com.bumptech.glide.Glide;
 import com.donkingliang.imageselector.utils.ImageSelector;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.model.owner.UploadImageBean;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.utils.FileHelper;
 import com.officego.commonlib.utils.FileUtils;
 import com.officego.commonlib.utils.ImageUtils;
@@ -127,7 +129,16 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
     @ViewById(resName = "tv_upload_back")
     TextView tvUploadBack;
     //驳回
-
+    @ViewById(resName = "iv_reject_name")
+    ImageView ivRejectName;
+    @ViewById(resName = "iv_reject_ownership_certificate")
+    ImageView ivRejectOwnershipCertificate;
+    @ViewById(resName = "iv_reject_business_license")
+    ImageView ivRejectBusinessLicense;
+    @ViewById(resName = "iv_reject_idcard")
+    ImageView ivRejectIdcard;
+    @ViewById(resName = "iv_reject_additional_info")
+    ImageView ivRejectAdditionalInfo;
 
     //是否展开
     private boolean isSpread;
@@ -252,17 +263,18 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
 
     @Click(resName = "btn_upload")
     void submitClick() {
-        submitIdentitySuccessDialog(this);
+        submitIdentitySuccessDialog();
     }
 
     //认证提交成功
-    private void submitIdentitySuccessDialog(Activity activity) {
-        CommonDialog dialog = new CommonDialog.Builder(activity)
+    private void submitIdentitySuccessDialog() {
+        CommonDialog dialog = new CommonDialog.Builder(this)
                 .setTitle("提交成功")
                 .setMessage("我们会在1-2个工作日完成审核")
                 .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
-                    //TODO
-                    dialog12.dismiss();
+                    finish();
+                    BaseNotification.newInstance().postNotificationName(
+                            CommonNotifications.firstIdentitySuccess, "firstIdentitySuccess");
                 }).create();
         dialog.showWithOutTouchable(false);
         dialog.setCancelable(false);

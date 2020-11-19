@@ -329,7 +329,7 @@ public class OfficegoApi {
      * isStatus 	否 	int 	0全部1发布2下架
      * keyWord 	否 	String 	关键字
      */
-    public void getHouseList(int buildingId, int isTemp, int pageNo, int isStatus,
+    public void getHouseList(int buildingId, int isTemp, int pageNo,
                              RetrofitCallback<HouseBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
@@ -337,7 +337,6 @@ public class OfficegoApi {
         map.put("isTemp", requestBody(isTemp + ""));
         map.put("pageNo", requestBody(pageNo + ""));
         map.put("pageSize", requestBody("10"));
-//        map.put("isStatus", requestBody(isStatus + ""));
         OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
                 .getHouseList(map)
                 .enqueue(callback);

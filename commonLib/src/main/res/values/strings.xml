@@ -98,6 +98,7 @@
     <string name="str_sunday">日</string>
     <string name="str_appointment_record">约看记录</string>
     <string name="str_search">搜索</string>
+    <string name="str_search_hint">请输入你想找的区域/商圈或办公楼名称</string>
     <string name="str_recommend_house">推荐房源</string>
     <string name="str_nearby_house">附近房源</string>
     <!--    video-->

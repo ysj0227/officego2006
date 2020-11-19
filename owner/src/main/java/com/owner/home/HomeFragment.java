@@ -29,6 +29,7 @@ import com.officego.commonlib.update.VersionDialog;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.OnLoadMoreListener;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
@@ -117,6 +118,8 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     private int isTemp;
     //更多dialog-删除，上架刷新
     private int mPosition;
+    //楼盘/网点列表的第几个位置
+    private int listBuildingPosition;
 
     @AfterViews
     void init() {
@@ -259,6 +262,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
             noData();
             return;
         }
+        LogCat.e(TAG, "111111 有房源数据");
         hasData();
         this.hasMore = hasMore;
         houseList.addAll(data);
@@ -345,7 +349,8 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     //左侧Popup选择
     //0: 下架(未发布),1: 上架(已发布) ;2:资料待完善  3: 置顶推荐;4:已售完;5:删除;6待审核7已驳回
     @Override
-    public void popupHouseList(BuildingJointWorkBean.ListBean bean) {
+    public void popupHouseList(int selectedPos, BuildingJointWorkBean.ListBean bean) {
+        listBuildingPosition = selectedPos;//选择的第几个楼盘
         currentBuildingMessage(bean);
         if (bean.getIsTemp() == 0) {
             getRefreshHouseList();//房源列表
@@ -354,6 +359,8 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
                 identityDoingView();
                 checkStatusOk(mData);
             } else if (7 == bean.getStatus()) {//7已驳回
+                //todo reasons
+//                tvRejectReason.setText(mData.);
                 identityRejectView();
                 checkStatusOk(mData);
             }
@@ -380,7 +387,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     }
 
     private void getHouseList() {
-        mPresenter.getHouseList(buildingId, mData.getIsTemp(), pageNum, mData.getStatus());
+        mPresenter.getHouseList(buildingId, mData.getIsTemp(), pageNum);
     }
 
     /**
@@ -393,7 +400,8 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         if (data.getAuditStatus() == -1) {//未认证
             cannotIdentity();
         } else {
-            mPresenter.initHouseList();//初始化列表
+            //初始化列表 listBuildingPosition==0
+            mPresenter.initHouseList(listBuildingPosition);
         }
     }
 
@@ -424,7 +432,9 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     public int[] getStickNotificationId() {
         return new int[]{CommonNotifications.ownerIdentityHandle,
                 CommonNotifications.updateBuildingSuccess,
-                CommonNotifications.updateHouseSuccess};
+                CommonNotifications.updateHouseSuccess,
+                CommonNotifications.rejectBuildingSuccess,
+                CommonNotifications.firstIdentitySuccess};
     }
 
     @Override
@@ -439,7 +449,17 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
                 }
                 mPresenter.getBuildingJointWorkList();
             } else if (id == CommonNotifications.updateHouseSuccess) {
+                //刷新房源
                 getRefreshHouseList();
+            } else if (id == CommonNotifications.rejectBuildingSuccess) {
+                //重新认证
+                LogCat.e(TAG, "111111 重新认证 rejectBuildingSuccess");
+                //先调楼盘列表获取之前的位置在刷新
+                mPresenter.getUserInfo();
+            } else if (id == CommonNotifications.firstIdentitySuccess) {
+                //首次认证提交
+                LogCat.e(TAG, "111111 首次认证提交 firstIdentitySuccess");
+                mPresenter.getUserInfo();
             }
         }
     }

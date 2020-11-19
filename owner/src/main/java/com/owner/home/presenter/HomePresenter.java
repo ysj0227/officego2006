@@ -45,10 +45,10 @@ public class HomePresenter extends BasePresenter<HomeContract.View>
     }
 
     @Override
-    public void getHouseList(int buildingId, int isTemp, int pageNo, int isStatus) {
+    public void getHouseList(int buildingId, int isTemp, int pageNo) {
         mView.showLoadingDialog();
         com.officego.commonlib.common.rpc.OfficegoApi.getInstance().getHouseList(
-                buildingId, isTemp, pageNo, isStatus, new RetrofitCallback<HouseBean>() {
+                buildingId, isTemp, pageNo,  new RetrofitCallback<HouseBean>() {
                     @Override
                     public void onSuccess(int code, String msg, HouseBean data) {
                         if (isViewAttached()) {
@@ -98,7 +98,7 @@ public class HomePresenter extends BasePresenter<HomeContract.View>
     }
 
     @Override
-    public void initHouseList() {
+    public void initHouseList(int buildingIdPos) {
         mView.showLoadingDialog();
         com.officego.commonlib.common.rpc.OfficegoApi.getInstance().getBuildingJointWorkList(new RetrofitCallback<BuildingJointWorkBean>() {
             @Override
@@ -106,7 +106,7 @@ public class HomePresenter extends BasePresenter<HomeContract.View>
                 if (isViewAttached()) {
                     //初始化楼盘网点第一条下的房源数据
                     if (data.getList().size() > 0) {
-                        mView.initHouseData(data.getList().get(0));
+                        mView.initHouseData(data.getList().get(buildingIdPos));
                     }
                 }
             }

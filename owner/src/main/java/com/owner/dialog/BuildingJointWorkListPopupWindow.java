@@ -61,7 +61,7 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
     public interface HomePopupListener {
         void popupDismiss();
 
-        void popupHouseList(BuildingJointWorkBean.ListBean bean);
+        void popupHouseList(int selectedPos, BuildingJointWorkBean.ListBean bean);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -231,7 +231,7 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
             //房源列表
             holder.itemView.setOnClickListener(view -> {
                 dismiss();
-                listener.popupHouseList(bean);
+                listener.popupHouseList(holder.getAdapterPosition(),bean);
             });
         }
     }

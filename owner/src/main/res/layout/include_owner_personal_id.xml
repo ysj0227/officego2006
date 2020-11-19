@@ -4,14 +4,14 @@
     android:layout_height="wrap_content">
 
     <ImageView
-        android:visibility="gone"
-        android:layout_marginStart="@dimen/dp_1"
         android:id="@+id/iv_reject_idcard"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignTop="@id/tv_upload_id"
         android:layout_alignBottom="@id/ll_upload_id_image"
-        android:background="@mipmap/ic_reject_bg" />
+        android:layout_marginStart="@dimen/dp_1"
+        android:background="@mipmap/ic_reject_bg"
+        android:visibility="gone" />
 
     <TextView
         android:id="@+id/tv_upload_id"

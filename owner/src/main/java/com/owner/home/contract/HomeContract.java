@@ -33,11 +33,11 @@ public interface HomeContract {
 
         void getBuildingJointWorkList();    //获取楼盘或网点列表
 
-        void getHouseList(int buildingId, int isTemp, int pageNo, int isStatus);
+        void getHouseList(int buildingId, int isTemp, int pageNo);
 
         void getUserInfo();
 
-        void initHouseList();
+        void initHouseList(int buildingIdPos);//第几个楼盘网点
 
         void isPublishHouse(int houseId, int isRelease,int isTemp);//上下架发布
 

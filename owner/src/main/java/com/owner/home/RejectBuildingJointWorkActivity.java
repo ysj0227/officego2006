@@ -404,7 +404,7 @@ public class RejectBuildingJointWorkActivity extends BaseMvpActivity<AddPresente
         finish();
         shortTip("提交成功");
         BaseNotification.newInstance().postNotificationName(
-                CommonNotifications.updateBuildingSuccess, "updateBuildingSuccess");
+                CommonNotifications.rejectBuildingSuccess, "rejectBuildingSuccess");
     }
 
     @SuppressLint("SetTextI18n")
