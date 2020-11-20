@@ -7,41 +7,80 @@
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="0dp"
-        android:layout_height="480dp"
+        android:layout_height="500dp"
         android:background="@color/common_divider"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <TextView
-            android:id="@+id/tv_title"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@color/white"
-            android:paddingLeft="@dimen/dp_18"
-            android:paddingTop="@dimen/dp_18"
-            android:paddingRight="@dimen/dp_18"
-            android:textColor="@color/text_66_p50"
-            android:textSize="@dimen/sp_16"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <androidx.recyclerview.widget.RecyclerView
-            android:id="@+id/rv_list"
+        <androidx.core.widget.NestedScrollView
             android:layout_width="0dp"
             android:layout_height="0dp"
-            android:background="@color/white"
-            android:paddingLeft="@dimen/dp_18"
-            android:paddingRight="@dimen/dp_18"
             app:layout_constraintBottom_toTopOf="@id/rl_bottom"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/tv_title" />
+            app:layout_constraintTop_toTopOf="parent">
+
+            <RelativeLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@color/white">
+
+                <TextView
+                    android:id="@+id/tv_title"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:paddingLeft="@dimen/dp_18"
+                    android:paddingTop="@dimen/dp_15"
+                    android:paddingRight="@dimen/dp_18"
+                    android:text="楼盘"
+                    android:textColor="@color/text_66_p50"
+                    android:textSize="@dimen/sp_16" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_list"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_title"
+                    android:paddingLeft="@dimen/dp_18"
+                    android:paddingRight="@dimen/dp_18" />
+
+                <View
+                    android:id="@+id/v_split_line"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_15"
+                    android:layout_below="@id/rv_list"
+                    android:layout_marginTop="@dimen/dp_8"
+                    android:background="@color/text_f7" />
+
+                <TextView
+                    android:id="@+id/tv_title_joint_work"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/v_split_line"
+                    android:paddingLeft="@dimen/dp_18"
+                    android:paddingTop="@dimen/dp_15"
+                    android:paddingRight="@dimen/dp_18"
+                    android:text="网点"
+                    android:textColor="@color/text_66_p50"
+                    android:textSize="@dimen/sp_16" />
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/rv_list_joint_work"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/tv_title_joint_work"
+                    android:paddingLeft="@dimen/dp_18"
+                    android:paddingRight="@dimen/dp_18" />
+
+            </RelativeLayout>
+
+        </androidx.core.widget.NestedScrollView>
 
         <RelativeLayout
             android:id="@+id/rl_bottom"
             android:layout_width="0dp"
-            android:layout_height="@dimen/dp_100"
+            android:layout_height="@dimen/dp_90"
             android:background="@color/white"
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
@@ -50,7 +89,7 @@
             <View
                 android:layout_width="match_parent"
                 android:layout_height="@dimen/dp_10"
-                android:background="@color/common_divider" />
+                android:background="@color/text_f7" />
 
             <TextView
                 android:id="@+id/tv_add"

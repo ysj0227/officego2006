@@ -11,7 +11,6 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -25,6 +24,7 @@ import com.officego.commonlib.ViewHolder;
 import com.officego.commonlib.common.model.BuildingManagerBean;
 import com.officego.commonlib.common.model.owner.BuildingJointWorkBean;
 import com.officego.commonlib.common.model.utils.BundleUtils;
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
 import com.owner.R;
 import com.owner.home.AddBuildingJointWorkActivity_;
@@ -32,6 +32,7 @@ import com.owner.home.EditBuildingActivity_;
 import com.owner.home.EditJointWorkActivity_;
 import com.owner.mine.model.UserOwnerBean;
 
+import java.util.ArrayList;
 import java.util.List;
 
 
@@ -47,6 +48,9 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
     private UserOwnerBean mUserData;
     private int statusBarHeight, titleBarHeight;
     private final int identityType = 2;//0个人1企业2联合，网点
+    //筛选楼盘网点列表
+    private List<BuildingJointWorkBean.ListBean> buildingList;
+    private List<BuildingJointWorkBean.ListBean> jointWorkList;
 
     public HomePopupListener getListener() {
         return listener;
@@ -71,6 +75,17 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
         this.mContext = activity;
         this.mUserData = mUserData;
         this.list = list;
+        //楼盘，网点
+        buildingList = new ArrayList<>();
+        jointWorkList = new ArrayList<>();
+        for (int i = 0; i < list.size(); i++) {
+            if (list.get(i).getBtype() == Constants.TYPE_BUILDING) {
+                buildingList.add(list.get(i));
+            } else {
+                jointWorkList.add(list.get(i));
+            }
+        }
+        //view
         LayoutInflater inflater = LayoutInflater.from(mContext);
         View viewLayout = inflater.inflate(R.layout.pop_building_jointwork_list, null);
         setContentView(viewLayout);
@@ -125,24 +140,28 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
     }
 
     private void handleView(View viewLayout) {
-        TextView tvPopupTitle = viewLayout.findViewById(R.id.tv_title);
-        TextView tvAdd = viewLayout.findViewById(R.id.tv_add);
+        TextView tvBuilding = viewLayout.findViewById(R.id.tv_title);
         RecyclerView recyclerViewList = viewLayout.findViewById(R.id.rv_list);
-        recyclerViewList.setLayoutManager(new LinearLayoutManager(mContext));
-        recyclerViewList.setAdapter(new BuildingAdapter(mContext, list));
-        if (mUserData != null) {
-            if (mUserData.getIdentityType() == identityType) {
-                tvPopupTitle.setText("网点");
-                tvAdd.setText("添加网点");
-            } else {
-                tvPopupTitle.setText("楼盘");
-                tvAdd.setText("添加楼盘");
-            }
+        View vLine = viewLayout.findViewById(R.id.v_split_line);
+        TextView tvJointWork = viewLayout.findViewById(R.id.tv_title_joint_work);
+        RecyclerView rvListJointWork = viewLayout.findViewById(R.id.rv_list_joint_work);
+        if (buildingList.size() == 0) {
+            tvBuilding.setVisibility(View.GONE);
+            recyclerViewList.setVisibility(View.GONE);
+            vLine.setVisibility(View.GONE);
+        } else if (jointWorkList.size() == 0) {
+            tvJointWork.setVisibility(View.GONE);
+            rvListJointWork.setVisibility(View.GONE);
+            vLine.setVisibility(View.GONE);
+        } else {
+            vLine.setVisibility(View.VISIBLE);
         }
+        recyclerViewList.setLayoutManager(new LinearLayoutManager(mContext));
+        recyclerViewList.setAdapter(new BuildingAdapter(mContext, buildingList));
+        rvListJointWork.setLayoutManager(new LinearLayoutManager(mContext));
+        rvListJointWork.setAdapter(new BuildingAdapter(mContext, jointWorkList));
         //添加楼盘网点
-        tvAdd.setOnClickListener(view -> {
-            gotoAddActivity();
-        });
+        viewLayout.findViewById(R.id.tv_add).setOnClickListener(view -> gotoAddActivity());
     }
 
     private void gotoEditActivity(BuildingManagerBean managerBean) {
@@ -184,7 +203,6 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
             ImageView ivEdit = holder.getView(R.id.iv_edit);
             RelativeLayout rlPreview = holder.getView(R.id.rl_preview);
             RelativeLayout rlEdit = holder.getView(R.id.rl_edit);
-            Button btnReject = holder.getView(R.id.btn_reject);
             ImageView ivPoint = holder.getView(R.id.iv_point);
             TextView tvTitle = holder.getView(R.id.tv_title);
             ivEdit.setBackgroundResource(1 == bean.getIsEdit() ? R.mipmap.ic_edit_blue : R.mipmap.ic_edit_gray);
@@ -231,7 +249,7 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
             //房源列表
             holder.itemView.setOnClickListener(view -> {
                 dismiss();
-                listener.popupHouseList(holder.getAdapterPosition(),bean);
+                listener.popupHouseList(holder.getAdapterPosition(), bean);
             });
         }
     }
