@@ -750,12 +750,11 @@ public class OfficegoApi {
         map.put("materials", requestBody(materials + ""));
         map.put("idFront", requestBody(idFront + ""));
         map.put("idBack", requestBody(idBack + ""));
+        map.put("buildId", requestBody(buildId + ""));
         if (TextUtils.isEmpty(buildId) || TextUtils.equals("0", buildId)) {
             map.put("districtId", requestBody(districtId + ""));
             map.put("businessDistrict", requestBody(businessDistrict + ""));
             map.put("address", requestBody(address + ""));
-        } else {
-            map.put("buildId", requestBody(buildId + ""));
         }
         if (buildingId != 0) {
             map.put("buildingId", requestBody(buildingId + ""));
