@@ -39,6 +39,6 @@ public class CommonNotifications {
     public static final int updateBuildingSuccess = totalEvents++;
     public static final int rejectBuildingSuccess = totalEvents++;
     public static final int updateHouseSuccess = totalEvents++;
-    //首次认证提交
-    public static final int firstIdentitySuccess = totalEvents++;
+    //认证或添加网点楼盘提交
+    public static final int checkedIdentitySuccess = totalEvents++;
 }

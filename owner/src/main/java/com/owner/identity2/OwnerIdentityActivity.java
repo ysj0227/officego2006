@@ -1,6 +1,5 @@
 package com.owner.identity2;
 
-import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -45,6 +44,7 @@ import com.owner.dialog.IdentityTypeDialog;
 import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.model.ImageBean;
 import com.owner.identity2.contract.IdentityContract;
+import com.owner.identity2.model.BuildingBean;
 import com.owner.identity2.presenter.IdentityPresenter;
 import com.owner.utils.CommUtils;
 import com.wildma.idcardcamera.camera.IDCardCamera;
@@ -273,8 +273,9 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
                 .setMessage("我们会在1-2个工作日完成审核")
                 .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
                     finish();
+                    //发送通知提交了认证
                     BaseNotification.newInstance().postNotificationName(
-                            CommonNotifications.firstIdentitySuccess, "firstIdentitySuccess");
+                            CommonNotifications.checkedIdentitySuccess, "checkedIdentitySuccess");
                 }).create();
         dialog.showWithOutTouchable(false);
         dialog.setCancelable(false);
@@ -335,16 +336,19 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
     @OnActivityResult(REQUEST_CREATE_BUILDING)
     void onCreateBuildingResult(int resultCode, Intent data) {
         if (resultCode == RESULT_OK) {
-            int buildingType = data.getIntExtra("buildingType", 1);
-            String buildingName = data.getStringExtra("buildingName");
-            String buildingAddress = data.getStringExtra("buildingAddress");
-            buildingFlayView(buildingType);
-            cetName.setText(buildingName);
-            tvAddress.setText(buildingAddress);
-            tvAddress.setVisibility(View.VISIBLE);
-            ivEdit.setVisibility(View.VISIBLE);
-            cetName.setEnabled(false);
-            hideSearchListView();
+            BuildingBean bean = (BuildingBean) data.getSerializableExtra("buildingMessage");
+            if (bean != null) {
+                int buildingType = bean.getBuildingType();
+                String buildingName = bean.getName();
+                String buildingAddress = bean.getAddress();
+                buildingFlayView(buildingType);
+                cetName.setText(buildingName);
+                tvAddress.setText(buildingAddress);
+                tvAddress.setVisibility(View.VISIBLE);
+                ivEdit.setVisibility(View.VISIBLE);
+                cetName.setEnabled(false);
+                hideSearchListView();
+            }
         }
     }
 

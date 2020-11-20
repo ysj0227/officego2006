@@ -74,9 +74,6 @@ public class WebViewActivity extends BaseActivity {
         } else if (flags == Constants.H5_ABOUTS) {
             titleBar.getAppTitle().setText(getString(R.string.str_title_about_us));
             loadWebView(AppConfig.H5_ABOUT_US + chanel());
-        } else if (flags == Constants.H5_ROLE) {
-            titleBar.getAppTitle().setText(getString(R.string.str_title_role));
-            loadWebView(AppConfig.H5_STAFF_LIST + chanelHelp());
         } else if (flags == Constants.H5_VR_RECORD) {
             titleBar.getAppTitle().setText(getString(R.string.str_title_vr_record));
             loadWebView(AppConfig.H5_VR_RECORD + chanelHelp());
@@ -217,9 +214,7 @@ public class WebViewActivity extends BaseActivity {
                     webView.loadUrl(AppConfig.H5_PRIVACY + chanel());
                 } else if (flags == Constants.H5_ABOUTS) {
                     webView.loadUrl(AppConfig.H5_ABOUT_US + chanel());
-                } else if (flags == Constants.H5_ROLE) {
-                    webView.loadUrl(AppConfig.H5_STAFF_LIST + chanel());
-                }else if (flags == Constants.H5_VR_RECORD) {
+                } else if (flags == Constants.H5_VR_RECORD) {
                     webView.loadUrl(AppConfig.H5_VR_RECORD + chanel());
                 }
             } else {

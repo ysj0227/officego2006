@@ -33,6 +33,7 @@ import com.owner.R;
 import com.owner.dialog.AreaDialog;
 import com.owner.identity.RequestPermissionsResult;
 import com.owner.identity2.contract.CreateBuildingContract;
+import com.owner.identity2.model.BuildingBean;
 import com.owner.identity2.presenter.CreateBuildingPresenter;
 
 import org.androidannotations.annotations.AfterViews;
@@ -80,6 +81,7 @@ public class OwnerCreateBuildingActivity extends BaseMvpActivity<CreateBuildingP
     private String localBuildingPath;
     private Uri localPhotoUri;
     private String name, address;
+    private String introduceImageUrl;
 
     @AfterViews
     void init() {
@@ -126,12 +128,20 @@ public class OwnerCreateBuildingActivity extends BaseMvpActivity<CreateBuildingP
             ToastUtils.toastForShort(context, "请输入详细地址");
             return;
         }
-        //todo
-        shortTip(R.string.tip_create_success);
+        if (TextUtils.isEmpty(introduceImageUrl)) {
+            shortTip("请上传封面图");
+            return;
+        }
+        //save
+        BuildingBean bean = new BuildingBean();
+        bean.setName(name);
+        bean.setBuildingType(rbBuilding.isChecked() ? Constants.TYPE_BUILDING : Constants.TYPE_JOINTWORK);
+        bean.setDistrictId(district);
+        bean.setBusinessId(business);
+        bean.setAddress(address);
+        bean.setMainPic(introduceImageUrl);
         Intent intent = getIntent();
-        intent.putExtra("buildingType", rbBuilding.isChecked() ? Constants.TYPE_BUILDING : Constants.TYPE_JOINTWORK);
-        intent.putExtra("buildingName", name);
-        intent.putExtra("buildingAddress", address);
+        intent.putExtra("buildingMessage", bean);
         setResult(RESULT_OK, intent);
         finish();
     }
@@ -199,6 +209,7 @@ public class OwnerCreateBuildingActivity extends BaseMvpActivity<CreateBuildingP
     @Override
     public void uploadSuccess(UploadImageBean data) {
         if (data != null && data.getUrls() != null && data.getUrls().size() > 0) {
+            introduceImageUrl = data.getUrls().get(0).getUrl();
             Glide.with(context).load(data.getUrls().get(0).getUrl()).into(ivImage);
             shortTip("上传成功");
         }

@@ -75,7 +75,7 @@ public class MainOwnerActivity extends BaseActivity implements RadioGroup.OnChec
 
     @AfterViews
     void init() {
-        StatusBarUtils.setStatusBarColor(this);
+        StatusBarUtils.setStatusBarFullTransparent(this);
         fManager = getSupportFragmentManager();
         rg_tab_bar.setOnCheckedChangeListener(this);
         rb_3.setText(R.string.str_tab_schedule);
@@ -112,13 +112,20 @@ public class MainOwnerActivity extends BaseActivity implements RadioGroup.OnChec
         switch (checkedId) {
             case R.id.tab_home:
                 TABLE_BAR_POSITION = 0;
-                StatusBarUtils.setStatusBarColor(this);
-                fg1 = new HomeFragment_();
-                fTransaction.add(R.id.ly_content, fg1, "Fragment1");
+                if (Constants.IS_HOME_REFRESH){//是否刷新
+                    fg1 = new HomeFragment_();
+                    fTransaction.add(R.id.ly_content, fg1, "Fragment1");
+                }else {
+                    if (fg1 == null) {
+                        fg1 = new HomeFragment_();
+                        fTransaction.add(R.id.ly_content, fg1, "Fragment1");
+                    } else {
+                        fTransaction.show(fg1);
+                    }
+                }
                 break;
             case R.id.tab_message:
                 TABLE_BAR_POSITION = 1;
-                StatusBarUtils.setStatusBarFullTransparent(this);
                 if (fg2 == null) {
                     fg2 = new MessageFragment_();
                     fTransaction.add(R.id.ly_content, fg2, "Fragment2");
@@ -128,7 +135,6 @@ public class MainOwnerActivity extends BaseActivity implements RadioGroup.OnChec
                 break;
             case R.id.tab_collect:
                 TABLE_BAR_POSITION = 2;
-                StatusBarUtils.setStatusBarFullTransparent(this);
                 if (fg3 == null) {
                     fg3 = new ScheduleFragment_();
                     fTransaction.add(R.id.ly_content, fg3, "Fragment3");
@@ -138,7 +144,6 @@ public class MainOwnerActivity extends BaseActivity implements RadioGroup.OnChec
                 break;
             case R.id.tab_mine:
                 TABLE_BAR_POSITION = 3;
-                StatusBarUtils.setStatusBarFullTransparent(this);
                 fg4 = new MineFragment_();
                 fTransaction.add(R.id.ly_content, fg4, "Fragment4");
                 break;

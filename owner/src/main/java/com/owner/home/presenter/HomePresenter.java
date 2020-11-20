@@ -97,17 +97,16 @@ public class HomePresenter extends BasePresenter<HomeContract.View>
         });
     }
 
+    //获取房源下的列表
     @Override
-    public void initHouseList(int buildingIdPos) {
+    public void getHouseList(int buildingIdPosition) {
         mView.showLoadingDialog();
         com.officego.commonlib.common.rpc.OfficegoApi.getInstance().getBuildingJointWorkList(new RetrofitCallback<BuildingJointWorkBean>() {
             @Override
             public void onSuccess(int code, String msg, BuildingJointWorkBean data) {
                 if (isViewAttached()) {
-                    //初始化楼盘网点第一条下的房源数据
-                    if (data.getList().size() > 0) {
-                        mView.initHouseData(data.getList().get(buildingIdPos));
-                    }
+                    mView.hideLoadingDialog();
+                    mView.initHouseList(buildingIdPosition,data);
                 }
             }
 

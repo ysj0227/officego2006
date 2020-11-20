@@ -29,7 +29,6 @@ import com.officego.commonlib.update.VersionDialog;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.OnLoadMoreListener;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
@@ -118,14 +117,12 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     private int isTemp;
     //更多dialog-删除，上架刷新
     private int mPosition;
-    //楼盘/网点列表的第几个位置
-    private int listBuildingPosition;
 
     @AfterViews
     void init() {
+        StatusBarUtils.setStatusBarFullTransparent(mActivity);
         mPresenter = new HomePresenter();
         mPresenter.attachView(this);
-        StatusBarUtils.setStatusBarFullTransparent(mActivity);
         initViews();
         initRefresh();
         if (NetworkUtils.isNetworkAvailable(mActivity)) {
@@ -220,6 +217,11 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         }
     }
 
+    //当切换tab 是否刷新首页数据
+    private void isRefreshHome(boolean isRefresh) {
+        Constants.IS_HOME_REFRESH = isRefresh;
+    }
+
     //添加房源
     private void gotoAddHouseActivity(BuildingManagerBean managerBean) {
         if (mUserData.getIdentityType() == Constants.TYPE_JOINTWORK) {
@@ -246,12 +248,55 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         popupWindow.setListener(this);
     }
 
+    //默认选择了楼盘
+    //0: 下架(未发布),1: 上架(已发布) ;2:资料待完善  3: 置顶推荐;4:已售完;5:删除;6待审核7已驳回
+    @Override
+    public void initHouseList(int buildingIdPosition, BuildingJointWorkBean data) {
+        if (data.getList().size() > 0) {
+            toLoadHouseData(buildingIdPosition, data.getList().get(buildingIdPosition));
+        }
+    }
+
+    //左侧Popup选择
+    //0: 下架(未发布),1: 上架(已发布) ;2:资料待完善  3: 置顶推荐;4:已售完;5:删除;6待审核7已驳回
+    @Override
+    public void popupHouseList(int buildingIdPosition, BuildingJointWorkBean.ListBean bean) {
+        toLoadHouseData(buildingIdPosition, bean);
+    }
+
+    private void toLoadHouseData(int buildingIdPosition, BuildingJointWorkBean.ListBean bean) {
+        Constants.listBuildingPosition = buildingIdPosition;//选择的第几个楼盘
+        currentBuildingMessage(bean);
+        if (bean.getIsTemp() == 0) {
+            getRefreshHouseList();//房源列表
+            return;
+        }
+        if (6 == bean.getStatus()) { //6待审核
+            isRefreshHome(true);//刷新
+            identityDoingView();
+            checkStatusOk(mData);
+        } else if (7 == bean.getStatus()) {//7已驳回
+            isRefreshHome(true);//刷新
+            tvRejectReason.setText("驳回原因：" + "测试测试");
+            identityRejectView();
+            checkStatusOk(mData);
+        }
+    }
+
+    private void getRefreshHouseList() {
+        houseList.clear();
+        pageNum = 1;
+        if (homeAdapter != null) {
+            homeAdapter.notifyDataSetChanged();
+        }
+        getHouseList();
+    }
+
     //房源列表
     @Override
     public void houseListSuccess(List<HouseBean.ListBean> data, boolean hasMore) {
         if (data == null || (pageNum == 1 && data.size() == 0)) {
-            //认证通过显示引导和认证通过状态步骤。
-            identityDoingView();
+            identityDoingView();//引导认证通过状态步骤。
             checkStatusOk(mData);//1审核通过
             if (TextUtils.isEmpty(SpUtils.getHouseLead())) {
                 new HouseLeadDialog(mActivity);//引导-我知道了
@@ -262,7 +307,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
             noData();
             return;
         }
-        LogCat.e(TAG, "111111 有房源数据");
+        isRefreshHome(false);//不刷新
         hasData();
         this.hasMore = hasMore;
         houseList.addAll(data);
@@ -284,12 +329,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         if (mData != null) {
             ivAdd.setVisibility(mData.isAddHouse() ? View.VISIBLE : View.GONE);
         }
-    }
-
-    @Override
-    public void initHouseData(BuildingJointWorkBean.ListBean bean) {
-        currentBuildingMessage(bean);
-        getHouseList();
     }
 
     /**
@@ -346,36 +385,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         homeAdapter.notifyItemChanged(mPosition);
     }
 
-    //左侧Popup选择
-    //0: 下架(未发布),1: 上架(已发布) ;2:资料待完善  3: 置顶推荐;4:已售完;5:删除;6待审核7已驳回
-    @Override
-    public void popupHouseList(int selectedPos, BuildingJointWorkBean.ListBean bean) {
-        listBuildingPosition = selectedPos;//选择的第几个楼盘
-        currentBuildingMessage(bean);
-        if (bean.getIsTemp() == 0) {
-            getRefreshHouseList();//房源列表
-        } else {
-            if (6 == bean.getStatus()) { //6待审核
-                identityDoingView();
-                checkStatusOk(mData);
-            } else if (7 == bean.getStatus()) {//7已驳回
-                //todo reasons
-//                tvRejectReason.setText(mData.);
-                identityRejectView();
-                checkStatusOk(mData);
-            }
-        }
-    }
-
-    private void getRefreshHouseList() {
-        houseList.clear();
-        pageNum = 1;
-        if (homeAdapter != null) {
-            homeAdapter.notifyDataSetChanged();
-        }
-        getHouseList();
-    }
-
     //获取当前楼盘的信息
     private void currentBuildingMessage(BuildingJointWorkBean.ListBean bean) {
         Constants.FLOOR_COUNTS = bean.getTotalFloor();
@@ -398,10 +407,11 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     public void userInfoSuccess(UserOwnerBean data) {
         mUserData = data;
         if (data.getAuditStatus() == -1) {//未认证
+            isRefreshHome(true);
             cannotIdentity();
         } else {
             //初始化列表 listBuildingPosition==0
-            mPresenter.initHouseList(listBuildingPosition);
+            mPresenter.getHouseList(Constants.listBuildingPosition);
         }
     }
 
@@ -434,7 +444,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
                 CommonNotifications.updateBuildingSuccess,
                 CommonNotifications.updateHouseSuccess,
                 CommonNotifications.rejectBuildingSuccess,
-                CommonNotifications.firstIdentitySuccess};
+                CommonNotifications.checkedIdentitySuccess};
     }
 
     @Override
@@ -452,13 +462,10 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
                 //刷新房源
                 getRefreshHouseList();
             } else if (id == CommonNotifications.rejectBuildingSuccess) {
-                //重新认证
-                LogCat.e(TAG, "111111 重新认证 rejectBuildingSuccess");
-                //先调楼盘列表获取之前的位置在刷新
+                //重新认证 --先调楼盘列表获取之前的位置在刷新
                 mPresenter.getUserInfo();
-            } else if (id == CommonNotifications.firstIdentitySuccess) {
-                //首次认证提交
-                LogCat.e(TAG, "111111 首次认证提交 firstIdentitySuccess");
+            } else if (id == CommonNotifications.checkedIdentitySuccess) {
+                //认证提交
                 mPresenter.getUserInfo();
             }
         }

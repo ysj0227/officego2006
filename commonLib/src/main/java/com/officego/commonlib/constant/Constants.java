@@ -23,7 +23,7 @@ public class Constants {
     public static final int ERROR_CODE_7012 = 7012;//楼盘已经下架
     public static final int ERROR_CODE_7013 = 7013;//楼盘下的房源已经售完
     public static final int ERROR_CODE_7014 = 7014;//楼盘已删除
-    public static final int ERROR_CODE_6028= 6028;//图片尺寸太大,宽高不能超过4096px
+    public static final int ERROR_CODE_6028 = 6028;//图片尺寸太大,宽高不能超过4096px
     //第三方app和微信通信的openapi接口
     public static IWXAPI WXapi;
 
@@ -96,10 +96,15 @@ public class Constants {
     public static String LONGITUDE = "";
     public static String LATITUDE = "";
 
-    //上传图片类型 1楼图片2视频3房源图片
+    //上传图片类型 1楼图片2视频3房源图片 4认证图片
     public final static int TYPE_IMAGE_DEF = 0;
     public final static int TYPE_IMAGE_BUILDING = 1;
     public final static int TYPE_IMAGE_HOUSE = 3;
+    public final static int TYPE_IMAGE_IDENTITY = 4;
     //总楼层
     public static String FLOOR_COUNTS = "";
+    //业主--首页列表重新认证和新认证刷新，当有房源时切换tab不刷新
+    public static boolean IS_HOME_REFRESH;
+    //楼盘/网点列表的第几个位置
+    public static int listBuildingPosition;
 }

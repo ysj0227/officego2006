@@ -20,7 +20,8 @@ public class CreateBuildingPresenter extends BasePresenter<CreateBuildingContrac
         //1楼图片2视频3房源图片4认证文件夹
         //封面图上传图片
         mView.showLoadingDialog();
-        OfficegoApi.getInstance().uploadSingleImageUrl(1, mFilePath, new RetrofitCallback<UploadImageBean>() {
+        OfficegoApi.getInstance().uploadSingleImageUrl(Constants.TYPE_IMAGE_BUILDING,
+                mFilePath, new RetrofitCallback<UploadImageBean>() {
             @Override
             public void onSuccess(int code, String msg, UploadImageBean data) {
                 if (isViewAttached()) {
