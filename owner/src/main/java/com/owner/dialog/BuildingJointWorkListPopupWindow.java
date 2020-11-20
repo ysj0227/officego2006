@@ -30,6 +30,7 @@ import com.owner.R;
 import com.owner.home.AddBuildingJointWorkActivity_;
 import com.owner.home.EditBuildingActivity_;
 import com.owner.home.EditJointWorkActivity_;
+import com.owner.identity2.OwnerIdentityActivity_;
 import com.owner.mine.model.UserOwnerBean;
 
 import java.util.ArrayList;
@@ -65,7 +66,7 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
     public interface HomePopupListener {
         void popupDismiss();
 
-        void popupHouseList(int selectedPos, BuildingJointWorkBean.ListBean bean);
+        void popupHouseList(BuildingJointWorkBean.ListBean bean);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -160,8 +161,9 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
         recyclerViewList.setAdapter(new BuildingAdapter(mContext, buildingList));
         rvListJointWork.setLayoutManager(new LinearLayoutManager(mContext));
         rvListJointWork.setAdapter(new BuildingAdapter(mContext, jointWorkList));
-        //添加楼盘网点
-        viewLayout.findViewById(R.id.tv_add).setOnClickListener(view -> gotoAddActivity());
+        //添加楼盘/网点
+        viewLayout.findViewById(R.id.tv_add).setOnClickListener(view ->
+                OwnerIdentityActivity_.intent(mContext).start());
     }
 
     private void gotoEditActivity(BuildingManagerBean managerBean) {
@@ -169,14 +171,6 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
             EditJointWorkActivity_.intent(mContext).buildingManagerBean(managerBean).start();
         } else {
             EditBuildingActivity_.intent(mContext).buildingManagerBean(managerBean).start();
-        }
-    }
-
-    private void gotoAddActivity() {
-        if (mUserData.getIdentityType() == identityType) {//网点
-            AddBuildingJointWorkActivity_.intent(mContext).flay(0).start();
-        } else {//添加楼盘
-            AddBuildingJointWorkActivity_.intent(mContext).flay(1).start();
         }
     }
 
@@ -249,7 +243,7 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
             //房源列表
             holder.itemView.setOnClickListener(view -> {
                 dismiss();
-                listener.popupHouseList(holder.getAdapterPosition(), bean);
+                listener.popupHouseList(bean);
             });
         }
     }

@@ -107,8 +107,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     private List<HouseBean.ListBean> houseList = new ArrayList<>();
     //楼盘网点信息
     private BuildingJointWorkBean.ListBean mData;
-    private int buildingId;
-    private int isTemp;
     //更多dialog-删除，上架刷新
     private int mPosition;
 
@@ -202,7 +200,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     @Click(resName = "iv_add")
     void addClick() {
         if (mData != null) {
-            gotoAddHouseActivity(new BuildingManagerBean(buildingId, isTemp));
+            gotoAddHouseActivity(new BuildingManagerBean(mData.getBuildingId(), mData.getIsTemp()));
         }
     }
 
@@ -240,21 +238,31 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     //默认选择了楼盘
     //0: 下架(未发布),1: 上架(已发布) ;2:资料待完善  3: 置顶推荐;4:已售完;5:删除;6待审核7已驳回
     @Override
-    public void initHouseList(int buildingIdPosition, BuildingJointWorkBean data) {
+    public void initHouseList(BuildingJointWorkBean data) {
+        boolean isRecordBuildingId = false;
         if (data.getList().size() > 0) {
-            toLoadHouseData(buildingIdPosition, data.getList().get(buildingIdPosition));
+            for (BuildingJointWorkBean.ListBean bean : data.getList()) {
+                if (bean.getBuildingId() == Constants.mCurrentBuildingId) {
+                    isRecordBuildingId = true;
+                    toLoadHouseData(bean);
+                    break;
+                }
+            }
+            if (!isRecordBuildingId) {
+                toLoadHouseData(data.getList().get(0));
+            }
         }
     }
 
     //左侧Popup选择
     //0: 下架(未发布),1: 上架(已发布) ;2:资料待完善  3: 置顶推荐;4:已售完;5:删除;6待审核7已驳回
     @Override
-    public void popupHouseList(int buildingIdPosition, BuildingJointWorkBean.ListBean bean) {
-        toLoadHouseData(buildingIdPosition, bean);
+    public void popupHouseList(BuildingJointWorkBean.ListBean bean) {
+        toLoadHouseData(bean);
     }
 
-    private void toLoadHouseData(int buildingIdPosition, BuildingJointWorkBean.ListBean bean) {
-        Constants.listBuildingPosition = buildingIdPosition;//选择的第几个楼盘
+    private void toLoadHouseData(BuildingJointWorkBean.ListBean bean) {
+        Constants.mCurrentBuildingId = bean.getBuildingId();//选择的第几个楼盘
         currentBuildingMessage(bean);
         if (bean.getIsTemp() == 0) {
             getRefreshHouseList();//房源列表
@@ -379,13 +387,11 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         Constants.FLOOR_COUNTS = bean.getTotalFloor();
         ivAdd.setVisibility(bean.isAddHouse() ? View.VISIBLE : View.GONE);
         tvHomeTitle.setText(bean.getBuildingName());
-        buildingId = bean.getBuildingId();
-        isTemp = bean.getIsTemp();
         mData = bean;
     }
 
     private void getHouseList() {
-        mPresenter.getHouseList(buildingId, mData.getIsTemp(), pageNum);
+        mPresenter.getHouseList(mData.getBuildingId(), mData.getIsTemp(), pageNum);
     }
 
     /**
@@ -399,8 +405,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
             isRefreshHome(true);
             cannotIdentity();
         } else {
-            //初始化列表 listBuildingPosition==0
-            mPresenter.getHouseList(Constants.listBuildingPosition);
+            mPresenter.getBuildingList();//楼盘网点列表
         }
     }
 

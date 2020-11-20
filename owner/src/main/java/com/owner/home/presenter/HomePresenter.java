@@ -99,14 +99,14 @@ public class HomePresenter extends BasePresenter<HomeContract.View>
 
     //获取房源下的列表
     @Override
-    public void getHouseList(int buildingIdPosition) {
+    public void getBuildingList() {
         mView.showLoadingDialog();
         com.officego.commonlib.common.rpc.OfficegoApi.getInstance().getBuildingJointWorkList(new RetrofitCallback<BuildingJointWorkBean>() {
             @Override
             public void onSuccess(int code, String msg, BuildingJointWorkBean data) {
                 if (isViewAttached()) {
                     mView.hideLoadingDialog();
-                    mView.initHouseList(buildingIdPosition,data);
+                    mView.initHouseList(data);
                 }
             }
 

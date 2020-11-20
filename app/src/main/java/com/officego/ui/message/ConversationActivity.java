@@ -143,6 +143,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
                 initIM();
                 RongIM.getInstance().setSendMessageListener(this);
                 mPresenter.firstChatApp(targetId, buildingId, houseId, getHouseChatId);
+
             }
         }
     }
@@ -179,7 +180,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
     private void initIM() {
         try {
             FragmentManager fragmentManage = getSupportFragmentManager();
-            ConversationFragment fragment = (ConversationFragment) fragmentManage.findFragmentById(R.id.conversation);
+            MyConversationFragment fragment = (MyConversationFragment) fragmentManage.findFragmentById(R.id.conversation);
             Uri uri;
             if (!TextUtils.isEmpty(targetId) && (targetId.length() > 1 &&
                     !TextUtils.equals(Constants.TYPE_TENANT, targetId.substring(targetId.length() - 1)) &&

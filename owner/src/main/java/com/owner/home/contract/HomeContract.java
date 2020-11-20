@@ -22,7 +22,7 @@ public interface HomeContract {
 
         void userInfoSuccess(UserOwnerBean data);
 
-        void initHouseList(int buildingIdPosition,BuildingJointWorkBean data);
+        void initHouseList(BuildingJointWorkBean data);
 
         void houseDeleteSuccess();
 
@@ -37,7 +37,7 @@ public interface HomeContract {
 
         void getUserInfo();
 
-        void getHouseList(int buildingIdPosition);//第几个楼盘网点
+        void getBuildingList();//第几个楼盘网点
 
         void isPublishHouse(int houseId, int isRelease,int isTemp);//上下架发布
 

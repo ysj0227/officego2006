@@ -99,9 +99,14 @@
             tools:ignore="RtlSymmetry" />
     </RelativeLayout>
 
+<!--    <fragment-->
+<!--        android:id="@+id/conversation"-->
+<!--        android:name="io.rong.imkit.fragment.ConversationFragment"-->
+<!--        android:layout_width="match_parent"-->
+<!--        android:layout_height="match_parent" />-->
     <fragment
         android:id="@+id/conversation"
-        android:name="io.rong.imkit.fragment.ConversationFragment"
+        android:name="com.officego.ui.message.MyConversationFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent" />
 </LinearLayout>
