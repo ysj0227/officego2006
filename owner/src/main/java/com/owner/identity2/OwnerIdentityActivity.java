@@ -40,6 +40,7 @@ import com.officego.commonlib.view.widget.SettingItemLayout;
 import com.owner.R;
 import com.owner.adapter.SearchAdapter;
 import com.owner.adapter.UploadImageAdapter;
+import com.owner.dialog.ExitConfirmDialog;
 import com.owner.dialog.IdentityTypeDialog;
 import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.model.ImageBean;
@@ -161,6 +162,7 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
         StatusBarUtils.setStatusBarFullTransparent(this);
         mPresenter = new IdentityPresenter();
         mPresenter.attachView(this);
+        titleBar.getLeftImg().setOnClickListener(view -> new ExitConfirmDialog(this));
         initViews();
         initData();
     }

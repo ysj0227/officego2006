@@ -1,9 +1,6 @@
 package com.owner.home;
 
-import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.pm.PackageManager;
-import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
@@ -11,14 +8,12 @@ import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.officego.commonlib.base.BaseMvpFragment;
-import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.model.BuildingManagerBean;
@@ -35,6 +30,7 @@ import com.owner.R;
 import com.owner.adapter.HomeAdapter;
 import com.owner.adapter.IdentityStatusAdapter;
 import com.owner.dialog.BuildingJointWorkListPopupWindow;
+import com.owner.dialog.ExitAppDialog;
 import com.owner.dialog.HomeMoreDialog;
 import com.owner.dialog.HouseLeadDialog;
 import com.owner.dialog.IdentityViewPagerDialog;
@@ -51,8 +47,6 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
 import java.util.List;
-
-import static com.officego.commonlib.utils.PermissionUtils.REQ_PERMISSIONS_CAMERA_STORAGE;
 
 /**
  * Created by YangShiJie
@@ -128,7 +122,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         if (NetworkUtils.isNetworkAvailable(mActivity)) {
             new VersionDialog(mActivity);
             mPresenter.getUserInfo();
-            fragmentCheckSDCardCameraPermission();
         } else {
             netException();
         }
@@ -180,16 +173,12 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     //去认证
     @Click(resName = "btn_identity")
     void toIdentityClick() {
-        toIdentityActivity();
+        OwnerIdentityActivity_.intent(mActivity).start();
     }
 
     //去认证
     @Override
     public void toIdentity() {
-        toIdentityActivity();
-    }
-
-    private void toIdentityActivity() {
         OwnerIdentityActivity_.intent(mActivity).start();
     }
 
@@ -533,43 +522,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     public void onResume() {
         super.onResume();
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
-            CommonDialog dialog = new CommonDialog.Builder(getContext())
-                    .setMessage("账号已退出，请重新登录")
-                    .setConfirmButton(com.officego.commonlib.R.string.str_login, (dialog12, which) -> {
-                        GotoActivityUtils.gotoLoginActivity(getActivity());
-                        dialog12.dismiss();
-                    }).create();
-            dialog.showWithOutTouchable(false);
-            dialog.setCancelable(false);
+            new ExitAppDialog(mActivity);
         }
-    }
-
-    // SD卡,相机 fragment
-    private boolean fragmentCheckSDCardCameraPermission() {
-        //mActivity1 必须使用this 在fragment
-        String[] PERMISSIONS_STORAGE = {Manifest.permission.CAMERA,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE};
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-            int permission1 = mActivity.checkSelfPermission(PERMISSIONS_STORAGE[0]);
-            int permission2 = mActivity.checkSelfPermission(PERMISSIONS_STORAGE[1]);
-            if (permission1 != PackageManager.PERMISSION_GRANTED ||
-                    permission2 != PackageManager.PERMISSION_GRANTED) {
-                this.requestPermissions(new String[]{
-                        PERMISSIONS_STORAGE[0], PERMISSIONS_STORAGE[1]}, REQ_PERMISSIONS_CAMERA_STORAGE);
-                return false;
-            } else {
-                return true;
-            }
-        }
-        return true;
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
-            mPresenter.getUserInfo();
-        }
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     }
 }

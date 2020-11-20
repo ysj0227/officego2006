@@ -24,6 +24,7 @@ import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
+import com.owner.dialog.ExitAppDialog;
 import com.owner.schedule.contract.ViewingDateContract;
 import com.owner.schedule.model.ViewingDateBean;
 import com.owner.schedule.presenter.ViewingDatePresenter;
@@ -101,14 +102,7 @@ public class ScheduleFragment extends BaseMvpFragment<ViewingDatePresenter>
     public void onResume() {
         super.onResume();
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
-            CommonDialog dialog = new CommonDialog.Builder(getContext())
-                    .setMessage("账号已退出，请重新登录")
-                    .setConfirmButton(com.officego.commonlib.R.string.str_login, (dialog12, which) -> {
-                        GotoActivityUtils.gotoLoginActivity(getActivity());
-                        dialog12.dismiss();
-                    }).create();
-            dialog.showWithOutTouchable(false);
-            dialog.setCancelable(false);
+            new ExitAppDialog(mActivity);
         }
     }
 

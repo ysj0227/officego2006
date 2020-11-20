@@ -32,6 +32,7 @@ import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.CircleImage;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
+import com.owner.dialog.ExitAppDialog;
 import com.owner.h5.WebViewActivity_;
 import com.owner.mine.contract.UserContract;
 import com.owner.mine.model.UserOwnerBean;
@@ -86,14 +87,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
     public void onResume() {
         super.onResume();
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
-            CommonDialog dialog = new CommonDialog.Builder(getContext())
-                    .setMessage("账号已退出，请重新登录")
-                    .setConfirmButton(com.officego.commonlib.R.string.str_login, (dialog12, which) -> {
-                        GotoActivityUtils.gotoLoginActivity(getActivity());
-                        dialog12.dismiss();
-                    }).create();
-            dialog.showWithOutTouchable(false);
-            dialog.setCancelable(false);
+            new ExitAppDialog(mActivity);
         }
     }
 
