@@ -17,7 +17,6 @@ import java.util.List;
 public class IdentityPresenter extends BasePresenter<IdentityContract.View>
         implements IdentityContract.Presenter {
 
-
     @Override
     public void searchBuilding(String keyword) {
         OfficegoApi.getInstance().searchListBuild(keyword, new RetrofitCallback<List<IdentityBuildingBean.DataBean>>() {

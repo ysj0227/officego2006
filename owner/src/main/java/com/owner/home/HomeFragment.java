@@ -171,13 +171,18 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     //去认证
     @Click(resName = "btn_identity")
     void toIdentityClick() {
-        OwnerIdentityActivity_.intent(mActivity).start();
+        toIdentityActivity();
     }
 
     //去认证
     @Override
     public void toIdentity() {
-        OwnerIdentityActivity_.intent(mActivity).start();
+        toIdentityActivity();
+    }
+
+    private void toIdentityActivity() {
+        OwnerIdentityActivity_.intent(mActivity)
+                .flay(Constants.IDENTITY_FIRST).start();
     }
 
     //网络异常重试

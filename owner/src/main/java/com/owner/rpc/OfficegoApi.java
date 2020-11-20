@@ -8,6 +8,7 @@ import com.officego.commonlib.common.model.QueryApplyLicenceBean;
 import com.officego.commonlib.common.model.owner.UploadImageBean;
 import com.officego.commonlib.common.rpc.request.BuildingJointWorkInterface;
 import com.officego.commonlib.common.rpc.request.LicenceInterface;
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.owner.identity.model.ApplyJoinBean;
 import com.owner.identity.model.ApplyLicenceBean;
@@ -688,7 +689,7 @@ public class OfficegoApi {
             RequestBody file;
             for (int i = 0; i < mFilePath.size(); i++) {
                 file = RequestBody.create(MediaType.parse("image/*"), new File(mFilePath.get(i)));
-                builder.addFormDataPart("files", ("files"+type) + i + ".png", file);
+                builder.addFormDataPart("files", ("files" + type) + i + ".png", file);
             }
         }
         OfficegoRetrofitClient1.getInstance().create(BuildingJointWorkInterface.class)
@@ -712,4 +713,68 @@ public class OfficegoApi {
         }
     }
 
+    /**
+     * 提交认证
+     * token 	是 	string 	用户名
+     * btype 	是 	int 	1楼2网点
+     * buildingName 	是 	string 	楼名称
+     * mainPic 	是 	file 	封面图
+     * <p>
+     * buildId 	否 	int 	有值必传无值无须传 关联楼id
+     * buildingId 	否 	int 	有值必传无值无须传 创建楼id
+     * districtId 	否 	int 	大区id 关联的时候不需要传
+     * businessDistrict 	否 	int 	商圈id 关联的时候不需要传
+     * address 	否 	string 	楼地址
+     * <p>
+     * premisesPermit 	是 	String 	房产证
+     * businessLicense 	是 	String 	营业执照
+     * idFront 	是 	String 	身份证正面
+     * idBack 	是 	String 	身份证反面
+     * materials 	是 	String 	补充资料
+     * isHolder 	是 	String 	权利人类型1个人2企业
+     * isFrist 	是 	String 	用户第一个认证的楼：1 后面添加的楼：2
+     */
+    public void submitIdentity(int btype, int isFrist, String buildingName, String mainPic,
+                               String premisesPermit, String businessLicense, String materials, String idFront,
+                               String idBack, int isHolder, String buildId, int buildingId,
+                               int districtId, int businessDistrict, String address,
+                               RetrofitCallback<Object> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("btype", requestBody(btype + ""));
+        map.put("isFrist", requestBody(isFrist + ""));
+        map.put("buildingName", requestBody(buildingName + ""));
+        map.put("mainPic", requestBody(mainPic + ""));
+        map.put("premisesPermit", requestBody(premisesPermit + ""));
+        map.put("businessLicense", requestBody(businessLicense + ""));
+        map.put("materials", requestBody(materials + ""));
+        map.put("idFront", requestBody(idFront + ""));
+        map.put("idBack", requestBody(idBack + ""));
+        if (TextUtils.isEmpty(buildId) || TextUtils.equals("0", buildId)) {
+            map.put("districtId", requestBody(districtId + ""));
+            map.put("businessDistrict", requestBody(businessDistrict + ""));
+            map.put("address", requestBody(address + ""));
+        } else {
+            map.put("buildId", requestBody(buildId + ""));
+        }
+        if (buildingId != 0) {
+            map.put("buildingId", requestBody(buildingId + ""));
+        }
+        if (Constants.TYPE_BUILDING == btype) {//网点不传
+            map.put("isHolder", requestBody(isHolder + ""));
+        }
+        OfficegoRetrofitClient1.getInstance().create(BuildingJointWorkInterface.class)
+                .addAttestationApp(map)
+                .enqueue(callback);
+    }
+
+    //认证信息回显，驳回
+    public void showIdentityMessage(int buildingId, RetrofitCallback<Object> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("buildingId", requestBody(buildingId + ""));
+        OfficegoRetrofitClient1.getInstance().create(BuildingJointWorkInterface.class)
+                .getAttestation(map)
+                .enqueue(callback);
+    }
 }

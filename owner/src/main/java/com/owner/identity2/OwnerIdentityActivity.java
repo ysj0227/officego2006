@@ -53,6 +53,7 @@ import com.wildma.idcardcamera.camera.IDCardCamera;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 
@@ -140,6 +141,10 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
     ImageView ivRejectIdcard;
     @ViewById(resName = "iv_reject_additional_info")
     ImageView ivRejectAdditionalInfo;
+    @Extra
+    int flay;
+    @Extra
+    int buildingId;
 
     //是否展开
     private boolean isSpread;

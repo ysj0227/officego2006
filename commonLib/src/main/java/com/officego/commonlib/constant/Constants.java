@@ -108,8 +108,11 @@ public class Constants {
     public static String FLOOR_COUNTS = "";
     //业主--首页列表重新认证和新认证刷新，当有房源时切换tab不刷新
     public static boolean IS_HOME_REFRESH;
-    //楼盘/网点列表的第几个位置
-//    public static int listBuildingPosition;
     //当前楼盘，网点id
     public static int mCurrentBuildingId;
+
+    //认证添加状态
+    public final static int IDENTITY_FIRST = 1;
+    public final static int IDENTITY_NO_FIRST = 2;
+    public final static int IDENTITY_REJECT = 3;
 }

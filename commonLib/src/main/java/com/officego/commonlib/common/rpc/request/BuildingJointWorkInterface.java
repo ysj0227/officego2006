@@ -105,7 +105,7 @@ public interface BuildingJointWorkInterface {
     Call<BaseResponse<Object>> buildingAdd(@PartMap Map<String, RequestBody> params);
 
     /**
-     *楼盘网点驳回回显
+     * 楼盘网点驳回回显
      */
     @Multipart
     @POST(path + "building/getBuildingTempById")
@@ -125,5 +125,19 @@ public interface BuildingJointWorkInterface {
     @Multipart
     @POST(path + "house/addHouseVr")
     Call<BaseResponse<Object>> housePublishVr(@PartMap Map<String, RequestBody> params);
+
+    /**
+     * 认证信息回显
+     */
+    @Multipart
+    @POST(path + "building/getAttestation")
+    Call<BaseResponse<Object>> getAttestation(@PartMap Map<String, RequestBody> params);
+
+    /**
+     * 提交认证信息
+     */
+    @Multipart
+    @POST(path + "building/addAttestationApp")
+    Call<BaseResponse<Object>> addAttestationApp(@PartMap Map<String, RequestBody> params);
 
 }

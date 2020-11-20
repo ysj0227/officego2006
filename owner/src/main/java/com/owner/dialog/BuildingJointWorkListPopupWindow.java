@@ -27,7 +27,6 @@ import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
 import com.owner.R;
-import com.owner.home.AddBuildingJointWorkActivity_;
 import com.owner.home.EditBuildingActivity_;
 import com.owner.home.EditJointWorkActivity_;
 import com.owner.identity2.OwnerIdentityActivity_;
@@ -163,7 +162,7 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
         rvListJointWork.setAdapter(new BuildingAdapter(mContext, jointWorkList));
         //添加楼盘/网点
         viewLayout.findViewById(R.id.tv_add).setOnClickListener(view ->
-                OwnerIdentityActivity_.intent(mContext).start());
+                OwnerIdentityActivity_.intent(mContext).flay(Constants.IDENTITY_NO_FIRST).start());
     }
 
     private void gotoEditActivity(BuildingManagerBean managerBean) {
