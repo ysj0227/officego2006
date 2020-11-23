@@ -49,7 +49,7 @@ public class AddPresenter extends BasePresenter<AddContract.View>
     @Override
     public void uploadSingleImage(int type, String mFilePath) {
         mView.showLoadingDialog();
-        com.owner.rpc.OfficegoApi.getInstance().uploadSingleImageUrl(type, mFilePath, new RetrofitCallback<UploadImageBean>() {
+        com.officego.commonlib.common.rpc.OfficegoApi.getInstance().uploadSingleImageUrl(type, mFilePath, new RetrofitCallback<UploadImageBean>() {
             @Override
             public void onSuccess(int code, String msg, UploadImageBean data) {
                 if (isViewAttached()) {

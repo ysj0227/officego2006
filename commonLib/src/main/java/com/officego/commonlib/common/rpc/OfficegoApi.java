@@ -17,6 +17,7 @@ import com.officego.commonlib.common.model.owner.BuildingJointWorkBean;
 import com.officego.commonlib.common.model.owner.HouseBean;
 import com.officego.commonlib.common.model.owner.HouseEditBean;
 import com.officego.commonlib.common.model.owner.RejectBuildingBean;
+import com.officego.commonlib.common.model.owner.UploadImageBean;
 import com.officego.commonlib.common.rpc.request.BuildingJointWorkInterface;
 import com.officego.commonlib.common.rpc.request.ChatInterface;
 import com.officego.commonlib.common.rpc.request.DirectoryInterface;
@@ -26,11 +27,13 @@ import com.officego.commonlib.common.rpc.request.ScheduleInterface;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.log.LogCat;
 
+import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 /**
@@ -815,5 +818,40 @@ public class OfficegoApi {
         OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
                 .housePublishVr(map)
                 .enqueue(callback);
+    }
+
+    /**
+     * 上传多张图片  新认证
+     */
+    public void uploadImage(int type, List<String> mFilePath, RetrofitCallback<UploadImageBean> callback) {
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        builder.addFormDataPart("token", SpUtils.getSignToken());
+        builder.addFormDataPart("filedirType", type + "");
+        if (mFilePath != null && mFilePath.size() > 0) {
+            RequestBody file;
+            for (int i = 0; i < mFilePath.size(); i++) {
+                file = RequestBody.create(MediaType.parse("image/*"), new File(mFilePath.get(i)));
+                builder.addFormDataPart("files", ("files" + type) + i + ".png", file);
+            }
+        }
+        OfficegoRetrofitClient1.getInstance().create(BuildingJointWorkInterface.class)
+                .uploadResourcesUrl(builder.build())
+                .enqueue(callback);
+    }
+
+    /**
+     * 上传图片
+     */
+    public void uploadSingleImageUrl(int type, String mFilePath, RetrofitCallback<UploadImageBean> callback) {
+        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM);
+        builder.addFormDataPart("token", SpUtils.getSignToken());
+        builder.addFormDataPart("filedirType", type + "");
+        if (!TextUtils.isEmpty(mFilePath)) {
+            RequestBody file = RequestBody.create(MediaType.parse("image/*"), new File(mFilePath));
+            builder.addFormDataPart("files", "owner_files.png", file);
+            OfficegoRetrofitClient1.getInstance().create(BuildingJointWorkInterface.class)
+                    .uploadResourcesUrl(builder.build())
+                    .enqueue(callback);
+        }
     }
 }

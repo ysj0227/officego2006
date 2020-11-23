@@ -5,7 +5,6 @@ import com.officego.commonlib.common.model.owner.UploadImageBean;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.owner.identity2.contract.CreateBuildingContract;
-import com.owner.rpc.OfficegoApi;
 
 /**
  * Created by shijie
@@ -20,7 +19,7 @@ public class CreateBuildingPresenter extends BasePresenter<CreateBuildingContrac
         //1楼图片2视频3房源图片4认证文件夹
         //封面图上传图片
         mView.showLoadingDialog();
-        OfficegoApi.getInstance().uploadSingleImageUrl(Constants.TYPE_IMAGE_BUILDING,
+        com.officego.commonlib.common.rpc.OfficegoApi.getInstance().uploadSingleImageUrl(Constants.TYPE_IMAGE_BUILDING,
                 mFilePath, new RetrofitCallback<UploadImageBean>() {
             @Override
             public void onSuccess(int code, String msg, UploadImageBean data) {

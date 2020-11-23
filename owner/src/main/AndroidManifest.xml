@@ -52,37 +52,14 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".identity.SelectIdActivity_"
-            android:screenOrientation="portrait" />
-        <activity
             android:name="com.owner.IDCameraActivity"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".identity.CompanyActivity_"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".identity.CreateCompanyActivity_"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity
-            android:name=".identity.JointWorkActivity_"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
-        <activity
-            android:name=".identity.CreateJointWorkActivity_"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".identity.PersonalActivity_"
-            android:screenOrientation="portrait"
-            android:windowSoftInputMode="stateHidden|adjustPan" />
+        
         <activity
             android:name=".identity.IdentitySendMsgActivity_"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
-        <activity
-            android:name=".identity.CreateBuildingActivity_"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
+
         <activity
             android:name=".identity.IdentityCancelActivity_"
             android:launchMode="singleTop"
@@ -118,14 +95,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".home.EditOpenSeatsActivity_"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".home.AddBuildingJointWorkActivity_"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".home.RejectBuildingJointWorkActivity_"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity

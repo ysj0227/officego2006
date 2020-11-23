@@ -101,7 +101,7 @@ public class IdentityPresenter extends BasePresenter<IdentityContract.View>
         //1楼图片2视频3房源图片4认证文件夹
         //认证上传图片
         mView.showLoadingDialog();
-        com.owner.rpc.OfficegoApi.getInstance().uploadImage(Constants.TYPE_IMAGE_IDENTITY,
+        com.officego.commonlib.common.rpc.OfficegoApi.getInstance().uploadImage(Constants.TYPE_IMAGE_IDENTITY,
                 mFilePath, new RetrofitCallback<UploadImageBean>() {
                     @Override
                     public void onSuccess(int code, String msg, UploadImageBean data) {

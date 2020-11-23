@@ -3,23 +3,10 @@ package com.owner.dialog;
 import android.app.Activity;
 
 import com.officego.commonlib.common.GotoActivityUtils;
-import com.officego.commonlib.common.config.CommonNotifications;
-import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
-import com.owner.identity.SelectIdActivity_;
 
 public class SwitchRoleDialog {
-    public static void switchDialog(Activity activity) {
-        CommonDialog dialog = new CommonDialog.Builder(activity)
-                .setTitle("信息尚未提交，是否确认切换身份？")
-                .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
-                    SelectIdActivity_.intent(activity).start();
-                    activity.finish();
-                })
-                .setCancelButton(R.string.sm_cancel, (dialog1, which) -> dialog1.dismiss()).create();
-        dialog.showWithOutTouchable(false);
-    }
 
     //认证过程中，返回提示
     public static void identityBackDialog(Activity activity) {
