@@ -67,11 +67,11 @@ public class IdentityTypeDialog {
         viewLayout.findViewById(R.id.btn_cancel).setOnClickListener(v -> dialog.dismiss());
         viewLayout.findViewById(R.id.rl_exit).setOnClickListener(v -> dialog.dismiss());
         tvType1.setOnClickListener(view -> {
-            listener.sureType(tvType1.getText().toString(),1);
+            listener.sureType(tvType1.getText().toString(),2);
             dialog.dismiss();
         });
         tvType2.setOnClickListener(view -> {
-            listener.sureType(tvType2.getText().toString(),2);
+            listener.sureType(tvType2.getText().toString(),1);
             dialog.dismiss();
         });
     }

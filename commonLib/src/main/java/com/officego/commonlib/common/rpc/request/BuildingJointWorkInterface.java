@@ -1,6 +1,7 @@
 package com.officego.commonlib.common.rpc.request;
 
 
+import com.officego.commonlib.common.model.IdentityRejectBean;
 import com.officego.commonlib.common.model.owner.AddHouseSuccessBean;
 import com.officego.commonlib.common.model.owner.BuildingEditBean;
 import com.officego.commonlib.common.model.owner.BuildingJointWorkBean;
@@ -131,7 +132,7 @@ public interface BuildingJointWorkInterface {
      */
     @Multipart
     @POST(path + "building/getAttestation")
-    Call<BaseResponse<Object>> getAttestation(@PartMap Map<String, RequestBody> params);
+    Call<BaseResponse<IdentityRejectBean>> getAttestation(@PartMap Map<String, RequestBody> params);
 
     /**
      * 提交认证信息

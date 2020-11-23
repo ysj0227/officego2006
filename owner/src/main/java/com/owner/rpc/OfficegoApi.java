@@ -4,6 +4,7 @@ import android.text.TextUtils;
 
 import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.model.IdentityRejectBean;
 import com.officego.commonlib.common.model.QueryApplyLicenceBean;
 import com.officego.commonlib.common.model.owner.UploadImageBean;
 import com.officego.commonlib.common.rpc.request.BuildingJointWorkInterface;
@@ -743,24 +744,28 @@ public class OfficegoApi {
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("btype", requestBody(btype + ""));
         map.put("isFrist", requestBody(isFrist + ""));
-        map.put("buildingName", requestBody(buildingName + ""));
-        map.put("mainPic", requestBody(mainPic + ""));
-        map.put("premisesPermit", requestBody(premisesPermit + ""));
-        map.put("businessLicense", requestBody(businessLicense + ""));
-        map.put("materials", requestBody(materials + ""));
-        map.put("idFront", requestBody(idFront + ""));
-        map.put("idBack", requestBody(idBack + ""));
+        map.put("buildingName", requestBody(buildingName));
+        map.put("mainPic", requestBody(mainPic));
+        map.put("premisesPermit", requestBody(premisesPermit));
+        if (Constants.TYPE_BUILDING == btype) {//网点不传
+            map.put("isHolder", requestBody(isHolder + ""));
+        }
+        if (isHolder == 1) {//个人
+            map.put("idFront", requestBody(idFront));
+            map.put("idBack", requestBody(idBack));
+        }
+        if (Constants.TYPE_JOINTWORK == btype || isHolder == 2) {//公司或网点
+            map.put("businessLicense", requestBody(businessLicense));//营业执照
+        }
+        map.put("materials", requestBody(materials));
         map.put("buildId", requestBody(buildId + ""));
         if (TextUtils.isEmpty(buildId) || TextUtils.equals("0", buildId)) {
             map.put("districtId", requestBody(districtId + ""));
             map.put("businessDistrict", requestBody(businessDistrict + ""));
-            map.put("address", requestBody(address + ""));
+            map.put("address", requestBody(address));
         }
         if (buildingId != 0) {
             map.put("buildingId", requestBody(buildingId + ""));
-        }
-        if (Constants.TYPE_BUILDING == btype) {//网点不传
-            map.put("isHolder", requestBody(isHolder + ""));
         }
         OfficegoRetrofitClient1.getInstance().create(BuildingJointWorkInterface.class)
                 .addAttestationApp(map)
@@ -768,7 +773,7 @@ public class OfficegoApi {
     }
 
     //认证信息回显，驳回
-    public void showIdentityMessage(int buildingId, RetrofitCallback<Object> callback) {
+    public void getIdentityMessage(int buildingId, RetrofitCallback<IdentityRejectBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("buildingId", requestBody(buildingId + ""));

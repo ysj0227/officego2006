@@ -162,7 +162,7 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
         rvListJointWork.setAdapter(new BuildingAdapter(mContext, jointWorkList));
         //添加楼盘/网点
         viewLayout.findViewById(R.id.tv_add).setOnClickListener(view ->
-                OwnerIdentityActivity_.intent(mContext).flay(Constants.IDENTITY_NO_FIRST).start());
+                OwnerIdentityActivity_.intent(mContext).flag(Constants.IDENTITY_NO_FIRST).start());
     }
 
     private void gotoEditActivity(BuildingManagerBean managerBean) {

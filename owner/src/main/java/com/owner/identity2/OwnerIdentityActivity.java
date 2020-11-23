@@ -1,5 +1,6 @@
 package com.owner.identity2;
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.net.Uri;
@@ -24,6 +25,7 @@ import com.donkingliang.imageselector.utils.ImageSelector;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
+import com.officego.commonlib.common.model.IdentityRejectBean;
 import com.officego.commonlib.common.model.owner.UploadImageBean;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.notification.BaseNotification;
@@ -42,6 +44,7 @@ import com.owner.adapter.SearchAdapter;
 import com.owner.adapter.UploadImageAdapter;
 import com.owner.dialog.ExitConfirmDialog;
 import com.owner.dialog.IdentityTypeDialog;
+import com.owner.home.utils.CommonUtils;
 import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.model.ImageBean;
 import com.owner.identity2.contract.IdentityContract;
@@ -59,7 +62,9 @@ import org.androidannotations.annotations.ViewById;
 
 import java.io.File;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by shijie
@@ -131,6 +136,8 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
     @ViewById(resName = "tv_upload_back")
     TextView tvUploadBack;
     //驳回
+    @ViewById(resName = "rl_reason")
+    RelativeLayout rlReason;
     @ViewById(resName = "iv_reject_name")
     ImageView ivRejectName;
     @ViewById(resName = "iv_reject_ownership_certificate")
@@ -142,7 +149,7 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
     @ViewById(resName = "iv_reject_additional_info")
     ImageView ivRejectAdditionalInfo;
     @Extra
-    int flay;
+    int flag;
     @Extra
     int buildingId;
 
@@ -161,6 +168,19 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
     private List<ImageBean> listBusinessLice = new ArrayList<>();
     private List<ImageBean> listAdditionalInfo = new ArrayList<>();
     private UploadImageAdapter cerAdapter, liceAdapter, addiAdapter;
+    //驳回原因
+    @SuppressLint("UseSparseArrays")
+    Map<Integer, String> map = new HashMap<>();
+    //提交信息
+    private int buildingType;
+    private String buildingName;
+    private String mainPic;
+    private int isHolder; //权利人类型1个人2公司
+    private String area;//区域
+    private int districtId, businessId;
+    private String address;
+    private String idFront, idBack;
+    private String buildId = "";//关联楼id
 
     @AfterViews
     void init() {
@@ -170,6 +190,9 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
         titleBar.getLeftImg().setOnClickListener(view -> new ExitConfirmDialog(this));
         initViews();
         initData();
+        if (Constants.IDENTITY_REJECT == flag) {//驳回
+            mPresenter.getIdentityMessage(buildingId);
+        }
     }
 
     private void initViews() {
@@ -225,7 +248,7 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
         rvAddiInfo.setAdapter(addiAdapter);
     }
 
-    @Click(resName = "iv_expand")
+    @Click(resName = "rl_reason")
     void spreadOnClick() {
         ivExpand.setBackgroundResource(isSpread ?
                 com.officego.commonlib.R.mipmap.ic_down_arrow_gray :
@@ -241,8 +264,17 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
 
     @Click(resName = "iv_edit")
     void editOnClick() {
+        BuildingBean bean = new BuildingBean();
+        bean.setName(buildingName);
+        bean.setBuildingType(buildingType);
+        bean.setDistrictId(districtId);
+        bean.setBusinessId(businessId);
+        bean.setAddress(address);
+        bean.setMainPic(mainPic);
+        bean.setArea(area);
         OwnerCreateBuildingActivity_.intent(context)
                 .isEdit(true)
+                .buildingBean(bean)
                 .startForResult(REQUEST_CREATE_BUILDING);
     }
 
@@ -270,31 +302,195 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
 
     @Click(resName = "btn_upload")
     void submitClick() {
+        if (TextUtils.isEmpty(buildingName)) {
+            shortTip("请输入要认证的楼盘/网点名称");
+            return;
+        }
+        if (listCertificate.size() == 0) {
+            shortTip("请上传房产证");
+            return;
+        }
+        String selectType = silSelectType.getContextView().getText() == null ? "" :
+                silSelectType.getContextView().getText().toString();
+        if (silSelectType.getVisibility() == View.VISIBLE && TextUtils.isEmpty(selectType)) {
+            shortTip("请选择权利人类型");
+            return;
+        }
+        if (isHolder == 1) {
+            if (TextUtils.isEmpty(idFront)) {
+                shortTip("请上传身份证正面");
+                return;
+            }
+            if (TextUtils.isEmpty(idBack)) {
+                shortTip("请上传身份证反面");
+                return;
+            }
+        }
+        if (isHolder == 2 || Constants.TYPE_JOINTWORK == buildingType) {
+            if (listBusinessLice.size() == 0) {
+                shortTip("请上传营业执照");
+                return;
+            }
+        }
+        //上传图片
+        String premisesPermit = CommonUtils.addAllUploadImage(listCertificate);
+        String businessLicense = CommonUtils.addAllUploadImage(listBusinessLice);
+        String materials = CommonUtils.addAllUploadImage(listAdditionalInfo);
+        mPresenter.submitIdentityMessage(buildingType, Constants.IDENTITY_FIRST == flag ? 1 : 2, buildingName,
+                mainPic, premisesPermit, businessLicense,
+                materials, idFront, idBack, isHolder,
+                buildId, buildingId, districtId, businessId,
+                address);
+    }
+
+    //驳回-获取认证信息
+    @Override
+    public void identityMessageSuccess(IdentityRejectBean bean) {
+        //驳回原因
+        rejectReasons(bean);
+        //编辑删除
+        ivDelete.setVisibility(View.VISIBLE);
+        //楼盘网点名称信息
+        if (!map.containsKey(1) && !map.containsKey(2)) {
+            ivEdit.setVisibility(TextUtils.isEmpty(bean.getBuildId()) ||
+                    TextUtils.equals("0", bean.getBuildId()) ? View.VISIBLE : View.GONE);
+            buildId = bean.getBuildId(); //buildId 关联楼id
+            mainPic = bean.getMainPic();
+            buildingType = Integer.valueOf(bean.getBtype());
+            buildingName = bean.getBuildingName();
+            holderType(buildingType);
+            if (!TextUtils.isEmpty(bean.getDistrictId())) {
+                districtId = Integer.valueOf(bean.getDistrictId());
+            }
+            if (!TextUtils.isEmpty(bean.getBusinessDistrict())) {
+                businessId = Integer.valueOf(bean.getBusinessDistrict());
+            }
+            area = bean.getProvincetName() + bean.getDistrictIdName() + bean.getBusinessDistrictName();
+            address = bean.getAddress();
+            //信息回显
+            buildingFlayView(buildingType);
+            cetName.setText(buildingName);
+            cetName.setSelection(cetName.getText().length());//光标
+            cetName.setEnabled(false);
+            if (!TextUtils.isEmpty(bean.getAddress())) {
+                tvAddress.setVisibility(View.VISIBLE);
+                tvAddress.setText(bean.getAddress());
+            }
+            hideSearchListView();
+        } else {
+            ivRejectName.setVisibility(View.VISIBLE);
+        }
+        //权利人类型
+        if (!TextUtils.isEmpty(bean.getIsHolder()) &&
+                !TextUtils.equals("0", bean.getIsHolder())) {
+            setIdentityType(Integer.valueOf(bean.getIsHolder()));
+        }
+        //房产证
+        if (!map.containsKey(3) && !map.containsKey(4)) {
+            showImageList(cerAdapter, bean.getPremisesPermit(), listCertificate);
+        } else {
+            ivRejectOwnershipCertificate.setVisibility(View.VISIBLE);
+        }
+        //营业执照
+        if (!map.containsKey(5) && !map.containsKey(6)) {
+            showImageList(liceAdapter, bean.getBusinessLicense(), listBusinessLice);
+        } else {
+            ivRejectBusinessLicense.setVisibility(View.VISIBLE);
+        }
+        //身份证
+        if (!map.containsKey(7) && !map.containsKey(8)) {
+            idFrontImage(bean.getIdFront());
+            idBackImage(bean.getIdBack());
+        } else {
+            ivRejectIdcard.setVisibility(View.VISIBLE);
+        }
+        //补充材料
+        if (!map.containsKey(9) && !map.containsKey(10)) {
+            showImageList(addiAdapter, bean.getMaterials(), listAdditionalInfo);
+        } else {
+            ivRejectAdditionalInfo.setVisibility(View.VISIBLE);
+        }
+    }
+
+    //图片
+    private void showImageList(UploadImageAdapter adapter, List<String> list,
+                               List<ImageBean> imageBeanList) {
+        if (list != null && list.size() > 0) {
+            for (int i = 0; i < list.size(); i++) {
+                String path = list.get(i);
+                imageBeanList.add(imageBeanList.size() - 1, new ImageBean(true, 0, path));
+            }
+            adapter.notifyDataSetChanged();
+        }
+    }
+
+    /**
+     * 驳回原因
+     * 1 名称不规范
+     * 2 地址不规范
+     * 3 房产证不清楚
+     * 4 房产证与认证楼盘不一致
+     * 5 营业执照不清楚
+     * 6 营业执照与权利人不一致
+     * 7 身份证不清楚
+     * 8 身份证与房产证不一致
+     * 9 补充材料不清楚
+     * 10 无相关补充材料或材料无法证明其关系
+     */
+    private void rejectReasons(IdentityRejectBean bean) {
+        rlReason.setVisibility(View.VISIBLE);
+        tvRejectReason.setVisibility(View.VISIBLE);
+        StringBuilder builder = new StringBuilder();
+        if (bean.getRemark() != null && bean.getRemark().size() > 0) {
+            int key;
+            String value;
+            for (int i = 0; i < bean.getRemark().size(); i++) {
+                key = bean.getRemark().get(i).getDictValue();
+                value = bean.getRemark().get(i).getDictCname();
+                if (i == bean.getRemark().size() - 1) {
+                    builder.append(value);
+                } else {
+                    builder.append(value).append("\n");
+                }
+                map.put(key, value);
+            }
+            tvRejectReason.setText("驳回原因：" + builder.toString());
+        } else {
+            tvRejectReason.setText("驳回原因：无");
+        }
+    }
+
+    //提交成功
+    @Override
+    public void submitIdentitySuccess() {
         submitIdentitySuccessDialog();
     }
 
-    //认证提交成功
-    private void submitIdentitySuccessDialog() {
-        CommonDialog dialog = new CommonDialog.Builder(this)
-                .setTitle("提交成功")
-                .setMessage("我们会在1-2个工作日完成审核")
-                .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
-                    finish();
-                    //发送通知提交了认证
-                    BaseNotification.newInstance().postNotificationName(
-                            CommonNotifications.checkedIdentitySuccess, "checkedIdentitySuccess");
-                }).create();
-        dialog.showWithOutTouchable(false);
-        dialog.setCancelable(false);
+    //网点初始0
+    private int holderType(int buildingType) {
+        if (Constants.TYPE_JOINTWORK == buildingType) {
+            isHolder = 0;
+        }
+        return isHolder;
     }
 
     @Override
     public void sureType(String text, int type) {
+        setIdentityType(type);
+    }
+
+    //身份选择
+    private void setIdentityType(int type) {
         //1公司 2个人（自定义参数）
-        silSelectType.setCenterText(text);
-        includeBusinessLicense.setVisibility(type == 1 ? View.VISIBLE : View.GONE);
-        includeOwnerPersonalId.setVisibility(type == 1 ? View.GONE : View.VISIBLE);
-        tvTipAdditionalInfo.setText(type == 1 ? "请上传以公司为主体的房屋租赁协议或其他相关材料" :
+        isHolder = type;
+        if (type == 1) {
+            silSelectType.setCenterText("个人");
+        } else if (type == 2) {
+            silSelectType.setCenterText("公司");
+        }
+        includeBusinessLicense.setVisibility(type == 2 ? View.VISIBLE : View.GONE);
+        includeOwnerPersonalId.setVisibility(type == 2 ? View.GONE : View.VISIBLE);
+        tvTipAdditionalInfo.setText(type == 2 ? "请上传以公司为主体的房屋租赁协议或其他相关材料" :
                 "请上传以个人为主体的房屋租赁协议或其他相关材料");
     }
 
@@ -320,6 +516,29 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
         searchAdapter.notifyDataSetChanged();
     }
 
+    //认证提交成功
+    private void submitIdentitySuccessDialog() {
+        CommonDialog dialog = new CommonDialog.Builder(this)
+                .setTitle("提交成功")
+                .setMessage("我们会在1-2个工作日完成审核")
+                .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
+                    finish();
+                    //通知提交认证
+                    if (Constants.IDENTITY_FIRST == flag) {
+                        BaseNotification.newInstance().postNotificationName(
+                                CommonNotifications.updateBuildingSuccess, "updateBuildingSuccess");
+                    } else if (Constants.IDENTITY_REJECT == flag) {
+                        BaseNotification.newInstance().postNotificationName(
+                                CommonNotifications.rejectBuildingSuccess, "rejectBuildingSuccess");
+                    } else {
+                        BaseNotification.newInstance().postNotificationName(
+                                CommonNotifications.checkedIdentitySuccess, "checkedIdentitySuccess");
+                    }
+                }).create();
+        dialog.showWithOutTouchable(false);
+        dialog.setCancelable(false);
+    }
+
     @Override
     public void associateBuilding(IdentityBuildingBean.DataBean bean, boolean isCreate) {
         if (isCreate) {
@@ -335,6 +554,16 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
             cetName.setSelection(cetName.getText().length());//光标
             cetName.setEnabled(false);
             hideSearchListView();
+            //设置提交信息
+            buildingType = bean.getBuildType();
+            buildingName = cetName.getText().toString();
+            mainPic = bean.getMainPic();
+            holderType(buildingType);
+            districtId = 0;
+            businessId = 0;
+            area = bean.getDistrict() + bean.getBusiness();
+            address = tvAddress.getText() == null ? "" : tvAddress.getText().toString();
+            buildId = String.valueOf(bean.getBid());
         }
         ivDelete.setVisibility(View.VISIBLE);
     }
@@ -345,12 +574,20 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
         if (resultCode == RESULT_OK) {
             BuildingBean bean = (BuildingBean) data.getSerializableExtra("buildingMessage");
             if (bean != null) {
-                int buildingType = bean.getBuildingType();
-                String buildingName = bean.getName();
-                String buildingAddress = bean.getAddress();
+                //设置提交信息
+                buildingType = bean.getBuildingType();
+                buildingName = bean.getName();
+                mainPic = bean.getMainPic();
+                holderType(buildingType);
+                districtId = bean.getDistrictId();
+                businessId = bean.getBusinessId();
+                area = bean.getArea();
+                address = bean.getAddress();
+                buildId = "0";
+                //
                 buildingFlayView(buildingType);
                 cetName.setText(buildingName);
-                tvAddress.setText(buildingAddress);
+                tvAddress.setText(address);
                 tvAddress.setVisibility(View.VISIBLE);
                 ivEdit.setVisibility(View.VISIBLE);
                 cetName.setEnabled(false);
@@ -430,13 +667,9 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
             } else if (TYPE_ADDI == imageType) {//补充材料
                 addListImage(urlSize, data, listAdditionalInfo, addiAdapter);
             } else if (TYPE_IDCARD_FRONT == imageType) {//身份证正面
-                Glide.with(context).load(data.getUrls().get(0).getUrl()).into(rivImageFront);
-                tvUploadFront.setText(getString(R.string.str_re_upload));
-                tvUploadFront.setTextColor(ContextCompat.getColor(context, R.color.white));
+                idFrontImage(data.getUrls().get(0).getUrl());
             } else if (TYPE_IDCARD_BACK == imageType) {//身份证反面
-                Glide.with(context).load(data.getUrls().get(0).getUrl()).into(rivImageBack);
-                tvUploadBack.setText(getString(R.string.str_re_upload));
-                tvUploadBack.setTextColor(ContextCompat.getColor(context, R.color.white));
+                idBackImage(data.getUrls().get(0).getUrl());
             }
             shortTip("上传成功");
         }
@@ -450,6 +683,26 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
             list.add(list.size() - 1, bean);
         }
         adapter.notifyDataSetChanged();
+    }
+
+    //身份证正面
+    private void idFrontImage(String path) {
+        if (!TextUtils.isEmpty(path)) {
+            idFront = path;
+            Glide.with(context).load(idFront).into(rivImageFront);
+            tvUploadFront.setText(getString(R.string.str_re_upload));
+            tvUploadFront.setTextColor(ContextCompat.getColor(context, R.color.white));
+        }
+    }
+
+    //身份证反面
+    private void idBackImage(String path) {
+        if (!TextUtils.isEmpty(path)) {
+            idBack = path;
+            Glide.with(context).load(idBack).into(rivImageBack);
+            tvUploadBack.setText(getString(R.string.str_re_upload));
+            tvUploadBack.setTextColor(ContextCompat.getColor(context, R.color.white));
+        }
     }
 
     //身份证照片
@@ -631,5 +884,4 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         PermissionUtils.requestPermissions(context, requestCode, permissions, grantResults);
     }
-
 }

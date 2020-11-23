@@ -19,10 +19,10 @@ public class MyConversationFragment extends ConversationFragment {
      */
     @Override
     public void onSendToggleClick(View view, String text) {
-        if (TextUtils.equals("159",text)){
-            //todo 发送自定义消息
-            text="****";
-        }
+//        if (TextUtils.equals("159",text)){
+//            //todo 发送自定义消息
+//            text="****";
+//        }
         super.onSendToggleClick(view, text);
     }
 }

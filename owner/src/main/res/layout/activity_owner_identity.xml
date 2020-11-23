@@ -197,7 +197,7 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@id/v_line2"
                 android:visibility="visible"
-                app:centerTextHint="请选择类型"
+                app:centerTextHint="请选择权利人类型"
                 app:centerTextHintColor="@color/text_66_p50"
                 app:editTextSize="@dimen/sp_14"
                 app:leftMarkShow="visible"

@@ -1,6 +1,7 @@
 package com.owner.identity2.contract;
 
 import com.officego.commonlib.base.BaseView;
+import com.officego.commonlib.common.model.IdentityRejectBean;
 import com.officego.commonlib.common.model.owner.UploadImageBean;
 import com.owner.identity.model.IdentityBuildingBean;
 
@@ -15,12 +16,23 @@ public interface IdentityContract {
 
         void searchBuildingSuccess(List<IdentityBuildingBean.DataBean> data);
 
+        void identityMessageSuccess(IdentityRejectBean data);
+
+        void submitIdentitySuccess();
+
         void uploadSuccess(int imageType, UploadImageBean data);
     }
 
     interface Presenter {
 
         void searchBuilding(String keywords);
+
+        void getIdentityMessage(int buildingId);
+
+        void submitIdentityMessage(int btype, int isFrist, String buildingName, String mainPic,
+                                   String premisesPermit, String businessLicense, String materials, String idFront,
+                                   String idBack, int isHolder, String buildId, int buildingId,
+                                   int districtId, int businessDistrict, String address);
 
         void uploadImage(int imageType, List<String> mFilePath);
     }

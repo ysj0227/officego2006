@@ -182,7 +182,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
 
     private void toIdentityActivity() {
         OwnerIdentityActivity_.intent(mActivity)
-                .flay(Constants.IDENTITY_FIRST).start();
+                .flag(Constants.IDENTITY_FIRST).start();
     }
 
     //网络异常重试

@@ -10,7 +10,6 @@ import android.widget.ImageView;
 import android.widget.RadioButton;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 
 import com.bumptech.glide.Glide;
@@ -76,6 +75,8 @@ public class OwnerCreateBuildingActivity extends BaseMvpActivity<CreateBuildingP
     String inputText;
     @Extra
     boolean isEdit;
+    @Extra
+    BuildingBean buildingBean;
 
     private int district, business;
     private String localBuildingPath;
@@ -93,8 +94,24 @@ public class OwnerCreateBuildingActivity extends BaseMvpActivity<CreateBuildingP
     }
 
     private void initViews() {
-        silName.getEditTextView().setText(inputText);
-        silName.getEditTextView().setSelection(TextUtils.isEmpty(inputText) ? 0 : inputText.length());
+        if (isEdit) {
+            if (buildingBean != null) {
+                silName.getEditTextView().setText(buildingBean.getName());
+                rbBuilding.setChecked(buildingBean.getBuildingType() == Constants.TYPE_BUILDING);
+                rbJointWork.setChecked(buildingBean.getBuildingType() == Constants.TYPE_JOINTWORK);
+                silArea.setCenterText(buildingBean.getArea());
+                silAddress.getEditTextView().setText(buildingBean.getAddress());
+                if (!TextUtils.isEmpty(buildingBean.getMainPic())) {
+                    introduceImageUrl = buildingBean.getMainPic();
+                    Glide.with(context).load(introduceImageUrl).into(ivImage);
+                }
+                district = buildingBean.getDistrictId();
+                business = buildingBean.getBusinessId();
+            }
+        } else {
+            silName.getEditTextView().setText(inputText);
+            silName.getEditTextView().setSelection(TextUtils.isEmpty(inputText) ? 0 : inputText.length());
+        }
     }
 
     @Click(resName = "sil_area")
@@ -140,6 +157,7 @@ public class OwnerCreateBuildingActivity extends BaseMvpActivity<CreateBuildingP
         bean.setBusinessId(business);
         bean.setAddress(address);
         bean.setMainPic(introduceImageUrl);
+        bean.setArea(area);
         Intent intent = getIntent();
         intent.putExtra("buildingMessage", bean);
         setResult(RESULT_OK, intent);

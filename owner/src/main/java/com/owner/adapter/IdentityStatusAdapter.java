@@ -105,7 +105,7 @@ public class IdentityStatusAdapter extends CommonListAdapter<String> {
         //驳回重新认证
         btnIdentity.setOnClickListener(view -> {
             OwnerIdentityActivity_.intent(mContext)
-                    .flay(Constants.IDENTITY_REJECT)
+                    .flag(Constants.IDENTITY_REJECT)
                     .buildingId(mData.getBuildingId()).start();
         });
     }

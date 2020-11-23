@@ -8,11 +8,12 @@ import java.io.Serializable;
  **/
 public class BuildingBean implements Serializable {
     private String name;
-    private int  districtId;
-    private int businessId ;
+    private int districtId;
+    private int businessId;
     private String address;
     private String mainPic;
     private int buildingType;
+    private String area;//区域
 
     public String getName() {
         return name;
@@ -60,5 +61,13 @@ public class BuildingBean implements Serializable {
 
     public void setBuildingType(int buildingType) {
         this.buildingType = buildingType;
+    }
+
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
     }
 }
