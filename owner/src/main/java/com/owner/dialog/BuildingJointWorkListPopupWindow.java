@@ -30,7 +30,7 @@ import com.owner.R;
 import com.owner.home.EditBuildingActivity_;
 import com.owner.home.EditJointWorkActivity_;
 import com.owner.identity2.OwnerIdentityActivity_;
-import com.owner.mine.model.UserOwnerBean;
+import com.officego.commonlib.common.model.UserMessageBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -45,7 +45,7 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
         PopupWindow.OnDismissListener {
     private Activity mContext;
     private List<BuildingJointWorkBean.ListBean> list;
-    private UserOwnerBean mUserData;
+    private UserMessageBean mUserData;
     private int statusBarHeight, titleBarHeight;
     private final int identityType = 2;//0个人1企业2联合，网点
     //筛选楼盘网点列表
@@ -69,7 +69,7 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
     }
 
     @SuppressLint("ClickableViewAccessibility")
-    public BuildingJointWorkListPopupWindow(Activity activity, UserOwnerBean mUserData, View topToPopupWindowView,
+    public BuildingJointWorkListPopupWindow(Activity activity, UserMessageBean mUserData, View topToPopupWindowView,
                                             List<BuildingJointWorkBean.ListBean> list) {
         super();
         this.mContext = activity;
@@ -165,8 +165,8 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
                 OwnerIdentityActivity_.intent(mContext).flag(Constants.IDENTITY_NO_FIRST).start());
     }
 
-    private void gotoEditActivity(BuildingManagerBean managerBean) {
-        if (mUserData.getIdentityType() == identityType) {
+    private void gotoEditActivity(int type, BuildingManagerBean managerBean) {
+        if (Constants.TYPE_JOINTWORK == type) {
             EditJointWorkActivity_.intent(mContext).buildingManagerBean(managerBean).start();
         } else {
             EditBuildingActivity_.intent(mContext).buildingManagerBean(managerBean).start();
@@ -236,7 +236,7 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
             //编辑
             rlEdit.setOnClickListener(view -> {
                 if (1 == bean.getIsEdit()) {
-                    gotoEditActivity(new BuildingManagerBean(bean.getBuildingId(), bean.getIsTemp()));
+                    gotoEditActivity(bean.getBtype(), new BuildingManagerBean(bean.getBuildingId(), bean.getIsTemp()));
                 }
             });
             //房源列表

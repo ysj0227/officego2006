@@ -38,7 +38,7 @@ import com.owner.h5.WebViewActivity_;
 import com.owner.home.contract.HomeContract;
 import com.owner.home.presenter.HomePresenter;
 import com.owner.identity2.OwnerIdentityActivity_;
-import com.owner.mine.model.UserOwnerBean;
+import com.officego.commonlib.common.model.UserMessageBean;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -96,7 +96,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     @ViewById(resName = "btn_again")
     Button btnAgain;
     //用户信息
-    private UserOwnerBean mUserData;
+    private UserMessageBean mUserData;
     //楼盘网点列表pop
     private BuildingJointWorkListPopupWindow popupWindow = null;
     //当前页码
@@ -216,7 +216,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
 
     //添加房源
     private void gotoAddHouseActivity(BuildingManagerBean managerBean) {
-        if (mUserData.getIdentityType() == Constants.TYPE_JOINTWORK) {
+        if (Constants.TYPE_JOINTWORK == mData.getBtype()) {
             AddEditIndependentActivity_.intent(mActivity)
                     .buildingFlag(Constants.BUILDING_FLAG_ADD)
                     .buildingManagerBean(managerBean)
@@ -401,10 +401,10 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
 
     /**
      * 身份类型 0个人1企业2联合
-     * auditStatus 0待审核1审核通过2审核未通过 3过期(和2未通过一样处理)-1未认证
+     * auditStatus -1未认证 0待审核1审核通过2审核未通过
      */
     @Override
-    public void userInfoSuccess(UserOwnerBean data) {
+    public void userInfoSuccess(UserMessageBean data) {
         mUserData = data;
         if (data.getAuditStatus() == -1) {//未认证
             isRefreshHome(true);

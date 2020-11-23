@@ -21,8 +21,8 @@ public interface UpdateUserContract {
 
     interface Presenter {
 
-        void updateAvatar(File file);
+        void updateAvatar(String path);
 
-        void UpdateUserInfo(String realName, String sex, String company, String job, String wx);
+        void UpdateUserInfo(String avatar, String nickname, String sex, String company, String job, String wx);
     }
 }

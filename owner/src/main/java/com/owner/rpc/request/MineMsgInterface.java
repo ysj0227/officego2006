@@ -4,7 +4,7 @@ import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.VersionBean;
 import com.officego.commonlib.retrofit.BaseResponse;
 import com.owner.mine.model.AvatarBean;
-import com.owner.mine.model.UserOwnerBean;
+import com.officego.commonlib.common.model.UserMessageBean;
 
 import java.util.Map;
 
@@ -46,12 +46,12 @@ public interface MineMsgInterface {
     @POST(path + "user/updateDataApp")
     Call<BaseResponse<Object>> updateUserData(@PartMap Map<String, RequestBody> params);
 
-    /**
-     * 获取房东个人信息
-     */
-    @Multipart
-    @POST(path + "user/userMsgApp")
-    Call<BaseResponse<UserOwnerBean>> getUserMsg(@PartMap Map<String, RequestBody> params);
+//    /**
+//     * 获取房东个人信息
+//     */
+//    @Multipart
+//    @POST(path + "user/getUserInfoApp")
+//    Call<BaseResponse<UserMessageBean>> getUserMsg(@PartMap Map<String, RequestBody> params);
 
     /**
      * 修改手机号

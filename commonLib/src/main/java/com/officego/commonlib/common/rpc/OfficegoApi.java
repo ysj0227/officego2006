@@ -11,6 +11,7 @@ import com.officego.commonlib.common.model.ExchangeContactsBean;
 import com.officego.commonlib.common.model.FirstChatBean;
 import com.officego.commonlib.common.model.IdentitychattedMsgBean;
 import com.officego.commonlib.common.model.RongUserInfoBean;
+import com.officego.commonlib.common.model.UserMessageBean;
 import com.officego.commonlib.common.model.owner.AddHouseSuccessBean;
 import com.officego.commonlib.common.model.owner.BuildingEditBean;
 import com.officego.commonlib.common.model.owner.BuildingJointWorkBean;
@@ -761,9 +762,9 @@ public class OfficegoApi {
     }
 
     //驳回重新添加
-    public void rejectReAddBuilding(int btype,String buildingName, int districtId,
+    public void rejectReAddBuilding(int btype, String buildingName, int districtId,
                                     int businessDistrict, String address, String mainPic,
-                                    String premisesPermit, int buildId,int buildingId,
+                                    String premisesPermit, int buildId, int buildingId,
                                     RetrofitCallback<Object> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
@@ -853,5 +854,35 @@ public class OfficegoApi {
                     .uploadResourcesUrl(builder.build())
                     .enqueue(callback);
         }
+    }
+
+    /**
+     * 获取个人信息
+     */
+    public void getUserMsg(RetrofitCallback<UserMessageBean> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("channel", requestBody("2"));
+        OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
+                .getUserMsg(map)
+                .enqueue(callback);
+    }
+
+    /**
+     * 更新个人信息
+     */
+    public void updateUserInfo(String avatar, String nickname, String sex, String company,
+                               String job, String wx, RetrofitCallback<Object> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("avatar", requestBody(avatar+""));
+        map.put("nickname", requestBody(nickname));
+        map.put("sex", requestBody(sex));
+        map.put("company", requestBody(company));
+        map.put("job", requestBody(job));
+        map.put("wxId", requestBody(wx));
+        OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
+                .updateUserInfo(map)
+                .enqueue(callback);
     }
 }

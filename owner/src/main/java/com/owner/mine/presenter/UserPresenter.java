@@ -2,11 +2,11 @@ package com.owner.mine.presenter;
 
 import com.officego.commonlib.base.BasePresenter;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.model.UserMessageBean;
+import com.officego.commonlib.common.rpc.OfficegoApi;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.log.LogCat;
 import com.owner.mine.contract.UserContract;
-import com.owner.mine.model.UserOwnerBean;
-import com.owner.rpc.OfficegoApi;
 
 /**
  * Created by YangShiJie
@@ -20,9 +20,9 @@ public class UserPresenter extends BasePresenter<UserContract.View>
     @Override
     public void getUserInfo() {
         mView.showLoadingDialog();
-        OfficegoApi.getInstance().getUserMsg(new RetrofitCallback<UserOwnerBean>() {
+        OfficegoApi.getInstance().getUserMsg(new RetrofitCallback<UserMessageBean>() {
             @Override
-            public void onSuccess(int code, String msg, UserOwnerBean data) {
+            public void onSuccess(int code, String msg, UserMessageBean data) {
                 if (isViewAttached()) {
                     mView.hideLoadingDialog();
                     SpUtils.saveHeaderImg(data.getAvatar());
@@ -31,7 +31,7 @@ public class UserPresenter extends BasePresenter<UserContract.View>
             }
 
             @Override
-            public void onFail(int code, String msg, UserOwnerBean data) {
+            public void onFail(int code, String msg, UserMessageBean data) {
                 LogCat.e(TAG, "getUserInfo onFail code=" + code + "  msg=" + msg);
                 if (isViewAttached()) {
                     mView.hideLoadingDialog();

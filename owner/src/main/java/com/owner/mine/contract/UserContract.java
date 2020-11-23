@@ -1,7 +1,7 @@
 package com.owner.mine.contract;
 
 import com.officego.commonlib.base.BaseView;
-import com.owner.mine.model.UserOwnerBean;
+import com.officego.commonlib.common.model.UserMessageBean;
 
 /**
  * Created by YangShiJie
@@ -11,7 +11,7 @@ import com.owner.mine.model.UserOwnerBean;
 public interface UserContract {
     interface View extends BaseView {
 
-        void userInfoSuccess(UserOwnerBean data);
+        void userInfoSuccess(UserMessageBean data);
 
         void userInfoFail(int code, String msg);
     }

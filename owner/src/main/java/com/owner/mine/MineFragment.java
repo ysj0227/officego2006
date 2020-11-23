@@ -10,7 +10,6 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
@@ -35,7 +34,7 @@ import com.owner.R;
 import com.owner.dialog.ExitAppDialog;
 import com.owner.h5.WebViewActivity_;
 import com.owner.mine.contract.UserContract;
-import com.owner.mine.model.UserOwnerBean;
+import com.officego.commonlib.common.model.UserMessageBean;
 import com.owner.mine.presenter.UserPresenter;
 import com.owner.rpc.OfficegoApi;
 import com.owner.zxing.QRScanActivity;
@@ -68,7 +67,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
     TextView tvAccount;
     @ViewById(resName = "tv_idify")
     TextView tvIdify;
-    private UserOwnerBean mUserInfo;
+    private UserMessageBean mUserInfo;
 
     @AfterViews
     void init() {
@@ -222,21 +221,19 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void userInfoSuccess(UserOwnerBean data) {
+    public void userInfoSuccess(UserMessageBean data) {
         if (data != null) {
             //刷新融云头像用户信息
-            RongCloudSetUserInfoUtils.refreshUserInfoCache(SpUtils.getRongChatId(), data.getRealname(), data.getAvatar());
+            RongCloudSetUserInfoUtils.refreshUserInfoCache(SpUtils.getRongChatId(), data.getNickname(), data.getAvatar());
             mUserInfo = data;
-            tvIdify.setText(StringIdentity.identityInfo(data));
-            tvIdify.setBackgroundResource(R.drawable.button_corners5_solid_white);
             Glide.with(mActivity).applyDefaultRequestOptions(GlideUtils.avaOoptions()).load(data.getAvatar()).into(civAvatar);
-            tvName.setText(data.getProprietorRealname());
-            if (TextUtils.isEmpty(data.getProprietorCompany())) {
-                tvAccount.setText(TextUtils.isEmpty(data.getProprietorJob()) ? "" : data.getProprietorJob());
+            tvName.setText(data.getNickname());
+            if (TextUtils.isEmpty(data.getNickname())) {
+                tvAccount.setText(TextUtils.isEmpty(data.getJob()) ? "" : data.getJob());
             } else {
-                tvAccount.setText(TextUtils.isEmpty(data.getProprietorJob()) ?
-                        data.getProprietorCompany() :
-                        data.getProprietorCompany() + "·" + data.getProprietorJob());
+                tvAccount.setText(TextUtils.isEmpty(data.getJob()) ?
+                        data.getCompany() :
+                        data.getCompany() + "·" + data.getJob());
             }
         }
     }

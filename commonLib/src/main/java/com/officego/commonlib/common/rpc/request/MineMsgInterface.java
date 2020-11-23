@@ -2,6 +2,7 @@ package com.officego.commonlib.common.rpc.request;
 
 import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.VersionBean;
+import com.officego.commonlib.common.model.UserMessageBean;
 import com.officego.commonlib.retrofit.BaseResponse;
 
 import java.util.Map;
@@ -48,5 +49,20 @@ public interface MineMsgInterface {
     @Multipart
     @POST(path + "version/android")
     Call<BaseResponse<VersionBean>> updateVersion(@PartMap Map<String, RequestBody> params);
+
+    /**
+     * 获取个人信息
+     */
+    @Multipart
+    @POST(path + "user/getUserInfoApp")
+    Call<BaseResponse<UserMessageBean>> getUserMsg(@PartMap Map<String, RequestBody> params);
+
+    /**
+     * 获取个人信息
+     */
+    @Multipart
+    @POST(path + "user/eidtUserApp")
+    Call<BaseResponse<Object>> updateUserInfo(@PartMap Map<String, RequestBody> params);
+
 
 }

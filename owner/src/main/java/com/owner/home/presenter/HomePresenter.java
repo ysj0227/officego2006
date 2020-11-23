@@ -1,14 +1,13 @@
 package com.owner.home.presenter;
 
 import com.officego.commonlib.base.BasePresenter;
+import com.officego.commonlib.common.model.UserMessageBean;
 import com.officego.commonlib.common.model.owner.BuildingJointWorkBean;
 import com.officego.commonlib.common.model.owner.HouseBean;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.log.LogCat;
 import com.owner.home.contract.HomeContract;
-import com.owner.mine.model.UserOwnerBean;
-import com.owner.rpc.OfficegoApi;
 
 /**
  * Created by YangShiJie
@@ -75,9 +74,9 @@ public class HomePresenter extends BasePresenter<HomeContract.View>
     @Override
     public void getUserInfo() {
         mView.showLoadingDialog();
-        OfficegoApi.getInstance().getUserMsg(new RetrofitCallback<UserOwnerBean>() {
+        com.officego.commonlib.common.rpc.OfficegoApi.getInstance().getUserMsg(new RetrofitCallback<UserMessageBean>() {
             @Override
-            public void onSuccess(int code, String msg, UserOwnerBean data) {
+            public void onSuccess(int code, String msg, UserMessageBean data) {
                 if (isViewAttached()) {
                     mView.hideLoadingDialog();
                     mView.userInfoSuccess(data);
@@ -85,7 +84,7 @@ public class HomePresenter extends BasePresenter<HomeContract.View>
             }
 
             @Override
-            public void onFail(int code, String msg, UserOwnerBean data) {
+            public void onFail(int code, String msg, UserMessageBean data) {
                 LogCat.e(TAG, "getUserInfo onFail code=" + code + "  msg=" + msg);
                 if (isViewAttached()) {
                     mView.hideLoadingDialog();

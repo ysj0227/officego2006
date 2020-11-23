@@ -3,7 +3,7 @@ package com.owner.home.contract;
 import com.officego.commonlib.base.BaseView;
 import com.officego.commonlib.common.model.owner.BuildingJointWorkBean;
 import com.officego.commonlib.common.model.owner.HouseBean;
-import com.owner.mine.model.UserOwnerBean;
+import com.officego.commonlib.common.model.UserMessageBean;
 
 import java.util.List;
 
@@ -20,7 +20,7 @@ public interface HomeContract {
 
         void houseListSuccess(List<HouseBean.ListBean> data, boolean hasMore);
 
-        void userInfoSuccess(UserOwnerBean data);
+        void userInfoSuccess(UserMessageBean data);
 
         void initHouseList(BuildingJointWorkBean data);
 

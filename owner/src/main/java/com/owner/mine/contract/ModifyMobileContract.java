@@ -1,7 +1,6 @@
 package com.owner.mine.contract;
 
 import com.officego.commonlib.base.BaseView;
-import com.owner.mine.model.UserOwnerBean;
 
 /**
  * Created by YangShiJie

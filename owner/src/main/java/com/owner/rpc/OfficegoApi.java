@@ -21,7 +21,7 @@ import com.owner.identity.model.IdentityCompanyBean;
 import com.owner.identity.model.IdentityJointWorkBean;
 import com.owner.identity.model.ImageBean;
 import com.owner.mine.model.AvatarBean;
-import com.owner.mine.model.UserOwnerBean;
+import com.officego.commonlib.common.model.UserMessageBean;
 import com.owner.rpc.request.IdentitySearchInterface;
 import com.owner.rpc.request.LoginInterface;
 import com.owner.rpc.request.MineMsgInterface;
@@ -75,14 +75,6 @@ public class OfficegoApi {
     //********************************************************************************
     //个人信息***************************************************************************
     //********************************************************************************
-    public void getUserMsg(RetrofitCallback<UserOwnerBean> callback) {
-        Map<String, RequestBody> map = new HashMap<>();
-        map.put("token", requestBody(SpUtils.getSignToken()));
-        map.put("channel", requestBody("2"));
-        OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
-                .getUserMsg(map)
-                .enqueue(callback);
-    }
 
     /**
      * realname 	否 	string 	真实姓名
