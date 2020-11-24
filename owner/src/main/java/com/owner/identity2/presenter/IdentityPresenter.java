@@ -8,7 +8,6 @@ import com.officego.commonlib.common.model.UserMessageBean;
 import com.officego.commonlib.common.model.owner.UploadImageBean;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
-import com.owner.dialog.CardDialog;
 import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity2.contract.IdentityContract;
 import com.owner.rpc.OfficegoApi;
@@ -28,9 +27,7 @@ public class IdentityPresenter extends BasePresenter<IdentityContract.View>
             @Override
             public void onSuccess(int code, String msg, UserMessageBean data) {
                 if (isViewAttached()) {
-                    if (data.isIsUserInfo()) {
-                        new CardDialog(context, data);
-                    }
+                    mView.userInfoSuccess(data);
                 }
             }
 
@@ -141,6 +138,31 @@ public class IdentityPresenter extends BasePresenter<IdentityContract.View>
                         if (isViewAttached()) {
                             mView.hideLoadingDialog();
                             if (code == Constants.DEFAULT_ERROR_CODE || code == Constants.ERROR_CODE_6028) {
+                                mView.shortTip(msg);
+                            }
+                        }
+                    }
+                });
+    }
+
+    @Override
+    public void updateUserInfo(String avatar, String nickname, String sex, String company, String job, String wx) {
+        mView.showLoadingDialog();
+        com.officego.commonlib.common.rpc.OfficegoApi.getInstance().updateUserInfo(avatar, nickname, sex,
+                company, job, wx, new RetrofitCallback<Object>() {
+                    @Override
+                    public void onSuccess(int code, String msg, Object data) {
+                        if (isViewAttached()) {
+                            mView.hideLoadingDialog();
+                            mView.updateUserSuccess();
+                        }
+                    }
+
+                    @Override
+                    public void onFail(int code, String msg, Object data) {
+                        if (isViewAttached()) {
+                            mView.hideLoadingDialog();
+                            if (code == Constants.DEFAULT_ERROR_CODE) {
                                 mView.shortTip(msg);
                             }
                         }

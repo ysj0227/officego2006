@@ -24,6 +24,10 @@ public interface IdentityContract {
         void submitIdentitySuccess();
 
         void uploadSuccess(int imageType, UploadImageBean data);
+
+        void userInfoSuccess(UserMessageBean data);
+
+        void updateUserSuccess();
     }
 
     interface Presenter {
@@ -40,5 +44,7 @@ public interface IdentityContract {
                                    int districtId, int businessDistrict, String address);
 
         void uploadImage(int imageType, List<String> mFilePath);
+
+        void updateUserInfo(String avatar, String nickname, String sex, String company, String job, String wx);
     }
 }

@@ -2,10 +2,12 @@ package com.owner.identity2;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
+import android.app.Dialog;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,6 +28,7 @@ import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.model.IdentityRejectBean;
+import com.officego.commonlib.common.model.UserMessageBean;
 import com.officego.commonlib.common.model.owner.UploadImageBean;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.notification.BaseNotification;
@@ -35,7 +38,8 @@ import com.officego.commonlib.utils.ImageUtils;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.PhotoUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
+import com.officego.commonlib.view.CircleImage;
+import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.RoundImageView;
 import com.officego.commonlib.view.TitleBarView;
 import com.officego.commonlib.view.dialog.CommonDialog;
@@ -51,6 +55,7 @@ import com.owner.identity.model.ImageBean;
 import com.owner.identity2.contract.IdentityContract;
 import com.owner.identity2.model.BuildingBean;
 import com.owner.identity2.presenter.IdentityPresenter;
+import com.owner.mine.MineMessageActivity_;
 import com.owner.utils.CommUtils;
 import com.wildma.idcardcamera.camera.IDCardCamera;
 
@@ -185,6 +190,12 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
     private String buildId = "";//关联楼id
     //驳回-如果驳回的名称提交校验身份改变
     private IdentityRejectBean currentRejectData;
+    //个人信息
+    private String avatarUrl;
+    private CircleImage civAvatar;
+    private UserMessageBean mUserBean;
+    private Dialog userDialog;
+
 
     @AfterViews
     void init() {
@@ -703,11 +714,39 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
             } else if (TYPE_IDCARD_BACK == imageType) {//身份证反面
                 idBackImage(data.getUrls().get(0).getUrl());
             } else if (TYPE_AVATAR == imageType) {//头像
-                LogCat.e(TAG, "11111 avatar url=" + data.getUrls().get(0).getUrl());
+                avatarUrl = data.getUrls().get(0).getUrl();
+                Glide.with(context).load(data.getUrls().get(0).getUrl()).into(civAvatar);
+                //更新用户信息
+                mPresenter.updateUserInfo(avatarUrl, mUserBean.getNickname(),
+                        TextUtils.isEmpty(mUserBean.getSex()) ? "1" : mUserBean.getSex(),
+                        mUserBean.getCompany(), mUserBean.getJob(), mUserBean.getWxId());
             }
             if (TYPE_AVATAR != imageType) {
                 shortTip("上传成功");
             }
+        }
+    }
+
+    /**
+     * 获取用户信息
+     */
+    @Override
+    public void userInfoSuccess(UserMessageBean data) {
+        if (data.isIsUserInfo()) {
+            avatarUrl = data.getAvatar();
+            mUserBean = data;
+            cardDialog(data);
+        }
+    }
+
+    /**
+     * 更新用户成功
+     */
+    @Override
+    public void updateUserSuccess() {
+        shortTip("名片保存成功");
+        if (userDialog != null) {
+            userDialog.dismiss();
         }
     }
 
@@ -928,18 +967,55 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
         PermissionUtils.requestPermissions(context, requestCode, permissions, grantResults);
     }
 
-    @Override
-    public int[] getStickNotificationId() {
-        return new int[]{CommonNotifications.identityModifyAvatar};
+    /**
+     * 更新卡片
+     */
+    private void cardDialog(UserMessageBean data) {
+        userDialog = new Dialog(context, R.style.BottomDialog);
+        View viewLayout = LayoutInflater.from(context).inflate(R.layout.dialog_mine_card, null);
+        userDialog.setContentView(viewLayout);
+        handleLayout(viewLayout, userDialog, data);
+        userDialog.setCancelable(true);
+        userDialog.show();
     }
 
-    @Override
-    public void didReceivedNotification(int id, Object... args) {
-        super.didReceivedNotification(id, args);
-        if (id == CommonNotifications.identityModifyAvatar) {
+    private void handleLayout(View viewLayout, Dialog dialog, UserMessageBean data) {
+        civAvatar = viewLayout.findViewById(R.id.civ_avatar);
+        ClearableEditText cetName = viewLayout.findViewById(R.id.cet_name);
+        ClearableEditText cetJob = viewLayout.findViewById(R.id.cet_job);
+        Button save = viewLayout.findViewById(R.id.btn_save);
+        TextView tvMore = viewLayout.findViewById(R.id.tv_more);
+        viewLayout.findViewById(R.id.rl_exit).setOnClickListener(v -> dialog.dismiss());
+        cetName.setText(data.getNickname());
+        cetJob.setText(data.getJob());
+        Glide.with(context).load(data.getAvatar()).into(civAvatar);
+        //头像
+        civAvatar.setOnClickListener(view -> {
             mUploadType = TYPE_AVATAR;
             selectedDialog();
-        }
+        });
+        //保存
+        save.setOnClickListener(view -> {
+            String nickName = cetName.getText().toString();
+            if (TextUtils.isEmpty(nickName)) {
+                shortTip("请输入称呼");
+                return;
+            }
+            String job = cetJob.getText().toString();
+            if (TextUtils.isEmpty(job)) {
+                shortTip("请输入职位");
+                return;
+            }
+            //更新用户信息
+            String sex = TextUtils.isEmpty(mUserBean.getSex()) ? "1" : mUserBean.getSex();
+            mPresenter.updateUserInfo(avatarUrl, nickName, sex, mUserBean.getCompany(), job, mUserBean.getWxId());
+        });
+        //个人信息
+        tvMore.setOnClickListener(view -> {
+            MineMessageActivity_.intent(context).mUserInfo(data).start();
+            dialog.dismiss();
+        });
     }
+
 
 }
