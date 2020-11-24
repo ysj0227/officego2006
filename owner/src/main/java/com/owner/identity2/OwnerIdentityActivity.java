@@ -306,7 +306,7 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
             shortTip("请输入要认证的楼盘/网点名称");
             return;
         }
-        if (listCertificate.size() == 0) {
+        if (listCertificate.size() <=1) {
             shortTip("请上传房产证");
             return;
         }
@@ -351,39 +351,38 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
         //编辑删除
         ivDelete.setVisibility(View.VISIBLE);
         //楼盘网点名称信息
-        if (!map.containsKey(1) && !map.containsKey(2)) {
-            ivEdit.setVisibility(TextUtils.isEmpty(bean.getBuildId()) ||
-                    TextUtils.equals("0", bean.getBuildId()) ? View.VISIBLE : View.GONE);
-            buildId = bean.getBuildId(); //buildId 关联楼id
-            mainPic = bean.getMainPic();
-            buildingType = Integer.valueOf(bean.getBtype());
-            buildingName = bean.getBuildingName();
-            holderType(buildingType);
-            if (!TextUtils.isEmpty(bean.getDistrictId())) {
-                districtId = Integer.valueOf(bean.getDistrictId());
-            }
-            if (!TextUtils.isEmpty(bean.getBusinessDistrict())) {
-                businessId = Integer.valueOf(bean.getBusinessDistrict());
-            }
-            area = bean.getProvincetName() + bean.getDistrictIdName() + bean.getBusinessDistrictName();
-            address = bean.getAddress();
-            //信息回显
-            buildingFlayView(buildingType);
-            cetName.setText(buildingName);
-            cetName.setSelection(cetName.getText().length());//光标
-            cetName.setEnabled(false);
-            if (!TextUtils.isEmpty(bean.getAddress())) {
-                tvAddress.setVisibility(View.VISIBLE);
-                tvAddress.setText(bean.getAddress());
-            }
-            hideSearchListView();
-        } else {
-            ivRejectName.setVisibility(View.VISIBLE);
+        ivEdit.setVisibility(TextUtils.isEmpty(bean.getBuildId()) ||
+                TextUtils.equals("0", bean.getBuildId()) ? View.VISIBLE : View.GONE);
+        buildId = bean.getBuildId(); //buildId 关联楼id
+        mainPic = bean.getMainPic();
+        buildingType = Integer.valueOf(bean.getBtype());
+        buildingName = bean.getBuildingName();
+        holderType(buildingType);
+        if (!TextUtils.isEmpty(bean.getDistrictId())) {
+            districtId = Integer.valueOf(bean.getDistrictId());
         }
+        if (!TextUtils.isEmpty(bean.getBusinessDistrict())) {
+            businessId = Integer.valueOf(bean.getBusinessDistrict());
+        }
+        area = bean.getProvincetName() + bean.getDistrictIdName() + bean.getBusinessDistrictName();
+        address = bean.getAddress();
+        //信息回显
+        buildingFlayView(buildingType);
+        cetName.setText(buildingName);
+        cetName.setSelection(cetName.getText().length());//光标
+        cetName.setEnabled(false);
+        if (!TextUtils.isEmpty(bean.getAddress())) {
+            tvAddress.setVisibility(View.VISIBLE);
+            tvAddress.setText(bean.getAddress());
+        }
+        hideSearchListView();//隐藏搜索
         //权利人类型
         if (!TextUtils.isEmpty(bean.getIsHolder()) &&
                 !TextUtils.equals("0", bean.getIsHolder())) {
             setIdentityType(Integer.valueOf(bean.getIsHolder()));
+        }
+        if (map.containsKey(1) || map.containsKey(2)) {
+            ivRejectName.setVisibility(View.VISIBLE);
         }
         //房产证
         if (!map.containsKey(3) && !map.containsKey(4)) {

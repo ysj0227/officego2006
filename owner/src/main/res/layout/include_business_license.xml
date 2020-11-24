@@ -18,7 +18,6 @@
         style="@style/marginLeftRight18"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_14"
         android:drawableEnd="@mipmap/ic_mark"
         android:text="上传营业执照"
         android:textColor="@color/text_33"

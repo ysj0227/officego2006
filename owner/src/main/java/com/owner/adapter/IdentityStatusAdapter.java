@@ -11,6 +11,7 @@ import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
 import com.officego.commonlib.common.model.owner.BuildingJointWorkBean;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.utils.DateTimeUtils;
 import com.owner.R;
 import com.owner.identity2.OwnerIdentityActivity_;
 
@@ -50,16 +51,16 @@ public class IdentityStatusAdapter extends CommonListAdapter<String> {
         TextView tvStatus = holder.getView(R.id.tv_status);
         TextView tvDate = holder.getView(R.id.tv_date);
         Button btnIdentity = holder.getView(R.id.btn_identity);
-
-        tvDate.setText("10-17 12:12");
         if (holder.getAdapterPosition() == 0) {
             ivLineUp.setVisibility(View.INVISIBLE);
             ivLineBottom.setVisibility(View.VISIBLE);
             ivStatus.setBackgroundResource(R.mipmap.ic_identity_ok);
             tvStatus.setText("提交认证");
+            tvDate.setText(DateTimeUtils.stampMinuteToDate(mData.getStartTime(), "yyyy-MM-dd HH:mm"));
         } else if (holder.getAdapterPosition() == 1) {
             ivLineUp.setVisibility(View.VISIBLE);
             ivLineBottom.setVisibility(View.VISIBLE);
+            tvDate.setText(DateTimeUtils.stampMinuteToDate(mData.getStartTime(), "yyyy-MM-dd HH:mm"));
             if (mData.getStatus() == STATUS_ING) {
                 tvStatus.setText("审核中");
                 ivLineBottom.setBackgroundResource(R.drawable.bg_dash_gray);
@@ -80,10 +81,11 @@ public class IdentityStatusAdapter extends CommonListAdapter<String> {
         } else if (holder.getAdapterPosition() == 2) {
             ivLineUp.setVisibility(View.VISIBLE);
             ivLineBottom.setVisibility(View.INVISIBLE);
+            tvDate.setText(DateTimeUtils.stampMinuteToDate(mData.getEndTime(), "yyyy-MM-dd HH:mm"));
             if (mData.getStatus() == STATUS_ING) {
                 tvStatus.setText("审核通过");
                 btnIdentity.setVisibility(View.GONE);
-                ivLineUp.setBackgroundResource(R.drawable.bg_dash_gray);
+                ivLineUp.setBackgroundResource(R.drawable.bg_dash_blue);
                 ivStatus.setBackgroundResource(R.mipmap.ic_identity_ok_gray);
             } else if (mData.getStatus() == STATUS_OK) {
                 tvStatus.setText("审核通过");
@@ -93,7 +95,7 @@ public class IdentityStatusAdapter extends CommonListAdapter<String> {
             } else if (mData.getStatus() == STATUS_NO) {
                 tvStatus.setText("认证未通过");
                 btnIdentity.setVisibility(View.VISIBLE);
-                ivLineUp.setBackgroundResource(R.drawable.bg_dash_blue);
+                ivLineUp.setBackgroundResource(R.drawable.bg_dash_gray);
                 ivStatus.setBackgroundResource(R.mipmap.ic_identity_no);
             } else {
                 tvStatus.setText("审核通过");

@@ -19,7 +19,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_18"
         android:text="上传身份证"
-        android:drawableRight="@mipmap/ic_mark"
+        android:drawableEnd="@mipmap/ic_mark"
         android:textColor="@color/text_33"
         android:textSize="@dimen/sp_14" />
 

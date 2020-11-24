@@ -22,6 +22,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
 import com.officego.commonlib.common.model.BuildingManagerBean;
+import com.officego.commonlib.common.model.UserMessageBean;
 import com.officego.commonlib.common.model.owner.BuildingJointWorkBean;
 import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.constant.Constants;
@@ -30,7 +31,6 @@ import com.owner.R;
 import com.owner.home.EditBuildingActivity_;
 import com.owner.home.EditJointWorkActivity_;
 import com.owner.identity2.OwnerIdentityActivity_;
-import com.officego.commonlib.common.model.UserMessageBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,7 +47,6 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
     private List<BuildingJointWorkBean.ListBean> list;
     private UserMessageBean mUserData;
     private int statusBarHeight, titleBarHeight;
-    private final int identityType = 2;//0个人1企业2联合，网点
     //筛选楼盘网点列表
     private List<BuildingJointWorkBean.ListBean> buildingList;
     private List<BuildingJointWorkBean.ListBean> jointWorkList;

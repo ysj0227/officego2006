@@ -17,6 +17,7 @@ import com.officego.commonlib.base.BaseMvpFragment;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.model.BuildingManagerBean;
+import com.officego.commonlib.common.model.UserMessageBean;
 import com.officego.commonlib.common.model.owner.BuildingJointWorkBean;
 import com.officego.commonlib.common.model.owner.HouseBean;
 import com.officego.commonlib.constant.Constants;
@@ -38,7 +39,6 @@ import com.owner.h5.WebViewActivity_;
 import com.owner.home.contract.HomeContract;
 import com.owner.home.presenter.HomePresenter;
 import com.owner.identity2.OwnerIdentityActivity_;
-import com.officego.commonlib.common.model.UserMessageBean;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -279,10 +279,27 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
             checkStatusOk(mData);
         } else if (7 == bean.getStatus()) {//7已驳回
             isRefreshHome(true);//刷新
-            tvRejectReason.setText("驳回原因：" + "测试测试");
             identityRejectView();
             checkStatusOk(mData);
+            tvRejectReason.setText(reasonsReject());
         }
+    }
+
+    private String reasonsReject() {
+        StringBuilder builder = new StringBuilder();
+        if (mData.getRemark() != null && mData.getRemark().size() > 0) {
+            String value;
+            for (int i = 0; i < mData.getRemark().size(); i++) {
+                value = mData.getRemark().get(i).getDictCname();
+                if (i == mData.getRemark().size() - 1) {
+                    builder.append(value);
+                } else {
+                    builder.append(value).append("\n");
+                }
+            }
+            return "驳回原因：" + builder.toString();
+        }
+        return "驳回原因：无";
     }
 
     private void getRefreshHouseList() {
@@ -480,9 +497,10 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     }
 
     private void hasData() {
+        mSwipeRefreshLayout.setVisibility(View.VISIBLE);
+        rvView.setVisibility(View.VISIBLE);
         tvNoData.setVisibility(View.GONE);
         rlException.setVisibility(View.GONE);
-        rvView.setVisibility(View.VISIBLE);
         rlToIdentity.setVisibility(View.GONE);
         rlCheckStatus.setVisibility(View.GONE);
         tvRejectReason.setVisibility(View.GONE);
@@ -511,20 +529,23 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
 
     //认证中或通过
     private void identityDoingView() {
+        mSwipeRefreshLayout.setVisibility(View.GONE);
+        rvView.setVisibility(View.GONE);
         rlToIdentity.setVisibility(View.GONE);
         rlCheckStatus.setVisibility(View.VISIBLE);
         tvNoData.setVisibility(View.GONE);
         rlException.setVisibility(View.GONE);
-        rvView.setVisibility(View.GONE);
         tvRejectReason.setVisibility(View.GONE);
     }
 
+    //认证驳回
     private void identityRejectView() {
+        mSwipeRefreshLayout.setVisibility(View.GONE);
+        rvView.setVisibility(View.GONE);
         rlToIdentity.setVisibility(View.GONE);
         rlCheckStatus.setVisibility(View.VISIBLE);
         tvNoData.setVisibility(View.GONE);
         rlException.setVisibility(View.GONE);
-        rvView.setVisibility(View.GONE);
         tvRejectReason.setVisibility(View.VISIBLE);//驳回原因
     }
 

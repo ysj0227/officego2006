@@ -121,6 +121,12 @@ public class BuildingJointWorkBean {
         private boolean isAddHouse;
         @SerializedName("totalFloor")
         private String totalFloor;
+        @SerializedName("startTime")
+        private long startTime;
+        @SerializedName("endTime")
+        private long endTime;
+        @SerializedName("remark")
+        private List<RemarkBean> remark;
 
         public String getBuildingName() {
             return buildingName;
@@ -192,6 +198,58 @@ public class BuildingJointWorkBean {
 
         public void setTotalFloor(String totalFloor) {
             this.totalFloor = totalFloor;
+        }
+
+        public long getStartTime() {
+            return startTime;
+        }
+
+        public void setStartTime(long startTime) {
+            this.startTime = startTime;
+        }
+
+        public long getEndTime() {
+            return endTime;
+        }
+
+        public void setEndTime(long endTime) {
+            this.endTime = endTime;
+        }
+
+        public List<RemarkBean> getRemark() {
+            return remark;
+        }
+
+        public void setRemark(List<RemarkBean> remark) {
+            this.remark = remark;
+        }
+
+        public static class RemarkBean {
+            /**
+             * dictValue : 1
+             * dictCname : 楼名名称不符合规范或不正确
+             */
+
+            @SerializedName("dictValue")
+            private int dictValue;
+            @SerializedName("dictCname")
+            private String dictCname;
+
+            public int getDictValue() {
+                return dictValue;
+            }
+
+            public void setDictValue(int dictValue) {
+                this.dictValue = dictValue;
+            }
+
+            public String getDictCname() {
+                return dictCname;
+            }
+
+            public void setDictCname(String dictCname) {
+                this.dictCname = dictCname;
+            }
         }
     }
 }

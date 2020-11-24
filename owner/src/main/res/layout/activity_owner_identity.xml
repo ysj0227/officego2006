@@ -181,7 +181,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/rl_show_name"
-                android:layout_marginTop="@dimen/dp_13" />
+                android:layout_marginTop="@dimen/dp_14" />
 
             <View
                 android:id="@+id/v_line2"
@@ -218,14 +218,14 @@
                     layout="@layout/include_business_license"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_12" />
+                    android:layout_marginTop="@dimen/dp_14" />
 
                 <include
                     android:id="@+id/include_owner_personal_id"
                     layout="@layout/include_owner_personal_id"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_12"
+                    android:layout_marginTop="@dimen/dp_14"
                     android:visibility="gone" />
             </RelativeLayout>
 

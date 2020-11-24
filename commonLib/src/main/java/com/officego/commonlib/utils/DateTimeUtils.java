@@ -1006,13 +1006,15 @@ public class DateTimeUtils {
      *
      * @return
      */
-    public static String StampSecondToDate(String stampTime, String patten) {
-        long time = Long.parseLong(stampTime);
-        Calendar calendar = Calendar.getInstance();
-        calendar.setTimeInMillis(time / 1000);
-        Date date = calendar.getTime();
-        SimpleDateFormat format = new SimpleDateFormat(patten, Locale.getDefault());
-        return format.format(date);
+    public static String stampMinuteToDate(long stampTime, String patten) {
+        if (stampTime != 0) {
+            Calendar calendar = Calendar.getInstance();
+            calendar.setTimeInMillis(stampTime*1000);
+            Date date = calendar.getTime();
+            SimpleDateFormat format = new SimpleDateFormat(patten, Locale.getDefault());
+            return format.format(date);
+        }
+        return "";
     }
 
     public static String getCurrentDateTime() {
@@ -1160,8 +1162,8 @@ public class DateTimeUtils {
         if (time == 0) {
             return "";
         }
-        Date date = new Date(time*1000);
+        Date date = new Date(time * 1000);
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy");
-        return sdf.format(date)+"年";
+        return sdf.format(date) + "年";
     }
 }
