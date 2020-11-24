@@ -37,18 +37,14 @@ import com.officego.ui.home.model.HouseOfficeDetailsJointWorkBean;
 import com.officego.ui.home.model.MeterBean;
 import com.officego.ui.home.model.QueryHistoryKeywordsBean;
 import com.officego.ui.home.model.SearchListBean;
-import com.officego.ui.mine.model.AvatarBean;
-import com.officego.ui.mine.model.UserBean;
 import com.officego.ui.mine.model.ViewingDateBean;
 import com.officego.ui.mine.model.ViewingDateDetailsBean;
 
-import java.io.File;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import okhttp3.MediaType;
-import okhttp3.MultipartBody;
 import okhttp3.RequestBody;
 
 /**
@@ -590,64 +586,6 @@ public class OfficegoApi {
                 .getSearchKeywords(map)
                 .enqueue(callback);
     }
-
-    //********************************************************************************
-    //个人信息***************************************************************************
-    //********************************************************************************
-
-    /**
-     * realname 	否 	string 	真实姓名
-     * file 	否 	file 	头像
-     * sex 	否 	string 	性别
-     * company 	否 	string 	公司名称
-     * job 	否 	string 	职位
-     * token
-     */
-    public void updateUserData(String realName, String sex, String wx, RetrofitCallback<Object> callback) {
-        Map<String, RequestBody> map = new HashMap<>();
-        map.put("token", requestBody(SpUtils.getSignToken()));
-        //map.put("avatar", requestBody());
-        map.put("realname", requestBody(realName));
-        map.put("sex", requestBody(sex));
-        map.put("company", requestBody(""));
-        map.put("job", requestBody(""));
-        map.put("WX", requestBody(wx));
-        OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
-                .updateUserData(map)
-                .enqueue(callback);
-    }
-
-
-    /**
-     * 更新头像
-     */
-    public void updateAvatar(File avatar, RetrofitCallback<AvatarBean> callback) {
-        RequestBody file = RequestBody.create(MediaType.parse("image/*"), avatar);
-
-        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                .addFormDataPart("file", "avatar_officego.png", file)
-                .addFormDataPart("token", SpUtils.getSignToken());
-        OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
-                .updateUserAvatar(builder.build())
-                .enqueue(callback);
-    }
-
-    /**
-     * 添加微信
-     * wxId 	是 	String 	微信号
-     * channel 	是 	int 	终端渠道,1:IOS,2:安卓,3:H5
-     * token 	是 	String 	token (登录接口返回)
-     */
-    public void addWechat(String wxId, RetrofitCallback<Object> callback) {
-        Map<String, RequestBody> map = new HashMap<>();
-        map.put("token", requestBody(SpUtils.getSignToken()));
-        map.put("wxId", requestBody(wxId));
-        map.put("channel", requestBody("2"));
-        OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
-                .changeWechat(map)
-                .enqueue(callback);
-    }
-
 
     /**
      * 预约看房行程

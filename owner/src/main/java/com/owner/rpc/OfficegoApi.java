@@ -20,8 +20,6 @@ import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.model.IdentityCompanyBean;
 import com.owner.identity.model.IdentityJointWorkBean;
 import com.owner.identity.model.ImageBean;
-import com.owner.mine.model.AvatarBean;
-import com.officego.commonlib.common.model.UserMessageBean;
 import com.owner.rpc.request.IdentitySearchInterface;
 import com.owner.rpc.request.LoginInterface;
 import com.owner.rpc.request.MineMsgInterface;
@@ -72,46 +70,6 @@ public class OfficegoApi {
                 .enqueue(callback);
     }
 
-    //********************************************************************************
-    //个人信息***************************************************************************
-    //********************************************************************************
-
-    /**
-     * realname 	否 	string 	真实姓名
-     * file 	否 	file 	头像
-     * sex 	否 	string 	性别
-     * company 	否 	string 	公司名称
-     * job 	否 	string 	职位
-     * token
-     */
-    public void updateUserData(String realName, String sex, String company, String job, String wx, RetrofitCallback<Object> callback) {
-        Map<String, RequestBody> map = new HashMap<>();
-        map.put("token", requestBody(SpUtils.getSignToken()));
-        map.put("realname", requestBody(realName));
-        map.put("sex", requestBody(sex));
-        map.put("company", requestBody(company));
-        map.put("job", requestBody(job));
-        map.put("WX", requestBody(wx));
-        OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
-                .updateUserData(map)
-                .enqueue(callback);
-    }
-
-
-    /**
-     * 更新头像
-     */
-    public void updateAvatar(File avatar, RetrofitCallback<AvatarBean> callback) {
-        RequestBody file = RequestBody.create(MediaType.parse("image/*"), avatar);
-
-        MultipartBody.Builder builder = new MultipartBody.Builder().setType(MultipartBody.FORM)
-                .addFormDataPart("file", "avatar_owner_officego.png", file)
-                .addFormDataPart("token", SpUtils.getSignToken());
-        OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
-                .updateUserAvatar(builder.build())
-                .enqueue(callback);
-    }
-
     /**
      * 修改手机号
      */
@@ -126,20 +84,6 @@ public class OfficegoApi {
                 .enqueue(callback);
     }
 
-//    /**
-//     * 版本更新
-//     *
-//     * @param versioncode
-//     * @param callback
-//     */
-//    public void updateVersion(String versioncode, RetrofitCallback<VersionBean> callback) {
-//        Map<String, RequestBody> map = new HashMap<>();
-//        map.put("token", requestBody(SpUtils.getSignToken()));
-//        map.put("versioncode", requestBody(versioncode));
-//        OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
-//                .updateVersion(map)
-//                .enqueue(callback);
-//    }
 
     /**
      * 预约看房行程

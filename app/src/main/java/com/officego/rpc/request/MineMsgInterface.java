@@ -1,16 +1,13 @@
 package com.officego.rpc.request;
 
-import com.officego.commonlib.retrofit.BaseResponse;
 import com.officego.commonlib.common.LoginBean;
-import com.officego.ui.mine.model.AvatarBean;
-import com.officego.ui.mine.model.UserBean;
 import com.officego.commonlib.common.VersionBean;
+import com.officego.commonlib.retrofit.BaseResponse;
 
 import java.util.Map;
 
 import okhttp3.RequestBody;
 import retrofit2.Call;
-import retrofit2.http.Body;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PartMap;
@@ -33,31 +30,6 @@ public interface MineMsgInterface {
     @Multipart
     @POST(path + "user/regTokenApp")
     Call<BaseResponse<LoginBean>> switchId(@PartMap Map<String, RequestBody> params);
-
-    /**
-     * 更新个人信息
-     * 表单形式
-     *
-     * @return
-     */
-    @POST(path + "user/updateDataApp")
-    Call<BaseResponse<AvatarBean>> updateUserAvatar(@Body RequestBody body);
-
-
-
-    @Multipart
-    @POST(path + "user/updateDataApp")
-    Call<BaseResponse<Object>> updateUserData(@PartMap Map<String, RequestBody> params);
-
-    /**
-     * 获取个人信息
-     * 表单形式
-     *
-     * @return
-     */
-    @Multipart
-    @POST(path + "user/getAllMsgApp")
-    Call<BaseResponse<UserBean>> getUserMsg(@PartMap Map<String, RequestBody> params);
 
     /**
      * 添加微信
