@@ -715,11 +715,7 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
                 idBackImage(data.getUrls().get(0).getUrl());
             } else if (TYPE_AVATAR == imageType) {//头像
                 avatarUrl = data.getUrls().get(0).getUrl();
-                Glide.with(context).load(data.getUrls().get(0).getUrl()).into(civAvatar);
-                //更新用户信息
-                mPresenter.updateUserInfo(avatarUrl, mUserBean.getNickname(),
-                        TextUtils.isEmpty(mUserBean.getSex()) ? "1" : mUserBean.getSex(),
-                        mUserBean.getCompany(), mUserBean.getJob(), mUserBean.getWxId());
+                Glide.with(context).load(avatarUrl).into(civAvatar);
             }
             if (TYPE_AVATAR != imageType) {
                 shortTip("上传成功");
@@ -1016,6 +1012,4 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
             dialog.dismiss();
         });
     }
-
-
 }
