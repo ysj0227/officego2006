@@ -1,9 +1,6 @@
 package com.officego.ui.mine.contract;
 
 import com.officego.commonlib.base.BaseView;
-import com.officego.ui.mine.model.UserBean;
-
-import java.io.File;
 
 /**
  * Created by YangShiJie
@@ -16,14 +13,12 @@ public interface UpdateUserContract {
         void UpdateUserSuccess();
 
         void UpdateAvatarSuccess(String avatar);
-
-        void UpdateUserFail(int code, String msg);
     }
 
     interface Presenter {
 
-        void updateAvatar(File file);
+        void updateAvatar(String path);
 
-        void UpdateUserInfo(String realName, String sex,String wx);
+        void updateUserInfo(String avatar,String realName, String sex,String wx);
     }
 }

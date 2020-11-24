@@ -869,7 +869,7 @@ public class OfficegoApi {
     }
 
     /**
-     * 更新个人信息
+     * 业主更新个人信息
      */
     public void updateUserInfo(String avatar, String nickname, String sex, String company,
                                String job, String wx, RetrofitCallback<Object> callback) {
@@ -880,6 +880,21 @@ public class OfficegoApi {
         map.put("sex", requestBody(sex));
         map.put("company", requestBody(company));
         map.put("job", requestBody(job));
+        map.put("wxId", requestBody(wx));
+        OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
+                .updateUserInfo(map)
+                .enqueue(callback);
+    }
+
+    /**
+     * 租户更新个人信息
+     */
+    public void updateUserInfo(String avatar, String nickname, String sex, String wx, RetrofitCallback<Object> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("avatar", requestBody(avatar+""));
+        map.put("nickname", requestBody(nickname));
+        map.put("sex", requestBody(sex));
         map.put("wxId", requestBody(wx));
         OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
                 .updateUserInfo(map)

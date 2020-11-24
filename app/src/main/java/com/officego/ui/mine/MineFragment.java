@@ -17,8 +17,8 @@ import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
+import com.officego.commonlib.common.model.UserMessageBean;
 import com.officego.commonlib.common.rongcloud.ConnectRongCloudUtils;
-import com.officego.commonlib.common.rongcloud.RongCloudSetUserInfoUtils;
 import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
@@ -31,7 +31,6 @@ import com.officego.h5.WebViewActivity_;
 import com.officego.rpc.OfficegoApi;
 import com.officego.ui.login.LoginActivity_;
 import com.officego.ui.mine.contract.UserContract;
-import com.officego.ui.mine.model.UserBean;
 import com.officego.ui.mine.presenter.UserPresenter;
 
 import org.androidannotations.annotations.AfterViews;
@@ -62,7 +61,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
     @ViewById(R.id.btn_login)
     Button btnLogin;
 
-    private UserBean mUserInfo;
+    private UserMessageBean mUserInfo;
 
     @AfterViews
     void init() {
@@ -232,29 +231,25 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
 
     @SuppressLint("SetTextI18n")
     @Override
-    public void userInfoSuccess(UserBean data) {
+    public void userInfoSuccess(UserMessageBean data) {
         hasLoginView();
+        if (data == null) {
+            return;
+        }
         //刷新融云头像用户信息
         mUserInfo = data;
-        if (data != null) {
-            RongCloudSetUserInfoUtils.refreshUserInfoCache(RongCloudSetUserInfoUtils.getRongTenantId(data.getUserId() + ""), data.getRealname(), data.getAvatar());
-            SpUtils.saveWechat(mUserInfo.getWxId() == null || TextUtils.isEmpty((String) mUserInfo.getWxId()) ? "" : (String) mUserInfo.getWxId());
-            Glide.with(mActivity).applyDefaultRequestOptions(GlideUtils.avaOoptions()).load(data.getAvatar()).into(civAvatar);
-            tvName.setText(data.getRealname());
-            if (TextUtils.isEmpty((String) data.getCompany())) {
-                tvAccount.setText(TextUtils.isEmpty((String) data.getJob()) ? "" : (String) data.getJob());
+        SpUtils.saveWechat(mUserInfo.getWxId() == null || TextUtils.isEmpty(mUserInfo.getWxId()) ? "" : mUserInfo.getWxId());
+        Glide.with(mActivity).applyDefaultRequestOptions(GlideUtils.avaOoptions()).load(data.getAvatar()).into(civAvatar);
+        tvName.setText(data.getNickname());
+        if (TextUtils.isEmpty(data.getCompany())) {
+            tvAccount.setText(TextUtils.isEmpty(data.getJob()) ? "" : data.getJob());
+        } else {
+            if (TextUtils.isEmpty(data.getJob())) {
+                tvAccount.setText(data.getCompany());
             } else {
-                if (TextUtils.isEmpty((String) data.getJob())) {
-                    tvAccount.setText((String) data.getCompany());
-                } else {
-                    tvAccount.setText(data.getCompany() + "·" + (TextUtils.isEmpty((String) data.getJob()) ? "" : (String) data.getJob()));
-                }
+                tvAccount.setText(data.getCompany() + "·" + (TextUtils.isEmpty(data.getJob()) ? "" : data.getJob()));
             }
         }
-    }
-
-    @Override
-    public void userInfoFail(int code, String msg) {
     }
 
     @Override

@@ -594,14 +594,6 @@ public class OfficegoApi {
     //********************************************************************************
     //个人信息***************************************************************************
     //********************************************************************************
-    public void getUserMsg(RetrofitCallback<UserBean> callback) {
-        Map<String, RequestBody> map = new HashMap<>();
-        map.put("token", requestBody(SpUtils.getSignToken()));
-        map.put("channel", requestBody("2"));
-        OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
-                .getUserMsg(map)
-                .enqueue(callback);
-    }
 
     /**
      * realname 	否 	string 	真实姓名
@@ -655,21 +647,6 @@ public class OfficegoApi {
                 .changeWechat(map)
                 .enqueue(callback);
     }
-
-//    /**
-//     * 版本更新
-//     *
-//     * @param versioncode
-//     * @param callback
-//     */
-//    public void updateVersion(String versioncode, RetrofitCallback<VersionBean> callback) {
-//        Map<String, RequestBody> map = new HashMap<>();
-//        map.put("token", requestBody(SpUtils.getSignToken()));
-//        map.put("versioncode", requestBody(versioncode));
-//        OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
-//                .updateVersion(map)
-//                .enqueue(callback);
-//    }
 
 
     /**

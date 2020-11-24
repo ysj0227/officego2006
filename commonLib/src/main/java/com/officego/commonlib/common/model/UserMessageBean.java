@@ -41,6 +41,8 @@ public class UserMessageBean implements Serializable {
     private String wxId;
     @SerializedName("roleType")
     private String roleType;
+    @SerializedName("phone")
+    private String phone;
 
     public String getAvatar() {
         return avatar;
@@ -112,5 +114,13 @@ public class UserMessageBean implements Serializable {
 
     public void setRoleType(String roleType) {
         this.roleType = roleType;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

@@ -68,13 +68,13 @@ public class MineMessageActivity extends BaseMvpActivity<UpdateUserPresenter>
     @ViewById(resName = "et_wx_content")
     ClearableEditText etWxContent;
 
+    @Extra
+    UserMessageBean mUserInfo;
+
     private String localAvatarPath;
     private Uri localPhotoUri;
     private File imageFile;
     private String avatarUrl;
-    @Extra
-    UserMessageBean mUserInfo;
-
     private boolean isUpdateAvatar;
 
     @AfterViews

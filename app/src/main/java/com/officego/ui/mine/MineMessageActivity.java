@@ -4,8 +4,6 @@ import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Build;
 import android.text.TextUtils;
@@ -20,6 +18,7 @@ import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
+import com.officego.commonlib.common.model.UserMessageBean;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.utils.FileHelper;
@@ -31,18 +30,15 @@ import com.officego.commonlib.view.CircleImage;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.TitleBarView;
 import com.officego.ui.mine.contract.UpdateUserContract;
-import com.officego.ui.mine.model.UserBean;
 import com.officego.ui.mine.presenter.UpdateUserPresenter;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
-import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.File;
-import java.io.FileNotFoundException;
 
 /**
  * Created by YangShiJie
@@ -70,12 +66,14 @@ public class MineMessageActivity extends BaseMvpActivity<UpdateUserPresenter>
     @ViewById(R.id.et_wx_content)
     ClearableEditText etWxContent;
 
+    @Extra
+    UserMessageBean mUserInfo;
+
     private String localAvatarPath;
     private Uri localPhotoUri;
     private File imageFile;
     private String avatarUrl;
-    @Extra
-    UserBean mUserInfo;
+    private boolean isUpdateAvatar;
 
     @AfterViews
     void init() {
@@ -86,15 +84,16 @@ public class MineMessageActivity extends BaseMvpActivity<UpdateUserPresenter>
         localAvatarPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + SpUtils.getUserId() + "_avatar.jpg";
         if (mUserInfo != null) {
             if (!TextUtils.isEmpty(mUserInfo.getAvatar())) {
+                avatarUrl = mUserInfo.getAvatar();
                 Glide.with(context).load(mUserInfo.getAvatar()).into(civAvatar);
             }
-            etNameContent.setText(mUserInfo.getRealname());
+            etNameContent.setText(mUserInfo.getNickname());
             etMobileContent.setText(mUserInfo.getPhone());
             if (mUserInfo.getSex() != null) {
-                etSexContent.setText((Double) mUserInfo.getSex() == 1 ? "男" : "女");
+                etSexContent.setText(TextUtils.equals("1", mUserInfo.getSex()) ? "男" : "女");
             }
-            SpUtils.saveWechat(mUserInfo.getWxId() == null || TextUtils.isEmpty((String) mUserInfo.getWxId()) ? "" : (String) mUserInfo.getWxId());
-            etWxContent.setText(mUserInfo.getWxId() == null || TextUtils.isEmpty((String) mUserInfo.getWxId()) ? "" : (String) mUserInfo.getWxId());
+            SpUtils.saveWechat(mUserInfo.getWxId() == null || TextUtils.isEmpty(mUserInfo.getWxId()) ? "" : mUserInfo.getWxId());
+            etWxContent.setText(mUserInfo.getWxId() == null || TextUtils.isEmpty(mUserInfo.getWxId()) ? "" : mUserInfo.getWxId());
         }
     }
 
@@ -128,8 +127,12 @@ public class MineMessageActivity extends BaseMvpActivity<UpdateUserPresenter>
             shortTip("请选择性别");
             return;
         }
+        submit(nikeName, sex);
+    }
+
+    private void submit(String nikeName, String sex) {
         String wx = etWxContent.getText() == null ? "" : etWxContent.getText().toString().trim();
-        mPresenter.UpdateUserInfo(nikeName, TextUtils.equals("男", sex) ? "1" : "0", wx);
+        mPresenter.updateUserInfo(avatarUrl, nikeName, TextUtils.equals("男", sex) ? "1" : "0", wx);
     }
 
     @Override
@@ -234,43 +237,31 @@ public class MineMessageActivity extends BaseMvpActivity<UpdateUserPresenter>
                     break;
                 case REQUEST_CROP_RESULT:
                     //更新头像
-                    mPresenter.updateAvatar(imageFile);
+                    mPresenter.updateAvatar(localAvatarPath);
                     break;
                 default:
             }
         }
     }
 
-    @UiThread
-    void updateHeaderImg(File file) {
-        try {
-            Bitmap bitmap = BitmapFactory.decodeStream(getContentResolver().openInputStream(Uri.fromFile(file)));
-            civAvatar.setImageBitmap(bitmap);
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        }
-    }
 
     @Override
     public void UpdateUserSuccess() {
         BaseNotification.newInstance().postNotificationName(CommonNotifications.updateUserInfoSuccess, "");
-        shortTip(R.string.tip_save_success);
-        finish();
-    }
-
-    @Override
-    public void UpdateAvatarSuccess(String avatar) {
-        if (imageFile != null) {
-            BaseNotification.newInstance().postNotificationName(CommonNotifications.updateUserInfoSuccess, "");
-            avatarUrl = avatar;
-            updateHeaderImg(imageFile);
-            shortTip(R.string.tip_save_success);
-            imageFile = null;
+        Glide.with(context).load(avatarUrl).into(civAvatar);
+        shortTip(com.owner.R.string.tip_save_success);
+        if (!isUpdateAvatar) {
+            finish();
         }
     }
 
     @Override
-    public void UpdateUserFail(int code, String msg) {
-        shortTip(R.string.tip_save_fail);
+    public void UpdateAvatarSuccess(String avatar) {
+        isUpdateAvatar = true;
+        BaseNotification.newInstance().postNotificationName(CommonNotifications.updateUserInfoSuccess, "");
+        avatarUrl = avatar;
+        String nikeName = etNameContent.getText() == null ? "" : etNameContent.getText().toString().trim();
+        String sex = etSexContent.getText() == null ? "" : etSexContent.getText().toString().trim();
+        submit(nikeName, sex);
     }
 }

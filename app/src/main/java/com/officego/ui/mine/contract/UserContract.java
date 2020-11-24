@@ -1,6 +1,7 @@
 package com.officego.ui.mine.contract;
 
 import com.officego.commonlib.base.BaseView;
+import com.officego.commonlib.common.model.UserMessageBean;
 import com.officego.ui.mine.model.UserBean;
 
 /**
@@ -11,9 +12,8 @@ import com.officego.ui.mine.model.UserBean;
 public interface UserContract {
     interface View extends BaseView {
 
-        void userInfoSuccess(UserBean data);
+        void userInfoSuccess(UserMessageBean data);
 
-        void userInfoFail(int code, String msg);
     }
 
     interface Presenter {

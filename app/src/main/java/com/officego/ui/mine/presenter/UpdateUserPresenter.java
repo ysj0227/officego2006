@@ -1,13 +1,12 @@
 package com.officego.ui.mine.presenter;
 
+import com.officego.R;
 import com.officego.commonlib.base.BasePresenter;
+import com.officego.commonlib.common.model.owner.UploadImageBean;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.log.LogCat;
-import com.officego.rpc.OfficegoApi;
 import com.officego.ui.mine.contract.UpdateUserContract;
-import com.officego.ui.mine.model.AvatarBean;
 
-import java.io.File;
 
 /**
  * Created by YangShiJie
@@ -20,32 +19,35 @@ public class UpdateUserPresenter extends BasePresenter<UpdateUserContract.View>
 
 
     @Override
-    public void updateAvatar(File file) {
+    public void updateAvatar(String path) {
         mView.showLoadingDialog();
-        OfficegoApi.getInstance().updateAvatar(file, new RetrofitCallback<AvatarBean>() {
+        com.officego.commonlib.common.rpc.OfficegoApi.getInstance().uploadSingleImageUrl(5, path, new RetrofitCallback<UploadImageBean>() {
             @Override
-            public void onSuccess(int code, String msg, AvatarBean data) {
+            public void onSuccess(int code, String msg, UploadImageBean data) {
                 if (isViewAttached()) {
                     mView.hideLoadingDialog();
-                    mView.UpdateAvatarSuccess(data.getAvatar());
+                    if (data != null && data.getUrls().size() > 0) {
+                        mView.UpdateAvatarSuccess(data.getUrls().get(0).getUrl());
+                    }
                 }
             }
 
             @Override
-            public void onFail(int code, String msg, AvatarBean data) {
+            public void onFail(int code, String msg, UploadImageBean data) {
                 LogCat.e(TAG, "getUserInfo onFail code=" + code + "  msg=" + msg);
                 if (isViewAttached()) {
                     mView.hideLoadingDialog();
-                    mView.UpdateUserFail(code, msg);
+                    mView.shortTip(R.string.tip_save_fail);
                 }
             }
         });
     }
 
     @Override
-    public void UpdateUserInfo(String realName, String sex,String wx) {
+    public void updateUserInfo(String avatar, String realName, String sex, String wx) {
         mView.showLoadingDialog();
-        OfficegoApi.getInstance().updateUserData(realName, sex, wx,new RetrofitCallback<Object>() {
+        com.officego.commonlib.common.rpc.OfficegoApi.getInstance().updateUserInfo(
+                avatar,realName, sex, wx, new RetrofitCallback<Object>() {
             @Override
             public void onSuccess(int code, String msg, Object data) {
                 if (isViewAttached()) {
@@ -56,10 +58,9 @@ public class UpdateUserPresenter extends BasePresenter<UpdateUserContract.View>
 
             @Override
             public void onFail(int code, String msg, Object data) {
-                LogCat.e(TAG, "getUserInfo onFail code=" + code + "  msg=" + msg);
                 if (isViewAttached()) {
                     mView.hideLoadingDialog();
-                    mView.UpdateUserFail(code, msg);
+                    mView.shortTip(R.string.tip_save_fail);
                 }
             }
         });
