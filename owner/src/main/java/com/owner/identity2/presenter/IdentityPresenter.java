@@ -1,10 +1,14 @@
 package com.owner.identity2.presenter;
 
+import android.content.Context;
+
 import com.officego.commonlib.base.BasePresenter;
 import com.officego.commonlib.common.model.IdentityRejectBean;
+import com.officego.commonlib.common.model.UserMessageBean;
 import com.officego.commonlib.common.model.owner.UploadImageBean;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
+import com.owner.dialog.CardDialog;
 import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity2.contract.IdentityContract;
 import com.owner.rpc.OfficegoApi;
@@ -17,6 +21,27 @@ import java.util.List;
  **/
 public class IdentityPresenter extends BasePresenter<IdentityContract.View>
         implements IdentityContract.Presenter {
+
+    @Override
+    public void getUserInfo(Context context) {
+        com.officego.commonlib.common.rpc.OfficegoApi.getInstance().getUserMsg(new RetrofitCallback<UserMessageBean>() {
+            @Override
+            public void onSuccess(int code, String msg, UserMessageBean data) {
+                if (isViewAttached()) {
+                    if (data.isIsUserInfo()) {
+                        new CardDialog(context, data);
+                    }
+                }
+            }
+
+            @Override
+            public void onFail(int code, String msg, UserMessageBean data) {
+                if (isViewAttached()) {
+
+                }
+            }
+        });
+    }
 
     @Override
     public void searchBuilding(String keyword) {

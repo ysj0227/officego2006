@@ -1,7 +1,10 @@
 package com.owner.identity2.contract;
 
+import android.content.Context;
+
 import com.officego.commonlib.base.BaseView;
 import com.officego.commonlib.common.model.IdentityRejectBean;
+import com.officego.commonlib.common.model.UserMessageBean;
 import com.officego.commonlib.common.model.owner.UploadImageBean;
 import com.owner.identity.model.IdentityBuildingBean;
 
@@ -24,6 +27,8 @@ public interface IdentityContract {
     }
 
     interface Presenter {
+
+        void getUserInfo(Context context);
 
         void searchBuilding(String keywords);
 

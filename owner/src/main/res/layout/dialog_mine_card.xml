@@ -1,0 +1,141 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:layout_width="@dimen/dp_286"
+        android:layout_height="wrap_content"
+        android:layout_centerInParent="true"
+        android:background="@drawable/bg_shape_white">
+
+        <RelativeLayout
+            android:id="@+id/rl_exit"
+            android:layout_width="@dimen/dp_60"
+            android:layout_height="@dimen/dp_40"
+            android:layout_alignParentEnd="true">
+
+            <ImageView
+                android:id="@+id/iv_exit"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerInParent="true"
+                android:background="@mipmap/ic_delete_grey"
+                tools:ignore="ContentDescription" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_title"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dp_30"
+            android:text="请完善个人名片"
+            android:textColor="@color/text_66"
+            android:textSize="@dimen/sp_20"
+            android:textStyle="bold" />
+
+        <com.officego.commonlib.view.CircleImage
+            android:id="@+id/civ_avatar"
+            android:layout_width="@dimen/dp_75"
+            android:layout_height="@dimen/dp_75"
+            android:layout_below="@id/tv_title"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dp_20"
+            android:src="@mipmap/default_avatar"
+            app:radius="@dimen/dp_40" />
+
+        <RelativeLayout
+            android:id="@+id/rl_name"
+            style="@style/marginLeftRight25"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_38"
+            android:layout_below="@id/civ_avatar"
+            android:layout_marginTop="@dimen/dp_18"
+            android:background="@drawable/edittext_edge_grey2">
+
+            <TextView
+                android:id="@+id/tv_name"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/dp_13"
+                android:text="称呼:"
+                android:textColor="@color/text_33"
+                android:textSize="@dimen/sp_13" />
+
+            <com.officego.commonlib.view.ClearableEditText
+                android:id="@+id/cet_name"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toEndOf="@+id/tv_name"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/dp_6"
+                android:textColor="@color/text_33"
+                android:textSize="@dimen/sp_13" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl_job"
+            style="@style/marginLeftRight25"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_38"
+            android:layout_below="@id/rl_name"
+            android:layout_marginTop="@dimen/dp_18"
+            android:background="@drawable/edittext_edge_grey2">
+
+            <TextView
+                android:id="@+id/tv_job"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_marginStart="@dimen/dp_13"
+                android:text="职位:"
+                android:textColor="@color/text_33"
+                android:textSize="@dimen/sp_13" />
+
+            <com.officego.commonlib.view.ClearableEditText
+                android:id="@+id/cet_job"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_toEndOf="@id/tv_job"
+                android:background="@null"
+                android:gravity="center_vertical"
+                android:paddingStart="@dimen/dp_6"
+                android:textColor="@color/text_33"
+                android:textSize="@dimen/sp_13" />
+
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_width="@dimen/dp_120"
+            android:layout_height="@dimen/dp_30"
+            android:layout_below="@id/rl_job"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dp_30"
+            android:background="@drawable/button_corners25_solid_main"
+            android:gravity="center"
+            android:text="确认保存"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_13" />
+
+        <TextView
+            android:id="@+id/tv_more"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/btn_save"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/dp_25"
+            android:layout_marginBottom="@dimen/dp_27"
+            android:text="更多>"
+            android:textColor="@color/common_blue_main"
+            android:textSize="@dimen/sp_12" />
+
+    </RelativeLayout>
+
+</RelativeLayout>

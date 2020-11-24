@@ -35,6 +35,7 @@ import com.officego.commonlib.utils.ImageUtils;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.PhotoUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.RoundImageView;
 import com.officego.commonlib.view.TitleBarView;
 import com.officego.commonlib.view.dialog.CommonDialog;
@@ -74,8 +75,8 @@ import java.util.Map;
 @EActivity(resName = "activity_owner_identity")
 public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
         implements IdentityContract.View, SearchBuildingTextWatcher.SearchListener,
-        IdentityTypeDialog.IdentityTypeListener,
-        SearchAdapter.IdentityBuildingListener, UploadImageAdapter.UploadListener {
+        IdentityTypeDialog.IdentityTypeListener, SearchAdapter.IdentityBuildingListener,
+        UploadImageAdapter.UploadListener {
     private static final int REQUEST_GALLERY = 0xa0;
     private static final int REQUEST_CAMERA = 0xa1;
     private static final int REQUEST_CREATE_BUILDING = 0xa3;
@@ -84,6 +85,7 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
     private static final int TYPE_CER = 3;//产证
     private static final int TYPE_LICE = 4;//营业执照
     private static final int TYPE_ADDI = 5;//补充材料
+    private static final int TYPE_AVATAR = 6;//头像
     @ViewById(resName = "title_bar")
     TitleBarView titleBar;
     @ViewById(resName = "tv_reject_reason")
@@ -161,7 +163,7 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
     //上传类型
     private int mUploadType;
     //本地路径
-    private String localIdCardFrontPath, localIdCardBackPath, localCerPath, localLicePath, localAddiPath;
+    private String localCerPath, localLicePath, localAddiPath, localAvatarPath;
     private Uri localPhotoUri;
     //上传图片
     private List<ImageBean> listCertificate = new ArrayList<>();
@@ -181,6 +183,8 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
     private String address;
     private String idFront, idBack;
     private String buildId = "";//关联楼id
+    //驳回-如果驳回的名称提交校验身份改变
+    private IdentityRejectBean currentRejectData;
 
     @AfterViews
     void init() {
@@ -190,7 +194,8 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
         titleBar.getLeftImg().setOnClickListener(view -> new ExitConfirmDialog(this));
         initViews();
         initData();
-        if (Constants.IDENTITY_REJECT == flag) {//驳回
+        mPresenter.getUserInfo(context);   //是否填写名片
+        if (Constants.IDENTITY_REJECT == flag) {  //驳回
             mPresenter.getIdentityMessage(buildingId);
         }
     }
@@ -306,7 +311,7 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
             shortTip("请输入要认证的楼盘/网点名称");
             return;
         }
-        if (listCertificate.size() <=1) {
+        if (listCertificate.size() <= 1) {
             shortTip("请上传房产证");
             return;
         }
@@ -327,14 +332,21 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
             }
         }
         if (isHolder == 2 || Constants.TYPE_JOINTWORK == buildingType) {
-            if (listBusinessLice.size() == 0) {
+            if (listBusinessLice.size() <= 1) {
                 shortTip("请上传营业执照");
                 return;
             }
         }
+        //如果驳回名称
+        if (isRejectModifyNameMessage()) {
+            shortTip("请修改楼盘/网点信息");
+            return;
+        }
         //上传图片
         String premisesPermit = CommonUtils.addAllUploadImage(listCertificate);
+        //营业执照
         String businessLicense = CommonUtils.addAllUploadImage(listBusinessLice);
+        //补充材料
         String materials = CommonUtils.addAllUploadImage(listAdditionalInfo);
         mPresenter.submitIdentityMessage(buildingType, Constants.IDENTITY_FIRST == flag ? 1 : 2, buildingName,
                 mainPic, premisesPermit, businessLicense,
@@ -346,6 +358,7 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
     //驳回-获取认证信息
     @Override
     public void identityMessageSuccess(IdentityRejectBean bean) {
+        currentRejectData = bean;
         //驳回原因
         rejectReasons(bean);
         //编辑删除
@@ -459,6 +472,26 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
         }
     }
 
+    /**
+     * 驳回-是否修改名称信息
+     * 1 名称不规范
+     * 2 地址不规范
+     */
+    private boolean isRejectModifyNameMessage() {
+        if (Constants.IDENTITY_REJECT == flag) {
+            if (map.containsKey(1) || map.containsKey(2)) {
+                return TextUtils.equals(buildingName, currentRejectData.getBuildingName()) &&
+                        TextUtils.equals(address, currentRejectData.getAddress()) &&
+                        TextUtils.equals(String.valueOf(districtId),
+                                TextUtils.isEmpty(currentRejectData.getDistrictId()) ? "0" : currentRejectData.getDistrictId()) &&
+                        TextUtils.equals(String.valueOf(businessId),
+                                TextUtils.isEmpty(currentRejectData.getBusinessDistrict()) ? "0" : currentRejectData.getBusinessDistrict());
+            }
+            return false;
+        }
+        return false;
+    }
+
     //提交成功
     @Override
     public void submitIdentitySuccess() {
@@ -525,13 +558,13 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
                     //通知提交认证
                     if (Constants.IDENTITY_FIRST == flag) {
                         BaseNotification.newInstance().postNotificationName(
-                                CommonNotifications.updateBuildingSuccess, "updateBuildingSuccess");
+                                CommonNotifications.checkedIdentitySuccess, "checkedIdentitySuccess");
                     } else if (Constants.IDENTITY_REJECT == flag) {
                         BaseNotification.newInstance().postNotificationName(
                                 CommonNotifications.rejectBuildingSuccess, "rejectBuildingSuccess");
                     } else {
                         BaseNotification.newInstance().postNotificationName(
-                                CommonNotifications.checkedIdentitySuccess, "checkedIdentitySuccess");
+                                CommonNotifications.updateBuildingSuccess, "updateBuildingSuccess");
                     }
                 }).create();
         dialog.showWithOutTouchable(false);
@@ -669,8 +702,12 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
                 idFrontImage(data.getUrls().get(0).getUrl());
             } else if (TYPE_IDCARD_BACK == imageType) {//身份证反面
                 idBackImage(data.getUrls().get(0).getUrl());
+            } else if (TYPE_AVATAR == imageType) {//头像
+                LogCat.e(TAG, "11111 avatar url=" + data.getUrls().get(0).getUrl());
             }
-            shortTip("上传成功");
+            if (TYPE_AVATAR != imageType) {
+                shortTip("上传成功");
+            }
         }
     }
 
@@ -754,6 +791,9 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
         } else if (TYPE_ADDI == mUploadType) {
             localAddiPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + System.currentTimeMillis() + "additionalInfo.jpg";
             fileUri = new File(localAddiPath);
+        } else if (TYPE_AVATAR == mUploadType) {//头像
+            localAvatarPath = FileHelper.SDCARD_CACHE_IMAGE_PATH + System.currentTimeMillis() + "avatarPath.jpg";
+            fileUri = new File(localAvatarPath);
         }
         localPhotoUri = Uri.fromFile(fileUri);
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -841,6 +881,8 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
                     uploadSingleImage(TYPE_LICE, localLicePath);
                 } else if (TYPE_ADDI == mUploadType) {//补充材料
                     uploadSingleImage(TYPE_ADDI, localAddiPath);
+                } else if (TYPE_AVATAR == mUploadType) {//头像图片
+                    uploadSingleImage(TYPE_AVATAR, localAvatarPath);
                 }
             } else if (requestCode == REQUEST_GALLERY && data != null) {//相册
                 List<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
@@ -854,6 +896,8 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
                     uploadSingleImage(TYPE_IDCARD_FRONT, images.get(0));
                 } else if (TYPE_IDCARD_BACK == mUploadType) {//身份证反面--相册
                     uploadSingleImage(TYPE_IDCARD_BACK, images.get(0));
+                } else if (TYPE_AVATAR == mUploadType) {//头像图片
+                    uploadSingleImage(TYPE_AVATAR, images.get(0));
                 }
             }
         }
@@ -883,4 +927,19 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         PermissionUtils.requestPermissions(context, requestCode, permissions, grantResults);
     }
+
+    @Override
+    public int[] getStickNotificationId() {
+        return new int[]{CommonNotifications.identityModifyAvatar};
+    }
+
+    @Override
+    public void didReceivedNotification(int id, Object... args) {
+        super.didReceivedNotification(id, args);
+        if (id == CommonNotifications.identityModifyAvatar) {
+            mUploadType = TYPE_AVATAR;
+            selectedDialog();
+        }
+    }
+
 }

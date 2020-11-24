@@ -81,23 +81,25 @@ public class IdentityStatusAdapter extends CommonListAdapter<String> {
         } else if (holder.getAdapterPosition() == 2) {
             ivLineUp.setVisibility(View.VISIBLE);
             ivLineBottom.setVisibility(View.INVISIBLE);
-            tvDate.setText(DateTimeUtils.stampMinuteToDate(mData.getEndTime(), "yyyy-MM-dd HH:mm"));
             if (mData.getStatus() == STATUS_ING) {
                 tvStatus.setText("审核通过");
                 btnIdentity.setVisibility(View.GONE);
-                ivLineUp.setBackgroundResource(R.drawable.bg_dash_blue);
+                ivLineUp.setBackgroundResource(R.drawable.bg_dash_gray);
                 ivStatus.setBackgroundResource(R.mipmap.ic_identity_ok_gray);
             } else if (mData.getStatus() == STATUS_OK) {
+                tvDate.setText(DateTimeUtils.stampMinuteToDate(mData.getEndTime(), "yyyy-MM-dd HH:mm"));
                 tvStatus.setText("审核通过");
                 btnIdentity.setVisibility(View.GONE);
                 ivLineUp.setBackgroundResource(R.drawable.bg_dash_blue);
                 ivStatus.setBackgroundResource(R.mipmap.ic_identity_ok);
             } else if (mData.getStatus() == STATUS_NO) {
+                tvDate.setText(DateTimeUtils.stampMinuteToDate(mData.getEndTime(), "yyyy-MM-dd HH:mm"));
                 tvStatus.setText("认证未通过");
                 btnIdentity.setVisibility(View.VISIBLE);
                 ivLineUp.setBackgroundResource(R.drawable.bg_dash_gray);
                 ivStatus.setBackgroundResource(R.mipmap.ic_identity_no);
             } else {
+                tvDate.setText(DateTimeUtils.stampMinuteToDate(mData.getEndTime(), "yyyy-MM-dd HH:mm"));
                 tvStatus.setText("审核通过");
                 btnIdentity.setVisibility(View.GONE);
                 ivLineUp.setBackgroundResource(R.drawable.bg_dash_blue);

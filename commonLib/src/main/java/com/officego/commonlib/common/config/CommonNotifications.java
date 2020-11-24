@@ -41,4 +41,6 @@ public class CommonNotifications {
     public static final int updateHouseSuccess = totalEvents++;
     //认证或添加网点楼盘提交
     public static final int checkedIdentitySuccess = totalEvents++;
+    //认证修改头像卡片
+    public static final int identityModifyAvatar = totalEvents++;
 }
