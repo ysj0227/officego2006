@@ -162,65 +162,13 @@
     </RelativeLayout>
 
     <RelativeLayout
-        android:id="@+id/rl_mobile"
-        style="@style/marginLeftRight18"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/dp_56"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rl_sex">
-
-        <TextView
-            android:id="@+id/tv_mobile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="公司名称"
-            android:textColor="@color/text_33"
-            android:textSize="@dimen/sp_15" />
-
-        <ImageView
-            android:id="@+id/iv_mobile_mark"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:layout_toEndOf="@id/tv_mobile"
-            android:src="@mipmap/ic_mark"
-            android:visibility="gone"
-            tools:ignore="ContentDescription" />
-
-
-        <com.officego.commonlib.view.ClearableEditText
-            android:id="@+id/et_company_content"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_centerVertical="true"
-            android:layout_marginStart="@dimen/dp_10"
-            android:layout_toEndOf="@id/iv_mobile_mark"
-            android:background="@null"
-            android:ellipsize="end"
-            android:enabled="false"
-            android:gravity="center_vertical"
-            android:maxLines="1"
-            android:textColor="@color/text_33"
-            android:textColorHint="@color/text_99"
-            android:textSize="@dimen/sp_15" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_1"
-            android:layout_alignParentBottom="true"
-            android:background="@color/common_divider" />
-    </RelativeLayout>
-
-    <RelativeLayout
         android:id="@+id/rl_job"
         style="@style/marginLeftRight18"
         android:layout_width="0dp"
         android:layout_height="@dimen/dp_56"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rl_mobile">
+        app:layout_constraintTop_toBottomOf="@id/rl_sex">
 
         <TextView
             android:id="@+id/tv_job"

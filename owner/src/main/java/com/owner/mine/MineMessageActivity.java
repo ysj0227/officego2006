@@ -61,8 +61,6 @@ public class MineMessageActivity extends BaseMvpActivity<UpdateUserPresenter>
     TextView etSexContent;
     @ViewById(resName = "et_name_content")
     ClearableEditText etNameContent;
-    @ViewById(resName = "et_company_content")
-    ClearableEditText etCompanyContent;
     @ViewById(resName = "et_job_content")
     ClearableEditText etJobContent;
     @ViewById(resName = "et_wx_content")
@@ -90,7 +88,6 @@ public class MineMessageActivity extends BaseMvpActivity<UpdateUserPresenter>
                 Glide.with(context).load(mUserInfo.getAvatar()).into(civAvatar);
             }
             etNameContent.setText(mUserInfo.getNickname());
-            etCompanyContent.setText(mUserInfo.getCompany());
             if (!TextUtils.isEmpty(mUserInfo.getSex())) { //1男性 0女性
                 etSexContent.setText(TextUtils.equals("1", mUserInfo.getSex()) ? "男" : "女");
             }
@@ -133,7 +130,7 @@ public class MineMessageActivity extends BaseMvpActivity<UpdateUserPresenter>
     }
 
     private void submit(String nikeName, String sex) {
-        String company = etCompanyContent.getText() == null ? "" : etCompanyContent.getText().toString().trim();
+        String company = mUserInfo == null ? "" : mUserInfo.getCompany();
         String job = etJobContent.getText() == null ? "" : etJobContent.getText().toString().trim();
         String wx = etWxContent.getText() == null ? "" : etWxContent.getText().toString().trim();
         mPresenter.UpdateUserInfo(avatarUrl, nikeName, TextUtils.equals("男", sex) ? "1" : "0", company, job, wx);

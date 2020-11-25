@@ -19,6 +19,7 @@ import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.model.UserMessageBean;
 import com.officego.commonlib.common.rongcloud.ConnectRongCloudUtils;
+import com.officego.commonlib.common.rongcloud.RongCloudSetUserInfoUtils;
 import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
@@ -233,21 +234,19 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
     @Override
     public void userInfoSuccess(UserMessageBean data) {
         hasLoginView();
-        if (data == null) {
-            return;
-        }
-        //刷新融云头像用户信息
-        mUserInfo = data;
-        SpUtils.saveWechat(mUserInfo.getWxId() == null || TextUtils.isEmpty(mUserInfo.getWxId()) ? "" : mUserInfo.getWxId());
-        Glide.with(mActivity).applyDefaultRequestOptions(GlideUtils.avaOoptions()).load(data.getAvatar()).into(civAvatar);
-        tvName.setText(data.getNickname());
-        if (TextUtils.isEmpty(data.getCompany())) {
-            tvAccount.setText(TextUtils.isEmpty(data.getJob()) ? "" : data.getJob());
-        } else {
-            if (TextUtils.isEmpty(data.getJob())) {
+        if (data != null) {
+            //刷新融云头像用户信息
+            RongCloudSetUserInfoUtils.refreshUserInfoCache(SpUtils.getRongChatId(), data.getNickname(), data.getAvatar());
+            mUserInfo = data;
+            tvName.setText(data.getNickname());
+            SpUtils.saveWechat(mUserInfo.getWxId() == null || TextUtils.isEmpty(mUserInfo.getWxId()) ? "" : mUserInfo.getWxId());
+            Glide.with(mActivity).applyDefaultRequestOptions(GlideUtils.avaOoptions()).load(data.getAvatar()).into(civAvatar);
+            if (TextUtils.isEmpty(data.getCompany()) && !TextUtils.isEmpty(data.getJob())) {
+                tvAccount.setText(data.getJob());
+            } else if (!TextUtils.isEmpty(data.getCompany()) && TextUtils.isEmpty(data.getJob())) {
                 tvAccount.setText(data.getCompany());
-            } else {
-                tvAccount.setText(data.getCompany() + "·" + (TextUtils.isEmpty(data.getJob()) ? "" : data.getJob()));
+            } else if (!TextUtils.isEmpty(data.getCompany()) && !TextUtils.isEmpty(data.getJob())) {
+                tvAccount.setText(data.getCompany() + "·" + data.getJob());
             }
         }
     }

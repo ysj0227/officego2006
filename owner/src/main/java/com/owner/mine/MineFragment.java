@@ -20,6 +20,7 @@ import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
+import com.officego.commonlib.common.model.UserMessageBean;
 import com.officego.commonlib.common.rongcloud.ConnectRongCloudUtils;
 import com.officego.commonlib.common.rongcloud.RongCloudSetUserInfoUtils;
 import com.officego.commonlib.common.sensors.SensorsTrack;
@@ -34,7 +35,6 @@ import com.owner.R;
 import com.owner.dialog.ExitAppDialog;
 import com.owner.h5.WebViewActivity_;
 import com.owner.mine.contract.UserContract;
-import com.officego.commonlib.common.model.UserMessageBean;
 import com.owner.mine.presenter.UserPresenter;
 import com.owner.rpc.OfficegoApi;
 import com.owner.zxing.QRScanActivity;
@@ -226,14 +226,14 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
             //刷新融云头像用户信息
             RongCloudSetUserInfoUtils.refreshUserInfoCache(SpUtils.getRongChatId(), data.getNickname(), data.getAvatar());
             mUserInfo = data;
-            Glide.with(mActivity).applyDefaultRequestOptions(GlideUtils.avaOoptions()).load(data.getAvatar()).into(civAvatar);
             tvName.setText(data.getNickname());
-            if (TextUtils.isEmpty(data.getNickname())) {
-                tvAccount.setText(TextUtils.isEmpty(data.getJob()) ? "" : data.getJob());
-            } else {
-                tvAccount.setText(TextUtils.isEmpty(data.getJob()) ?
-                        data.getCompany() :
-                        data.getCompany() + "·" + data.getJob());
+            Glide.with(mActivity).applyDefaultRequestOptions(GlideUtils.avaOoptions()).load(data.getAvatar()).into(civAvatar);
+            if (TextUtils.isEmpty(data.getCompany()) && !TextUtils.isEmpty(data.getJob())) {
+                tvAccount.setText(data.getJob());
+            } else if (!TextUtils.isEmpty(data.getCompany()) && TextUtils.isEmpty(data.getJob())) {
+                tvAccount.setText(data.getCompany());
+            } else if (!TextUtils.isEmpty(data.getCompany()) && !TextUtils.isEmpty(data.getJob())) {
+                tvAccount.setText(data.getCompany() + "·" + data.getJob());
             }
         }
     }
