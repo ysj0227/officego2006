@@ -729,7 +729,7 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
      */
     @Override
     public void userInfoSuccess(UserMessageBean data) {
-        if (data.isIsUserInfo()) {
+        if (!data.isIsUserInfo()) {
             avatarUrl = data.getAvatar();
             mUserBean = data;
             cardDialog(data);
