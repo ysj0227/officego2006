@@ -983,7 +983,9 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
         Button save = viewLayout.findViewById(R.id.btn_save);
         TextView tvMore = viewLayout.findViewById(R.id.tv_more);
         viewLayout.findViewById(R.id.rl_exit).setOnClickListener(v -> dialog.dismiss());
-        cetName.setText(data.getNickname());
+        if (data.isNickname()){
+            cetName.setText(data.getNickname());
+        }
         cetJob.setText(data.getJob());
         Glide.with(context).load(data.getAvatar()).into(civAvatar);
         //头像
@@ -995,12 +997,12 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
         save.setOnClickListener(view -> {
             String nickName = cetName.getText().toString();
             if (TextUtils.isEmpty(nickName)) {
-                shortTip("请输入称呼");
+                shortTip(R.string.str_input_nick_name);
                 return;
             }
             String job = cetJob.getText().toString();
             if (TextUtils.isEmpty(job)) {
-                shortTip("请输入职位");
+                shortTip(R.string.str_input_job);
                 return;
             }
             //更新用户信息

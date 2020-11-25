@@ -207,7 +207,7 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
             } else {
                 tvTitle.setText(name);
             }
-            ivPoint.setVisibility(View.GONE);
+            ivPoint.setVisibility(bean.isRed() ? View.VISIBLE : View.GONE);//小红点
             if (2 == bean.getStatus()) {
                 rlPreview.setVisibility(View.VISIBLE);
                 rlEdit.setVisibility(View.VISIBLE);

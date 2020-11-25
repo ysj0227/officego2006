@@ -75,6 +75,8 @@
 
             <com.officego.commonlib.view.ClearableEditText
                 android:id="@+id/cet_name"
+                android:hint="@string/str_input_nick_name"
+                android:textColorHint="@color/text_66_p50"
                 android:singleLine="true"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
@@ -113,6 +115,8 @@
                 android:layout_height="match_parent"
                 android:layout_toEndOf="@id/tv_job"
                 android:background="@null"
+                android:hint="@string/str_input_job"
+                android:textColorHint="@color/text_66_p50"
                 android:gravity="center_vertical"
                 android:paddingStart="@dimen/dp_6"
                 android:textColor="@color/text_33"

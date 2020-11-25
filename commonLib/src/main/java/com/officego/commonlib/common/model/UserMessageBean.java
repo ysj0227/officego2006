@@ -43,6 +43,8 @@ public class UserMessageBean implements Serializable {
     private String roleType;
     @SerializedName("phone")
     private String phone;
+    @SerializedName("isNickname")
+    private boolean isNickname;
 
     public String getAvatar() {
         return avatar;
@@ -122,5 +124,13 @@ public class UserMessageBean implements Serializable {
 
     public void setPhone(String phone) {
         this.phone = phone;
+    }
+
+    public boolean isNickname() {
+        return isNickname;
+    }
+
+    public void setNickname(boolean nickname) {
+        isNickname = nickname;
     }
 }

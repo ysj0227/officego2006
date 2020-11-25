@@ -125,6 +125,8 @@ public class BuildingJointWorkBean {
         private long startTime;
         @SerializedName("endTime")
         private long endTime;
+        @SerializedName("isRed")
+        private boolean isRed;
         @SerializedName("remark")
         private List<RemarkBean> remark;
 
@@ -214,6 +216,14 @@ public class BuildingJointWorkBean {
 
         public void setEndTime(long endTime) {
             this.endTime = endTime;
+        }
+
+        public boolean isRed() {
+            return isRed;
+        }
+
+        public void setRed(boolean red) {
+            isRed = red;
         }
 
         public List<RemarkBean> getRemark() {
