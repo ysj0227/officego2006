@@ -523,7 +523,8 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         rvView.setVisibility(View.GONE);
         tvRejectReason.setVisibility(View.GONE);
         if (TextUtils.isEmpty(SpUtils.getToIdentity())) {
-            new IdentityViewPagerDialog(mActivity).setListener(this);//未认证dialog
+            //未认证dialog
+            new IdentityViewPagerDialog(mActivity).setListener(this);
         }
     }
 

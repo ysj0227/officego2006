@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.officego.commonlib.base.BaseView;
 import com.officego.commonlib.common.model.IdentityRejectBean;
+import com.officego.commonlib.common.model.SearchListBean;
 import com.officego.commonlib.common.model.UserMessageBean;
 import com.officego.commonlib.common.model.owner.UploadImageBean;
 import com.owner.identity.model.IdentityBuildingBean;
@@ -17,7 +18,7 @@ import java.util.List;
 public interface IdentityContract {
     interface View extends BaseView {
 
-        void searchBuildingSuccess(List<IdentityBuildingBean.DataBean> data);
+        void searchBuildingSuccess(List<SearchListBean.DataBean> data);
 
         void identityMessageSuccess(IdentityRejectBean data);
 
@@ -34,7 +35,7 @@ public interface IdentityContract {
 
         void getUserInfo(Context context);
 
-        void searchBuilding(String keywords);
+        void searchList(String keywords);
 
         void getIdentityMessage(int buildingId);
 

@@ -4,10 +4,12 @@ import android.content.Context;
 
 import com.officego.commonlib.base.BasePresenter;
 import com.officego.commonlib.common.model.IdentityRejectBean;
+import com.officego.commonlib.common.model.SearchListBean;
 import com.officego.commonlib.common.model.UserMessageBean;
 import com.officego.commonlib.common.model.owner.UploadImageBean;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
+import com.officego.commonlib.utils.log.LogCat;
 import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity2.contract.IdentityContract;
 import com.owner.rpc.OfficegoApi;
@@ -41,19 +43,19 @@ public class IdentityPresenter extends BasePresenter<IdentityContract.View>
     }
 
     @Override
-    public void searchBuilding(String keyword) {
-        OfficegoApi.getInstance().searchListBuild(keyword, new RetrofitCallback<List<IdentityBuildingBean.DataBean>>() {
+    public void searchList(String keyword) {
+        com.officego.commonlib.common.rpc.OfficegoApi.getInstance().searchList(keyword,
+                new RetrofitCallback<List<SearchListBean.DataBean>>() {
             @Override
-            public void onSuccess(int code, String msg, List<IdentityBuildingBean.DataBean> data) {
+            public void onSuccess(int code, String msg, List<SearchListBean.DataBean> data) {
                 if (isViewAttached()) {
                     mView.searchBuildingSuccess(data);
                 }
             }
 
             @Override
-            public void onFail(int code, String msg, List<IdentityBuildingBean.DataBean> data) {
+            public void onFail(int code, String msg, List<SearchListBean.DataBean> data) {
                 if (isViewAttached()) {
-                    mView.hideLoadingDialog();
                     if (code == Constants.DEFAULT_ERROR_CODE) {
                         mView.shortTip(msg);
                     }

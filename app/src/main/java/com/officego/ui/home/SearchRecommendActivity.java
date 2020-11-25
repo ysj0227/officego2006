@@ -25,8 +25,8 @@ import com.officego.commonlib.view.LabelsView;
 import com.officego.ui.adapter.KeywordsAdapter;
 import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.ui.home.contract.SearchContract;
-import com.officego.ui.home.model.QueryHistoryKeywordsBean;
-import com.officego.ui.home.model.SearchListBean;
+import com.officego.commonlib.common.model.QueryHistoryKeywordsBean;
+import com.officego.commonlib.common.model.SearchListBean;
 import com.officego.ui.home.presenter.SearchKeywordsPresenter;
 import com.officego.commonlib.common.model.utils.BundleUtils;
 

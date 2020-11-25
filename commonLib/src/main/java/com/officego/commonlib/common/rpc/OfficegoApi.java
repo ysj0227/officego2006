@@ -11,6 +11,7 @@ import com.officego.commonlib.common.model.ExchangeContactsBean;
 import com.officego.commonlib.common.model.FirstChatBean;
 import com.officego.commonlib.common.model.IdentitychattedMsgBean;
 import com.officego.commonlib.common.model.RongUserInfoBean;
+import com.officego.commonlib.common.model.SearchListBean;
 import com.officego.commonlib.common.model.UserMessageBean;
 import com.officego.commonlib.common.model.owner.AddHouseSuccessBean;
 import com.officego.commonlib.common.model.owner.BuildingEditBean;
@@ -25,6 +26,7 @@ import com.officego.commonlib.common.rpc.request.DirectoryInterface;
 import com.officego.commonlib.common.rpc.request.LicenceInterface;
 import com.officego.commonlib.common.rpc.request.MineMsgInterface;
 import com.officego.commonlib.common.rpc.request.ScheduleInterface;
+import com.officego.commonlib.common.rpc.request.SearchInterface;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.log.LogCat;
 
@@ -898,6 +900,16 @@ public class OfficegoApi {
         map.put("wxId", requestBody(wx));
         OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
                 .updateUserInfo(map)
+                .enqueue(callback);
+    }
+    /**
+     * 全局搜索
+     */
+    public void searchList(String keywords, RetrofitCallback<List<SearchListBean.DataBean>> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("keywords", requestBody(keywords));
+        OfficegoRetrofitClient.getInstance().create(SearchInterface.class)
+                .searchList(map)
                 .enqueue(callback);
     }
 }

@@ -11,8 +11,8 @@ import com.officego.commonlib.utils.log.LogCat;
 import com.officego.rpc.OfficegoApi;
 import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.ui.home.contract.SearchContract;
-import com.officego.ui.home.model.QueryHistoryKeywordsBean;
-import com.officego.ui.home.model.SearchListBean;
+import com.officego.commonlib.common.model.QueryHistoryKeywordsBean;
+import com.officego.commonlib.common.model.SearchListBean;
 
 import java.util.List;
 

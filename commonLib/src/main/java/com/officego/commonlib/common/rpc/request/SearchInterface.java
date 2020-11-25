@@ -1,8 +1,8 @@
-package com.officego.rpc.request;
+package com.officego.commonlib.common.rpc.request;
 
+import com.officego.commonlib.common.model.QueryHistoryKeywordsBean;
+import com.officego.commonlib.common.model.SearchListBean;
 import com.officego.commonlib.retrofit.BaseResponse;
-import com.officego.ui.home.model.QueryHistoryKeywordsBean;
-import com.officego.ui.home.model.SearchListBean;
 
 import java.util.List;
 import java.util.Map;

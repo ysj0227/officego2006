@@ -10,6 +10,7 @@ import androidx.core.content.ContextCompat;
 
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
+import com.officego.commonlib.common.model.SearchListBean;
 import com.owner.R;
 import com.owner.identity.model.IdentityBuildingBean;
 
@@ -20,9 +21,9 @@ import java.util.List;
  * Data 2020/6/6.
  * Descriptions:
  **/
-public class SearchAdapter extends CommonListAdapter<IdentityBuildingBean.DataBean> {
+public class SearchAdapter extends CommonListAdapter<SearchListBean.DataBean> {
     private Context context;
-    private List<IdentityBuildingBean.DataBean> list;
+    private List<SearchListBean.DataBean> list;
 
     public IdentityBuildingListener getListener() {
         return listener;
@@ -35,17 +36,17 @@ public class SearchAdapter extends CommonListAdapter<IdentityBuildingBean.DataBe
     private IdentityBuildingListener listener;
 
     public interface IdentityBuildingListener {
-        void associateBuilding(IdentityBuildingBean.DataBean bean, boolean isCreate);
+        void associateBuilding(SearchListBean.DataBean bean, boolean isCreate);
     }
 
-    public SearchAdapter(Context context, List<IdentityBuildingBean.DataBean> list) {
+    public SearchAdapter(Context context, List<SearchListBean.DataBean> list) {
         super(context, R.layout.item_id_building_search, list);
         this.context = context;
         this.list = list;
     }
 
     @Override
-    public void convert(ViewHolder holder, final IdentityBuildingBean.DataBean bean) {
+    public void convert(ViewHolder holder, final SearchListBean.DataBean bean) {
         TextView tvBuildingName = holder.getView(R.id.tv_building_name);
         TextView tvAddress = holder.getView(R.id.tv_address);
         TextView tvAdd = holder.getView(R.id.tv_add);

@@ -122,8 +122,7 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
         if (motionEvent.getAction() == MotionEvent.ACTION_OUTSIDE || motionEvent.getAction() == MotionEvent.ACTION_DOWN) {
             int topY = titleBarHeight + statusBarHeight;//状态栏到title的高度
             float heightY = mContext.getResources().getDimension(R.dimen.dp_472) + topY + mContext.getResources().getDimension(R.dimen.dp_8);
-            if (this.isShowing() && motionEvent.getRawY() < topY ||
-                    motionEvent.getRawY() > heightY) {
+            if (this.isShowing() && motionEvent.getRawY() < topY || motionEvent.getRawY() > heightY) {
                 dismiss();
                 return true;
             }
@@ -175,11 +174,13 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
     //房源特色
     private class BuildingAdapter extends CommonListAdapter<BuildingJointWorkBean.ListBean> {
         private Context context;
+        private List<BuildingJointWorkBean.ListBean> list;
 
         @SuppressLint("UseSparseArrays")
         BuildingAdapter(Context context, List<BuildingJointWorkBean.ListBean> list) {
             super(context, R.layout.item_popup_building_jointwork, list);
             this.context = context;
+            this.list = list;
         }
 
         /**
@@ -191,6 +192,8 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
         @SuppressLint("SetTextI18n")
         @Override
         public void convert(ViewHolder holder, final BuildingJointWorkBean.ListBean bean) {
+            View vLine = holder.getView(R.id.v_line);
+            vLine.setVisibility(list != null && list.size() > 0 && holder.getAdapterPosition() == list.size() - 1 ? View.GONE : View.VISIBLE);
             ImageView ivStatus = holder.getView(R.id.iv_status);
             ImageView ivEdit = holder.getView(R.id.iv_edit);
             RelativeLayout rlPreview = holder.getView(R.id.rl_preview);

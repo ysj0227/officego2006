@@ -7,7 +7,7 @@ import com.officego.R;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
 import com.officego.commonlib.constant.Constants;
-import com.officego.ui.home.model.SearchListBean;
+import com.officego.commonlib.common.model.SearchListBean;
 
 import java.util.List;
 

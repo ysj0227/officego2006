@@ -19,7 +19,7 @@ public class SearchBuildingTextWatcher implements TextWatcher {
     private SearchListener listener;
 
     public interface SearchListener {
-        void searchBuilding(String str);
+        void searchEditTextList(String str);
     }
 
     @Override
@@ -30,7 +30,7 @@ public class SearchBuildingTextWatcher implements TextWatcher {
     @Override
     public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
         if (listener != null) {
-            listener.searchBuilding(charSequence.toString());
+            listener.searchEditTextList(charSequence.toString());
         }
     }
 

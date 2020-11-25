@@ -28,6 +28,7 @@ import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.model.IdentityRejectBean;
+import com.officego.commonlib.common.model.SearchListBean;
 import com.officego.commonlib.common.model.UserMessageBean;
 import com.officego.commonlib.common.model.owner.UploadImageBean;
 import com.officego.commonlib.constant.Constants;
@@ -50,7 +51,6 @@ import com.owner.adapter.UploadImageAdapter;
 import com.owner.dialog.ExitConfirmDialog;
 import com.owner.dialog.IdentityTypeDialog;
 import com.owner.home.utils.CommonUtils;
-import com.owner.identity.model.IdentityBuildingBean;
 import com.owner.identity.model.ImageBean;
 import com.owner.identity2.contract.IdentityContract;
 import com.owner.identity2.model.BuildingBean;
@@ -164,7 +164,7 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
     private boolean isSpread;
     //搜索
     private SearchAdapter searchAdapter;
-    private List<IdentityBuildingBean.DataBean> mList = new ArrayList<>();
+    private List<SearchListBean.DataBean> mList = new ArrayList<>();
     //上传类型
     private int mUploadType;
     //本地路径
@@ -539,16 +539,16 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
 
     //搜索楼盘网点
     @Override
-    public void searchBuilding(String str) {
+    public void searchEditTextList(String str) {
         showSearchListView();
-        mPresenter.searchBuilding(str);
+        mPresenter.searchList(str);
     }
 
     @Override
-    public void searchBuildingSuccess(List<IdentityBuildingBean.DataBean> data) {
+    public void searchBuildingSuccess(List<SearchListBean.DataBean> data) {
         mList.clear();
         mList.addAll(data);
-        mList.add(data.size(), new IdentityBuildingBean.DataBean());
+        mList.add(data.size(), new SearchListBean.DataBean());
         if (searchAdapter == null) {
             searchAdapter = new SearchAdapter(context, mList);
             searchAdapter.setListener(this);
@@ -583,7 +583,7 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
     }
 
     @Override
-    public void associateBuilding(IdentityBuildingBean.DataBean bean, boolean isCreate) {
+    public void associateBuilding(SearchListBean.DataBean bean, boolean isCreate) {
         if (isCreate) {
             String inputTx = cetName.getText().toString().trim();
             OwnerCreateBuildingActivity_.intent(context)
@@ -604,7 +604,8 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
             holderType(buildingType);
             districtId = 0;
             businessId = 0;
-            area = bean.getDistrict() + bean.getBusiness();
+            area = (bean.getDistrict() == null ? "" : (String) bean.getDistrict()) +
+                    (bean.getBusiness() == null ? "" : (String) bean.getBusiness());
             address = tvAddress.getText() == null ? "" : tvAddress.getText().toString();
             buildId = String.valueOf(bean.getBid());
         }
@@ -971,7 +972,7 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
         View viewLayout = LayoutInflater.from(context).inflate(R.layout.dialog_mine_card, null);
         userDialog.setContentView(viewLayout);
         handleLayout(viewLayout, userDialog, data);
-        userDialog.setCancelable(true);
+        userDialog.setCanceledOnTouchOutside(false);
         userDialog.show();
     }
 

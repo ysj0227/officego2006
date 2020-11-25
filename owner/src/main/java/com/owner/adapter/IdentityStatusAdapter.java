@@ -60,7 +60,7 @@ public class IdentityStatusAdapter extends CommonListAdapter<String> {
         } else if (holder.getAdapterPosition() == 1) {
             ivLineUp.setVisibility(View.VISIBLE);
             ivLineBottom.setVisibility(View.VISIBLE);
-            tvDate.setText(DateTimeUtils.stampMinuteToDate(mData.getStartTime(), "yyyy-MM-dd HH:mm"));
+            tvDate.setVisibility(View.GONE);
             if (mData.getStatus() == STATUS_ING) {
                 tvStatus.setText("审核中");
                 ivLineBottom.setBackgroundResource(R.drawable.bg_dash_gray);
@@ -82,23 +82,27 @@ public class IdentityStatusAdapter extends CommonListAdapter<String> {
             ivLineUp.setVisibility(View.VISIBLE);
             ivLineBottom.setVisibility(View.INVISIBLE);
             if (mData.getStatus() == STATUS_ING) {
+                tvDate.setVisibility(View.GONE);
                 tvStatus.setText("审核通过");
                 btnIdentity.setVisibility(View.GONE);
                 ivLineUp.setBackgroundResource(R.drawable.bg_dash_gray);
                 ivStatus.setBackgroundResource(R.mipmap.ic_identity_ok_gray);
             } else if (mData.getStatus() == STATUS_OK) {
+                tvDate.setVisibility(View.VISIBLE);
                 tvDate.setText(DateTimeUtils.stampMinuteToDate(mData.getEndTime(), "yyyy-MM-dd HH:mm"));
                 tvStatus.setText("审核通过");
                 btnIdentity.setVisibility(View.GONE);
                 ivLineUp.setBackgroundResource(R.drawable.bg_dash_blue);
                 ivStatus.setBackgroundResource(R.mipmap.ic_identity_ok);
             } else if (mData.getStatus() == STATUS_NO) {
+                tvDate.setVisibility(View.VISIBLE);
                 tvDate.setText(DateTimeUtils.stampMinuteToDate(mData.getEndTime(), "yyyy-MM-dd HH:mm"));
                 tvStatus.setText("认证未通过");
                 btnIdentity.setVisibility(View.VISIBLE);
                 ivLineUp.setBackgroundResource(R.drawable.bg_dash_gray);
                 ivStatus.setBackgroundResource(R.mipmap.ic_identity_no);
             } else {
+                tvDate.setVisibility(View.VISIBLE);
                 tvDate.setText(DateTimeUtils.stampMinuteToDate(mData.getEndTime(), "yyyy-MM-dd HH:mm"));
                 tvStatus.setText("审核通过");
                 btnIdentity.setVisibility(View.GONE);

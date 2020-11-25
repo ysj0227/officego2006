@@ -6,7 +6,7 @@
     android:layout_height="wrap_content">
 
     <RelativeLayout
-        android:layout_width="@dimen/dp_286"
+        android:layout_width="@dimen/dp_284"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
         android:background="@drawable/bg_shape_white">
@@ -34,7 +34,7 @@
             android:layout_marginTop="@dimen/dp_30"
             android:text="请完善个人名片"
             android:textColor="@color/text_66"
-            android:textSize="@dimen/sp_20"
+            android:textSize="@dimen/sp_22"
             android:textStyle="bold" />
 
         <com.officego.commonlib.view.CircleImage
@@ -44,8 +44,15 @@
             android:layout_below="@id/tv_title"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/dp_20"
-            android:src="@mipmap/default_avatar"
+            android:src="@mipmap/ic_card_avatar_def"
             app:radius="@dimen/dp_40" />
+
+        <ImageView
+            android:layout_alignBottom="@id/civ_avatar"
+           android:layout_alignRight="@id/civ_avatar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/ic_card_camera" />
 
         <RelativeLayout
             android:id="@+id/rl_name"
@@ -68,6 +75,7 @@
 
             <com.officego.commonlib.view.ClearableEditText
                 android:id="@+id/cet_name"
+                android:singleLine="true"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_toEndOf="@+id/tv_name"
@@ -100,6 +108,7 @@
 
             <com.officego.commonlib.view.ClearableEditText
                 android:id="@+id/cet_job"
+                android:singleLine="true"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_toEndOf="@id/tv_job"
@@ -107,14 +116,15 @@
                 android:gravity="center_vertical"
                 android:paddingStart="@dimen/dp_6"
                 android:textColor="@color/text_33"
-                android:textSize="@dimen/sp_13" />
+                android:textSize="@dimen/sp_13"
+                tools:ignore="RtlSymmetry" />
 
         </RelativeLayout>
 
         <Button
             android:id="@+id/btn_save"
             android:layout_width="@dimen/dp_120"
-            android:layout_height="@dimen/dp_30"
+            android:layout_height="@dimen/dp_32"
             android:layout_below="@id/rl_job"
             android:layout_centerHorizontal="true"
             android:layout_marginTop="@dimen/dp_30"
