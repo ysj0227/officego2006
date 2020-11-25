@@ -251,9 +251,6 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
     @Override
     public void didReceivedNotification(int id, Object... args) {
         super.didReceivedNotification(id, args);
-        if (args == null) {
-            return;
-        }
         if (id == CommonNotifications.updateUserOwnerInfoSuccess) {
             mPresenter.getUserInfo();
         }

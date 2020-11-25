@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import com.officego.commonlib.base.BaseApplication;
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.SharedManager;
 
 import io.rong.imkit.RongIM;
@@ -50,6 +51,8 @@ public class SpUtils {
         SpUtils.saveNickName(data.getNickName());
         //业主重新登录或切换身份
         clearToIdentity();
+        //房东初始化首页选择的楼盘id
+        Constants.mCurrentBuildingId = 0;
     }
 
     //clear用户登录信息
