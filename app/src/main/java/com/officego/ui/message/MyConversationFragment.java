@@ -1,6 +1,5 @@
 package com.officego.ui.message;
 
-import android.text.TextUtils;
 import android.view.View;
 
 import io.rong.imkit.fragment.ConversationFragment;

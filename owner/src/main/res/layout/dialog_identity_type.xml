@@ -22,6 +22,7 @@
 
         <RelativeLayout
             android:id="@+id/rl_exit"
+            android:visibility="gone"
             android:layout_width="@dimen/dp_100"
             android:layout_height="@dimen/dp_40"
             android:layout_alignParentEnd="true"

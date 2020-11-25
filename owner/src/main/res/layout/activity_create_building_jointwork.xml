@@ -151,7 +151,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_6"
-            android:text="请上传楼盘外立面照片"
+            android:text="请上传楼盘/网点的封面图"
             android:textColor="@color/text_66_p50"
             android:textSize="@dimen/sp_12"
             app:layout_constraintStart_toStartOf="parent"

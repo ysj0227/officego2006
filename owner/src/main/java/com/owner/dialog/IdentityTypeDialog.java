@@ -64,8 +64,7 @@ public class IdentityTypeDialog {
     private void handleLayout(View viewLayout, Dialog dialog) {
         TextView tvType1 = viewLayout.findViewById(R.id.tv_type1);
         TextView tvType2 = viewLayout.findViewById(R.id.tv_type2);
-        viewLayout.findViewById(R.id.btn_cancel).setVisibility(View.GONE);
-        viewLayout.findViewById(R.id.rl_exit).setOnClickListener(v -> dialog.dismiss());
+        viewLayout.findViewById(R.id.btn_cancel).setOnClickListener(v -> dialog.dismiss());
         tvType1.setOnClickListener(view -> {
             listener.sureType(tvType1.getText().toString(),2);
             dialog.dismiss();

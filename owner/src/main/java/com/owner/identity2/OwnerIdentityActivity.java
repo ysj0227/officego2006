@@ -536,7 +536,7 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
         includeBusinessLicense.setVisibility(type == 2 ? View.VISIBLE : View.GONE);
         includeOwnerPersonalId.setVisibility(type == 2 ? View.GONE : View.VISIBLE);
         tvTipAdditionalInfo.setText(type == 2 ? "请上传以公司为主体的房屋租赁协议或其他相关材料" :
-                "请上传以个人为主体的房屋租赁协议或其他相关材料");
+                "若需要，请上传身份信息与产证信息一致的相关材料");
     }
 
     //搜索楼盘网点
@@ -635,7 +635,7 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
                 ivEdit.setVisibility(View.VISIBLE);
                 buildingFlayView(buildingType);
                 cetName.setText(buildingName);
-                tvAddress.setText(area+address);
+                tvAddress.setText(area + address);
                 cetName.setEnabled(false);
                 hideSearchListView();
             }
@@ -658,11 +658,16 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
             tvBuildingFlay.setText("楼盘");
             tvBuildingFlay.setBackgroundResource(com.officego.commonlib.R.drawable.label_corners_solid_blue);
             silSelectType.setVisibility(View.VISIBLE);
-            includeBusinessLicense.setVisibility(View.VISIBLE);
-            includeOwnerPersonalId.setVisibility(View.GONE);
-            tvTextBusinessLicense.setText("上传营业执照");
-            tvTipBusinessLicense.setText("请确保上传与房产证上权利人名称相同的公司营业执照");
-            tvTipAdditionalInfo.setText("请上传以公司为主体的房屋租赁协议或其他相关材料");
+            if (isHolder == 2) {//公司
+                includeBusinessLicense.setVisibility(View.VISIBLE);
+                includeOwnerPersonalId.setVisibility(View.GONE);
+                tvTextBusinessLicense.setText("上传营业执照");
+                tvTipBusinessLicense.setText("请确保上传与房产证上权利人名称相同的公司营业执照");
+                tvTipAdditionalInfo.setText("请上传以公司为主体的房屋租赁协议或其他相关材料");
+            } else {//个人
+                includeBusinessLicense.setVisibility(View.GONE);
+                includeOwnerPersonalId.setVisibility(View.VISIBLE);
+            }
         } else {
             tvBuildingFlay.setText("网点");
             tvBuildingFlay.setBackgroundResource(com.officego.commonlib.R.drawable.label_corners_solid_purple);

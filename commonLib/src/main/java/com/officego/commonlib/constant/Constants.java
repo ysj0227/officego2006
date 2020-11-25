@@ -9,7 +9,7 @@ import java.util.concurrent.ConcurrentHashMap;
 
 public class Constants {
     public static final String FILE_PROVIDER_AUTHORITY =
-            CommonHelper.getAppPackageName(BaseApplication.getContext()) + ".fileprovider";
+            CommonHelper.getAppPackageName(BaseApplication.getContext()) + ".Fileprovider";
     //code
     public static final int DEFAULT_ERROR_CODE = 5000;//默认错误状态码,此状态必须写明 message 原因
     public static final int DEFAULT_SUCCESS_CODE = 200;//程序默认的成功状态码
