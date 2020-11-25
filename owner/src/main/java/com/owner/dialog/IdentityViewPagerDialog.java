@@ -1,5 +1,6 @@
 package com.owner.dialog;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
 import android.util.SparseArray;
@@ -62,7 +63,7 @@ public class IdentityViewPagerDialog {
         }
         dialogWindow.setGravity(Gravity.CENTER);
         handleLayout(viewLayout, dialog);
-        dialog.setCancelable(true);
+        dialog.setCanceledOnTouchOutside(false);
         dialog.show();
     }
 
@@ -145,6 +146,7 @@ public class IdentityViewPagerDialog {
         public void onPageScrolled(int position, float positionOffset, int positionOffsetPixels) {
         }
 
+        @SuppressLint("SetTextI18n")
         @Override
         public void onPageSelected(int position) {
             switch (position) {
@@ -154,7 +156,7 @@ public class IdentityViewPagerDialog {
                     break;
                 case 1:
                     point2.setChecked(true);
-                    tvTitle.setText("720 VR全方位呈现房源");
+                    tvTitle.setText("720°VR全方位呈现房源");
                     break;
                 case 2:
                     point3.setChecked(true);

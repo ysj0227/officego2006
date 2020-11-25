@@ -67,7 +67,7 @@ public class IdentityStatusAdapter extends CommonListAdapter<String> {
                 ivStatus.setBackgroundResource(R.mipmap.ic_identity_checking);
             } else if (mData.getStatus() == STATUS_OK) {
                 tvStatus.setText("审核");
-                ivLineBottom.setBackgroundResource(R.drawable.bg_dash_gray);
+                ivLineBottom.setBackgroundResource(R.drawable.bg_dash_blue);
                 ivStatus.setBackgroundResource(R.mipmap.ic_identity_ok);
             } else if (mData.getStatus() == STATUS_NO) {
                 tvStatus.setText("审核");
@@ -75,7 +75,7 @@ public class IdentityStatusAdapter extends CommonListAdapter<String> {
                 ivStatus.setBackgroundResource(R.mipmap.ic_identity_ok);
             } else {
                 tvStatus.setText("审核");
-                ivLineBottom.setBackgroundResource(R.drawable.bg_dash_gray);
+                ivLineBottom.setBackgroundResource(R.drawable.bg_dash_blue);
                 ivStatus.setBackgroundResource(R.mipmap.ic_identity_ok);
             }
         } else if (holder.getAdapterPosition() == 2) {

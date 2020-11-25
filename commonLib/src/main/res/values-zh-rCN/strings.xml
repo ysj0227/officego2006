@@ -70,11 +70,6 @@
     <string name="ipc_setting_detection_day_friday">周五</string>
     <string name="ipc_setting_detection_day_saturday">周六</string>
     <string name="ipc_setting_detection_day_sunday">周日</string>
-    <string name="sunmi_device_w1">W1路由器</string>
-    <string name="sunmi_device_printer">云打印机</string>
-    <string name="sunmi_device_fs">AI识客摄像机</string>
-    <string name="sunmi_device_ss">智能看店摄像机</string>
-    <string name="sunmi_device_more">更多支持设备\n敬请期待…</string>
     <string name="str_setting_detail">查看详情</string>
     <string name="str_coming_soon">敬请期待</string>
     <string name="str_num_10_thousands">万</string>

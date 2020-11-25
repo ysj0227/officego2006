@@ -196,7 +196,6 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
     private UserMessageBean mUserBean;
     private Dialog userDialog;
 
-
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarFullTransparent(this);
@@ -212,6 +211,8 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
     }
 
     private void initViews() {
+        //title
+        titleBar.setAppTitle(Constants.IDENTITY_NO_FIRST == flag ? "添加楼盘/网点" : "房东认证");
         //搜索列表
         LinearLayoutManager buildingManager = new LinearLayoutManager(context);
         rvRecommendBuilding.setLayoutManager(buildingManager);
@@ -266,11 +267,11 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
 
     @Click(resName = "rl_reason")
     void spreadOnClick() {
-        ivExpand.setBackgroundResource(isSpread ?
-                com.officego.commonlib.R.mipmap.ic_down_arrow_gray :
-                com.officego.commonlib.R.mipmap.ic_up_arrow_gray);
-        tvRejectReason.setSingleLine(isSpread);
         isSpread = !isSpread;
+        tvRejectReason.setSingleLine(isSpread);
+        ivExpand.setBackgroundResource(isSpread ?
+                R.mipmap.ic_down_arrow_gray :
+                R.mipmap.ic_up_arrow_gray);
     }
 
     @Click(resName = "sil_select_type")
@@ -397,7 +398,8 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
         cetName.setEnabled(false);
         if (!TextUtils.isEmpty(bean.getAddress())) {
             tvAddress.setVisibility(View.VISIBLE);
-            tvAddress.setText(bean.getAddress());
+            tvAddress.setText(new StringBuilder().append(bean.getProvincetName()).append(bean.getDistrictIdName())
+                    .append(bean.getBusinessDistrictName()).append(bean.getAddress()).toString());
         }
         hideSearchListView();//隐藏搜索
         //权利人类型
@@ -629,11 +631,11 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
                 address = bean.getAddress();
                 buildId = "0";
                 //
-                buildingFlayView(buildingType);
-                cetName.setText(buildingName);
-                tvAddress.setText(address);
                 tvAddress.setVisibility(View.VISIBLE);
                 ivEdit.setVisibility(View.VISIBLE);
+                buildingFlayView(buildingType);
+                cetName.setText(buildingName);
+                tvAddress.setText(area+address);
                 cetName.setEnabled(false);
                 hideSearchListView();
             }
@@ -983,7 +985,7 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
         Button save = viewLayout.findViewById(R.id.btn_save);
         TextView tvMore = viewLayout.findViewById(R.id.tv_more);
         viewLayout.findViewById(R.id.rl_exit).setOnClickListener(v -> dialog.dismiss());
-        if (data.isNickname()){
+        if (data.isNickname()) {
             cetName.setText(data.getNickname());
         }
         cetJob.setText(data.getJob());

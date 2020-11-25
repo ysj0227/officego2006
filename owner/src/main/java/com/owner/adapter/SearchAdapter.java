@@ -12,7 +12,6 @@ import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
 import com.officego.commonlib.common.model.SearchListBean;
 import com.owner.R;
-import com.owner.identity.model.IdentityBuildingBean;
 
 import java.util.List;
 
@@ -54,8 +53,8 @@ public class SearchAdapter extends CommonListAdapter<SearchListBean.DataBean> {
         vLine.setBackgroundColor(ContextCompat.getColor(context, R.color.black_20));
         if (list != null && list.size() > 0 && holder.getAdapterPosition() == list.size() - 1) {
             tvBuildingName.setVisibility(View.GONE);
-            tvAdd.setText("创建楼盘/网点");
-            tvAddress.setText("楼盘/网点不存在");
+            tvAdd.setText("立即创建");
+            tvAddress.setText("以上都不是，去创建");
             tvAddress.setTextColor(ContextCompat.getColor(context, R.color.text_33));
             holder.itemView.setOnClickListener(v -> listener.associateBuilding(bean, true));
         } else {
