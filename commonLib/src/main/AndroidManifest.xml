@@ -5,9 +5,9 @@
     <uses-permission android:name="android.permission.READ_PHONE_STATE" />
 
     <application>
-
+        <!--  项目中使用-->
         <provider
-            android:name="androidx.core.content.FileProvider"
+            android:name=".utils.OfficeGoFileProvider"
             android:authorities="${applicationId}.Fileprovider"
             android:exported="false"
             android:grantUriPermissions="true">
@@ -17,15 +17,15 @@
                 android:resource="@xml/photo_file_paths" />
         </provider>
 
-<!--        &lt;!&ndash; 融云兼容聊天拍照&ndash;&gt;-->
-<!--        <provider-->
-<!--            android:name="androidx.core.content.FileProvider"-->
-<!--            android:authorities="${applicationId}.FileProvider"-->
-<!--            android:exported="false"-->
-<!--            android:grantUriPermissions="true">-->
-<!--            <meta-data-->
-<!--                android:name="android.support.FILE_PROVIDER_PATHS"-->
-<!--                android:resource="@xml/rc_file_path" />-->
-<!--        </provider>-->
+        <!-- 融云兼容聊天拍照-->
+        <provider
+            android:name="androidx.core.content.FileProvider"
+            android:authorities="${applicationId}.FileProvider"
+            android:exported="false"
+            android:grantUriPermissions="true">
+            <meta-data
+                android:name="android.support.FILE_PROVIDER_PATHS"
+                android:resource="@xml/rc_file_path" />
+        </provider>
     </application>
 </manifest>
