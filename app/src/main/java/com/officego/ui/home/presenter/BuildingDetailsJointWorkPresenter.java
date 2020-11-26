@@ -37,7 +37,6 @@ public class BuildingDetailsJointWorkPresenter extends BasePresenter<BuildingDet
                 decoration, houseTags, seats, new RetrofitCallback<BuildingJointWorkBean>() {
                     @Override
                     public void onSuccess(int code, String msg, BuildingJointWorkBean data) {
-                        LogCat.e(TAG, "getBuildingDetails onSuccess =" + data);
                         if (isViewAttached()) {
                             mView.hideLoadingDialog();
                             mView.BuildingJointWorkDetailsSuccess(data);
@@ -46,7 +45,6 @@ public class BuildingDetailsJointWorkPresenter extends BasePresenter<BuildingDet
 
                     @Override
                     public void onFail(int code, String msg, BuildingJointWorkBean data) {
-                        LogCat.e(TAG, "getBuildingDetails onFail code=" + code + "  msg=" + msg);
                         if (isViewAttached()) {
                             mView.hideLoadingDialog();
                             if (code == Constants.ERROR_CODE_7012 || code == Constants.ERROR_CODE_7013 || code == Constants.ERROR_CODE_7014) {
@@ -63,7 +61,6 @@ public class BuildingDetailsJointWorkPresenter extends BasePresenter<BuildingDet
         OfficegoApi.getInstance().getBuildingJointWorkDetailsOwner(btype, buildingId,isTemp, new RetrofitCallback<BuildingJointWorkBean>() {
                     @Override
                     public void onSuccess(int code, String msg, BuildingJointWorkBean data) {
-                        LogCat.e(TAG, "getBuildingDetails onSuccess =" + data);
                         if (isViewAttached()) {
                             mView.hideLoadingDialog();
                             mView.BuildingJointWorkDetailsSuccess(data);
@@ -72,7 +69,6 @@ public class BuildingDetailsJointWorkPresenter extends BasePresenter<BuildingDet
 
                     @Override
                     public void onFail(int code, String msg, BuildingJointWorkBean data) {
-                        LogCat.e(TAG, "getBuildingDetails onFail code=" + code + "  msg=" + msg);
                         if (isViewAttached()) {
                             mView.hideLoadingDialog();
                             if (code == Constants.ERROR_CODE_7012 || code == Constants.ERROR_CODE_7013 || code == Constants.ERROR_CODE_7014) {
@@ -89,7 +85,6 @@ public class BuildingDetailsJointWorkPresenter extends BasePresenter<BuildingDet
         OfficegoApi.getInstance().favorite(buildingId, flag, new RetrofitCallback<Object>() {
             @Override
             public void onSuccess(int code, String msg, Object data) {
-                LogCat.e(TAG, "favorite onSuccess =" + data);
                 if (isViewAttached()) {
                     mView.hideLoadingDialog();
                     mView.favoriteSuccess();
@@ -98,7 +93,6 @@ public class BuildingDetailsJointWorkPresenter extends BasePresenter<BuildingDet
 
             @Override
             public void onFail(int code, String msg, Object data) {
-                LogCat.e(TAG, "favorite onFail code=" + code + "  msg=" + msg);
                 if (isViewAttached()) {
                     mView.hideLoadingDialog();
                     if (code == Constants.ERROR_CODE_5002 || code == RpcErrorCode.RPC_ERR_TIMEOUT) {
@@ -117,7 +111,6 @@ public class BuildingDetailsJointWorkPresenter extends BasePresenter<BuildingDet
                 decoration, houseTags, seats, new RetrofitCallback<BuildingDetailsChildBean>() {
                     @Override
                     public void onSuccess(int code, String msg, BuildingDetailsChildBean data) {
-                        LogCat.e(TAG, "getBuildingSelectList onSuccess =" + data);
                         if (isViewAttached()) {
                             mView.hideLoadingDialog();
                             mView.buildingSelectListSuccess(data.getTotal(), data.getList());
@@ -126,7 +119,6 @@ public class BuildingDetailsJointWorkPresenter extends BasePresenter<BuildingDet
 
                     @Override
                     public void onFail(int code, String msg, BuildingDetailsChildBean data) {
-                        LogCat.e(TAG, "getBuildingSelectList onFail code=" + code + "  msg=" + msg);
                         if (isViewAttached()) {
                             mView.hideLoadingDialog();
                         }

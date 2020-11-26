@@ -83,7 +83,7 @@
                     android:id="@+id/rb_joint_work"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginLeft="@dimen/dp_10"
+                    android:layout_marginStart="@dimen/dp_10"
                     android:text="共享办公"
                     android:textColor="@color/text_33"
                     android:textSize="@dimen/sp_14" />
@@ -146,8 +146,8 @@
             app:layout_constraintTop_toBottomOf="@id/sil_address" />
 
         <TextView
-            style="@style/marginLeftRight18"
             android:id="@+id/tv_tip_upload_text"
+            style="@style/marginLeftRight18"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_6"

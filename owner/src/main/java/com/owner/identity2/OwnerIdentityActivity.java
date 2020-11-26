@@ -382,7 +382,6 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
         mainPic = bean.getMainPic();
         buildingType = Integer.valueOf(bean.getBtype());
         buildingName = bean.getBuildingName();
-        holderType(buildingType);
         if (!TextUtils.isEmpty(bean.getDistrictId())) {
             districtId = Integer.valueOf(bean.getDistrictId());
         }
@@ -511,14 +510,6 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
         submitIdentitySuccessDialog();
     }
 
-    //网点初始0
-    private int holderType(int buildingType) {
-        if (Constants.TYPE_JOINTWORK == buildingType) {
-            isHolder = 0;
-        }
-        return isHolder;
-    }
-
     @Override
     public void sureType(String text, int type) {
         setIdentityType(type);
@@ -584,6 +575,7 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
         dialog.setCancelable(false);
     }
 
+    @SuppressLint("SetTextI18n")
     @Override
     public void associateBuilding(SearchListBean.DataBean bean, boolean isCreate) {
         if (isCreate) {
@@ -603,13 +595,13 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
             buildingType = bean.getBuildType();
             buildingName = cetName.getText().toString();
             mainPic = bean.getMainPic();
-            holderType(buildingType);
             districtId = 0;
             businessId = 0;
             area = (bean.getDistrict() == null ? "" : (String) bean.getDistrict()) +
                     (bean.getBusiness() == null ? "" : (String) bean.getBusiness());
             address = tvAddress.getText() == null ? "" : tvAddress.getText().toString();
             buildId = String.valueOf(bean.getBid());
+            tvAddress.setText(area + address);
         }
         ivDelete.setVisibility(View.VISIBLE);
     }
@@ -624,7 +616,6 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
                 buildingType = bean.getBuildingType();
                 buildingName = bean.getName();
                 mainPic = bean.getMainPic();
-                holderType(buildingType);
                 districtId = bean.getDistrictId();
                 businessId = bean.getBusinessId();
                 area = bean.getArea();
@@ -664,7 +655,7 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
                 tvTextBusinessLicense.setText("上传营业执照");
                 tvTipBusinessLicense.setText("请确保上传与房产证上权利人名称相同的公司营业执照");
                 tvTipAdditionalInfo.setText("请上传以公司为主体的房屋租赁协议或其他相关材料");
-            } else {//个人
+            } else if (isHolder == 1) {//个人
                 includeBusinessLicense.setVisibility(View.GONE);
                 includeOwnerPersonalId.setVisibility(View.VISIBLE);
             }
