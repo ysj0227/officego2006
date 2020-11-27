@@ -151,6 +151,7 @@
 
         <Button
             android:id="@+id/btn_scan"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_40"
             android:background="@drawable/button_corners_edge_white"

@@ -50,8 +50,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sil_title"
-                app:editMaxLength="3"
                 app:editDigits="0123456789"
+                app:editMaxLength="3"
                 app:leftMarkShow="visible"
                 app:leftText="工位数"
                 app:rightArrowShow="gone"
@@ -82,8 +82,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sil_area"
-                app:editMaxLength="6"
                 app:editDigits="0123456789"
+                app:editMaxLength="6"
                 app:editTextWidth="@dimen/dp_180"
                 app:leftMarkShow="visible"
                 app:leftText="租金"
@@ -99,10 +99,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sil_rent_single"
+                android:visibility="gone"
                 app:leftMarkShow="visible"
                 app:leftText="所在楼层"
                 app:leftToArrowText=""
-                android:visibility="gone"
                 app:leftToArrowTextColor="@color/text_33"
                 app:rightArrowShow="visible"
                 app:rightOtherImageViewShow="gone"
@@ -172,37 +172,37 @@
                 app:showDividerBottom="visible"
                 app:showEditText="gone" />
 
-<!--            <com.officego.commonlib.view.widget.SettingItemLayout-->
-<!--                android:id="@+id/sil_car_num"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_below="@id/sil_conditioned_fee"-->
-<!--                app:editMaxLength="20"-->
-<!--                app:centerTextHint="例:地面车位100个，车库车位5个"-->
-<!--                app:centerTextHintColor="@color/text_66_p50"-->
-<!--                app:leftMarkShow="invisible"-->
-<!--                app:leftText="车位数"-->
-<!--                app:rightArrowShow="gone"-->
-<!--                app:rightOtherImageViewShow="gone"-->
-<!--                app:showCenterText="visible"-->
-<!--                app:showDividerBottom="visible"-->
-<!--                app:showEditText="gone" />-->
+            <!--            <com.officego.commonlib.view.widget.SettingItemLayout-->
+            <!--                android:id="@+id/sil_car_num"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_below="@id/sil_conditioned_fee"-->
+            <!--                app:editMaxLength="20"-->
+            <!--                app:centerTextHint="例:地面车位100个，车库车位5个"-->
+            <!--                app:centerTextHintColor="@color/text_66_p50"-->
+            <!--                app:leftMarkShow="invisible"-->
+            <!--                app:leftText="车位数"-->
+            <!--                app:rightArrowShow="gone"-->
+            <!--                app:rightOtherImageViewShow="gone"-->
+            <!--                app:showCenterText="visible"-->
+            <!--                app:showDividerBottom="visible"-->
+            <!--                app:showEditText="gone" />-->
 
-<!--            <com.officego.commonlib.view.widget.SettingItemLayout-->
-<!--                android:id="@+id/sil_car_fee"-->
-<!--                android:layout_width="match_parent"-->
-<!--                android:layout_height="wrap_content"-->
-<!--                android:layout_below="@id/sil_car_num"-->
-<!--                app:editMaxLength="20"-->
-<!--                app:centerTextHint="车位费 元/月"-->
-<!--                app:centerTextHintColor="@color/text_66_p50"-->
-<!--                app:leftMarkShow="invisible"-->
-<!--                app:leftText="车位费"-->
-<!--                app:rightArrowShow="gone"-->
-<!--                app:rightOtherImageViewShow="gone"-->
-<!--                app:showCenterText="visible"-->
-<!--                app:showDividerBottom="visible"-->
-<!--                app:showEditText="gone" />-->
+            <!--            <com.officego.commonlib.view.widget.SettingItemLayout-->
+            <!--                android:id="@+id/sil_car_fee"-->
+            <!--                android:layout_width="match_parent"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:layout_below="@id/sil_car_num"-->
+            <!--                app:editMaxLength="20"-->
+            <!--                app:centerTextHint="车位费 元/月"-->
+            <!--                app:centerTextHintColor="@color/text_66_p50"-->
+            <!--                app:leftMarkShow="invisible"-->
+            <!--                app:leftText="车位费"-->
+            <!--                app:rightArrowShow="gone"-->
+            <!--                app:rightOtherImageViewShow="gone"-->
+            <!--                app:showCenterText="visible"-->
+            <!--                app:showDividerBottom="visible"-->
+            <!--                app:showEditText="gone" />-->
 
             <com.officego.commonlib.view.widget.SettingItemLayout
                 android:id="@+id/sil_storey_height"
@@ -253,6 +253,7 @@
 
         <Button
             android:id="@+id/btn_scan"
+            style="?android:attr/borderlessButtonStyle"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_40"
             android:background="@drawable/button_corners_edge_white"
