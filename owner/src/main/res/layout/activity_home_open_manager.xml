@@ -67,9 +67,9 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/sil_rent_single"
+                android:visibility="gone"
                 app:leftMarkShow="visible"
                 app:leftText="所在楼层"
-                android:visibility="gone"
                 app:leftToArrowText=""
                 app:leftToArrowTextColor="@color/text_33"
                 app:rightArrowShow="visible"
@@ -146,35 +146,35 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="@dimen/dp_15"
-        android:layout_marginBottom="@dimen/dp_20">
-
-        <Button
-            android:id="@+id/btn_next"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_40"
-            android:background="@drawable/btn_common_bg_primary"
-            android:gravity="center"
-            android:text="@string/str_save_publish"
-            android:textColor="@color/white"
-            android:textSize="@dimen/sp_15"
-            android:visibility="visible"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginBottom="@dimen/dp_14">
 
         <Button
             android:id="@+id/btn_scan"
             android:layout_width="match_parent"
             android:layout_height="@dimen/dp_40"
-            android:layout_marginTop="@dimen/dp_18"
             android:background="@drawable/button_corners_edge_white"
             android:text="@string/str_goto_web_edit"
             android:textColor="@color/common_blue_main"
             android:textSize="@dimen/sp_15"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/btn_next" />
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <Button
+            android:id="@+id/btn_next"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_40"
+            android:layout_marginTop="@dimen/dp_18"
+            android:background="@drawable/btn_common_bg_primary"
+            android:gravity="center"
+            android:text="@string/str_save_publish"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_15"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/btn_scan" />
+
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <ImageView
@@ -185,7 +185,7 @@
         android:layout_alignParentBottom="true"
         android:layout_marginTop="@dimen/dp_8"
         android:layout_marginEnd="@dimen/dp_16"
-        android:layout_marginBottom="@dimen/dp_48"
+        android:layout_marginBottom="@dimen/dp_100"
         android:background="@mipmap/ic_small_delete_blue"
         tools:ignore="ContentDescription" />
 </RelativeLayout>

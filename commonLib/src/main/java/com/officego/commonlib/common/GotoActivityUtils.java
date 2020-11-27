@@ -79,29 +79,6 @@ public class GotoActivityUtils {
         context.startActivity(intent);
     }
 
-    //房东-认证聊天默认返回个人中心
-    public static void mainOwnerDefMainActivity(Context context) {
-        ComponentName comp = new ComponentName(context, "com.officego.MainOwnerActivity_");
-        Intent intent = new Intent();
-        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        intent.putExtra("isIdentifyChat", true);//是否认证聊天返回
-        intent.setComponent(comp);
-        intent.setAction("android.intent.action.VIEW");
-        context.startActivity(intent);
-    }
-
-    //认证申请进入聊天
-    public static void gotoConversationActivity(Context context, String targetId) {
-        ComponentName comp = new ComponentName(context, "com.officego.ui.message.ConversationActivity_");
-        Intent intent = new Intent();
-        intent.putExtra("isSendApply", true);
-        intent.putExtra("chatTargetId", targetId);
-        intent.setComponent(comp);
-        intent.setAction("android.intent.action.VIEW");
-        context.startActivity(intent);
-    }
-
     //系统推送消息进入聊天
     public static void gotoSystemPushConversationActivity(Context context, String targetId) {
         if (context != null) {

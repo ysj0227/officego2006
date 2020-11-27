@@ -33,8 +33,6 @@ public class UserMessageBean implements Serializable {
     private String nickname;
     @SerializedName("sex")
     private String sex;
-    @SerializedName("company")
-    private String company;
     @SerializedName("job")
     private String job;
     @SerializedName("wxId")
@@ -84,14 +82,6 @@ public class UserMessageBean implements Serializable {
 
     public void setSex(String sex) {
         this.sex = sex;
-    }
-
-    public String getCompany() {
-        return company;
-    }
-
-    public void setCompany(String company) {
-        this.company = company;
     }
 
     public String getJob() {

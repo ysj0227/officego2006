@@ -130,7 +130,6 @@ public class MineMessageActivity extends BaseMvpActivity<UpdateUserPresenter>
     }
 
     private void submit(String nikeName, String sex) {
-        String company = mUserInfo == null ? "" : mUserInfo.getCompany();
         String job = etJobContent.getText() == null ? "" : etJobContent.getText().toString().trim();
         String wx = etWxContent.getText() == null ? "" : etWxContent.getText().toString().trim();
         mPresenter.UpdateUserInfo(avatarUrl, nikeName, TextUtils.equals("男", sex) ? "1" : "0",  job, wx);

@@ -81,13 +81,13 @@ public class MainOwnerActivity extends BaseActivity implements RadioGroup.OnChec
         rb_3.setText(R.string.str_tab_schedule);
         //初始化第一个选中
         TABLE_BAR_POSITION = 0;
+        rb_1.setChecked(true);
 
-        Intent intent = getIntent();
         if (TABLE_BAR_POSITION == 1) {
             rb_2.setChecked(true);
         } else if (TABLE_BAR_POSITION == 2) {
             rb_3.setChecked(true);
-        } else if (TABLE_BAR_POSITION == 3 || (intent != null && intent.hasExtra("isIdentifyChat"))) {
+        } else if (TABLE_BAR_POSITION == 3) {
             rb_4.setChecked(true);
         } else {
             rb_1.setChecked(true);
@@ -112,10 +112,10 @@ public class MainOwnerActivity extends BaseActivity implements RadioGroup.OnChec
         switch (checkedId) {
             case R.id.tab_home:
                 TABLE_BAR_POSITION = 0;
-                if (Constants.IS_HOME_REFRESH){//是否刷新
+                if (Constants.IS_HOME_REFRESH) {//是否刷新
                     fg1 = new HomeFragment_();
                     fTransaction.add(R.id.ly_content, fg1, "Fragment1");
-                }else {
+                } else {
                     if (fg1 == null) {
                         fg1 = new HomeFragment_();
                         fTransaction.add(R.id.ly_content, fg1, "Fragment1");

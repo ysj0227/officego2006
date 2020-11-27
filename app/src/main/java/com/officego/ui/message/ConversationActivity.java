@@ -43,7 +43,6 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 
 import io.rong.imkit.RongIM;
-import io.rong.imkit.fragment.ConversationFragment;
 import io.rong.imlib.model.Conversation;
 import io.rong.imlib.model.Message;
 
@@ -73,7 +72,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
     private String getHouseChatId;//去除 targetId  的最后一位 ,产品定义
     private ChatHouseBean mData;
     private boolean isFirstChat = true;//是否第一次聊天  isChat": 0 :点击发送按钮的时候需要调用 addChat接口，1:不需要
-    private boolean isSendApply;//租户认证发送的申请
+    //    private boolean isSendApply;//租户认证发送的申请
     private String mNikeName;
     private boolean isCanExchange;//是否可以交换手机微信
     private boolean isOnClickExchangeContacts;//是否点击可以交换手机微信
@@ -100,14 +99,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         mPresenter.attachView(this);
         initViewById();
         Intent intent = getIntent();
-        if (intent != null && intent.hasExtra("chatTargetId")) {//聊天认证申请进入
-            //认证申请页面进入
-            isSendApply = intent.hasExtra("isSendApply");
-            targetId = intent.getStringExtra("chatTargetId");
-            ctlChat.setVisibility(View.GONE);
-            mPresenter.identityChattedMsg(targetId);
-            initIM();
-        } else if (intent != null && intent.hasExtra("systemPushTargetId")) {
+        if (intent != null && intent.hasExtra("systemPushTargetId")) {
             //系统消息
             targetId = intent.getStringExtra("systemPushTargetId");
             ctlChat.setVisibility(View.GONE);
@@ -116,18 +108,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             initIM();
         } else {
             initIMInfo();
-            //认证申请聊天列表进入
-            String mineId = SpUtils.getRongChatId();
-            if (!TextUtils.isEmpty(targetId) && targetId.length() > 1 &&
-                    TextUtils.equals(Constants.TYPE_OWNER, targetId.substring(targetId.length() - 1)) &&
-                    (!TextUtils.isEmpty(mineId) && mineId.length() > 1 &&
-                            TextUtils.equals(Constants.TYPE_OWNER, mineId.substring(mineId.length() - 1)))) {
-                //认证申请聊天列表进入,融云id最后一位是“1”
-                isSendApply = false;
-                ctlChat.setVisibility(View.GONE);
-                mPresenter.identityChattedMsg(targetId);
-                initIM();
-            } else if (!TextUtils.isEmpty(targetId) && (TextUtils.equals(Constants.TYPE_SYSTEM, targetId) ||
+            if (!TextUtils.isEmpty(targetId) && (TextUtils.equals(Constants.TYPE_SYSTEM, targetId) ||
                     (targetId.length() > 1 && TextUtils.equals(Constants.TYPE_SYSTEM, targetId.substring(targetId.length() - 1))))) {
                 //系统消息聊天列表进入
                 ctlChat.setVisibility(View.GONE);
@@ -138,7 +119,6 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
                 //是否可以交换微信电话
                 mPresenter.exchangeContactsVerification(targetId);
                 //租户-房东聊天
-                isSendApply = false;
                 ctlChat.setVisibility(View.VISIBLE);
                 initIM();
                 RongIM.getInstance().setSendMessageListener(this);
@@ -155,12 +135,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
 
     @Override
     public void onBackPressed() {
-        if (isSendApply) {
-            //发送认证 ，返回房东个人中心
-            GotoActivityUtils.mainOwnerDefMainActivity(context);
-        } else {
-            super.onBackPressed();
-        }
+        super.onBackPressed();
     }
 
     private void initIMInfo() {
