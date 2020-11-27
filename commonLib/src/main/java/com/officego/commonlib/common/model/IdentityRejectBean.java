@@ -240,17 +240,17 @@ public class IdentityRejectBean {
          * dictCname : 楼名名称不符合规范或不正确
          */
 
-        @SerializedName("dictValue")
-        private int dictValue;
+        @SerializedName("dictCode")
+        private int dictCode;
         @SerializedName("dictCname")
         private String dictCname;
 
-        public int getDictValue() {
-            return dictValue;
+        public int getDictCode() {
+            return dictCode;
         }
 
-        public void setDictValue(int dictValue) {
-            this.dictValue = dictValue;
+        public void setDictCode(int dictCode) {
+            this.dictCode = dictCode;
         }
 
         public String getDictCname() {

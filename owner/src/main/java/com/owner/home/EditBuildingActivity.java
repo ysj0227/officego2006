@@ -700,6 +700,8 @@ public class EditBuildingActivity extends BaseMvpActivity<BuildingPresenter>
 
     @Override
     public void editSaveSuccess() {
+        //更新总楼层
+        Constants.FLOOR_COUNTS = silStorey.getEditTextView().getText().toString();
         UploadVideoVrActivity_.intent(context)
                 .flay(Constants.FLAG_BUILDING)
                 .buildingManagerBean(buildingManagerBean)

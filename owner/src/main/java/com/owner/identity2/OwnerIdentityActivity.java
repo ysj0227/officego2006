@@ -406,30 +406,30 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
                 !TextUtils.equals("0", bean.getIsHolder())) {
             setIdentityType(Integer.valueOf(bean.getIsHolder()));
         }
-        if (map.containsKey(1) || map.containsKey(2)) {
+        if (map.containsKey(1)) {
             ivRejectName.setVisibility(View.VISIBLE);
         }
         //房产证
-        if (!map.containsKey(3) && !map.containsKey(4)) {
+        if (!map.containsKey(2)) {
             showImageList(cerAdapter, bean.getPremisesPermit(), listCertificate);
         } else {
             ivRejectOwnershipCertificate.setVisibility(View.VISIBLE);
         }
         //营业执照
-        if (!map.containsKey(5) && !map.containsKey(6)) {
+        if (!map.containsKey(3)) {
             showImageList(liceAdapter, bean.getBusinessLicense(), listBusinessLice);
         } else {
             ivRejectBusinessLicense.setVisibility(View.VISIBLE);
         }
         //身份证
-        if (!map.containsKey(7) && !map.containsKey(8)) {
+        if (!map.containsKey(4)) {
             idFrontImage(bean.getIdFront());
             idBackImage(bean.getIdBack());
         } else {
             ivRejectIdcard.setVisibility(View.VISIBLE);
         }
         //补充材料
-        if (!map.containsKey(9) && !map.containsKey(10)) {
+        if (!map.containsKey(5)) {
             showImageList(addiAdapter, bean.getMaterials(), listAdditionalInfo);
         } else {
             ivRejectAdditionalInfo.setVisibility(View.VISIBLE);
@@ -469,7 +469,7 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
             int key;
             String value;
             for (int i = 0; i < bean.getRemark().size(); i++) {
-                key = bean.getRemark().get(i).getDictValue();
+                key = bean.getRemark().get(i).getDictCode();
                 value = bean.getRemark().get(i).getDictCname();
                 if (i == bean.getRemark().size() - 1) {
                     builder.append(value);
@@ -491,7 +491,7 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
      */
     private boolean isRejectModifyNameMessage() {
         if (Constants.IDENTITY_REJECT == flag) {
-            if (map.containsKey(1) || map.containsKey(2)) {
+            if (map.containsKey(1)) {
                 return TextUtils.equals(buildingName, currentRejectData.getBuildingName()) &&
                         TextUtils.equals(address, currentRejectData.getAddress()) &&
                         TextUtils.equals(String.valueOf(districtId),
@@ -983,6 +983,7 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
         viewLayout.findViewById(R.id.rl_exit).setOnClickListener(v -> dialog.dismiss());
         if (data.isNickname()) {
             cetName.setText(data.getNickname());
+            cetName.setSelection(data.getNickname().length());
         }
         cetJob.setText(data.getJob());
         Glide.with(context).load(data.getAvatar()).into(civAvatar);
@@ -1005,7 +1006,7 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
             }
             //更新用户信息
             String sex = TextUtils.isEmpty(mUserBean.getSex()) ? "1" : mUserBean.getSex();
-            mPresenter.updateUserInfo(avatarUrl, nickName, sex, mUserBean.getCompany(), job, mUserBean.getWxId());
+            mPresenter.updateUserInfo(avatarUrl, nickName, sex,  job, mUserBean.getWxId());
         });
         //个人信息
         tvMore.setOnClickListener(view -> {

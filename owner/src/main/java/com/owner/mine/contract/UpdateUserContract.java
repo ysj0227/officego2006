@@ -2,8 +2,6 @@ package com.owner.mine.contract;
 
 import com.officego.commonlib.base.BaseView;
 
-import java.io.File;
-
 /**
  * Created by YangShiJie
  * Data 2020/6/8.
@@ -23,6 +21,6 @@ public interface UpdateUserContract {
 
         void updateAvatar(String path);
 
-        void UpdateUserInfo(String avatar, String nickname, String sex, String company, String job, String wx);
+        void UpdateUserInfo(String avatar, String nickname, String sex, String job, String wx);
     }
 }

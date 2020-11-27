@@ -119,6 +119,10 @@ public class EditOpenSeatsActivity extends BaseMvpActivity<OpenSeatsPresenter>
         if (buildingFlag == Constants.BUILDING_FLAG_EDIT) {
             mPresenter.getHouseEdit(buildingManagerBean.getBuildingId(), buildingManagerBean.getIsTemp());
         }
+        //总楼层
+        if (!TextUtils.isEmpty(Constants.FLOOR_JOINT_WORK_COUNTS)){
+            tvCountsFloor.setText("总" + Constants.FLOOR_JOINT_WORK_COUNTS + "层");
+        }
     }
 
     private void initViews() {
@@ -341,9 +345,6 @@ public class EditOpenSeatsActivity extends BaseMvpActivity<OpenSeatsPresenter>
             silRentSingle.getEditTextView().setText(data.getHouseMsg().getDayPrice() + "");
             //楼层
             etFloors.setText(data.getHouseMsg().getFloor());
-            if (!TextUtils.isEmpty(Constants.FLOOR_COUNTS)){
-                tvCountsFloor.setText("总" + Constants.FLOOR_COUNTS + "层");
-            }
             //租期
             silRentTime.getEditTextView().setText(data.getHouseMsg().getMinimumLease());
             silFreeRent.getLeftToArrowTextView().setText(data.getHouseMsg().getRentFreePeriod());

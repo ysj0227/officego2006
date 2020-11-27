@@ -64,7 +64,6 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
-import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.ViewById;
 
 import java.io.File;
@@ -736,6 +735,8 @@ public class EditJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
 
     @Override
     public void editSaveSuccess() {
+        //更新总楼层
+        Constants.FLOOR_JOINT_WORK_COUNTS = etFloorsCount.getText().toString();
         UploadVideoVrActivity_.intent(context)
                 .flay(Constants.FLAG_BUILDING)
                 .buildingManagerBean(buildingManagerBean)

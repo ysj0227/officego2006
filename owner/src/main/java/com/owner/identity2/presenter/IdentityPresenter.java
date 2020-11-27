@@ -46,22 +46,22 @@ public class IdentityPresenter extends BasePresenter<IdentityContract.View>
     public void searchList(String keyword) {
         com.officego.commonlib.common.rpc.OfficegoApi.getInstance().searchList(keyword,
                 new RetrofitCallback<List<SearchListBean.DataBean>>() {
-            @Override
-            public void onSuccess(int code, String msg, List<SearchListBean.DataBean> data) {
-                if (isViewAttached()) {
-                    mView.searchBuildingSuccess(data);
-                }
-            }
-
-            @Override
-            public void onFail(int code, String msg, List<SearchListBean.DataBean> data) {
-                if (isViewAttached()) {
-                    if (code == Constants.DEFAULT_ERROR_CODE) {
-                        mView.shortTip(msg);
+                    @Override
+                    public void onSuccess(int code, String msg, List<SearchListBean.DataBean> data) {
+                        if (isViewAttached()) {
+                            mView.searchBuildingSuccess(data);
+                        }
                     }
-                }
-            }
-        });
+
+                    @Override
+                    public void onFail(int code, String msg, List<SearchListBean.DataBean> data) {
+                        if (isViewAttached()) {
+                            if (code == Constants.DEFAULT_ERROR_CODE) {
+                                mView.shortTip(msg);
+                            }
+                        }
+                    }
+                });
     }
 
     @Override
@@ -148,10 +148,10 @@ public class IdentityPresenter extends BasePresenter<IdentityContract.View>
     }
 
     @Override
-    public void updateUserInfo(String avatar, String nickname, String sex, String company, String job, String wx) {
+    public void updateUserInfo(String avatar, String nickname, String sex, String job, String wx) {
         mView.showLoadingDialog();
         com.officego.commonlib.common.rpc.OfficegoApi.getInstance().updateUserInfo(avatar, nickname, sex,
-                company, job, wx, new RetrofitCallback<Object>() {
+                job, wx, new RetrofitCallback<Object>() {
                     @Override
                     public void onSuccess(int code, String msg, Object data) {
                         if (isViewAttached()) {

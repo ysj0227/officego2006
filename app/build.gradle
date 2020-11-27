@@ -25,9 +25,9 @@ android {
             }
         }
         multiDexEnabled true
-        manifestPlaceholders = [ENV_VALUE: "ENV_TEST",
-                                APP_NAME : "@string/app_name",
-                                WX_APP_ID: "wx57ca52557f7efc4c",
+        manifestPlaceholders = [ENV_VALUE    : "ENV_TEST",
+                                APP_NAME     : "@string/app_name",
+                                WX_APP_ID    : "wx57ca52557f7efc4c",
                                 JPUSH_APPKEY : "032e4f10975ceb69f6f19ca3",
                                 JPUSH_CHANNEL: "default_developer",]
     }
@@ -47,19 +47,32 @@ android {
                                     APP_NAME      : "@string/app_name",
                                     WX_APP_ID     : "wx70ee9e90c1d62d83",
                                     SENSORS_SCHEME: "sacc267397",
-                                    JPUSH_APPKEY : "032e4f10975ceb69f6f19ca3",
-                                    JPUSH_CHANNEL: "default_developer",]
+                                    JPUSH_APPKEY  : "032e4f10975ceb69f6f19ca3",
+                                    JPUSH_CHANNEL : "default_developer",]
             zipAlignEnabled false
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
+        preRelease {
+            manifestPlaceholders = [ENV_VALUE     : "ENV_RELEASE",
+                                    APP_NAME      : "@string/app_name",
+                                    WX_APP_ID     : "wx70ee9e90c1d62d83",
+                                    SENSORS_SCHEME: "saa39f5229",
+                                    JPUSH_APPKEY  : "032e4f10975ceb69f6f19ca3",
+                                    JPUSH_CHANNEL : "default_developer",]
+            minifyEnabled false
+            zipAlignEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.sign
+            multiDexEnabled = true
         }
         release {
             manifestPlaceholders = [ENV_VALUE     : "ENV_RELEASE",
                                     APP_NAME      : "@string/app_name",
                                     WX_APP_ID     : "wx70ee9e90c1d62d83",
                                     SENSORS_SCHEME: "saa39f5229",
-                                    JPUSH_APPKEY : "032e4f10975ceb69f6f19ca3",
-                                    JPUSH_CHANNEL: "default_developer",]
+                                    JPUSH_APPKEY  : "032e4f10975ceb69f6f19ca3",
+                                    JPUSH_CHANNEL : "default_developer",]
             minifyEnabled false
             zipAlignEnabled true
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'

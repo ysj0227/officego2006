@@ -406,7 +406,11 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
 
     //获取当前楼盘的信息
     private void currentBuildingMessage(BuildingJointWorkBean.ListBean bean) {
-        Constants.FLOOR_COUNTS = bean.getTotalFloor();
+        if (Constants.TYPE_BUILDING == bean.getBtype()) {
+            Constants.FLOOR_COUNTS = bean.getTotalFloor();
+        } else {
+            Constants.FLOOR_JOINT_WORK_COUNTS = bean.getTotalFloor();
+        }
         ivAdd.setVisibility(bean.isAddHouse() ? View.VISIBLE : View.GONE);
         tvHomeTitle.setText(bean.getBuildingName());
         mData = bean;

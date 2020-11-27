@@ -241,12 +241,8 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
             tvName.setText(data.getNickname());
             SpUtils.saveWechat(mUserInfo.getWxId() == null || TextUtils.isEmpty(mUserInfo.getWxId()) ? "" : mUserInfo.getWxId());
             Glide.with(mActivity).applyDefaultRequestOptions(GlideUtils.avaOoptions()).load(data.getAvatar()).into(civAvatar);
-            if (TextUtils.isEmpty(data.getCompany()) && !TextUtils.isEmpty(data.getJob())) {
+            if (!TextUtils.isEmpty(data.getJob())) {
                 tvAccount.setText(data.getJob());
-            } else if (!TextUtils.isEmpty(data.getCompany()) && TextUtils.isEmpty(data.getJob())) {
-                tvAccount.setText(data.getCompany());
-            } else if (!TextUtils.isEmpty(data.getCompany()) && !TextUtils.isEmpty(data.getJob())) {
-                tvAccount.setText(data.getCompany() + "·" + data.getJob());
             }
         }
     }

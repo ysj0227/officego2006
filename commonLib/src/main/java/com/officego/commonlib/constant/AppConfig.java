@@ -19,9 +19,6 @@ public class AppConfig extends BaseConfig {
     public static String H5_REGISTER = "";//注册协议
     public static String H5_QA = "";//常见问题
     public static String H5_VR_RECORD = "";//VR录制
-
-    public static String H5_OWNER_BUILDINGlIST = "";//房源管理
-    public static String H5_OWNER_HOUSElIST = "";// 网点管理
     //融云key
     public static String RC_APPKEY = "";
     public static String RC_APPSECRET = "";
@@ -42,9 +39,6 @@ public class AppConfig extends BaseConfig {
     //测试
     @Override
     protected void initTest(Context context, String env) {
-        //预发环境
-//        APP_URL = "http://admin.officego.com.cn/";
-//        APP_URL_MAIN = "http://test.officego.com.cn/";
         //开发环境
         APP_URL = "http://debug.officego.com.cn/";
         APP_URL_MAIN = "http://test1.officego.com.cn/";
@@ -58,9 +52,31 @@ public class AppConfig extends BaseConfig {
         H5_PRIVACY = APP_URL_MAIN + "lessee/privacy.html";
         H5_REGISTER = APP_URL_MAIN + "lessee/registerProtocol.html";
         H5_QA = APP_URL_MAIN + "lessee/issueList.html";
-        //楼盘网点管理
-        H5_OWNER_BUILDINGlIST = APP_URL_MAIN + "owner/houseList.html";
-        H5_OWNER_HOUSElIST = APP_URL_MAIN + "owner/branchList.html";
+        //VR录制
+        H5_VR_RECORD = APP_URL_MAIN + "owner/vr.html";
+        //融云IM test
+        RC_APPKEY = "kj7swf8oknm02";
+        RC_APPSECRET = "OF78PpILjjRk4";
+        //bugly
+        BUGLY_ID = "dc2ca7a8a6";
+    }
+
+    //预发
+    @Override
+    protected void initPreRelease(Context context, String env) {
+        //预发环境
+        APP_URL = "http://admin.officego.com.cn/";
+        APP_URL_MAIN = "http://test.officego.com.cn/";
+        //web扫码
+        WEB_URL_SCAN_LOGIN = "http://debugweb.officego.com.cn/";
+        SA_SERVER_URL = "https://officego.datasink.sensorsdata.cn/sa?project=default&token=d0db7a742f154aac";
+        //个人中心
+        H5_ABOUT_US = APP_URL_MAIN + "lessee/aboutUs.html";
+        H5_HELP_FEEDBACK = APP_URL_MAIN + "lessee/opinion.html";
+        H5_HELP_FEEDBACK_OWNER = APP_URL_MAIN + "owner/opinion.html";
+        H5_PRIVACY = APP_URL_MAIN + "lessee/privacy.html";
+        H5_REGISTER = APP_URL_MAIN + "lessee/registerProtocol.html";
+        H5_QA = APP_URL_MAIN + "lessee/issueList.html";
         //VR录制
         H5_VR_RECORD = APP_URL_MAIN + "owner/vr.html";
         //融云IM test
@@ -85,9 +101,6 @@ public class AppConfig extends BaseConfig {
         H5_PRIVACY = APP_URL_MAIN + "lessee/privacy.html";
         H5_REGISTER = APP_URL_MAIN + "lessee/registerProtocol.html";
         H5_QA = APP_URL_MAIN + "lessee/issueList.html";
-        //楼盘网点管理
-        H5_OWNER_BUILDINGlIST = APP_URL_MAIN + "owner/houseList.html";
-        H5_OWNER_HOUSElIST = APP_URL_MAIN + "owner/branchList.html";
         //VR录制
         H5_VR_RECORD = APP_URL_MAIN + "owner/vr.html";
         //融云IM release

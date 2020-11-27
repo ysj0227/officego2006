@@ -7,7 +7,6 @@ import com.officego.commonlib.common.model.IdentityRejectBean;
 import com.officego.commonlib.common.model.SearchListBean;
 import com.officego.commonlib.common.model.UserMessageBean;
 import com.officego.commonlib.common.model.owner.UploadImageBean;
-import com.owner.identity.model.IdentityBuildingBean;
 
 import java.util.List;
 
@@ -46,6 +45,6 @@ public interface IdentityContract {
 
         void uploadImage(int imageType, List<String> mFilePath);
 
-        void updateUserInfo(String avatar, String nickname, String sex, String company, String job, String wx);
+        void updateUserInfo(String avatar, String nickname, String sex, String job, String wx);
     }
 }

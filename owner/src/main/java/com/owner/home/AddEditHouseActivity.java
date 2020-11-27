@@ -372,16 +372,6 @@ public class AddEditHouseActivity extends BaseMvpActivity<HousePresenter>
         dialog.showWithOutTouchable(false);
     }
 
-//    @FocusChange(resName = "et_seat_start")
-//    void onStartSeatFocusChange(View view, boolean isFocus) {
-//        if (isFocus) setSeats();
-//    }
-//
-//    @FocusChange(resName = "et_seat_end")
-//    void onEndSeatFocusChange(View view, boolean isFocus) {
-//        if (isFocus) setSeats();
-//    }
-
     @Click(resName = "tv_rent_sum_tip")
     void textRentSumTipOnClick() {
         silRentSum.setEditText(rentCounts + "");

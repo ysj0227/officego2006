@@ -4,9 +4,6 @@ import com.officego.commonlib.base.BaseApplication;
 import com.officego.commonlib.utils.CommonHelper;
 import com.tencent.mm.opensdk.openapi.IWXAPI;
 
-import java.util.Map;
-import java.util.concurrent.ConcurrentHashMap;
-
 public class Constants {
     public static final String FILE_PROVIDER_AUTHORITY =
             CommonHelper.getAppPackageName(BaseApplication.getContext()) + ".Fileprovider";
@@ -104,8 +101,9 @@ public class Constants {
     public final static int TYPE_IMAGE_BUILDING = 1;
     public final static int TYPE_IMAGE_HOUSE = 3;
     public final static int TYPE_IMAGE_IDENTITY = 4;
-    //总楼层
+    //总楼层 楼盘-网点
     public static String FLOOR_COUNTS = "";
+    public static String FLOOR_JOINT_WORK_COUNTS = "";
     //业主--首页列表重新认证和新认证刷新，当有房源时切换tab不刷新
     public static boolean IS_HOME_REFRESH;
     //当前楼盘，网点id

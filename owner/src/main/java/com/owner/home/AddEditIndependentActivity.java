@@ -162,8 +162,8 @@ public class AddEditIndependentActivity extends BaseMvpActivity<IndependentPrese
         titleBar.setAppTitle(buildingFlag == Constants.BUILDING_FLAG_ADD ? "添加独立办公室" : "编辑独立办公室");
         tvUploadTitle.setText("上传办公室图片");
         tvDesTitle.setText("户型格局介绍");
-        if (!TextUtils.isEmpty(Constants.FLOOR_COUNTS)) {
-            tvCountsFloor.setText("总" + Constants.FLOOR_COUNTS + "层");
+        if (!TextUtils.isEmpty(Constants.FLOOR_JOINT_WORK_COUNTS)) {
+            tvCountsFloor.setText("总" + Constants.FLOOR_JOINT_WORK_COUNTS + "层");
         }
         //上传图片
         GridLayoutManager layoutManager2 = new GridLayoutManager(context, 3);

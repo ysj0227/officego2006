@@ -53,6 +53,8 @@ public class SpUtils {
         clearToIdentity();
         //房东初始化首页选择的楼盘id
         Constants.mCurrentBuildingId = 0;
+        Constants.FLOOR_JOINT_WORK_COUNTS="";
+        Constants.FLOOR_COUNTS="";
     }
 
     //clear用户登录信息
