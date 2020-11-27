@@ -1,4 +1,4 @@
-package com.owner.identity2.presenter;
+package com.owner.identity.presenter;
 
 import android.content.Context;
 
@@ -9,10 +9,7 @@ import com.officego.commonlib.common.model.UserMessageBean;
 import com.officego.commonlib.common.model.owner.UploadImageBean;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
-import com.officego.commonlib.utils.log.LogCat;
-import com.owner.identity.model.IdentityBuildingBean;
-import com.owner.identity2.contract.IdentityContract;
-import com.owner.rpc.OfficegoApi;
+import com.owner.identity.contract.IdentityContract;
 
 import java.util.List;
 

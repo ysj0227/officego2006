@@ -13,7 +13,7 @@ import com.officego.commonlib.common.model.owner.BuildingJointWorkBean;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.DateTimeUtils;
 import com.owner.R;
-import com.owner.identity2.OwnerIdentityActivity_;
+import com.owner.identity.OwnerIdentityActivity_;
 
 import java.util.List;
 

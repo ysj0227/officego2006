@@ -1,4 +1,4 @@
-package com.owner.identity2;
+package com.owner.identity;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -52,9 +52,9 @@ import com.owner.dialog.ExitConfirmDialog;
 import com.owner.dialog.IdentityTypeDialog;
 import com.owner.home.utils.CommonUtils;
 import com.owner.identity.model.ImageBean;
-import com.owner.identity2.contract.IdentityContract;
-import com.owner.identity2.model.BuildingBean;
-import com.owner.identity2.presenter.IdentityPresenter;
+import com.owner.identity.contract.IdentityContract;
+import com.owner.identity.model.BuildingBean;
+import com.owner.identity.presenter.IdentityPresenter;
 import com.owner.mine.MineMessageActivity_;
 import com.owner.utils.CommUtils;
 import com.wildma.idcardcamera.camera.IDCardCamera;

@@ -1,10 +1,10 @@
-package com.owner.identity2.presenter;
+package com.owner.identity.presenter;
 
 import com.officego.commonlib.base.BasePresenter;
 import com.officego.commonlib.common.model.owner.UploadImageBean;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
-import com.owner.identity2.contract.CreateBuildingContract;
+import com.owner.identity.contract.CreateBuildingContract;
 
 /**
  * Created by shijie

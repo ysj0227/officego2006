@@ -33,25 +33,6 @@ public interface MineMsgInterface {
     @POST(path + "user/regTokenApp")
     Call<BaseResponse<LoginBean>> switchId(@PartMap Map<String, RequestBody> params);
 
-    /**
-     * 更新个人头像
-     */
-    @POST(path + "user/updateDataApp")
-    Call<BaseResponse<AvatarBean>> updateUserAvatar(@Body RequestBody body);
-
-    /**
-     * 更新个人信息
-     */
-    @Multipart
-    @POST(path + "user/updateDataApp")
-    Call<BaseResponse<Object>> updateUserData(@PartMap Map<String, RequestBody> params);
-
-//    /**
-//     * 获取房东个人信息
-//     */
-//    @Multipart
-//    @POST(path + "user/getUserInfoApp")
-//    Call<BaseResponse<UserMessageBean>> getUserMsg(@PartMap Map<String, RequestBody> params);
 
     /**
      * 修改手机号
@@ -60,19 +41,5 @@ public interface MineMsgInterface {
     @POST(path + "user/changePhone")
     Call<BaseResponse<Object>> modifyMobile(@PartMap Map<String, RequestBody> params);
 
-    /**
-     * 添加(绑定)微信
-     */
-    @Multipart
-    @POST(path + "user/changeWxId")
-    Call<BaseResponse<Object>> bindWechat(@PartMap Map<String, RequestBody> params);
-
-
-    /**
-     * 版本更新
-     */
-    @Multipart
-    @POST(path + "version/android")
-    Call<BaseResponse<VersionBean>> updateVersion(@PartMap Map<String, RequestBody> params);
 
 }

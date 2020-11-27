@@ -1,4 +1,4 @@
-package com.owner.identity2.contract;
+package com.owner.identity.contract;
 
 import android.content.Context;
 

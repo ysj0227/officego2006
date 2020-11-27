@@ -1,4 +1,4 @@
-package com.owner.identity2;
+package com.owner.identity;
 
 import android.app.AlertDialog;
 import android.content.Intent;
@@ -30,10 +30,9 @@ import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.commonlib.view.widget.SettingItemLayout;
 import com.owner.R;
 import com.owner.dialog.AreaDialog;
-import com.owner.identity.RequestPermissionsResult;
-import com.owner.identity2.contract.CreateBuildingContract;
-import com.owner.identity2.model.BuildingBean;
-import com.owner.identity2.presenter.CreateBuildingPresenter;
+import com.owner.identity.contract.CreateBuildingContract;
+import com.owner.identity.model.BuildingBean;
+import com.owner.identity.presenter.CreateBuildingPresenter;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;

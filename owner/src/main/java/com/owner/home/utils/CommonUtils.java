@@ -2,7 +2,6 @@ package com.owner.home.utils;
 
 import android.text.TextUtils;
 import android.widget.CheckBox;
-import android.widget.RadioButton;
 
 import com.owner.identity.model.ImageBean;
 

@@ -1,4 +1,4 @@
-package com.owner.identity2.model;
+package com.owner.identity.model;
 
 import java.io.Serializable;
 

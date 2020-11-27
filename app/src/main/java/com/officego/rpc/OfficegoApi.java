@@ -7,7 +7,10 @@ import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.model.ChatHouseBean;
 import com.officego.commonlib.common.model.DirectoryBean;
+import com.officego.commonlib.common.model.QueryHistoryKeywordsBean;
 import com.officego.commonlib.common.model.RenterBean;
+import com.officego.commonlib.common.model.SearchListBean;
+import com.officego.commonlib.common.rpc.request.SearchInterface;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.CommonHelper;
@@ -22,7 +25,6 @@ import com.officego.rpc.request.LoginInterface;
 import com.officego.rpc.request.MineMsgInterface;
 import com.officego.rpc.request.ScheduleInterface;
 import com.officego.rpc.request.SearchAreaInterface;
-import com.officego.commonlib.common.rpc.request.SearchInterface;
 import com.officego.ui.collect.model.CollectBuildingBean;
 import com.officego.ui.collect.model.CollectHouseBean;
 import com.officego.ui.home.model.BannerBean;
@@ -35,8 +37,6 @@ import com.officego.ui.home.model.ChatsBean;
 import com.officego.ui.home.model.HouseOfficeDetailsBean;
 import com.officego.ui.home.model.HouseOfficeDetailsJointWorkBean;
 import com.officego.ui.home.model.MeterBean;
-import com.officego.commonlib.common.model.QueryHistoryKeywordsBean;
-import com.officego.commonlib.common.model.SearchListBean;
 import com.officego.ui.mine.model.ViewingDateBean;
 import com.officego.ui.mine.model.ViewingDateDetailsBean;
 
@@ -705,21 +705,6 @@ public class OfficegoApi {
                     .addRenter(map)
                     .enqueue(callback);
         }
-    }
-
-    /**
-     * id 	是 	int 	行程id
-     * auditStatus 	是 	int 	审核状态0预约1预约成功(同意)2预约失败(拒绝)3已看房4未看房
-     */
-    public void updateAuditStatus(int id, int auditStatus,
-                                  RetrofitCallback<Object> callback) {
-        Map<String, RequestBody> map = new HashMap<>();
-        map.put("token", requestBody(SpUtils.getSignToken()));
-        map.put("id", requestBody(id + ""));
-        map.put("auditStatus", requestBody(auditStatus + ""));
-        OfficegoRetrofitClient.getInstance().create(ScheduleInterface.class)
-                .updateAuditStatus(map)
-                .enqueue(callback);
     }
 
     /**

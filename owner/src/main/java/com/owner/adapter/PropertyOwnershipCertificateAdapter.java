@@ -6,8 +6,6 @@ import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 
-import androidx.annotation.NonNull;
-
 import com.bumptech.glide.Glide;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;

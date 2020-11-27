@@ -18,7 +18,6 @@ import com.officego.commonlib.common.model.owner.BuildingEditBean;
 import com.officego.commonlib.common.model.owner.BuildingJointWorkBean;
 import com.officego.commonlib.common.model.owner.HouseBean;
 import com.officego.commonlib.common.model.owner.HouseEditBean;
-import com.officego.commonlib.common.model.owner.RejectBuildingBean;
 import com.officego.commonlib.common.model.owner.UploadImageBean;
 import com.officego.commonlib.common.rpc.request.BuildingJointWorkInterface;
 import com.officego.commonlib.common.rpc.request.ChatInterface;
@@ -729,73 +728,6 @@ public class OfficegoApi {
                 .houseEditSave(map)
                 .enqueue(callback);
     }
-
-    /**
-     * 添加楼盘网点
-     * token 	是 	string 	用户名
-     * buildingName 	是 	string 	楼名称
-     * districtId 	是 	number 	区域
-     * businessDistrict 	是 	number 	商圈
-     * address 	是 	string 	地址
-     * mainPic 	是 	string 	封面图url
-     * premisesPermit 	否 	string 	房产证url 英文逗号拼接
-     * btype 	是 	int 	1楼盘2网点
-     * buildingId 如果是关联的楼盘或是网点传
-     */
-    public void addBuilding(int btype, String buildingName, int districtId,
-                            int businessDistrict, String address, String mainPic,
-                            String premisesPermit, int buildId,
-                            RetrofitCallback<Object> callback) {
-        Map<String, RequestBody> map = new HashMap<>();
-        map.put("token", requestBody(SpUtils.getSignToken()));
-        map.put("btype", requestBody(btype + ""));
-        map.put("buildingName", requestBody(buildingName + ""));
-        map.put("mainPic", requestBody(mainPic + ""));
-        map.put("buildingCardTemp", requestBody(premisesPermit + ""));
-        if (districtId != 0 || buildId != 0) {
-            map.put("districtId", requestBody(districtId + ""));
-            map.put("businessDistrict", requestBody(businessDistrict + ""));
-            map.put("address", requestBody(address + ""));
-            map.put("buildId", requestBody(buildId + ""));
-        }
-        OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
-                .buildingAdd(map)
-                .enqueue(callback);
-    }
-
-    //驳回重新添加
-    public void rejectReAddBuilding(int btype, String buildingName, int districtId,
-                                    int businessDistrict, String address, String mainPic,
-                                    String premisesPermit, int buildId, int buildingId,
-                                    RetrofitCallback<Object> callback) {
-        Map<String, RequestBody> map = new HashMap<>();
-        map.put("token", requestBody(SpUtils.getSignToken()));
-        map.put("btype", requestBody(btype + ""));
-        map.put("buildingName", requestBody(buildingName + ""));
-        map.put("mainPic", requestBody(mainPic + ""));
-        map.put("buildingCardTemp", requestBody(premisesPermit + ""));
-        if (districtId != 0 || buildId != 0) {
-            map.put("districtId", requestBody(districtId + ""));
-            map.put("businessDistrict", requestBody(businessDistrict + ""));
-            map.put("address", requestBody(address + ""));
-            map.put("buildId", requestBody(buildId + ""));
-        }
-        map.put("buildingId", requestBody(buildingId + ""));
-        OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
-                .buildingAdd(map)
-                .enqueue(callback);
-    }
-
-    //楼盘网点驳回回显
-    public void rejectBuildingMsg(int buildingId, RetrofitCallback<RejectBuildingBean> callback) {
-        Map<String, RequestBody> map = new HashMap<>();
-        map.put("token", requestBody(SpUtils.getSignToken()));
-        map.put("buildingId", requestBody(buildingId + ""));
-        OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
-                .buildingRejectMsg(map)
-                .enqueue(callback);
-    }
-
 
     //楼盘保存发布带VR
     public void buildingPublishVr(int buildingId, int isTemp, String vr,

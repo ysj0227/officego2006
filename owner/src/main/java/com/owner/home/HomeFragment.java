@@ -38,7 +38,7 @@ import com.owner.dialog.IdentityViewPagerDialog;
 import com.owner.h5.WebViewActivity_;
 import com.owner.home.contract.HomeContract;
 import com.owner.home.presenter.HomePresenter;
-import com.owner.identity2.OwnerIdentityActivity_;
+import com.owner.identity.OwnerIdentityActivity_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;

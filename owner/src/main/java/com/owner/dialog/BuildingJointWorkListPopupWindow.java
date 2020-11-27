@@ -30,7 +30,7 @@ import com.officego.commonlib.utils.CommonHelper;
 import com.owner.R;
 import com.owner.home.EditBuildingActivity_;
 import com.owner.home.EditJointWorkActivity_;
-import com.owner.identity2.OwnerIdentityActivity_;
+import com.owner.identity.OwnerIdentityActivity_;
 
 import java.util.ArrayList;
 import java.util.List;
