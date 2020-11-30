@@ -232,29 +232,35 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     //楼盘网点列表
     @Override
     public void buildingJointWorkListSuccess(BuildingJointWorkBean data) {
-        ivLeftMore.setVisibility(View.GONE);
-        tvHomeTitle.setVisibility(View.GONE);
-        ivAdd.setVisibility(View.GONE);
-        tvExpand.setVisibility(View.VISIBLE);
-        popupWindow = new BuildingJointWorkListPopupWindow(mActivity, mUserData, rlTitle, data.getList());
-        popupWindow.setListener(this);
+        if (data == null) {
+            shortTip("暂无数据");
+        } else {
+            ivLeftMore.setVisibility(View.GONE);
+            tvHomeTitle.setVisibility(View.GONE);
+            ivAdd.setVisibility(View.GONE);
+            tvExpand.setVisibility(View.VISIBLE);
+            popupWindow = new BuildingJointWorkListPopupWindow(mActivity, mUserData, rlTitle, data.getList());
+            popupWindow.setListener(this);
+        }
     }
 
     //默认选择了楼盘
     //0: 下架(未发布),1: 上架(已发布) ;2:资料待完善  3: 置顶推荐;4:已售完;5:删除;6待审核7已驳回
     @Override
     public void initHouseList(BuildingJointWorkBean data) {
-        boolean isRecordBuildingId = false;
-        if (data.getList().size() > 0) {
-            for (BuildingJointWorkBean.ListBean bean : data.getList()) {
-                if (bean.getBuildingId() == Constants.mCurrentBuildingId) {
-                    isRecordBuildingId = true;
-                    toLoadHouseData(bean);
-                    break;
+        if (data != null) {
+            boolean isRecordBuildingId = false;
+            if (data.getList().size() > 0) {
+                for (BuildingJointWorkBean.ListBean bean : data.getList()) {
+                    if (bean.getBuildingId() == Constants.mCurrentBuildingId) {
+                        isRecordBuildingId = true;
+                        toLoadHouseData(bean);
+                        break;
+                    }
                 }
-            }
-            if (!isRecordBuildingId) {
-                toLoadHouseData(data.getList().get(0));
+                if (!isRecordBuildingId) {
+                    toLoadHouseData(data.getList().get(0));
+                }
             }
         }
     }
