@@ -1,13 +1,15 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="@dimen/dp_60">
+    android:layout_height="@dimen/dp_60"
+    xmlns:app="http://schemas.android.com/apk/res-auto">
 
-    <com.officego.commonlib.view.RoundImageView
+    <com.officego.commonlib.view.CircleImage
         android:id="@+id/riv_avatar"
         android:layout_width="@dimen/dp_45"
         android:layout_height="@dimen/dp_45"
         android:scaleType="centerCrop"
+        app:radius="@dimen/dp_40"
         android:layout_centerVertical="true"
         android:layout_marginStart="@dimen/dp_10" />
 

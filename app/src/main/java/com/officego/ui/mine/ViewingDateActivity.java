@@ -240,7 +240,7 @@ public class ViewingDateActivity extends BaseMvpActivity<ViewingDatePresenter>
                 }
                 hasData();
                 viewingDateAdapter.notifyDataSetChanged();
-                return;
+                break;
             } else if (i == viewingDateAllList.size() - 1 && !isHasList) {
                 noData();
             }

@@ -54,7 +54,7 @@ public class IdentityPresenter extends BasePresenter<IdentityContract.View>
 
     @Override
     public void searchList(String keyword) {
-        com.officego.commonlib.common.rpc.OfficegoApi.getInstance().searchList(keyword,
+        com.officego.commonlib.common.rpc.OfficegoApi.getInstance().searchList2(keyword,
                 new RetrofitCallback<List<SearchListBean.DataBean>>() {
                     @Override
                     public void onSuccess(int code, String msg, List<SearchListBean.DataBean> data) {

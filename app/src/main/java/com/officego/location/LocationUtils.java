@@ -65,21 +65,18 @@ public class LocationUtils {
     /**
      * 定位监听
      */
-    AMapLocationListener locationListener = new AMapLocationListener() {
-        @Override
-        public void onLocationChanged(AMapLocation location) {
-            if (null != location) {
-                //errCode等于0代表定位成功，其他的为定位失败，具体的可以参照官网定位错误码说明
-                if (location.getErrorCode() == 0) {
-                    if (location.getLongitude() > 0 && location.getLatitude() > 0) {
-                        Constants.LONGITUDE = String.valueOf(location.getLongitude());
-                        Constants.LATITUDE = String.valueOf(location.getLatitude());
-                    }
-//                    LogCat.e("TAG", "高德 经    度    : " + location.getLongitude() + "纬    度    : " + location.getLatitude());
-                } else {
-                    //定位失败
-//                    LogCat.e("TAG", "高德 错误码:" + location.getErrorCode() + "错误信息:" + location.getErrorInfo() + "错误描述:" + location.getLocationDetail());
+    private AMapLocationListener locationListener = location -> {
+        if (null != location) {
+            //errCode等于0代表定位成功，其他的为定位失败，具体的可以参照官网定位错误码说明
+            if (location.getErrorCode() == 0) {
+                if (location.getLongitude() > 0 && location.getLatitude() > 0) {
+                    Constants.LONGITUDE = String.valueOf(location.getLongitude());
+                    Constants.LATITUDE = String.valueOf(location.getLatitude());
                 }
+//                    LogCat.e("TAG", "高德 经    度    : " + location.getLongitude() + "纬    度    : " + location.getLatitude());
+            } else {
+                //定位失败
+//                    LogCat.e("TAG", "高德 错误码:" + location.getErrorCode() + "错误信息:" + location.getErrorInfo() + "错误描述:" + location.getLocationDetail());
             }
         }
     };

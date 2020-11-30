@@ -843,4 +843,15 @@ public class OfficegoApi {
                 .searchList(map)
                 .enqueue(callback);
     }
+
+    /**
+     * 全局搜索-认证
+     */
+    public void searchList2(String keywords, RetrofitCallback<List<SearchListBean.DataBean>> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("keywords", requestBody(keywords));
+        OfficegoRetrofitClient.getInstance().create(SearchInterface.class)
+                .searchList2(map)
+                .enqueue(callback);
+    }
 }

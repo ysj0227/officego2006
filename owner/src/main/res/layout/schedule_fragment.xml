@@ -183,7 +183,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:layout_marginBottom="@dimen/dp_90"
+            android:layout_marginBottom="@dimen/dp_60"
             android:drawableTop="@mipmap/ic_empty"
             android:drawablePadding="@dimen/dp_2"
             android:gravity="center"

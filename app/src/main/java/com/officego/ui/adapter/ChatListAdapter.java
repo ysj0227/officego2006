@@ -13,6 +13,7 @@ import com.officego.commonlib.ViewHolder;
 import com.officego.commonlib.common.model.ChatListBean;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.GlideUtils;
+import com.officego.commonlib.view.CircleImage;
 import com.officego.commonlib.view.RoundImageView;
 
 import java.util.List;
@@ -37,7 +38,7 @@ public class ChatListAdapter extends CommonListAdapter<ChatListBean.ListBean> {
     @SuppressLint({"SetTextI18n", "DefaultLocale"})
     @Override
     public void convert(ViewHolder holder, final ChatListBean.ListBean bean) {
-        RoundImageView rivAvatar = holder.getView(R.id.riv_avatar);
+        CircleImage rivAvatar = holder.getView(R.id.riv_avatar);
         Glide.with(context).applyDefaultRequestOptions(GlideUtils.avaOoptions()).load(bean.getAvatar()).into(rivAvatar);
         holder.setText(R.id.tv_name, bean.getNickname());
         TextView tvMessage = holder.getView(R.id.tv_message);

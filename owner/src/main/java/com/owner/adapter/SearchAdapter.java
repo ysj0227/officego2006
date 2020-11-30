@@ -15,6 +15,8 @@ import com.owner.R;
 
 import java.util.List;
 
+import static com.owner.utils.CommUtils.searchHtmlTextView;
+
 /**
  * Created by YangShiJie
  * Data 2020/6/6.
@@ -61,10 +63,10 @@ public class SearchAdapter extends CommonListAdapter<SearchListBean.DataBean> {
             tvAddress.setTextColor(ContextCompat.getColor(context, R.color.text_66_p50));
             tvBuildingName.setVisibility(View.VISIBLE);
             if (!TextUtils.isEmpty(bean.getBuildingName())) {
-                tvBuildingName.setText(Html.fromHtml(bean.getBuildingName()));
+                searchHtmlTextView(tvBuildingName, bean.getBuildingName());
             }
             if (!TextUtils.isEmpty(bean.getAddress())) {
-                tvAddress.setText(Html.fromHtml(bean.getAddress()));
+                searchHtmlTextView(tvAddress, bean.getAddress());
             }
             tvAdd.setText(bean.getBuildType() == 1 ? "关联楼盘" : "关联网点");
             holder.itemView.setOnClickListener(v -> listener.associateBuilding(bean, false));

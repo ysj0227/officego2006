@@ -241,7 +241,7 @@ public class ScheduleFragment extends BaseMvpFragment<ViewingDatePresenter>
                 }
                 hasData();
                 viewingDateAdapter.notifyDataSetChanged();
-                return;
+                break;
             } else if (i == viewingDateAllList.size() - 1 && !isHasList) {
                 noData();
             }

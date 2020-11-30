@@ -30,6 +30,13 @@ public interface SearchInterface {
     Call<BaseResponse<List<SearchListBean.DataBean>>> searchList(@PartMap Map<String, RequestBody> params);
 
     /**
+     * 全局搜索接口 认证
+     */
+    @Multipart
+    @POST(path + "esearch/searchListApp2")
+    Call<BaseResponse<List<SearchListBean.DataBean>>> searchList2(@PartMap Map<String, RequestBody> params);
+
+    /**
      * 添加搜索历史接口
      */
     @Multipart

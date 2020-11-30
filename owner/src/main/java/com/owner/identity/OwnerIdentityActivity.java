@@ -174,7 +174,7 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
     private UploadImageAdapter cerAdapter, liceAdapter, addiAdapter;
     //驳回原因
     @SuppressLint("UseSparseArrays")
-    Map<Integer, String> map = new HashMap<>();
+    private Map<Integer, String> map = new HashMap<>();
     //提交信息
     private int buildingType;
     private String buildingName;
@@ -565,10 +565,10 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
             mainPic = bean.getMainPic();
             districtId = 0;
             businessId = 0;
+            buildId = String.valueOf(bean.getBid());
             area = (bean.getDistrict() == null ? "" : (String) bean.getDistrict()) +
                     (bean.getBusiness() == null ? "" : (String) bean.getBusiness());
             address = tvAddress.getText() == null ? "" : tvAddress.getText().toString();
-            buildId = String.valueOf(bean.getBid());
             tvAddress.setText(area + address);
         }
         ivDelete.setVisibility(View.VISIBLE);
