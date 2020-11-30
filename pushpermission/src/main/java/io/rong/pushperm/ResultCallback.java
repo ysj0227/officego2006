@@ -7,7 +7,7 @@ import io.rong.pushperm.perm.PermissionType;
  */
 public interface ResultCallback {
 
-     public enum FailedType {
+     enum FailedType {
           /**
            * 不支持
            */
@@ -19,7 +19,7 @@ public interface ResultCallback {
           /**
            * 取消
            */
-          CANNEL;
+          CANNEL
      }
 
      /**

@@ -37,8 +37,8 @@ public class ViewingDateAdapter extends CommonListAdapter<ViewingDateBean.DataBe
     @Override
     public void convert(ViewHolder holder, final ViewingDateBean.DataBean.ScheduleListBean bean) {
 
-        holder.setText(R.id.tv_date, DateTimeUtils.StampToDate(String.valueOf(bean.getTime())+"000", "MM月dd日"));
-        holder.setText(R.id.tv_time, DateTimeUtils.StampToDate(String.valueOf(bean.getTime())+"000", "HH:mm"));
+        holder.setText(R.id.tv_date, DateTimeUtils.StampToDate(bean.getTime() +"000", "MM月dd日"));
+        holder.setText(R.id.tv_time, DateTimeUtils.StampToDate(bean.getTime() +"000", "HH:mm"));
         holder.setText(R.id.tv_name, bean.getContact());
         holder.setText(R.id.tv_position, bean.getJob());
         holder.setText(com.owner.R.id.tv_building_name, "约看 「" + (TextUtils.isEmpty(bean.getBuildingName()) ? bean.getBranchesName() : bean.getBuildingName()) + "」");

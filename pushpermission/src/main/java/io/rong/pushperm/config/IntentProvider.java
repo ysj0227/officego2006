@@ -51,7 +51,7 @@ public class IntentProvider {
         /**
          * 浮窗
          */
-        FLOAT_WINDOW;
+        FLOAT_WINDOW
     }
 
 

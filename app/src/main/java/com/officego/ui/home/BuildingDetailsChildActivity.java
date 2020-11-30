@@ -680,7 +680,6 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         if (iVideoPlayer != null) {
             iVideoPlayer.release();
         }
-        ;
     }
 
     //视频暂停
