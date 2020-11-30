@@ -21,7 +21,7 @@ public interface IdentityContract {
 
         void identityMessageSuccess(IdentityRejectBean data);
 
-        void submitIdentitySuccess();
+//        void submitIdentitySuccess();
 
         void uploadSuccess(int imageType, UploadImageBean data);
 

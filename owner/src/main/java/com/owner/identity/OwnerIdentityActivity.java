@@ -26,13 +26,11 @@ import com.bumptech.glide.Glide;
 import com.donkingliang.imageselector.utils.ImageSelector;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
-import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.model.IdentityRejectBean;
 import com.officego.commonlib.common.model.SearchListBean;
 import com.officego.commonlib.common.model.UserMessageBean;
 import com.officego.commonlib.common.model.owner.UploadImageBean;
 import com.officego.commonlib.constant.Constants;
-import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.utils.FileHelper;
 import com.officego.commonlib.utils.FileUtils;
 import com.officego.commonlib.utils.ImageUtils;
@@ -43,7 +41,6 @@ import com.officego.commonlib.view.CircleImage;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.RoundImageView;
 import com.officego.commonlib.view.TitleBarView;
-import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.commonlib.view.widget.SettingItemLayout;
 import com.owner.R;
 import com.owner.adapter.SearchAdapter;
@@ -51,9 +48,9 @@ import com.owner.adapter.UploadImageAdapter;
 import com.owner.dialog.ExitConfirmDialog;
 import com.owner.dialog.IdentityTypeDialog;
 import com.owner.home.utils.CommonUtils;
-import com.owner.identity.model.ImageBean;
 import com.owner.identity.contract.IdentityContract;
 import com.owner.identity.model.BuildingBean;
+import com.owner.identity.model.ImageBean;
 import com.owner.identity.presenter.IdentityPresenter;
 import com.owner.mine.MineMessageActivity_;
 import com.owner.utils.CommUtils;
@@ -199,7 +196,7 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarFullTransparent(this);
-        mPresenter = new IdentityPresenter();
+        mPresenter = new IdentityPresenter(this, flag);
         mPresenter.attachView(this);
         titleBar.getLeftImg().setOnClickListener(view -> new ExitConfirmDialog(this));
         initViews();
@@ -504,12 +501,6 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
         return false;
     }
 
-    //提交成功
-    @Override
-    public void submitIdentitySuccess() {
-        submitIdentitySuccessDialog();
-    }
-
     @Override
     public void sureType(String text, int type) {
         setIdentityType(type);
@@ -550,29 +541,6 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
         }
         searchAdapter.setData(mList);
         searchAdapter.notifyDataSetChanged();
-    }
-
-    //认证提交成功
-    private void submitIdentitySuccessDialog() {
-        CommonDialog dialog = new CommonDialog.Builder(this)
-                .setTitle("提交成功")
-                .setMessage("我们会在1-2个工作日完成审核")
-                .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
-                    finish();
-                    //通知提交认证
-                    if (Constants.IDENTITY_FIRST == flag) {
-                        BaseNotification.newInstance().postNotificationName(
-                                CommonNotifications.checkedIdentitySuccess, "checkedIdentitySuccess");
-                    } else if (Constants.IDENTITY_REJECT == flag) {
-                        BaseNotification.newInstance().postNotificationName(
-                                CommonNotifications.rejectBuildingSuccess, "rejectBuildingSuccess");
-                    } else {
-                        BaseNotification.newInstance().postNotificationName(
-                                CommonNotifications.updateBuildingSuccess, "updateBuildingSuccess");
-                    }
-                }).create();
-        dialog.showWithOutTouchable(false);
-        dialog.setCancelable(false);
     }
 
     @SuppressLint("SetTextI18n")
@@ -746,7 +714,8 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
     }
 
     //上传成功添加列表图片
-    private void addListImage(int urlSize, UploadImageBean data, List<ImageBean> list, UploadImageAdapter adapter) {
+    private void addListImage(int urlSize, UploadImageBean data, List<ImageBean> list,
+                              UploadImageAdapter adapter) {
         ImageBean bean;
         for (int i = 0; i < urlSize; i++) {
             bean = new ImageBean(true, 0, data.getUrls().get(i).getUrl());
@@ -987,31 +956,32 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
         }
         cetJob.setText(data.getJob());
         Glide.with(context).load(data.getAvatar()).into(civAvatar);
-        //头像
-        civAvatar.setOnClickListener(view -> {
-            mUploadType = TYPE_AVATAR;
-            selectedDialog();
-        });
-        //保存
-        save.setOnClickListener(view -> {
-            String nickName = cetName.getText().toString();
-            if (TextUtils.isEmpty(nickName)) {
-                shortTip(R.string.str_input_nick_name);
-                return;
+        View.OnClickListener listener = view -> {
+            int id = view.getId();
+            if (id == R.id.civ_avatar) { //头像
+                mUploadType = TYPE_AVATAR;
+                selectedDialog();
+            } else if (id == R.id.btn_save) { //保存
+                String nickName = cetName.getText() == null ? "" : cetName.getText().toString();
+                if (TextUtils.isEmpty(nickName)) {
+                    shortTip(R.string.str_input_nick_name);
+                    return;
+                }
+                String job = cetJob.getText() == null ? "" : cetJob.getText().toString();
+                if (TextUtils.isEmpty(job)) {
+                    shortTip(R.string.str_input_job);
+                    return;
+                }
+                //更新用户信息
+                String sex = TextUtils.isEmpty(mUserBean.getSex()) ? "1" : mUserBean.getSex();
+                mPresenter.updateUserInfo(avatarUrl, nickName, sex, job, mUserBean.getWxId());
+            } else if (id == R.id.tv_more) { //个人信息
+                MineMessageActivity_.intent(context).mUserInfo(data).start();
+                dialog.dismiss();
             }
-            String job = cetJob.getText().toString();
-            if (TextUtils.isEmpty(job)) {
-                shortTip(R.string.str_input_job);
-                return;
-            }
-            //更新用户信息
-            String sex = TextUtils.isEmpty(mUserBean.getSex()) ? "1" : mUserBean.getSex();
-            mPresenter.updateUserInfo(avatarUrl, nickName, sex,  job, mUserBean.getWxId());
-        });
-        //个人信息
-        tvMore.setOnClickListener(view -> {
-            MineMessageActivity_.intent(context).mUserInfo(data).start();
-            dialog.dismiss();
-        });
+        };
+        civAvatar.setOnClickListener(listener);
+        save.setOnClickListener(listener);
+        tvMore.setOnClickListener(listener);
     }
 }

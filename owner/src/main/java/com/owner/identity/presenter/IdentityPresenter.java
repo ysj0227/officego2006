@@ -1,14 +1,19 @@
 package com.owner.identity.presenter;
 
+import android.app.Activity;
 import android.content.Context;
 
 import com.officego.commonlib.base.BasePresenter;
+import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.model.IdentityRejectBean;
 import com.officego.commonlib.common.model.SearchListBean;
 import com.officego.commonlib.common.model.UserMessageBean;
 import com.officego.commonlib.common.model.owner.UploadImageBean;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.retrofit.RetrofitCallback;
+import com.officego.commonlib.view.dialog.CommonDialog;
+import com.owner.R;
 import com.owner.identity.contract.IdentityContract;
 
 import java.util.List;
@@ -19,6 +24,14 @@ import java.util.List;
  **/
 public class IdentityPresenter extends BasePresenter<IdentityContract.View>
         implements IdentityContract.Presenter {
+
+    private Activity context;
+    private int flag;
+
+    public IdentityPresenter(Activity context, int flag) {
+        this.context = context;
+        this.flag = flag;
+    }
 
     @Override
     public void getUserInfo(Context context) {
@@ -100,8 +113,8 @@ public class IdentityPresenter extends BasePresenter<IdentityContract.View>
                     @Override
                     public void onSuccess(int code, String msg, Object data) {
                         if (isViewAttached()) {
-                            mView.submitIdentitySuccess();
                             mView.hideLoadingDialog();
+                            submitIdentitySuccessDialog();
                         }
                     }
 
@@ -168,4 +181,28 @@ public class IdentityPresenter extends BasePresenter<IdentityContract.View>
                     }
                 });
     }
+
+    //认证提交成功
+    private void submitIdentitySuccessDialog() {
+        CommonDialog dialog = new CommonDialog.Builder(context)
+                .setTitle("提交成功")
+                .setMessage("我们会在1-2个工作日完成审核")
+                .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
+                    context.finish();
+                    //通知提交认证
+                    if (Constants.IDENTITY_FIRST == flag) {
+                        BaseNotification.newInstance().postNotificationName(
+                                CommonNotifications.checkedIdentitySuccess, "checkedIdentitySuccess");
+                    } else if (Constants.IDENTITY_REJECT == flag) {
+                        BaseNotification.newInstance().postNotificationName(
+                                CommonNotifications.rejectBuildingSuccess, "rejectBuildingSuccess");
+                    } else {
+                        BaseNotification.newInstance().postNotificationName(
+                                CommonNotifications.updateBuildingSuccess, "updateBuildingSuccess");
+                    }
+                }).create();
+        dialog.showWithOutTouchable(false);
+        dialog.setCancelable(false);
+    }
+
 }

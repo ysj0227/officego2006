@@ -357,11 +357,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     @Override
     public void itemPublishStatus(int position, HouseBean.ListBean bean, boolean isOpenSeats) {
         mPosition = position;
-        if (isOpenSeats) {
-            mPresenter.isPublishHouse(bean.getHouseId(), HOUSE_OFF, bean.getIsTemp());
-        } else {
-            mPresenter.isPublishHouse(bean.getHouseId(), HOUSE_ON, bean.getIsTemp());
-        }
+        mPresenter.isPublishHouse(bean.getHouseId(), isOpenSeats ? HOUSE_OFF : HOUSE_ON, bean.getIsTemp());
     }
 
     @Override
