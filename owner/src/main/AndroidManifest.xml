@@ -24,7 +24,6 @@
         <activity
             android:name=".schedule.ScheduleFragment_"
             android:screenOrientation="portrait" />
-
         <activity
             android:name=".message.MessageFragment_"
             android:screenOrientation="portrait" />
