@@ -39,6 +39,7 @@
             app:layout_constraintTop_toTopOf="parent"
             app:leftMarkShow="visible"
             app:leftText="楼盘/网点"
+            app:editMaxLength="25"
             app:rightArrowShow="gone"
             app:rightOtherImageViewShow="gone"
             app:showCenterText="gone"

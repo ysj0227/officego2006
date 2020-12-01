@@ -68,7 +68,6 @@ public class ViewingDateProvider extends IContainerItemProvider.MessageProvider<
     @Override
     public void bindView(View view, int i, ViewingDateInfo info, UIMessage uiMessage) {
         ViewingDateInfoHolder holder = (ViewingDateInfoHolder) view.getTag();
-        //LogCat.d("TAG", "1111 msg=" + info.getContent() + " exc= " + info.getExtraMessage() + " id=" + info.getId());
         if (uiMessage.getMessageDirection() == Message.MessageDirection.RECEIVE) {//接收显示同意拒绝
             if (TextUtils.equals(Constants.TYPE_TENANT, SpUtils.getRole())) {
                 holder.tvContent.setText("我想邀请你到现场看房，是否同意？");
@@ -90,8 +89,12 @@ public class ViewingDateProvider extends IContainerItemProvider.MessageProvider<
         }
         holder.tvBuildingName.setText("名称：" + (TextUtils.isEmpty(info.getBuildingName()) ? "" : info.getBuildingName()));
         holder.tvAddress.setText("地址：" + (TextUtils.isEmpty(info.getBuildingAddress()) ? "" : info.getBuildingAddress()));
-        if (!TextUtils.isEmpty(info.getTime())) {
-            holder.tvTime.setText("约看时间：" + DateTimeUtils.StampToDate(info.getTime(), "yyyy-MM-dd HH:mm"));
+        try {
+            if (!TextUtils.isEmpty(info.getTime())) {
+                holder.tvTime.setText("约看时间：" + DateTimeUtils.StampToDate(info.getTime(), "yyyy-MM-dd HH:mm"));
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
         }
         mMessage = holder.tvContent.getText().toString();
     }
