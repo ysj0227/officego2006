@@ -160,7 +160,7 @@ public class IdentityPresenter extends BasePresenter<IdentityContract.View>
     @Override
     public void updateUserInfo(String avatar, String nickname, String sex, String job, String wx) {
         mView.showLoadingDialog();
-        com.officego.commonlib.common.rpc.OfficegoApi.getInstance().updateUserInfo(avatar, nickname, sex,
+        com.officego.commonlib.common.rpc.OfficegoApi.getInstance().updateUserInfoCard(avatar, nickname, sex,
                 job, wx, new RetrofitCallback<Object>() {
                     @Override
                     public void onSuccess(int code, String msg, Object data) {

@@ -3,7 +3,6 @@ package com.owner.home;
 import android.annotation.SuppressLint;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -79,8 +78,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     //未认证
     @ViewById(resName = "rl_to_identity")
     NestedScrollView rlToIdentity;
-    @ViewById(resName = "btn_identity")
-    Button btnIdentity;
     //认证状态流程
     @ViewById(resName = "rl_check_status")
     RelativeLayout rlCheckStatus;
@@ -93,8 +90,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     TextView tvNoData;
     @ViewById(resName = "rl_exception")
     RelativeLayout rlException;
-    @ViewById(resName = "btn_again")
-    Button btnAgain;
     //用户信息
     private UserMessageBean mUserData;
     //楼盘网点列表pop
@@ -249,16 +244,16 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     @Override
     public void initHouseList(BuildingJointWorkBean data) {
         if (data != null) {
-            boolean isRecordBuildingId = false;
+            boolean isRecordBuildingFlag = false;
             if (data.getList().size() > 0) {
                 for (BuildingJointWorkBean.ListBean bean : data.getList()) {
                     if (bean.getBuildingId() == Constants.mCurrentBuildingId) {
-                        isRecordBuildingId = true;
+                        isRecordBuildingFlag = true;
                         toLoadHouseData(bean);
                         break;
                     }
                 }
-                if (!isRecordBuildingId) {
+                if (!isRecordBuildingFlag) {
                     toLoadHouseData(data.getList().get(0));
                 }
             }

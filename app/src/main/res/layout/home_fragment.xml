@@ -9,8 +9,7 @@
     <com.officego.utils.SuperSwipeRefreshLayout
         android:id="@+id/bga_refresh"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@color/common_blue_main">
+        android:layout_height="match_parent">
 
         <androidx.coordinatorlayout.widget.CoordinatorLayout
             android:id="@+id/cdl_root"
