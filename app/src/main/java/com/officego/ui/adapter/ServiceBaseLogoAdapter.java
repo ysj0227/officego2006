@@ -31,7 +31,6 @@ public class ServiceBaseLogoAdapter extends CommonListAdapter<BuildingJointWorkB
         ImageView ivLogo = holder.getView(R.id.iv_service_logo);
         if (!bean.getDictImg().contains("https")){
             Glide.with(context).load(bean.getDictImg().replace("http","https")).into(ivLogo);
-            LogCat.e("tag","11111=="+bean.getDictImg().replace("http","https"));
         }else {
             Glide.with(context).load(bean.getDictImgBlack()).into(ivLogo);
         }

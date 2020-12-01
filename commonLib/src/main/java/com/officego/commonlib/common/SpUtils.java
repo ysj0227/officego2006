@@ -52,7 +52,7 @@ public class SpUtils {
         //业主重新登录或切换身份
         clearToIdentity();
         //房东初始化首页选择的楼盘id
-        Constants.mCurrentBuildingId = 0;
+        Constants.mCurrentBuildingName = "";
         Constants.FLOOR_JOINT_WORK_COUNTS="";
         Constants.FLOOR_COUNTS="";
     }

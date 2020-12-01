@@ -235,7 +235,6 @@ public class FindHouseActivity extends BaseMvpActivity<FindhousePresenter>
 
     @Override
     public void onProgressAfter() {
-
     }
 
     @Override

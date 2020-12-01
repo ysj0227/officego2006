@@ -6,13 +6,12 @@ import android.text.TextUtils;
 import com.officego.R;
 import com.officego.commonlib.base.BasePresenter;
 import com.officego.commonlib.common.SpUtils;
-import com.officego.commonlib.retrofit.RetrofitCallback;
-import com.officego.commonlib.utils.log.LogCat;
-import com.officego.rpc.OfficegoApi;
 import com.officego.commonlib.common.model.DirectoryBean;
-import com.officego.ui.home.contract.SearchContract;
 import com.officego.commonlib.common.model.QueryHistoryKeywordsBean;
 import com.officego.commonlib.common.model.SearchListBean;
+import com.officego.commonlib.retrofit.RetrofitCallback;
+import com.officego.rpc.OfficegoApi;
+import com.officego.ui.home.contract.SearchContract;
 
 import java.util.List;
 
@@ -23,10 +22,7 @@ import java.util.List;
  **/
 public class SearchKeywordsPresenter extends BasePresenter<SearchContract.View>
         implements SearchContract.Presenter {
-    private final String TAG = this.getClass().getSimpleName();
-
     private Context context;
-
 
     public SearchKeywordsPresenter(Context context) {
         this.context = context;
@@ -38,7 +34,6 @@ public class SearchKeywordsPresenter extends BasePresenter<SearchContract.View>
         OfficegoApi.getInstance().getSearchKeywords(new RetrofitCallback<List<QueryHistoryKeywordsBean.DataBean>>() {
             @Override
             public void onSuccess(int code, String msg, List<QueryHistoryKeywordsBean.DataBean> data) {
-                LogCat.e(TAG, "getSearchKeywords onSuccess =" + data);
                 if (isViewAttached()) {
                     mView.hideLoadingDialog();
                     mView.historySuccess(data);
@@ -47,7 +42,6 @@ public class SearchKeywordsPresenter extends BasePresenter<SearchContract.View>
 
             @Override
             public void onFail(int code, String msg, List<QueryHistoryKeywordsBean.DataBean> data) {
-                LogCat.e(TAG, "getSearchKeywords onFail code=" + code + "  msg=" + msg);
                 if (isViewAttached()) {
                     mView.hideLoadingDialog();
                 }
@@ -61,7 +55,6 @@ public class SearchKeywordsPresenter extends BasePresenter<SearchContract.View>
         OfficegoApi.getInstance().getHotKeywords(new RetrofitCallback<List<DirectoryBean.DataBean>>() {
             @Override
             public void onSuccess(int code, String msg, List<DirectoryBean.DataBean> data) {
-                LogCat.e(TAG, "getHotKeywords onSuccess =" + data);
                 if (isViewAttached()) {
                     mView.hideLoadingDialog();
                     mView.hotSuccess(data);
@@ -70,7 +63,6 @@ public class SearchKeywordsPresenter extends BasePresenter<SearchContract.View>
 
             @Override
             public void onFail(int code, String msg, List<DirectoryBean.DataBean> data) {
-                LogCat.e(TAG, "getHotKeywords onFail code=" + code + "  msg=" + msg);
                 if (isViewAttached()) {
                     mView.hideLoadingDialog();
                 }
@@ -83,7 +75,6 @@ public class SearchKeywordsPresenter extends BasePresenter<SearchContract.View>
         OfficegoApi.getInstance().searchList(keywords, new RetrofitCallback<List<SearchListBean.DataBean>>() {
             @Override
             public void onSuccess(int code, String msg, List<SearchListBean.DataBean> data) {
-                LogCat.e(TAG, "getHotKeywords onSuccess =" + data);
                 if (isViewAttached()) {
                     mView.searchListSuccess(data);
                 }
@@ -91,9 +82,6 @@ public class SearchKeywordsPresenter extends BasePresenter<SearchContract.View>
 
             @Override
             public void onFail(int code, String msg, List<SearchListBean.DataBean> data) {
-                LogCat.e(TAG, "getHotKeywords onFail code=" + code + "  msg=" + msg);
-                if (isViewAttached()) {
-                }
             }
         });
     }
@@ -119,7 +107,6 @@ public class SearchKeywordsPresenter extends BasePresenter<SearchContract.View>
         OfficegoApi.getInstance().clearSearchKeywords(new RetrofitCallback<Object>() {
             @Override
             public void onSuccess(int code, String msg, Object data) {
-                LogCat.e(TAG, "clearSearchKeywords onSuccess =" + data);
                 if (isViewAttached()) {
                     mView.hideLoadingDialog();
                     mView.clearHistorySuccess();
@@ -129,7 +116,6 @@ public class SearchKeywordsPresenter extends BasePresenter<SearchContract.View>
 
             @Override
             public void onFail(int code, String msg, Object data) {
-                LogCat.e(TAG, "clearSearchKeywords onFail code=" + code + "  msg=" + msg);
                 if (isViewAttached()) {
                     mView.hideLoadingDialog();
                     mView.shortTip(R.string.tip_delete_fail);

@@ -17,11 +17,8 @@ import java.util.List;
  **/
 public class BuildingInfoAdapter extends CommonListAdapter<BuildingInfoBean> {
 
-    private Context context;
-
     public BuildingInfoAdapter(Context context, List<BuildingInfoBean> list) {
         super(context, R.layout.item_house_introduce_info, list);
-        this.context = context;
     }
 
     @SuppressLint("SetTextI18n")

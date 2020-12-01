@@ -107,7 +107,7 @@ public class Constants {
     //业主--首页列表重新认证和新认证刷新，当有房源时切换tab不刷新
     public static boolean IS_HOME_REFRESH;
     //当前楼盘，网点id
-    public static int mCurrentBuildingId;
+    public static String mCurrentBuildingName="";
 
     //认证添加状态
     public final static int IDENTITY_FIRST = 1;

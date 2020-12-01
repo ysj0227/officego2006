@@ -232,7 +232,6 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
         popupWindow.setOnSureClickListener(this);
     }
 
-
     //网络异常重试
     @Click(R.id.btn_again)
     void netExceptionAgainClick() {
@@ -275,7 +274,6 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
     @Override
     public void onSurePopUpWindow(boolean isLine, HashSet<Integer> hashSet,
                                   SparseBooleanArray checkStates, String data1, String data2) {
-//        LogCat.e("TAG", "onSurePopUpWindow  isLine=" + isLine + " data1=" + data1 + " data2=" + data2);
         if (TextUtils.isEmpty(data1) && TextUtils.isEmpty(data2)) {
             tvSearchArea.setText("区域");
             tvSearchArea.setTextColor(ContextCompat.getColor(context, R.color.text_66));
@@ -303,7 +301,6 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
     //全部，写字楼，共享办公
     @Override
     public void onOfficeTypePopUpWindow(int searchType, int officeType, int text) {
-        LogCat.e("TAG", "onOfficeTypePopUpWindow data= " + officeType + "text=" + text);
         btype = officeType;
         tvSearchOffice.setText(text);
         //初始化选择的写字楼或共享办公
@@ -319,7 +316,6 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
     //排序
     @Override
     public void onOfficeOrderPopUpWindow(int searchType, String order) {
-//        LogCat.e("TAG", "onOfficeOrderPopUpWindow data= " + order);
         sort = order;
         //查询列表
         getList();
@@ -328,8 +324,6 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
     @Override
     public void onConditionPopUpWindow(int searchType, int btype, String constructionArea,
                                        String rentPrice, String simple, String decoration, String tags, Map<Integer, String> mapDecoration) {
-//        LogCat.e("TAG", "onConditionPopUpWindow btype= " + btype + " constructionArea=" + constructionArea +
-//                " rentPrice=" + rentPrice + " simple=" + simple + " decoration=" + decoration + " tags=" + tags);
         this.btype = btype;
         this.area = constructionArea;
         this.dayPrice = rentPrice;

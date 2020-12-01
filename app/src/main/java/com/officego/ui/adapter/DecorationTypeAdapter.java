@@ -56,7 +56,6 @@ public class DecorationTypeAdapter extends CommonListAdapter<DirectoryBean.DataB
         if (map.size() > 1) {
             key = key.replace(key.length() - 1, key.length(), "");
         }
-        LogCat.e("TAG", "key = " + key);
         return key.toString();
     }
 

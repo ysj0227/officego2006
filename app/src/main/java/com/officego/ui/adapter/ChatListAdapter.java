@@ -62,5 +62,4 @@ public class ChatListAdapter extends CommonListAdapter<ChatListBean.ListBean> {
             }
         });
     }
-
 }

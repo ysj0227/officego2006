@@ -54,7 +54,6 @@ public class HouseUniqueAdapter extends CommonListAdapter<DirectoryBean.DataBean
         if (map.size() > 1) {
             key = key.replace(key.length() - 1, key.length(), "");
         }
-        LogCat.e("TAG", "key = " + key);
         return key.toString();
     }
 

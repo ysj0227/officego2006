@@ -247,7 +247,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
             boolean isRecordBuildingFlag = false;
             if (data.getList().size() > 0) {
                 for (BuildingJointWorkBean.ListBean bean : data.getList()) {
-                    if (bean.getBuildingId() == Constants.mCurrentBuildingId) {
+                    if (TextUtils.equals(Constants.mCurrentBuildingName, bean.getBuildingName())) {
                         isRecordBuildingFlag = true;
                         toLoadHouseData(bean);
                         break;
@@ -268,7 +268,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     }
 
     private void toLoadHouseData(BuildingJointWorkBean.ListBean bean) {
-        Constants.mCurrentBuildingId = bean.getBuildingId();//选择的第几个楼盘
+        Constants.mCurrentBuildingName = bean.getBuildingName();//选择的第几个楼盘
         currentBuildingMessage(bean);
         if (bean.getIsTemp() == 0) {
             getRefreshHouseList();//房源列表

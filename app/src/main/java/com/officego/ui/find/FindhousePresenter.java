@@ -34,7 +34,6 @@ public class FindhousePresenter extends BasePresenter<FindHouseContract.View>
         OfficegoApi.getInstance().getHouseUnique(new RetrofitCallback<List<DirectoryBean.DataBean>>() {
             @Override
             public void onSuccess(int code, String msg, List<DirectoryBean.DataBean> data) {
-                LogCat.e(TAG, "getHouseUnique onSuccess =" + data);
                 if (isViewAttached()) {
                     mView.getHouseUniqueSuccess(data);
                     mView.hideLoadingDialog();
@@ -43,7 +42,6 @@ public class FindhousePresenter extends BasePresenter<FindHouseContract.View>
 
             @Override
             public void onFail(int code, String msg, List<DirectoryBean.DataBean> data) {
-                LogCat.e(TAG, "getHouseUnique onFail code=" + code + "  msg=" + msg);
                 if (isViewAttached()) {
                     mView.getHouseUniqueFail(code, msg);
                     mView.hideLoadingDialog();
@@ -57,7 +55,6 @@ public class FindhousePresenter extends BasePresenter<FindHouseContract.View>
         OfficegoApi.getInstance().getDecoratedType(new RetrofitCallback<List<DirectoryBean.DataBean>>() {
             @Override
             public void onSuccess(int code, String msg, List<DirectoryBean.DataBean> data) {
-                LogCat.e(TAG, "getDecoratedType onSuccess =" + data);
                 if (isViewAttached()) {
                     mView.getDecoratedTypeSuccess(data);
                 }
@@ -65,7 +62,6 @@ public class FindhousePresenter extends BasePresenter<FindHouseContract.View>
 
             @Override
             public void onFail(int code, String msg, List<DirectoryBean.DataBean> data) {
-                LogCat.e(TAG, "getDecoratedType onFail code=" + code + "  msg=" + msg);
                 if (isViewAttached()) {
                     mView.getDecoratedTypeFail(code, msg);
                 }
@@ -81,7 +77,6 @@ public class FindhousePresenter extends BasePresenter<FindHouseContract.View>
                 rentPrice, simple, decoration, tags, new RetrofitCallback<Object>() {
                     @Override
                     public void onSuccess(int code, String msg, Object data) {
-                        LogCat.e(TAG, "wantToFind onSuccess =" + data);
                         if (isViewAttached()) {
                             mView.shortTip(R.string.str_login_success);
                             GotoActivityUtils.gotoMainActivity(context);
@@ -91,7 +86,6 @@ public class FindhousePresenter extends BasePresenter<FindHouseContract.View>
 
                     @Override
                     public void onFail(int code, String msg, Object data) {
-                        LogCat.e(TAG, "wantToFind onFail code=" + code + "  msg=" + msg);
                         if (isViewAttached()) {
                             mView.hideLoadingDialog();
                             mView.shortTip(R.string.tip_save_fail);
