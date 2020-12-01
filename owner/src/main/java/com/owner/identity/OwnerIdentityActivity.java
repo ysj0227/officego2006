@@ -695,10 +695,12 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
      */
     @Override
     public void userInfoSuccess(UserMessageBean data) {
-        if (!data.isIsUserInfo()) {
-            avatarUrl = data.getAvatar();
-            mUserBean = data;
-            cardDialog(data);
+        if (data != null) {
+            if (!data.isIsUserInfo()) {
+                avatarUrl = data.getAvatar();
+                mUserBean = data;
+                cardDialog(data);
+            }
         }
     }
 
@@ -969,8 +971,7 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
                 }
                 String job = cetJob.getText() == null ? "" : cetJob.getText().toString();
                 if (TextUtils.isEmpty(job)) {
-                    shortTip(R.string.str_input_job);
-                    return;
+                    job = mUserBean.getJob();
                 }
                 //更新用户信息
                 String sex = TextUtils.isEmpty(mUserBean.getSex()) ? "1" : mUserBean.getSex();

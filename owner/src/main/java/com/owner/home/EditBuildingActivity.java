@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -429,6 +430,7 @@ public class EditBuildingActivity extends BaseMvpActivity<BuildingPresenter>
             //楼盘类型1写字楼 2商务园 3创意园 4共享空间 5公寓  6产业园
             silGardenName.setVisibility(View.VISIBLE);
             silGardenName.setCenterText(data.getBuildingMsg().getBuildingName());
+            silGardenName.getContextView().setTextColor(ContextCompat.getColor(context, R.color.text_99));
             mBuildingType = data.getBuildingMsg().getBuildingType();
             if (data.getBuildingMsg().getBuildingType() == 1) {
                 silNo.setVisibility(View.GONE);

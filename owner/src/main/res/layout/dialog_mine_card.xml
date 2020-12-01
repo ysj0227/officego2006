@@ -48,10 +48,10 @@
             app:radius="@dimen/dp_40" />
 
         <ImageView
-            android:layout_alignBottom="@id/civ_avatar"
-           android:layout_alignRight="@id/civ_avatar"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_alignRight="@id/civ_avatar"
+            android:layout_alignBottom="@id/civ_avatar"
             android:background="@mipmap/ic_card_camera" />
 
         <RelativeLayout
@@ -69,22 +69,23 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/dp_13"
-                android:text="称呼:"
+                android:drawableEnd="@mipmap/ic_mark"
+                android:text="称呼"
                 android:textColor="@color/text_33"
                 android:textSize="@dimen/sp_13" />
 
             <com.officego.commonlib.view.ClearableEditText
                 android:id="@+id/cet_name"
-                android:hint="@string/str_input_nick_name"
-                android:textColorHint="@color/text_66_p50"
-                android:singleLine="true"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_toEndOf="@+id/tv_name"
                 android:background="@null"
                 android:gravity="center_vertical"
+                android:hint="@string/str_input_nick_name"
                 android:paddingStart="@dimen/dp_6"
+                android:singleLine="true"
                 android:textColor="@color/text_33"
+                android:textColorHint="@color/text_66_p50"
                 android:textSize="@dimen/sp_13" />
 
         </RelativeLayout>
@@ -104,22 +105,22 @@
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_marginStart="@dimen/dp_13"
-                android:text="职位:"
+                android:text="职位"
                 android:textColor="@color/text_33"
                 android:textSize="@dimen/sp_13" />
 
             <com.officego.commonlib.view.ClearableEditText
                 android:id="@+id/cet_job"
-                android:singleLine="true"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_toEndOf="@id/tv_job"
                 android:background="@null"
-                android:hint="@string/str_input_job"
-                android:textColorHint="@color/text_66_p50"
                 android:gravity="center_vertical"
-                android:paddingStart="@dimen/dp_6"
+                android:hint="如：租赁经理"
+                android:paddingStart="@dimen/dp_8"
+                android:singleLine="true"
                 android:textColor="@color/text_33"
+                android:textColorHint="@color/text_66_p50"
                 android:textSize="@dimen/sp_13"
                 tools:ignore="RtlSymmetry" />
 

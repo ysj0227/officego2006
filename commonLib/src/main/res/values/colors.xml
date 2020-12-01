@@ -6,7 +6,6 @@
     <color name="common_purple_deep">#AB5CFF</color>
     <color name="common_blue_main">#46C3C2</color>      <!--应用主色调-->
     <color name="common_blue_normal">#DAF3F3</color>    <!--主色调次-->
-<!--    <color name="common_blue_main">#FF6000</color>      &lt;!&ndash;应用主色调&ndash;&gt;-->
     <color name="common_blue_main_20a">#3346C3C2</color><!--主色调20%透明-->
     <color name="common_blue_main_60a">#9946C3C2</color><!--主色调60%透明-->
     <color name="common_blue_main_80a">#CC46C3C2</color><!--主色调60%透明-->

@@ -14,6 +14,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.core.content.FileProvider;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -415,6 +416,7 @@ public class EditJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
             }
             //网点名称
             silJointWorkName.setCenterText(data.getBuildingMsg().getBranchesName());
+            silJointWorkName.getContextView().setTextColor(ContextCompat.getColor(context, R.color.text_99));
             silArea.setCenterText(data.getAddress());
             //区域
             district = TextUtils.isEmpty(data.getBuildingMsg().getDistrictId()) ? 0 : Integer.valueOf(data.getBuildingMsg().getDistrictId());
