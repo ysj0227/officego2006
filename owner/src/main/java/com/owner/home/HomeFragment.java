@@ -473,6 +473,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
             } else if (id == CommonNotifications.updateBuildingSuccess) {
                 if (popupWindow != null) {
                     popupWindow.dismiss();
+                    popupWindow = null;
                 }
                 mPresenter.getBuildingJointWorkList();
             } else if (id == CommonNotifications.updateHouseSuccess) {
