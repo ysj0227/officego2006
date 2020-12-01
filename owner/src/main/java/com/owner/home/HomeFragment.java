@@ -86,7 +86,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     @ViewById(resName = "tv_reject_reason")
     TextView tvRejectReason;
     //无数据
-    @ViewById(resName = "tv_no_data")
+    @ViewById(resName = "tv_home_no_data")
     TextView tvNoData;
     @ViewById(resName = "rl_exception")
     RelativeLayout rlException;

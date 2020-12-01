@@ -119,7 +119,7 @@ public class EditOpenSeatsActivity extends BaseMvpActivity<OpenSeatsPresenter>
             mPresenter.getHouseEdit(buildingManagerBean.getBuildingId(), buildingManagerBean.getIsTemp());
         }
         //总楼层
-        if (!TextUtils.isEmpty(Constants.FLOOR_JOINT_WORK_COUNTS)){
+        if (!TextUtils.isEmpty(Constants.FLOOR_JOINT_WORK_COUNTS)) {
             tvCountsFloor.setText("总" + Constants.FLOOR_JOINT_WORK_COUNTS + "层");
         }
     }
@@ -288,14 +288,14 @@ public class EditOpenSeatsActivity extends BaseMvpActivity<OpenSeatsPresenter>
             if (requestCode == REQUEST_CAMERA) {//拍照
                 ImageUtils.isSaveCropImageView(localImagePath);//图片处理
                 uploadImageList.add(uploadImageList.size() - 1, new ImageBean(false, 0, localImagePath));
-                mPresenter.uploadImage(Constants.TYPE_IMAGE_HOUSE,uploadImageList);
+                mPresenter.uploadImage(Constants.TYPE_IMAGE_HOUSE, uploadImageList);
             } else if (requestCode == REQUEST_GALLERY && data != null) {//相册
                 List<String> images = data.getStringArrayListExtra(ImageSelector.SELECT_RESULT);
                 for (int i = 0; i < images.size(); i++) {
                     ImageUtils.isSaveCropImageView(images.get(i));//图片处理
                     uploadImageList.add(uploadImageList.size() - 1, new ImageBean(false, 0, images.get(i)));
                 }
-                mPresenter.uploadImage(Constants.TYPE_IMAGE_HOUSE,uploadImageList);
+                mPresenter.uploadImage(Constants.TYPE_IMAGE_HOUSE, uploadImageList);
             }
         }
     }
@@ -339,9 +339,14 @@ public class EditOpenSeatsActivity extends BaseMvpActivity<OpenSeatsPresenter>
         if (data == null) return;
         if (data.getHouseMsg() != null) {
             //工位
-            silSeats.getEditTextView().setText(data.getHouseMsg().getSeats() + "");
+            String seat = data.getHouseMsg().getSeats() == 0 ? "" : data.getHouseMsg().getSeats() + "";
+            silSeats.getEditTextView().setText(seat);
+            if (!TextUtils.isEmpty(seat)) {
+                silSeats.getEditTextView().setSelection(seat.length());
+            }
             //租金
-            silRentSingle.getEditTextView().setText(data.getHouseMsg().getDayPrice() + "");
+            String price = TextUtils.equals("0.0", data.getHouseMsg().getDayPrice() + "") ? "" : data.getHouseMsg().getDayPrice() + "";
+            silRentSingle.getEditTextView().setText(price);
             //楼层
             etFloors.setText(data.getHouseMsg().getFloor());
             //租期
