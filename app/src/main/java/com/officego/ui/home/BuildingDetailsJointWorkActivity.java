@@ -33,7 +33,10 @@ import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
+import com.officego.commonlib.common.dialog.WeChatShareDialog;
 import com.officego.commonlib.common.model.BuildingIdBundleBean;
+import com.officego.commonlib.common.model.DirectoryBean;
+import com.officego.commonlib.common.model.ShareBean;
 import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.utils.CommonHelper;
@@ -45,7 +48,6 @@ import com.officego.commonlib.view.RoundImageView;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.config.ConditionConfig;
 import com.officego.h5.WebViewVRActivity_;
-import com.officego.commonlib.common.model.ShareBean;
 import com.officego.ui.adapter.BuildingInfoAdapter;
 import com.officego.ui.adapter.HouseItemAllAdapter;
 import com.officego.ui.adapter.JointWorkAllChildAdapter;
@@ -53,8 +55,6 @@ import com.officego.ui.adapter.ServiceBaseLogoAdapter;
 import com.officego.ui.adapter.ServiceCreateLogoAdapter;
 import com.officego.ui.dialog.PreImageDialog;
 import com.officego.ui.dialog.ServiceLogoDialog;
-import com.officego.commonlib.common.dialog.WeChatShareDialog;
-import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.ui.home.contract.BuildingDetailsJointWorkContract;
 import com.officego.ui.home.model.BuildingConditionItem;
 import com.officego.ui.home.model.BuildingDetailsBean;
@@ -578,7 +578,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
             ConversationActivity_.intent(context).buildingId(mData.getBuilding().getBuildingId()).targetId(data.getTargetId() + "").start();
         } else {
             CommonDialog dialog = new CommonDialog.Builder(context)
-                    .setTitle(R.string.str_selected_owner_to_chat)
+                    .setTitle(R.string.str_selected_jointwork_owner_to_chat)
                     .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
                         dialog12.dismiss();
                         scrollViewY();

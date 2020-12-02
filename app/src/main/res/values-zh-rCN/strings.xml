@@ -60,7 +60,6 @@
     <string name="str_cannot_get_mine_phone_use_sms">无法获取本机号码，请使用验证码登录</string>
     <string name="rc_chat_tip">我对你发布的房源有兴趣，能聊聊吗？</string>
     <string name="text_right_now_try">即刻体验</string>
-
     <string name="str_protocol">
 感谢你对OfficeGo（伙办连）的信任！我们依据监管要求更新了《服务协议》和《隐私条款》，特向 你说明如下：\t
 \t\n1.为了向你提供相关功能，我们会收集、使用必要的信息；
@@ -72,11 +71,11 @@
     <string name="str_text_vr">VR</string>
     <string name="str_no_vr">暂无VR视频</string>
     <string name="str_selected_owner_to_chat">该楼盘有多个房东入驻，请选择一个房源再跟房东聊</string>
+    <string name="str_selected_jointwork_owner_to_chat">该网点有多个房东入驻，请选择一个房源再跟房东聊</string>
     <string name="str_joint_work_info">网点信息</string>
     <string name="str_building_details_info">楼盘信息</string>
     <string name="str_house_details_info">房源信息</string>
     <string name="tip_video_play_exception">视频播放异常</string>
     <string name="str_text_and">和</string>
     <string name="str_system_message">系统消息</string>
-
 </resources>
