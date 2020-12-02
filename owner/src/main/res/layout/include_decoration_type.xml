@@ -17,7 +17,7 @@
         app:rightOtherImageViewShow="gone"
         app:showCenterText="gone"
         app:showDividerBottom="gone"
-        app:showEditText="visible" />
+        app:showEditText="gone" />
 
     <androidx.recyclerview.widget.RecyclerView
         android:id="@+id/rv_decoration_type"
