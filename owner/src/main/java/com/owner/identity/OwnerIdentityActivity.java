@@ -512,13 +512,15 @@ public class OwnerIdentityActivity extends BaseMvpActivity<IdentityPresenter>
         isHolder = type;
         if (type == 1) {
             silSelectType.setCenterText("个人");
+            tvTipAdditionalInfo.setText("若需要，请上传身份信息与产证信息一致的相关材料");
         } else if (type == 2) {
             silSelectType.setCenterText("公司");
+            tvTextBusinessLicense.setText("上传营业执照");
+            tvTipBusinessLicense.setText("请确保上传与房产证上权利人名称相同的公司营业执照");
+            tvTipAdditionalInfo.setText("请上传以公司为主体的房屋租赁协议或其他相关材料");
         }
         includeBusinessLicense.setVisibility(type == 2 ? View.VISIBLE : View.GONE);
         includeOwnerPersonalId.setVisibility(type == 2 ? View.GONE : View.VISIBLE);
-        tvTipAdditionalInfo.setText(type == 2 ? "请上传以公司为主体的房屋租赁协议或其他相关材料" :
-                "若需要，请上传身份信息与产证信息一致的相关材料");
     }
 
     //搜索楼盘网点
