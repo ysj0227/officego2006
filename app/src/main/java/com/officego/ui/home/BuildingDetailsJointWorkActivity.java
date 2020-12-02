@@ -33,6 +33,7 @@ import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
+import com.officego.commonlib.common.dialog.MapDialog;
 import com.officego.commonlib.common.dialog.WeChatShareDialog;
 import com.officego.commonlib.common.model.BuildingIdBundleBean;
 import com.officego.commonlib.common.model.DirectoryBean;
@@ -333,7 +334,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) nsvView.getLayoutParams();
             params.bottomMargin = 10;
             nsvView.setLayoutParams(params);
-            if (BundleUtils.ownerIsOff(this)){
+            if (BundleUtils.ownerIsOff(this)) {
                 btnShare.setVisibility(View.GONE);
             }
         }
@@ -527,6 +528,15 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
             serviceList.add(bean);
         }
         new ServiceLogoDialog(context, getString(R.string.str_title_base_sservice), serviceList);
+    }
+
+    //导航
+    @Click({R.id.tv_location, R.id.tv_bus_line})
+    void mapClick() {
+        if (mData != null) {
+            new MapDialog(context, mData.getBuilding().getLatitude(),
+                    mData.getBuilding().getLongitude(), mData.getBuilding().getAddress());
+        }
     }
 
     //微信分享

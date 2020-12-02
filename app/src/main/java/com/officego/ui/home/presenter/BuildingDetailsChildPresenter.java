@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import com.officego.commonlib.base.BasePresenter;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.rpc.OfficegoApi;
 import com.officego.ui.home.contract.BuildingDetailsChildContract;
 import com.officego.ui.home.model.ChatsBean;
@@ -45,6 +44,10 @@ public class BuildingDetailsChildPresenter extends BasePresenter<BuildingDetails
                         public void onFail(int code, String msg, HouseOfficeDetailsBean data) {
                             if (isViewAttached()) {
                                 mView.hideLoadingDialog();
+                                if (code == Constants.ERROR_CODE_7012 || code == Constants.ERROR_CODE_7013
+                                        || code == Constants.ERROR_CODE_7014 || code == Constants.ERROR_CODE_7016) {
+                                    mView.detailsFail(msg);
+                                }
                             }
                         }
                     });
@@ -55,7 +58,7 @@ public class BuildingDetailsChildPresenter extends BasePresenter<BuildingDetails
     public void getDetailsOwner(String btype, String houseId, int isTemp) {
         if (!TextUtils.isEmpty(btype)) {
             mView.showLoadingDialog();
-            OfficegoApi.getInstance().selectHousebyHouseIdOwner(btype, houseId,isTemp,
+            OfficegoApi.getInstance().selectHousebyHouseIdOwner(btype, houseId, isTemp,
                     new RetrofitCallback<HouseOfficeDetailsBean>() {
                         @Override
                         public void onSuccess(int code, String msg, HouseOfficeDetailsBean data) {

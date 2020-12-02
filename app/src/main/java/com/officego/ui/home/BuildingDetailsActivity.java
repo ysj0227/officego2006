@@ -34,6 +34,7 @@ import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
+import com.officego.commonlib.common.dialog.MapDialog;
 import com.officego.commonlib.common.model.BuildingIdBundleBean;
 import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.common.sensors.SensorsTrack;
@@ -314,7 +315,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) nsvView.getLayoutParams();
             params.bottomMargin = 10;
             nsvView.setLayoutParams(params);
-            if (BundleUtils.ownerIsOff(this)){
+            if (BundleUtils.ownerIsOff(this)) {
                 btnShare.setVisibility(View.GONE);
             }
         }
@@ -473,6 +474,15 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             isPaused = true;
             ibPlay.setBackgroundResource(R.mipmap.play_normal);
             radioGroupIsShow(true);
+        }
+    }
+
+    //导航
+    @Click({R.id.tv_location, R.id.tv_bus_line})
+    void mapClick() {
+        if (mData != null) {
+            new MapDialog(context, mData.getBuilding().getLatitude(),
+                    mData.getBuilding().getLongitude(), mData.getBuilding().getAddress());
         }
     }
 

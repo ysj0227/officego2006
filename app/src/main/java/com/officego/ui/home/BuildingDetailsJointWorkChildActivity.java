@@ -30,6 +30,7 @@ import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.dialog.MapDialog;
 import com.officego.commonlib.common.model.HouseIdBundleBean;
 import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.common.sensors.SensorsTrack;
@@ -237,7 +238,7 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) nsvView.getLayoutParams();
             params.bottomMargin = 10;
             nsvView.setLayoutParams(params);
-            if (BundleUtils.ownerIsOff(this)){
+            if (BundleUtils.ownerIsOff(this)) {
                 btnShare.setVisibility(View.GONE);
             }
         }
@@ -431,6 +432,15 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         isExpand = !isExpand;
         tvQueryTrains.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, isExpand ? up : down, null);
         showBusLine();
+    }
+
+    //导航
+    @Click({R.id.tv_location, R.id.tv_bus_line})
+    void mapClick() {
+        if (mData != null) {
+            new MapDialog(context, mData.getHouse().getLatitude(),
+                    mData.getHouse().getLongitude(), mData.getHouse().getAddress());
+        }
     }
 
     //微信分享

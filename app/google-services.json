@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "126773160510",
+    "firebase_url": "https://officegocom.firebaseio.com",
+    "project_id": "officegocom",
+    "storage_bucket": "officegocom.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:126773160510:android:e9f5218f285b7bcefe7f6f",
+        "android_client_info": {
+          "package_name": "com.officego"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "126773160510-606c4qov6jspunsd1844t52dg95otldk.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBfFAFPVFxLonWvNLt9XOwU6Xp0wS_lo9M"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "126773160510-606c4qov6jspunsd1844t52dg95otldk.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "126773160510-44p3mjusg3ut9huqtnjrfp36ts9vub22.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.boshu.officego"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

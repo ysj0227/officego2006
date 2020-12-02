@@ -15,6 +15,8 @@ public interface BuildingDetailsChildContract {
 
         void detailsSuccess(HouseOfficeDetailsBean data);
 
+        void detailsFail(String msg);
+
         void favoriteChildSuccess();
 
         void chatSuccess(ChatsBean data);

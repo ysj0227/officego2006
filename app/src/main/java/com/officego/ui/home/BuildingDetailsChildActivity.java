@@ -30,6 +30,7 @@ import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.dialog.MapDialog;
 import com.officego.commonlib.common.dialog.WeChatShareDialog;
 import com.officego.commonlib.common.model.HouseIdBundleBean;
 import com.officego.commonlib.common.model.ShareBean;
@@ -41,6 +42,7 @@ import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.IVideoPlayer;
 import com.officego.commonlib.view.LabelsView;
+import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.h5.WebViewVRActivity_;
 import com.officego.ui.adapter.BuildingInfoAdapter;
 import com.officego.ui.dialog.PreImageDialog;
@@ -241,7 +243,7 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
             RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) nsvView.getLayoutParams();
             params.bottomMargin = 10;
             nsvView.setLayoutParams(params);
-            if (BundleUtils.ownerIsOff(this)){
+            if (BundleUtils.ownerIsOff(this)) {
                 btnShare.setVisibility(View.GONE);
             }
         }
@@ -257,8 +259,8 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         if (mChildHouseBean != null) {
             if (BundleUtils.ownerHouseBean(this) != null) {//业主首页进入详情
                 mPresenter.getDetailsOwner(String.valueOf(mChildHouseBean.getBtype()),
-                        String.valueOf(mChildHouseBean.getHouseId()),BundleUtils.ownerIsTemp((Activity) context));
-            }else {
+                        String.valueOf(mChildHouseBean.getHouseId()), BundleUtils.ownerIsTemp((Activity) context));
+            } else {
                 mPresenter.getDetails(String.valueOf(mChildHouseBean.getBtype()), String.valueOf(mChildHouseBean.getHouseId()));
             }
             SensorsTrack.visitHouseDataPage(String.valueOf(mChildHouseBean.getHouseId())); //神策
@@ -304,6 +306,17 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         trafficView(data);
         //特色
         labelHouseTags(data);
+    }
+
+    @Override
+    public void detailsFail(String msg) {
+        CommonDialog dialog = new CommonDialog.Builder(context)
+                .setTitle(msg)
+                .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
+                    dialog12.dismiss();
+                    finish();
+                }).create();
+        dialog.showWithOutTouchable(false);
     }
 
     @Override
@@ -460,6 +473,15 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         isExpand = !isExpand;
         tvQueryTrains.setCompoundDrawablesRelativeWithIntrinsicBounds(null, null, isExpand ? up : down, null);
         showBusLine();
+    }
+
+    //导航
+    @Click({R.id.tv_location, R.id.tv_bus_line})
+    void mapClick() {
+        if (mData != null) {
+            new MapDialog(context, mData.getHouse().getLatitude(),
+                    mData.getHouse().getLongitude(), mData.getHouse().getAddress());
+        }
     }
 
     //微信分享

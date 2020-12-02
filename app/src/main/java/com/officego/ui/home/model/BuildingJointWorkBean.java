@@ -238,6 +238,10 @@ public class BuildingJointWorkBean implements Serializable {
         private List<String> nearbySubwayTime;
         @SerializedName("stationColours")
         private List<String> stationColours;
+        @SerializedName("longitude")
+        private double longitude;
+        @SerializedName("latitude")
+        private double latitude;
 
         public int getMaxSeatsIndependentOffice() {
             return maxSeatsIndependentOffice;
@@ -421,6 +425,22 @@ public class BuildingJointWorkBean implements Serializable {
 
         public void setStationColours(List<String> stationColours) {
             this.stationColours = stationColours;
+        }
+
+        public double getLongitude() {
+            return longitude;
+        }
+
+        public void setLongitude(double longitude) {
+            this.longitude = longitude;
+        }
+
+        public double getLatitude() {
+            return latitude;
+        }
+
+        public void setLatitude(double latitude) {
+            this.latitude = latitude;
         }
 
         public static class OpenStationMapBean implements Serializable {

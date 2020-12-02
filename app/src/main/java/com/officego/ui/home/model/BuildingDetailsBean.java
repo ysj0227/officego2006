@@ -210,6 +210,10 @@ public class BuildingDetailsBean implements Serializable {
         private List<String> nearbySubwayTime;
         @SerializedName("stationColours")
         private List<String> stationColours;
+        @SerializedName("longitude")
+        private double longitude;
+        @SerializedName("latitude")
+        private double latitude;
 
         public String getAddress() {
             return address;
@@ -321,6 +325,22 @@ public class BuildingDetailsBean implements Serializable {
 
         public void setStationColours(List<String> stationColours) {
             this.stationColours = stationColours;
+        }
+
+        public double getLongitude() {
+            return longitude;
+        }
+
+        public void setLongitude(double longitude) {
+            this.longitude = longitude;
+        }
+
+        public double getLatitude() {
+            return latitude;
+        }
+
+        public void setLatitude(double latitude) {
+            this.latitude = latitude;
         }
     }
 

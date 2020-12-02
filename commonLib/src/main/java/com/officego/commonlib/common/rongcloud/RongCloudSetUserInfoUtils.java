@@ -18,16 +18,21 @@ public class RongCloudSetUserInfoUtils {
     /**
      * 融云连接成功
      * 保存,设置当前用户信息
+     *
      * @param userRongChatId targetId
      */
     public static void setCurrentInfo(String userRongChatId) {
-        SpUtils.saveRongChatId(userRongChatId);
-        UserInfo userInfo = new UserInfo(userRongChatId, SpUtils.getNickName(), Uri.parse(SpUtils.getHeaderImg()));
-        RongIM.getInstance().setCurrentUserInfo(userInfo);
-        //是否携带用户信息，true 携带，false 不携带。
-        RongIM.getInstance().setMessageAttachedUserInfo(true);
-        RongIM.getInstance().enableNewComingMessageIcon(true);
-        RongIM.getInstance().enableUnreadMessageIcon(true);
+        try {
+            SpUtils.saveRongChatId(userRongChatId);
+            UserInfo userInfo = new UserInfo(userRongChatId, SpUtils.getNickName(), Uri.parse(SpUtils.getHeaderImg()));
+            RongIM.getInstance().setCurrentUserInfo(userInfo);
+            //是否携带用户信息，true 携带，false 不携带。
+            RongIM.getInstance().setMessageAttachedUserInfo(true);
+            RongIM.getInstance().enableNewComingMessageIcon(true);
+            RongIM.getInstance().enableUnreadMessageIcon(true);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     /**
@@ -38,26 +43,17 @@ public class RongCloudSetUserInfoUtils {
      * @param imgUrl 用户头像
      */
     public static void refreshUserInfoCache(String id, String name, String imgUrl) {
-        if (TextUtils.isEmpty(id)) return;
-        UserInfo userInfo = new UserInfo(id, name, Uri.parse(imgUrl));
-        RongIM.getInstance().refreshUserInfoCache(userInfo);
-        //是否携带用户信息，true 携带，false 不携带。
-        RongIM.getInstance().setMessageAttachedUserInfo(true);
-        RongIM.getInstance().enableNewComingMessageIcon(true);
-        RongIM.getInstance().enableUnreadMessageIcon(true);
-    }
-
-    /**
-     * 获取租户融云id
-     */
-    public static String getRongTenantId(String id) {
-        return id + "0";
-    }
-
-    /**
-     * 获取房东融云id
-     */
-    public static String getRongOwnerId(String id) {
-        return id + "1";
+        try {
+            if (!TextUtils.isEmpty(id) && !TextUtils.isEmpty(imgUrl)) {
+                UserInfo userInfo = new UserInfo(id, name, Uri.parse(imgUrl));
+                RongIM.getInstance().refreshUserInfoCache(userInfo);
+                //是否携带用户信息，true 携带，false 不携带。
+                RongIM.getInstance().setMessageAttachedUserInfo(true);
+                RongIM.getInstance().enableNewComingMessageIcon(true);
+                RongIM.getInstance().enableUnreadMessageIcon(true);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 }
