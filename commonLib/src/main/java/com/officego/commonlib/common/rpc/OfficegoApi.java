@@ -562,9 +562,7 @@ public class OfficegoApi {
         map.put("unitPatternRemark", requestBody(unitPatternRemark + ""));
         map.put("tags", requestBody(tags + ""));
         //图片
-        if (!TextUtils.isEmpty(unitPatternImg)) {
-            map.put("unitPatternImg", requestBody(unitPatternImg + ""));
-        }
+        map.put("unitPatternImg", requestBody(unitPatternImg));
         map.put("mainPic", requestBody(mainPic + ""));
         map.put("addImgUrl", requestBody(addImgUrl + ""));
         map.put("delImgUrl", requestBody(delImgUrl + ""));
@@ -608,9 +606,7 @@ public class OfficegoApi {
         map.put("unitPatternRemark", requestBody(unitPatternRemark + ""));
         map.put("tags", requestBody(tags + ""));
         //图片
-        if (!TextUtils.isEmpty(unitPatternImg)) {
-            map.put("unitPatternImg", requestBody(unitPatternImg + ""));
-        }
+        map.put("unitPatternImg", requestBody(unitPatternImg + ""));
         map.put("mainPic", requestBody(mainPic + ""));
         map.put("addImgUrl", requestBody(addImgUrl + ""));
         map.put("delImgUrl", requestBody(delImgUrl + ""));
@@ -649,9 +645,7 @@ public class OfficegoApi {
         map.put("clearHeight", requestBody(clearHeight + ""));
         //图片
         map.put("unitPatternRemark", requestBody(unitPatternRemark + ""));
-        if (!TextUtils.isEmpty(unitPatternImg)) {
-            map.put("unitPatternImg", requestBody(unitPatternImg + ""));
-        }
+        map.put("unitPatternImg", requestBody(unitPatternImg + ""));
         map.put("mainPic", requestBody(mainPic + ""));
         map.put("addImgUrl", requestBody(addImgUrl + ""));
         map.put("delImgUrl", requestBody(delImgUrl + ""));
@@ -687,9 +681,7 @@ public class OfficegoApi {
         map.put("clearHeight", requestBody(clearHeight + ""));
         //图片
         map.put("unitPatternRemark", requestBody(unitPatternRemark + ""));
-        if (!TextUtils.isEmpty(unitPatternImg)) {
-            map.put("unitPatternImg", requestBody(unitPatternImg + ""));
-        }
+        map.put("unitPatternImg", requestBody(unitPatternImg + ""));
         map.put("mainPic", requestBody(mainPic + ""));
         map.put("addImgUrl", requestBody(addImgUrl + ""));
         map.put("delImgUrl", requestBody(delImgUrl + ""));
