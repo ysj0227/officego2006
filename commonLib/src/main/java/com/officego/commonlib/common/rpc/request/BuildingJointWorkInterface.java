@@ -74,7 +74,7 @@ public interface BuildingJointWorkInterface {
     /**
      * 上传图片
      */
-    @POST(path + "building/uploadResourcesUrl")
+    @POST(path + "upload/uploadResourcesUrl")
     Call<BaseResponse<UploadImageBean>> uploadResourcesUrl(@Body RequestBody body);
 
     /**
@@ -97,20 +97,6 @@ public interface BuildingJointWorkInterface {
     @Multipart
     @POST(path + "house/insertHouse")
     Call<BaseResponse<AddHouseSuccessBean>> houseAdd(@PartMap Map<String, RequestBody> params);
-
-    /**
-     * 楼盘添加
-     */
-    @Multipart
-    @POST(path + "building/insertBuilding")
-    Call<BaseResponse<Object>> buildingAdd(@PartMap Map<String, RequestBody> params);
-
-    /**
-     * 楼盘网点驳回回显
-     */
-    @Multipart
-    @POST(path + "building/getBuildingTempById")
-    Call<BaseResponse<RejectBuildingBean>> buildingRejectMsg(@PartMap Map<String, RequestBody> params);
 
 
     /**
