@@ -211,6 +211,7 @@
         <item name="android:layout_marginLeft">@dimen/dp_25</item>
         <item name="android:layout_marginRight">@dimen/dp_25</item>
     </style>
+
     <style name="weekIndicatorStyle">
         <item name="android:layout_width">0dp</item>
         <item name="android:layout_height">match_parent</item>
@@ -218,6 +219,10 @@
         <item name="android:gravity">center</item>
         <item name="android:textSize">@dimen/sp_13</item>
         <item name="android:textColor">@color/text_75</item>
+    </style>
+
+    <style name="customTabLayout">
+        <item name="android:textSize">@dimen/sp_15</item>
     </style>
 
 </resources>

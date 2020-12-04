@@ -32,6 +32,8 @@ import com.officego.h5.WebViewActivity_;
 import com.officego.rpc.OfficegoApi;
 import com.officego.ui.coupon.CardQrActivity;
 import com.officego.ui.coupon.CardQrActivity_;
+import com.officego.ui.coupon.CouponActivity;
+import com.officego.ui.coupon.CouponActivity_;
 import com.officego.ui.login.LoginActivity_;
 import com.officego.ui.mine.contract.UserContract;
 import com.officego.ui.mine.presenter.UserPresenter;
@@ -115,7 +117,8 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
     void settingClick() {
 //        if (isToLogin()) return;
 //        MineSettingActivity_.intent(mActivity).startForResult(REQUEST_CODE_LOGOUT);
-        CardQrActivity_.intent(mActivity).start();
+
+        CouponActivity_.intent(mActivity).start();
     }
 
     @OnActivityResult(REQUEST_CODE_LOGOUT)

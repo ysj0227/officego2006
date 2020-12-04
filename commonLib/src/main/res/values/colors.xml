@@ -12,6 +12,7 @@
     <color name="common_blue_light">#ECF9F8</color>    <!--主色调次-->
     <color name="common_grey_66">#666666</color>
     <color name="common_97">#979797</color>
+    <color name="common_5c">#5C5C5C</color>
 
     <!--文字颜色-->
     <color name="text_main">#303540</color>          <!--主要-->
