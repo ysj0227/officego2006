@@ -104,19 +104,7 @@
 
         <activity
             android:name=".MainActivity_"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <!-- web或js打开本地APP 协议部分，自定义设置 -->
-                <!--                <data-->
-                <!--                    android:host="officego"-->
-                <!--                    android:path="/app"-->
-                <!--                    android:scheme="url" />-->
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-            </intent-filter>
-        </activity>
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.login.LoginActivity_"
             android:exported="true"
@@ -457,14 +445,16 @@
             android:name="com.cmic.sso.sdk.activity.LoginAuthActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop"
-            android:screenOrientation="unspecified"
-           />
+            android:screenOrientation="unspecified" />
         <!-- Required -->
         <activity
             android:name="cn.jiguang.verifysdk.CtLoginActivity"
             android:configChanges="orientation|keyboardHidden|screenSize"
             android:launchMode="singleTop"
-            android:screenOrientation="unspecified"/>
+            android:screenOrientation="unspecified" />
+        <activity
+            android:name=".ui.coupon.CardQrActivity_"
+            android:launchMode="singleTop" />
 
         <meta-data
             android:name="JPUSH_APPKEY"

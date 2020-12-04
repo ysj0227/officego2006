@@ -1,13 +1,11 @@
 package com.officego.commonlib.common.rpc.request;
 
-
 import com.officego.commonlib.common.model.IdentityRejectBean;
 import com.officego.commonlib.common.model.owner.AddHouseSuccessBean;
 import com.officego.commonlib.common.model.owner.BuildingEditBean;
 import com.officego.commonlib.common.model.owner.BuildingJointWorkBean;
 import com.officego.commonlib.common.model.owner.HouseBean;
 import com.officego.commonlib.common.model.owner.HouseEditBean;
-import com.officego.commonlib.common.model.owner.RejectBuildingBean;
 import com.officego.commonlib.common.model.owner.UploadImageBean;
 import com.officego.commonlib.retrofit.BaseResponse;
 

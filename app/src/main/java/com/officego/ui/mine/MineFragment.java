@@ -30,9 +30,12 @@ import com.officego.commonlib.view.CircleImage;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.h5.WebViewActivity_;
 import com.officego.rpc.OfficegoApi;
+import com.officego.ui.coupon.CardQrActivity;
+import com.officego.ui.coupon.CardQrActivity_;
 import com.officego.ui.login.LoginActivity_;
 import com.officego.ui.mine.contract.UserContract;
 import com.officego.ui.mine.presenter.UserPresenter;
+import com.owner.mine.MineSettingActivity_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -110,8 +113,9 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
 
     @Click(R.id.iv_setting)
     void settingClick() {
-        if (isToLogin()) return;
-        MineSettingActivity_.intent(mActivity).startForResult(REQUEST_CODE_LOGOUT);
+//        if (isToLogin()) return;
+//        MineSettingActivity_.intent(mActivity).startForResult(REQUEST_CODE_LOGOUT);
+        CardQrActivity_.intent(mActivity).start();
     }
 
     @OnActivityResult(REQUEST_CODE_LOGOUT)
