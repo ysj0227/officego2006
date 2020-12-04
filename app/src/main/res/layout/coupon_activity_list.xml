@@ -36,12 +36,13 @@
         app:tabTextColor="@color/text_66_p50">
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/tab_"
+            android:id="@+id/tab_valid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="可使用" />
 
         <com.google.android.material.tabs.TabItem
+            android:id="@+id/tab_invalid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="已失效" />

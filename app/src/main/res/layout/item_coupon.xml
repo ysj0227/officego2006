@@ -2,8 +2,8 @@
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="@dimen/dp_100"
-    android:background="@mipmap/ic_coupon_valid"
-    android:layout_marginTop="@dimen/dp_5">
+    android:layout_marginTop="@dimen/dp_5"
+    android:id="@+id/rl_coupon_bg">
 
     <RelativeLayout
         android:id="@+id/rl_left"
@@ -17,9 +17,9 @@
 
             <RelativeLayout
                 android:id="@+id/rl_rmb"
-                android:layout_centerHorizontal="true"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true">
 
                 <TextView
                     android:id="@+id/tv_rmb_unit"
@@ -55,6 +55,11 @@
                 android:textColor="@color/common_blue_main"
                 android:textSize="@dimen/sp_12" />
         </RelativeLayout>
+        <ImageView
+            android:id="@+id/iv_flag"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:background="@mipmap/ic_complete_more_mes" />
 
     </RelativeLayout>
 
