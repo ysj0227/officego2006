@@ -35,6 +35,7 @@ import com.owner.R;
 import com.owner.dialog.ExitAppDialog;
 import com.owner.h5.WebViewActivity_;
 import com.owner.mine.contract.UserContract;
+import com.owner.mine.coupon.ScanCouponResultActivity_;
 import com.owner.mine.presenter.UserPresenter;
 import com.owner.rpc.OfficegoApi;
 import com.owner.zxing.QRScanActivity;
@@ -139,6 +140,11 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         }
     }
 
+    @Click(resName = "rl_record")
+    void recordClick() {
+        ScanCouponResultActivity_.intent(mActivity).start();
+    }
+
     @Click(resName = "rl_help")
     void helpClick() {
         WebViewActivity_.intent(mActivity).flags(Constants.H5_HELP).start();
@@ -175,7 +181,8 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
     //扫一扫
     @Click(resName = "iv_scan")
     void scanClick() {
-        scanDialog(getContext());
+//        scanDialog(getContext());
+        startActivity(new Intent(getActivity(), QRScanActivity.class));
     }
 
     private void switchDialog() {

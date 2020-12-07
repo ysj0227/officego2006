@@ -453,11 +453,13 @@
             android:launchMode="singleTop"
             android:screenOrientation="unspecified" />
         <activity
-            android:name=".ui.coupon.CardQrActivity_"
-            android:launchMode="singleTop" />
-        <activity
             android:name=".ui.coupon.CouponActivity_"
-            android:launchMode="singleTop" />
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".ui.coupon.CouponDetailsActivity_"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="JPUSH_APPKEY"

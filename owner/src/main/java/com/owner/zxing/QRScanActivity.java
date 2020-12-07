@@ -12,6 +12,7 @@ import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.view.TitleBarView;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
+import com.owner.mine.coupon.ScanCouponResultActivity_;
 
 import cn.bingoogolapple.qrcode.core.QRCodeView;
 import cn.bingoogolapple.qrcode.zxing.ZXingView;
@@ -19,6 +20,7 @@ import cn.bingoogolapple.qrcode.zxing.ZXingView;
 public class QRScanActivity extends BaseActivity implements QRCodeView.Delegate {
     private static final int REQUEST_CODE = 1000;
     private static final String RULE_QR_CODE = "officego_";
+    private static final String RULE_QR_COUPON_CODE = "officegoTC_";
     private ZXingView mZXingView;
     private TitleBarView titleBar;
     private boolean isOpenFlashlight;
@@ -93,12 +95,17 @@ public class QRScanActivity extends BaseActivity implements QRCodeView.Delegate 
     @Override
     public void onScanQRCodeSuccess(String result) {
         vibrate();
-        if (!result.contains(RULE_QR_CODE) || result.length() <= RULE_QR_CODE.length()) {
-            scanQRError();
-        } else {
+        if (result.contains(RULE_QR_CODE) && result.length() > RULE_QR_CODE.length()) {
+            //扫码登录
             ScanCompleteActivity_.intent(context)
                     .scanContent(result.replace(RULE_QR_CODE, ""))
                     .startForResult(REQUEST_CODE);
+        } else if (result.contains(RULE_QR_COUPON_CODE) && result.length() > RULE_QR_COUPON_CODE.length()) {
+            //核销券码
+            ScanCouponResultActivity_.intent(context).start();
+            finish();
+        } else {
+            scanQRError();
         }
     }
 

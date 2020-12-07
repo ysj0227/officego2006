@@ -7,20 +7,15 @@ import android.widget.TextView;
 
 import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.GotoActivityUtils;
-import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.VersionBean;
-import com.officego.commonlib.common.rongcloud.ConnectRongCloudUtils;
-import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.update.AppUpdate;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
-import com.owner.rpc.OfficegoApi;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -56,11 +51,6 @@ public class MineSettingActivity extends BaseActivity {
     @Click(resName = "rl_mobile")
     void modifyMobileClick() {
         ModifyMobileActivity_.intent(context).start();
-    }
-
-    @Click(resName = "rl_wx")
-    void modifyWechatClick() {
-        ModifyWechatActivity_.intent(context).start();
     }
 
     @Click(resName = "rl_version_update")

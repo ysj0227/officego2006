@@ -1,16 +1,11 @@
 package com.officego.ui.coupon;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.widget.RelativeLayout;
 
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.tabs.TabLayout;
 import com.officego.R;
-import com.officego.commonlib.CommonListAdapter;
-import com.officego.commonlib.ViewHolder;
 import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.ui.adapter.CouponAdapter;

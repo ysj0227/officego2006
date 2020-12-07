@@ -13,6 +13,9 @@
     <color name="common_grey_66">#666666</color>
     <color name="common_97">#979797</color>
     <color name="common_5c">#5C5C5C</color>
+    <color name="common_c1">#C1C7C7</color>
+    <color name="common_73">#737676</color>
+    <color name="common_ad">#ADADAD</color>
 
     <!--文字颜色-->
     <color name="text_main">#303540</color>          <!--主要-->
@@ -23,6 +26,7 @@
     <color name="text_33">#333333</color>          <!--hint-->
     <color name="text_66">#666666</color>          <!--hint-->
     <color name="text_66_p50">#99666666</color>          <!--hint-->
+    <color name="text_65">#656363</color>          <!--hint-->
     <color name="text_99">#999999</color>          <!--hint-->
     <color name="text_f7">#F7F7F7</color>          <!--hint-->
     <color name="text_75">#757575</color>          <!--hint-->

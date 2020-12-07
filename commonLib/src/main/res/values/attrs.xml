@@ -55,7 +55,7 @@
         <attr name="centerTextSize" format="dimension" /><!-- 右边文字大小-->
         <attr name="centerTextColor" format="color" /><!-- 右边文字颜色-->
 
-        <attr name="leftToArrowText" format="string"/><!-- 箭头左侧文字内容-->
+        <attr name="leftToArrowText" format="string" /><!-- 箭头左侧文字内容-->
         <attr name="leftToArrowTextSize" format="dimension" /><!-- 箭头左侧文字大小-->
         <attr name="leftToArrowTextColor" format="color" /><!-- 箭头左侧文字颜色-->
 
@@ -118,36 +118,25 @@
 
     </declare-styleable>
 
-    <!--    <declare-styleable name="SettingItemEdittextLayout">-->
-    <!--        <attr name="parentWidth" />-->
-    <!--        <attr name="parentHeight" />-->
-    <!--        <attr name="imageLeft" />-->
-    <!--        <attr name="imageLeftSize" />-->
-    <!--        <attr name="leftText" />-->
-    <!--        <attr name="leftTextSize" />-->
-    <!--        <attr name="leftTextColor" />-->
-    <!--        <attr name="editTextContent" format="string" />-->
-    <!--        <attr name="editTextHint" format="string" />-->
-    <!--        <attr name="editTextSize" format="dimension" />-->
-    <!--        <attr name="editTextColor" format="color" />-->
-    <!--        <attr name="editTextHintColor" format="color" />-->
-    <!--        <attr name="editTextBackground" format="reference" />-->
-    <!--        <attr name="editTextRightPadding" format="dimension" />-->
-    <!--        <attr name="rightText" />-->
-    <!--        <attr name="rightTextSize" />-->
-    <!--        <attr name="rightTextColor" />-->
-    <!--        <attr name="dividerShow" />-->
-    <!--        <attr name="dividerColor" />-->
-    <!--        <attr name="dividerHeight" />-->
-    <!--        <attr name="editTextInputType">-->
-    <!--            <flag name="none" value="0x00000000" />-->
-    <!--            <flag name="text" value="0x00000001" />-->
-    <!--            <flag name="textMultiLine" value="0x00020001" />-->
-    <!--            <flag name="number" value="0x00000002" />-->
-    <!--            <flag name="numberDecimal" value="0x00002002" />-->
-    <!--            <flag name="phone" value="0x00000003" />-->
-    <!--        </attr>-->
-    <!--    </declare-styleable>-->
+    <declare-styleable name="TextViewItemLayout">
+        <attr name="parentHeight" />
+        <attr name="title" format="string" />
+        <attr name="titleSize" format="dimension" />
+        <attr name="titleColor" format="color" />
+        <attr name="contentText" format="string" />
+        <attr name="contentTextSize" format="dimension" />
+        <attr name="contentTextColor" format="color" />
+        <!-- 分割线位置 -->
+        <attr name="dividerTop" format="enum">
+            <enum name="visible" value="0" />
+            <enum name="gone" value="1" />
+        </attr>
+        <!-- 分割线位置 -->
+        <attr name="dividerBottom" format="enum">
+            <enum name="visible" value="0" />
+            <enum name="gone" value="1" />
+        </attr>
+    </declare-styleable>
 
     <declare-styleable name="VerifyCodeInputView">
         <attr name="box" format="integer" />

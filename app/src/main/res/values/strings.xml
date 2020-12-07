@@ -78,4 +78,9 @@
     <string name="tip_video_play_exception">视频播放异常</string>
     <string name="str_text_and">和</string>
     <string name="str_system_message">系统消息</string>
+    <string name="str_coupon_content">
+        &#160;· 1.优惠券仅限在有效期内使用，过期则无法使用；\t\n
+        · 2.少量特殊商品不能使用优惠券（有些优惠券标注全场通用则可以使用）；\t\n
+        · 3.一张订单只能使用一张优惠券，优惠券不可合并；\t\n
+        · 4.每张优惠券只能使用一次，抵价金额未用完下次也不能继续使用；</string>
 </resources>
