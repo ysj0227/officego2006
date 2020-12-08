@@ -13,6 +13,7 @@ import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.TitleBarView;
 import com.officego.commonlib.view.widget.TextViewItemLayout;
 import com.owner.R;
+import com.owner.mine.model.MeetingBean;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -78,13 +79,17 @@ public class ScanCouponResultActivity extends BaseActivity {
 
     @Click(resName = "til_meeting_room")
     void meetingRoomClick() {
-        List<String> teacherlist = new ArrayList<>();
+        List<MeetingBean> arrayList = new ArrayList<>();
+        MeetingBean bean;
         for (int i = 0; i < 5; i++) {
-            teacherlist.add("aa" + i);
+            bean = new MeetingBean();
+            bean.setId(i);
+            bean.setName("免费会议室+i");
+            arrayList.add(bean);
         }
-        String[] teachers = new String[teacherlist.size()];
-        for (int i = 0; i < teacherlist.size(); i++) {
-            teachers[i] = teacherlist.get(i);
+        String[] teachers = new String[arrayList.size()];
+        for (int i = 0; i < arrayList.size(); i++) {
+            teachers[i] = arrayList.get(i).getName();
         }
         meetingRoomAlertDialog(teachers);
     }
@@ -97,6 +102,7 @@ public class ScanCouponResultActivity extends BaseActivity {
         btnSure.setVisibility(View.GONE);
     }
 
+    //选择免费会议室
     private void meetingRoomAlertDialog(String[] items) {
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         builder.setSingleChoiceItems(items, roomPosition, (dialog, which) -> {
