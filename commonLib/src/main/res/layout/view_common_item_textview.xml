@@ -4,7 +4,7 @@
     android:id="@+id/cl_container"
     android:layout_width="match_parent"
     android:layout_height="@dimen/dp_56"
-    android:background="@drawable/bg_common_list_item">
+    android:background="@color/white">
 
     <ImageView
         android:id="@+id/iv_image"
