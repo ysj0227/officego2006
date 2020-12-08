@@ -111,9 +111,12 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
 
     @Click(R.id.iv_setting)
     void settingClick() {
-//        if (isToLogin()) return;
-//        MineSettingActivity_.intent(mActivity).startForResult(REQUEST_CODE_LOGOUT);
+        if (isToLogin()) return;
+        MineSettingActivity_.intent(mActivity).startForResult(REQUEST_CODE_LOGOUT);
+    }
 
+    @Click(R.id.rl_coupon)
+    void couponClick() {
         CouponActivity_.intent(mActivity).start();
     }
 

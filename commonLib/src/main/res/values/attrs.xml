@@ -138,6 +138,20 @@
         </attr>
     </declare-styleable>
 
+    <declare-styleable name="ItemTextLayout">
+        <attr name="parentHeight" />
+        <attr name="textTitle" format="string" />
+        <attr name="textTitleSize" format="dimension" />
+        <attr name="textTitleColor" format="color" />
+        <attr name="imageBackground" format="reference" />
+        <attr name="imageWidth" format="dimension" />
+        <attr name="imageHeight" format="dimension" />
+        <attr name="dividerLine" format="enum">
+            <enum name="visible" value="0" />
+            <enum name="gone" value="1" />
+        </attr>
+    </declare-styleable>
+
     <declare-styleable name="VerifyCodeInputView">
         <attr name="box" format="integer" />
         <attr name="child_h_padding" format="dimension" />

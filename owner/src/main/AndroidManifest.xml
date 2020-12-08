@@ -99,6 +99,10 @@
             android:name=".mine.coupon.ScanCouponResultActivity_"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".mine.coupon.WriteOffRecordActivity_"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

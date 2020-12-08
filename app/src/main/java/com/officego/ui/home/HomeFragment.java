@@ -450,7 +450,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
             int pageId = mBannerClickList.get(position).getPageId() == null ? 0 :
                     Integer.valueOf(CommonHelper.bigDecimal(mBannerClickList.get(position).getPageId(), true));
             if (type == 1) {
-                //内链类型1：楼盘详情，2:网点详情 3:楼盘房源详情,4:网点房源详情
+                //pageType内链类型1：楼盘详情，2:网点详情 3:楼盘房源详情,4:网点房源详情
                 if (pageId==0){
                     return;
                 }

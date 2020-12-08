@@ -54,7 +54,6 @@ public class ScanCouponResultActivity extends BaseActivity {
 
     private int roomPosition;
 
-    @SuppressLint("SetTextI18n")
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarColor(this);

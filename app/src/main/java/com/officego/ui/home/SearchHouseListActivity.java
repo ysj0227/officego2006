@@ -20,7 +20,6 @@ import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.OnLoadMoreListener;
 import com.officego.config.ConditionConfig;

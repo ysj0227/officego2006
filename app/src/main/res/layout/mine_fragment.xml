@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/common_blue_main"
@@ -83,267 +82,87 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
 
-            <RelativeLayout
+            <com.officego.commonlib.view.widget.ItemTextLayout
+                android:id="@+id/rl_coupon"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_12"
+                app:dividerLine="visible"
+                app:imageBackground="@mipmap/ic_coupon_icon"
+                app:imageHeight="@dimen/dp_19"
+                app:imageWidth="@dimen/dp_16"
+                app:textTitle="卡券" />
+
+            <com.officego.commonlib.view.widget.ItemTextLayout
                 android:id="@+id/rl_viewing_date"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_56"
-                android:layout_marginTop="@dimen/dp_12">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dividerLine="visible"
+                app:imageBackground="@mipmap/ic_viewing_date"
+                app:imageHeight="@dimen/dp_16"
+                app:imageWidth="@dimen/dp_16"
+                app:textTitle="@string/str_viewing_date" />
 
-                <ImageView
-                    android:id="@+id/iv_viewing_date"
-                    android:layout_width="@dimen/dp_16"
-                    android:layout_height="@dimen/dp_16"
-                    android:layout_centerVertical="true"
-                    android:background="@mipmap/ic_viewing_date"
-                    tools:ignore="ContentDescription" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/dp_18"
-                    android:layout_toEndOf="@id/iv_viewing_date"
-                    android:text="@string/str_viewing_date"
-                    android:textColor="@color/text_33"
-                    android:textSize="@dimen/sp_15" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/ic_right_arrow_small" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_1"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/common_divider" />
-            </RelativeLayout>
-
-            <RelativeLayout
+            <com.officego.commonlib.view.widget.ItemTextLayout
                 android:id="@+id/rl_help"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_56">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dividerLine="visible"
+                app:imageBackground="@mipmap/ic_help"
+                app:imageHeight="@dimen/dp_19"
+                app:imageWidth="@dimen/dp_16"
+                app:textTitle="@string/str_help" />
 
-                <ImageView
-                    android:id="@+id/iv_help"
-                    android:layout_width="@dimen/dp_16"
-                    android:layout_height="@dimen/dp_19"
-                    android:layout_centerVertical="true"
-                    android:background="@mipmap/ic_help"
-                    tools:ignore="ContentDescription" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/dp_18"
-                    android:layout_toEndOf="@id/iv_help"
-                    android:text="@string/str_help"
-                    android:textColor="@color/text_33"
-                    android:textSize="@dimen/sp_15" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/ic_right_arrow_small" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_1"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/common_divider" />
-            </RelativeLayout>
-
-            <RelativeLayout
+            <com.officego.commonlib.view.widget.ItemTextLayout
                 android:id="@+id/rl_service"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_56">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dividerLine="visible"
+                app:imageBackground="@mipmap/ic_customer_service"
+                app:imageHeight="@dimen/dp_16"
+                app:imageWidth="@dimen/dp_16"
+                app:textTitle="@string/str_customer_service" />
 
-                <ImageView
-                    android:id="@+id/iv_service"
-                    android:layout_width="@dimen/dp_16"
-                    android:layout_height="@dimen/dp_16"
-                    android:layout_centerVertical="true"
-                    android:background="@mipmap/ic_customer_service"
-                    tools:ignore="ContentDescription" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/dp_18"
-                    android:layout_toEndOf="@id/iv_service"
-                    android:text="@string/str_customer_service"
-                    android:textColor="@color/text_33"
-                    android:textSize="@dimen/sp_15" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/ic_right_arrow_small" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_1"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/common_divider" />
-            </RelativeLayout>
-
-            <RelativeLayout
+            <com.officego.commonlib.view.widget.ItemTextLayout
                 android:id="@+id/rl_protocol_service"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_56">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dividerLine="visible"
+                app:imageBackground="@mipmap/ic_protocol_service"
+                app:imageHeight="@dimen/dp_16"
+                app:imageWidth="@dimen/dp_16"
+                app:textTitle="@string/str_protocol_service" />
 
-                <ImageView
-                    android:id="@+id/iv_protocol_service"
-                    android:layout_width="@dimen/dp_16"
-                    android:layout_height="@dimen/dp_16"
-                    android:layout_centerVertical="true"
-                    android:background="@mipmap/ic_protocol_service"
-                    tools:ignore="ContentDescription" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/dp_18"
-                    android:layout_toEndOf="@id/iv_protocol_service"
-                    android:text="@string/str_protocol_service"
-                    android:textColor="@color/text_33"
-                    android:textSize="@dimen/sp_15" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/ic_right_arrow_small" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_1"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/common_divider" />
-            </RelativeLayout>
-
-            <RelativeLayout
+            <com.officego.commonlib.view.widget.ItemTextLayout
                 android:id="@+id/rl_protocol"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_56">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dividerLine="visible"
+                app:imageBackground="@mipmap/ic_protocol_privacy"
+                app:imageHeight="@dimen/dp_16"
+                app:imageWidth="@dimen/dp_16"
+                app:textTitle="@string/str_privacy" />
 
-                <ImageView
-                    android:id="@+id/iv_protocol"
-                    android:layout_width="@dimen/dp_16"
-                    android:layout_height="@dimen/dp_16"
-                    android:layout_centerVertical="true"
-                    android:background="@mipmap/ic_protocol_privacy"
-                    tools:ignore="ContentDescription" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/dp_18"
-                    android:layout_toEndOf="@id/iv_protocol"
-                    android:text="@string/str_privacy"
-                    android:textColor="@color/text_33"
-                    android:textSize="@dimen/sp_15" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/ic_right_arrow_small" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_1"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/common_divider" />
-            </RelativeLayout>
-
-
-            <RelativeLayout
+            <com.officego.commonlib.view.widget.ItemTextLayout
                 android:id="@+id/rl_switch_id"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_56">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dividerLine="visible"
+                app:imageBackground="@mipmap/ic_switch_id"
+                app:imageHeight="@dimen/dp_16"
+                app:imageWidth="@dimen/dp_16"
+                app:textTitle="@string/str_switch_owner" />
 
-                <ImageView
-                    android:id="@+id/iv_switch"
-                    android:layout_width="@dimen/dp_16"
-                    android:layout_height="@dimen/dp_16"
-                    android:layout_centerVertical="true"
-                    android:background="@mipmap/ic_switch_id"
-                    tools:ignore="ContentDescription" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/dp_18"
-                    android:layout_toEndOf="@id/iv_switch"
-                    android:text="@string/str_switch_owner"
-                    android:textColor="@color/text_33"
-                    android:textSize="@dimen/sp_15" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/ic_right_arrow_small"
-                    tools:ignore="ContentDescription" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_1"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/common_divider" />
-            </RelativeLayout>
-
-            <RelativeLayout
+            <com.officego.commonlib.view.widget.ItemTextLayout
                 android:id="@+id/rl_about"
-                android:layout_width="wrap_content"
-                android:layout_height="@dimen/dp_56">
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dividerLine="visible"
+                app:imageBackground="@mipmap/ic_about"
+                app:imageHeight="@dimen/dp_16"
+                app:imageWidth="@dimen/dp_16"
+                app:textTitle="@string/str_about_us" />
 
-                <ImageView
-                    android:id="@+id/iv_about"
-                    android:layout_width="@dimen/dp_16"
-                    android:layout_height="@dimen/dp_16"
-                    android:layout_centerVertical="true"
-                    android:background="@mipmap/ic_about"
-                    tools:ignore="ContentDescription" />
-
-                <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/dp_18"
-                    android:layout_toEndOf="@id/iv_about"
-                    android:text="@string/str_about_us"
-                    android:textColor="@color/text_33"
-                    android:textSize="@dimen/sp_15" />
-
-                <ImageView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_alignParentEnd="true"
-                    android:layout_centerVertical="true"
-                    android:background="@drawable/ic_right_arrow_small" />
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_1"
-                    android:layout_alignParentBottom="true"
-                    android:background="@color/common_divider" />
-            </RelativeLayout>
         </LinearLayout>
 
     </androidx.core.widget.NestedScrollView>
