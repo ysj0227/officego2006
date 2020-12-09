@@ -1,14 +1,11 @@
 package com.officego.h5;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
 import android.webkit.CookieManager;
-import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -18,16 +15,11 @@ import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.RelativeLayout;
 
-import androidx.annotation.NonNull;
-
 import com.officego.R;
 import com.officego.commonlib.base.BaseActivity;
-import com.officego.commonlib.constant.AppConfig;
-import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.TitleBarView;
-import com.officego.commonlib.view.webview.SMWebChromeClientPhoto;
 import com.officego.view.webview.SMWebViewClient;
 
 import org.androidannotations.annotations.AfterViews;
@@ -41,8 +33,8 @@ import org.androidannotations.annotations.ViewById;
  * Descriptions:WebView
  **/
 @SuppressLint("Registered")
-@EActivity(R.layout.activity_webview)
-public class WebViewActivity extends BaseActivity {
+@EActivity(R.layout.activity_webview_vr)
+public class WebViewCouponActivity extends BaseActivity {
     @ViewById(R.id.wv_view)
     WebView webView;
     @ViewById(R.id.title_bar)
@@ -51,47 +43,27 @@ public class WebViewActivity extends BaseActivity {
     RelativeLayout rlException;
     @ViewById(R.id.btn_again)
     Button btnAgain;
+
     @Extra
-    int flags;
+    String url;
 
-    private SMWebChromeClientPhoto webChrome;
-
+    @SuppressLint("SetTextI18n")
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarColor(this);
         setWebChromeClient();
-        if (flags == Constants.H5_HELP) {
-            titleBar.getAppTitle().setText(getString(R.string.str_title_help));
-            loadWebView(AppConfig.H5_HELP_FEEDBACK + chanel());
-        } else if (flags == Constants.H5_PROTOCOL_SERVICE) {
-            titleBar.getAppTitle().setText(getString(com.owner.R.string.str_protocol_service));
-            loadWebView(AppConfig.H5_REGISTER + chanel());
-        } else if (flags == Constants.H5_PROTOCOL) {
-            titleBar.getAppTitle().setText(getString(R.string.str_title_protocol));
-            loadWebView(AppConfig.H5_PRIVACY + chanel());
-        } else if (flags == Constants.H5_ABOUTS) {
-            titleBar.getAppTitle().setText(getString(R.string.str_title_about_us));
-            loadWebView(AppConfig.H5_ABOUT_US + chanel());
+        titleBar.getAppTitle().setText("会议室");
+        url="https://www.baidu.com/baidu?tn=monline_3_dg&ie=utf-8&wd=%E9%A3%8E%E6%99%AF";
+        if (!TextUtils.isEmpty(url)) {
+            loadWebView(url);
         }
     }
 
-    private String chanel() {
-        return "?channel=2&identity=0";
-    }
-
-    /**
-     * 设置setWebChromeClient对象
-     */
     private void setWebChromeClient() {
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
-                if (TextUtils.isEmpty(title) || title.contains("http")) {
-                    titleBar.getAppTitle().setText(R.string.app_name);
-                } else {
-                    titleBar.getAppTitle().setText(title);
-                }
                 exceptionPageReceivedTitle(view, title);
             }
         });
@@ -118,16 +90,10 @@ public class WebViewActivity extends BaseActivity {
         webSetting.setBuiltInZoomControls(true);
         webSetting.setUseWideViewPort(true);
         webSetting.setLoadsImagesAutomatically(true);
-//        webSetting.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         webSetting.setAllowFileAccess(true);// 设置允许访问文件数据
         webSetting.setLoadWithOverviewMode(true);
         webSetting.setBlockNetworkImage(false);//解决图片不显示
-        webSetting.setAllowFileAccessFromFileURLs(true);
-        webView.addJavascriptInterface(new JsInterface(this), "android");
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-//        webView.setWebChromeClient(new WebChromeClient());//
-        webChrome = new SMWebChromeClientPhoto(this);
-        webView.setWebChromeClient(webChrome);
         webView.loadUrl(url);
         webView.setWebViewClient(new SMWebViewClient(this) {
             @Override
@@ -155,30 +121,12 @@ public class WebViewActivity extends BaseActivity {
 
             @Override
             public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
-                //exceptionPageHttpError(view, errorResponse);
                 hideLoadingDialog();
                 super.onReceivedHttpError(view, request, errorResponse);
             }
         });
     }
 
-    //上传图片
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (webChrome != null) {
-            webChrome.uploadImage(requestCode, resultCode, data);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (webChrome != null) {
-            webChrome.onPermissionResult(requestCode, grantResults);
-        }
-    }
 
     /**
      * 网络异常
@@ -197,15 +145,7 @@ public class WebViewActivity extends BaseActivity {
             rlException.setVisibility(View.GONE);
             view.clearCache(true);
             view.clearHistory();
-            if (flags == Constants.H5_HELP) {
-                webView.loadUrl(AppConfig.H5_HELP_FEEDBACK + chanel());
-            } else if (flags == Constants.H5_PROTOCOL_SERVICE) {
-                webView.loadUrl(AppConfig.H5_REGISTER + chanel());
-            } else if (flags == Constants.H5_PROTOCOL) {
-                webView.loadUrl(AppConfig.H5_PRIVACY + chanel());
-            } else if (flags == Constants.H5_ABOUTS) {
-                webView.loadUrl(AppConfig.H5_ABOUT_US + chanel());
-            }
+            webView.loadUrl(url);
         });
     }
 
@@ -218,8 +158,23 @@ public class WebViewActivity extends BaseActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        webView.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        webView.onPause();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (webView != null) {
+            webView.destroy();
+        }
         clearCache();
     }
 
@@ -251,31 +206,5 @@ public class WebViewActivity extends BaseActivity {
         }
     }
 
-    /**
-     * Android 6.0以上处理方法
-     * onReceivedHttpError
-     */
-    private void exceptionPageHttpError(WebView view, WebResourceResponse errorResponse) {
-        int statusCode = errorResponse.getStatusCode();
-        if (404 == statusCode || 500 == statusCode) {
-            view.loadUrl("about:blank");// 避免出现默认的错误界面
-            view.removeAllViews();
-            receiverExceptionError(view);
-        }
-    }
 
-    //js传递给Android
-    private class JsInterface {
-        private Context mContext;
-
-        JsInterface(Context context) {
-            this.mContext = context;
-        }
-
-        @JavascriptInterface
-        public void closeView() {
-            //Log.d("TAG", "js to android closeView");
-            finish();
-        }
-    }
 }

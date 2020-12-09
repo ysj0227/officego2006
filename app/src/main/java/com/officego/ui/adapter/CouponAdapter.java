@@ -71,9 +71,8 @@ public class CouponAdapter extends CommonListAdapter<String> {
             tvUseDate.setTextColor(ContextCompat.getColor(context, R.color.common_c1));
             ivCouponFlag.setBackgroundResource(R.mipmap.ic_coupon_flag_expire);
         }
-
-        btnUse.setOnClickListener(view -> CouponDetailsActivity_.intent(context).start());
-
+        //进入会议室
+        holder.itemView.setOnClickListener(view -> CouponDetailsActivity_.intent(context).start());
     }
 
 }

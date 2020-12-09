@@ -9,6 +9,7 @@ import android.widget.TextView;
 import com.officego.R;
 import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.h5.WebViewCouponActivity_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -24,6 +25,18 @@ import cn.bingoogolapple.qrcode.zxing.QRCodeEncoder;
 @SuppressLint("Registered")
 @EActivity(R.layout.coupon_activity_details)
 public class CouponDetailsActivity extends BaseActivity {
+    @ViewById(R.id.tv_rmb_unit)
+    TextView tvRmbUnit;
+    @ViewById(R.id.tv_rmb)
+    TextView tvRmb;
+    @ViewById(R.id.tv_use_range)
+    TextView tvUseRange;
+    @ViewById(R.id.tv_active_name)
+    TextView tvActiveName;
+    @ViewById(R.id.tv_use_way)
+    TextView tvUseWay;
+    @ViewById(R.id.tv_use_date)
+    TextView tvUseDate;
     @ViewById(R.id.iv_qr)
     ImageView ivQR;
     @ViewById(R.id.iv_spread)
@@ -36,11 +49,18 @@ public class CouponDetailsActivity extends BaseActivity {
     //是否展开
     private boolean isSpread;
 
+    @SuppressLint("SetTextI18n")
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarColor(this);
         createQR();
-        tvQR.setText("12344444555");
+        tvRmbUnit.setText("¥");
+        tvRmb.setText("100");
+        tvUseRange.setText("满1000可用");
+        tvActiveName.setText("【办公节限时活动】");
+        tvUseWay.setText("仅限到店核销使用");
+        tvUseDate.setText("");
+        tvQR.setText("00000000000");
     }
 
     @Click(R.id.rl_spread)
@@ -53,7 +73,7 @@ public class CouponDetailsActivity extends BaseActivity {
 
     @Click(R.id.tv_can_use_meeting_room)
     void queryMeetingRoomOnClick() {
-        shortTip("H5");
+        WebViewCouponActivity_.intent(context).start();
     }
 
     private void createQR() {
@@ -63,5 +83,4 @@ public class CouponDetailsActivity extends BaseActivity {
             ivQR.setImageBitmap(bitmap);
         });
     }
-
 }

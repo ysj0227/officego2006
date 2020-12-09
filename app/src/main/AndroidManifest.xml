@@ -460,6 +460,10 @@
             android:name=".ui.coupon.CouponDetailsActivity_"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".h5.WebViewCouponActivity_"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="JPUSH_APPKEY"

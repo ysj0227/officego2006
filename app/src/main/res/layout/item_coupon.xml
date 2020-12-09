@@ -101,13 +101,14 @@
             android:textColor="@color/common_5c"
             android:textSize="@dimen/sp_12" />
 
-        <Button
+        <TextView
             android:id="@+id/btn_use"
             android:layout_width="@dimen/dp_54"
             android:layout_height="@dimen/dp_22"
             android:layout_alignParentEnd="true"
             android:layout_centerVertical="true"
             android:layout_marginEnd="@dimen/dp_10"
+            android:gravity="center"
             android:background="@drawable/button_corners25_solid_main"
             android:text="去使用"
             android:textColor="@color/white"
