@@ -1,6 +1,7 @@
 package com.officego.h5;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.text.TextUtils;
@@ -53,7 +54,7 @@ public class WebViewCouponActivity extends BaseActivity {
         StatusBarUtils.setStatusBarColor(this);
         setWebChromeClient();
         titleBar.getAppTitle().setText("会议室");
-        url="https://www.baidu.com/baidu?tn=monline_3_dg&ie=utf-8&wd=%E9%A3%8E%E6%99%AF";
+        url = "https://www.baidu.com/baidu?tn=monline_3_dg&ie=utf-8&wd=%E9%A3%8E%E6%99%AF";
         if (!TextUtils.isEmpty(url)) {
             loadWebView(url);
         }
@@ -78,7 +79,7 @@ public class WebViewCouponActivity extends BaseActivity {
         }
     }
 
-    @SuppressLint("SetJavaScriptEnabled")
+    @SuppressLint({"SetJavaScriptEnabled", "JavascriptInterface"})
     private void loadWebView(String url) {
         showLoadingDialog();
         WebSettings webSetting = webView.getSettings();
@@ -93,6 +94,7 @@ public class WebViewCouponActivity extends BaseActivity {
         webSetting.setAllowFileAccess(true);// 设置允许访问文件数据
         webSetting.setLoadWithOverviewMode(true);
         webSetting.setBlockNetworkImage(false);//解决图片不显示
+        webView.addJavascriptInterface(new JsInterface(this), "android");
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         webView.loadUrl(url);
         webView.setWebViewClient(new SMWebViewClient(this) {
@@ -206,5 +208,16 @@ public class WebViewCouponActivity extends BaseActivity {
         }
     }
 
+    private class JsInterface {
+        private Context context;
 
+        JsInterface(Context context) {
+            this.context = context;
+        }
+
+//        @JavascriptInterface
+//        public void closeView() {
+//
+//        }
+    }
 }

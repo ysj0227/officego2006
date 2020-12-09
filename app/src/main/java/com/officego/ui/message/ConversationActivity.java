@@ -72,7 +72,6 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
     private String getHouseChatId;//去除 targetId  的最后一位 ,产品定义
     private ChatHouseBean mData;
     private boolean isFirstChat = true;//是否第一次聊天  isChat": 0 :点击发送按钮的时候需要调用 addChat接口，1:不需要
-    //    private boolean isSendApply;//租户认证发送的申请
     private String mNikeName;
     private boolean isCanExchange;//是否可以交换手机微信
     private boolean isOnClickExchangeContacts;//是否点击可以交换手机微信
@@ -156,26 +155,24 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         try {
             FragmentManager fragmentManage = getSupportFragmentManager();
             MyConversationFragment fragment = (MyConversationFragment) fragmentManage.findFragmentById(R.id.conversation);
-            Uri uri;
+            String conversationType;//消息类型
             if (!TextUtils.isEmpty(targetId) && (targetId.length() > 1 &&
                     !TextUtils.equals(Constants.TYPE_TENANT, targetId.substring(targetId.length() - 1)) &&
                     !TextUtils.equals(Constants.TYPE_OWNER, targetId.substring(targetId.length() - 1)))
                     || TextUtils.equals(Constants.TYPE_SYSTEM, targetId)) {
                 //系统消息
                 findViewById(R.id.rc_extension).setVisibility(View.INVISIBLE);
-                uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon()
-                        .appendPath("conversation")
-                        .appendPath(Conversation.ConversationType.SYSTEM.getName().toLowerCase())
-                        .appendQueryParameter("targetId", targetId).build();
+                conversationType = Conversation.ConversationType.SYSTEM.getName().toLowerCase();
             } else {
                 //聊天消息
                 findViewById(R.id.rc_extension).setVisibility(TextUtils.isEmpty(targetId) ? View.INVISIBLE : View.VISIBLE);
-                uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon()
-                        .appendPath("conversation")
-                        .appendPath(Conversation.ConversationType.PRIVATE.getName().toLowerCase())
-                        .appendQueryParameter("targetId", targetId).build();
+                conversationType = Conversation.ConversationType.PRIVATE.getName().toLowerCase();
             }
             if (fragment != null) {
+                Uri uri = Uri.parse("rong://" + getApplicationInfo().packageName).buildUpon()
+                        .appendPath("conversation")
+                        .appendPath(conversationType)
+                        .appendQueryParameter("targetId", targetId).build();
                 fragment.setUri(uri);
             }
         } catch (Exception e) {
