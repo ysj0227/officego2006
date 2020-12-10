@@ -1,8 +1,8 @@
 package com.officego.ui.adapter;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -12,6 +12,8 @@ import androidx.core.content.ContextCompat;
 import com.officego.R;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
+import com.officego.commonlib.common.model.CouponListBean;
+import com.officego.commonlib.view.widget.AutoFitTextView;
 import com.officego.ui.coupon.CouponDetailsActivity_;
 
 import java.util.List;
@@ -20,7 +22,7 @@ import java.util.List;
  * Created by shijie
  * Date 2020/12/4
  **/
-public class CouponAdapter extends CommonListAdapter<String> {
+public class CouponAdapter extends CommonListAdapter<CouponListBean.ListBean> {
     private Context context;
     private boolean isValid;
 
@@ -28,28 +30,62 @@ public class CouponAdapter extends CommonListAdapter<String> {
      * @param context 上下文
      * @param list    列表数据
      */
-    public CouponAdapter(Context context, boolean isValid, List<String> list) {
+    public CouponAdapter(Context context, boolean isValid, List<CouponListBean.ListBean> list) {
         super(context, R.layout.item_coupon, list);
         this.isValid = isValid;
         this.context = context;
     }
 
+    /**
+     * "offline": 1609407811,//下架时间
+     * "discountMax": "300",//最大折扣金额/券金额/减至金额
+     * "couponType": 3,//券类型 1:折扣券,2:满减券,3:减至券
+     * "amountRange": "1000,1500",//使用金额范围
+     * "useRange": 1,//使用范围
+     * "batchCode": "859F7588CB5D472B",//券码
+     * "discount": "",//折扣
+     * "online": 1606902208,、、上架时间
+     * "batchTitle": "减至券啊",//券名称
+     * "batchId": "20201202174338",//批次id
+     * "shelfLife": "2020.12.31 - 2020.12.02",//有效期
+     * "status":  0:未启用/未绑定,1:已绑定/待使用,2:废弃,3:暂停,4:过期,5:冻结,6:已核销
+     */
+
+    @SuppressLint("SetTextI18n")
     @Override
-    public void convert(ViewHolder holder, String s) {
+    public void convert(ViewHolder holder, CouponListBean.ListBean bean) {
         RelativeLayout rlCouponBg = holder.getView(R.id.rl_coupon_bg);
         TextView tvRmbUnit = holder.getView(R.id.tv_rmb_unit);
-        TextView tvRmb = holder.getView(R.id.tv_rmb);
+        AutoFitTextView tvRmb = holder.getView(R.id.tv_rmb);
         TextView tvUseRange = holder.getView(R.id.tv_use_range);
         ImageView ivFlag = holder.getView(R.id.iv_flag);
         TextView tvActiveName = holder.getView(R.id.tv_active_name);
         TextView tvUseWay = holder.getView(R.id.tv_use_way);
         TextView tvUseDate = holder.getView(R.id.tv_use_date);
-        Button btnUse = holder.getView(R.id.btn_use);
+        TextView btnUse = holder.getView(R.id.btn_use);
         ImageView ivCouponFlag = holder.getView(R.id.iv_coupon_flag);
-        rlCouponBg.setBackground(ContextCompat.getDrawable(context, isValid ? R.mipmap.ic_coupon_valid : R.mipmap.ic_coupon_invalid));
+
+        //券类型 1:折扣券,2:满减券,3:减至券
+        if (bean.getCouponType() == 1) {
+            tvRmbUnit.setVisibility(View.GONE);
+            tvRmb.setText(bean.getDiscount());
+            tvUseRange.setText(bean.getAmountRangeText());
+        } else if (bean.getCouponType() == 2) {
+            tvRmbUnit.setVisibility(View.VISIBLE);
+            tvRmb.setText(bean.getDiscountMax());
+            tvUseRange.setText(bean.getAmountRangeText());
+        } else {
+            tvRmbUnit.setVisibility(View.GONE);
+            tvRmb.setText("减至" + bean.getDiscountMax());
+            tvUseRange.setText(bean.getAmountRangeText());
+        }
+        tvActiveName.setText(bean.getBatchTitle());
+        tvUseWay.setText("仅限到店核销使用");
+        tvUseDate.setText(bean.getShelfLife());
         //颜色
         if (isValid) {
-            ivFlag.setVisibility(View.VISIBLE);
+            rlCouponBg.setBackground(ContextCompat.getDrawable(context, R.mipmap.ic_coupon_valid));
+            ivFlag.setVisibility(View.GONE);
             btnUse.setVisibility(View.VISIBLE);
             ivCouponFlag.setVisibility(View.GONE);
             tvRmbUnit.setTextColor(ContextCompat.getColor(context, R.color.common_blue_main));
@@ -58,8 +94,8 @@ public class CouponAdapter extends CommonListAdapter<String> {
             tvActiveName.setTextColor(ContextCompat.getColor(context, R.color.black));
             tvUseWay.setTextColor(ContextCompat.getColor(context, R.color.common_5c));
             tvUseDate.setTextColor(ContextCompat.getColor(context, R.color.common_5c));
-//            ivFlag.setBackgroundResource();
         } else {
+            rlCouponBg.setBackground(ContextCompat.getDrawable(context, R.mipmap.ic_coupon_invalid));
             ivFlag.setVisibility(View.GONE);
             btnUse.setVisibility(View.GONE);
             ivCouponFlag.setVisibility(View.VISIBLE);
@@ -69,10 +105,15 @@ public class CouponAdapter extends CommonListAdapter<String> {
             tvActiveName.setTextColor(ContextCompat.getColor(context, R.color.common_c1));
             tvUseWay.setTextColor(ContextCompat.getColor(context, R.color.common_c1));
             tvUseDate.setTextColor(ContextCompat.getColor(context, R.color.common_c1));
-            ivCouponFlag.setBackgroundResource(R.mipmap.ic_coupon_flag_expire);
+            if (bean.getStatus() == 6) {
+                ivCouponFlag.setBackgroundResource(R.mipmap.ic_coupon_flag_used);
+            } else {
+                ivCouponFlag.setBackgroundResource(R.mipmap.ic_coupon_flag_expire);
+            }
         }
-        //进入会议室
-        holder.itemView.setOnClickListener(view -> CouponDetailsActivity_.intent(context).start());
-    }
 
+        if (isValid) {//进入会议室
+            holder.itemView.setOnClickListener(view -> CouponDetailsActivity_.intent(context).start());
+        }
+    }
 }

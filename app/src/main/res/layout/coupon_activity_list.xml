@@ -36,37 +36,42 @@
         app:tabTextColor="@color/text_66_p50">
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/tab_valid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="可使用" />
 
         <com.google.android.material.tabs.TabItem
-            android:id="@+id/tab_invalid"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="已失效" />
     </com.google.android.material.tabs.TabLayout>
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rv_view"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/bga_refresh"
         style="@style/marginLeftRight18"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tl_view"
-        android:layout_marginTop="@dimen/dp_15" />
+        android:layout_below="@id/tl_view">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/rv_view"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/dp_15" />
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <TextView
-        android:visibility="gone"
         android:id="@+id/tv_no_data"
-        android:layout_width="wrap_content"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/dp_72"
+        android:layout_below="@id/tl_view"
+        android:layout_centerInParent="true"
+        android:layout_marginTop="@dimen/dp_60"
         android:drawableTop="@mipmap/ic_coupon_no"
-        android:gravity="center_horizontal"
+        android:gravity="center"
         android:text="暂无更多内容"
         android:textColor="@color/text_66_p50"
-        android:textSize="@dimen/sp_14" />
+        android:textSize="@dimen/sp_12"
+        android:visibility="visible" />
 
 </RelativeLayout>

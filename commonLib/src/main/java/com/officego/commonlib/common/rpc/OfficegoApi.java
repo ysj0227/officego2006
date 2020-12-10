@@ -6,6 +6,7 @@ import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.VersionBean;
 import com.officego.commonlib.common.model.ChatHouseBean;
 import com.officego.commonlib.common.model.ChatListBean;
+import com.officego.commonlib.common.model.CouponListBean;
 import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.commonlib.common.model.ExchangeContactsBean;
 import com.officego.commonlib.common.model.FirstChatBean;
@@ -21,6 +22,7 @@ import com.officego.commonlib.common.model.owner.HouseEditBean;
 import com.officego.commonlib.common.model.owner.UploadImageBean;
 import com.officego.commonlib.common.rpc.request.BuildingJointWorkInterface;
 import com.officego.commonlib.common.rpc.request.ChatInterface;
+import com.officego.commonlib.common.rpc.request.CouponInterface;
 import com.officego.commonlib.common.rpc.request.DirectoryInterface;
 import com.officego.commonlib.common.rpc.request.LicenceInterface;
 import com.officego.commonlib.common.rpc.request.MineMsgInterface;
@@ -801,7 +803,7 @@ public class OfficegoApi {
                                String job, String wx, RetrofitCallback<Object> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
-        map.put("avatar", requestBody(avatar+""));
+        map.put("avatar", requestBody(avatar + ""));
         map.put("nickname", requestBody(nickname));
         map.put("sex", requestBody(sex));
         map.put("job", requestBody(job));
@@ -810,14 +812,15 @@ public class OfficegoApi {
                 .updateUserInfo(map)
                 .enqueue(callback);
     }
- /**
+
+    /**
      * 业主更新个人信息卡片
      */
     public void updateUserInfoCard(String avatar, String nickname, String sex,
-                               String job, String wx, RetrofitCallback<Object> callback) {
+                                   String job, String wx, RetrofitCallback<Object> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
-        map.put("avatar", requestBody(avatar+""));
+        map.put("avatar", requestBody(avatar + ""));
         map.put("nickname", requestBody(nickname));
         map.put("sex", requestBody(sex));
         map.put("job", requestBody(job));
@@ -834,7 +837,7 @@ public class OfficegoApi {
     public void updateUserInfo(String avatar, String nickname, String sex, String wx, RetrofitCallback<Object> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
-        map.put("avatar", requestBody(avatar+""));
+        map.put("avatar", requestBody(avatar + ""));
         map.put("nickname", requestBody(nickname));
         map.put("sex", requestBody(sex));
         map.put("wxId", requestBody(wx));
@@ -842,6 +845,7 @@ public class OfficegoApi {
                 .updateUserInfo(map)
                 .enqueue(callback);
     }
+
     /**
      * 全局搜索
      */
@@ -863,4 +867,23 @@ public class OfficegoApi {
                 .searchList2(map)
                 .enqueue(callback);
     }
+
+    /**
+     * status 	是 	string 	1可使用2已过期
+     * pageSize 	否 	int 	条数
+     * pageNo 	否 	int 	页数
+     */
+    public void getCouponList(int status, RetrofitCallback<CouponListBean> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+//        map.put("token", requestBody("MTM0X3N1bndlbGxfMTYwNzA0OTI4MV8x"));
+        map.put("channel", requestBody("2"));
+        map.put("status", requestBody(status + ""));
+        map.put("pageSize", requestBody("99999"));
+        map.put("pageNo", requestBody("1"));
+        OfficegoRetrofitClient.getInstance().create(CouponInterface.class)
+                .getCouponList(map)
+                .enqueue(callback);
+    }
+
 }
