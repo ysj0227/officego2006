@@ -57,7 +57,7 @@ public class CouponAdapter extends CommonListAdapter<CouponListBean.ListBean> {
         RelativeLayout rlCouponBg = holder.getView(R.id.rl_coupon_bg);
         TextView tvRmbUnit = holder.getView(R.id.tv_rmb_unit);
         AutoFitTextView tvRmb = holder.getView(R.id.tv_rmb);
-        TextView tvUseRange = holder.getView(R.id.tv_use_range);
+        AutoFitTextView tvUseRange = holder.getView(R.id.tv_use_range);
         ImageView ivFlag = holder.getView(R.id.iv_flag);
         TextView tvActiveName = holder.getView(R.id.tv_active_name);
         TextView tvUseWay = holder.getView(R.id.tv_use_way);
@@ -68,18 +68,16 @@ public class CouponAdapter extends CommonListAdapter<CouponListBean.ListBean> {
         //券类型 1:折扣券,2:满减券,3:减至券
         if (bean.getCouponType() == 1) {
             tvRmbUnit.setVisibility(View.GONE);
-            tvRmb.setText(bean.getDiscount());
-            tvUseRange.setText(bean.getAmountRangeText());
+            tvRmb.setText((Integer.parseInt(bean.getDiscount()) / 10) + "折");
         } else if (bean.getCouponType() == 2) {
             tvRmbUnit.setVisibility(View.VISIBLE);
             tvRmb.setText(bean.getDiscountMax());
-            tvUseRange.setText(bean.getAmountRangeText());
         } else {
             tvRmbUnit.setVisibility(View.GONE);
             tvRmb.setText("减至" + bean.getDiscountMax());
-            tvUseRange.setText(bean.getAmountRangeText());
         }
-        tvActiveName.setText(bean.getBatchTitle());
+        tvUseRange.setText(bean.getAmountRangeText());
+        tvActiveName.setText("【"+bean.getBatchTitle()+"】");
         tvUseWay.setText("仅限到店核销使用");
         tvUseDate.setText(bean.getShelfLife());
         //颜色
@@ -111,9 +109,12 @@ public class CouponAdapter extends CommonListAdapter<CouponListBean.ListBean> {
                 ivCouponFlag.setBackgroundResource(R.mipmap.ic_coupon_flag_expire);
             }
         }
-
-        if (isValid) {//进入会议室
-            holder.itemView.setOnClickListener(view -> CouponDetailsActivity_.intent(context).start());
+        //进入会议室
+        if (isValid) {
+            holder.itemView.setOnClickListener(view ->
+                    CouponDetailsActivity_.intent(context)
+                            .couponBean(bean)
+                            .start());
         }
     }
 }

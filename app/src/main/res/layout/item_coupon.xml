@@ -37,15 +37,15 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_toEndOf="@id/tv_rmb_unit"
-                    android:paddingLeft="@dimen/dp_4"
+                    android:maxLines="1"
+                    android:paddingStart="@dimen/dp_4"
                     android:paddingEnd="@dimen/dp_4"
-                    android:singleLine="true"
                     android:textColor="@color/common_blue_main"
                     android:textSize="@dimen/sp_30"
                     android:textStyle="bold" />
             </RelativeLayout>
 
-            <TextView
+            <com.officego.commonlib.view.widget.AutoFitTextView
                 android:id="@+id/tv_use_range"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -73,7 +73,7 @@
             android:id="@+id/tv_active_name"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_15"
+            android:layout_marginStart="@dimen/dp_8"
             android:layout_marginTop="@dimen/dp_20"
             android:textColor="@color/black"
             android:textSize="@dimen/sp_14" />

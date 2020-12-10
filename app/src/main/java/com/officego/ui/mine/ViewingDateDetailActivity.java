@@ -103,7 +103,7 @@ public class ViewingDateDetailActivity extends BaseMvpActivity<ViewingDateDetail
         mobile = data.getBuilding().getPhone();
         int auditStatus = data.getBuilding().getAuditStatus();
         if (auditStatus == 0) {
-            strStatus = "预约";
+            strStatus = "待接受";
             ivMobile.setVisibility(View.GONE);
         } else if (auditStatus == 1) {
             strStatus = "已预约";

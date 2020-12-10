@@ -55,7 +55,7 @@ public class ViewingDateAdapter extends CommonListAdapter<ViewingDateBean.DataBe
         int status = bean.getAuditStatus();
         String strStatus = "";
         if (status == 0) {
-            strStatus = "预约";
+            strStatus = "待接受";
             status(false, rlDetails, tvName, tvBuildingName, tvStatus, vLineTop, ivDateFlag, vLineBottom);
         } else if (status == 1) {
             strStatus = "已预约";

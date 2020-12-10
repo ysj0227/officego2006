@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.officego.commonlib.base.BaseMvpActivity;
+import com.officego.commonlib.common.model.CouponWriteOffListBean;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.OnLoadMoreListener;
@@ -43,9 +44,7 @@ public class WriteOffRecordActivity extends BaseMvpActivity<WriteOffPresenter>
     @ViewById(resName = "rl_exception")
     RelativeLayout rlException;
 
-    //当前页码
-    private int pageNum = 1;
-    //list 是否有更多
+    private int pageNum = 1; //当前页码
     private boolean hasMore;
     private WriteOffAdapter adapter;
 
@@ -122,7 +121,8 @@ public class WriteOffRecordActivity extends BaseMvpActivity<WriteOffPresenter>
     }
 
     @Override
-    public void writeOffListSuccess() {
-        //todo
+    public void writeOffListSuccess(CouponWriteOffListBean data) {
+//        adapter = new WriteOffAdapter(context, list);
+//        rvWriteOff.setAdapter(adapter);
     }
 }

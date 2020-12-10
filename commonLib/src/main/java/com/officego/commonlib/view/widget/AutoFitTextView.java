@@ -1,63 +1,199 @@
 package com.officego.commonlib.view.widget;
 
 /**
+ * 自定义TextView，文本内容自动调整字体大小以适应TextView的大小
  * Created by shijie
  * Date 2020/12/10
  **/
 
-import android.annotation.SuppressLint;
 import android.content.Context;
-import android.graphics.Canvas;
-import android.graphics.Paint;
-import android.graphics.Rect;
 import android.util.AttributeSet;
 import android.util.TypedValue;
 import android.widget.TextView;
 
 /**
- * 自定义TextView，文本内容自动调整字体大小以适应TextView的大小
- * @author yzp
+ * A {@link TextView} that re-sizes its text to be no larger than the width of the view.
+ *
+ * @attr ref R.styleable.AutofitTextView_sizeToFit
+ * @attr ref R.styleable.AutofitTextView_minTextSize
+ * @attr ref R.styleable.AutofitTextView_precision
  */
-@SuppressLint("AppCompatCustomView")
-public class AutoFitTextView extends TextView {
-    private Paint mTextPaint;
-    private float mTextSize;
+
+public class AutoFitTextView extends TextView implements AutoFitHelper.OnTextSizeChangeListener {
+
+    private AutoFitHelper mHelper;
 
     public AutoFitTextView(Context context) {
         super(context);
+        init(context, null, 0);
     }
 
     public AutoFitTextView(Context context, AttributeSet attrs) {
         super(context, attrs);
+        init(context, attrs, 0);
+    }
+
+    public AutoFitTextView(Context context, AttributeSet attrs, int defStyle) {
+        super(context, attrs, defStyle);
+        init(context, attrs, defStyle);
+    }
+
+    private void init(Context context, AttributeSet attrs, int defStyle) {
+        mHelper = AutoFitHelper.create(this, attrs, defStyle)
+                .addOnTextSizeChangeListener(this);
+    }
+
+    // Getters and Setters
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setTextSize(int unit, float size) {
+        super.setTextSize(unit, size);
+        if (mHelper != null) {
+            mHelper.setTextSize(unit, size);
+        }
     }
 
     /**
-     * Re size the font so the specified text fits in the text box assuming the
-     * text box is the specified width.
-     *
+     * {@inheritDoc}
      */
-    private void refitText(String text, int textViewWidth) {
-        if (text == null || textViewWidth <= 0)
-            return;
-        mTextPaint = new Paint();
-        mTextPaint.set(this.getPaint());
-        int availableTextViewWidth = getWidth() - getPaddingLeft() - getPaddingRight();
-        float[] charsWidthArr = new float[text.length()];
-        Rect boundsRect = new Rect();
-        mTextPaint.getTextBounds(text, 0, text.length(), boundsRect);
-        int textWidth = boundsRect.width();
-        mTextSize = getTextSize();
-        while (textWidth > availableTextViewWidth) {
-            mTextSize -= 1;
-            mTextPaint.setTextSize(mTextSize);
-            textWidth = mTextPaint.getTextWidths(text, charsWidthArr);
+    @Override
+    public void setLines(int lines) {
+        super.setLines(lines);
+        if (mHelper != null) {
+            mHelper.setMaxLines(lines);
         }
-        this.setTextSize(TypedValue.COMPLEX_UNIT_PX, mTextSize);
+    }
+
+    /**
+     * {@inheritDoc}
+     */
+    @Override
+    public void setMaxLines(int maxLines) {
+        super.setMaxLines(maxLines);
+        if (mHelper != null) {
+            mHelper.setMaxLines(maxLines);
+        }
+    }
+
+    /**
+     * Returns the {@link AutoFitHelper} for this View.
+     */
+    public AutoFitHelper getAutofitHelper() {
+        return mHelper;
+    }
+
+    /**
+     * Returns whether or not the text will be automatically re-sized to fit its constraints.
+     */
+    public boolean isSizeToFit() {
+        return mHelper.isEnabled();
+    }
+
+    /**
+     * Sets the property of this field (sizeToFit), to automatically resize the text to fit its
+     * constraints.
+     */
+    public void setSizeToFit() {
+        setSizeToFit(true);
+    }
+
+    /**
+     * If true, the text will automatically be re-sized to fit its constraints; if false, it will
+     * act like a normal TextView.
+     *
+     * @param sizeToFit
+     */
+    public void setSizeToFit(boolean sizeToFit) {
+        mHelper.setEnabled(sizeToFit);
+    }
+
+    /**
+     * Returns the maximum size (in pixels) of the text in this View.
+     */
+    public float getMaxTextSize() {
+        return mHelper.getMaxTextSize();
+    }
+
+    /**
+     * Set the maximum text size to the given value, interpreted as "scaled pixel" units. This size
+     * is adjusted based on the current density and user font size preference.
+     *
+     * @param size The scaled pixel size.
+     *
+     * @attr ref android.R.styleable#TextView_textSize
+     */
+    public void setMaxTextSize(float size) {
+        mHelper.setMaxTextSize(size);
+    }
+
+    /**
+     * Set the maximum text size to a given unit and value. See TypedValue for the possible
+     * dimension units.
+     *
+     * @param unit The desired dimension unit.
+     * @param size The desired size in the given units.
+     *
+     * @attr ref android.R.styleable#TextView_textSize
+     */
+    public void setMaxTextSize(int unit, float size) {
+        mHelper.setMaxTextSize(unit, size);
+    }
+
+    /**
+     * Returns the minimum size (in pixels) of the text in this View.
+     */
+    public float getMinTextSize() {
+        return mHelper.getMinTextSize();
+    }
+
+    /**
+     * Set the minimum text size to the given value, interpreted as "scaled pixel" units. This size
+     * is adjusted based on the current density and user font size preference.
+     *
+     * @param minSize The scaled pixel size.
+     *
+     * @attr ref me.grantland.R.styleable#AutofitTextView_minTextSize
+     */
+    public void setMinTextSize(int minSize) {
+        mHelper.setMinTextSize(TypedValue.COMPLEX_UNIT_SP, minSize);
+    }
+
+    /**
+     * Set the minimum text size to a given unit and value. See TypedValue for the possible
+     * dimension units.
+     *
+     * @param unit The desired dimension unit.
+     * @param minSize The desired size in the given units.
+     *
+     * @attr ref me.grantland.R.styleable#AutofitTextView_minTextSize
+     */
+    public void setMinTextSize(int unit, float minSize) {
+        mHelper.setMinTextSize(unit, minSize);
+    }
+
+    /**
+     * Returns the amount of precision used to calculate the correct text size to fit within its
+     * bounds.
+     */
+    public float getPrecision() {
+        return mHelper.getPrecision();
+    }
+
+    /**
+     * Set the amount of precision used to calculate the correct text size to fit within its
+     * bounds. Lower precision is more precise and takes more time.
+     *
+     * @param precision The amount of precision.
+     */
+    public void setPrecision(float precision) {
+        mHelper.setPrecision(precision);
     }
 
     @Override
-    protected void onDraw(Canvas canvas) {
-        super.onDraw(canvas);
-        refitText(this.getText().toString(), this.getWidth());
+    public void onTextSizeChange(float textSize, float oldTextSize) {
+        // do nothing
     }
 }

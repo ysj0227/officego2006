@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import androidx.annotation.Nullable;
 
 import com.officego.commonlib.base.BaseActivity;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.TitleBarView;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
@@ -102,7 +103,8 @@ public class QRScanActivity extends BaseActivity implements QRCodeView.Delegate 
                     .startForResult(REQUEST_CODE);
         } else if (result.contains(RULE_QR_COUPON_CODE) && result.length() > RULE_QR_COUPON_CODE.length()) {
             //核销券码
-            ScanCouponResultActivity_.intent(context).start();
+            String code=result.substring(RULE_QR_COUPON_CODE.length());
+            ScanCouponResultActivity_.intent(context).qrCode(code).start();
             finish();
         } else {
             scanQRError();

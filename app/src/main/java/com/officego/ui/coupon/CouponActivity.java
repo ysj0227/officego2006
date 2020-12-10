@@ -106,11 +106,8 @@ public class CouponActivity extends BaseMvpActivity<CouponListPresenter> impleme
         hasData();
         list.clear();
         list.addAll(data);
-        if (adapter == null) {
-            adapter = new CouponAdapter(context, false, list);
-            rvView.setAdapter(adapter);
-        }
-        adapter.notifyDataSetChanged();
+        adapter = new CouponAdapter(context, mStatus != 2, list);
+        rvView.setAdapter(adapter);
     }
 
     @Override

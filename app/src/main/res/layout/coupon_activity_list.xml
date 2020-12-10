@@ -51,7 +51,9 @@
         style="@style/marginLeftRight18"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@id/tl_view">
+        android:layout_below="@id/tl_view"
+        android:layout_marginTop="@dimen/dp_5"
+        android:layout_marginBottom="@dimen/dp_8">
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/rv_view"

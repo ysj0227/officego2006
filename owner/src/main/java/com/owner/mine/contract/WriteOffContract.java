@@ -1,6 +1,7 @@
 package com.owner.mine.contract;
 
 import com.officego.commonlib.base.BaseView;
+import com.officego.commonlib.common.model.CouponWriteOffListBean;
 import com.officego.commonlib.common.model.UserMessageBean;
 
 /**
@@ -11,11 +12,11 @@ import com.officego.commonlib.common.model.UserMessageBean;
 public interface WriteOffContract {
     interface View extends BaseView {
 
-        void writeOffListSuccess();
+        void writeOffListSuccess(CouponWriteOffListBean data);
     }
 
     interface Presenter {
 
-        void getWriteOffList();
+        void getWriteOffList(int pageNo);
     }
 }

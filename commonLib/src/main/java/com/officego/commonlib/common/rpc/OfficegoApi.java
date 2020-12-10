@@ -6,7 +6,10 @@ import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.VersionBean;
 import com.officego.commonlib.common.model.ChatHouseBean;
 import com.officego.commonlib.common.model.ChatListBean;
+import com.officego.commonlib.common.model.CouponDetailsBean;
 import com.officego.commonlib.common.model.CouponListBean;
+import com.officego.commonlib.common.model.CouponWriteOffBean;
+import com.officego.commonlib.common.model.CouponWriteOffListBean;
 import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.commonlib.common.model.ExchangeContactsBean;
 import com.officego.commonlib.common.model.FirstChatBean;
@@ -62,9 +65,6 @@ public class OfficegoApi {
 
     /**
      * 版本更新
-     *
-     * @param versioncode
-     * @param callback
      */
     public void updateVersion(String versioncode, RetrofitCallback<VersionBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
@@ -141,8 +141,6 @@ public class OfficegoApi {
 
     /**
      * 聊天
-     *
-     * @param callback
      */
     public void isChat(int buildingId, int houseId, String targetId, RetrofitCallback<FirstChatBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
@@ -869,6 +867,7 @@ public class OfficegoApi {
     }
 
     /**
+     * 卡券列表
      * status 	是 	string 	1可使用2已过期
      * pageSize 	否 	int 	条数
      * pageNo 	否 	int 	页数
@@ -886,4 +885,46 @@ public class OfficegoApi {
                 .enqueue(callback);
     }
 
+    /**
+     * 卡券详情
+     */
+    public void getCouponDetails(String batchCode, RetrofitCallback<CouponDetailsBean> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("channel", requestBody("2"));
+        map.put("batchCode", requestBody(batchCode));
+        OfficegoRetrofitClient.getInstance().create(CouponInterface.class)
+                .getCouponCodeDetails(map)
+                .enqueue(callback);
+    }
+
+    /**
+     * 卡券核销
+     * id 	是 	int 	劵id
+     * roomId 	是 	int 	会议室id
+     */
+    public void couponSureWriteOff(int couponId, int roomId, RetrofitCallback<CouponWriteOffBean> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("channel", requestBody("2"));
+        map.put("id", requestBody(couponId + ""));
+        map.put("roomId", requestBody(roomId + ""));
+        OfficegoRetrofitClient.getInstance().create(CouponInterface.class)
+                .sureWriteOffCoupon(map)
+                .enqueue(callback);
+    }
+
+    /**
+     * 卡券核销列表
+     */
+    public void couponSureWriteOffList(int pageNo, RetrofitCallback<CouponWriteOffListBean> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("channel", requestBody("2"));
+        map.put("pageSize", requestBody("10"));
+        map.put("pageNo", requestBody(pageNo + ""));
+        OfficegoRetrofitClient.getInstance().create(CouponInterface.class)
+                .getCouponUserList(map)
+                .enqueue(callback);
+    }
 }

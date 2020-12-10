@@ -8,12 +8,15 @@ import android.widget.TextView;
 
 import com.officego.R;
 import com.officego.commonlib.base.BaseActivity;
+import com.officego.commonlib.common.model.CouponListBean;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.view.widget.AutoFitTextView;
 import com.officego.h5.WebViewCouponActivity_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 import cn.bingoogolapple.qrcode.zxing.QRCodeEncoder;
@@ -28,9 +31,9 @@ public class CouponDetailsActivity extends BaseActivity {
     @ViewById(R.id.tv_rmb_unit)
     TextView tvRmbUnit;
     @ViewById(R.id.tv_rmb)
-    TextView tvRmb;
+    AutoFitTextView tvRmb;
     @ViewById(R.id.tv_use_range)
-    TextView tvUseRange;
+    AutoFitTextView tvUseRange;
     @ViewById(R.id.tv_active_name)
     TextView tvActiveName;
     @ViewById(R.id.tv_use_way)
@@ -45,22 +48,36 @@ public class CouponDetailsActivity extends BaseActivity {
     TextView tvQR;
     @ViewById(R.id.tv_content)
     TextView tvContent;
+    @Extra
+    CouponListBean.ListBean couponBean;
 
     //是否展开
     private boolean isSpread;
+    private String code;
 
     @SuppressLint("SetTextI18n")
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarColor(this);
-        createQR();
-        tvRmbUnit.setText("¥");
-        tvRmb.setText("100");
-        tvUseRange.setText("满1000可用");
-        tvActiveName.setText("【办公节限时活动】");
-        tvUseWay.setText("仅限到店核销使用");
-        tvUseDate.setText("");
-        tvQR.setText("00000000000");
+        if (couponBean != null) {
+            code = "officegoTC_" + couponBean.getBatchCode();
+            createQR();
+            if (couponBean.getCouponType() == 1) {
+                tvRmbUnit.setVisibility(View.GONE);
+                tvRmb.setText(couponBean.getDiscount());
+            } else if (couponBean.getCouponType() == 2) {
+                tvRmbUnit.setVisibility(View.VISIBLE);
+                tvRmb.setText(couponBean.getDiscountMax());
+            } else {
+                tvRmbUnit.setVisibility(View.GONE);
+                tvRmb.setText("减至" + couponBean.getDiscountMax());
+            }
+            tvUseRange.setText(couponBean.getAmountRangeText());
+            tvActiveName.setText("【" + couponBean.getBatchTitle() + "】");
+            tvUseWay.setText("仅限到店核销使用");
+            tvUseDate.setText(couponBean.getShelfLife());
+            tvQR.setText(couponBean.getBatchCode());
+        }
     }
 
     @Click(R.id.rl_spread)
@@ -78,8 +95,7 @@ public class CouponDetailsActivity extends BaseActivity {
 
     private void createQR() {
         runOnUiThread(() -> {
-            Bitmap bitmap = QRCodeEncoder.syncEncodeQRCode("11111111111",
-                    (int) getResources().getDimension(R.dimen.dp_240));
+            Bitmap bitmap = QRCodeEncoder.syncEncodeQRCode(code, (int) getResources().getDimension(R.dimen.dp_240));
             ivQR.setImageBitmap(bitmap);
         });
     }

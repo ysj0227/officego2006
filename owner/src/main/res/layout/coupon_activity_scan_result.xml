@@ -96,6 +96,7 @@
         app:title="核销会议室：" />
 
     <com.officego.commonlib.view.widget.TextViewItemLayout
+        android:visibility="gone"
         android:id="@+id/til_use_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

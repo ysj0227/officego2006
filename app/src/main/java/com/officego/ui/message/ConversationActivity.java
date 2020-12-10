@@ -122,7 +122,6 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
                 initIM();
                 RongIM.getInstance().setSendMessageListener(this);
                 mPresenter.firstChatApp(targetId, buildingId, houseId, getHouseChatId);
-
             }
         }
     }

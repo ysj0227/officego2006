@@ -2,13 +2,14 @@ package com.officego.commonlib.common.model;
 
 import com.google.gson.annotations.SerializedName;
 
+import java.io.Serializable;
 import java.util.List;
 
 /**
  * Created by shijie
  * Date 2020/12/10
  **/
-public class CouponListBean {
+public class CouponListBean implements Serializable {
 
     @SerializedName("list")
     private List<ListBean> list;
@@ -21,7 +22,7 @@ public class CouponListBean {
         this.list = list;
     }
 
-    public static class ListBean {
+    public static class ListBean implements Serializable{
         /**
          * offline : 1609407811
          * discountMax : 300
