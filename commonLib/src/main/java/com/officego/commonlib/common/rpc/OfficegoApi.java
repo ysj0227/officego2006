@@ -875,7 +875,6 @@ public class OfficegoApi {
     public void getCouponList(int status, RetrofitCallback<CouponListBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
-//        map.put("token", requestBody("MTM0X3N1bndlbGxfMTYwNzA0OTI4MV8x"));
         map.put("channel", requestBody("2"));
         map.put("status", requestBody(status + ""));
         map.put("pageSize", requestBody("99999"));

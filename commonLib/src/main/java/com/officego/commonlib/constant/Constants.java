@@ -71,6 +71,8 @@ public class Constants {
     //楼盘，网点类型
     public final static int TYPE_BUILDING = 1;
     public final static int TYPE_JOINTWORK = 2;
+    //分享
+    public final static int TYPE_MEETING_ROOM = 5;
 
     /**
      * 提交认证

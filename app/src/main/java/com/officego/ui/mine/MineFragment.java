@@ -117,6 +117,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
 
     @Click(R.id.rl_coupon)
     void couponClick() {
+        if (isToLogin()) return;
         CouponActivity_.intent(mActivity).start();
     }
 

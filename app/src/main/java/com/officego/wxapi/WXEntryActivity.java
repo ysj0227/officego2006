@@ -16,10 +16,9 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.officego.R;
-import com.officego.application.MyApplication;
+import com.officego.commonlib.common.model.ShareBean;
 import com.officego.commonlib.constant.AppConfig;
 import com.officego.commonlib.constant.Constants;
-import com.officego.commonlib.common.model.ShareBean;
 import com.officego.utils.Util;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
@@ -87,10 +86,6 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
         isGoBaseResp = true;
         switch (resp.errCode) {
             case BaseResp.ErrCode.ERR_OK:
-//                result = R.string.errcode_success;
-//                Toast.makeText(WXEntryActivity.this, result, Toast.LENGTH_LONG).show();
-                this.finish();
-                break;
             case BaseResp.ErrCode.ERR_USER_CANCEL:
                 this.finish();
                 break;
@@ -109,37 +104,40 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
         return (type == null) ? String.valueOf(System.currentTimeMillis()) : type + System.currentTimeMillis();
     }
 
+    /**
+     * 楼盘详情分享回调链接：https://m.officego.com/lessee/housesDetail.html?buildingId=7154
+     * 楼盘下的房源分享回调链接：https://m.officego.com/lessee/detail.html?buildingId=7154&houseId=9519
+     * 网点分享回调链接：https://m.officego.com/lessee/housesDetail2.html?buildingId=7154
+     * 网点下的房源分享回调链接：https://m.officego.com/lessee/detail2.html?buildingId=7154&houseId=9519
+     */
     private void shareWX(int mTargetScene, ShareBean bean) {
         if (bean == null) {
             this.finish();
             return;
         }
-        String webpageUrl;
-//        楼盘详情分享回调链接：https://m.officego.com/lessee/housesDetail.html?buildingId=7154
-//        楼盘下的房源分享回调链接：https://m.officego.com/lessee/detail.html?buildingId=7154&houseId=9519
-//        网点分享回调链接：https://m.officego.com/lessee/housesDetail2.html?buildingId=7154
-//        网点下的房源分享回调链接：https://m.officego.com/lessee/detail2.html?buildingId=7154&houseId=9519
+        String webPageUrl = "";
         if (bean.getbType() == Constants.TYPE_BUILDING) {
             if (!bean.isHouseChild()) {
-                webpageUrl = AppConfig.APP_URL_MAIN + "lessee/housesDetail.html?" + bean.getId() + "&isShare=0";
+                webPageUrl = AppConfig.APP_URL_MAIN + "lessee/housesDetail.html?" + bean.getId() + "&isShare=0";
             } else {
-                webpageUrl = AppConfig.APP_URL_MAIN + "lessee/detail.html?" + bean.getId() + "&isShare=0";
+                webPageUrl = AppConfig.APP_URL_MAIN + "lessee/detail.html?" + bean.getId() + "&isShare=0";
             }
-        } else {
+        } else if (bean.getbType() == Constants.TYPE_JOINTWORK) {
             if (!bean.isHouseChild()) {
-                webpageUrl = AppConfig.APP_URL_MAIN + "lessee/housesDetail2.html?" + bean.getId() + "&isShare=0";
+                webPageUrl = AppConfig.APP_URL_MAIN + "lessee/housesDetail2.html?" + bean.getId() + "&isShare=0";
             } else {
-                webpageUrl = AppConfig.APP_URL_MAIN + "lessee/detail2.html?" + bean.getId() + "&isShare=0";
+                webPageUrl = AppConfig.APP_URL_MAIN + "lessee/detail2.html?" + bean.getId() + "&isShare=0";
             }
+        } else if (bean.getbType() == Constants.TYPE_MEETING_ROOM) {
+            webPageUrl = bean.getDetailsUrl();
         }
         int THUMB_SIZE = 150;
         WXWebpageObject webpage = new WXWebpageObject();
-//        webpage.webpageUrl = bean.getDetailsUrl();
-        webpage.webpageUrl = webpageUrl;
+        webpage.webpageUrl = webPageUrl;
         WXMediaMessage msg = new WXMediaMessage(webpage);
         msg.title = bean.getTitle();
         msg.description = bean.getDes();
-        //0 分享好友  1 分享朋友圈 webpage
+        //0 分享好友  1 分享朋友圈
         Glide.with(this).asBitmap().load(bean.getImgUrl()).into(new SimpleTarget<Bitmap>() {
             @Override
             public void onResourceReady(@NonNull Bitmap resource, @Nullable Transition<? super Bitmap> transition) {

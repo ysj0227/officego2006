@@ -42,6 +42,7 @@
                     android:textColor="@color/common_blue_main"
                     android:textSize="@dimen/sp_28"
                     android:textStyle="bold"
+                    app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toEndOf="@id/tv_rmb_unit"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -55,7 +56,7 @@
                 android:layout_marginLeft="@dimen/dp_3"
                 android:layout_marginRight="@dimen/dp_3"
                 android:gravity="center_horizontal"
-                android:text="满100可用"
+                android:singleLine="true"
                 android:textColor="@color/common_blue_main"
                 android:textSize="@dimen/sp_12" />
         </RelativeLayout>
@@ -80,6 +81,9 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_8"
             android:layout_marginTop="@dimen/dp_20"
+            android:layout_marginEnd="@dimen/dp_4"
+            android:ellipsize="end"
+            android:maxLines="1"
             android:textColor="@color/black"
             android:textSize="@dimen/sp_14" />
 

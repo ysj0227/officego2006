@@ -11,6 +11,7 @@ import androidx.core.content.ContextCompat;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.model.CouponDetailsBean;
 import com.officego.commonlib.common.model.CouponWriteOffBean;
+import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.TitleBarView;
 import com.officego.commonlib.view.widget.TextViewItemLayout;
@@ -103,14 +104,22 @@ public class ScanCouponResultActivity extends BaseMvpActivity<CouponDetailsPrese
     public void couponDetailsSuccess(CouponDetailsBean data) {
         couponId = data.getId();
         arrayList = data.getBuildingMeetingroomList();//会议室列表
+        if (arrayList != null && arrayList.size() == 1) {
+            roomName = data.getBuildingMeetingroomList().get(0).getTitle();
+            setRoomText(roomName);
+        }
         tilName.setContext(data.getBatchTitle());
-        tilMoney.setContext(data.getDiscountMax());
         if (data.getCouponType() == 1) {
             tilType.setContext("折扣券");
+            if (!TextUtils.isEmpty(data.getDiscount())){
+                tilMoney.setContext(CommonHelper.digits(Integer.parseInt(data.getDiscount()), 10) + "折");
+            }
         } else if (data.getCouponType() == 2) {
             tilType.setContext("满减券");
+            tilMoney.setContext(String.format("¥%s", data.getDiscountMax()));
         } else {
             tilType.setContext("减至券");
+            tilMoney.setContext(String.format("¥%s", data.getDiscountMax()));
         }
         tilQrcode.setContext(data.getBatchCode());
         tilValidDate.setContext(data.getShelfLife());
@@ -142,9 +151,7 @@ public class ScanCouponResultActivity extends BaseMvpActivity<CouponDetailsPrese
         builder.setSingleChoiceItems(items, roomPosition, (dialog, which) -> {
             roomPosition = which;
             roomName = items[which];
-            tilMeetingRoom.setContext(roomName);
-            tilMeetingRoom.getContextView().setCompoundDrawablesRelativeWithIntrinsicBounds(
-                    0, 0, 0, 0);
+            setRoomText(roomName);
             dialog.dismiss();
         });
         AlertDialog dialog = builder.create();
@@ -152,4 +159,9 @@ public class ScanCouponResultActivity extends BaseMvpActivity<CouponDetailsPrese
         dialog.show();
     }
 
+    private void setRoomText(String name) {
+        tilMeetingRoom.setContext(name);
+        tilMeetingRoom.getContextView().setCompoundDrawablesRelativeWithIntrinsicBounds(
+                0, 0, 0, 0);
+    }
 }

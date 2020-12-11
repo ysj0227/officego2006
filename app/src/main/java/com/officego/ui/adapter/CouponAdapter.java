@@ -2,6 +2,7 @@ package com.officego.ui.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -13,6 +14,7 @@ import com.officego.R;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
 import com.officego.commonlib.common.model.CouponListBean;
+import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.view.widget.AutoFitTextView;
 import com.officego.ui.coupon.CouponDetailsActivity_;
 
@@ -70,7 +72,9 @@ public class CouponAdapter extends CommonListAdapter<CouponListBean.ListBean> {
             tvRmbUnit.setVisibility(View.GONE);
             tvRmbUnit.setTextSize(20f);
             tvRmbUnit.setText("");
-            tvRmb.setText((Integer.parseInt(bean.getDiscount()) / 10) + "折");
+            if (!TextUtils.isEmpty(bean.getDiscount())) {
+                tvRmb.setText(CommonHelper.digits(Integer.parseInt(bean.getDiscount()), 10) + "折");
+            }
         } else if (bean.getCouponType() == 2) {
             tvRmbUnit.setVisibility(View.VISIBLE);
             tvRmbUnit.setTextSize(20f);
@@ -109,10 +113,13 @@ public class CouponAdapter extends CommonListAdapter<CouponListBean.ListBean> {
             tvActiveName.setTextColor(ContextCompat.getColor(context, R.color.common_c1));
             tvUseWay.setTextColor(ContextCompat.getColor(context, R.color.common_c1));
             tvUseDate.setTextColor(ContextCompat.getColor(context, R.color.common_c1));
+            // 0:未启用/未绑定,1:已绑定/待使用,2:废弃,3:暂停,4:过期,5:冻结,6:已核销
             if (bean.getStatus() == 6) {
                 ivCouponFlag.setBackgroundResource(R.mipmap.ic_coupon_flag_used);
-            } else {
+            } else  if (bean.getStatus() == 4){
                 ivCouponFlag.setBackgroundResource(R.mipmap.ic_coupon_flag_expire);
+            }else {
+                ivCouponFlag.setBackgroundResource(R.mipmap.ic_coupon_flag_expire2);
             }
         }
         //进入会议室

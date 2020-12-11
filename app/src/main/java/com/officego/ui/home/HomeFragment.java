@@ -27,6 +27,7 @@ import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.OnLoadMoreListener;
 import com.officego.config.ConditionConfig;
 import com.officego.h5.WebViewBannerActivity_;
+import com.officego.h5.WebViewCouponActivity_;
 import com.officego.ui.adapter.HouseAdapter;
 import com.officego.ui.home.contract.HomeContract;
 import com.officego.ui.home.model.BannerBean;
@@ -450,22 +451,24 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
             int pageId = mBannerClickList.get(position).getPageId() == null ? 0 :
                     Integer.valueOf(CommonHelper.bigDecimal(mBannerClickList.get(position).getPageId(), true));
             if (type == 1) {
-                //pageType内链类型1：楼盘详情，2:网点详情 3:楼盘房源详情,4:网点房源详情
-                if (pageId==0){
-                    return;
+                //pageType内链类型1：楼盘详情，2:网点详情 3:楼盘房源详情,4:网点房源详情 5会议室
+                if (pageType == 5) {//会议室
+                    WebViewCouponActivity_.intent(mActivity).start();
                 }
-                if (pageType == 1) {
-                    BuildingDetailsActivity_.intent(mActivity)
-                            .mBuildingBean(BundleUtils.BuildingMessage(Constants.TYPE_BUILDING, pageId)).start();
-                } else if (pageType == 2) {
-                    BuildingDetailsJointWorkActivity_.intent(mActivity)
-                            .mBuildingBean(BundleUtils.BuildingMessage(Constants.TYPE_JOINTWORK, pageId)).start();
-                } else if (pageType == 3) {
-                    BuildingDetailsChildActivity_.intent(mActivity)
-                            .mChildHouseBean(BundleUtils.houseMessage(Constants.TYPE_BUILDING, pageId)).start();
-                } else if (pageType == 4) {
-                    BuildingDetailsJointWorkChildActivity_.intent(mActivity)
-                            .mChildHouseBean(BundleUtils.houseMessage(Constants.TYPE_JOINTWORK, pageId)).start();
+                if (pageId != 0) {
+                    if (pageType == 1) {
+                        BuildingDetailsActivity_.intent(mActivity)
+                                .mBuildingBean(BundleUtils.BuildingMessage(Constants.TYPE_BUILDING, pageId)).start();
+                    } else if (pageType == 2) {
+                        BuildingDetailsJointWorkActivity_.intent(mActivity)
+                                .mBuildingBean(BundleUtils.BuildingMessage(Constants.TYPE_JOINTWORK, pageId)).start();
+                    } else if (pageType == 3) {
+                        BuildingDetailsChildActivity_.intent(mActivity)
+                                .mChildHouseBean(BundleUtils.houseMessage(Constants.TYPE_BUILDING, pageId)).start();
+                    } else if (pageType == 4) {
+                        BuildingDetailsJointWorkChildActivity_.intent(mActivity)
+                                .mChildHouseBean(BundleUtils.houseMessage(Constants.TYPE_JOINTWORK, pageId)).start();
+                    }
                 }
             } else if (type == 3) {
                 //外链跳转

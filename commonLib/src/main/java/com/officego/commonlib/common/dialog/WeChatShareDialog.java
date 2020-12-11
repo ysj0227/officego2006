@@ -50,14 +50,9 @@ public class WeChatShareDialog {
             Intent intent = new Intent();
             intent.putExtra(Constants.WX_TYPE, type);
             intent.putExtra(Constants.WX_DATA, bean);
-           // intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.setComponent(comp);
             intent.setAction("android.intent.action.VIEW");
             context.startActivity(intent);
-//            Intent intent = new Intent(context, WXEntryActivity.class);
-//            intent.putExtra(Constants.WX_TYPE, type);
-//            intent.putExtra(Constants.WX_DATA, bean);
-//            context.startActivity(intent);
         } else {
             ToastUtils.toastForShort(context, R.string.wx_version_no_support_timeline);
         }

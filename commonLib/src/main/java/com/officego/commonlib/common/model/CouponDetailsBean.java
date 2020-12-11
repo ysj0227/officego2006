@@ -24,10 +24,10 @@ public class CouponDetailsBean {
      * buildingMeetingroomList : [{"title":"梦想加会议室(建科网B)","roomId":6,"buildingId":7719}]
      */
 
-    @SerializedName("offline")
-    private int offline;
     @SerializedName("discountMax")
     private String discountMax;
+   @SerializedName("discount")
+    private String discount;
     @SerializedName("phone")
     private String phone;
     @SerializedName("couponType")
@@ -47,12 +47,12 @@ public class CouponDetailsBean {
     @SerializedName("buildingMeetingroomList")
     private List<BuildingMeetingroomListBean> buildingMeetingroomList;
 
-    public int getOffline() {
-        return offline;
+    public String getDiscount() {
+        return discount;
     }
 
-    public void setOffline(int offline) {
-        this.offline = offline;
+    public void setDiscount(String discount) {
+        this.discount = discount;
     }
 
     public String getDiscountMax() {

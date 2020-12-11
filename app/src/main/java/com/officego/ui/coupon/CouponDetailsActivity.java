@@ -2,6 +2,7 @@ package com.officego.ui.coupon;
 
 import android.annotation.SuppressLint;
 import android.graphics.Bitmap;
+import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -9,6 +10,7 @@ import android.widget.TextView;
 import com.officego.R;
 import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.model.CouponListBean;
+import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.widget.AutoFitTextView;
 import com.officego.h5.WebViewCouponActivity_;
@@ -71,7 +73,9 @@ public class CouponDetailsActivity extends BaseActivity {
                 tvRmbUnit.setVisibility(View.GONE);
                 tvRmbUnit.setTextSize(20f);
                 tvRmbUnit.setText("");
-                tvRmb.setText((Integer.parseInt(couponBean.getDiscount()) / 10) + "折");
+                if (!TextUtils.isEmpty(couponBean.getDiscount())) {
+                    tvRmb.setText(CommonHelper.digits(Integer.parseInt(couponBean.getDiscount()), 10) + "折");
+                }
             } else if (couponBean.getCouponType() == 2) {
                 tvRmbUnit.setVisibility(View.VISIBLE);
                 tvRmbUnit.setTextSize(20f);
@@ -83,6 +87,7 @@ public class CouponDetailsActivity extends BaseActivity {
                 tvRmbUnit.setText("减至");
                 tvRmb.setText(couponBean.getDiscountMax());
             }
+            tvContent.setText(couponBean.getRemark());
         }
     }
 

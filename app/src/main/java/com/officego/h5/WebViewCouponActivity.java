@@ -20,8 +20,13 @@ import android.widget.RelativeLayout;
 import com.officego.R;
 import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.dialog.WeChatShareDialog;
+import com.officego.commonlib.common.model.ShareBean;
+import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.ui.login.LoginActivity_;
 import com.officego.view.webview.SMWebViewClient;
 
 import org.androidannotations.annotations.AfterViews;
@@ -52,13 +57,7 @@ public class WebViewCouponActivity extends BaseActivity {
         StatusBarUtils.setStatusBarColor(this);
         setWebChromeClient();
         url = "http://122.51.67.206/";
-        if (!TextUtils.isEmpty(url)) {
-            loadWebView(url + chanel());
-        }
-    }
-
-    private String chanel() {
-        return "?channel=2&token=" + SpUtils.getSignToken();
+        loadWebView(url + "?channel=2&token=" + SpUtils.getSignToken());
     }
 
     private void setWebChromeClient() {
@@ -224,21 +223,37 @@ public class WebViewCouponActivity extends BaseActivity {
         @JavascriptInterface
         public void shareClick(String url) {
             shortTip(url);
+
+            ShareBean bean = new ShareBean();
+            bean.setbType(Constants.TYPE_MEETING_ROOM);
+            bean.setTitle("会议室");
+            bean.setDes("");
+            bean.setImgUrl("");//图片url
+            bean.setDetailsUrl("http://122.51.67.206/");//分享url
+            new WeChatShareDialog(context, bean);
         }
 
         @JavascriptInterface
         public void callPhoneClick(String phone) {
             shortTip(phone);
+            CommonHelper.callPhone(context, phone);
         }
 
         @JavascriptInterface
         public void chatClick(String targetId) {
             shortTip(targetId);
+            if (TextUtils.isEmpty(SpUtils.getSignToken())) {
+                LoginActivity_.intent(context).isFinishCurrentView(true).start();
+                return;
+            }
+            // ConversationActivity_.intent(context).buildingId(mData.getBuilding().getBuildingId()).targetId(data.getTargetId()).start();
         }
 
         @JavascriptInterface
         public void mapClick(String json) {
             shortTip(json);
+//            new MapDialog(context, mData.getBuilding().getLatitude(),
+//                    mData.getBuilding().getLongitude(), mData.getBuilding().getAddress());
         }
     }
 }

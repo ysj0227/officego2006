@@ -22,7 +22,7 @@ public class CouponListBean implements Serializable {
         this.list = list;
     }
 
-    public static class ListBean implements Serializable{
+    public static class ListBean implements Serializable {
         /**
          * offline : 1609407811
          * discountMax : 300
@@ -62,6 +62,8 @@ public class CouponListBean implements Serializable {
         private String shelfLife;
         @SerializedName("status")
         private int status;
+        @SerializedName("remark")
+        private String remark;
 
         public String getDiscountMax() {
             return discountMax;
@@ -157,6 +159,14 @@ public class CouponListBean implements Serializable {
 
         public void setAmountRangeText(String amountRangeText) {
             this.amountRangeText = amountRangeText;
+        }
+
+        public String getRemark() {
+            return remark;
+        }
+
+        public void setRemark(String remark) {
+            this.remark = remark;
         }
     }
 }

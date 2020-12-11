@@ -81,6 +81,7 @@
                             android:layout_below="@id/rl_rmb"
                             android:layout_marginLeft="@dimen/dp_3"
                             android:layout_marginRight="@dimen/dp_3"
+                            android:singleLine="true"
                             android:gravity="center_horizontal"
                             android:textColor="@color/white"
                             android:textSize="@dimen/sp_12" />
@@ -99,6 +100,9 @@
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dp_8"
                         android:layout_marginTop="@dimen/dp_20"
+                        android:layout_marginEnd="@dimen/dp_4"
+                        android:ellipsize="end"
+                        android:maxLines="1"
                         android:textColor="@color/white"
                         android:textSize="@dimen/sp_14" />
 
