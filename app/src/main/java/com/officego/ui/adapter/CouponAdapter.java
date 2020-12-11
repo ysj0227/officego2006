@@ -68,16 +68,22 @@ public class CouponAdapter extends CommonListAdapter<CouponListBean.ListBean> {
         //券类型 1:折扣券,2:满减券,3:减至券
         if (bean.getCouponType() == 1) {
             tvRmbUnit.setVisibility(View.GONE);
+            tvRmbUnit.setTextSize(20f);
+            tvRmbUnit.setText("");
             tvRmb.setText((Integer.parseInt(bean.getDiscount()) / 10) + "折");
         } else if (bean.getCouponType() == 2) {
             tvRmbUnit.setVisibility(View.VISIBLE);
+            tvRmbUnit.setTextSize(20f);
+            tvRmbUnit.setText("¥");
             tvRmb.setText(bean.getDiscountMax());
         } else {
-            tvRmbUnit.setVisibility(View.GONE);
-            tvRmb.setText("减至" + bean.getDiscountMax());
+            tvRmbUnit.setVisibility(View.VISIBLE);
+            tvRmbUnit.setTextSize(10f);
+            tvRmbUnit.setText("减至");
+            tvRmb.setText(bean.getDiscountMax());
         }
         tvUseRange.setText(bean.getAmountRangeText());
-        tvActiveName.setText("【"+bean.getBatchTitle()+"】");
+        tvActiveName.setText("【" + bean.getBatchTitle() + "】");
         tvUseWay.setText("仅限到店核销使用");
         tvUseDate.setText(bean.getShelfLife());
         //颜色

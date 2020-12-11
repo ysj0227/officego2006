@@ -13,6 +13,8 @@ public interface WriteOffContract {
     interface View extends BaseView {
 
         void writeOffListSuccess(CouponWriteOffListBean data);
+
+        void endRefresh();
     }
 
     interface Presenter {

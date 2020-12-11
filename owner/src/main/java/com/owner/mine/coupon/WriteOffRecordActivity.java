@@ -20,6 +20,7 @@ import com.owner.mine.contract.WriteOffContract;
 import com.owner.mine.presenter.WriteOffPresenter;
 
 import org.androidannotations.annotations.AfterViews;
+import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
@@ -47,6 +48,7 @@ public class WriteOffRecordActivity extends BaseMvpActivity<WriteOffPresenter>
     private int pageNum = 1; //当前页码
     private boolean hasMore;
     private WriteOffAdapter adapter;
+    private List<CouponWriteOffListBean.ListBean> list = new ArrayList<>();
 
     @AfterViews
     void init() {
@@ -61,15 +63,6 @@ public class WriteOffRecordActivity extends BaseMvpActivity<WriteOffPresenter>
     private void initViews() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         rvWriteOff.setLayoutManager(layoutManager);
-    }
-
-    private void testList() {
-        List<String> list = new ArrayList<>();
-        for (int i = 0; i < 2; i++) {
-            list.add("");
-        }
-        adapter = new WriteOffAdapter(context, list);
-        rvWriteOff.setAdapter(adapter);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -91,9 +84,15 @@ public class WriteOffRecordActivity extends BaseMvpActivity<WriteOffPresenter>
                 mSwipeRefreshLayout != null && mSwipeRefreshLayout.isRefreshing());
     }
 
+    //网络异常重试
+    @Click(resName = "btn_again")
+    void exceptionAgainClick() {
+        mPresenter.getWriteOffList(pageNum);
+    }
+
+
     private void getList() {
-//        mPresenter.getWriteOffList();
-        testList();
+        mPresenter.getWriteOffList(pageNum);
     }
 
     //加载更多
@@ -111,18 +110,52 @@ public class WriteOffRecordActivity extends BaseMvpActivity<WriteOffPresenter>
             netException();
             return;
         }
+        //初始化
+        list.clear();
+        pageNum = 1;
+        if (adapter != null) {
+            adapter.notifyDataSetChanged();
+        }
         getList();
+    }
+
+    @Override
+    public void endRefresh() {
+        if (mSwipeRefreshLayout != null) {
+            mSwipeRefreshLayout.setRefreshing(false);
+        }
+    }
+
+    @Override
+    public void writeOffListSuccess(CouponWriteOffListBean data) {
+        if (data == null || (pageNum == 1 && data.getList().size() == 0)) {
+            hasMore = false;
+            noData();
+            return;
+        }
+        hasMore = data.getList().size() >= 10;
+        hasData();
+        list.addAll(data.getList());
+        if (adapter == null) {
+            adapter = new WriteOffAdapter(context, list);
+            rvWriteOff.setAdapter(adapter);
+        }
+        adapter.notifyDataSetChanged();
+    }
+
+    private void hasData() {
+        rvWriteOff.setVisibility(View.VISIBLE);
+        tvNoData.setVisibility(View.GONE);
+    }
+
+    private void noData() {
+        rvWriteOff.setVisibility(View.GONE);
+        tvNoData.setVisibility(View.VISIBLE);
     }
 
     private void netException() {
         tvNoData.setVisibility(View.GONE);
         rlException.setVisibility(View.VISIBLE);
         rvWriteOff.setVisibility(View.GONE);
-    }
-
-    @Override
-    public void writeOffListSuccess(CouponWriteOffListBean data) {
-//        adapter = new WriteOffAdapter(context, list);
-//        rvWriteOff.setAdapter(adapter);
     }
 }

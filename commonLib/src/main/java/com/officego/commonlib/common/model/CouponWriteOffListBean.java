@@ -31,7 +31,7 @@ public class CouponWriteOffListBean {
          * batchTitle : 减至券啊
          * shelfLife : 2020.12.31 - 2020.12.02
          * title : 梦想加会议室(建科网B)
-         * status : 6
+         * status : 6   //0:未启用,1:待使用,2:废弃,3:暂停,4:过期,5:冻结,6:已核销
          */
 
         @SerializedName("offline")

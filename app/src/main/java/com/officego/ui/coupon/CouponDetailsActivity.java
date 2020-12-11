@@ -62,21 +62,27 @@ public class CouponDetailsActivity extends BaseActivity {
         if (couponBean != null) {
             code = "officegoTC_" + couponBean.getBatchCode();
             createQR();
-            if (couponBean.getCouponType() == 1) {
-                tvRmbUnit.setVisibility(View.GONE);
-                tvRmb.setText(couponBean.getDiscount());
-            } else if (couponBean.getCouponType() == 2) {
-                tvRmbUnit.setVisibility(View.VISIBLE);
-                tvRmb.setText(couponBean.getDiscountMax());
-            } else {
-                tvRmbUnit.setVisibility(View.GONE);
-                tvRmb.setText("减至" + couponBean.getDiscountMax());
-            }
             tvUseRange.setText(couponBean.getAmountRangeText());
             tvActiveName.setText("【" + couponBean.getBatchTitle() + "】");
             tvUseWay.setText("仅限到店核销使用");
             tvUseDate.setText(couponBean.getShelfLife());
             tvQR.setText(couponBean.getBatchCode());
+            if (couponBean.getCouponType() == 1) {
+                tvRmbUnit.setVisibility(View.GONE);
+                tvRmbUnit.setTextSize(20f);
+                tvRmbUnit.setText("");
+                tvRmb.setText((Integer.parseInt(couponBean.getDiscount()) / 10) + "折");
+            } else if (couponBean.getCouponType() == 2) {
+                tvRmbUnit.setVisibility(View.VISIBLE);
+                tvRmbUnit.setTextSize(20f);
+                tvRmbUnit.setText("¥");
+                tvRmb.setText(couponBean.getDiscountMax());
+            } else {
+                tvRmbUnit.setVisibility(View.VISIBLE);
+                tvRmbUnit.setTextSize(10f);
+                tvRmbUnit.setText("减至");
+                tvRmb.setText(couponBean.getDiscountMax());
+            }
         }
     }
 

@@ -22,6 +22,7 @@ public class WriteOffPresenter extends BasePresenter<WriteOffContract.View> impl
             public void onSuccess(int code, String msg, CouponWriteOffListBean data) {
                 if (isViewAttached()) {
                     mView.hideLoadingDialog();
+                    mView.endRefresh();
                     mView.writeOffListSuccess(data);
                 }
             }

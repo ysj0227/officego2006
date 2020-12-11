@@ -43,7 +43,7 @@
                         android:layout_height="wrap_content"
                         android:layout_centerInParent="true">
 
-                        <RelativeLayout
+                        <androidx.constraintlayout.widget.ConstraintLayout
                             android:id="@+id/rl_rmb"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -53,31 +53,34 @@
                                 android:id="@+id/tv_rmb_unit"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_alignBottom="@id/tv_rmb"
-                                android:layout_marginBottom="@dimen/dp_2"
-                                android:text="¥"
                                 android:textColor="@color/white"
                                 android:textSize="@dimen/sp_20"
-                                android:textStyle="bold" />
+                                android:textStyle="bold"
+                                app:layout_constraintBaseline_toBaselineOf="@id/tv_rmb"
+                                app:layout_constraintStart_toStartOf="parent" />
 
                             <com.officego.commonlib.view.widget.AutoFitTextView
                                 android:id="@+id/tv_rmb"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:layout_toEndOf="@id/tv_rmb_unit"
                                 android:maxLines="1"
-                                android:paddingStart="@dimen/dp_4"
+                                android:paddingStart="@dimen/dp_2"
                                 android:paddingEnd="@dimen/dp_4"
                                 android:textColor="@color/white"
-                                android:textSize="@dimen/sp_30"
-                                android:textStyle="bold" />
-                        </RelativeLayout>
+                                android:textSize="@dimen/sp_28"
+                                android:textStyle="bold"
+                                app:layout_constraintStart_toEndOf="@id/tv_rmb_unit"
+                                app:layout_constraintTop_toTopOf="parent" />
+
+                        </androidx.constraintlayout.widget.ConstraintLayout>
 
                         <com.officego.commonlib.view.widget.AutoFitTextView
                             android:id="@+id/tv_use_range"
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:layout_below="@id/rl_rmb"
+                            android:layout_marginLeft="@dimen/dp_3"
+                            android:layout_marginRight="@dimen/dp_3"
                             android:gravity="center_horizontal"
                             android:textColor="@color/white"
                             android:textSize="@dimen/sp_12" />

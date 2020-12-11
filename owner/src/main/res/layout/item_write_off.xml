@@ -11,7 +11,6 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_18"
         android:layout_marginTop="@dimen/dp_15"
-        android:text="2020.11.01 - 2020.11.30"
         android:textColor="@color/text_65"
         android:textSize="@dimen/sp_14"
         app:layout_constraintStart_toStartOf="parent"
@@ -55,7 +54,6 @@
         android:id="@+id/tv_write_off_code"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="111"
         android:textColor="@color/black"
         android:textSize="@dimen/sp_14"
         app:layout_constraintBottom_toBottomOf="@id/tv_write_code_text"
@@ -76,16 +74,16 @@
 
     <TextView
         android:id="@+id/tv_meeting_name"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/dp_18"
         android:ellipsize="end"
         android:singleLine="true"
-        android:text="WoWork(大世界店)"
         android:textColor="@color/black"
         android:textSize="@dimen/sp_14"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/tv_meeting_text"
         app:layout_constraintBottom_toBottomOf="@id/tv_meeting_text"
-        app:layout_constraintLeft_toRightOf="@id/tv_meeting_text"
         app:layout_constraintTop_toTopOf="@id/tv_meeting_text" />
 
     <View
@@ -108,17 +106,15 @@
         android:layout_marginTop="@dimen/dp_13"
         android:background="@mipmap/ic_coupon_used_record"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/bottom_divider"
-        android:contentDescription="TODO" />
+        app:layout_constraintTop_toBottomOf="@id/bottom_divider" />
 
     <TextView
         android:id="@+id/tv_coupon_name"
-        android:layout_width="@dimen/dp_180"
+        android:layout_width="@dimen/dp_170"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_10"
         android:ellipsize="end"
         android:singleLine="true"
-        android:text="【1212办公节】天降优惠券"
         android:textColor="@color/text_33"
         android:textSize="@dimen/sp_13"
         android:textStyle="bold"
@@ -131,7 +127,6 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="@dimen/dp_18"
-        android:text="¥500.00"
         android:textColor="@color/black"
         android:textSize="@dimen/sp_18"
         android:textStyle="bold"

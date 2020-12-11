@@ -7,6 +7,7 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
 import android.webkit.CookieManager;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -18,9 +19,9 @@ import android.widget.RelativeLayout;
 
 import com.officego.R;
 import com.officego.commonlib.base.BaseActivity;
+import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.view.TitleBarView;
 import com.officego.view.webview.SMWebViewClient;
 
 import org.androidannotations.annotations.AfterViews;
@@ -34,17 +35,14 @@ import org.androidannotations.annotations.ViewById;
  * Descriptions:WebView
  **/
 @SuppressLint("Registered")
-@EActivity(R.layout.activity_webview_vr)
+@EActivity(R.layout.activity_webview_coupon)
 public class WebViewCouponActivity extends BaseActivity {
     @ViewById(R.id.wv_view)
     WebView webView;
-    @ViewById(R.id.title_bar)
-    TitleBarView titleBar;
     @ViewById(R.id.rl_exception)
     RelativeLayout rlException;
     @ViewById(R.id.btn_again)
     Button btnAgain;
-
     @Extra
     String url;
 
@@ -53,11 +51,14 @@ public class WebViewCouponActivity extends BaseActivity {
     void init() {
         StatusBarUtils.setStatusBarColor(this);
         setWebChromeClient();
-        titleBar.getAppTitle().setText("会议室");
-        url = "https://www.baidu.com/baidu?tn=monline_3_dg&ie=utf-8&wd=%E9%A3%8E%E6%99%AF";
+        url = "http://122.51.67.206/";
         if (!TextUtils.isEmpty(url)) {
-            loadWebView(url);
+            loadWebView(url + chanel());
         }
+    }
+
+    private String chanel() {
+        return "?channel=2&token=" + SpUtils.getSignToken();
     }
 
     private void setWebChromeClient() {
@@ -215,9 +216,29 @@ public class WebViewCouponActivity extends BaseActivity {
             this.context = context;
         }
 
-//        @JavascriptInterface
-//        public void closeView() {
-//
-//        }
+        @JavascriptInterface
+        public void closeView() {
+            finish();
+        }
+
+        @JavascriptInterface
+        public void shareClick(String url) {
+            shortTip(url);
+        }
+
+        @JavascriptInterface
+        public void callPhoneClick(String phone) {
+            shortTip(phone);
+        }
+
+        @JavascriptInterface
+        public void chatClick(String targetId) {
+            shortTip(targetId);
+        }
+
+        @JavascriptInterface
+        public void mapClick(String json) {
+            shortTip(json);
+        }
     }
 }
