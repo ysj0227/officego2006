@@ -1,6 +1,7 @@
 package com.officego.h5;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -236,7 +237,12 @@ public class WebViewCouponActivity extends BaseActivity {
         @JavascriptInterface
         public void callPhoneClick(String phone) {
             shortTip(phone);
-            CommonHelper.callPhone(context, phone);
+            String[] items = {phone};
+            new AlertDialog.Builder(context)
+                    .setItems(items, (dialogInterface, i) -> {
+                        CommonHelper.callPhone(context, phone);
+                    }).create().show();
+
         }
 
         @JavascriptInterface

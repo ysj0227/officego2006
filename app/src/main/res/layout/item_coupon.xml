@@ -27,7 +27,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textColor="@color/common_blue_main"
+                    android:paddingStart="@dimen/dp_2"
                     android:textSize="@dimen/sp_20"
+                    android:singleLine="true"
                     android:textStyle="bold"
                     app:layout_constraintBaseline_toBaselineOf="@id/tv_rmb"
                     app:layout_constraintStart_toStartOf="parent" />
@@ -36,7 +38,7 @@
                     android:id="@+id/tv_rmb"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:maxLines="1"
+                    android:singleLine="true"
                     android:paddingStart="@dimen/dp_2"
                     android:paddingEnd="@dimen/dp_4"
                     android:textColor="@color/common_blue_main"

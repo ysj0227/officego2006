@@ -56,6 +56,7 @@ public class CouponAdapter extends CommonListAdapter<CouponListBean.ListBean> {
     @SuppressLint("SetTextI18n")
     @Override
     public void convert(ViewHolder holder, CouponListBean.ListBean bean) {
+        holder.setIsRecyclable(false);//禁止复用
         RelativeLayout rlCouponBg = holder.getView(R.id.rl_coupon_bg);
         TextView tvRmbUnit = holder.getView(R.id.tv_rmb_unit);
         AutoFitTextView tvRmb = holder.getView(R.id.tv_rmb);
@@ -116,9 +117,9 @@ public class CouponAdapter extends CommonListAdapter<CouponListBean.ListBean> {
             // 0:未启用/未绑定,1:已绑定/待使用,2:废弃,3:暂停,4:过期,5:冻结,6:已核销
             if (bean.getStatus() == 6) {
                 ivCouponFlag.setBackgroundResource(R.mipmap.ic_coupon_flag_used);
-            } else  if (bean.getStatus() == 4){
+            } else if (bean.getStatus() == 4) {
                 ivCouponFlag.setBackgroundResource(R.mipmap.ic_coupon_flag_expire);
-            }else {
+            } else {
                 ivCouponFlag.setBackgroundResource(R.mipmap.ic_coupon_flag_expire2);
             }
         }
