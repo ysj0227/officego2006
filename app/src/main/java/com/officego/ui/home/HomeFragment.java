@@ -453,7 +453,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
             if (type == 1) {
                 //pageType内链类型1：楼盘详情，2:网点详情 3:楼盘房源详情,4:网点房源详情 5会议室
                 if (pageType == 5) {//会议室
-                    WebViewCouponActivity_.intent(mActivity).start();
+                    WebViewCouponActivity_.intent(mActivity).amountRange("").start();
                 }
                 if (pageId != 0) {
                     if (pageType == 1) {

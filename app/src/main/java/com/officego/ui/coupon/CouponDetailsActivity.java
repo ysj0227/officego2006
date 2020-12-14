@@ -101,7 +101,7 @@ public class CouponDetailsActivity extends BaseActivity {
 
     @Click(R.id.tv_can_use_meeting_room)
     void queryMeetingRoomOnClick() {
-        WebViewCouponActivity_.intent(context).start();
+        WebViewCouponActivity_.intent(context).amountRange(couponBean.getAmountRange()).start();
     }
 
     private void createQR() {

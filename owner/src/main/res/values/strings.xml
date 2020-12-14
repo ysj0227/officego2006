@@ -150,5 +150,6 @@
     <string name="str_identity_msg_success">认证成功</string>
     <string name="str_to_perfect_building">当前楼盘待完善，完善楼盘信息即可发布房源</string>
     <string name="str_to_perfect_jointwork">当前网点待完善，完善网点信息即可发布房源</string>
+    <string name="str_tip_add_house">快去添加房源吧</string>
 
 </resources>

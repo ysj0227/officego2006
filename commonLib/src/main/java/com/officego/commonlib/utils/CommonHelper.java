@@ -473,6 +473,14 @@ public class CommonHelper {
         view.setLayoutParams(params);
     }
 
+    //RelativeLayout 设置布局间距状态栏的距离
+    public static void setRelativeLayoutParams(Context context, View view, int margin) {
+        RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) view.getLayoutParams();
+        params.topMargin = CommonHelper.statusHeight(context) + margin;
+        params.width = RelativeLayout.LayoutParams.MATCH_PARENT;
+        view.setLayoutParams(params);
+    }
+
     //LinearLayout 设置布局间距状态栏的距离
     public static void setLinearLayoutParams(Context context, View view) {
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) view.getLayoutParams();

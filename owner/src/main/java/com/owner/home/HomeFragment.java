@@ -611,7 +611,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
                 ivAdd.setVisibility(View.VISIBLE);
                 tvPassThrough.setVisibility(View.GONE);
                 btnPerfect.setVisibility(View.GONE);
-                tvPerfectMsg.setText("快去添加房源吧");
+                tvPerfectMsg.setText(R.string.str_tip_add_house);
             }
         }
     }

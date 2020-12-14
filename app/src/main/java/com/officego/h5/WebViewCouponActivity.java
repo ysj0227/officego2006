@@ -1,7 +1,6 @@
 package com.officego.h5;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Build;
@@ -21,19 +20,25 @@ import android.widget.RelativeLayout;
 import com.officego.R;
 import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.dialog.MapDialog;
 import com.officego.commonlib.common.dialog.WeChatShareDialog;
 import com.officego.commonlib.common.model.ShareBean;
+import com.officego.commonlib.constant.AppConfig;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.ui.login.LoginActivity_;
+import com.officego.ui.message.ConversationActivity_;
 import com.officego.view.webview.SMWebViewClient;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by YangShiJie
@@ -50,15 +55,21 @@ public class WebViewCouponActivity extends BaseActivity {
     @ViewById(R.id.btn_again)
     Button btnAgain;
     @Extra
-    String url;
+    String amountRange;
 
-    @SuppressLint("SetTextI18n")
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarColor(this);
+        CommonHelper.setRelativeLayoutParams(context, webView, 8);
         setWebChromeClient();
-        url = "http://122.51.67.206/";
-        loadWebView(url + "?channel=2&token=" + SpUtils.getSignToken());
+        loadWebView("http://122.51.67.206/" + strMap());
+//        loadWebView(AppConfig.MEETING_ROOM_URL + strMap());
+    }
+
+    private String strMap() {
+        return "?channel=2" +
+                "&token=" + SpUtils.getSignToken() +
+                "&amountRange=" + amountRange;
     }
 
     private void setWebChromeClient() {
@@ -133,8 +144,6 @@ public class WebViewCouponActivity extends BaseActivity {
 
     /**
      * 网络异常
-     *
-     * @param view
      */
     private void receiverExceptionError(WebView view) {
         webView.setVisibility(View.GONE);
@@ -148,7 +157,7 @@ public class WebViewCouponActivity extends BaseActivity {
             rlException.setVisibility(View.GONE);
             view.clearCache(true);
             view.clearHistory();
-            webView.loadUrl(url);
+            webView.loadUrl(AppConfig.MEETING_ROOM_URL);
         });
     }
 
@@ -222,44 +231,57 @@ public class WebViewCouponActivity extends BaseActivity {
         }
 
         @JavascriptInterface
-        public void shareClick(String url) {
-            shortTip(url);
-
+        public void shareClick(String json) throws JSONException {
+            //shortTip(json);
+            JSONObject object = new JSONObject(json);
+            String officeTitle = object.getString("officeTitle");
+            String url = object.getString("url");
+            String mainPic = object.getString("mainPic");
             ShareBean bean = new ShareBean();
             bean.setbType(Constants.TYPE_MEETING_ROOM);
-            bean.setTitle("会议室");
+            bean.setTitle(officeTitle);
             bean.setDes("");
-            bean.setImgUrl("");//图片url
-            bean.setDetailsUrl("http://122.51.67.206/");//分享url
+            bean.setImgUrl(mainPic);//图片url
+            bean.setDetailsUrl(url);//分享url
             new WeChatShareDialog(context, bean);
         }
 
         @JavascriptInterface
-        public void callPhoneClick(String phone) {
-            shortTip(phone);
-            String[] items = {phone};
-            new AlertDialog.Builder(context)
-                    .setItems(items, (dialogInterface, i) -> {
+        public void callPhoneClick(String json) throws JSONException {
+            JSONObject object = new JSONObject(json);
+            String phone = object.getString("phone");
+            CommonDialog dialog = new CommonDialog.Builder(context)
+                    .setTitle(phone)
+                    .setCancelButton(R.string.sm_cancel)
+                    .setConfirmButton("拨打", (dialog12, which) -> {
+                        dialog12.dismiss();
                         CommonHelper.callPhone(context, phone);
-                    }).create().show();
-
+                    }).create();
+            dialog.showWithOutTouchable(true);
         }
 
         @JavascriptInterface
-        public void chatClick(String targetId) {
-            shortTip(targetId);
+        public void chatClick(String json) throws JSONException {
+            JSONObject object = new JSONObject(json);
+            int buildingId = object.getInt("buildingId");
+            String targetId = object.getString("targetId");
             if (TextUtils.isEmpty(SpUtils.getSignToken())) {
                 LoginActivity_.intent(context).isFinishCurrentView(true).start();
                 return;
             }
-            // ConversationActivity_.intent(context).buildingId(mData.getBuilding().getBuildingId()).targetId(data.getTargetId()).start();
+            ConversationActivity_.intent(context).buildingId(buildingId)
+                    .targetId(targetId).start();
         }
 
         @JavascriptInterface
-        public void mapClick(String json) {
-            shortTip(json);
-//            new MapDialog(context, mData.getBuilding().getLatitude(),
-//                    mData.getBuilding().getLongitude(), mData.getBuilding().getAddress());
+        public void mapClick(String json) throws JSONException {
+            JSONObject object = new JSONObject(json);
+            double latitude = TextUtils.isEmpty(object.getString("latitude")) ? 0 :
+                    Double.parseDouble(object.getString("latitude"));
+            double longitude = TextUtils.isEmpty(object.getString("longitude")) ? 0 :
+                    Double.parseDouble(object.getString("longitude"));
+            String address = object.getString("address");
+            new MapDialog(context, latitude, longitude, address);
         }
     }
 }

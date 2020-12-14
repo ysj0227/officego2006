@@ -7,8 +7,7 @@
     <WebView
         android:id="@+id/wv_view"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/dp_38" />
+        android:layout_height="match_parent" />
 
     <include layout="@layout/include_exception" />
 </RelativeLayout>

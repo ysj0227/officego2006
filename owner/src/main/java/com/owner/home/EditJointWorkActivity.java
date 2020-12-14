@@ -744,7 +744,7 @@ public class EditJointWorkActivity extends BaseMvpActivity<JointWorkPresenter>
         if (isRefreshHouseList){
             //首页编辑楼盘网点成功
             BaseNotification.newInstance().postNotificationName(
-                    CommonNotifications.refreshHouseSuccess, "updateBuildingSuccess");
+                    CommonNotifications.refreshHouseSuccess, "refreshHouseSuccess");
         }else {
             //popup编辑楼盘网点成功
             BaseNotification.newInstance().postNotificationName(
