@@ -197,6 +197,7 @@ public class IdentityPresenter extends BasePresenter<IdentityContract.View>
                         BaseNotification.newInstance().postNotificationName(
                                 CommonNotifications.rejectBuildingSuccess, "rejectBuildingSuccess");
                     } else {
+                        //添加楼盘网点成功
                         BaseNotification.newInstance().postNotificationName(
                                 CommonNotifications.updateBuildingSuccess, "updateBuildingSuccess");
                     }

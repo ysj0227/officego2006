@@ -147,5 +147,8 @@
     <string name="str_save_next">保存，下一步</string>
     <string name="str_go_to_identity">去认证</string>
     <string name="str_re_upload">重新上传</string>
+    <string name="str_identity_msg_success">认证成功</string>
+    <string name="str_to_perfect_building">当前楼盘待完善，完善楼盘信息即可发布房源</string>
+    <string name="str_to_perfect_jointwork">当前网点待完善，完善网点信息即可发布房源</string>
 
 </resources>

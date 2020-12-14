@@ -19,28 +19,22 @@ public class CommonNotifications {
     //更新用户信息成功
     public static final int updateUserInfoSuccess = totalEvents++;
     public static final int updateUserOwnerInfoSuccess = totalEvents++;
-    public static final int updateAvatarSuccess = totalEvents++;
 
     //绑定微信
     public static final int conversationBindWeChat = totalEvents++;
     public static final int conversationBindPhone = totalEvents++;
-    //房东认证
-    public static final int ownerIdentityHandle = totalEvents++;
     //融云其他设备登录踢出
     public static final int rongCloudkickDialog = totalEvents++;
     //身份发送变化重新登录
     public static final int identityChangeToRelogin = totalEvents++;
-
     //登录登出
     public static final int loginIn = totalEvents++;
     public static final int loginOut = totalEvents++;
-
     //楼盘网点添加成功
     public static final int updateBuildingSuccess = totalEvents++;
     public static final int rejectBuildingSuccess = totalEvents++;
     public static final int updateHouseSuccess = totalEvents++;
+    public static final int refreshHouseSuccess = totalEvents++;
     //认证或添加网点楼盘提交
     public static final int checkedIdentitySuccess = totalEvents++;
-    //认证修改头像卡片
-    public static final int identityModifyAvatar = totalEvents++;
 }

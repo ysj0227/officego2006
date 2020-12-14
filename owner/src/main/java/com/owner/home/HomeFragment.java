@@ -85,6 +85,15 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     RecyclerView rvIdentityStep;
     @ViewById(resName = "tv_reject_reason")
     TextView tvRejectReason;
+    //完善楼盘信息
+    @ViewById(resName = "rl_pass_through")
+    RelativeLayout rlPassThrough;
+    @ViewById(resName = "tv_pass_through")
+    TextView tvPassThrough;
+    @ViewById(resName = "tv_perfect_msg")
+    TextView tvPerfectMsg;
+    @ViewById(resName = "btn_perfect")
+    TextView btnPerfect;
     //无数据
     @ViewById(resName = "tv_home_no_data")
     TextView tvNoData;
@@ -204,6 +213,19 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         }
     }
 
+    //完善楼盘，网点资料
+    @Click(resName = "btn_perfect")
+    void perfectClick() {
+        if (mData != null) {
+            BuildingManagerBean bean = new BuildingManagerBean(mData.getBuildingId(), mData.getIsTemp());
+            if (Constants.TYPE_JOINTWORK == mData.getBtype()) {
+                EditJointWorkActivity_.intent(mActivity).buildingManagerBean(bean).isRefreshHouseList(true).start();
+            } else {
+                EditBuildingActivity_.intent(mActivity).buildingManagerBean(bean).isRefreshHouseList(true).start();
+            }
+        }
+    }
+
     //当切换tab 是否刷新首页数据
     private void isRefreshHome(boolean isRefresh) {
         Constants.IS_HOME_REFRESH = isRefresh;
@@ -224,7 +246,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         }
     }
 
-    //楼盘网点列表
+    //楼盘网点Popup列表
     @Override
     public void buildingJointWorkListSuccess(BuildingJointWorkBean data) {
         if (data == null) {
@@ -260,7 +282,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         }
     }
 
-    //左侧Popup选择
+    //左侧Popup选择楼盘打开房源
     //0: 下架(未发布),1: 上架(已发布) ;2:资料待完善  3: 置顶推荐;4:已售完;5:删除;6待审核7已驳回
     @Override
     public void popupHouseList(BuildingJointWorkBean.ListBean bean) {
@@ -315,11 +337,16 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     //房源列表
     @Override
     public void houseListSuccess(List<HouseBean.ListBean> data, boolean hasMore) {
+        if (2 == mData.getStatus()) {//资料待完善
+            identityPassThroughView(mData.getBtype(), true);
+            return;
+        }
         if (data == null || (pageNum == 1 && data.size() == 0)) {
-            identityDoingView();//引导认证通过状态步骤。
-            checkStatusOk(mData);//1审核通过
-            if (TextUtils.isEmpty(SpUtils.getHouseLead())) {
-                new HouseLeadDialog(mActivity);//引导-我知道了
+            if (0 == mData.getStatus() || 1 == mData.getStatus()) {//已完善
+                identityPassThroughView(mData.getBtype(), false);
+                if (TextUtils.isEmpty(SpUtils.getHouseLead())) {
+                    new HouseLeadDialog(mActivity);//引导-我知道了
+                }
             }
             return;
         }
@@ -457,20 +484,18 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
 
     @Override
     public int[] getStickNotificationId() {
-        return new int[]{CommonNotifications.ownerIdentityHandle,
-                CommonNotifications.updateBuildingSuccess,
+        return new int[]{CommonNotifications.updateBuildingSuccess,
                 CommonNotifications.updateHouseSuccess,
                 CommonNotifications.rejectBuildingSuccess,
-                CommonNotifications.checkedIdentitySuccess};
+                CommonNotifications.checkedIdentitySuccess,
+                CommonNotifications.refreshHouseSuccess};
     }
 
     @Override
     public void didReceivedNotification(int id, Object... args) {
         super.didReceivedNotification(id, args);
         if (args != null) {
-            if (id == CommonNotifications.ownerIdentityHandle) {
-                mPresenter.getUserInfo();
-            } else if (id == CommonNotifications.updateBuildingSuccess) {
+            if (id == CommonNotifications.updateBuildingSuccess) {
                 if (popupWindow != null) {
                     popupWindow.dismiss();
                     popupWindow = null;
@@ -480,10 +505,13 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
                 //刷新房源
                 getRefreshHouseList();
             } else if (id == CommonNotifications.rejectBuildingSuccess) {
-                //重新认证 --先调楼盘列表获取之前的位置在刷新
+                //驳回重新认证 --先调楼盘列表获取之前的位置在刷新
                 mPresenter.getUserInfo();
             } else if (id == CommonNotifications.checkedIdentitySuccess) {
                 //认证提交
+                mPresenter.getUserInfo();
+            }else if (id == CommonNotifications.refreshHouseSuccess) {
+                //首页编辑楼盘网点成功
                 mPresenter.getUserInfo();
             }
         }
@@ -492,6 +520,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     private void noData() {
         tvNoData.setVisibility(View.VISIBLE);
         rlException.setVisibility(View.GONE);
+        rlPassThrough.setVisibility(View.GONE);
         houseList.clear();
         if (homeAdapter != null) {
             homeAdapter.notifyDataSetChanged();
@@ -506,6 +535,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         rlToIdentity.setVisibility(View.GONE);
         rlCheckStatus.setVisibility(View.GONE);
         tvRejectReason.setVisibility(View.GONE);
+        rlPassThrough.setVisibility(View.GONE);
     }
 
     private void netException() {
@@ -515,6 +545,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         rlToIdentity.setVisibility(View.GONE);
         rlCheckStatus.setVisibility(View.GONE);
         tvRejectReason.setVisibility(View.GONE);
+        rlPassThrough.setVisibility(View.GONE);
     }
 
     private void cannotIdentity() {
@@ -524,6 +555,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         rlException.setVisibility(View.GONE);
         rvView.setVisibility(View.GONE);
         tvRejectReason.setVisibility(View.GONE);
+        rlPassThrough.setVisibility(View.GONE);
         if (TextUtils.isEmpty(SpUtils.getToIdentity())) {
             //未认证dialog
             new IdentityViewPagerDialog(mActivity).setListener(this);
@@ -539,6 +571,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         tvNoData.setVisibility(View.GONE);
         rlException.setVisibility(View.GONE);
         tvRejectReason.setVisibility(View.GONE);
+        rlPassThrough.setVisibility(View.GONE);
     }
 
     //认证驳回
@@ -550,6 +583,37 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         tvNoData.setVisibility(View.GONE);
         rlException.setVisibility(View.GONE);
         tvRejectReason.setVisibility(View.VISIBLE);//驳回原因
+        rlPassThrough.setVisibility(View.GONE);
+    }
+
+    /**
+     * 认证通过
+     *
+     * @param btype       楼盘或网点
+     * @param isToPerfect 是否去完善信息
+     */
+    private void identityPassThroughView(int btype, boolean isToPerfect) {
+        mSwipeRefreshLayout.setVisibility(View.GONE);
+        rvView.setVisibility(View.GONE);
+        rlToIdentity.setVisibility(View.GONE);
+        rlCheckStatus.setVisibility(View.GONE);
+        tvNoData.setVisibility(View.GONE);
+        rlException.setVisibility(View.GONE);
+        rlPassThrough.setVisibility(View.VISIBLE);
+        if (mData != null) {
+            if (isToPerfect) { //信息待完善
+                ivAdd.setVisibility(View.GONE);
+                tvPassThrough.setVisibility(View.VISIBLE);
+                btnPerfect.setVisibility(View.VISIBLE);
+                tvPerfectMsg.setText(Constants.TYPE_BUILDING == btype ? R.string.str_to_perfect_building : R.string.str_to_perfect_jointwork);
+                btnPerfect.setText(Constants.TYPE_BUILDING == btype ? "完善楼盘信息" : "完善网点信息");
+            } else {//已完善，可添加房源
+                ivAdd.setVisibility(View.VISIBLE);
+                tvPassThrough.setVisibility(View.GONE);
+                btnPerfect.setVisibility(View.GONE);
+                tvPerfectMsg.setText("快去添加房源吧");
+            }
+        }
     }
 
     @Override

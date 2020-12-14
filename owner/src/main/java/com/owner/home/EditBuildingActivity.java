@@ -23,12 +23,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.donkingliang.imageselector.utils.ImageSelector;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.dialog.YearDateDialog;
 import com.officego.commonlib.common.model.BuildingManagerBean;
 import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.commonlib.common.model.owner.BuildingEditBean;
 import com.officego.commonlib.common.model.owner.UploadImageBean;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.EditInputFilter;
 import com.officego.commonlib.utils.FileHelper;
@@ -159,6 +161,8 @@ public class EditBuildingActivity extends BaseMvpActivity<BuildingPresenter>
     //编辑
     @Extra
     BuildingManagerBean buildingManagerBean;
+    @Extra
+    boolean isRefreshHouseList;
     //是否竣工时间
     private boolean isCompleteTime;
     //区域
@@ -702,6 +706,15 @@ public class EditBuildingActivity extends BaseMvpActivity<BuildingPresenter>
 
     @Override
     public void editSaveSuccess() {
+        if (isRefreshHouseList){
+            //首页编辑楼盘网点成功
+            BaseNotification.newInstance().postNotificationName(
+                    CommonNotifications.refreshHouseSuccess, "updateBuildingSuccess");
+        }else {
+            //popup编辑楼盘网点成功
+            BaseNotification.newInstance().postNotificationName(
+                    CommonNotifications.updateBuildingSuccess, "updateBuildingSuccess");
+        }
         //更新总楼层
         Constants.FLOOR_COUNTS = silStorey.getEditTextView().getText().toString();
         UploadVideoVrActivity_.intent(context)
