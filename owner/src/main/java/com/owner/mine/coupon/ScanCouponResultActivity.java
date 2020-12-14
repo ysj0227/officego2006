@@ -64,6 +64,7 @@ public class ScanCouponResultActivity extends BaseMvpActivity<CouponDetailsPrese
     private List<CouponDetailsBean.BuildingMeetingroomListBean> arrayList = new ArrayList<>();
     private int couponId;
     private String roomName;
+    private boolean isSuccess;
 
     @AfterViews
     void init() {
@@ -90,7 +91,7 @@ public class ScanCouponResultActivity extends BaseMvpActivity<CouponDetailsPrese
 
     @Click(resName = "til_meeting_room")
     void meetingRoomClick() {
-        if (arrayList == null || arrayList.size() == 0) {
+        if (isSuccess || arrayList == null || arrayList.size() == 0) {
             return;
         }
         String[] rooms = new String[arrayList.size()];
@@ -108,10 +109,10 @@ public class ScanCouponResultActivity extends BaseMvpActivity<CouponDetailsPrese
             roomName = data.getBuildingMeetingroomList().get(0).getTitle();
             setRoomText(roomName);
         }
-        tilName.setContext(data.getBatchTitle());
+        tilName.setContext("【" + data.getBatchTitle() + "】");
         if (data.getCouponType() == 1) {
             tilType.setContext("折扣券");
-            if (!TextUtils.isEmpty(data.getDiscount())){
+            if (!TextUtils.isEmpty(data.getDiscount())) {
                 tilMoney.setContext(CommonHelper.digits(Integer.parseInt(data.getDiscount()), 10) + "折");
             }
         } else if (data.getCouponType() == 2) {
@@ -131,6 +132,7 @@ public class ScanCouponResultActivity extends BaseMvpActivity<CouponDetailsPrese
 
     @Override
     public void writeOffSuccess(CouponWriteOffBean data) {
+        isSuccess = true;
         titleBar.setRightTextViewText(R.string.str_complete);
         titleBar.getRightTextView().setTextColor(ContextCompat.getColor(context, R.color.common_blue_main));
         titleBar.getRightTextView().setOnClickListener(view -> finish());

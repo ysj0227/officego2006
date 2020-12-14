@@ -62,8 +62,8 @@ public class WebViewCouponActivity extends BaseActivity {
         StatusBarUtils.setStatusBarColor(this);
         CommonHelper.setRelativeLayoutParams(context, webView, 8);
         setWebChromeClient();
-        loadWebView("http://122.51.67.206/" + strMap());
-//        loadWebView(AppConfig.MEETING_ROOM_URL + strMap());
+//        loadWebView("http://122.51.67.206/" + strMap());
+        loadWebView(AppConfig.MEETING_ROOM_URL + strMap());
     }
 
     private String strMap() {
@@ -140,7 +140,6 @@ public class WebViewCouponActivity extends BaseActivity {
             }
         });
     }
-
 
     /**
      * 网络异常

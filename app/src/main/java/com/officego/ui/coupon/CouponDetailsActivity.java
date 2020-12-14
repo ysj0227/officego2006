@@ -50,6 +50,8 @@ public class CouponDetailsActivity extends BaseActivity {
     TextView tvQR;
     @ViewById(R.id.tv_content)
     TextView tvContent;
+    @ViewById(R.id.tv_spread)
+    TextView tvSpread;
     @Extra
     CouponListBean.ListBean couponBean;
 
@@ -97,6 +99,7 @@ public class CouponDetailsActivity extends BaseActivity {
         ivSpread.setBackgroundResource(isSpread ?
                 R.mipmap.ic_down_arrow_gray : R.mipmap.ic_up_arrow_gray);
         tvContent.setVisibility(isSpread ? View.GONE : View.VISIBLE);
+        tvSpread.setText(isSpread ? "收起使用说明" : "查看使用说明");
     }
 
     @Click(R.id.tv_can_use_meeting_room)

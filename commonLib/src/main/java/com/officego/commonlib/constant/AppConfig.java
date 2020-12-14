@@ -33,6 +33,9 @@ public class AppConfig extends BaseConfig {
     //Vivo推送
     public static final String VIVO_APP_ID = "103930536";
     public static final String VIVO_APP_KEY = "6ae46b0df31681793fc065eb57ba9c03";
+    //极光
+    public static final String JPHSH_KEY = "032e4f10975ceb69f6f19ca3";
+    public static final String JPHSH_SECRET = "ca6f1e8e34b0e72a77538df0";
     //神策数据
     public static String SA_SERVER_URL = "";
     //免费会议室

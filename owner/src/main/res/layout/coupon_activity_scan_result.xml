@@ -3,7 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/text_f2">
+    android:background="@color/white">
 
     <com.officego.commonlib.view.TitleBarView
         android:id="@+id/title_bar"
@@ -96,11 +96,11 @@
         app:title="核销会议室：" />
 
     <com.officego.commonlib.view.widget.TextViewItemLayout
-        android:visibility="gone"
         android:id="@+id/til_use_date"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/til_meeting_room"
+        android:visibility="gone"
         app:dividerBottom="gone"
         app:title="核销日期：" />
 

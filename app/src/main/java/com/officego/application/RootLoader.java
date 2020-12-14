@@ -26,6 +26,9 @@ import javax.net.ssl.SSLContext;
 import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
+import cn.jiguang.verifysdk.api.JVerificationInterface;
+import cn.jiguang.verifysdk.api.RequestCallback;
+
 /**
  * Created by YangShiJie
  * Data 2020/5/7.
@@ -41,7 +44,7 @@ public class RootLoader {
         String env = Utils.getMetaValue(context, "ENV_DATA", AppConfig.ENV_TEST);
         new AppConfig().init(context, env);
         //JPush一键登录
-//        quickLogin();
+        quickLogin();
         //create file
         FileHelper.getInstance();
         handleSSLHandshake();
@@ -86,17 +89,13 @@ public class RootLoader {
     }
 
     //JPush一键登录
-//    private void quickLogin() {
-//        JVerificationInterface.setDebugMode(true);
-//        final long start = System.currentTimeMillis();
-//        JVerificationInterface.init(context, new RequestCallback<String>() {
-//            @Override
-//            public void onResult(int code, String result) {
-//                LogCat.d("RootLoader", "[JPush init] code = " + code + " result = " +
-//                        result + " consists = " + (System.currentTimeMillis() - start));
-//            }
-//        });
-//    }
+    private void quickLogin() {
+        JVerificationInterface.setDebugMode(true);
+        final long start = System.currentTimeMillis();
+        JVerificationInterface.init(context, (code, result) ->
+                LogCat.d("RootLoader", "[JPush init] code = " + code + " result = " +
+                result + " consists = " + (System.currentTimeMillis() - start)));
+    }
 
     //Glide加载https部分失败，设置信任证书
     private void handleSSLHandshake() {
