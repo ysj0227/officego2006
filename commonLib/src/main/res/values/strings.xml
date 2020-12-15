@@ -185,4 +185,5 @@
     <string name="str_save_publish">保存并发布</string>
     <string name="str_input_nick_name">请输入称呼</string>
     <string name="str_input_job">请输入职位</string>
+    <string name="str_button_test">测试</string>
 </resources>

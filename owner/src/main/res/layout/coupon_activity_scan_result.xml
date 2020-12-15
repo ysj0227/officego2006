@@ -21,11 +21,11 @@
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_160"
         android:layout_below="@id/title_bar"
-        android:layout_marginBottom="@dimen/dp_6"
         android:background="@color/white"
         android:visibility="gone">
 
         <TextView
+            android:id="@+id/tv_success"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerInParent="true"
@@ -34,6 +34,13 @@
             android:text="核销成功"
             android:textColor="@color/text_65"
             android:textSize="@dimen/sp_16" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_6"
+            android:layout_below="@+id/tv_success"
+            android:layout_marginTop="@dimen/dp_30"
+            android:background="@color/text_f7" />
     </RelativeLayout>
 
 
@@ -91,8 +98,8 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/til_valid_date"
         app:contentText="请选择    "
-        app:contentTextColor="@color/text_65"
         app:dividerBottom="visible"
+        app:contentTextColor="@color/text_66"
         app:title="核销会议室：" />
 
     <com.officego.commonlib.view.widget.TextViewItemLayout
@@ -101,7 +108,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/til_meeting_room"
         android:visibility="gone"
-        app:dividerBottom="gone"
+        app:dividerBottom="visible"
         app:title="核销日期：" />
 
     <Button

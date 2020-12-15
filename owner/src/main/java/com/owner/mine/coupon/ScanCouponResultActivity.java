@@ -133,6 +133,7 @@ public class ScanCouponResultActivity extends BaseMvpActivity<CouponDetailsPrese
     @Override
     public void writeOffSuccess(CouponWriteOffBean data) {
         isSuccess = true;
+        titleBar.setAppTitle("核销结果");
         titleBar.setRightTextViewText(R.string.str_complete);
         titleBar.getRightTextView().setTextColor(ContextCompat.getColor(context, R.color.common_blue_main));
         titleBar.getRightTextView().setOnClickListener(view -> finish());

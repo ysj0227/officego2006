@@ -33,10 +33,10 @@ public class WriteOffAdapter extends CommonListAdapter<CouponWriteOffListBean.Li
         TextView tvCouponName = holder.getView(R.id.tv_coupon_name);
         TextView tvCouponMoney = holder.getView(R.id.tv_coupon_money);
         tvWriteOffStatus.setText(bean.getStatus() == 6 ? "核销成功" : "已过期");
-        tvUseDate.setText(bean.getShelfLife());
+        tvUseDate.setText(bean.getUpdateTime());
         tvWriteOffCode.setText(bean.getBatchCode());
         tvMeetingName.setText(bean.getTitle());
-        tvCouponName.setText(bean.getBatchTitle());
+        tvCouponName.setText(String.format("【%s】", bean.getBatchTitle()));
         tvCouponMoney.setText(String.format("¥%s", bean.getDiscountMax()));
     }
 }

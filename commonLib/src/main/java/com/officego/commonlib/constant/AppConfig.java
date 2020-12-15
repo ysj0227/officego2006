@@ -60,7 +60,7 @@ public class AppConfig extends BaseConfig {
         //VR录制
         H5_VR_RECORD = APP_URL_MAIN + "owner/vr.html";
         //会议室
-        MEETING_ROOM_URL = "https://meeting.officego.com.cn/";
+        MEETING_ROOM_URL = "http://meeting.officego.com.cn/";
         //融云IM test
         RC_APPKEY = "kj7swf8oknm02";
         RC_APPSECRET = "OF78PpILjjRk4";
@@ -87,7 +87,7 @@ public class AppConfig extends BaseConfig {
         //VR录制
         H5_VR_RECORD = APP_URL_MAIN + "owner/vr.html";
         //会议室
-        MEETING_ROOM_URL = "https://meeting.officego.com.cn/";
+        MEETING_ROOM_URL = "http://meeting.officego.com.cn/";
         //融云IM test
         RC_APPKEY = "kj7swf8oknm02";
         RC_APPSECRET = "OF78PpILjjRk4";
