@@ -7,6 +7,7 @@ import android.widget.TextView;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
 import com.officego.commonlib.common.model.CouponWriteOffListBean;
+import com.officego.commonlib.utils.CommonHelper;
 import com.owner.R;
 
 import java.util.List;
@@ -36,7 +37,11 @@ public class WriteOffAdapter extends CommonListAdapter<CouponWriteOffListBean.Li
         tvUseDate.setText(bean.getUpdateTime());
         tvWriteOffCode.setText(bean.getBatchCode());
         tvMeetingName.setText(bean.getTitle());
-        tvCouponName.setText(String.format("【%s】", bean.getBatchTitle()));
-        tvCouponMoney.setText(String.format("¥%s", bean.getDiscountMax()));
+        tvCouponName.setText( bean.getBatchTitle());
+        if (bean.getCouponType()==1){
+            tvCouponMoney.setText(CommonHelper.digits(Integer.parseInt(bean.getDiscount()), 10) + "折");
+        }else {
+            tvCouponMoney.setText(String.format("¥%s", bean.getDiscountMax()));
+        }
     }
 }

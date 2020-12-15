@@ -12,7 +12,6 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 
 import com.officego.MainActivity_;
@@ -21,10 +20,9 @@ import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.sensors.SensorsTrack;
-import com.officego.commonlib.constant.AppConfig;
 import com.officego.commonlib.constant.Constants;
-import com.officego.commonlib.ssl.HttpsUtils;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NotificationUtil;
 import com.officego.commonlib.utils.PermissionUtils;
@@ -44,26 +42,12 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
-import org.json.JSONException;
-import org.json.JSONObject;
 
-import java.io.IOException;
-import java.util.Base64;
 import java.util.Locale;
 import java.util.Objects;
 
-import cn.jiguang.verifysdk.api.AuthPageEventListener;
-import cn.jiguang.verifysdk.api.JVerificationInterface;
-import cn.jiguang.verifysdk.api.LoginSettings;
 import io.rong.pushperm.ResultCallback;
 import io.rong.pushperm.RongPushPremissionsCheckHelper;
-import okhttp3.Call;
-import okhttp3.Callback;
-import okhttp3.MediaType;
-import okhttp3.OkHttpClient;
-import okhttp3.Request;
-import okhttp3.RequestBody;
-import okhttp3.Response;
 
 /**
  * Created by YangShiJie
@@ -267,6 +251,19 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
             }
         }
         finish();
+    }
+
+    @Override
+    public int[] getStickNotificationId() {
+        return new int[]{CommonNotifications.JPushSendPhone};
+    }
+
+    @Override
+    public void didReceivedNotification(int id, Object... args) {
+        super.didReceivedNotification(id, args);
+        if (id == CommonNotifications.JPushSendPhone) {
+            mPresenter.loginOnlyPhone((String) args[0]);
+        }
     }
 
     @Override

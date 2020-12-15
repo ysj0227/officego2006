@@ -67,7 +67,7 @@ public class CouponDetailsActivity extends BaseActivity {
             code = "officegoTC_" + couponBean.getBatchCode();
             createQR();
             tvUseRange.setText(couponBean.getAmountRangeText());
-            tvActiveName.setText("【" + couponBean.getBatchTitle() + "】");
+            tvActiveName.setText(couponBean.getBatchTitle());
             tvUseWay.setText("仅限到店核销使用");
             tvUseDate.setText(couponBean.getShelfLife());
             tvQR.setText(couponBean.getBatchCode());

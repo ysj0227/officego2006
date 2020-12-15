@@ -100,7 +100,7 @@
         app:contentText="请选择    "
         app:dividerBottom="visible"
         app:contentTextColor="@color/text_66"
-        app:title="核销会议室：" />
+        app:title="核销网点：" />
 
     <com.officego.commonlib.view.widget.TextViewItemLayout
         android:id="@+id/til_use_date"

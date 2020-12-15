@@ -109,7 +109,7 @@ public class ScanCouponResultActivity extends BaseMvpActivity<CouponDetailsPrese
             roomName = data.getBuildingMeetingroomList().get(0).getTitle();
             setRoomText(roomName);
         }
-        tilName.setContext("【" + data.getBatchTitle() + "】");
+        tilName.setContext(data.getBatchTitle());
         if (data.getCouponType() == 1) {
             tilType.setContext("折扣券");
             if (!TextUtils.isEmpty(data.getDiscount())) {

@@ -34,10 +34,10 @@ public class CouponWriteOffListBean {
          * status : 6   //0:未启用,1:待使用,2:废弃,3:暂停,4:过期,5:冻结,6:已核销
          */
 
-        @SerializedName("offline")
-        private int offline;
         @SerializedName("discountMax")
         private String discountMax;
+        @SerializedName("discount")
+        private String discount;
         @SerializedName("batchCode")
         private String batchCode;
         @SerializedName("online")
@@ -52,14 +52,8 @@ public class CouponWriteOffListBean {
         private String title;
         @SerializedName("status")
         private int status;
-
-        public int getOffline() {
-            return offline;
-        }
-
-        public void setOffline(int offline) {
-            this.offline = offline;
-        }
+        @SerializedName("couponType")
+        private int couponType;
 
         public String getDiscountMax() {
             return discountMax;
@@ -123,6 +117,22 @@ public class CouponWriteOffListBean {
 
         public void setStatus(int status) {
             this.status = status;
+        }
+
+        public int getCouponType() {
+            return couponType;
+        }
+
+        public void setCouponType(int couponType) {
+            this.couponType = couponType;
+        }
+
+        public String getDiscount() {
+            return discount;
+        }
+
+        public void setDiscount(String discount) {
+            this.discount = discount;
         }
     }
 }

@@ -37,4 +37,6 @@ public class CommonNotifications {
     public static final int refreshHouseSuccess = totalEvents++;
     //认证或添加网点楼盘提交
     public static final int checkedIdentitySuccess = totalEvents++;
+    //发送手机号
+    public static final int JPushSendPhone = totalEvents++;
 }
