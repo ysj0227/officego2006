@@ -50,7 +50,6 @@ public class Constants {
     //楼盘，房源
     public static final int FLAG_BUILDING = 1000;
     public static final int FLAG_HOUSE = 1001;
-
     //h5 flags
     public final static int H5_HELP = 0;
     public final static int H5_PROTOCOL = 1;
@@ -58,7 +57,6 @@ public class Constants {
     public final static int H5_ABOUTS = 2;
     public final static int H5_ROLE = 4;
     public final static int H5_VR_RECORD = 5;
-
     //客服
     public static final String SERVICE_HOT_MOBILE = "17321221162";
     public static final String SERVICE_TECHNICAL_SUPPORT = "13052007068";
@@ -67,38 +65,21 @@ public class Constants {
     public static final String SERVICE_EMAIL_TENANT = "service@officego.com";
     public static final String SERVICE_EMAIL_OWNER = "business@officego.com";
 
-
     //楼盘，网点类型
     public final static int TYPE_BUILDING = 1;
     public final static int TYPE_JOINTWORK = 2;
     //分享
     public final static int TYPE_MEETING_ROOM = 5;
-
-    /**
-     * 提交认证
-     */
-    //createCompany1提交认证2企业确认3楼盘、网点确认
-    public final static int TYPE_CREATE_FROM_ALL = 1;
-    public final static int TYPE_CREATE_FROM_COMPANY = 2;
-    public final static int TYPE_CREATE_FROM_JOINT_BUILDING = 3;
-    //identityType  身份类型0个人1企业2联合
-    public final static int TYPE_IDENTITY_PERSONAL = 0;
-    public final static int TYPE_IDENTITY_COMPANY = 1;
-    public final static int TYPE_IDENTITY_JOINT_WORK = 2;
-
     //神策埋点筛选区域文本,装修类型文本
     public static String SENSORS_AREA_CONTENT = "";
     public static String SENSORS_DECORATION = "";
-
     //当前是否在消息的MessageFragment  切换账号为了刷新会话列表
     public static int TABLE_BAR_POSITION;
     //融云是否连接成功
     public static boolean isRCIMConnectSuccess;
-
     //经纬度高德地图
     public static String LONGITUDE = "";
     public static String LATITUDE = "";
-
     //上传图片类型 1楼图片2视频3房源图片 4认证图片
     public final static int TYPE_IMAGE_DEF = 0;
     public final static int TYPE_IMAGE_BUILDING = 1;
@@ -109,9 +90,8 @@ public class Constants {
     public static String FLOOR_JOINT_WORK_COUNTS = "";
     //业主--首页列表重新认证和新认证刷新，当有房源时切换tab不刷新
     public static boolean IS_HOME_REFRESH;
-    //当前楼盘，网点id
+    //当前楼盘，网点名称
     public static String mCurrentBuildingName="";
-
     //认证添加状态
     public final static int IDENTITY_FIRST = 1;
     public final static int IDENTITY_NO_FIRST = 2;

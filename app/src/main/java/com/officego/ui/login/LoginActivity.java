@@ -12,6 +12,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.annotation.RequiresApi;
 import androidx.core.app.ActivityCompat;
 
 import com.officego.MainActivity_;
@@ -21,7 +22,9 @@ import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.sensors.SensorsTrack;
+import com.officego.commonlib.constant.AppConfig;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.ssl.HttpsUtils;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NotificationUtil;
 import com.officego.commonlib.utils.PermissionUtils;
@@ -30,9 +33,9 @@ import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.h5.WebViewActivity_;
-import com.officego.ui.dialog.TestLoginDialog;
 import com.officego.ui.login.contract.LoginContract;
 import com.officego.ui.login.presenter.LoginPresenter;
+import com.officego.utils.JPushAuthLoginRequest;
 import com.officego.utils.MonitorEditTextUtils;
 
 import org.androidannotations.annotations.AfterViews;
@@ -41,12 +44,26 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
+import org.json.JSONException;
+import org.json.JSONObject;
 
+import java.io.IOException;
+import java.util.Base64;
 import java.util.Locale;
 import java.util.Objects;
 
+import cn.jiguang.verifysdk.api.AuthPageEventListener;
+import cn.jiguang.verifysdk.api.JVerificationInterface;
+import cn.jiguang.verifysdk.api.LoginSettings;
 import io.rong.pushperm.ResultCallback;
 import io.rong.pushperm.RongPushPremissionsCheckHelper;
+import okhttp3.Call;
+import okhttp3.Callback;
+import okhttp3.MediaType;
+import okhttp3.OkHttpClient;
+import okhttp3.Request;
+import okhttp3.RequestBody;
+import okhttp3.Response;
 
 /**
  * Created by YangShiJie
@@ -174,41 +191,9 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
 
     @Click(R.id.btn_test)
     void testClick() {
-        new TestLoginDialog(context,mPresenter);
-//        authLogin();
+//        new TestLoginDialog(context,mPresenter);
+        JPushAuthLoginRequest.getInstance().authLogin(context);
     }
-
-    //sdk集成页面
-//    private void authLogin() {
-//        showLoadingDialog();
-//        LoginSettings settings = new LoginSettings();
-//        settings.setAutoFinish(true);//设置登录完成后是否自动关闭授权页
-//        settings.setTimeout(15 * 1000);//设置超时时间，单位毫秒。 合法范围（0，30000],范围以外默认设置为10000
-//        settings.setAuthPageEventListener(new AuthPageEventListener() {
-//            @Override
-//            public void onEvent(int cmd, String msg) {
-//                LogCat.e(TAG, "cmd=" + cmd + "  msg=" + msg);
-//                //do something...
-//            }
-//        });//设置授权页事件监听
-//        JVerificationInterface.loginAuth(context, settings, new VerifyListener() {
-//            @Override
-//            public void onResult(int code, String content, String operator) {
-//                hideLoadingDialog();
-//                if (code == 6000) {
-//                    CommonDialog dialog = new CommonDialog.Builder(context)
-//                            .setTitle("code=" + code + ", token=" + content + " ,operator=" + operator)
-//                            .setConfirmButton("我知道了", (dialog12, which) -> {
-//                                dialog12.dismiss();
-//                            }).create();
-//                    dialog.showWithOutTouchable(true);
-//                    LogCat.e(TAG, "1111111 code=" + code + ", token=" + content + " ,operator=" + operator);
-//                } else {
-//                    LogCat.e(TAG, "code=" + code + ", message=" + content);
-//                }
-//            }
-//        });
-//    }
 
     @Click(R.id.tv_get_code)
     void getCodeClick() {

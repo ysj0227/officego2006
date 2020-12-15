@@ -132,7 +132,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/dp_35"
+            android:layout_marginTop="@dimen/dp_100"
             android:background="@mipmap/ic_owner_identity_pass_through"
             tools:ignore="ContentDescription" />
 
