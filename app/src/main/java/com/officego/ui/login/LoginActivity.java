@@ -35,7 +35,6 @@ import com.officego.commonlib.view.ClearableEditText;
 import com.officego.h5.WebViewActivity_;
 import com.officego.ui.login.contract.LoginContract;
 import com.officego.ui.login.presenter.LoginPresenter;
-import com.officego.utils.JPushAuthLoginDialogRequest;
 import com.officego.utils.JPushAuthLoginRequest;
 import com.officego.utils.MonitorEditTextUtils;
 
@@ -181,9 +180,11 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
 
     @Click(R.id.btn_test)
     void testClick() {
+        if (isFastClick(1200)) {
+            return;
+        }
 //        new TestLoginDialog(context,mPresenter);
         JPushAuthLoginRequest.getInstance().authLogin(context);
-//        JPushAuthLoginDialogRequest.getInstance().authLogin(context);
     }
 
     @Click(R.id.tv_get_code)

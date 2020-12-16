@@ -9,6 +9,7 @@ import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.constant.AppConfig;
 import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.ssl.HttpsUtils;
+import com.officego.commonlib.utils.LoadingDialog;
 import com.officego.commonlib.utils.ToastUtils;
 import com.officego.commonlib.utils.log.LogCat;
 
@@ -46,6 +47,9 @@ import sun.misc.BASE64Encoder;
 public class JPushAuthLoginRequest {
 
     public static final String TAG = "JPushAuthLoginRequest";
+    private static final int LOGIN_SUCCESS = 6000;
+    private static final int LOGIN_NETWORK_FAIL = 2016;
+    private LoadingDialog loadingDialog;
 
     public static JPushAuthLoginRequest getInstance() {
         return Singleton.INSTANCE;
@@ -57,6 +61,7 @@ public class JPushAuthLoginRequest {
 
     //sdk集成页面
     public void authLogin(Context mContext) {
+        showLoadingDialog(mContext);
         LoginSettings settings = new LoginSettings();
         settings.setAutoFinish(true);//设置登录完成后是否自动关闭授权页
         settings.setTimeout(15 * 1000);//设置超时时间，单位毫秒。 合法范围（0，30000],范围以外默认设置为10000
@@ -69,8 +74,12 @@ public class JPushAuthLoginRequest {
         JVerificationInterface.setCustomUIWithConfig(builder());
         JVerificationInterface.loginAuth(mContext, settings, (code, content, operator) -> {
             try {
-                if (code == 6000) {
+                LogCat.e(TAG, "code=" + code + "  content=" + content);
+                hideLoadingDialog();
+                if (code == LOGIN_SUCCESS) {
                     getJPushPhone(mContext, content);
+                } else if (code == LOGIN_NETWORK_FAIL) {
+                    ToastUtils.toastForShort(mContext, "请开启手机移动数据");
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -83,6 +92,7 @@ public class JPushAuthLoginRequest {
      */
     private void getJPushPhone(Context context, String loginToken) throws JSONException {
         //Base64加密
+        showLoadingDialog(context);
         String jpushSercet = String.format("%s:%s", AppConfig.JPHSH_KEY, AppConfig.JPHSH_SECRET);
         BASE64Encoder base64Encoder = new BASE64Encoder();
         String encoded = base64Encoder.encode(jpushSercet.getBytes());
@@ -106,14 +116,13 @@ public class JPushAuthLoginRequest {
             @Override
             public void onFailure(Call call, IOException e) {
                 ToastUtils.toastForShort(context, R.string.str_server_exception);
+                hideLoadingDialog();
             }
-
 
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 //注意此处必须new 一个string 不然的话直接调用response.body().string()会崩溃，因为此处流只调用一次然后关闭了
                 String result = response.body().string();
-                //LogCat.e(TAG, "result=" + result);
                 resultData(context, result);
             }
         });
@@ -135,6 +144,7 @@ public class JPushAuthLoginRequest {
         } catch (Exception e) {
             e.printStackTrace();
         }
+        hideLoadingDialog();
     }
 
     private String decrypt(String cryptograph, String prikey) throws Exception {
@@ -168,7 +178,6 @@ public class JPushAuthLoginRequest {
     //自定义ui
     public JVerifyUIConfig builder() {
         JVerifyUIConfig uiConfig = new JVerifyUIConfig.Builder()
-//                .setNavText("登录")
                 .setNavTextSize(20)
                 .setNavColor(0xff46C3C2)
                 .setNavTextColor(0xffffffff)
@@ -176,16 +185,17 @@ public class JPushAuthLoginRequest {
                 .setLogoHeight(80)
                 .setLogoHidden(false)
                 .setNumberColor(0xff46C3C2)
-                .setNumberSize(22)
+                .setNumberSize(24)
                 .setLogBtnHeight(50)
                 .setLogBtnTextSize(18)
-//                .setLogBtnText("本机号码一键登录")
-//                .setLogBtnTextColor(0x00000000)
-//                .setLogBtnImgPath("")
                 .setAppPrivacyColor(0xFFBBBCC5, 0XFF46C3C2)
                 .setPrivacyText("登录即同意《", "", "", "》并使用本机号码登录")
                 .setPrivacyCheckboxHidden(false)
                 .setPrivacyTextCenterGravity(true)
+                .setSloganTextSize(12)
+//                .setLogBtnText("本机号码一键登录")
+//                .setLogBtnTextColor(0x00000000)
+//                .setLogBtnImgPath("")
 //                .setUncheckedImgPath("ic_circle_uncheck")
 //                .setCheckedImgPath("ic_circle_check")
 //                .setPrivacyTextSize(12)
@@ -198,5 +208,30 @@ public class JPushAuthLoginRequest {
 //                .setPrivacyOffsetY(35)
                 .build();
         return uiConfig;
+    }
+
+    /**
+     * 显示加载框
+     */
+    public void showLoadingDialog(Context context) {
+        if (loadingDialog == null) {
+            loadingDialog = new LoadingDialog(context);
+            loadingDialog.setCanceledOnTouchOutside(false);
+        }
+        if (loadingDialog != null && !loadingDialog.isShowing()) {
+            loadingDialog.setLoadingContent(null);
+            loadingDialog.show();
+        }
+    }
+
+    /**
+     * 关闭加载框
+     */
+    public void hideLoadingDialog() {
+        if (loadingDialog != null) {
+            loadingDialog.setCancelable(true);
+            loadingDialog.dismiss();
+            loadingDialog = null;
+        }
     }
 }
