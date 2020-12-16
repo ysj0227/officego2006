@@ -118,14 +118,16 @@ public class WebViewActivity extends BaseActivity {
         webSetting.setBuiltInZoomControls(true);
         webSetting.setUseWideViewPort(true);
         webSetting.setLoadsImagesAutomatically(true);
-//        webSetting.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         webSetting.setAllowFileAccess(true);// 设置允许访问文件数据
         webSetting.setLoadWithOverviewMode(true);
         webSetting.setBlockNetworkImage(false);//解决图片不显示
+        //webview在5.0后默认关闭混合加载http不能加载https资源
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+            webSetting.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
+        }
         webSetting.setAllowFileAccessFromFileURLs(true);
         webView.addJavascriptInterface(new JsInterface(this), "android");
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-//        webView.setWebChromeClient(new WebChromeClient());//
         webChrome = new SMWebChromeClientPhoto(this);
         webView.setWebChromeClient(webChrome);
         webView.loadUrl(url);

@@ -22,12 +22,14 @@ import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.sensors.SensorsTrack;
+import com.officego.commonlib.constant.AppConfig;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NotificationUtil;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.RegexUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.utils.Utils;
 import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.h5.WebViewActivity_;
@@ -109,6 +111,9 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
             NotificationUtil.showSettingDialog(context);
         }
         smsEditText();
+        //是否显示测试按钮
+        String env = Utils.getMetaValue(context, "ENV_DATA", AppConfig.ENV_TEST);
+        btnTest.setVisibility(TextUtils.equals(env, AppConfig.ENV_RELEASE) ? View.GONE : View.VISIBLE);
     }
 
     //点击验证码输入框
@@ -177,6 +182,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
     void testClick() {
 //        new TestLoginDialog(context,mPresenter);
         JPushAuthLoginRequest.getInstance().authLogin(context);
+//        JPushAuthLoginDialogRequest.getInstance().authLogin(context);
     }
 
     @Click(R.id.tv_get_code)

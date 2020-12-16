@@ -64,6 +64,8 @@ public class CouponListBean implements Serializable {
         private int status;
         @SerializedName("remark")
         private String remark;
+        @SerializedName("useLimit")
+        private String useLimit;
 
         public String getDiscountMax() {
             return discountMax;
@@ -167,6 +169,14 @@ public class CouponListBean implements Serializable {
 
         public void setRemark(String remark) {
             this.remark = remark;
+        }
+
+        public String getUseLimit() {
+            return useLimit;
+        }
+
+        public void setUseLimit(String useLimit) {
+            this.useLimit = useLimit;
         }
     }
 }

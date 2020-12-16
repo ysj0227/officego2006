@@ -89,7 +89,7 @@ public class CouponAdapter extends CommonListAdapter<CouponListBean.ListBean> {
         }
         tvUseRange.setText(bean.getAmountRangeText());
         tvActiveName.setText(bean.getBatchTitle());
-        tvUseWay.setText("仅限到店核销使用");
+        tvUseWay.setText(bean.getUseLimit());
         tvUseDate.setText(bean.getShelfLife());
         //颜色
         if (isValid) {

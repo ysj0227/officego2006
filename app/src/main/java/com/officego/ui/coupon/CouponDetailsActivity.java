@@ -68,7 +68,7 @@ public class CouponDetailsActivity extends BaseActivity {
             createQR();
             tvUseRange.setText(couponBean.getAmountRangeText());
             tvActiveName.setText(couponBean.getBatchTitle());
-            tvUseWay.setText("仅限到店核销使用");
+            tvUseWay.setText(couponBean.getUseLimit());
             tvUseDate.setText(couponBean.getShelfLife());
             tvQR.setText(couponBean.getBatchCode());
             if (couponBean.getCouponType() == 1) {
@@ -95,11 +95,11 @@ public class CouponDetailsActivity extends BaseActivity {
 
     @Click(R.id.rl_spread)
     void spreadOnClick() {
+        tvSpread.setText(isSpread ? "收起使用说明" : "查看使用说明");
         isSpread = !isSpread;
         ivSpread.setBackgroundResource(isSpread ?
                 R.mipmap.ic_down_arrow_gray : R.mipmap.ic_up_arrow_gray);
         tvContent.setVisibility(isSpread ? View.GONE : View.VISIBLE);
-        tvSpread.setText(isSpread ? "收起使用说明" : "查看使用说明");
     }
 
     @Click(R.id.tv_can_use_meeting_room)
