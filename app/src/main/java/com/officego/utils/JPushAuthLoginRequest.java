@@ -127,7 +127,7 @@ public class JPushAuthLoginRequest {
                 JSONObject object = new JSONObject(result);
                 if (8000 == object.getInt("code")) {
                     String phone = decrypt(object.getString("phone"), jpushPrikey(context));
-                    BaseNotification.newInstance().postNotificationName(CommonNotifications.JPushSendPhone, phone.substring(phone.length()-11));
+                    BaseNotification.newInstance().postNotificationName(CommonNotifications.JPushSendPhone, phone);
                 } else {
                     ToastUtils.toastForShort(context, "手机号获取失败");
                 }
@@ -168,24 +168,24 @@ public class JPushAuthLoginRequest {
     //自定义ui
     public JVerifyUIConfig builder() {
         JVerifyUIConfig uiConfig = new JVerifyUIConfig.Builder()
-//                .setAuthBGImgPath()
 //                .setNavText("登录")
-//                .setNavReturnImgPath("")
+                .setNavTextSize(20)
                 .setNavColor(0xff46C3C2)
                 .setNavTextColor(0xffffffff)
                 .setLogoWidth(80)
                 .setLogoHeight(80)
                 .setLogoHidden(false)
                 .setNumberColor(0xff46C3C2)
-                .setNumberSize(20)
+                .setNumberSize(22)
                 .setLogBtnHeight(50)
                 .setLogBtnTextSize(18)
 //                .setLogBtnText("本机号码一键登录")
 //                .setLogBtnTextColor(0x00000000)
 //                .setLogBtnImgPath("")
-//                .setAppPrivacyOne("服务", "sssss")
-//                .setAppPrivacyTwo()
-//                .setAppPrivacyColor(0xff000000, 0xff000000)
+                .setAppPrivacyColor(0xFFBBBCC5, 0XFF46C3C2)
+                .setPrivacyText("登录即同意《", "", "", "》并使用本机号码登录")
+                .setPrivacyCheckboxHidden(false)
+                .setPrivacyTextCenterGravity(true)
 //                .setUncheckedImgPath("ic_circle_uncheck")
 //                .setCheckedImgPath("ic_circle_check")
 //                .setPrivacyTextSize(12)

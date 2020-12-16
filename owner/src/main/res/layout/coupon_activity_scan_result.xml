@@ -99,7 +99,6 @@
         android:layout_below="@id/til_valid_date"
         app:contentText="请选择    "
         app:dividerBottom="visible"
-        app:contentTextColor="@color/text_66"
         app:title="核销网点：" />
 
     <com.officego.commonlib.view.widget.TextViewItemLayout

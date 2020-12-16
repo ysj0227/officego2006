@@ -35,6 +35,7 @@ import com.officego.commonlib.view.ClearableEditText;
 import com.officego.h5.WebViewActivity_;
 import com.officego.ui.login.contract.LoginContract;
 import com.officego.ui.login.presenter.LoginPresenter;
+import com.officego.utils.JPushAuthLoginDialogRequest;
 import com.officego.utils.JPushAuthLoginRequest;
 import com.officego.utils.MonitorEditTextUtils;
 

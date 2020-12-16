@@ -3,7 +3,6 @@ package com.officego.utils;
 import android.content.Context;
 import android.content.res.AssetManager;
 import android.graphics.Color;
-import android.graphics.Typeface;
 import android.text.TextUtils;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -36,7 +35,6 @@ import cn.jiguang.verifysdk.api.AuthPageEventListener;
 import cn.jiguang.verifysdk.api.JVerificationInterface;
 import cn.jiguang.verifysdk.api.JVerifyUIConfig;
 import cn.jiguang.verifysdk.api.LoginSettings;
-import cn.jiguang.verifysdk.api.VerifyListener;
 import okhttp3.Call;
 import okhttp3.Callback;
 import okhttp3.MediaType;
@@ -75,26 +73,16 @@ public class JPushAuthLoginDialogRequest {
                 LogCat.e(TAG, "cmd=" + cmd + "  msg=" + msg);
             }
         });
-//        JVerificationInterface.setCustomUIWithConfig(builder());
-//        JVerificationInterface.loginAuth(mContext, settings, (code, content, operator) -> {
-//            try {
-//                if (code == 6000) {
-//                    getJPushPhone(mContext, content);
-//                }
-//            } catch (JSONException e) {
-//                e.printStackTrace();
-//            }
-//        });
-
         JVerificationInterface.setCustomUIWithConfig(getDialogPortraitConfig(mContext));
-        JVerificationInterface.loginAuth(mContext, new VerifyListener() {
-            @Override
-            public void onResult(final int code, final String token, String operator) {
+        JVerificationInterface.loginAuth(mContext, (code, token, operator) -> {
+            try {
                 if (code == 6000) {
-                    LogCat.e(TAG, "onResult: loginSuccess");
+                    getJPushPhone(mContext, token);
                 } else {
                     LogCat.e(TAG, "onResult: loginError");
                 }
+            } catch (JSONException e) {
+                e.printStackTrace();
             }
         });
     }
@@ -129,12 +117,10 @@ public class JPushAuthLoginDialogRequest {
                 ToastUtils.toastForShort(context, R.string.str_server_exception);
             }
 
-
             @Override
             public void onResponse(Call call, Response response) throws IOException {
                 //注意此处必须new 一个string 不然的话直接调用response.body().string()会崩溃，因为此处流只调用一次然后关闭了
                 String result = response.body().string();
-                //LogCat.e(TAG, "result=" + result);
                 resultData(context, result);
             }
         });
@@ -148,7 +134,7 @@ public class JPushAuthLoginDialogRequest {
                 JSONObject object = new JSONObject(result);
                 if (8000 == object.getInt("code")) {
                     String phone = decrypt(object.getString("phone"), jpushPrikey(context));
-                    BaseNotification.newInstance().postNotificationName(CommonNotifications.JPushSendPhone, phone.substring(phone.length() - 11));
+                    BaseNotification.newInstance().postNotificationName(CommonNotifications.JPushSendPhone, phone);
                 } else {
                     ToastUtils.toastForShort(context, "手机号获取失败");
                 }
@@ -186,33 +172,31 @@ public class JPushAuthLoginDialogRequest {
         return stringbuilder.toString();
     }
 
-
     private JVerifyUIConfig getDialogPortraitConfig(Context context) {
-        int widthDp = CommonHelper.px2dp(context, 660);
-        JVerifyUIConfig.Builder uiConfigBuilder = new JVerifyUIConfig.Builder().setDialogTheme(widthDp - 60, 300, 0, 0, false);
+        JVerifyUIConfig.Builder uiConfigBuilder = new JVerifyUIConfig.Builder().setDialogTheme(320, 300, 0, 0, false);
+        uiConfigBuilder.setLogoHidden(true);
 //        uiConfigBuilder.setLogoHeight(30);
 //        uiConfigBuilder.setLogoWidth(30);
 //        uiConfigBuilder.setLogoOffsetY(-15);
 //        uiConfigBuilder.setLogoOffsetX((widthDp-40)/2-15-20);
 //        uiConfigBuilder.setLogoImgPath("logo_login_land");
-        uiConfigBuilder.setLogoHidden(true);
 
         uiConfigBuilder.setNumFieldOffsetY(104).setNumberColor(Color.BLACK);
         uiConfigBuilder.setSloganOffsetY(135);
         uiConfigBuilder.setSloganTextColor(0xFFD0D0D9);
-        uiConfigBuilder.setLogBtnOffsetY(161);
+        uiConfigBuilder.setLogBtnOffsetY(165);
 
         uiConfigBuilder.setPrivacyOffsetY(15);
 //        uiConfigBuilder.setCheckedImgPath("cb_chosen");
 //        uiConfigBuilder.setUncheckedImgPath("cb_unchosen");
+//        uiConfigBuilder.setLogBtnImgPath("selector_btn_normal");
         uiConfigBuilder.setNumberColor(0xFF222328);
         uiConfigBuilder.setNumberSize(20);
-//        uiConfigBuilder.setLogBtnImgPath("selector_btn_normal");
         uiConfigBuilder.setPrivacyState(true);
         uiConfigBuilder.setLogBtnText("一键登录");
         uiConfigBuilder.setLogBtnHeight(44);
         uiConfigBuilder.setLogBtnWidth(250);
-        uiConfigBuilder.setAppPrivacyColor(0xFFBBBCC5, 0xFF8998FF);
+        uiConfigBuilder.setAppPrivacyColor(0xFFBBBCC5, 0XFF46C3C2);
         uiConfigBuilder.setPrivacyText("登录即同意《", "", "", "》并授权OfficeGo获取本机号码");
         uiConfigBuilder.setPrivacyCheckboxHidden(true);
         uiConfigBuilder.setPrivacyTextCenterGravity(true);
@@ -231,7 +215,7 @@ public class JPushAuthLoginDialogRequest {
         ImageView img = new ImageView(context);
         img.setImageResource(R.mipmap.ic_logo);
         TextView tvTitle = new TextView(context);
-//        tvTitle.setText("极光认证");
+//        tvTitle.setText("OfficeGo");
 //        tvTitle.setTextSize(19);
 //        tvTitle.setTextColor(Color.BLACK);
 //        tvTitle.setTypeface(Typeface.defaultFromStyle(Typeface.BOLD));

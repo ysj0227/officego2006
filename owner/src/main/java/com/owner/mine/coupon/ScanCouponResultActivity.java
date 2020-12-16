@@ -83,7 +83,7 @@ public class ScanCouponResultActivity extends BaseMvpActivity<CouponDetailsPrese
         }
         String room = tilMeetingRoom.getContextView().getText().toString();
         if (TextUtils.isEmpty(room) || room.contains("请选择")) {
-            shortTip("请选择会议室");
+            shortTip("请选择核销网点");
             return;
         }
         mPresenter.sureWriteOff(arrayList, couponId, roomName);
