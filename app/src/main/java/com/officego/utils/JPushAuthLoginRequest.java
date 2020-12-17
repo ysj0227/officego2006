@@ -41,7 +41,7 @@ public class JPushAuthLoginRequest {
         boolean verifyEnable = JVerificationInterface.checkVerifyEnable(mContext);
         if (!verifyEnable) {
             CommonDialog dialog = new CommonDialog.Builder(mContext)
-                    .setTitle("当前网络环境不支持一键登录\n请开启移动数据")
+                    .setTitle("当前网络环境不支持一键登录\n请开启手机移动数据")
                     .setConfirmButton(R.string.str_confirm).create();
             dialog.showWithOutTouchable(true);
             return;
@@ -53,7 +53,7 @@ public class JPushAuthLoginRequest {
         settings.setAuthPageEventListener(new AuthPageEventListener() {
             @Override
             public void onEvent(int cmd, String msg) {
-                LogCat.e(TAG, "cmd=" + cmd + "  msg=" + msg);
+                //LogCat.e(TAG, "cmd=" + cmd + "  msg=" + msg);
             }
         });
         JVerificationInterface.setCustomUIWithConfig(builder());
@@ -175,9 +175,10 @@ public class JPushAuthLoginRequest {
                 .setSloganTextSize(14) //移动，联通，电信
                 .setUncheckedImgPath("umcsdk_uncheck_image2")
                 .setCheckedImgPath("umcsdk_check_image2")
-                .setPrivacyCheckboxSize(12)
+                .setPrivacyCheckboxSize(14)
                 .setPrivacyTextSize(13)
                 .setPrivacyNavColor(0XFF46C3C2)
+                .setPrivacyState(true)//是否选中协议
                 .build();
         return uiConfig;
     }

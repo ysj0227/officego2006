@@ -129,6 +129,7 @@ public class WebViewCouponActivity extends BaseActivity {
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
+                showLoadingDialog();
                 super.onPageStarted(view, url, favicon);
             }
 
