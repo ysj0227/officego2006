@@ -48,6 +48,7 @@ public class JPushAuthLoginRequest {
 
     public static final String TAG = "JPushAuthLoginRequest";
     private static final int LOGIN_SUCCESS = 6000;
+    private static final int LOGIN_EXCEPTION = 6003;
     private static final int LOGIN_NETWORK_FAIL = 2016;
     private LoadingDialog loadingDialog;
 
@@ -77,9 +78,12 @@ public class JPushAuthLoginRequest {
                 LogCat.e(TAG, "code=" + code + "  content=" + content);
                 hideLoadingDialog();
                 if (code == LOGIN_SUCCESS) {
+                    //发送通知调用接口 TODO
                     getJPushPhone(mContext, content);
                 } else if (code == LOGIN_NETWORK_FAIL) {
                     ToastUtils.toastForShort(mContext, "请开启手机移动数据");
+                } else if (code == LOGIN_EXCEPTION) {
+                    ToastUtils.toastForShort(mContext, "手机号获取失败");
                 }
             } catch (JSONException e) {
                 e.printStackTrace();
@@ -92,7 +96,6 @@ public class JPushAuthLoginRequest {
      */
     private void getJPushPhone(Context context, String loginToken) throws JSONException {
         //Base64加密
-        showLoadingDialog(context);
         String jpushSercet = String.format("%s:%s", AppConfig.JPHSH_KEY, AppConfig.JPHSH_SECRET);
         BASE64Encoder base64Encoder = new BASE64Encoder();
         String encoded = base64Encoder.encode(jpushSercet.getBytes());
@@ -116,7 +119,6 @@ public class JPushAuthLoginRequest {
             @Override
             public void onFailure(Call call, IOException e) {
                 ToastUtils.toastForShort(context, R.string.str_server_exception);
-                hideLoadingDialog();
             }
 
             @Override
@@ -144,7 +146,6 @@ public class JPushAuthLoginRequest {
         } catch (Exception e) {
             e.printStackTrace();
         }
-        hideLoadingDialog();
     }
 
     private String decrypt(String cryptograph, String prikey) throws Exception {
@@ -178,34 +179,34 @@ public class JPushAuthLoginRequest {
     //自定义ui
     public JVerifyUIConfig builder() {
         JVerifyUIConfig uiConfig = new JVerifyUIConfig.Builder()
-                .setNavTextSize(20)
-                .setNavColor(0xff46C3C2)
-                .setNavTextColor(0xffffffff)
+                .setLogoImgPath("jpush_app_logo")
                 .setLogoWidth(80)
                 .setLogoHeight(80)
                 .setLogoHidden(false)
+                .setNavTextSize(20)
+                .setNavColor(0xff46C3C2)
+                .setNavTextColor(0xffffffff)
                 .setNumberColor(0xff46C3C2)
                 .setNumberSize(24)
                 .setLogBtnHeight(50)
                 .setLogBtnTextSize(18)
                 .setAppPrivacyColor(0xFFBBBCC5, 0XFF46C3C2)
-                .setPrivacyText("登录即同意《", "", "", "》并使用本机号码登录")
+                .setPrivacyText("登录即同意《", "", "", "》并授权OfficeGo平台")
                 .setPrivacyCheckboxHidden(false)
                 .setPrivacyTextCenterGravity(true)
-                .setSloganTextSize(12)
+                .setSloganTextSize(14) //移动，联通，电信
+                .setUncheckedImgPath("umcsdk_uncheck_image2")
+                .setCheckedImgPath("umcsdk_check_image2")
+                .setPrivacyCheckboxSize(12)
+                .setPrivacyTextSize(13)
+                .setPrivacyNavColor(0XFF46C3C2)
 //                .setLogBtnText("本机号码一键登录")
 //                .setLogBtnTextColor(0x00000000)
 //                .setLogBtnImgPath("")
-//                .setUncheckedImgPath("ic_circle_uncheck")
-//                .setCheckedImgPath("ic_circle_check")
-//                .setPrivacyTextSize(12)
 //                .setSloganTextColor(0xff999999) //移动，联通，电信
 //                .setLogoOffsetY(50)
 //                .setLogoImgPath("")
 //                .setNumFieldOffsetY(190)
-//                .setSloganOffsetY(220)
-//                .setLogBtnOffsetY(254)
-//                .setPrivacyOffsetY(35)
                 .build();
         return uiConfig;
     }
@@ -217,8 +218,6 @@ public class JPushAuthLoginRequest {
         if (loadingDialog == null) {
             loadingDialog = new LoadingDialog(context);
             loadingDialog.setCanceledOnTouchOutside(false);
-        }
-        if (loadingDialog != null && !loadingDialog.isShowing()) {
             loadingDialog.setLoadingContent(null);
             loadingDialog.show();
         }

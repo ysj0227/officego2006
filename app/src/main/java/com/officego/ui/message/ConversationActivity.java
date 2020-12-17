@@ -61,7 +61,6 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
     private TextView tvTip;
     private RelativeLayout rlTip;
     private ImageView ivMobile, ivWx;
-
     @Extra
     String targetId;//融云的id
     @Extra

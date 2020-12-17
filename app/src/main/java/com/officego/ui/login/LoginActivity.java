@@ -79,12 +79,9 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
     Button btnLoginNoPassword;
     @ViewById(R.id.btn_test)
     Button btnTest;
-    //关闭当前租户页面
     @Extra
-    boolean isFinishCurrentView;
+    boolean isFinishCurrentView; //关闭当前租户页面
     private String mobile;
-    //房东model修改密码重新登录
-    private boolean isOwnerLogin;
     //倒计时对象,总共的时间,每隔多少秒更新一次时间
     final MyCountDownTimer mTimer = new MyCountDownTimer(Constants.SMS_TIME, 1000);
 
@@ -98,7 +95,8 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         new MonitorEditTextUtils(btnLogin, etMobile);
         tvProtocol.setText(Html.fromHtml(getString(R.string.str_click_login_agree_service)));
         if (getIntent().getExtras() != null) {
-            isOwnerLogin = getIntent().getExtras().getBoolean("isOwnerLogin");
+            //房东model修改密码重新登录
+            boolean isOwnerLogin = getIntent().getExtras().getBoolean("isOwnerLogin");
             rlBack.setVisibility(isOwnerLogin ? View.GONE : View.VISIBLE);
         }
         if (!TextUtils.isEmpty(SpUtils.getSignToken())) {

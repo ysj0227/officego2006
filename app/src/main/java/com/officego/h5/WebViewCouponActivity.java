@@ -63,7 +63,6 @@ public class WebViewCouponActivity extends BaseActivity {
         CommonHelper.setRelativeLayoutParams(context, webView, 8);
         setWebChromeClient();
         loadWebView(AppConfig.MEETING_ROOM_URL + strMap());
-        //loadWebView("http://122.51.67.206/" + strMap());//test
     }
 
     private String strMap() {
@@ -107,7 +106,7 @@ public class WebViewCouponActivity extends BaseActivity {
         webSetting.setLoadWithOverviewMode(true);
         webSetting.setBlockNetworkImage(false);//解决图片不显示
         //webview在5.0后默认关闭混合加载http不能加载https资源
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             webSetting.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
         webView.addJavascriptInterface(new JsInterface(this), "android");
