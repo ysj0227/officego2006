@@ -29,6 +29,13 @@ public class ConversationPresenter extends BasePresenter<ConversationContract.Vi
         implements ConversationContract.Presenter {
     private final String TAG = this.getClass().getSimpleName();
 
+    private boolean isMeetingEnter;
+
+    public ConversationPresenter(boolean isMeetingEnter) {
+        super();
+        this.isMeetingEnter = isMeetingEnter;
+    }
+
     /**
      * 获取聊天房源信息
      */
@@ -43,9 +50,8 @@ public class ConversationPresenter extends BasePresenter<ConversationContract.Vi
                             if (isViewAttached()) {
                                 mView.hideLoadingDialog();
                                 mView.houseSuccess(data);
-                                if (data != null) {
+                                if (!isMeetingEnter && data != null)
                                     insertMessageInfo(targetId, data);
-                                }
                             }
                         }
 

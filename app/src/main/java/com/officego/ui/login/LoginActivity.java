@@ -268,7 +268,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
     public void didReceivedNotification(int id, Object... args) {
         super.didReceivedNotification(id, args);
         if (id == CommonNotifications.JPushSendPhone) {
-            mPresenter.loginOnlyPhone((String) args[0]);
+            mPresenter.getJPushPhone((String) args[0]);
         }
     }
 

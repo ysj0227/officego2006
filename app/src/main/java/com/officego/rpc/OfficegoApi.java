@@ -639,7 +639,6 @@ public class OfficegoApi {
      * token 	是 	是 	token
      */
     public void getTargetId(String buildingId, RetrofitCallback<ChatsBean> callback) {
-//        LogCat.e(TAG,"chatApp  token="+SpUtils.getSignToken()+" buildingId="+buildingId);
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("buildingId", requestBody(buildingId));
@@ -657,6 +656,21 @@ public class OfficegoApi {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("houseId", requestBody(houseId));
+        OfficegoRetrofitClient.getInstance().create(ChatInterface.class)
+                .getTargetId(map)
+                .enqueue(callback);
+    }
+
+    /**
+     * houseId 	是 	int 	从房源进入聊天页面需要传递
+     * token 	是 	是 	token
+     * ownerChattedType  0 默认以前的  1会议室
+     */
+    public void getTargetId3(int buildingId, RetrofitCallback<ChatsBean> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("buildingId", requestBody(buildingId+""));
+        map.put("ownerChattedType", requestBody("1"));
         OfficegoRetrofitClient.getInstance().create(ChatInterface.class)
                 .getTargetId(map)
                 .enqueue(callback);

@@ -24,5 +24,7 @@ public interface LoginContract {
         void login(String mobile, String password);
 
         void loginOnlyPhone(String mobile);
+
+        void getJPushPhone(String loginToken);//一键登录极光登录token
     }
 }

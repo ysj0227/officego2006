@@ -67,6 +67,8 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
     int buildingId;//楼盘详情传入
     @Extra
     int houseId;//房源详情传入
+    @Extra
+    boolean isMeetingEnter;//会议室进入
 
     private String getHouseChatId;//去除 targetId  的最后一位 ,产品定义
     private ChatHouseBean mData;
@@ -93,7 +95,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarFullTransparent(this);
-        mPresenter = new ConversationPresenter();
+        mPresenter = new ConversationPresenter(isMeetingEnter);
         mPresenter.attachView(this);
         initViewById();
         Intent intent = getIntent();

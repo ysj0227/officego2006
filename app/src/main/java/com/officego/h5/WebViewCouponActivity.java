@@ -25,10 +25,13 @@ import com.officego.commonlib.common.dialog.WeChatShareDialog;
 import com.officego.commonlib.common.model.ShareBean;
 import com.officego.commonlib.constant.AppConfig;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.dialog.CommonDialog;
+import com.officego.rpc.OfficegoApi;
+import com.officego.ui.home.model.ChatsBean;
 import com.officego.ui.login.LoginActivity_;
 import com.officego.ui.message.ConversationActivity_;
 import com.officego.view.webview.SMWebViewClient;
@@ -63,6 +66,11 @@ public class WebViewCouponActivity extends BaseActivity {
         CommonHelper.setRelativeLayoutParams(context, webView, 8);
         setWebChromeClient();
         loadWebView(AppConfig.MEETING_ROOM_URL + strMap());
+        if (NetworkUtils.isNetworkAvailable(context)) {
+            loadWebView(AppConfig.MEETING_ROOM_URL + strMap());
+        } else {
+            receiverExceptionError(webView);
+        }
     }
 
     private String strMap() {
@@ -266,13 +274,11 @@ public class WebViewCouponActivity extends BaseActivity {
         public void chatClick(String json) throws JSONException {
             JSONObject object = new JSONObject(json);
             int buildingId = object.getInt("buildingId");
-            String targetId = object.getString("targetId");
             if (TextUtils.isEmpty(SpUtils.getSignToken())) {
                 LoginActivity_.intent(context).isFinishCurrentView(true).start();
                 return;
             }
-            ConversationActivity_.intent(context).buildingId(buildingId)
-                    .targetId(targetId).start();
+            gotoChat(buildingId);
         }
 
         @JavascriptInterface
@@ -284,6 +290,31 @@ public class WebViewCouponActivity extends BaseActivity {
                     Double.parseDouble(object.getString("longitude"));
             String address = object.getString("address");
             new MapDialog(context, latitude, longitude, address);
+        }
+    }
+
+    /**
+     * 服务端创建聊天会话
+     */
+    public void gotoChat(int buildingId) {
+        if (buildingId != 0) {
+            showLoadingDialog();
+            OfficegoApi.getInstance().getTargetId3(buildingId, new RetrofitCallback<ChatsBean>() {
+                @Override
+                public void onSuccess(int code, String msg, ChatsBean data) {
+                    hideLoadingDialog();
+                    ConversationActivity_.intent(context).buildingId(buildingId)
+                            .targetId(data.getTargetId()).isMeetingEnter(true).start();
+                }
+
+                @Override
+                public void onFail(int code, String msg, ChatsBean data) {
+                    hideLoadingDialog();
+                    if (code == Constants.DEFAULT_ERROR_CODE) {
+                        shortTip(msg);
+                    }
+                }
+            });
         }
     }
 }
