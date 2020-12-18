@@ -7,6 +7,7 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
 import android.webkit.CookieManager;
+import android.webkit.GeolocationPermissions;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
@@ -65,7 +66,6 @@ public class WebViewCouponActivity extends BaseActivity {
         StatusBarUtils.setStatusBarColor(this);
         CommonHelper.setRelativeLayoutParams(context, webView, 8);
         setWebChromeClient();
-        loadWebView(AppConfig.MEETING_ROOM_URL + strMap());
         if (NetworkUtils.isNetworkAvailable(context)) {
             loadWebView(AppConfig.MEETING_ROOM_URL + strMap());
         } else {
@@ -85,6 +85,12 @@ public class WebViewCouponActivity extends BaseActivity {
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
                 exceptionPageReceivedTitle(view, title);
+            }
+
+            @Override
+            public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
+                callback.invoke(origin, true, true);
+                super.onGeolocationPermissionsShowPrompt(origin, callback);
             }
         });
     }
@@ -113,10 +119,14 @@ public class WebViewCouponActivity extends BaseActivity {
         webSetting.setAllowFileAccess(true);// 设置允许访问文件数据
         webSetting.setLoadWithOverviewMode(true);
         webSetting.setBlockNetworkImage(false);//解决图片不显示
-        //webview在5.0后默认关闭混合加载http不能加载https资源
+        //webView在5.0后默认关闭混合加载http不能加载https资源
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             webSetting.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
+        //高德地图
+        String dir = this.getApplicationContext().getDir("database", Context.MODE_PRIVATE).getPath();
+        webSetting.setGeolocationEnabled(true);
+        webSetting.setGeolocationDatabasePath(dir);
         webView.addJavascriptInterface(new JsInterface(this), "android");
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         webView.loadUrl(url);

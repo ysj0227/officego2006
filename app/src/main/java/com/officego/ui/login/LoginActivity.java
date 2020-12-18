@@ -90,7 +90,6 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         mPresenter = new LoginPresenter(context);
         mPresenter.attachView(this);
         initViews();
-
     }
 
     private void initViews() {
