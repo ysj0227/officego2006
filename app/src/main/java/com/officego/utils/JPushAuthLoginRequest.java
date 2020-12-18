@@ -59,6 +59,7 @@ public class JPushAuthLoginRequest {
         JVerificationInterface.setCustomUIWithConfig(builder());
         JVerificationInterface.loginAuth(mContext, settings, (code, content, operator) -> {
             hideLoadingDialog();
+            //LogCat.e(TAG, "code=" + code + "  content=" + content);
             if (code == LOGIN_SUCCESS) {
                 BaseNotification.newInstance().postNotificationName(CommonNotifications.JPushSendPhone, content);
             } else if (code == LOGIN_NETWORK_FAIL) {
@@ -68,91 +69,6 @@ public class JPushAuthLoginRequest {
             }
         });
     }
-
-//    /**
-//     * 获取手机号
-//     */
-//    private void getJPushPhone(Context context, String loginToken) throws JSONException {
-//        //Base64加密
-//        String jpushSercet = String.format("%s:%s", AppConfig.JPHSH_KEY, AppConfig.JPHSH_SECRET);
-//        BASE64Encoder base64Encoder = new BASE64Encoder();
-//        String encoded = base64Encoder.encode(jpushSercet.getBytes());
-//        String params = new JSONObject()
-//                .put("loginToken", loginToken)
-//                .put("exID", "123456")
-//                .toString();
-//        MediaType JSON = MediaType.parse("application/json; charset=utf-8");
-//        RequestBody requestBody = RequestBody.create(JSON, params);//请求json内容
-//        Request.Builder request = new Request.Builder()
-//                .addHeader("Authorization", "Basic " + encoded)
-//                .url("https://api.verification.jpush.cn/v1/web/loginTokenVerify")
-//                .post(requestBody);
-//        OkHttpClient.Builder mBuilder = new OkHttpClient.Builder();
-//        HttpsUtils.SSLParams sslParams = HttpsUtils.getSslSocketFactory();
-//        mBuilder.sslSocketFactory(sslParams.sSLSocketFactory, sslParams.trustManager);
-//        mBuilder.hostnameVerifier(HttpsUtils.UnSafeHostnameVerifier);
-//        OkHttpClient okHttpClient = mBuilder.build();
-//        Call call = okHttpClient.newCall(request.build());
-//        call.enqueue(new Callback() {
-//            @Override
-//            public void onFailure(Call call, IOException e) {
-//                ToastUtils.toastForShort(context, R.string.str_server_exception);
-//            }
-//
-//            @Override
-//            public void onResponse(Call call, Response response) throws IOException {
-//                //注意此处必须new 一个string 不然的话直接调用response.body().string()会崩溃，因为此处流只调用一次然后关闭了
-//                String result = response.body().string();
-//                resultData(context, result);
-//            }
-//        });
-//    }
-//
-//    private void resultData(Context context, String result) {
-//        try {
-//            if (TextUtils.isEmpty(result)) {
-//                ToastUtils.toastForShort(context, "手机号获取失败");
-//            } else {
-//                JSONObject object = new JSONObject(result);
-//                if (8000 == object.getInt("code")) {
-//                    String phone = decrypt(object.getString("phone"), jpushPrikey(context));
-//                    BaseNotification.newInstance().postNotificationName(CommonNotifications.JPushSendPhone, phone);
-//                } else {
-//                    ToastUtils.toastForShort(context, "手机号获取失败");
-//                }
-//            }
-//        } catch (Exception e) {
-//            e.printStackTrace();
-//        }
-//    }
-//
-//    private String decrypt(String cryptograph, String prikey) throws Exception {
-//        BASE64Decoder base64Decoder = new BASE64Decoder();
-//        PKCS8EncodedKeySpec keySpec = new PKCS8EncodedKeySpec(base64Decoder.decodeBuffer(prikey));
-//        PrivateKey privateKey = KeyFactory.getInstance("RSA").generatePrivate(keySpec);
-//
-//        Cipher cipher = Cipher.getInstance("RSA/ECB/PKCS1Padding");
-//        cipher.init(Cipher.PRIVATE_KEY, privateKey);
-//
-//        byte[] b = base64Decoder.decodeBuffer(cryptograph);
-//        return new String(cipher.doFinal(b));
-//    }
-//
-//    private String jpushPrikey(Context context) {
-//        StringBuilder stringbuilder = new StringBuilder();
-//        try {
-//            AssetManager assetmanager = context.getAssets();
-//            BufferedReader bf = new BufferedReader(new InputStreamReader(
-//                    assetmanager.open("jpush_prikey.txt")));
-//            String line;
-//            while ((line = bf.readLine()) != null) {
-//                stringbuilder.append(line);
-//            }
-//        } catch (IOException e) {
-//            e.printStackTrace();
-//        }
-//        return stringbuilder.toString();
-//    }
 
     //自定义ui
     public JVerifyUIConfig builder() {

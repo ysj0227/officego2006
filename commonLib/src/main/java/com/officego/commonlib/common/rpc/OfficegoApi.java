@@ -14,6 +14,7 @@ import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.commonlib.common.model.ExchangeContactsBean;
 import com.officego.commonlib.common.model.FirstChatBean;
 import com.officego.commonlib.common.model.IdentitychattedMsgBean;
+import com.officego.commonlib.common.model.JPushLoginBean;
 import com.officego.commonlib.common.model.RongUserInfoBean;
 import com.officego.commonlib.common.model.SearchListBean;
 import com.officego.commonlib.common.model.UserMessageBean;
@@ -27,6 +28,7 @@ import com.officego.commonlib.common.rpc.request.BuildingJointWorkInterface;
 import com.officego.commonlib.common.rpc.request.ChatInterface;
 import com.officego.commonlib.common.rpc.request.CouponInterface;
 import com.officego.commonlib.common.rpc.request.DirectoryInterface;
+import com.officego.commonlib.common.rpc.request.JPushOneKeyLoginInterface;
 import com.officego.commonlib.common.rpc.request.LicenceInterface;
 import com.officego.commonlib.common.rpc.request.MineMsgInterface;
 import com.officego.commonlib.common.rpc.request.ScheduleInterface;
@@ -924,6 +926,17 @@ public class OfficegoApi {
         map.put("pageNo", requestBody(pageNo + ""));
         OfficegoRetrofitClient.getInstance().create(CouponInterface.class)
                 .getCouponUserList(map)
+                .enqueue(callback);
+    }
+
+    /**
+     * 极光一键登录
+     */
+    public void jPushLogin(String loginToken, RetrofitCallback<JPushLoginBean> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("loginToken", requestBody(loginToken));
+        OfficegoRetrofitClient.getInstance().create(JPushOneKeyLoginInterface.class)
+                .getJPushPhone(map)
                 .enqueue(callback);
     }
 }

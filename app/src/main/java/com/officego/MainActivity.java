@@ -51,7 +51,7 @@ import static com.officego.commonlib.constant.Constants.TABLE_BAR_POSITION;
  * Data 2020/7/3.
  * Descriptions:
  **/
-@SuppressLint("Registered")
+@SuppressLint({"Registered", "NonConstantResourceId"})
 @EActivity(R.layout.activity_main_new)
 public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedChangeListener {
     @ViewById(R.id.rg_tab_bar)

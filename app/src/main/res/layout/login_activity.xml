@@ -154,7 +154,7 @@
         android:text="@string/str_no_password_login"
         android:textColor="@color/common_blue_main"
         android:textSize="@dimen/sp_18"
-        android:visibility="gone"
+        android:visibility="visible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/btn_login" />

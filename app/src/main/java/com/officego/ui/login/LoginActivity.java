@@ -22,15 +22,11 @@ import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.sensors.SensorsTrack;
-import com.officego.commonlib.constant.AppConfig;
 import com.officego.commonlib.constant.Constants;
-import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NotificationUtil;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.RegexUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.Utils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.h5.WebViewActivity_;
 import com.officego.ui.login.contract.LoginContract;
@@ -42,6 +38,7 @@ import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
+import org.androidannotations.annotations.FocusChange;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
@@ -57,7 +54,7 @@ import io.rong.pushperm.RongPushPremissionsCheckHelper;
  * Descriptions:
  **/
 
-@SuppressLint("Registered")
+@SuppressLint({"Registered", "NonConstantResourceId"})
 @EActivity(R.layout.login_activity)
 public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         implements LoginContract.View {
@@ -92,10 +89,14 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         StatusBarUtils.setStatusBarColor(this);
         mPresenter = new LoginPresenter(context);
         mPresenter.attachView(this);
+        initViews();
+
+    }
+
+    private void initViews() {
         new MonitorEditTextUtils(btnLogin, etMobile);
         tvProtocol.setText(Html.fromHtml(getString(R.string.str_click_login_agree_service)));
-        if (getIntent().getExtras() != null) {
-            //房东model修改密码重新登录
+        if (getIntent().getExtras() != null) { //房东model修改密码重新登录
             boolean isOwnerLogin = getIntent().getExtras().getBoolean("isOwnerLogin");
             rlBack.setVisibility(isOwnerLogin ? View.GONE : View.VISIBLE);
         }
@@ -108,17 +109,12 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         } else {
             NotificationUtil.showSettingDialog(context);
         }
-        smsEditText();
-        //是否显示测试按钮
-        String env = Utils.getMetaValue(context, "ENV_DATA", AppConfig.ENV_TEST);
-        btnTest.setVisibility(TextUtils.equals(env, AppConfig.ENV_RELEASE) ? View.GONE : View.VISIBLE);
     }
 
     //点击验证码输入框
-    private void smsEditText() {
-        etCode.setOnFocusChangeListener((view, b) -> {
-            SensorsTrack.codeInput();//神策
-        });
+    @FocusChange(R.id.et_code)
+    void codeFocusChange(View view, boolean b) {
+        SensorsTrack.codeInput();//神策
     }
 
     @Click(R.id.btn_login)
@@ -129,26 +125,22 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         mobile = RegexUtils.handleIllegalCharacter(etMobile.getText() == null ? "" :
                 etMobile.getText().toString().trim());
         if (rlCode.isShown()) {
-            //神策
-            SensorsTrack.login();
+            SensorsTrack.login(); //神策
             String code = Objects.requireNonNull(etCode.getText()).toString().trim();
             if (TextUtils.isEmpty(code)) {
                 shortTip(R.string.str_please_input_sms_code);
                 return;
             }
-            //登录
-            mPresenter.login(mobile, code);
+            mPresenter.login(mobile, code); //登录
         } else {
-            //神策
-            SensorsTrack.smsCode();
+            SensorsTrack.smsCode(); //神策
             if (!RegexUtils.isChinaPhone(mobile)) {
                 shortTip(R.string.tip_input_correct_phone);
                 return;
             }
             rlCode.setVisibility(View.VISIBLE);
             btnLogin.setText(R.string.str_login);
-            //发送验证码
-            startDownTimer(mobile);
+            startDownTimer(mobile); //发送验证码
         }
     }
 
@@ -164,25 +156,16 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         if (isFastClick(1500)) {
             return;
         }
-        //神策
-        SensorsTrack.login();
         //手机权限
         if (PermissionUtils.checkPhonePermission(this)) {
-            if (!TextUtils.isEmpty(CommonHelper.getPhoneNum(context))) {
-                mPresenter.loginOnlyPhone(CommonHelper.getPhoneNum(context));
-            } else {
-                shortTip(R.string.str_cannot_get_mine_phone_use_sms);
-            }
+            SensorsTrack.login();//神策
+            JPushAuthLoginRequest.getInstance().authLogin(context);
         }
     }
 
     @Click(R.id.btn_test)
     void testClick() {
-        if (isFastClick(1200)) {
-            return;
-        }
-//        new TestLoginDialog(context,mPresenter);
-        JPushAuthLoginRequest.getInstance().authLogin(context);
+        //new TestLoginDialog(context,mPresenter);
     }
 
     @Click(R.id.tv_get_code)
@@ -229,7 +212,6 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
             SensorsTrack.trackInstallation(context);
-            btnLoginNoPassword.setVisibility(TextUtils.isEmpty(CommonHelper.getPhoneNum(context)) ? View.GONE : View.VISIBLE);
         }
         if (grantResults.length <= 0) {
             return;
@@ -325,11 +307,9 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
             if (ActivityCompat.checkSelfPermission(this,
                     "android.permission.READ_PHONE_STATE") == PackageManager.PERMISSION_GRANTED) {
                 SensorsTrack.trackInstallation(context);
-                btnLoginNoPassword.setVisibility(TextUtils.isEmpty(CommonHelper.getPhoneNum(context)) ? View.GONE : View.VISIBLE);
             }
         } else {
             SensorsTrack.trackInstallation(context);
-            btnLoginNoPassword.setVisibility(TextUtils.isEmpty(CommonHelper.getPhoneNum(context)) ? View.GONE : View.VISIBLE);
         }
     }
 
@@ -338,23 +318,19 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         RongPushPremissionsCheckHelper.checkPermissionsAndShowDialog(this, new ResultCallback() {
             @Override
             public void onAreadlyOpened(String value) {
-                LogCat.e(TAG, "11111 onAreadlyOpened  value=" + value);
             }
 
             @Override
             public boolean onBeforeShowDialog(String value) {
-                LogCat.e(TAG, "11111 onBeforeShowDialog value=" + value);
                 return false;
             }
 
             @Override
             public void onGoToSetting(String value) {
-                LogCat.e(TAG, "11111 onGoToSetting value=" + value);
             }
 
             @Override
             public void onFailed(String value, FailedType type) {
-                LogCat.e(TAG, "11111 onFailed value=" + value);
             }
         });
     }
