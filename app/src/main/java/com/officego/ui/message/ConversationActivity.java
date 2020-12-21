@@ -20,6 +20,7 @@ import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.dialog.ConfirmDialog;
 import com.officego.commonlib.common.dialog.InputContactsDialog;
+import com.officego.commonlib.common.message.PhoneEncryptedInfo;
 import com.officego.commonlib.common.model.ChatHouseBean;
 import com.officego.commonlib.common.model.FirstChatBean;
 import com.officego.commonlib.common.model.IdentitychattedMsgBean;
@@ -232,6 +233,18 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
     @Override
     public void exchangeContactsSuccess(boolean isCanExchange) {
         this.isCanExchange = isCanExchange;
+        exchangeTip();
+    }
+
+    @Override
+    public void exchangeContactsFail(String msg) {
+        if (isOnClickExchangeContacts) {
+            shortTip(msg);
+        }
+        exchangeTip();
+    }
+
+    private void exchangeTip() {
         if (isCanExchange) {
             rlTip.setVisibility(View.GONE);
             ivMobile.setImageResource(R.mipmap.ic_mobile_blue_big);
@@ -245,13 +258,6 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
                         "和房东建立聊天后即可发起交换微信和电话" :
                         "双方建立看房日程后才能发起交换微信和电话");
             }
-        }
-    }
-
-    @Override
-    public void exchangeContactsFail(String msg) {
-        if (isOnClickExchangeContacts) {
-            shortTip(msg);
         }
     }
 
@@ -381,7 +387,8 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
                 CommonNotifications.conversationBindWeChat,
                 CommonNotifications.conversationBindPhone,
                 CommonNotifications.conversationIdApplyAgree,
-                CommonNotifications.conversationIdApplyReject
+                CommonNotifications.conversationIdApplyReject,
+                CommonNotifications.conversationPhoneEncrypted
         };
     }
 
@@ -437,6 +444,9 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             //拒绝认证申请
             SendMessageManager.getInstance().sendIdApplyStatusMessage(false, targetId, "我已拒绝你加入公司", "");
             SendMessageManager.getInstance().sendTextMessage(targetId, "我已拒绝你加入公司");
+        }else if (id == CommonNotifications.conversationPhoneEncrypted) {
+            //手机号加密
+            SendMessageManager.getInstance().insertPhoneEncryptedMessage(PhoneEncryptedInfo.setData(""), targetId);
         }
     }
 

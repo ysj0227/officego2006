@@ -2,11 +2,13 @@ package com.officego.commonlib.common.rongcloud;
 
 import android.text.TextUtils;
 
+import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.message.BuildingInfo;
 import com.officego.commonlib.common.message.EcPhoneStatusInfo;
 import com.officego.commonlib.common.message.EcWeChatStatusInfo;
 import com.officego.commonlib.common.message.IdentityApplyInfo;
 import com.officego.commonlib.common.message.IdentityApplyStatusInfo;
+import com.officego.commonlib.common.message.PhoneEncryptedInfo;
 import com.officego.commonlib.common.message.PhoneInfo;
 import com.officego.commonlib.common.message.ViewingDateInfo;
 import com.officego.commonlib.common.message.ViewingDateStatusInfo;
@@ -201,6 +203,21 @@ public class SendMessageManager {
     }
 
     /**
+     * 插入手机号加密
+     */
+    public void insertPhoneEncryptedMessage(PhoneEncryptedInfo info, String targetId) {
+        if (info != null) {
+            RongIM.getInstance().insertIncomingMessage(
+                    Conversation.ConversationType.PRIVATE,
+                    targetId,
+                    SpUtils.getRongChatId(),
+                    new Message.ReceivedStatus(1), //1 send  2 receive
+                    info,
+                    resultCallback);
+        }
+    }
+
+    /**
      * 插入自定义消息
      * setInsertIncomingMessage
      */
@@ -210,7 +227,7 @@ public class SendMessageManager {
                     Conversation.ConversationType.PRIVATE,
                     targetId,
                     myId,
-                    new Message.ReceivedStatus(1),
+                    new Message.ReceivedStatus(1), //1 send  2 receive
                     info,
                     resultCallback);
         }

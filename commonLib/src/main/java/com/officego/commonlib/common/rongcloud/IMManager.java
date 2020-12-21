@@ -16,6 +16,8 @@ import com.officego.commonlib.common.message.IdentityApplyInfo;
 import com.officego.commonlib.common.message.IdentityApplyProvider;
 import com.officego.commonlib.common.message.IdentityApplyStatusInfo;
 import com.officego.commonlib.common.message.IdentityApplyStatusProvider;
+import com.officego.commonlib.common.message.PhoneEncryptedInfo;
+import com.officego.commonlib.common.message.PhoneEncryptedProvider;
 import com.officego.commonlib.common.message.PhoneInfo;
 import com.officego.commonlib.common.message.PhoneProvider;
 import com.officego.commonlib.common.message.ViewingDateInfo;
@@ -137,6 +139,9 @@ public class IMManager {
         //认证发送申请  同意拒绝
         RongIM.registerMessageType(IdentityApplyStatusInfo.class);
         RongIM.registerMessageTemplate(new IdentityApplyStatusProvider());
+        //聊天手机发送-加密提示
+        RongIM.registerMessageType(PhoneEncryptedInfo.class);
+        RongIM.registerMessageTemplate(new PhoneEncryptedProvider());
     }
 
     /**

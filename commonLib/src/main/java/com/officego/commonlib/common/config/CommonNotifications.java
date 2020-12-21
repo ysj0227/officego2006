@@ -16,6 +16,8 @@ public class CommonNotifications {
 
     public static final int conversationIdApplyAgree = totalEvents++;
     public static final int conversationIdApplyReject = totalEvents++;
+    //手机号加密
+    public static final int conversationPhoneEncrypted = totalEvents++;
     //更新用户信息成功
     public static final int updateUserInfoSuccess = totalEvents++;
     public static final int updateUserOwnerInfoSuccess = totalEvents++;
