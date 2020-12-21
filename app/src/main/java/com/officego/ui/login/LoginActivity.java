@@ -45,9 +45,6 @@ import org.androidannotations.annotations.ViewById;
 import java.util.Locale;
 import java.util.Objects;
 
-import io.rong.pushperm.ResultCallback;
-import io.rong.pushperm.RongPushPremissionsCheckHelper;
-
 /**
  * Created by YangShiJie
  * Data 2020/5/7.
@@ -310,28 +307,6 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         } else {
             SensorsTrack.trackInstallation(context);
         }
-    }
-
-    //融云消息推送的手机权限设置
-    private void rongPermissionSetting() {
-        RongPushPremissionsCheckHelper.checkPermissionsAndShowDialog(this, new ResultCallback() {
-            @Override
-            public void onAreadlyOpened(String value) {
-            }
-
-            @Override
-            public boolean onBeforeShowDialog(String value) {
-                return false;
-            }
-
-            @Override
-            public void onGoToSetting(String value) {
-            }
-
-            @Override
-            public void onFailed(String value, FailedType type) {
-            }
-        });
     }
 
 }
