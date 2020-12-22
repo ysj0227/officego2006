@@ -5,7 +5,6 @@
     android:id="@+id/ctl_search"
     android:layout_width="match_parent"
     android:layout_height="@dimen/dp_32"
-    android:layout_marginStart="@dimen/dp_18"
     tools:ignore="MissingConstraints,MissingDefaultResource">
 
     <ImageView

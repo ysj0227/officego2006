@@ -1,0 +1,63 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/marginLeftRight16"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.officego.commonlib.view.RoundImageView
+        android:id="@+id/riv_tips"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_172"
+        android:layout_marginTop="@dimen/dp_15"
+        android:background="@mipmap/ic_loading_def_bg"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.officego.commonlib.view.LabelsView
+        android:id="@+id/ll_labels_tips"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_20"
+        android:layout_marginBottom="@dimen/dp_12"
+        app:isIndicator="false"
+        app:labelBackground="@drawable/text_label_blue"
+        app:labelTextColor="@color/common_blue_main"
+        app:labelTextPaddingBottom="@dimen/dp_6"
+        app:labelTextPaddingLeft="@dimen/dp_12"
+        app:labelTextPaddingRight="@dimen/dp_12"
+        app:labelTextPaddingTop="@dimen/dp_6"
+        app:labelTextSize="11sp"
+        app:layout_constraintBottom_toBottomOf="@id/riv_tips"
+        app:layout_constraintStart_toStartOf="parent"
+        app:lineMargin="@dimen/dp_6"
+        app:maxLines="1"
+        app:selectType="NONE"
+        app:wordMargin="@dimen/dp_8"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/tv_tips"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_13"
+        android:ellipsize="end"
+        android:maxLines="3"
+        android:textColor="@color/text_33"
+        android:textSize="@dimen/sp_13"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/riv_tips" />
+
+    <View
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="@dimen/dp_1"
+        android:layout_marginTop="@dimen/dp_18"
+        android:background="@color/common_divider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_tips" />
+</androidx.constraintlayout.widget.ConstraintLayout>

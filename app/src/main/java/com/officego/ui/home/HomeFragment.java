@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
-import androidx.recyclerview.widget.PagerSnapHelper;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.officego.R;
@@ -13,6 +12,7 @@ import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.update.VersionDialog;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.ui.adapter.BrandAdapter;
+import com.officego.ui.adapter.HomeAdapter;
 import com.officego.ui.adapter.NewsAdapter;
 
 import org.androidannotations.annotations.AfterViews;
@@ -36,6 +36,8 @@ public class HomeFragment extends BaseFragment {
     RecyclerView rvNews;
     @ViewById(R.id.rv_brand)
     RecyclerView rvBrand;
+    @ViewById(R.id.rv_hots)
+    RecyclerView rvHots;
 
     @AfterViews
     void init() {
@@ -44,15 +46,17 @@ public class HomeFragment extends BaseFragment {
         new VersionDialog(mActivity);
         testNews();
         testBrand();
+        testhots();
     }
 
     private void initViews() {
         LinearLayoutManager layoutManager = new LinearLayoutManager(mActivity);
         layoutManager.setOrientation(RecyclerView.HORIZONTAL);
         rvNews.setLayoutManager(layoutManager);
-
         GridLayoutManager layoutManager1 = new GridLayoutManager(mActivity, 2);
         rvBrand.setLayoutManager(layoutManager1);
+        LinearLayoutManager layoutManager2 = new LinearLayoutManager(mActivity);
+        rvHots.setLayoutManager(layoutManager2);
     }
 
     @Click(R.id.ctl_search)
@@ -75,12 +79,21 @@ public class HomeFragment extends BaseFragment {
         }
         rvNews.setAdapter(new NewsAdapter(mActivity, listBrand));
     }
+
     private void testBrand() {
         List<String> listBrand = new ArrayList<>();
         for (int i = 0; i < 4; i++) {
             listBrand.add("https://img.officego.com/building/1600411301880.png?x-oss-process=style/small");
         }
         rvBrand.setAdapter(new BrandAdapter(mActivity, listBrand));
+    }
+
+    private void testhots() {
+        List<String> listBrand = new ArrayList<>();
+        for (int i = 0; i < 9; i++) {
+            listBrand.add("https://img.officego.com/building/1600411301880.png?x-oss-process=style/small");
+        }
+        rvHots.setAdapter(new HomeAdapter(listBrand));
     }
 
 }

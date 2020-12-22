@@ -41,7 +41,8 @@
                     layout="@layout/home_include_search"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_32"
-                    android:layout_marginTop="@dimen/dp_30"
+                    android:layout_marginStart="@dimen/dp_18"
+                    android:layout_marginTop="@dimen/dp_40"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
 
@@ -108,6 +109,45 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_brand"
+                        android:layout_marginTop="@dimen/dp_15" />
+
+                </RelativeLayout>
+                <!--热门推荐-->
+                <RelativeLayout
+                    android:id="@+id/rl_hots"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_20"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/rl_brand">
+
+                    <TextView
+                        android:id="@+id/tv_hots"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_16"
+                        android:text="热门推荐"
+                        android:textColor="@color/text_33"
+                        android:textSize="@dimen/sp_16"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/tv_all_house"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignBottom="@id/tv_hots"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginEnd="@dimen/dp_16"
+                        android:text="全部房源"
+                        android:textColor="@color/text_66"
+                        android:textSize="@dimen/sp_14" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_hots"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/tv_hots"
                         android:layout_marginTop="@dimen/dp_15" />
 
                 </RelativeLayout>
