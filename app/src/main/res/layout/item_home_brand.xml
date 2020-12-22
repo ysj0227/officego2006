@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="@dimen/dp_4"
+    app:cardCornerRadius="@dimen/dp_6">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <com.officego.commonlib.view.RoundImageView
+            android:id="@+id/riv_image"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_86"
+            android:layout_centerInParent="true"
+            android:scaleType="centerCrop" />
+
+        <com.officego.commonlib.view.RoundImageView
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_86"
+            android:layout_centerInParent="true"
+            android:background="@color/trans_common_35" />
+
+        <TextView
+            android:id="@+id/tv_name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerInParent="true"
+            android:text="@string/app_name"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_13" />
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>

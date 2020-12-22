@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="@dimen/dp_150"
+    android:layout_height="@dimen/dp_112"
+    android:layout_marginEnd="@dimen/dp_8"
+    app:cardCornerRadius="@dimen/dp_6">
+
+    <RelativeLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content">
+
+        <com.officego.commonlib.view.RoundImageView
+            android:id="@+id/riv_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_centerInParent="true"
+            android:scaleType="centerCrop" />
+
+        <TextView
+            android:id="@+id/tv_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/dp_6"
+            android:paddingBottom="@dimen/dp_20"
+            android:text="#午间小憩#"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_12" />
+
+        <TextView
+            android:id="@+id/tv_des"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true"
+            android:layout_marginStart="@dimen/dp_6"
+            android:paddingBottom="@dimen/dp_5"
+            android:text="你多久没运动了？"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_10" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_35"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/bg_gradient_gray" />
+    </RelativeLayout>
+
+
+</androidx.cardview.widget.CardView>

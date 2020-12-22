@@ -197,9 +197,19 @@
         <item name="android:layout_marginRight">@dimen/dp_10</item>
     </style>
 
+    <style name="marginLeftRight14">
+        <item name="android:layout_marginLeft">@dimen/dp_14</item>
+        <item name="android:layout_marginRight">@dimen/dp_14</item>
+    </style>
+
     <style name="marginLeftRight15">
         <item name="android:layout_marginLeft">@dimen/dp_15</item>
         <item name="android:layout_marginRight">@dimen/dp_15</item>
+    </style>
+
+    <style name="marginLeftRight16">
+        <item name="android:layout_marginLeft">@dimen/dp_16</item>
+        <item name="android:layout_marginRight">@dimen/dp_16</item>
     </style>
 
     <style name="marginLeftRight18">

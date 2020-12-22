@@ -1,0 +1,236 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="@dimen/dp_86"
+    android:id="@+id/ctl_building_type"
+    android:background="@drawable/bg_shape_shade"
+    tools:ignore="MissingConstraints">
+
+    <RelativeLayout
+        android:id="@+id/rl_joint_work"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintLeft_toLeftOf="parent"
+        app:layout_constraintRight_toLeftOf="@id/rl_open_independent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:id="@+id/rl1"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true">
+
+            <ImageView
+                android:id="@+id/iv_joint_work"
+                android:layout_width="@dimen/dp_40"
+                android:layout_height="@dimen/dp_40"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/jpush_app_logo"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/iv_joint_work_flag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginBottom="@dimen/dp_5"
+                android:background="@mipmap/ic_checkbox_checked"
+                tools:ignore="ContentDescription" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_joint_work"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl1"
+            android:gravity="center"
+            android:text="共享办公"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_13" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_open_independent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/rl_joint_work"
+        app:layout_constraintRight_toLeftOf="@id/rl_office_type"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:id="@+id/rl2"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true">
+
+            <ImageView
+                android:id="@+id/iv_open_independent"
+                android:layout_width="@dimen/dp_40"
+                android:layout_height="@dimen/dp_40"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/jpush_app_logo"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/iv_open_independent_flag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginBottom="@dimen/dp_5"
+                android:background="@mipmap/ic_checkbox_checked"
+                tools:ignore="ContentDescription" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_open_independent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl2"
+            android:gravity="center"
+            android:text="开放工位"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_13" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_office_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/rl_open_independent"
+        app:layout_constraintRight_toLeftOf="@id/rl_garden"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:id="@+id/rl3"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true">
+
+            <ImageView
+                android:id="@+id/iv_office"
+                android:layout_width="@dimen/dp_40"
+                android:layout_height="@dimen/dp_40"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/jpush_app_logo"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/iv_office_flag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginBottom="@dimen/dp_5"
+                android:background="@mipmap/ic_checkbox_checked"
+                tools:ignore="ContentDescription" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_office"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl3"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:text="写字楼"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_13" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_garden"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/rl_office_type"
+        app:layout_constraintRight_toLeftOf="@id/rl_meeting_room"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:id="@+id/rl4"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true">
+
+            <ImageView
+                android:id="@+id/iv_garden"
+                android:layout_width="@dimen/dp_40"
+                android:layout_height="@dimen/dp_40"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/jpush_app_logo"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/iv_garden_flag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginBottom="@dimen/dp_5"
+                android:background="@mipmap/ic_checkbox_checked"
+                tools:ignore="ContentDescription" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_garden"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl4"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:text="园区"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_13" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_meeting_room"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintLeft_toRightOf="@id/rl_garden"
+        app:layout_constraintRight_toRightOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RelativeLayout
+            android:id="@+id/rl5"
+            android:layout_width="@dimen/dp_50"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true">
+
+            <ImageView
+                android:id="@+id/iv_meeting_room"
+                android:layout_width="@dimen/dp_40"
+                android:layout_height="@dimen/dp_40"
+                android:layout_centerHorizontal="true"
+                android:background="@drawable/jpush_app_logo"
+                tools:ignore="ContentDescription" />
+
+            <ImageView
+                android:id="@+id/iv_meeting_room_flag"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginBottom="@dimen/dp_5"
+                android:background="@mipmap/ic_checkbox_checked"
+                tools:ignore="ContentDescription" />
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_meeting_room"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/rl5"
+            android:layout_centerHorizontal="true"
+            android:gravity="center"
+            android:text="会议室"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_13" />
+
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>
