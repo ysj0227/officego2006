@@ -135,7 +135,7 @@ public class HouseAdapter extends CommonListAdapter<BuildingBean.ListBean> {
             labelsView.setWordMargin(40);
             labelsView.setLabelTextPadding(8, 5, 8, 5);
             labelsView.setLabelTextColor(ContextCompat.getColor(context, R.color.white));
-            labelsView.setLabelBackgroundResource(R.drawable.text_label_deep_blue);
+            labelsView.setLabelBackgroundResource(R.drawable.text_label_deep_main);
             ArrayList<LabelBean> officeList = new ArrayList<>();
             if (bean.getOpenStation() == 0 && bean.getIndependenceOffice() == 0) {
                 labelsView.setVisibility(View.GONE);

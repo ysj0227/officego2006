@@ -93,7 +93,7 @@ public class HomeFragment extends BaseFragment {
         for (int i = 0; i < 9; i++) {
             listBrand.add("https://img.officego.com/building/1600411301880.png?x-oss-process=style/small");
         }
-        rvHots.setAdapter(new HomeAdapter(listBrand));
+        rvHots.setAdapter(new HomeAdapter(mActivity,listBrand));
     }
 
 }

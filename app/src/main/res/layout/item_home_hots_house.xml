@@ -69,6 +69,8 @@
         android:text="2.0Km | 闵行区-莘庄"
         android:textColor="@color/text_33"
         android:textSize="@dimen/sp_12"
+        android:singleLine="true"
+        android:ellipsize="end"
         app:layout_constraintLeft_toRightOf="@id/iv_house"
         app:layout_constraintTop_toBottomOf="@id/tv_house_name" />
 
@@ -81,9 +83,10 @@
         android:text="步行20分钟到「16号线·龙阳路」"
         android:textColor="@color/text_33"
         android:textSize="@dimen/sp_12"
+        android:singleLine="true"
+        android:ellipsize="end"
         app:layout_constraintLeft_toRightOf="@id/iv_house"
         app:layout_constraintTop_toBottomOf="@id/tv_location" />
-
 
     <TextView
         android:id="@+id/tv_office_independent"
@@ -123,7 +126,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_12"
         android:layout_marginTop="@dimen/dp_7"
-        android:text="￥"
+        android:text="@string/str_rmb_unit"
         android:textColor="@color/common_blue_main"
         android:textSize="@dimen/sp_12"
         app:layout_constraintBaseline_toBaselineOf="@id/tv_chat_time"
@@ -162,7 +165,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_18"
-        android:background="@drawable/text_label_yellow"
+        android:background="@drawable/text_label_yellow_light"
         android:paddingStart="@dimen/dp_20"
         android:paddingTop="@dimen/dp_3"
         android:paddingEnd="@dimen/dp_20"

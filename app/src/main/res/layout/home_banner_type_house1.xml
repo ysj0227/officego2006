@@ -1,0 +1,130 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    style="@style/marginLeftRight16"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.officego.commonlib.view.RoundImageView
+        android:id="@+id/riv_house"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_172"
+        android:layout_marginTop="@dimen/dp_22"
+        android:background="@mipmap/ic_loading_def_bg"
+        android:scaleType="centerCrop"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <com.officego.commonlib.view.LabelsView
+        android:id="@+id/ll_labels_house"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_10"
+        android:layout_marginBottom="@dimen/dp_10"
+        app:isIndicator="false"
+        app:labelBackground="@drawable/text_label_yellow"
+        app:labelTextColor="@color/white"
+        app:labelTextPaddingBottom="@dimen/dp_3"
+        app:labelTextPaddingLeft="@dimen/dp_10"
+        app:labelTextPaddingRight="@dimen/dp_10"
+        app:labelTextPaddingTop="@dimen/dp_3"
+        app:labelTextSize="@dimen/sp_10"
+        app:layout_constraintBottom_toBottomOf="@id/riv_house"
+        app:layout_constraintStart_toStartOf="parent"
+        app:lineMargin="@dimen/dp_6"
+        app:maxLines="1"
+        app:selectType="NONE"
+        app:wordMargin="@dimen/dp_8"
+        tools:ignore="MissingConstraints" />
+
+    <TextView
+        android:id="@+id/tv_name"
+        android:layout_width="@dimen/dp_185"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_8"
+        android:ellipsize="end"
+        android:text="陆家嘴世纪金融广场3号楼"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_15"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/riv_house" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintBottom_toBottomOf="@id/tv_name"
+        app:layout_constraintTop_toTopOf="@id/tv_name">
+
+        <TextView
+            android:id="@+id/tv_rmb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_rmb_unit"
+            android:textColor="@color/common_blue_main"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_rmb_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="1888.0"
+            android:textColor="@color/common_blue_main"
+            android:textSize="@dimen/sp_16"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_rmb"
+            app:layout_constraintLeft_toRightOf="@id/tv_rmb"
+            app:layout_constraintTop_toBottomOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="/m²/天起"
+            android:textColor="@color/common_blue_main"
+            android:textSize="@dimen/sp_12"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_rmb_money"
+            app:layout_constraintLeft_toRightOf="@id/tv_rmb_money"
+            app:layout_constraintTop_toBottomOf="parent" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+    <TextView
+        android:id="@+id/tv_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_7"
+        android:text="2.0Km | 闵行区-莘庄"
+        android:textColor="@color/text_33"
+        android:textSize="@dimen/sp_12"
+        android:singleLine="true"
+        android:ellipsize="end"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_name" />
+
+    <TextView
+        android:id="@+id/tv_lines"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_7"
+        android:text="步行20分钟到「16号线·龙阳路」"
+        android:textColor="@color/text_33"
+        android:textSize="@dimen/sp_12"
+        android:singleLine="true"
+        android:ellipsize="end"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_location" />
+
+    <View
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="@dimen/dp_1"
+        android:layout_marginTop="@dimen/dp_18"
+        android:background="@color/common_divider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_lines" />
+</androidx.constraintlayout.widget.ConstraintLayout>

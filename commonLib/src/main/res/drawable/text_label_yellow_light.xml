@@ -6,8 +6,10 @@
         android:width="@dimen/dp_2"
         android:color="@android:color/transparent" />
 
-    <solid android:color="@color/common_blue" />
+    <solid android:color="@color/common_yellow_trans" />
 
-    <corners android:radius="@dimen/dp_2" />
+    <corners
+        android:bottomRightRadius="@dimen/dp_24"
+        android:topRightRadius="@dimen/dp_24" />
 
 </shape>

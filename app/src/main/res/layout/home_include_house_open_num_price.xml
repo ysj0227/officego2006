@@ -10,7 +10,7 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_18"
-        android:background="@drawable/text_label_deep_blue"
+        android:background="@drawable/text_label_deep_main"
         android:padding="@dimen/dp_3"
         android:text="@string/str_open_work"
         android:textColor="@color/white"
