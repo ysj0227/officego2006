@@ -1,6 +1,7 @@
 package com.officego.ui.adapter;
 
 import android.app.Activity;
+import android.text.Html;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -114,6 +115,8 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     //热门
     private void hotsView(RecyclerView.ViewHolder holder, String bean) {
         Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(bean).into(((HotsHolder) holder).ivImageHots);
+        ((HotsHolder) holder).tvOfficeIndependent.setText(Html.fromHtml("办公室<font color='#46C3C2'>6</font>间"));
+        ((HotsHolder) holder).tvOpenSeats.setText(Html.fromHtml("开放工位<font color='#46C3C2'>9</font>个"));
     }
 
     //生活小知识
