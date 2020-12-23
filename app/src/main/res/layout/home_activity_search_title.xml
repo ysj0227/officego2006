@@ -62,7 +62,7 @@
                 android:paddingEnd="@dimen/dp_3"
                 android:singleLine="true"
                 android:textColor="@color/text_disable"
-                android:textSize="@dimen/sp_14"
+                android:textSize="@dimen/sp_12"
                 tools:ignore="RtlSymmetry" />
         </RelativeLayout>
 

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_gravity="center"
+    android:layout_marginEnd="@dimen/dp_6">
+
+    <com.officego.commonlib.view.RoundImageView
+        android:id="@+id/riv_image"
+        android:layout_width="@dimen/dp_104"
+        android:layout_height="@dimen/dp_104"
+        android:layout_centerHorizontal="true"
+        android:background="@mipmap/ic_loading_def_bg"
+        android:scaleType="centerCrop" />
+
+    <TextView
+        android:id="@+id/tv_label"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBottom="@id/riv_image"
+        android:layout_centerHorizontal="true"
+        android:paddingBottom="@dimen/dp_3"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_10" />
+
+    <View
+        android:layout_width="@dimen/dp_104"
+        android:layout_height="@dimen/dp_18"
+        android:layout_alignBottom="@id/riv_image"
+        android:layout_centerHorizontal="true"
+        android:background="@drawable/bg_gradient_gray" />
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/riv_image"
+        android:layout_marginBottom="@dimen/dp_10"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dp_7">
+
+        <TextView
+            android:id="@+id/tv_rmb"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/str_rmb_unit"
+            android:textColor="@color/common_red"
+            android:textSize="@dimen/sp_11"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+        <TextView
+            android:id="@+id/tv_rmb_money"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:textColor="@color/common_red"
+            android:textSize="@dimen/sp_14"
+            android:textStyle="bold"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_rmb"
+            app:layout_constraintBottom_toBottomOf="@id/tv_rmb"
+            app:layout_constraintLeft_toRightOf="@id/tv_rmb" />
+
+        <TextView
+            android:id="@+id/tv_unit"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="/时"
+            android:textColor="@color/common_red"
+            android:textSize="@dimen/sp_11"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_rmb"
+            app:layout_constraintBottom_toBottomOf="@id/tv_rmb_money"
+            app:layout_constraintLeft_toRightOf="@id/tv_rmb_money" />
+
+        <TextView
+            android:id="@+id/tv_discount"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_3"
+            android:textColor="@color/text_99"
+            android:textSize="@dimen/sp_11"
+            app:layout_constraintBaseline_toBaselineOf="@id/tv_rmb"
+            app:layout_constraintBottom_toBottomOf="@id/tv_unit"
+            app:layout_constraintLeft_toRightOf="@id/tv_unit" />
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
+</RelativeLayout>

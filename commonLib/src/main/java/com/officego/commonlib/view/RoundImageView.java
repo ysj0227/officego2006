@@ -22,9 +22,8 @@ import android.widget.ImageView;
 @SuppressLint("AppCompatCustomView")
 public class RoundImageView extends ImageView {
 
-
     //圆角大小，默认为10
-    private int mBorderRadius = 6;
+    private int mBorderRadius = 16;
 
     private Paint mPaint;
 

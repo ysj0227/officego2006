@@ -31,18 +31,21 @@
     <color name="text_f7">#F7F7F7</color>          <!--hint-->
     <color name="text_75">#757575</color>          <!--hint-->
     <color name="text_f2">#f2f2f2</color>          <!--hint-->
+    <color name="text_f3">#F3F5F5</color>          <!--hint-->
     <color name="text_e5">#E5E9EF</color>          <!--hint-->
     <color name="text_ea">#FFEAEA</color>          <!--hint-->
     <color name="divider_gray">#DCE2EB</color>          <!--hint-->
     <color name="pop_background">#99000000</color>          <!--透明度-->
     <!--其他通用-->
     <color name="common_bg">#FAFAFA</color>          <!--背景-->
-    <color name="common_fill">#F5F7FA</color>        <!--填充-->
-    <color name="common_divider">#EEEEEE</color>     <!--分割线-->
-    <color name="common_search_bg">#EEEEEE</color>     <!--分割线-->
-    <color name="common_yellow">#FDA82A</color>     <!--分割线-->
-    <color name="common_yellow_trans">#1AFDA82A</color>     <!--分割线-->
-    <color name="common_blue">#1F8AF8</color>     <!--分割线-->
+    <color name="common_fill">#F5F7FA</color>
+    <color name="common_divider">#EEEEEE</color>
+    <color name="common_search_bg">#EEEEEE</color>
+    <color name="common_yellow">#FDA82A</color>
+    <color name="common_yellow_trans">#1AFDA82A</color>
+    <color name="common_blue">#1F8AF8</color>
+    <color name="trans_common_35">#80353B3B</color>   <!--透明度50%-->
+    <color name="common_red">#FF424F</color>          <!--红色-->
 
     <color name="assist_primary">#3065F5</color>     <!--辅助色-->
     <color name="caution_primary">#FF3838</color>    <!--警示-->

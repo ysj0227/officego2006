@@ -46,7 +46,8 @@ public class HomeFragment extends BaseFragment {
         new VersionDialog(mActivity);
         testNews();
         testBrand();
-        testhots();
+        testHotsList();
+        //暂无数据，网络异常 TODO
     }
 
     private void initViews() {
@@ -59,12 +60,17 @@ public class HomeFragment extends BaseFragment {
         rvHots.setLayoutManager(layoutManager2);
     }
 
-    @Click(R.id.ctl_search)
-    void searchClick() {
-        gotoSearchActivity();
+    @Click({R.id.tv_all_house, R.id.btn_query_more})
+    void moreHouseClick() {
+        if (isFastClick(1200)) {
+            return;
+        }
+        SearchHouseListActivity_.intent(mActivity)
+                .searchKeywords("").start();
     }
 
-    private void gotoSearchActivity() {
+    @Click(R.id.ctl_search)
+    void searchClick() {
         if (isFastClick(1200)) {
             return;
         }
@@ -88,12 +94,18 @@ public class HomeFragment extends BaseFragment {
         rvBrand.setAdapter(new BrandAdapter(mActivity, listBrand));
     }
 
-    private void testhots() {
+    private void testHotsList() {
         List<String> listBrand = new ArrayList<>();
-        for (int i = 0; i < 9; i++) {
+        for (int i = 0; i < 10; i++) {
             listBrand.add("https://img.officego.com/building/1600411301880.png?x-oss-process=style/small");
         }
-        rvHots.setAdapter(new HomeAdapter(mActivity,listBrand));
+        listBrand.add(2,"https://img.officego.com/building/1600411301880.png?x-oss-process=style/small");
+        listBrand.add(3,"https://img.officego.com/building/1600411301880.png?x-oss-process=style/small");
+        listBrand.add(5,"https://img.officego.com/building/1600411301880.png?x-oss-process=style/small");
+        listBrand.add(7,"https://img.officego.com/building/1600411301880.png?x-oss-process=style/small");
+        listBrand.add(9,"https://img.officego.com/building/1600411301880.png?x-oss-process=style/small");
+
+        rvHots.setAdapter(new HomeAdapter(mActivity, listBrand));
     }
 
 }
