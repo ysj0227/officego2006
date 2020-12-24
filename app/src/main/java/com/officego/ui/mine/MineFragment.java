@@ -31,6 +31,8 @@ import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.h5.WebViewActivity_;
 import com.officego.rpc.OfficegoApi;
 import com.officego.ui.coupon.CouponActivity_;
+import com.officego.ui.find.WantToFindActivity;
+import com.officego.ui.find.WantToFindActivity_;
 import com.officego.ui.login.LoginActivity_;
 import com.officego.ui.mine.contract.UserContract;
 import com.officego.ui.mine.presenter.UserPresenter;
@@ -48,7 +50,7 @@ import static android.app.Activity.RESULT_OK;
  * Data 2020/5/11.
  * Descriptions:
  **/
-@SuppressLint("NewApi")
+@SuppressLint({"NewApi", "NonConstantResourceId"})
 @EFragment(R.layout.mine_fragment)
 public class MineFragment extends BaseMvpFragment<UserPresenter>
         implements UserContract.View {
@@ -113,6 +115,12 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
     void settingClick() {
         if (isToLogin()) return;
         MineSettingActivity_.intent(mActivity).startForResult(REQUEST_CODE_LOGOUT);
+    }
+
+    @Click(R.id.rl_want)
+    void findClick() {
+        if (isToLogin()) return;
+        WantToFindActivity_.intent(mActivity).start();
     }
 
     @Click(R.id.rl_coupon)

@@ -22,19 +22,20 @@
     <color name="text_normal">#525866</color>        <!--常规-->
     <color name="text_caption">#8E8E93</color>       <!--次要-->
     <color name="text_disable">#A1A7B3</color>       <!--禁用or辅助-->
-    <color name="text_hint">#D8D8D8</color>          <!--hint-->
-    <color name="text_33">#333333</color>          <!--hint-->
-    <color name="text_66">#666666</color>          <!--hint-->
-    <color name="text_66_p50">#99666666</color>          <!--hint-->
-    <color name="text_65">#656363</color>          <!--hint-->
-    <color name="text_99">#999999</color>          <!--hint-->
-    <color name="text_f7">#F7F7F7</color>          <!--hint-->
-    <color name="text_75">#757575</color>          <!--hint-->
-    <color name="text_f2">#f2f2f2</color>          <!--hint-->
-    <color name="text_f3">#F3F5F5</color>          <!--hint-->
-    <color name="text_e5">#E5E9EF</color>          <!--hint-->
-    <color name="text_ea">#FFEAEA</color>          <!--hint-->
-    <color name="divider_gray">#DCE2EB</color>          <!--hint-->
+    <color name="text_hint">#D8D8D8</color>
+    <color name="text_33">#333333</color>
+    <color name="text_66">#666666</color>
+    <color name="text_66_p50">#99666666</color>
+    <color name="text_65">#656363</color>
+    <color name="text_99">#999999</color>
+    <color name="text_f7">#F7F7F7</color>
+    <color name="text_75">#757575</color>
+    <color name="text_f2">#f2f2f2</color>
+    <color name="text_f3">#F3F5F5</color>
+    <color name="text_f4">#F4F8F7</color>
+    <color name="text_e5">#E5E9EF</color>
+    <color name="text_ea">#FFEAEA</color>
+    <color name="divider_gray">#DCE2EB</color>
     <color name="pop_background">#99000000</color>          <!--透明度-->
     <!--其他通用-->
     <color name="common_bg">#FAFAFA</color>          <!--背景-->
@@ -81,5 +82,5 @@
     <color name="black_60">#99000000</color>
     <color name="black_70">#B3000000</color>
 
-    <color name="trans_bg">#44000000</color>          <!--hint-->
+    <color name="trans_bg">#44000000</color>
 </resources>

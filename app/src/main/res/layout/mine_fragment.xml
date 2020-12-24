@@ -83,6 +83,17 @@
             android:orientation="vertical">
 
             <com.officego.commonlib.view.widget.ItemTextLayout
+                android:id="@+id/rl_want"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_12"
+                app:dividerLine="visible"
+                app:imageBackground="@mipmap/ic_coupon_icon"
+                app:imageHeight="@dimen/dp_19"
+                app:imageWidth="@dimen/dp_16"
+                app:textTitle="我想找" />
+
+            <com.officego.commonlib.view.widget.ItemTextLayout
                 android:id="@+id/rl_coupon"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

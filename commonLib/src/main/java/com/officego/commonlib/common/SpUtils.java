@@ -36,6 +36,8 @@ public class SpUtils {
     private static final String TO_IDENTITY = PACKAGE_NAME + "TO_IDENTITY";
     //审核成功添加房源引导
     private static final String IDENTITY_HOUSE_LEAD = PACKAGE_NAME + "IDENTITY_HOUSE_LEAD";
+    //我想找-跳过保存当前时间
+    private static final String WANT_FIND_CURRENT_DATE = PACKAGE_NAME + "WANT_FIND_CURRENT_DATE";
 
     private static SharedPreferences getSharedPreference() {
         return SharedManager.getSharedPreference(BaseApplication.getContext());
@@ -53,8 +55,8 @@ public class SpUtils {
         clearToIdentity();
         //房东初始化首页选择的楼盘id
         Constants.mCurrentBuildingName = "";
-        Constants.FLOOR_JOINT_WORK_COUNTS="";
-        Constants.FLOOR_COUNTS="";
+        Constants.FLOOR_JOINT_WORK_COUNTS = "";
+        Constants.FLOOR_COUNTS = "";
     }
 
     //clear用户登录信息
@@ -153,13 +155,13 @@ public class SpUtils {
         return SharedManager.getValue(BaseApplication.getContext(), LOGIN_ROLE);
     }
 
-    //是否去web编辑
-    public static void saveEditToWeb() {
-        SharedManager.putValue(BaseApplication.getContext(), EDIT_TO_WEB, "Y");
+    //我想找-跳过保存当前时间
+    public static void saveFindDate() {
+        SharedManager.putValue(BaseApplication.getContext(), WANT_FIND_CURRENT_DATE, String.valueOf(System.currentTimeMillis()));
     }
 
-    public static String getEditToWeb() {
-        return SharedManager.getValue(BaseApplication.getContext(), EDIT_TO_WEB);
+    public static String getFindDate() {
+        return SharedManager.getValue(BaseApplication.getContext(), WANT_FIND_CURRENT_DATE);
     }
 
     //保存是否显示引导页

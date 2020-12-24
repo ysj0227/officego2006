@@ -1,0 +1,194 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/nsv_view"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/dp_65"
+        android:scrollbars="none"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <androidx.constraintlayout.widget.ConstraintLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <View
+                android:id="@+id/v_top"
+                android:layout_width="0dp"
+                android:layout_height="@dimen/dp_168"
+                android:background="@color/common_blue_main"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/iv_close"
+                android:layout_width="@dimen/dp_25"
+                android:layout_height="@dimen/dp_26"
+                android:layout_marginStart="@dimen/dp_12"
+                android:layout_marginTop="@dimen/dp_40"
+                android:background="@mipmap/ic_back_white_pressed"
+                android:padding="@dimen/dp_3"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent"
+                tools:ignore="ContentDescription" />
+
+            <TextView
+                android:id="@+id/tv_want"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_16"
+                android:layout_marginTop="@dimen/dp_80"
+                android:text="我想找"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_24"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toTopOf="parent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_16"
+                android:layout_marginTop="@dimen/dp_4"
+                android:text="根据选择为您筛选更合适的房源"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_13"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_want" />
+
+            <TextView
+                android:id="@+id/tv_person"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_16"
+                android:layout_marginTop="@dimen/dp_25"
+                android:text="1.您的团队规模？"
+                android:textColor="@color/text_33"
+                android:textSize="@dimen/sp_17"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/v_top" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_person"
+                style="@style/marginLeftRight16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_person" />
+
+
+            <TextView
+                android:id="@+id/tv_rent"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_16"
+                android:layout_marginTop="@dimen/dp_20"
+                android:text="2.您想租多久？"
+                android:textColor="@color/text_33"
+                android:textSize="@dimen/sp_17"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rv_person" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_rent"
+                style="@style/marginLeftRight16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_rent" />
+
+            <TextView
+                android:id="@+id/tv_factor"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/dp_16"
+                android:layout_marginTop="@dimen/dp_20"
+                android:text="3.您优先考虑哪方面因素？"
+                android:textColor="@color/text_33"
+                android:textSize="@dimen/sp_17"
+                android:textStyle="bold"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/rv_rent" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="(可多选)"
+                android:textColor="@color/text_99"
+                android:textSize="@dimen/sp_13"
+                app:layout_constraintBaseline_toBaselineOf="@id/tv_factor"
+                app:layout_constraintLeft_toRightOf="@id/tv_factor"
+                app:layout_constraintTop_toBottomOf="@+id/rv_rent" />
+
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/rv_factor"
+                style="@style/marginLeftRight16"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginTop="@dimen/dp_10"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@+id/tv_factor" />
+
+        </androidx.constraintlayout.widget.ConstraintLayout>
+
+    </androidx.core.widget.NestedScrollView>
+
+    <RelativeLayout
+        android:id="@+id/rl_bottom_view"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_6"
+        android:background="@color/white"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/nsv_view">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_1"
+            android:layout_alignParentTop="true"
+            android:background="@color/common_divider" />
+
+        <Button
+            android:id="@+id/btn_skip"
+            android:layout_width="@dimen/dp_86"
+            android:layout_height="@dimen/dp_38"
+            android:layout_marginStart="@dimen/dp_16"
+            android:layout_marginTop="@dimen/dp_12"
+            android:background="@drawable/text_label_gray"
+            android:gravity="center"
+            android:text="下次再说"
+            android:textColor="@color/common_blue_main"
+            android:textSize="@dimen/sp_14" />
+
+        <Button
+            android:id="@+id/btn_save"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_38"
+            android:layout_alignParentEnd="true"
+            android:layout_marginStart="@dimen/dp_10"
+            android:layout_marginTop="@dimen/dp_12"
+            android:layout_marginEnd="@dimen/dp_16"
+            android:layout_toEndOf="@id/btn_skip"
+            android:background="@drawable/btn_common_bg_primary"
+            android:gravity="center"
+            android:text="确认保存"
+            android:textColor="@color/white"
+            android:textSize="@dimen/sp_14" />
+    </RelativeLayout>
+</androidx.constraintlayout.widget.ConstraintLayout>

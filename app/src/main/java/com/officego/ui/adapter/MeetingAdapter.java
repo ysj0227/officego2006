@@ -36,7 +36,7 @@ public class MeetingAdapter extends CommonListAdapter<String> {
         tvDiscount.getPaint().setAntiAlias(true);//抗锯齿
         tvDiscount.getPaint().setFlags(Paint. STRIKE_THRU_TEXT_FLAG|Paint.ANTI_ALIAS_FLAG);  // 设置中划线并加清晰
         tvLabel.setText("可用优惠券");
-        tvRmbMoney.setText("20");
-        tvDiscount.setText("¥100/时");
+        tvRmbMoney.setText("200");
+        tvDiscount.setText("¥1000/时");
     }
 }
