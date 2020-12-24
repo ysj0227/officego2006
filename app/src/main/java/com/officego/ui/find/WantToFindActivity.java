@@ -1,22 +1,29 @@
 package com.officego.ui.find;
 
 import android.annotation.SuppressLint;
+import android.text.TextUtils;
+import android.view.View;
+import android.widget.ImageView;
 
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.officego.MainActivity_;
 import com.officego.R;
 import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.ui.adapter.FactorAdapter;
 import com.officego.ui.adapter.PersonAdapter;
 import com.officego.ui.adapter.RentAdapter;
+import com.officego.ui.login.LoginActivity_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.HashMap;
@@ -36,7 +43,10 @@ public class WantToFindActivity extends BaseActivity implements PersonAdapter.Pe
     RecyclerView rvPerson;
     @ViewById(R.id.rv_factor)
     RecyclerView rvFactor;
-
+    @ViewById(R.id.iv_close)
+    ImageView ivClose;
+    @Extra
+    boolean isBack;
 
     private String mPerson = "", mRent = "", mFactor = "";
     private Map<Integer, String> factorMap = new HashMap<>();
@@ -44,6 +54,7 @@ public class WantToFindActivity extends BaseActivity implements PersonAdapter.Pe
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarFullTransparent(this);
+        ivClose.setVisibility(isBack ? View.VISIBLE : View.GONE);
         initViews();
         data();
     }
@@ -77,11 +88,30 @@ public class WantToFindActivity extends BaseActivity implements PersonAdapter.Pe
     @Click(R.id.btn_skip)
     void skipClick() {
         SpUtils.saveFindDate();
+        gotoActivity();
     }
 
     @Click(R.id.btn_save)
     void saveClick() {
+        //保存成功后跳转 TODO
+        if (TextUtils.isEmpty(mPerson)||TextUtils.isEmpty(mRent)||TextUtils.isEmpty(mFactor)){
+            shortTip("还有资料没填哦～");
+            return;
+        }
+        SpUtils.saveWantFind();
+        gotoActivity();
+    }
 
+    private void gotoActivity() {
+        if (isBack){
+            finish();
+            return;
+        }
+        if (TextUtils.equals(Constants.TYPE_OWNER, SpUtils.getRole())) {
+            LoginActivity_.intent(context).start();
+        } else {
+            MainActivity_.intent(context).start();
+        }
     }
 
     @Override

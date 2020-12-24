@@ -24,9 +24,9 @@ import androidx.viewpager.widget.ViewPager;
 import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.constant.Constants;
-import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.location.LocationUtils;
+import com.officego.ui.find.WantToFindActivity_;
 import com.officego.ui.login.LoginActivity_;
 
 import org.androidannotations.annotations.AfterViews;
@@ -123,10 +123,14 @@ public class LeadPagesActivity extends BaseActivity {
         if (isFastClick(1000)) return;
         SpUtils.saveLead();//保存是否开启了引导页
         SpUtils.saveRole(Constants.TYPE_TENANT);
-        if (TextUtils.equals(Constants.TYPE_OWNER, SpUtils.getRole())) {
-            LoginActivity_.intent(context).start();
+        if (SpUtils.isShowWantFind()) {
+            WantToFindActivity_.intent(context).start(); //我想找页面
         } else {
-            MainActivity_.intent(context).start();
+            if (TextUtils.equals(Constants.TYPE_OWNER, SpUtils.getRole())) {
+                LoginActivity_.intent(context).start();
+            } else {
+                MainActivity_.intent(context).start();
+            }
         }
         finish();
     }
@@ -169,6 +173,7 @@ public class LeadPagesActivity extends BaseActivity {
             }
         }
     }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

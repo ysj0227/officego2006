@@ -15,6 +15,7 @@ import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.location.LocationUtils;
 import com.officego.ui.dialog.ProtocolDialog;
+import com.officego.ui.find.WantToFindActivity_;
 import com.officego.ui.login.LoginActivity_;
 
 
@@ -46,10 +47,14 @@ public class LaunchActivity extends BaseActivity
         if (TextUtils.isEmpty(SpUtils.getLead())) {
             LeadPagesActivity_.intent(context).start();
         } else {
-            if (TextUtils.equals(Constants.TYPE_OWNER, SpUtils.getRole())) {
-                LoginActivity_.intent(context).start();
+            if (SpUtils.isShowWantFind()) {
+                WantToFindActivity_.intent(context).start();  //我想找页面
             } else {
-                MainActivity_.intent(context).start();
+                if (TextUtils.equals(Constants.TYPE_OWNER, SpUtils.getRole())) {
+                    LoginActivity_.intent(context).start();
+                } else {
+                    MainActivity_.intent(context).start();
+                }
             }
         }
         finish();

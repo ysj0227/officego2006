@@ -38,6 +38,8 @@ public class SpUtils {
     private static final String IDENTITY_HOUSE_LEAD = PACKAGE_NAME + "IDENTITY_HOUSE_LEAD";
     //我想找-跳过保存当前时间
     private static final String WANT_FIND_CURRENT_DATE = PACKAGE_NAME + "WANT_FIND_CURRENT_DATE";
+    //保存了我想找
+    private static final String WANT_FIND_SAVE = PACKAGE_NAME + "WANT_FIND_SAVE";
 
     private static SharedPreferences getSharedPreference() {
         return SharedManager.getSharedPreference(BaseApplication.getContext());
@@ -162,6 +164,24 @@ public class SpUtils {
 
     public static String getFindDate() {
         return SharedManager.getValue(BaseApplication.getContext(), WANT_FIND_CURRENT_DATE);
+    }
+
+    //保存了我想找
+    public static void saveWantFind() {
+        SharedManager.putValue(BaseApplication.getContext(), WANT_FIND_SAVE, "Y");
+    }
+
+    public static String getWantFind() {
+        return SharedManager.getValue(BaseApplication.getContext(), WANT_FIND_SAVE);
+    }
+
+    //是显示我想找
+    public static boolean isShowWantFind() {
+        long seconds = 7 * 24 * 60 * 60 * 1000;//7天毫秒   7天
+//        long seconds = 10 * 1000;//毫秒
+        return TextUtils.isEmpty(SpUtils.getWantFind()) &&
+                (TextUtils.isEmpty(SpUtils.getFindDate()) ||
+                        (System.currentTimeMillis() - Long.parseLong(getFindDate()) >= seconds));
     }
 
     //保存是否显示引导页

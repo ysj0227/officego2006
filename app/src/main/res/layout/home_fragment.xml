@@ -158,7 +158,7 @@
                     android:layout_height="@dimen/dp_38"
                     android:layout_marginTop="@dimen/dp_46"
                     android:layout_marginBottom="@dimen/dp_54"
-                    android:background="@drawable/btn_common_bg_edge_gray20"
+                    android:background="@drawable/btn_common_bg_edge_gray6"
                     android:text="查看全部房源"
                     android:textColor="@color/text_66_p50"
                     android:textSize="@dimen/sp_13"

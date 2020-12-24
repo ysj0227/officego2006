@@ -170,7 +170,7 @@
             android:layout_height="@dimen/dp_38"
             android:layout_marginStart="@dimen/dp_16"
             android:layout_marginTop="@dimen/dp_12"
-            android:background="@drawable/text_label_gray"
+            android:background="@drawable/text_label_gray_radius5"
             android:gravity="center"
             android:text="下次再说"
             android:textColor="@color/common_blue_main"
