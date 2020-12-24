@@ -83,17 +83,17 @@ public class CollectWorkOfficeAdapter extends CommonListAdapter<CollectHouseBean
                 seats = bean.getSimple().substring(str1.length() + 1);
             }
             tvItemListChildLeftUp.setText(CommonHelper.bigDecimal(bean.getArea().toString(), true) + "㎡");
-            tvItemListChildLeftDown.setText("最多" + seats + "个工位");
+            tvItemListChildLeftDown.setText("最多" + seats + "工位");
             tvItemListChildCenterUp.setText(Html.fromHtml("<font color='#46C3C2'>¥" + bean.getDayPrice() + "</font>/㎡/天"));
             tvItemListChildCenterDown.setText("¥" + (bean.getMonthPrice() == null ? "0.0" : bean.getMonthPrice()) + "/月");
             if (bean.getMonthPrice() != null && bean.getMonthPrice().toString().length() >= 10) {
                 tvItemListChildCenterDown.setTextSize(TypedValue.COMPLEX_UNIT_PX, CommonHelper.sp2px(context, 10));
-            }else {
+            } else {
                 tvItemListChildCenterDown.setTextSize(TypedValue.COMPLEX_UNIT_PX, CommonHelper.sp2px(context, 11));
             }
             tvItemListChildRightUp.setText(bean.getDecoration());
             tvItemListChildRightUp.setTextColor(ContextCompat.getColor(context, R.color.common_blue_main));
-            tvItemListChildRightDown.setText(bean.getFloor() + "/共" + bean.getTotalFloor() + "层");
+            tvItemListChildRightDown.setText(bean.getFloor() + "楼");
         }
         gotoDetails(holder, bean);
     }
@@ -106,7 +106,7 @@ public class CollectWorkOfficeAdapter extends CommonListAdapter<CollectHouseBean
         holder.itemView.setOnClickListener(v -> {
             int isFailed = bean.isIsfailure();
             if (isFailed == 1 || isFailed == 2 || isFailed == 3) {
-                if (bean.getId()==0){
+                if (bean.getId() == 0) {
                     return;
                 }
                 if (Constants.TYPE_BUILDING == bean.getBtype()) {

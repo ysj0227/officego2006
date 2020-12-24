@@ -14,7 +14,8 @@ import com.officego.commonlib.view.RoundImageView;
  * Date 2020/12/23
  **/
 public class HotsHolder extends RecyclerView.ViewHolder {
-    public TextView tvName, tvType, tvOfficeIndependent, tvOpenSeats;
+    public TextView tvName, tvType, tvOfficeIndependent, tvOpenSeats,
+            tvLocation, tvLines, tvRmbMoney,tvUnit, tvChatTime;
     public RoundImageView ivImageHots;
     public ImageView ivVrFlag;
 
@@ -26,5 +27,10 @@ public class HotsHolder extends RecyclerView.ViewHolder {
         tvType = itemView.findViewById(R.id.tv_type);
         tvOfficeIndependent = itemView.findViewById(R.id.tv_office_independent);
         tvOpenSeats = itemView.findViewById(R.id.tv_open_seats);
+        tvLocation = itemView.findViewById(R.id.tv_location);
+        tvLines = itemView.findViewById(R.id.tv_lines);
+        tvRmbMoney = itemView.findViewById(R.id.tv_rmb_money);
+        tvUnit = itemView.findViewById(R.id.tv_unit);
+        tvChatTime = itemView.findViewById(R.id.tv_chat_time);
     }
 }

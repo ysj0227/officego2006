@@ -16,12 +16,16 @@ import com.officego.commonlib.view.RoundImageView;
 public class House1Holder extends RecyclerView.ViewHolder {
     public RoundImageView ivImage;
     public LabelsView llLabelsHouse;
-    public TextView tvName;
+    public TextView tvName,tvLocation, tvLines, tvRmbMoney,tvUnit;
 
     public House1Holder(View itemView) {
         super(itemView);
         ivImage = itemView.findViewById(R.id.riv_house);
         llLabelsHouse = itemView.findViewById(R.id.ll_labels_house);
         tvName = itemView.findViewById(R.id.tv_name);
+        tvLocation = itemView.findViewById(R.id.tv_location);
+        tvLines = itemView.findViewById(R.id.tv_lines);
+        tvRmbMoney = itemView.findViewById(R.id.tv_rmb_money);
+        tvUnit = itemView.findViewById(R.id.tv_unit);
     }
 }

@@ -115,6 +115,12 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     //热门
     private void hotsView(RecyclerView.ViewHolder holder, String bean) {
         Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(bean).into(((HotsHolder) holder).ivImageHots);
+        ((HotsHolder) holder).tvName.setText("金融街海伦中心");
+        ((HotsHolder) holder).tvLocation.setText("2.0Km | 闵行区-莘庄");
+        ((HotsHolder) holder).tvLines.setText("步行20分钟到「16号线·龙阳路」");
+        ((HotsHolder) holder).tvRmbMoney.setText("2000");
+        ((HotsHolder) holder).tvUnit.setText("/m²/天起");
+        ((HotsHolder) holder).tvChatTime.setText("房东2天前来过");
         ((HotsHolder) holder).tvOfficeIndependent.setText(Html.fromHtml("办公室<font color='#46C3C2'>6</font>间"));
         ((HotsHolder) holder).tvOpenSeats.setText(Html.fromHtml("开放工位<font color='#46C3C2'>9</font>个"));
     }
@@ -124,33 +130,38 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         List<String> list = new ArrayList();
         list.add("#白月光#");
         list.add("#蓝色的天空#");
-
-        ((TipsHolder) holder).tvTips.setText("大家都知道价格、位置、交通、物业等决定着你的企业选址的重要因素。但如果某些写字楼、产业园、创意园能受到政策的扶持，比如能享受到减免税费、折扣租…");
         Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(bean).into(((TipsHolder) holder).ivImageTips);
         ((TipsHolder) holder).llLabelsTips.setLabels(list, (label, pos, data) -> data);
+        ((TipsHolder) holder).tvTips.setText("大家都知道价格、位置、交通、物业等决定着你的企业选址的重要因素。但如果某些写字楼、产业园、创意园能受到政策的扶持，比如能享受到减免税费、折扣租…");
     }
 
-    //房源1-单图
+    //房源-单图
     private void house1View(RecyclerView.ViewHolder holder, String bean) {
         List<String> list = new ArrayList();
         list.add("#蓝色的天空#");
-
         Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(bean).into(((House1Holder) holder).ivImage);
         ((House1Holder) holder).llLabelsHouse.setLabels(list, (label, pos, data) -> data);
+        ((House1Holder) holder).tvName.setText("陆家嘴世纪金融广场3号楼");
+        ((House1Holder) holder).tvLocation.setText("2.0Km | 闵行区-莘庄");
+        ((House1Holder) holder).tvLines.setText("步行20分钟到「2号线·龙阳路」");
+        ((House1Holder) holder).tvRmbMoney.setText("1000");
+        ((House1Holder) holder).tvUnit.setText("/月/起");
     }
 
-    //房源2-多图
+    //房源-多图
     private void house2View(RecyclerView.ViewHolder holder, String bean) {
         List<String> list = new ArrayList();
         list.add("#白月光#");
-
         String a = "https://img.officego.com/building/1599535447621.jpg?x-oss-process=style/small";
         String b = "https://img.officego.com/building/1591868828854.jpg?x-oss-process=style/small";
-        ((House2Holder) holder).tvTips.setText("嘉华中心是一座 45 层的甲级办公楼，位于淮海中路战略要地。作为上海最著名的商务区之一，这里吸引了众多《财富》世界 500 强企业入驻。时尚的室内环境为嘉华中心…");
         Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(a).into(((House2Holder) holder).ivImage);
         Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(bean).into(((House2Holder) holder).rivHouseRightUp);
         Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(b).into(((House2Holder) holder).rivHouseRightDown);
         ((House2Holder) holder).llLabelsHouse.setLabels(list, (label, pos, data) -> data);
+        ((House2Holder) holder).tvName.setText("陆家嘴世纪金融广场6号楼");
+        ((House2Holder) holder).tvRmbMoney.setText("6600");
+        ((House2Holder) holder).tvUnit.setText("/月/起");
+        ((House2Holder) holder).tvTips.setText("嘉华中心是一座 45 层的甲级办公楼，位于淮海中路战略要地。作为上海最著名的商务区之一");
     }
 
     //会议室
@@ -163,19 +174,22 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             listBrand.add("https://img.officego.com/building/1594194990729.jpg?x-oss-process=style/small");
         }
         ((MeetingHolder) holder).rvMeeting.setAdapter(new MeetingAdapter(context, listBrand));
-
         ((MeetingHolder) holder).tvMeetingMore.setOnClickListener(view -> WebViewCouponActivity_.intent(context).amountRange("").start());
-
     }
 
     //打折
     private void discountView(RecyclerView.ViewHolder holder, String bean) {
-        Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(bean).into(((DiscountHolder) holder).ivHouse);
-
         List<String> lists = new ArrayList();
         lists.add("地铁上盖");
         lists.add("精装修");
+        Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(bean).into(((DiscountHolder) holder).ivHouse);
         ((DiscountHolder) holder).llLabelsDiscount.setLabels(lists, (label, pos, data) -> data);
+        ((DiscountHolder) holder).tvName.setText("大西洋国际大厦");
+        ((DiscountHolder) holder).tvLocation.setText("2.0Km | 闵行区-莘庄");
+        ((DiscountHolder) holder).tvLines.setText("步行20分钟到「2号线·龙阳路」");
+        ((DiscountHolder) holder).tvRmbMoney.setText("1000");
+        ((DiscountHolder) holder).tvUnit.setText("/月/起");
+        ((DiscountHolder) holder).tvDiscount.setText("¥2100.0/月起");
     }
 
 }

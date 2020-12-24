@@ -16,7 +16,7 @@ import com.officego.commonlib.view.RoundImageView;
 public class House2Holder extends RecyclerView.ViewHolder {
     public RoundImageView ivImage, rivHouseRightUp, rivHouseRightDown;
     public LabelsView llLabelsHouse;
-    public TextView tvName,tvTips;
+    public TextView tvName,tvRmbMoney,tvUnit,tvTips;
 
     public House2Holder(View itemView) {
         super(itemView);
@@ -25,6 +25,8 @@ public class House2Holder extends RecyclerView.ViewHolder {
         rivHouseRightDown = itemView.findViewById(R.id.riv_house_right_down);
         llLabelsHouse = itemView.findViewById(R.id.ll_labels_house);
         tvName = itemView.findViewById(R.id.tv_name);
+        tvRmbMoney = itemView.findViewById(R.id.tv_rmb_money);
+        tvUnit = itemView.findViewById(R.id.tv_unit);
         tvTips = itemView.findViewById(R.id.tv_tips);
     }
 }
