@@ -15,6 +15,7 @@ import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.ui.adapter.FactorAdapter;
 import com.officego.ui.adapter.PersonAdapter;
 import com.officego.ui.adapter.RentAdapter;
@@ -69,7 +70,18 @@ public class WantToFindActivity extends BaseActivity implements PersonAdapter.Pe
     }
 
     private void data() {
-        PersonAdapter personAdapter = new PersonAdapter(context, rvPerson, mPerson, CommonFindList.peopleNumList());
+        mPerson = TextUtils.isEmpty(SpUtils.getWantFindPerson()) ? "" : SpUtils.getWantFindPerson();
+        mRent = TextUtils.isEmpty(SpUtils.getWantFindRent()) ? "" : SpUtils.getWantFindRent();
+        if (!TextUtils.isEmpty(SpUtils.getWantFindFactor())) {
+            mFactor = SpUtils.getWantFindFactor();
+            String[] list = SpUtils.getWantFindFactor().split(",");
+            for (String s : list) {
+                factorMap.put(Integer.parseInt(s), "");
+            }
+        } else {
+            mFactor = "";
+        }
+        PersonAdapter personAdapter = new PersonAdapter(context, mPerson, CommonFindList.peopleNumList());
         personAdapter.setListener(this);
         rvPerson.setAdapter(personAdapter);
         RentAdapter rentAdapter = new RentAdapter(context, rvRent, mRent, CommonFindList.rentTimeList());
@@ -94,16 +106,17 @@ public class WantToFindActivity extends BaseActivity implements PersonAdapter.Pe
     @Click(R.id.btn_save)
     void saveClick() {
         //保存成功后跳转 TODO
-        if (TextUtils.isEmpty(mPerson)||TextUtils.isEmpty(mRent)||TextUtils.isEmpty(mFactor)){
+        if (TextUtils.isEmpty(mPerson) || TextUtils.isEmpty(mRent) || TextUtils.isEmpty(mFactor)) {
             shortTip("还有资料没填哦～");
             return;
         }
         SpUtils.saveWantFind();
+        SpUtils.saveWantFindData(mPerson, mRent, mFactor);
         gotoActivity();
     }
 
     private void gotoActivity() {
-        if (isBack){
+        if (isBack) {
             finish();
             return;
         }

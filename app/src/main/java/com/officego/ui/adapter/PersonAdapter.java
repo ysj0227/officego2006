@@ -11,7 +11,9 @@ import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
 import com.officego.ui.find.WantFindBean;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by YangShiJie
@@ -19,8 +21,8 @@ import java.util.List;
  * Descriptions:
  **/
 public class PersonAdapter extends CommonListAdapter<WantFindBean> {
-    private int checkedPos = -1;
-    private final RecyclerView rvPerson;
+    private Map<Integer, String> map = new HashMap<>();
+    private boolean onBind;
 
     public PersonListener getListener() {
         return listener;
@@ -36,31 +38,37 @@ public class PersonAdapter extends CommonListAdapter<WantFindBean> {
         void personResult(String value);
     }
 
-    public PersonAdapter(Context context, RecyclerView rvPerson, String value, List<WantFindBean> list) {
+    public PersonAdapter(Context context,  String value, List<WantFindBean> list) {
         super(context, R.layout.item_find, list);
-        this.rvPerson = rvPerson;
         for (int i = 0; i < list.size(); i++) {
             if (TextUtils.equals(value, list.get(i).getValue())) {
-                this.checkedPos = i;
+                map.put(i, list.get(i).getKey());
             }
         }
     }
 
     @Override
-    public void convert(ViewHolder holder, final WantFindBean bean) {
+    public void convert(ViewHolder holder, WantFindBean bean) {
+        int position = holder.getAdapterPosition();
         CheckBox tvName = holder.getView(R.id.tv_name);
         tvName.setText(bean.getKey());
-        tvName.setChecked(holder.getAdapterPosition() == checkedPos);
         tvName.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                checkedPos = holder.getAdapterPosition();
+                map.clear();
+                map.put(position, bean.getKey());
                 if (listener != null) {
                     listener.personResult(bean.getValue());
                 }
+            } else {
+                map.remove(position);
             }
-            if (!rvPerson.isComputingLayout()) {
+            if (!onBind) {
                 notifyDataSetChanged();
             }
         });
+        onBind = true;
+        tvName.setChecked(map != null && map.containsKey(position));
+        onBind = false;
     }
+
 }

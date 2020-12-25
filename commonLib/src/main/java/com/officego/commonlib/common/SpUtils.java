@@ -40,6 +40,12 @@ public class SpUtils {
     private static final String WANT_FIND_CURRENT_DATE = PACKAGE_NAME + "WANT_FIND_CURRENT_DATE";
     //保存了我想找
     private static final String WANT_FIND_SAVE = PACKAGE_NAME + "WANT_FIND_SAVE";
+    //人数范围
+    private static final String WANT_FIND_PERSON = PACKAGE_NAME + "WANT_FIND_PERSON";
+    //租期
+    private static final String WANT_FIND_RENT = PACKAGE_NAME + "WANT_FIND_RENT";
+    //因素
+    private static final String WANT_FIND_FACTOR = PACKAGE_NAME + "WANT_FIND_FACTOR";
 
     private static SharedPreferences getSharedPreference() {
         return SharedManager.getSharedPreference(BaseApplication.getContext());
@@ -157,33 +163,6 @@ public class SpUtils {
         return SharedManager.getValue(BaseApplication.getContext(), LOGIN_ROLE);
     }
 
-    //我想找-跳过保存当前时间
-    public static void saveFindDate() {
-        SharedManager.putValue(BaseApplication.getContext(), WANT_FIND_CURRENT_DATE, String.valueOf(System.currentTimeMillis()));
-    }
-
-    public static String getFindDate() {
-        return SharedManager.getValue(BaseApplication.getContext(), WANT_FIND_CURRENT_DATE);
-    }
-
-    //保存了我想找
-    public static void saveWantFind() {
-        SharedManager.putValue(BaseApplication.getContext(), WANT_FIND_SAVE, "Y");
-    }
-
-    public static String getWantFind() {
-        return SharedManager.getValue(BaseApplication.getContext(), WANT_FIND_SAVE);
-    }
-
-    //是显示我想找
-    public static boolean isShowWantFind() {
-        long seconds = 7 * 24 * 60 * 60 * 1000;//7天毫秒   7天
-//        long seconds = 10 * 1000;//毫秒
-        return TextUtils.isEmpty(SpUtils.getWantFind()) &&
-                (TextUtils.isEmpty(SpUtils.getFindDate()) ||
-                        (System.currentTimeMillis() - Long.parseLong(getFindDate()) >= seconds));
-    }
-
     //保存是否显示引导页
     public static void saveLead() {
         SharedManager.putValue(BaseApplication.getContext(), LEAD_PAGES, "TRUE");
@@ -222,5 +201,51 @@ public class SpUtils {
 
     public static String getHouseLead() {
         return SharedManager.getValue(BaseApplication.getContext(), IDENTITY_HOUSE_LEAD);
+    }
+
+    //我想找-跳过保存当前时间
+    public static void saveFindDate() {
+        SharedManager.putValue(BaseApplication.getContext(), WANT_FIND_CURRENT_DATE, String.valueOf(System.currentTimeMillis()));
+    }
+
+    public static String getFindDate() {
+        return SharedManager.getValue(BaseApplication.getContext(), WANT_FIND_CURRENT_DATE);
+    }
+
+    //保存了我想找
+    public static void saveWantFind() {
+        SharedManager.putValue(BaseApplication.getContext(), WANT_FIND_SAVE, "Y");
+    }
+
+    public static String getWantFind() {
+        return SharedManager.getValue(BaseApplication.getContext(), WANT_FIND_SAVE);
+    }
+
+    //是显示我想找
+    public static boolean isShowWantFind() {
+        long seconds = 7 * 24 * 60 * 60 * 1000;//7天毫秒   7天
+//        long seconds = 10 * 1000;//毫秒
+        return TextUtils.isEmpty(SpUtils.getWantFind()) &&
+                (TextUtils.isEmpty(SpUtils.getFindDate()) ||
+                        (System.currentTimeMillis() - Long.parseLong(getFindDate()) >= seconds));
+    }
+
+    //人数规模 ,租期,因素
+    public static void saveWantFindData(String person, String rent, String factor) {
+        SharedManager.putValue(BaseApplication.getContext(), WANT_FIND_PERSON, person);
+        SharedManager.putValue(BaseApplication.getContext(), WANT_FIND_RENT, rent);
+        SharedManager.putValue(BaseApplication.getContext(), WANT_FIND_FACTOR, factor);
+    }
+
+    public static String getWantFindPerson() {
+        return SharedManager.getValue(BaseApplication.getContext(), WANT_FIND_PERSON);
+    }
+
+    public static String getWantFindRent() {
+        return SharedManager.getValue(BaseApplication.getContext(), WANT_FIND_RENT);
+    }
+
+    public static String getWantFindFactor() {
+        return SharedManager.getValue(BaseApplication.getContext(), WANT_FIND_FACTOR);
     }
 }

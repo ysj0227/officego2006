@@ -21,7 +21,7 @@ class CommonFindList {
         list.add(bean3);
         WantFindBean bean4 = new WantFindBean("51-100人", "51,100");
         list.add(bean4);
-        WantFindBean bean5 = new WantFindBean("100人以上", "100,99999999");
+        WantFindBean bean5 = new WantFindBean("100人以上", "101,99999999");
         list.add(bean5);
         return list;
     }
