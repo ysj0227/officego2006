@@ -29,6 +29,7 @@
                 android:layout_width="@dimen/dp_35"
                 android:layout_height="@dimen/dp_35"
                 android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/dp_3"
                 android:background="@mipmap/ic_home_share"
                 tools:ignore="ContentDescription" />
 
@@ -37,7 +38,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_marginBottom="@dimen/dp_5"
+                android:layout_marginTop="@dimen/dp_3"
                 android:background="@mipmap/ic_home_hot"
                 tools:ignore="ContentDescription" />
 
@@ -79,12 +80,11 @@
                 tools:ignore="ContentDescription" />
 
             <ImageView
-                android:visibility="gone"
                 android:id="@+id/iv_open_independent_flag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_marginBottom="@dimen/dp_5"
+                android:visibility="gone"
                 tools:ignore="ContentDescription" />
         </RelativeLayout>
 
@@ -128,7 +128,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_marginBottom="@dimen/dp_5"
                 android:visibility="gone"
                 tools:ignore="ContentDescription" />
         </RelativeLayout>
@@ -174,7 +173,6 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_marginBottom="@dimen/dp_5"
                 android:visibility="gone"
                 tools:ignore="ContentDescription" />
         </RelativeLayout>
@@ -216,11 +214,10 @@
                 tools:ignore="ContentDescription" />
 
             <ImageView
-                android:id="@+id/iv_meeting_room_flag"
+                android:id="@+id/iv_meeting_flag"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
-                android:layout_marginBottom="@dimen/dp_5"
                 android:background="@mipmap/ic_home_rent"
                 tools:ignore="ContentDescription" />
         </RelativeLayout>

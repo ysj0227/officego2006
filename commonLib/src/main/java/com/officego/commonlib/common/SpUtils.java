@@ -225,7 +225,8 @@ public class SpUtils {
     public static boolean isShowWantFind() {
         long seconds = 7 * 24 * 60 * 60 * 1000;//7天毫秒   7天
 //        long seconds = 10 * 1000;//毫秒
-        return TextUtils.isEmpty(SpUtils.getWantFind()) &&
+        return !TextUtils.equals(Constants.TYPE_OWNER, SpUtils.getRole()) &&
+                TextUtils.isEmpty(SpUtils.getWantFind()) &&
                 (TextUtils.isEmpty(SpUtils.getFindDate()) ||
                         (System.currentTimeMillis() - Long.parseLong(getFindDate()) >= seconds));
     }
