@@ -17,6 +17,12 @@
             android:layout_centerInParent="true"
             android:scaleType="centerCrop" />
 
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_38"
+            android:layout_alignParentBottom="true"
+            android:background="@drawable/bg_gradient_gray" />
+
         <TextView
             android:id="@+id/tv_label"
             android:layout_width="wrap_content"
@@ -39,12 +45,6 @@
             android:textColor="@color/white"
             android:textSize="@dimen/sp_10" />
 
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_35"
-            android:layout_alignParentBottom="true"
-            android:background="@drawable/bg_gradient_gray" />
     </RelativeLayout>
-
 
 </androidx.cardview.widget.CardView>

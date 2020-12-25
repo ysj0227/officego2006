@@ -14,6 +14,13 @@
         android:background="@mipmap/ic_loading_def_bg"
         android:scaleType="centerCrop" />
 
+    <View
+        android:layout_width="@dimen/dp_104"
+        android:layout_height="@dimen/dp_16"
+        android:layout_alignBottom="@id/riv_image"
+        android:layout_centerHorizontal="true"
+        android:background="@mipmap/ic_meeting_shadow" />
+
     <TextView
         android:id="@+id/tv_label"
         android:layout_width="wrap_content"
@@ -23,13 +30,6 @@
         android:paddingBottom="@dimen/dp_3"
         android:textColor="@color/white"
         android:textSize="@dimen/sp_10" />
-
-    <View
-        android:layout_width="@dimen/dp_104"
-        android:layout_height="@dimen/dp_18"
-        android:layout_alignBottom="@id/riv_image"
-        android:layout_centerHorizontal="true"
-        android:background="@drawable/bg_gradient_gray" />
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="wrap_content"

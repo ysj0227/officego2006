@@ -20,14 +20,12 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <TextView
+    <ImageView
         android:id="@+id/tv_meeting_flag"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:background="@mipmap/ic_mark"
-        android:textColor="@color/text_33"
-        android:textSize="@dimen/sp_16"
-        android:textStyle="bold"
+        android:layout_width="@dimen/sp_24"
+        android:layout_height="@dimen/dp_12"
+        android:background="@mipmap/ic_home_rent"
+        android:layout_marginStart="@dimen/dp_3"
         app:layout_constraintBottom_toBottomOf="@id/tv_meeting_title"
         app:layout_constraintLeft_toRightOf="@id/tv_meeting_title"
         app:layout_constraintTop_toTopOf="@id/tv_meeting_title" />
