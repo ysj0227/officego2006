@@ -21,7 +21,7 @@ import java.util.Map;
  * Descriptions:
  **/
 public class PersonAdapter extends CommonListAdapter<WantFindBean> {
-    private Map<Integer, String> map = new HashMap<>();
+    private final Map<Integer, String> map = new HashMap<>();
     private boolean onBind;
 
     public PersonListener getListener() {

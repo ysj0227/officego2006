@@ -88,7 +88,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_12"
                 app:dividerLine="visible"
-                app:imageBackground="@mipmap/ic_coupon_icon"
+                app:imageBackground="@mipmap/ic_want_to_find"
                 app:imageHeight="@dimen/dp_19"
                 app:imageWidth="@dimen/dp_16"
                 app:textTitle="我想找" />
