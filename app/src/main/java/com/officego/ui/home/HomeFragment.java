@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
-import android.view.animation.LinearInterpolator;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -147,15 +146,11 @@ public class HomeFragment extends BaseFragment implements
 
     //设置左右摇摆动画
     private void showAnimation() {
-        // 获取自定义动画实例
         CustomRotateAnim rotateAnim = new CustomRotateAnim();
-        // 一次动画执行1秒
         rotateAnim.setDuration(1500);
-        // 设置为循环播放
-        rotateAnim.setRepeatCount(10);
-        // 设置为匀速
-        rotateAnim.setInterpolator(new LinearInterpolator());
+        rotateAnim.setRepeatCount(-1);
         ivJointWorkFlag.startAnimation(rotateAnim);
+        ivMeetingFlag.startAnimation(rotateAnim);
     }
 
     //向右移动
@@ -188,6 +183,7 @@ public class HomeFragment extends BaseFragment implements
     //关闭动画
     private void closeAnimation() {
         ivJointWorkFlag.clearAnimation();
+        ivMeetingFlag.clearAnimation();
         rlIdentity.clearAnimation();
     }
 

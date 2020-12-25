@@ -23,7 +23,7 @@ public class CustomRotateAnim extends Animation {
     @Override
     protected void applyTransformation(float interpolatedTime, Transformation t) {
         // 左右摇摆
-        t.getMatrix().setRotate((float)(Math.sin(interpolatedTime*Math.PI*2)*40), mWidth/2, mHeight/2);
+        t.getMatrix().setRotate((float)(Math.sin(interpolatedTime*Math.PI*2)*15), mWidth/2, mHeight/2);
         super.applyTransformation(interpolatedTime, t);
     }
 }

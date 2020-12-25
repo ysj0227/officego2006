@@ -49,7 +49,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rl1"
-            android:layout_marginTop="@dimen/dp_8"
+            android:layout_marginTop="@dimen/dp_6"
             android:gravity="center"
             android:text="共享办公"
             android:textColor="@color/text_33"
@@ -76,6 +76,7 @@
                 android:layout_width="@dimen/dp_35"
                 android:layout_height="@dimen/dp_35"
                 android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/dp_3"
                 android:background="@mipmap/ic_home_open_seats"
                 tools:ignore="ContentDescription" />
 
@@ -84,6 +85,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
+                android:layout_marginTop="@dimen/dp_3"
                 android:visibility="gone"
                 tools:ignore="ContentDescription" />
         </RelativeLayout>
@@ -93,7 +95,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/rl2"
-            android:layout_marginTop="@dimen/dp_8"
+            android:layout_marginTop="@dimen/dp_6"
             android:gravity="center"
             android:text="开放工位"
             android:textColor="@color/text_33"
@@ -120,6 +122,7 @@
                 android:layout_width="@dimen/dp_35"
                 android:layout_height="@dimen/dp_35"
                 android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/dp_3"
                 android:background="@mipmap/ic_home_office"
                 tools:ignore="ContentDescription" />
 
@@ -128,6 +131,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
+                android:layout_marginTop="@dimen/dp_3"
                 android:visibility="gone"
                 tools:ignore="ContentDescription" />
         </RelativeLayout>
@@ -138,7 +142,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/rl3"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/dp_8"
+            android:layout_marginTop="@dimen/dp_6"
             android:gravity="center"
             android:text="写字楼"
             android:textColor="@color/text_33"
@@ -165,6 +169,7 @@
                 android:layout_width="@dimen/dp_35"
                 android:layout_height="@dimen/dp_35"
                 android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/dp_3"
                 android:background="@mipmap/ic_home_garden"
                 tools:ignore="ContentDescription" />
 
@@ -173,6 +178,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
+                android:layout_marginTop="@dimen/dp_3"
                 android:visibility="gone"
                 tools:ignore="ContentDescription" />
         </RelativeLayout>
@@ -183,7 +189,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/rl4"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/dp_8"
+            android:layout_marginTop="@dimen/dp_6"
             android:gravity="center"
             android:text="园区"
             android:textColor="@color/text_33"
@@ -210,6 +216,7 @@
                 android:layout_width="@dimen/dp_35"
                 android:layout_height="@dimen/dp_35"
                 android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/dp_3"
                 android:background="@mipmap/ic_home_meeting"
                 tools:ignore="ContentDescription" />
 
@@ -218,6 +225,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_alignParentEnd="true"
+                android:layout_marginTop="@dimen/dp_3"
                 android:background="@mipmap/ic_home_rent"
                 tools:ignore="ContentDescription" />
         </RelativeLayout>
@@ -228,7 +236,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/rl5"
             android:layout_centerHorizontal="true"
-            android:layout_marginTop="@dimen/dp_8"
+            android:layout_marginTop="@dimen/dp_6"
             android:gravity="center"
             android:text="会议室"
             android:textColor="@color/text_33"
