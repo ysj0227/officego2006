@@ -15,11 +15,11 @@ import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.ui.adapter.FactorAdapter;
 import com.officego.ui.adapter.PersonAdapter;
 import com.officego.ui.adapter.RentAdapter;
 import com.officego.ui.login.LoginActivity_;
+import com.officego.utils.CommonList;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -81,13 +81,13 @@ public class WantToFindActivity extends BaseActivity implements PersonAdapter.Pe
         } else {
             mFactor = "";
         }
-        PersonAdapter personAdapter = new PersonAdapter(context, mPerson, CommonFindList.peopleNumList());
+        PersonAdapter personAdapter = new PersonAdapter(context, mPerson, CommonList.peopleNumList());
         personAdapter.setListener(this);
         rvPerson.setAdapter(personAdapter);
-        RentAdapter rentAdapter = new RentAdapter(context, rvRent, mRent, CommonFindList.rentTimeList());
+        RentAdapter rentAdapter = new RentAdapter(context, rvRent, mRent, CommonList.rentTimeList());
         rentAdapter.setListener(this);
         rvRent.setAdapter(rentAdapter);
-        FactorAdapter factorAdapter = new FactorAdapter(context, factorMap, CommonFindList.factorList());
+        FactorAdapter factorAdapter = new FactorAdapter(context, factorMap, CommonList.factorList());
         factorAdapter.setListener(this);
         rvFactor.setAdapter(factorAdapter);
     }

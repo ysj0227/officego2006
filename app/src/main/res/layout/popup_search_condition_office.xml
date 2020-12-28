@@ -1,0 +1,215 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+    <!--面积-->
+    <TextView
+        android:textStyle="bold"
+        android:id="@+id/tv_office_area"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="面积"
+        android:textColor="@color/text_main"
+        android:textSize="@dimen/sp_13" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_office_area"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_office_area"
+        android:layout_marginTop="@dimen/dp_16" />
+
+    <EditText
+        android:id="@+id/et_office_area_min"
+        android:layout_width="@dimen/dp_160"
+        android:layout_height="@dimen/dp_34"
+        android:layout_below="@id/rv_office_area"
+        android:background="@drawable/button_text_selector"
+        android:gravity="center"
+        android:hint="最小"
+        android:inputType="phone"
+        android:maxLength="10"
+        android:paddingLeft="@dimen/dp_3"
+        android:paddingRight="@dimen/dp_3"
+        android:textSize="@dimen/sp_12" />
+
+    <TextView
+        android:id="@+id/tv_office_area_line"
+        android:layout_width="@dimen/dp_7"
+        android:layout_height="@dimen/dp_1"
+        android:layout_below="@id/rv_office_area"
+        android:layout_marginStart="@dimen/dp_6"
+        android:layout_marginTop="@dimen/dp_18"
+        android:layout_marginEnd="@dimen/dp_6"
+        android:layout_toEndOf="@id/et_office_area_min"
+        android:background="@color/black" />
+
+    <EditText
+        android:id="@+id/et_office_area_max"
+        android:layout_width="@dimen/dp_160"
+        android:layout_height="@dimen/dp_34"
+        android:layout_below="@id/rv_office_area"
+        android:layout_toEndOf="@id/tv_office_area_line"
+        android:background="@drawable/button_text_selector"
+        android:gravity="center"
+        android:hint="最大"
+        android:inputType="phone"
+        android:maxLength="10"
+        android:paddingLeft="@dimen/dp_3"
+        android:paddingRight="@dimen/dp_3"
+        android:textSize="@dimen/sp_12" />
+    <!--租金-->
+    <TextView
+        android:textStyle="bold"
+        android:id="@+id/tv_office_rent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/et_office_area_min"
+        android:layout_marginTop="@dimen/dp_16"
+        android:text="租金(元/㎡/天)"
+        android:textColor="@color/text_main"
+        android:textSize="@dimen/sp_13" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_office_rent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_office_rent"
+        android:layout_marginTop="@dimen/dp_16" />
+
+    <EditText
+        android:id="@+id/et_office_rent_min"
+        android:layout_width="@dimen/dp_160"
+        android:layout_height="@dimen/dp_34"
+        android:layout_below="@id/rv_office_rent"
+        android:background="@drawable/button_text_selector"
+        android:gravity="center"
+        android:hint="最小"
+        android:inputType="phone"
+        android:maxLength="10"
+        android:paddingLeft="@dimen/dp_3"
+        android:paddingRight="@dimen/dp_3"
+        android:textSize="@dimen/sp_12" />
+
+    <TextView
+        android:id="@+id/tv_office_rent_line"
+        android:layout_width="@dimen/dp_7"
+        android:layout_height="@dimen/dp_1"
+        android:layout_below="@id/rv_office_rent"
+        android:layout_marginStart="@dimen/dp_6"
+        android:layout_marginTop="@dimen/dp_18"
+        android:layout_marginEnd="@dimen/dp_6"
+        android:layout_toEndOf="@id/et_office_rent_min"
+        android:background="@color/black" />
+
+    <EditText
+        android:id="@+id/et_office_rent_max"
+        android:layout_width="@dimen/dp_160"
+        android:layout_height="@dimen/dp_34"
+        android:layout_below="@id/rv_office_rent"
+        android:layout_toEndOf="@id/tv_office_rent_line"
+        android:background="@drawable/button_text_selector"
+        android:gravity="center"
+        android:hint="最大"
+        android:inputType="phone"
+        android:maxLength="10"
+        android:paddingLeft="@dimen/dp_3"
+        android:paddingRight="@dimen/dp_3"
+        android:textSize="@dimen/sp_12" />
+    <!--    工位-->
+    <TextView
+        android:textStyle="bold"
+        android:id="@+id/tv_office_seats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/et_office_rent_min"
+        android:layout_marginTop="@dimen/dp_16"
+        android:text="工位"
+        android:textColor="@color/text_main"
+        android:textSize="@dimen/sp_13" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_office_seats"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_office_seats"
+        android:layout_marginTop="@dimen/dp_16" />
+
+    <EditText
+        android:id="@+id/et_office_seats_min"
+        android:layout_width="@dimen/dp_160"
+        android:layout_height="@dimen/dp_34"
+        android:layout_below="@id/rv_office_seats"
+        android:background="@drawable/button_text_selector"
+        android:gravity="center"
+        android:hint="最小"
+        android:inputType="phone"
+        android:maxLength="10"
+        android:paddingLeft="@dimen/dp_3"
+        android:paddingRight="@dimen/dp_3"
+        android:textSize="@dimen/sp_12" />
+
+    <TextView
+        android:id="@+id/tv_office_seats_line"
+        android:layout_width="@dimen/dp_7"
+        android:layout_height="@dimen/dp_1"
+        android:layout_below="@id/rv_office_seats"
+        android:layout_marginStart="@dimen/dp_6"
+        android:layout_marginTop="@dimen/dp_18"
+        android:layout_marginEnd="@dimen/dp_6"
+        android:layout_toEndOf="@id/et_office_seats_min"
+        android:background="@color/black" />
+
+    <EditText
+        android:id="@+id/et_office_seats_max"
+        android:layout_width="@dimen/dp_160"
+        android:layout_height="@dimen/dp_34"
+        android:layout_below="@id/rv_office_seats"
+        android:layout_toEndOf="@id/tv_office_seats_line"
+        android:background="@drawable/button_text_selector"
+        android:gravity="center"
+        android:hint="最大"
+        android:inputType="phone"
+        android:maxLength="10"
+        android:paddingLeft="@dimen/dp_3"
+        android:paddingRight="@dimen/dp_3"
+        android:textSize="@dimen/sp_12" />
+    <!--    装修类型-->
+    <TextView
+        android:textStyle="bold"
+        android:id="@+id/tv_office_decorate"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/et_office_seats_min"
+        android:layout_marginTop="@dimen/dp_16"
+        android:text="装修类型"
+        android:textColor="@color/text_main"
+        android:textSize="@dimen/sp_13" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_office_decorate"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_office_decorate"
+        android:layout_marginTop="@dimen/dp_16" />
+    <!--    特色-->
+    <TextView
+        android:id="@+id/tv_office_characteristic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rv_office_decorate"
+        android:layout_marginTop="@dimen/dp_16"
+        android:text="特色"
+        android:textStyle="bold"
+        android:textColor="@color/text_main"
+        android:textSize="@dimen/sp_13" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_office_characteristic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_office_characteristic"
+        android:layout_marginTop="@dimen/dp_16" />
+
+</RelativeLayout>

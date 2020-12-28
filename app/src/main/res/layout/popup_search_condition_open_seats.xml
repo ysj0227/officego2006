@@ -1,0 +1,102 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:orientation="vertical">
+
+    <!--租金-->
+    <TextView
+        android:id="@+id/tv_open_seats_rent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_16"
+        android:text="租金(元/工位/月)"
+        android:textColor="@color/text_main"
+        android:textSize="@dimen/sp_13"
+        android:textStyle="bold" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_open_seats_rent"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_open_seats_rent"
+        android:layout_marginTop="@dimen/dp_16" />
+
+    <EditText
+        android:id="@+id/et_open_seats_rent_min"
+        android:layout_width="@dimen/dp_160"
+        android:layout_height="@dimen/dp_34"
+        android:layout_below="@id/rv_open_seats_rent"
+        android:background="@drawable/button_text_selector"
+        android:gravity="center"
+        android:hint="最小"
+        android:inputType="phone"
+        android:maxLength="10"
+        android:paddingLeft="@dimen/dp_3"
+        android:paddingRight="@dimen/dp_3"
+        android:textSize="@dimen/sp_12" />
+
+    <TextView
+        android:id="@+id/tv_open_seats_rent_line"
+        android:layout_width="@dimen/dp_7"
+        android:layout_height="@dimen/dp_1"
+        android:layout_below="@id/rv_open_seats_rent"
+        android:layout_marginStart="@dimen/dp_6"
+        android:layout_marginTop="@dimen/dp_18"
+        android:layout_marginEnd="@dimen/dp_6"
+        android:layout_toEndOf="@id/et_open_seats_rent_min"
+        android:background="@color/black" />
+
+    <EditText
+        android:id="@+id/et_open_seats_rent_max"
+        android:layout_width="@dimen/dp_160"
+        android:layout_height="@dimen/dp_34"
+        android:layout_below="@id/rv_open_seats_rent"
+        android:layout_toEndOf="@id/tv_open_seats_rent_line"
+        android:background="@drawable/button_text_selector"
+        android:gravity="center"
+        android:hint="最大"
+        android:inputType="phone"
+        android:maxLength="10"
+        android:paddingLeft="@dimen/dp_3"
+        android:paddingRight="@dimen/dp_3"
+        android:textSize="@dimen/sp_12" />
+
+    <!--   品牌-->
+    <TextView
+        android:id="@+id/tv_open_seats_brand"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/et_open_seats_rent_min"
+        android:layout_marginTop="@dimen/dp_16"
+        android:text="品牌"
+        android:textColor="@color/text_main"
+        android:textSize="@dimen/sp_13"
+        android:textStyle="bold" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_open_seats_brand"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_open_seats_brand"
+        android:layout_marginTop="@dimen/dp_16" />
+    <!--    特色-->
+    <TextView
+        android:id="@+id/tv_open_seats_characteristic"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/rv_open_seats_brand"
+        android:layout_marginTop="@dimen/dp_16"
+        android:text="特色"
+        android:textColor="@color/text_main"
+        android:textSize="@dimen/sp_13"
+        android:textStyle="bold" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_open_seats_characteristic"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_open_seats_characteristic"
+        android:layout_marginTop="@dimen/dp_16" />
+
+</RelativeLayout>

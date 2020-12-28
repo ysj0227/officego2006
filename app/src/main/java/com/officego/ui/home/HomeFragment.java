@@ -54,8 +54,12 @@ public class HomeFragment extends BaseFragment implements
     ImageView ivMeetingFlag;
     @ViewById(R.id.rl_identity)
     RelativeLayout rlIdentity;
+    @ViewById(R.id.iv_scroll_top)
+    ImageView ivScrollTop;
+
     //设置左右移动
     private TranslateAnimation animationMove;
+    private boolean isCloseIdentity;
 
     //暂无数据，网络异常 TODO
     @AfterViews
@@ -98,6 +102,11 @@ public class HomeFragment extends BaseFragment implements
         SearchRecommendActivity_.intent(mActivity).start();
     }
 
+    @Click(R.id.iv_scroll_top)
+    void scrollTopClick() {
+        nsvView.fullScroll(NestedScrollView.FOCUS_UP);
+    }
+
     @Click(R.id.iv_identity)
     void identityClick() {
         shortTip("aa");
@@ -105,6 +114,8 @@ public class HomeFragment extends BaseFragment implements
 
     @Click(R.id.iv_identity_close)
     void identityCloseClick() {
+        isCloseIdentity = true;
+        rlIdentity.clearAnimation();
         rlIdentity.setVisibility(View.GONE);
     }
 
@@ -189,10 +200,19 @@ public class HomeFragment extends BaseFragment implements
 
     @Override
     public void onScrollChange(NestedScrollView v, int scrollX, int scrollY, int oldScrollX, int oldScrollY) {
-        if (scrollY == oldScrollY) {
-            showRightAnimation();
-        } else {
-            showLeftAnimation();
+        if (!isCloseIdentity) {
+            if (scrollY == oldScrollY) {
+                showRightAnimation();
+            } else {
+                showLeftAnimation();
+            }
+        }
+        //滚动到顶
+        if (scrollY == 0) {
+            ivScrollTop.setVisibility(View.GONE);
+        } else if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
+            // 滚动到底
+            ivScrollTop.setVisibility(View.VISIBLE);
         }
     }
 }

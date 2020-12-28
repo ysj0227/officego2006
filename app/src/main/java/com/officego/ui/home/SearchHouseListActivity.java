@@ -46,7 +46,7 @@ import java.util.Map;
  * Data 2020/5/11.
  * Descriptions: 搜索列表
  **/
-@SuppressLint("Registered")
+@SuppressLint("Registered,NonConstantResourceId")
 @EActivity(R.layout.home_activity_search_house_list)
 public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> implements
         HomeContract.View, SearchPopupWindow.onSureClickListener,
@@ -226,8 +226,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
                 ContextCompat.getDrawable(context, R.mipmap.ic_arrow_up_blue), null);
         popupWindow = new SearchPopupWindow(this, ctlSearch, textView, searchType,
                 btype, hashSet, checkStates, district, business,
-                line, nearbySubway, area, dayPrice, seats,
-                decoration, houseTags, sort, mapDecoration);
+                line, nearbySubway, sort);
         popupWindow.setOnSureClickListener(this);
     }
 

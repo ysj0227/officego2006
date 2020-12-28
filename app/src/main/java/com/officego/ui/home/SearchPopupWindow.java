@@ -6,7 +6,6 @@ import android.content.Context;
 import android.graphics.Rect;
 import android.graphics.drawable.ColorDrawable;
 import android.os.Build;
-import android.text.Html;
 import android.text.TextUtils;
 import android.util.SparseBooleanArray;
 import android.view.LayoutInflater;
@@ -15,9 +14,10 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
+import android.widget.CompoundButton;
+import android.widget.EditText;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
-import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -28,15 +28,17 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.officego.R;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
+import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.rpc.OfficegoApi;
-import com.officego.commonlib.common.model.DirectoryBean;
+import com.officego.ui.find.WantFindBean;
 import com.officego.ui.home.model.BusinessCircleBean;
 import com.officego.ui.home.model.MeterBean;
+import com.officego.utils.CommonList;
+import com.officego.utils.GridSpacingItemDecoration;
 import com.officego.utils.SpaceItemDecoration;
-import com.officego.view.SeekBarPressure;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,23 +55,14 @@ import java.util.Map;
 public class SearchPopupWindow extends PopupWindow implements
         View.OnTouchListener,
         PopupWindow.OnDismissListener {
-    /**
-     * 当店铺列表大于固定数量，RecyclerView设置固定高度
-     */
-    private Activity mContext;
-    private TextView mSetTitleView;
+    private final Activity mContext;
+    private final TextView mSetTitleView;
 
-    private Map<Integer, String> mMapDecoration;//装修类型
     private HashSet<Integer> mHashSetLine, mHashSetBusiness;
     private SparseBooleanArray mCheckStatesLine, mCheckStatesBusiness;//记录选中的位置
     private String district = "", business = "";//商圈
     private String line = "", nearbySubway = ""; //地铁
     private int btype;//楼盘,网点
-    private String constructionArea = "";//面积
-    private String rentPrice = "", rentPrice2 = ""; //写字楼，共享办公
-    private String simple = "", simple2 = "";//写字楼，共享办公
-    private String decoration = "";//装修类型
-    private String houseTags = "";//装修特色
     private String sort;//排序
 
     //layout 类型
@@ -79,7 +72,7 @@ public class SearchPopupWindow extends PopupWindow implements
     private final int SEARCH_TYPE_CONDITION = 3;
     private int layout;
     //搜索类型
-    private int mSearchType;
+    private final int mSearchType;
     //height
     private int screenHeight, statusBarHeight, titleBarHeight, searchHeight, bottomTabBarHeight;
 
@@ -87,7 +80,6 @@ public class SearchPopupWindow extends PopupWindow implements
     private List<MeterBean.DataBean> meterList = new ArrayList<>();
     //商圈列表
     private List<BusinessCircleBean.DataBean> businessCircleList = new ArrayList<>();
-
 
     private onSureClickListener onSureClickListener;
 
@@ -115,9 +107,7 @@ public class SearchPopupWindow extends PopupWindow implements
                                     String simple, String decoration, String tags, Map<Integer, String> mMapDecoration);
     }
 
-    /**
-     * popupWindow设置参数
-     */
+    //popupWindow设置参数
     private void init(View view) {
         //背景
         ColorDrawable cd = new ColorDrawable(0x99000000);
@@ -146,8 +136,7 @@ public class SearchPopupWindow extends PopupWindow implements
                              TextView setTextView, int searchType,
                              int btype, HashSet<Integer> hashSet, SparseBooleanArray checkStates,
                              String district, String business, String line,
-                             String nearbySubway, String area, String dayPrice, String seats,
-                             String decoration, String houseTags, String sort, Map<Integer, String> mapDecoration) {
+                             String nearbySubway, String sort) {
         super();
         this.mContext = activity;
         this.mSetTitleView = setTextView;
@@ -176,19 +165,12 @@ public class SearchPopupWindow extends PopupWindow implements
         this.business = business;
         this.line = line;
         this.nearbySubway = nearbySubway;
-        this.constructionArea = area;
-        if (btype == 0 || btype == 1) {
-            this.rentPrice = dayPrice;
-            this.simple = seats;
-        } else {
-            this.rentPrice2 = dayPrice;
-            this.simple2 = seats;
-        }
-        this.decoration = decoration;
-        this.houseTags = houseTags;
         this.sort = sort;
-        this.mMapDecoration = mapDecoration;
+        //初始view
+        initViews(topToPopupWindowView, searchType);
+    }
 
+    private void initViews(View topToPopupWindowView, int searchType) {
         LayoutInflater inflater = LayoutInflater.from(mContext);
         if (searchType == SEARCH_TYPE_AREA) {
             layout = R.layout.popup_search_area;
@@ -215,7 +197,6 @@ public class SearchPopupWindow extends PopupWindow implements
         //显示位置
         showAsDropDown(topToPopupWindowView);
         init(viewLayout);
-        //数据处理
         handelLayoutData(searchType, viewLayout);
     }
 
@@ -256,9 +237,7 @@ public class SearchPopupWindow extends PopupWindow implements
         setImageBackground();
     }
 
-    /**
-     * Android 7.0以上 view显示问题
-     */
+    //Android 7.0以上 view显示问题
     @Override
     public void showAsDropDown(View anchor) {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
@@ -274,9 +253,7 @@ public class SearchPopupWindow extends PopupWindow implements
         super.showAsDropDown(anchor);
     }
 
-    /**
-     * 根据不同的layout处理不同的数据
-     */
+    //根据不同的layout处理不同的数据
     private void handelLayoutData(int searchType, View viewLayout) {
         if (searchType == SEARCH_TYPE_AREA) {
             handleArea(viewLayout);
@@ -370,9 +347,7 @@ public class SearchPopupWindow extends PopupWindow implements
         btnSure.setOnClickListener(clickListener);
     }
 
-    /**
-     * 地铁adapter
-     */
+    //地铁adapter
     private void showMeterAdapter(TextView tvMeterText, TextView tvBusinessCircleText,
                                   RecyclerView recyclerViewCenter, TextView tvMeterNum,
                                   RecyclerView recyclerViewRight) {
@@ -382,9 +357,7 @@ public class SearchPopupWindow extends PopupWindow implements
         recyclerViewCenter.setAdapter(meterAdapter);
     }
 
-    /**
-     * 商圈adapter
-     */
+    //商圈adapter
     private void showBusinessAdapter(TextView tvBusinessCircleText, TextView tvMeterText,
                                      RecyclerView recyclerViewCenter,
                                      TextView tvBusinessCircleNum,
@@ -395,9 +368,7 @@ public class SearchPopupWindow extends PopupWindow implements
         recyclerViewCenter.setAdapter(businessCircleAdapter);
     }
 
-    /**
-     * 切换商圈和地铁的时候清空之前的选项
-     */
+    //切换商圈和地铁的时候清空之前的选项
     private void clearSelectedItem() {
         business = "";
         district = "";
@@ -447,7 +418,6 @@ public class SearchPopupWindow extends PopupWindow implements
     }
 
     //商圈
-
     private void getSearchDistrictList(TextView tvBusinessCircleText, TextView tvMeterText,
                                        RecyclerView recyclerViewCenter,
                                        TextView tvBusinessCircleNum,
@@ -534,245 +504,139 @@ public class SearchPopupWindow extends PopupWindow implements
         });
     }
 
-    //筛选
-    private void setSeekBarPressure(String officeText, SeekBarPressure sbpSeekBar) {
-        if (officeText.contains(",")) {
-            String str1 = officeText.substring(0, officeText.indexOf(","));
-            String start = officeText.substring(0, str1.length());
-            String end = officeText.substring(str1.length() + 1);
-            sbpSeekBar.setProgressLow(Double.valueOf(start));
-            sbpSeekBar.setProgressHigh(Double.valueOf(end));
-        }
-    }
+    private final int spanCount = 3;
+    private final int spacing = 15;
 
     private void handleCondition(View viewLayout) {
-        RadioGroup rgHouseGroup = viewLayout.findViewById(R.id.rg_house_type);
-        RadioButton rbOffice = viewLayout.findViewById(R.id.rb_office);
+        //类型
         RadioButton rbJointWork = viewLayout.findViewById(R.id.rb_joint_work);
-        RecyclerView rvDecorationType = viewLayout.findViewById(R.id.rv_decoration_type);
-        RecyclerView rvHouseUnique = viewLayout.findViewById(R.id.rv_house_characteristic);
-        TextView tvHouseType = viewLayout.findViewById(R.id.tv_house_type);
-        TextView tvDecorationType = viewLayout.findViewById(R.id.tv_decoration_type);
-        //选择面积租金工位
-        TextView tvArea = viewLayout.findViewById(R.id.tv_area);
-        SeekBarPressure sbpArea = viewLayout.findViewById(R.id.sbp_area);
-        TextView tvRent = viewLayout.findViewById(R.id.tv_rent);
-        SeekBarPressure sbpRent = viewLayout.findViewById(R.id.sbp_rent);
-        TextView tvWorkstation = viewLayout.findViewById(R.id.tv_workstation);
-        SeekBarPressure sbpSimple = viewLayout.findViewById(R.id.sbp_workstation);
-        //共享办公 租金/工位
-        SeekBarPressure sbpRent2 = viewLayout.findViewById(R.id.sbp_rent2);
-        SeekBarPressure sbpSimple2 = viewLayout.findViewById(R.id.sbp_workstation2);
-        Button btnClear = viewLayout.findViewById(R.id.btn_clear);
-        Button btnSure = viewLayout.findViewById(R.id.btn_sure);
-        //初始文本
-        tvArea.setText(Html.fromHtml(mContext.getString(R.string.str_text_area)));
-        tvWorkstation.setText(Html.fromHtml(mContext.getString(R.string.str_text_workstation)));
-        GridLayoutManager layoutManager = new GridLayoutManager(mContext, 3);
-        rvDecorationType.setLayoutManager(layoutManager);
-        rvDecorationType.addItemDecoration(new SpaceItemDecoration(mContext, 3));
-        GridLayoutManager layoutManager1 = new GridLayoutManager(mContext, 3);
-        rvHouseUnique.setLayoutManager(layoutManager1);
-        rvHouseUnique.addItemDecoration(new SpaceItemDecoration(mContext, 3));
-        if (btype == 0) {
-            tvRent.setText(Html.fromHtml(mContext.getString(R.string.str_text_rent)));
-            rbOffice.setChecked(true);
-            tvHouseType.setVisibility(View.VISIBLE);
-            rgHouseGroup.setVisibility(View.VISIBLE);
-        } else if (btype == 1) {
-            tvRent.setText(Html.fromHtml(mContext.getString(R.string.str_text_rent)));
-            rbOffice.setChecked(true);
-            tvHouseType.setVisibility(View.GONE);
-            rgHouseGroup.setVisibility(View.GONE);
-            showConditionOfficeLayout(true, rvDecorationType, tvDecorationType,
-                    tvArea, sbpArea, sbpRent, tvWorkstation, sbpSimple, sbpRent2, sbpSimple2);
-        } else if (btype == 2) {
-            tvRent.setText(Html.fromHtml(mContext.getString(R.string.str_text_rent_month)));
-            rbOffice.setChecked(false);
-            tvHouseType.setVisibility(View.GONE);
-            rgHouseGroup.setVisibility(View.GONE);
-            showConditionOfficeLayout(false, rvDecorationType, tvDecorationType,
-                    tvArea, sbpArea, sbpRent, tvWorkstation, sbpSimple, sbpRent2, sbpSimple2);
-        }
-        //请求list
-        getDecorationTypeList(rvDecorationType);
-        getHouseUniqueList(rvHouseUnique);
-//        写字楼
-//        面积：    范围 0 -2000
-//        租金：    范围 0- 50
-//        工位：    范围 0 - 500
-//        共享办公
-//        工位：    范围 0 - 30
-//        租金：    范围 0 - 10万
-        sbpArea.setProgressMax(2000, 2000);
-        sbpRent.setProgressMax(50, 50);
-        sbpSimple.setProgressMax(500, 500);
-        sbpRent2.setProgressMax(50000, 50000);
-        sbpSimple2.setProgressMax(30, 30);
-        if (btype == 0 || btype == 1) {
-            setSeekBarPressure(this.constructionArea, sbpArea);
-            setSeekBarPressure(this.rentPrice, sbpRent);
-            setSeekBarPressure(this.simple, sbpSimple);
-        } else if (btype == 2) {
-            setSeekBarPressure(this.rentPrice2, sbpRent2);
-            setSeekBarPressure(this.simple2, sbpSimple2);
-        }
-        //监听
-        sbpArea.setOnSeekBarChangeListener(listener, 0);
-        sbpRent.setOnSeekBarChangeListener(listener, 1);
-        sbpSimple.setOnSeekBarChangeListener(listener, 2);
-        sbpRent2.setOnSeekBarChangeListener(listener, 3);
-        sbpSimple2.setOnSeekBarChangeListener(listener, 4);
-        rbOffice.setOnClickListener(v -> {
-            tvRent.setText(Html.fromHtml(mContext.getString(R.string.str_text_rent)));
-            showConditionOfficeLayout(true, rvDecorationType, tvDecorationType,
-                    tvArea, sbpArea, sbpRent, tvWorkstation, sbpSimple, sbpRent2, sbpSimple2);
-        });
-        rbJointWork.setOnClickListener(v -> {
-            tvRent.setText(Html.fromHtml(mContext.getString(R.string.str_text_rent_month)));
-            showConditionOfficeLayout(false, rvDecorationType, tvDecorationType,
-                    tvArea, sbpArea, sbpRent, tvWorkstation, sbpSimple, sbpRent2, sbpSimple2);
-        });
-        //clear
-        btnClear.setOnClickListener(v -> {
-            //clear text
-            this.constructionArea = "";
-            this.rentPrice = "";
-            this.simple = "";
-            this.rentPrice2 = "";
-            this.simple2 = "";
-            this.decoration = "";
-            this.houseTags = "";
-            this.mMapDecoration.clear();
-            Constants.SENSORS_AREA_CONTENT = "";
-            Constants.SENSORS_DECORATION = "";
-            //请求list
-            getDecorationTypeList(rvDecorationType);
-            getHouseUniqueList(rvHouseUnique);
-            //初始化数
-            sbpArea.setProgressLow(0);
-            sbpArea.setProgressHigh(2000);
-            sbpRent.setProgressLow(0);
-            sbpRent.setProgressHigh(50);
-//            sbpSimple.setProgressLow(0);
-//            sbpSimple.setProgressHigh(500);
-            sbpRent2.setProgressLow(0);
-            sbpRent2.setProgressHigh(50000);
-            sbpSimple2.setProgressLow(0);
-            sbpSimple2.setProgressHigh(30);
-            //清理
-            clearCondition(rbOffice);
-        });
-        btnSure.setOnClickListener(v -> {
-            //清理
-            clearCondition(rbOffice);
-        });
-    }
-
-    private void clearCondition(RadioButton rbOffice) {
-        dismiss();
-        String mArea, mRentPrice, mSimple;
-        btype = rbOffice.isChecked() ? 1 : 2;
-        mRentPrice = rbOffice.isChecked() ? rentPrice : rentPrice2;
-        mSimple = rbOffice.isChecked() ? simple : simple2;
-        mArea = rbOffice.isChecked() ? constructionArea : "";
-        onSureClickListener.onConditionPopUpWindow(mSearchType, btype, mArea, mRentPrice, mSimple, decoration, houseTags, mMapDecoration);
-    }
-
-    private void showConditionOfficeLayout(boolean isOffice, RecyclerView rvDecorationType, TextView tvDecorationType,
-                                           TextView tvArea, SeekBarPressure sbpArea, SeekBarPressure sbpRent, TextView tvWorkstation,
-                                           SeekBarPressure sbpSimple, SeekBarPressure sbpRent2, SeekBarPressure sbpSimple2) {
-        if (isOffice) {
-            tvDecorationType.setVisibility(View.VISIBLE);
-            rvDecorationType.setVisibility(View.VISIBLE);
-            tvArea.setVisibility(View.VISIBLE);
-            sbpArea.setVisibility(View.VISIBLE);
-            sbpRent.setVisibility(View.VISIBLE);
-            tvWorkstation.setVisibility(View.GONE);// 办公室没有工位
-            sbpSimple.setVisibility(View.GONE);// 办公室没有工位
-            sbpRent2.setVisibility(View.GONE);
-            sbpSimple2.setVisibility(View.GONE);
-        } else {
-            tvDecorationType.setVisibility(View.GONE);
-            rvDecorationType.setVisibility(View.GONE);
-            tvArea.setVisibility(View.GONE);
-            sbpArea.setVisibility(View.GONE);
-            sbpRent.setVisibility(View.GONE);
-            sbpSimple.setVisibility(View.GONE);
-            tvWorkstation.setVisibility(View.VISIBLE);
-            sbpRent2.setVisibility(View.VISIBLE);
-            sbpSimple2.setVisibility(View.VISIBLE);
-        }
-    }
-
-    /**
-     * seekBar
-     */
-    SeekBarPressure.OnSeekBarChangeListener listener = new SeekBarPressure.OnSeekBarChangeListener() {
-        @Override
-        public void onProgressBefore() {
-
-        }
-
-        @Override
-        public void onProgressChanged(int type, SeekBarPressure seekBar, double progressLow, double progressHigh) {
-            if (type == 0) {
-                //面积
-                constructionArea = (int) progressLow + "," + (int) progressHigh;
-            } else if (type == 1) {
-                //租金
-                rentPrice = (int) progressLow + "," + (int) progressHigh;
-            } else if (type == 2) {
-                //工位
-                simple = (int) progressLow + "," + (int) progressHigh;
-            } else if (type == 3) {
-                //共享办公租金
-                rentPrice2 = (int) progressLow + "," + (int) progressHigh;
-            } else if (type == 4) {
-                //共享办公工位
-                simple2 = (int) progressLow + "," + (int) progressHigh;
-            }
-        }
-
-        @Override
-        public void onProgressAfter() {
-
-        }
-    };
-
-    //装修类型
-    private void getDecorationTypeList(RecyclerView rvDecorationType) {
-        OfficegoApi.getInstance().getDecoratedType(new RetrofitCallback<List<DirectoryBean.DataBean>>() {
-            @Override
-            public void onSuccess(int code, String msg, List<DirectoryBean.DataBean> data) {
-                DecorationTypeAdapter adapter = new DecorationTypeAdapter(mContext, data);
-                rvDecorationType.setAdapter(adapter);
-            }
-
-            @Override
-            public void onFail(int code, String msg, List<DirectoryBean.DataBean> data) {
+        RadioButton rbOpenSeats = viewLayout.findViewById(R.id.rb_open_seats);
+        RadioButton rbOffice = viewLayout.findViewById(R.id.rb_office);
+        RadioButton rbGarden = viewLayout.findViewById(R.id.rb_garden);
+        View includeJointWork = viewLayout.findViewById(R.id.include_joint_work);
+        View includeOpenSeats = viewLayout.findViewById(R.id.include_open_seats);
+        View includeOffice = viewLayout.findViewById(R.id.include_office);
+        rbJointWork.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                includeJointWork.setVisibility(View.VISIBLE);
+                includeOpenSeats.setVisibility(View.GONE);
+                includeOffice.setVisibility(View.GONE);
             }
         });
-    }
-
-    //房源特色
-    private void getHouseUniqueList(RecyclerView rvHouseUnique) {
-        OfficegoApi.getInstance().getHouseUnique(new RetrofitCallback<List<DirectoryBean.DataBean>>() {
-            @Override
-            public void onSuccess(int code, String msg, List<DirectoryBean.DataBean> data) {
-                HouseUniqueAdapter adapter = new HouseUniqueAdapter(mContext, data);
-                rvHouseUnique.setAdapter(adapter);
-            }
-
-            @Override
-            public void onFail(int code, String msg, List<DirectoryBean.DataBean> data) {
+        rbOpenSeats.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                includeJointWork.setVisibility(View.GONE);
+                includeOpenSeats.setVisibility(View.VISIBLE);
+                includeOffice.setVisibility(View.GONE);
             }
         });
+        rbOffice.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                includeJointWork.setVisibility(View.GONE);
+                includeOpenSeats.setVisibility(View.GONE);
+                includeOffice.setVisibility(View.VISIBLE);
+            }
+        });
+        rbGarden.setOnCheckedChangeListener((compoundButton, b) -> {
+            if (b) {
+                includeJointWork.setVisibility(View.GONE);
+                includeOpenSeats.setVisibility(View.GONE);
+                includeOffice.setVisibility(View.VISIBLE);
+            }
+        });
+        //共享办公
+        RecyclerView rvJointWorkRent = viewLayout.findViewById(R.id.rv_joint_work_rent);
+        RecyclerView rvJointWorkSeats = viewLayout.findViewById(R.id.rv_joint_work_seats);
+        RecyclerView rvJointWorkBrand = viewLayout.findViewById(R.id.rv_joint_work_brand);
+        RecyclerView rvJointWorkCharacteristic = viewLayout.findViewById(R.id.rv_joint_work_characteristic);
+        EditText etJointWorkRentMin = viewLayout.findViewById(R.id.et_joint_work_rent_min);
+        EditText etJointWorkRentMax = viewLayout.findViewById(R.id.et_joint_work_rent_max);
+        EditText etJointWorkSeatsMin = viewLayout.findViewById(R.id.et_joint_work_seats_min);
+        EditText etJointWorkSeatsMax = viewLayout.findViewById(R.id.et_joint_work_seats_max);
+
+        List<DirectoryBean.DataBean> listS = new ArrayList<>();
+        DirectoryBean.DataBean bean;
+        for (int i = 0; i < 7; i++) {
+            bean = new DirectoryBean.DataBean();
+            bean.setDictCname("大众品牌");
+            bean.setDictValue(i);
+            listS.add(bean);
+        }
+        rvJointWorkRent.setLayoutManager(new GridLayoutManager(mContext, spanCount));
+        rvJointWorkSeats.setLayoutManager(new GridLayoutManager(mContext, spanCount));
+        rvJointWorkBrand.setLayoutManager(new GridLayoutManager(mContext, spanCount));
+        rvJointWorkCharacteristic.setLayoutManager(new GridLayoutManager(mContext, spanCount));
+
+        rvJointWorkRent.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, false));
+        rvJointWorkSeats.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, false));
+        rvJointWorkBrand.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, false));
+        rvJointWorkCharacteristic.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, false));
+
+        rvJointWorkRent.setAdapter(new OfficeRentAdapter(mContext, "", CommonList.rentList()));
+        rvJointWorkSeats.setAdapter(new OfficeSeatsAdapter(mContext, "", CommonList.seatsList()));
+        rvJointWorkBrand.setAdapter(new DecorationTypeAdapter(mContext, listS));
+        rvJointWorkCharacteristic.setAdapter(new HouseUniqueAdapter(mContext, listS));
+
+        //开放工位
+        RecyclerView rvOpenSeatsRent = viewLayout.findViewById(R.id.rv_open_seats_rent);
+        RecyclerView rvOpenSeatsBrand = viewLayout.findViewById(R.id.rv_open_seats_brand);
+        RecyclerView rvOpenSeatsCharacteristic = viewLayout.findViewById(R.id.rv_open_seats_characteristic);
+        EditText etOpenSeatsRentMin = viewLayout.findViewById(R.id.et_open_seats_rent_min);
+        EditText etOpenSeatsRentMax = viewLayout.findViewById(R.id.et_open_seats_rent_max);
+
+        rvOpenSeatsRent.setLayoutManager(new GridLayoutManager(mContext, spanCount));
+        rvOpenSeatsBrand.setLayoutManager(new GridLayoutManager(mContext, spanCount));
+        rvOpenSeatsCharacteristic.setLayoutManager(new GridLayoutManager(mContext, spanCount));
+
+        rvOpenSeatsRent.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, false));
+        rvOpenSeatsBrand.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, false));
+        rvOpenSeatsCharacteristic.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, false));
+
+        rvOpenSeatsRent.setAdapter(new OfficeRentAdapter(mContext, "", CommonList.rentList()));
+        rvOpenSeatsBrand.setAdapter(new DecorationTypeAdapter(mContext, listS));
+        rvOpenSeatsCharacteristic.setAdapter(new HouseUniqueAdapter(mContext, listS));
+
+        //办公室
+        RecyclerView rvOfficeArea = viewLayout.findViewById(R.id.rv_office_area);
+        RecyclerView rvOfficeRent = viewLayout.findViewById(R.id.rv_office_rent);
+        RecyclerView rvOfficeSeats = viewLayout.findViewById(R.id.rv_office_seats);
+        RecyclerView rvOfficeDecorate = viewLayout.findViewById(R.id.rv_office_decorate);
+        RecyclerView rvOfficeCharacteristic = viewLayout.findViewById(R.id.rv_office_characteristic);
+        EditText etOfficeAreaMin = viewLayout.findViewById(R.id.et_office_area_min);
+        EditText etOfficeAreaMax = viewLayout.findViewById(R.id.et_office_area_max);
+        EditText etOfficeRentMin = viewLayout.findViewById(R.id.et_office_rent_min);
+        EditText etOfficeRentMax = viewLayout.findViewById(R.id.et_office_rent_max);
+        EditText etOfficeSeatsMin = viewLayout.findViewById(R.id.et_office_seats_min);
+        EditText etOfficeSeatsMax = viewLayout.findViewById(R.id.et_office_seats_max);
+
+        List<DirectoryBean.DataBean> list = new ArrayList<>();
+        DirectoryBean.DataBean beans;
+        for (int i = 0; i < 7; i++) {
+            beans = new DirectoryBean.DataBean();
+            beans.setDictCname("精装修");
+            beans.setDictValue(i);
+            list.add(beans);
+        }
+        rvOfficeArea.setLayoutManager(new GridLayoutManager(mContext, spanCount));
+        rvOfficeRent.setLayoutManager(new GridLayoutManager(mContext, spanCount));
+        rvOfficeSeats.setLayoutManager(new GridLayoutManager(mContext, spanCount));
+        rvOfficeDecorate.setLayoutManager(new GridLayoutManager(mContext, spanCount));
+        rvOfficeCharacteristic.setLayoutManager(new GridLayoutManager(mContext, spanCount));
+
+        rvOfficeArea.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, false));
+        rvOfficeRent.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, false));
+        rvOfficeSeats.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, false));
+        rvOfficeDecorate.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, false));
+        rvOfficeCharacteristic.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, false));
+
+        rvOfficeArea.setAdapter(new OfficeAreaAdapter(mContext, "", CommonList.areaList()));
+        rvOfficeRent.setAdapter(new OfficeRentAdapter(mContext, "", CommonList.rentList()));
+        rvOfficeSeats.setAdapter(new OfficeSeatsAdapter(mContext, "", CommonList.seatsList()));
+        rvOfficeDecorate.setAdapter(new DecorationTypeAdapter(mContext, list));
+        rvOfficeCharacteristic.setAdapter(new HouseUniqueAdapter(mContext, list));
     }
 
-    /**
-     * 地铁数据
-     */
+    //地铁数据
     private Map<Integer, Boolean> mapMeter = new HashMap<>();
 
     private class MeterAdapter extends CommonListAdapter<MeterBean.DataBean> {
@@ -835,7 +699,7 @@ public class SearchPopupWindow extends PopupWindow implements
         }
     }
 
-    //clear 之前选中的子项
+    //清除选中的子项
     private void clearMeterHashSet(TextView tvNum) {
         tvNum.setText("");
         tvNum.setVisibility(View.GONE);
@@ -901,9 +765,7 @@ public class SearchPopupWindow extends PopupWindow implements
         }
     }
 
-    /**
-     * 商圈
-     */
+    //商圈
     private Map<Integer, Boolean> mapBusiness = new HashMap<>();
 
     private class BusinessCircleAdapter extends CommonListAdapter<BusinessCircleBean.DataBean> {
@@ -960,7 +822,7 @@ public class SearchPopupWindow extends PopupWindow implements
         }
     }
 
-    //clear 之前选中的子项
+    //清除选中的子项
     private void clearBusinessHashSet(TextView tvNum) {
         tvNum.setText("");
         tvNum.setVisibility(View.GONE);
@@ -1027,66 +889,6 @@ public class SearchPopupWindow extends PopupWindow implements
         }
     }
 
-    //房源特色
-    private class HouseUniqueAdapter extends CommonListAdapter<DirectoryBean.DataBean> {
-
-        //当前选中的数据列表
-        private Map<Integer, String> map;
-
-        @SuppressLint("UseSparseArrays")
-        public HouseUniqueAdapter(Context context, List<DirectoryBean.DataBean> list) {
-            super(context, R.layout.item_house_type, list);
-            map = new HashMap<>();
-        }
-
-        @Override
-        public void convert(ViewHolder holder, final DirectoryBean.DataBean bean) {
-            CheckBox cbType = holder.getView(R.id.cb_type);
-            cbType.setText(bean.getDictCname());
-            cbType.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if (isChecked) {
-                    map.put(bean.getDictValue(), bean.getDictCname());
-                } else {
-                    map.remove(bean.getDictValue());
-                }
-                houseTags = getKey(map);
-            });
-        }
-    }
-
-    //装修类型
-    private class DecorationTypeAdapter extends CommonListAdapter<DirectoryBean.DataBean> {
-        //当前选中的数据列表
-//        private Map<Integer, String> map;
-        @SuppressLint("UseSparseArrays")
-        DecorationTypeAdapter(Context context, List<DirectoryBean.DataBean> list) {
-            super(context, R.layout.item_house_type, list);
-            if (mMapDecoration == null) {
-                mMapDecoration = new HashMap<>();
-            }
-        }
-
-        @Override
-        public void convert(ViewHolder holder, final DirectoryBean.DataBean bean) {
-            CheckBox cbType = holder.getView(R.id.cb_type);
-            cbType.setText(bean.getDictCname());
-            if (mMapDecoration != null) {
-                cbType.setChecked(mMapDecoration.containsKey(bean.getDictValue()));
-            }
-            cbType.setOnCheckedChangeListener((buttonView, isChecked) -> {
-                if (isChecked) {
-                    if (!mMapDecoration.containsKey(bean.getDictValue())) {
-                        mMapDecoration.put(bean.getDictValue(), bean.getDictCname());
-                    }
-                } else {
-                    mMapDecoration.remove(bean.getDictValue());
-                }
-                decoration = getKey(mMapDecoration);
-                sensorsDecorationEvent(mMapDecoration);
-            });
-        }
-    }
-
     //HashSet 选中的数据
     private String getHashSetKey(HashSet<Integer> mSet) {
         Iterator<Integer> iterator = mSet.iterator();
@@ -1150,4 +952,90 @@ public class SearchPopupWindow extends PopupWindow implements
         }
         Constants.SENSORS_AREA_CONTENT = keyName.toString();
     }
+
+    //*****************************************************************
+    //*************************    筛选  *******************************
+    //*****************************************************************
+    //面积
+    class OfficeAreaAdapter extends CommonListAdapter<WantFindBean> {
+
+        public OfficeAreaAdapter(Context context, String value, List<WantFindBean> list) {
+            super(context, R.layout.item_house_decroation, list);
+        }
+
+        @Override
+        public void convert(ViewHolder holder, final WantFindBean bean) {
+            CheckBox tvName = holder.getView(R.id.cb_item);
+            tvName.setText(bean.getValue());
+        }
+    }
+
+    //面积
+    class OfficeRentAdapter extends CommonListAdapter<WantFindBean> {
+
+        public OfficeRentAdapter(Context context, String value, List<WantFindBean> list) {
+            super(context, R.layout.item_house_decroation, list);
+        }
+
+        @Override
+        public void convert(ViewHolder holder, final WantFindBean bean) {
+            CheckBox tvName = holder.getView(R.id.cb_item);
+            tvName.setText(bean.getValue());
+        }
+    }
+
+    //面积
+    class OfficeSeatsAdapter extends CommonListAdapter<WantFindBean> {
+
+        public OfficeSeatsAdapter(Context context, String value, List<WantFindBean> list) {
+            super(context, R.layout.item_house_decroation, list);
+        }
+
+        @Override
+        public void convert(ViewHolder holder, final WantFindBean bean) {
+            CheckBox tvName = holder.getView(R.id.cb_item);
+            tvName.setText(bean.getValue());
+        }
+    }
+
+    //装修类型
+    private class DecorationTypeAdapter extends CommonListAdapter<DirectoryBean.DataBean> {
+        @SuppressLint("UseSparseArrays")
+        DecorationTypeAdapter(Context context, List<DirectoryBean.DataBean> list) {
+            super(context, R.layout.item_house_decroation, list);
+
+        }
+
+        @Override
+        public void convert(ViewHolder holder, final DirectoryBean.DataBean bean) {
+            CheckBox cbType = holder.getView(R.id.cb_item);
+            cbType.setText(bean.getDictCname());
+
+        }
+    }
+
+    //房源特色
+    private class HouseUniqueAdapter extends CommonListAdapter<DirectoryBean.DataBean> {
+        private Map<Integer, String> map;
+
+        @SuppressLint("UseSparseArrays")
+        public HouseUniqueAdapter(Context context, List<DirectoryBean.DataBean> list) {
+            super(context, R.layout.item_house_decroation, list);
+            map = new HashMap<>();
+        }
+
+        @Override
+        public void convert(ViewHolder holder, final DirectoryBean.DataBean bean) {
+            CheckBox cbType = holder.getView(R.id.cb_item);
+            cbType.setText(bean.getDictCname());
+            cbType.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    map.put(bean.getDictValue(), bean.getDictCname());
+                } else {
+                    map.remove(bean.getDictValue());
+                }
+            });
+        }
+    }
+
 }
