@@ -55,6 +55,8 @@ import java.util.Map;
 public class SearchPopupWindow extends PopupWindow implements
         View.OnTouchListener,
         PopupWindow.OnDismissListener {
+    private final int spanCount = 3;
+    private final int spacing = 15;
     private final Activity mContext;
     private final TextView mSetTitleView;
 
@@ -504,8 +506,15 @@ public class SearchPopupWindow extends PopupWindow implements
         });
     }
 
-    private final int spanCount = 3;
-    private final int spacing = 15;
+    //共享办公
+    private RecyclerView rvJointWorkRent, rvJointWorkSeats, rvJointWorkBrand, rvJointWorkCharacteristic;
+    private EditText etJointWorkRentMin, etJointWorkRentMax, etJointWorkSeatsMin, etJointWorkSeatsMax;
+    //开放工位
+    private RecyclerView rvOpenSeatsRent, rvOpenSeatsBrand, rvOpenSeatsCharacteristic;
+    private EditText etOpenSeatsRentMin, etOpenSeatsRentMax;
+    //办公室，园区
+    private RecyclerView rvOfficeArea, rvOfficeRent, rvOfficeSeats, rvOfficeDecorate, rvOfficeCharacteristic;
+    private EditText etOfficeAreaMin, etOfficeAreaMax, etOfficeRentMin, etOfficeRentMax, etOfficeSeatsMin, etOfficeSeatsMax;
 
     private void handleCondition(View viewLayout) {
         //类型
@@ -516,6 +525,7 @@ public class SearchPopupWindow extends PopupWindow implements
         View includeJointWork = viewLayout.findViewById(R.id.include_joint_work);
         View includeOpenSeats = viewLayout.findViewById(R.id.include_open_seats);
         View includeOffice = viewLayout.findViewById(R.id.include_office);
+        rbOffice.setChecked(true);
         rbJointWork.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) {
                 includeJointWork.setVisibility(View.VISIBLE);
@@ -545,14 +555,22 @@ public class SearchPopupWindow extends PopupWindow implements
             }
         });
         //共享办公
-        RecyclerView rvJointWorkRent = viewLayout.findViewById(R.id.rv_joint_work_rent);
-        RecyclerView rvJointWorkSeats = viewLayout.findViewById(R.id.rv_joint_work_seats);
-        RecyclerView rvJointWorkBrand = viewLayout.findViewById(R.id.rv_joint_work_brand);
-        RecyclerView rvJointWorkCharacteristic = viewLayout.findViewById(R.id.rv_joint_work_characteristic);
-        EditText etJointWorkRentMin = viewLayout.findViewById(R.id.et_joint_work_rent_min);
-        EditText etJointWorkRentMax = viewLayout.findViewById(R.id.et_joint_work_rent_max);
-        EditText etJointWorkSeatsMin = viewLayout.findViewById(R.id.et_joint_work_seats_min);
-        EditText etJointWorkSeatsMax = viewLayout.findViewById(R.id.et_joint_work_seats_max);
+        jointWorkViews(viewLayout);
+        //开放工位
+        openSeatViews(viewLayout);
+        //办公室
+        officeViews(viewLayout);
+    }
+
+    private void jointWorkViews(View viewLayout) {
+        rvJointWorkRent = viewLayout.findViewById(R.id.rv_joint_work_rent);
+        rvJointWorkSeats = viewLayout.findViewById(R.id.rv_joint_work_seats);
+        rvJointWorkBrand = viewLayout.findViewById(R.id.rv_joint_work_brand);
+        rvJointWorkCharacteristic = viewLayout.findViewById(R.id.rv_joint_work_characteristic);
+        etJointWorkRentMin = viewLayout.findViewById(R.id.et_joint_work_rent_min);
+        etJointWorkRentMax = viewLayout.findViewById(R.id.et_joint_work_rent_max);
+        etJointWorkSeatsMin = viewLayout.findViewById(R.id.et_joint_work_seats_min);
+        etJointWorkSeatsMax = viewLayout.findViewById(R.id.et_joint_work_seats_max);
 
         List<DirectoryBean.DataBean> listS = new ArrayList<>();
         DirectoryBean.DataBean bean;
@@ -576,13 +594,22 @@ public class SearchPopupWindow extends PopupWindow implements
         rvJointWorkSeats.setAdapter(new OfficeSeatsAdapter(mContext, "", CommonList.seatsList()));
         rvJointWorkBrand.setAdapter(new DecorationTypeAdapter(mContext, listS));
         rvJointWorkCharacteristic.setAdapter(new HouseUniqueAdapter(mContext, listS));
+    }
 
-        //开放工位
-        RecyclerView rvOpenSeatsRent = viewLayout.findViewById(R.id.rv_open_seats_rent);
-        RecyclerView rvOpenSeatsBrand = viewLayout.findViewById(R.id.rv_open_seats_brand);
-        RecyclerView rvOpenSeatsCharacteristic = viewLayout.findViewById(R.id.rv_open_seats_characteristic);
-        EditText etOpenSeatsRentMin = viewLayout.findViewById(R.id.et_open_seats_rent_min);
-        EditText etOpenSeatsRentMax = viewLayout.findViewById(R.id.et_open_seats_rent_max);
+    private void openSeatViews(View viewLayout) {
+        List<DirectoryBean.DataBean> listS = new ArrayList<>();
+        DirectoryBean.DataBean bean;
+        for (int i = 0; i < 7; i++) {
+            bean = new DirectoryBean.DataBean();
+            bean.setDictCname("大众品牌");
+            bean.setDictValue(i);
+            listS.add(bean);
+        }
+        rvOpenSeatsRent = viewLayout.findViewById(R.id.rv_open_seats_rent);
+        rvOpenSeatsBrand = viewLayout.findViewById(R.id.rv_open_seats_brand);
+        rvOpenSeatsCharacteristic = viewLayout.findViewById(R.id.rv_open_seats_characteristic);
+        etOpenSeatsRentMin = viewLayout.findViewById(R.id.et_open_seats_rent_min);
+        etOpenSeatsRentMax = viewLayout.findViewById(R.id.et_open_seats_rent_max);
 
         rvOpenSeatsRent.setLayoutManager(new GridLayoutManager(mContext, spanCount));
         rvOpenSeatsBrand.setLayoutManager(new GridLayoutManager(mContext, spanCount));
@@ -595,19 +622,20 @@ public class SearchPopupWindow extends PopupWindow implements
         rvOpenSeatsRent.setAdapter(new OfficeRentAdapter(mContext, "", CommonList.rentList()));
         rvOpenSeatsBrand.setAdapter(new DecorationTypeAdapter(mContext, listS));
         rvOpenSeatsCharacteristic.setAdapter(new HouseUniqueAdapter(mContext, listS));
+    }
 
-        //办公室
-        RecyclerView rvOfficeArea = viewLayout.findViewById(R.id.rv_office_area);
-        RecyclerView rvOfficeRent = viewLayout.findViewById(R.id.rv_office_rent);
-        RecyclerView rvOfficeSeats = viewLayout.findViewById(R.id.rv_office_seats);
-        RecyclerView rvOfficeDecorate = viewLayout.findViewById(R.id.rv_office_decorate);
-        RecyclerView rvOfficeCharacteristic = viewLayout.findViewById(R.id.rv_office_characteristic);
-        EditText etOfficeAreaMin = viewLayout.findViewById(R.id.et_office_area_min);
-        EditText etOfficeAreaMax = viewLayout.findViewById(R.id.et_office_area_max);
-        EditText etOfficeRentMin = viewLayout.findViewById(R.id.et_office_rent_min);
-        EditText etOfficeRentMax = viewLayout.findViewById(R.id.et_office_rent_max);
-        EditText etOfficeSeatsMin = viewLayout.findViewById(R.id.et_office_seats_min);
-        EditText etOfficeSeatsMax = viewLayout.findViewById(R.id.et_office_seats_max);
+    private void officeViews(View viewLayout) {
+        rvOfficeArea = viewLayout.findViewById(R.id.rv_office_area);
+        rvOfficeRent = viewLayout.findViewById(R.id.rv_office_rent);
+        rvOfficeSeats = viewLayout.findViewById(R.id.rv_office_seats);
+        rvOfficeDecorate = viewLayout.findViewById(R.id.rv_office_decorate);
+        rvOfficeCharacteristic = viewLayout.findViewById(R.id.rv_office_characteristic);
+        etOfficeAreaMin = viewLayout.findViewById(R.id.et_office_area_min);
+        etOfficeAreaMax = viewLayout.findViewById(R.id.et_office_area_max);
+        etOfficeRentMin = viewLayout.findViewById(R.id.et_office_rent_min);
+        etOfficeRentMax = viewLayout.findViewById(R.id.et_office_rent_max);
+        etOfficeSeatsMin = viewLayout.findViewById(R.id.et_office_seats_min);
+        etOfficeSeatsMax = viewLayout.findViewById(R.id.et_office_seats_max);
 
         List<DirectoryBean.DataBean> list = new ArrayList<>();
         DirectoryBean.DataBean beans;
@@ -640,10 +668,7 @@ public class SearchPopupWindow extends PopupWindow implements
     private Map<Integer, Boolean> mapMeter = new HashMap<>();
 
     private class MeterAdapter extends CommonListAdapter<MeterBean.DataBean> {
-        /**
-         * @param context 上下文
-         * @param list    列表数据
-         */
+
         private RecyclerView recyclerViewRight;
         private TextView tvNum;
         private boolean onBind;

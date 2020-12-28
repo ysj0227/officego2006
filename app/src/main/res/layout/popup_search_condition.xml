@@ -117,7 +117,8 @@
                         android:id="@+id/include_joint_work"
                         layout="@layout/popup_search_condition_joint_work"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content" />
+                        android:layout_height="wrap_content"
+                        android:visibility="gone" />
 
                     <include
                         android:id="@+id/include_open_seats"
@@ -131,7 +132,7 @@
                         layout="@layout/popup_search_condition_office"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="gone" />
+                        android:visibility="visible" />
 
                 </RelativeLayout>
 
