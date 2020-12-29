@@ -8,7 +8,7 @@
     <RelativeLayout
         android:id="@+id/rl_topview"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_472"
+        android:layout_height="@dimen/dp_490"
         android:background="@color/white">
 
         <RelativeLayout

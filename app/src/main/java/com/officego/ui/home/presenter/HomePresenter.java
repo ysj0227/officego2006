@@ -173,7 +173,7 @@ public class HomePresenter extends BasePresenter<HomeContract.View> implements H
 
     private void conditionListSuccess() {
         index++;
-        if (index == 3 && isViewAttached()) {
+        if (index == 4 && isViewAttached()) {
             index = 0;
             mView.hideLoadingDialog();
             mView.conditionListSuccess(decorationList, buildingUniqueList, jointWorkUniqueList, brandList);

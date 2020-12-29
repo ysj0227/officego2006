@@ -15,6 +15,7 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.TextView;
@@ -24,6 +25,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
@@ -31,6 +33,9 @@ import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.CommonHelper;
+import com.officego.commonlib.utils.GlideUtils;
+import com.officego.commonlib.utils.ToastUtils;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.rpc.OfficegoApi;
 import com.officego.ui.find.WantFindBean;
 import com.officego.ui.home.model.BusinessCircleBean;
@@ -180,6 +185,8 @@ public class SearchPopupWindow extends PopupWindow implements
         this.buildingUniqueList = buildingUniqueList;
         this.jointWorkUniqueList = jointWorkUniqueList;
         this.brandList = brandList;
+        LogCat.e("TAG", "11111111111 decorationList=" + decorationList.size() + "jointWorkUniqueList ="
+                + jointWorkUniqueList.size() + " buildingUniqueList=" + buildingUniqueList.size() + " brandList=" + brandList.size());
         //初始view
         initViews(topToPopupWindowView, searchType);
     }
@@ -213,7 +220,6 @@ public class SearchPopupWindow extends PopupWindow implements
         init(viewLayout);
         handelLayoutData(searchType, viewLayout);
     }
-
 
     private void setImageBackground() {
         if (mSetTitleView != null) {
@@ -518,6 +524,7 @@ public class SearchPopupWindow extends PopupWindow implements
         });
     }
 
+    private View includeJointWork, includeOpenSeats, includeOffice, includeGarden;
     //共享办公
     private RecyclerView rvJointWorkRent, rvJointWorkSeats, rvJointWorkBrand, rvJointWorkCharacteristic;
     private EditText etJointWorkRentMin, etJointWorkRentMax, etJointWorkSeatsMin, etJointWorkSeatsMax;
@@ -527,83 +534,52 @@ public class SearchPopupWindow extends PopupWindow implements
     //办公室，园区
     private RecyclerView rvOfficeArea, rvOfficeRent, rvOfficeSeats, rvOfficeDecorate, rvOfficeCharacteristic;
     private EditText etOfficeAreaMin, etOfficeAreaMax, etOfficeRentMin, etOfficeRentMax, etOfficeSeatsMin, etOfficeSeatsMax;
-    //adapter
-    private AreaAdapter officeAreaAdapter;
-    private RentAdapter jointRentAdapter, openSeatRentAdapter, officeRentAdpater;
-    private SeatsAdapter jointSeatsAdapter, officeSeatAdapter;
-    private BrandAdapter jointBrandAdapter, openBrandAdapter;
-    private DecorationTypeAdapter officeDecorationAdapter;
-    private UniqueAdapter jointUniqueAdapter, openSeatsUniqueAdapter, officeUniqueAdapter;
+    //园区
+    private RecyclerView rvGardenArea, rvGardenRent, rvGardenSeats, rvGardenDecorate, rvGardenCharacteristic;
+    private EditText etGardenAreaMin, etGardenAreaMax, etGardenRentMin, etGardenRentMax, etGardenSeatsMin, etGardenSeatsMax;
+    //共享办公
+    private JointRentAdapter jointRentAdapter;
+    private JointSeatsAdapter jointSeatsAdapter;
+    private JointBrandAdapter jointBrandAdapter;
+    private JointUniqueAdapter jointUniqueAdapter;
+    //开放工位
+    private OpenRentAdapter openSeatRentAdapter;
+    private OpenBrandAdapter openBrandAdapter;
+    private OpenUniqueAdapter openSeatsUniqueAdapter;
+    //办公室
+    private OfficeAreaAdapter officeAreaAdapter;
+    private OfficeRentAdapter officeRentAdapter;
+    private OfficeSeatsAdapter officeSeatAdapter;
+    private OfficeDecorationAdapter officeDecorationAdapter;
+    private OfficeUniqueAdapter officeUniqueAdapter;
+    //园区
+    private GardenAreaAdapter gardenAreaAdapter;
+    private GardenRentAdapter gardenRentAdapter;
+    private GardenSeatsAdapter gardenSeatAdapter;
+    private GardenDecorationAdapter gardenDecorationAdapter;
+    private GardenUniqueAdapter gardenUniqueAdapter;
+
     private void handleCondition(View viewLayout) {
-        //类型
         RadioButton rbJointWork = viewLayout.findViewById(R.id.rb_joint_work);
         RadioButton rbOpenSeats = viewLayout.findViewById(R.id.rb_open_seats);
         RadioButton rbOffice = viewLayout.findViewById(R.id.rb_office);
         RadioButton rbGarden = viewLayout.findViewById(R.id.rb_garden);
-        View includeJointWork = viewLayout.findViewById(R.id.include_joint_work);
-        View includeOpenSeats = viewLayout.findViewById(R.id.include_open_seats);
-        View includeOffice = viewLayout.findViewById(R.id.include_office);
-//        rbOffice.setChecked(true);
-//        includeJointWork.setVisibility(View.GONE);
-//        includeOpenSeats.setVisibility(View.GONE);
-//        includeOffice.setVisibility(View.VISIBLE);
-
-        rbJointWork.setChecked(true);
-        includeJointWork.setVisibility(View.VISIBLE);
-        includeOpenSeats.setVisibility(View.GONE);
-        includeOffice.setVisibility(View.GONE);
+        includeJointWork = viewLayout.findViewById(R.id.include_joint_work);
+        includeOpenSeats = viewLayout.findViewById(R.id.include_open_seats);
+        includeOffice = viewLayout.findViewById(R.id.include_office);
+        includeGarden = viewLayout.findViewById(R.id.include_garden);
 
         rbJointWork.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (b) {
-                includeJointWork.setVisibility(View.VISIBLE);
-                includeOpenSeats.setVisibility(View.GONE);
-                includeOffice.setVisibility(View.GONE);
-                jointRentAdapter = new RentAdapter(mContext, "", CommonList.rentList());
-                rvJointWorkRent.setAdapter(jointRentAdapter);
-                jointSeatsAdapter = new SeatsAdapter(mContext, "", CommonList.seatsList());
-                rvJointWorkSeats.setAdapter(jointSeatsAdapter);
-                jointBrandAdapter = new BrandAdapter(mContext, brandList);
-                rvJointWorkBrand.setAdapter(jointBrandAdapter);
-                jointUniqueAdapter = new UniqueAdapter(mContext, jointWorkUniqueList);
-                rvJointWorkCharacteristic.setAdapter(jointUniqueAdapter);
-            }
+            if (b) showListViews(0);
         });
         rbOpenSeats.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (b) {
-                includeJointWork.setVisibility(View.GONE);
-                includeOpenSeats.setVisibility(View.VISIBLE);
-                includeOffice.setVisibility(View.GONE);
-                openSeatRentAdapter = new RentAdapter(mContext, "", CommonList.rentList());
-                rvOpenSeatsRent.setAdapter(openSeatRentAdapter);
-                openBrandAdapter = new BrandAdapter(mContext, brandList);
-                rvOpenSeatsBrand.setAdapter(openBrandAdapter);
-                openSeatsUniqueAdapter = new UniqueAdapter(mContext, jointWorkUniqueList);
-                rvOpenSeatsCharacteristic.setAdapter(openSeatsUniqueAdapter);
-            }
+            if (b) showListViews(1);
         });
         rbOffice.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (b) {
-                includeJointWork.setVisibility(View.GONE);
-                includeOpenSeats.setVisibility(View.GONE);
-                includeOffice.setVisibility(View.VISIBLE);
-                officeAreaAdapter = new AreaAdapter(mContext, "", CommonList.areaList());
-                rvOfficeArea.setAdapter(officeAreaAdapter);
-                officeRentAdpater = new RentAdapter(mContext, "", CommonList.rentList());
-                rvOfficeRent.setAdapter(officeRentAdpater);
-                officeSeatAdapter = new SeatsAdapter(mContext, "", CommonList.seatsList());
-                rvOfficeSeats.setAdapter(officeSeatAdapter);
-                officeDecorationAdapter = new DecorationTypeAdapter(mContext, decorationList);
-                rvOfficeDecorate.setAdapter(officeDecorationAdapter);
-                officeUniqueAdapter = new UniqueAdapter(mContext, buildingUniqueList);
-                rvOfficeCharacteristic.setAdapter(officeUniqueAdapter);
-            }
+            if (b) showListViews(2);
         });
         rbGarden.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (b) {
-                includeJointWork.setVisibility(View.GONE);
-                includeOpenSeats.setVisibility(View.GONE);
-                includeOffice.setVisibility(View.VISIBLE);
-            }
+            if (b) showListViews(3);
         });
         //共享办公
         jointWorkViews(viewLayout);
@@ -611,6 +587,77 @@ public class SearchPopupWindow extends PopupWindow implements
         openSeatViews(viewLayout);
         //办公室
         officeViews(viewLayout);
+        //园区
+        gardenViews(viewLayout);
+        //初始化选中
+        rbOffice.setChecked(true);
+        showListViews(2);
+    }
+
+    private void showListViews(int flag) {
+        if (flag == 0) {
+            includeJointWork.setVisibility(View.VISIBLE);
+            includeOpenSeats.setVisibility(View.GONE);
+            includeOffice.setVisibility(View.GONE);
+            includeGarden.setVisibility(View.GONE);
+            if (jointRentAdapter == null) {
+                jointRentAdapter = new JointRentAdapter(mContext, "", CommonList.rentList());
+                rvJointWorkRent.setAdapter(jointRentAdapter);
+                jointSeatsAdapter = new JointSeatsAdapter(mContext, "", CommonList.seatsList());
+                rvJointWorkSeats.setAdapter(jointSeatsAdapter);
+                jointBrandAdapter = new JointBrandAdapter(mContext, brandList);
+                rvJointWorkBrand.setAdapter(jointBrandAdapter);
+                jointUniqueAdapter = new JointUniqueAdapter(mContext, jointWorkUniqueList);
+                rvJointWorkCharacteristic.setAdapter(jointUniqueAdapter);
+            }
+        } else if (flag == 1) {
+            includeJointWork.setVisibility(View.GONE);
+            includeOpenSeats.setVisibility(View.VISIBLE);
+            includeOffice.setVisibility(View.GONE);
+            includeGarden.setVisibility(View.GONE);
+            if (openSeatRentAdapter == null) {
+                openSeatRentAdapter = new OpenRentAdapter(mContext, "", CommonList.rentList());
+                rvOpenSeatsRent.setAdapter(openSeatRentAdapter);
+                openBrandAdapter = new OpenBrandAdapter(mContext, brandList);
+                rvOpenSeatsBrand.setAdapter(openBrandAdapter);
+                openSeatsUniqueAdapter = new OpenUniqueAdapter(mContext, jointWorkUniqueList);
+                rvOpenSeatsCharacteristic.setAdapter(openSeatsUniqueAdapter);
+            }
+        } else if (flag == 2) {
+            includeJointWork.setVisibility(View.GONE);
+            includeOpenSeats.setVisibility(View.GONE);
+            includeOffice.setVisibility(View.VISIBLE);
+            includeGarden.setVisibility(View.GONE);
+            if (officeAreaAdapter == null) {
+                officeAreaAdapter = new OfficeAreaAdapter(mContext, "", CommonList.areaList());
+                rvOfficeArea.setAdapter(officeAreaAdapter);
+                officeRentAdapter = new OfficeRentAdapter(mContext, "", CommonList.rentList());
+                rvOfficeRent.setAdapter(officeRentAdapter);
+                officeSeatAdapter = new OfficeSeatsAdapter(mContext, "", CommonList.seatsList());
+                rvOfficeSeats.setAdapter(officeSeatAdapter);
+                officeDecorationAdapter = new OfficeDecorationAdapter(mContext, decorationList);
+                rvOfficeDecorate.setAdapter(officeDecorationAdapter);
+                officeUniqueAdapter = new OfficeUniqueAdapter(mContext, buildingUniqueList);
+                rvOfficeCharacteristic.setAdapter(officeUniqueAdapter);
+            }
+        } else if (flag == 3) {
+            includeJointWork.setVisibility(View.GONE);
+            includeOpenSeats.setVisibility(View.GONE);
+            includeOffice.setVisibility(View.GONE);
+            includeGarden.setVisibility(View.VISIBLE);
+            if (gardenAreaAdapter == null) {
+                gardenAreaAdapter = new GardenAreaAdapter(mContext, "", CommonList.areaList());
+                rvGardenArea.setAdapter(gardenAreaAdapter);
+                gardenRentAdapter = new GardenRentAdapter(mContext, "", CommonList.rentList());
+                rvGardenRent.setAdapter(gardenRentAdapter);
+                gardenSeatAdapter = new GardenSeatsAdapter(mContext, "", CommonList.seatsList());
+                rvGardenSeats.setAdapter(gardenSeatAdapter);
+                gardenDecorationAdapter = new GardenDecorationAdapter(mContext, decorationList);
+                rvGardenDecorate.setAdapter(gardenDecorationAdapter);
+                gardenUniqueAdapter = new GardenUniqueAdapter(mContext, buildingUniqueList);
+                rvGardenCharacteristic.setAdapter(gardenUniqueAdapter);
+            }
+        }
     }
 
     private void jointWorkViews(View viewLayout) {
@@ -633,14 +680,6 @@ public class SearchPopupWindow extends PopupWindow implements
         rvJointWorkBrand.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, false));
         rvJointWorkCharacteristic.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, false));
 
-        jointRentAdapter = new RentAdapter(mContext, "", CommonList.rentList());
-        rvJointWorkRent.setAdapter(jointRentAdapter);
-        jointSeatsAdapter = new SeatsAdapter(mContext, "", CommonList.seatsList());
-        rvJointWorkSeats.setAdapter(jointSeatsAdapter);
-        jointBrandAdapter = new BrandAdapter(mContext, brandList);
-        rvJointWorkBrand.setAdapter(jointBrandAdapter);
-        jointUniqueAdapter = new UniqueAdapter(mContext, jointWorkUniqueList);
-        rvJointWorkCharacteristic.setAdapter(jointUniqueAdapter);
     }
 
     private void openSeatViews(View viewLayout) {
@@ -657,13 +696,6 @@ public class SearchPopupWindow extends PopupWindow implements
         rvOpenSeatsRent.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, false));
         rvOpenSeatsBrand.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, false));
         rvOpenSeatsCharacteristic.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, false));
-
-        openSeatRentAdapter = new RentAdapter(mContext, "", CommonList.rentList());
-        rvOpenSeatsRent.setAdapter(openSeatRentAdapter);
-        openBrandAdapter = new BrandAdapter(mContext, brandList);
-        rvOpenSeatsBrand.setAdapter(openBrandAdapter);
-        openSeatsUniqueAdapter = new UniqueAdapter(mContext, jointWorkUniqueList);
-        rvOpenSeatsCharacteristic.setAdapter(openSeatsUniqueAdapter);
     }
 
     private void officeViews(View viewLayout) {
@@ -690,17 +722,32 @@ public class SearchPopupWindow extends PopupWindow implements
         rvOfficeSeats.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, false));
         rvOfficeDecorate.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, false));
         rvOfficeCharacteristic.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, false));
+    }
 
-        officeAreaAdapter = new AreaAdapter(mContext, "", CommonList.areaList());
-        rvOfficeArea.setAdapter(officeAreaAdapter);
-        officeRentAdpater = new RentAdapter(mContext, "", CommonList.rentList());
-        rvOfficeRent.setAdapter(officeRentAdpater);
-        officeSeatAdapter = new SeatsAdapter(mContext, "", CommonList.seatsList());
-        rvOfficeSeats.setAdapter(officeSeatAdapter);
-        officeDecorationAdapter = new DecorationTypeAdapter(mContext, decorationList);
-        rvOfficeDecorate.setAdapter(officeDecorationAdapter);
-        officeUniqueAdapter = new UniqueAdapter(mContext, buildingUniqueList);
-        rvOfficeCharacteristic.setAdapter(officeUniqueAdapter);
+    private void gardenViews(View viewLayout) {
+        rvGardenArea = viewLayout.findViewById(R.id.rv_garden_area);
+        rvGardenRent = viewLayout.findViewById(R.id.rv_garden_rent);
+        rvGardenSeats = viewLayout.findViewById(R.id.rv_garden_seats);
+        rvGardenDecorate = viewLayout.findViewById(R.id.rv_garden_decorate);
+        rvGardenCharacteristic = viewLayout.findViewById(R.id.rv_garden_characteristic);
+        etGardenAreaMin = viewLayout.findViewById(R.id.et_garden_area_min);
+        etGardenAreaMax = viewLayout.findViewById(R.id.et_garden_area_max);
+        etGardenRentMin = viewLayout.findViewById(R.id.et_garden_rent_min);
+        etGardenRentMax = viewLayout.findViewById(R.id.et_garden_rent_max);
+        etGardenSeatsMin = viewLayout.findViewById(R.id.et_garden_seats_min);
+        etGardenSeatsMax = viewLayout.findViewById(R.id.et_garden_seats_max);
+
+        rvGardenArea.setLayoutManager(new GridLayoutManager(mContext, spanCount));
+        rvGardenRent.setLayoutManager(new GridLayoutManager(mContext, spanCount));
+        rvGardenSeats.setLayoutManager(new GridLayoutManager(mContext, spanCount));
+        rvGardenDecorate.setLayoutManager(new GridLayoutManager(mContext, spanCount));
+        rvGardenCharacteristic.setLayoutManager(new GridLayoutManager(mContext, spanCount));
+
+        rvGardenArea.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, false));
+        rvGardenRent.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, false));
+        rvGardenSeats.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, false));
+        rvGardenDecorate.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, false));
+        rvGardenCharacteristic.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, false));
     }
 
     //地铁数据
@@ -1020,10 +1067,15 @@ public class SearchPopupWindow extends PopupWindow implements
     //*****************************************************************
     //*************************    筛选  *******************************
     //*****************************************************************
-    //面积
-    class AreaAdapter extends CommonListAdapter<WantFindBean> {
 
-        public AreaAdapter(Context context, String value, List<WantFindBean> list) {
+    /**
+     * 共享办公
+     */
+    //工位
+    class JointSeatsAdapter extends CommonListAdapter<WantFindBean> {
+        private int checkedPos = -1;
+
+        public JointSeatsAdapter(Context context, String value, List<WantFindBean> list) {
             super(context, R.layout.item_house_decroation, list);
         }
 
@@ -1031,13 +1083,24 @@ public class SearchPopupWindow extends PopupWindow implements
         public void convert(ViewHolder holder, final WantFindBean bean) {
             CheckBox tvName = holder.getView(R.id.cb_item);
             tvName.setText(bean.getValue());
+            tvName.setChecked(holder.getAdapterPosition() == checkedPos);
+            tvName.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    checkedPos = holder.getAdapterPosition();
+                    if (!rvJointWorkSeats.isComputingLayout()) {
+                        setEditText(bean.getKey(), etJointWorkSeatsMin, etJointWorkSeatsMax);
+                        notifyDataSetChanged();
+                    }
+                }
+            });
         }
     }
 
     //租金
-    class RentAdapter extends CommonListAdapter<WantFindBean> {
+    class JointRentAdapter extends CommonListAdapter<WantFindBean> {
+        private int checkedPos = -1;
 
-        public RentAdapter(Context context, String value, List<WantFindBean> list) {
+        public JointRentAdapter(Context context, String value, List<WantFindBean> list) {
             super(context, R.layout.item_house_decroation, list);
         }
 
@@ -1045,69 +1108,25 @@ public class SearchPopupWindow extends PopupWindow implements
         public void convert(ViewHolder holder, final WantFindBean bean) {
             CheckBox tvName = holder.getView(R.id.cb_item);
             tvName.setText(bean.getValue());
-        }
-    }
-
-    //工位
-    class SeatsAdapter extends CommonListAdapter<WantFindBean> {
-
-        public SeatsAdapter(Context context, String value, List<WantFindBean> list) {
-            super(context, R.layout.item_house_decroation, list);
-        }
-
-        @Override
-        public void convert(ViewHolder holder, final WantFindBean bean) {
-            CheckBox tvName = holder.getView(R.id.cb_item);
-            tvName.setText(bean.getValue());
-        }
-    }
-
-    //装修
-    private class DecorationTypeAdapter extends CommonListAdapter<DirectoryBean.DataBean> {
-        @SuppressLint("UseSparseArrays")
-        DecorationTypeAdapter(Context context, List<DirectoryBean.DataBean> list) {
-            super(context, R.layout.item_house_decroation, list);
-
-        }
-
-        @Override
-        public void convert(ViewHolder holder, final DirectoryBean.DataBean bean) {
-            CheckBox cbType = holder.getView(R.id.cb_item);
-            cbType.setText(bean.getDictCname());
-
-        }
-    }
-
-    //特色
-    private class UniqueAdapter extends CommonListAdapter<DirectoryBean.DataBean> {
-        private Map<Integer, String> map;
-
-        @SuppressLint("UseSparseArrays")
-        public UniqueAdapter(Context context, List<DirectoryBean.DataBean> list) {
-            super(context, R.layout.item_house_decroation, list);
-            map = new HashMap<>();
-        }
-
-        @Override
-        public void convert(ViewHolder holder, final DirectoryBean.DataBean bean) {
-            CheckBox cbType = holder.getView(R.id.cb_item);
-            cbType.setText(bean.getDictCname());
-            cbType.setOnCheckedChangeListener((buttonView, isChecked) -> {
+            tvName.setChecked(holder.getAdapterPosition() == checkedPos);
+            tvName.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (isChecked) {
-                    map.put(bean.getDictValue(), bean.getDictCname());
-                } else {
-                    map.remove(bean.getDictValue());
+                    checkedPos = holder.getAdapterPosition();
+                    if (!rvJointWorkRent.isComputingLayout()) {
+                        setEditText(bean.getKey(), etJointWorkRentMin, etJointWorkRentMax);
+                        notifyDataSetChanged();
+                    }
                 }
             });
         }
     }
 
     //品牌
-    private class BrandAdapter extends CommonListAdapter<DirectoryBean.DataBean> {
+    class JointBrandAdapter extends CommonListAdapter<DirectoryBean.DataBean> {
         private Map<Integer, String> map;
 
         @SuppressLint("UseSparseArrays")
-        public BrandAdapter(Context context, List<DirectoryBean.DataBean> list) {
+        public JointBrandAdapter(Context context, List<DirectoryBean.DataBean> list) {
             super(context, R.layout.item_house_decroation, list);
             map = new HashMap<>();
         }
@@ -1118,7 +1137,9 @@ public class SearchPopupWindow extends PopupWindow implements
             cbType.setText(bean.getDictCname());
             cbType.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (isChecked) {
-                    map.put(bean.getDictValue(), bean.getDictCname());
+                    if (!map.containsKey(bean.getDictValue())) {
+                        map.put(bean.getDictValue(), bean.getDictCname());
+                    }
                 } else {
                     map.remove(bean.getDictValue());
                 }
@@ -1126,4 +1147,399 @@ public class SearchPopupWindow extends PopupWindow implements
         }
     }
 
+    //特色
+    class JointUniqueAdapter extends CommonListAdapter<DirectoryBean.DataBean> {
+        private Map<Integer, String> map;
+
+        @SuppressLint("UseSparseArrays")
+        public JointUniqueAdapter(Context context, List<DirectoryBean.DataBean> list) {
+            super(context, R.layout.item_house_decroation, list);
+            map = new HashMap<>();
+        }
+
+        @Override
+        public void convert(ViewHolder holder, final DirectoryBean.DataBean bean) {
+            CheckBox cbType = holder.getView(R.id.cb_item);
+            cbType.setText(bean.getDictCname());
+            cbType.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    if (map.size() >= 4) {
+                        cbType.setChecked(false);
+                        ToastUtils.toastForShort(mContext, "最多选择4项");
+                        return;
+                    }
+                    if (!map.containsKey(bean.getDictValue())) {
+                        map.put(bean.getDictValue(), bean.getDictCname());
+                    }
+                } else {
+                    map.remove(bean.getDictValue());
+                }
+            });
+        }
+    }
+
+    /**
+     * 开放工位
+     */
+    //租金
+    class OpenRentAdapter extends CommonListAdapter<WantFindBean> {
+        private int checkedPos = -1;
+
+        public OpenRentAdapter(Context context, String value, List<WantFindBean> list) {
+            super(context, R.layout.item_house_decroation, list);
+        }
+
+        @Override
+        public void convert(ViewHolder holder, final WantFindBean bean) {
+            CheckBox tvName = holder.getView(R.id.cb_item);
+            tvName.setText(bean.getValue());
+            tvName.setChecked(holder.getAdapterPosition() == checkedPos);
+            tvName.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    checkedPos = holder.getAdapterPosition();
+                    if (!rvOpenSeatsRent.isComputingLayout()) {
+                        setEditText(bean.getKey(), etOpenSeatsRentMin, etOpenSeatsRentMax);
+                        notifyDataSetChanged();
+                    }
+                }
+            });
+        }
+    }
+
+    //品牌
+    class OpenBrandAdapter extends CommonListAdapter<DirectoryBean.DataBean> {
+        private Map<Integer, String> map;
+
+        @SuppressLint("UseSparseArrays")
+        public OpenBrandAdapter(Context context, List<DirectoryBean.DataBean> list) {
+            super(context, R.layout.item_house_decroation, list);
+            map = new HashMap<>();
+        }
+
+        @Override
+        public void convert(ViewHolder holder, final DirectoryBean.DataBean bean) {
+            CheckBox cbType = holder.getView(R.id.cb_item);
+            cbType.setText(bean.getDictCname());
+            cbType.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    if (!map.containsKey(bean.getDictValue())) {
+                        map.put(bean.getDictValue(), bean.getDictCname());
+                    }
+                } else {
+                    map.remove(bean.getDictValue());
+                }
+            });
+        }
+    }
+
+    //特色
+    class OpenUniqueAdapter extends CommonListAdapter<DirectoryBean.DataBean> {
+        private Map<Integer, String> map;
+
+        @SuppressLint("UseSparseArrays")
+        public OpenUniqueAdapter(Context context, List<DirectoryBean.DataBean> list) {
+            super(context, R.layout.item_house_decroation, list);
+            map = new HashMap<>();
+        }
+
+        @Override
+        public void convert(ViewHolder holder, final DirectoryBean.DataBean bean) {
+            CheckBox cbType = holder.getView(R.id.cb_item);
+            cbType.setText(bean.getDictCname());
+            cbType.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    if (map.size() >= 4) {
+                        cbType.setChecked(false);
+                        ToastUtils.toastForShort(mContext, "最多选择4项");
+                        return;
+                    }
+                    if (!map.containsKey(bean.getDictValue())) {
+                        map.put(bean.getDictValue(), bean.getDictCname());
+                    }
+                } else {
+                    map.remove(bean.getDictValue());
+                }
+            });
+        }
+    }
+
+    /**
+     * 办公室
+     */
+    //面积
+    class OfficeAreaAdapter extends CommonListAdapter<WantFindBean> {
+        private int checkedPos = -1;
+
+        public OfficeAreaAdapter(Context context, String value, List<WantFindBean> list) {
+            super(context, R.layout.item_house_decroation, list);
+        }
+
+        @Override
+        public void convert(ViewHolder holder, final WantFindBean bean) {
+            CheckBox tvName = holder.getView(R.id.cb_item);
+            tvName.setText(bean.getValue());
+            tvName.setChecked(holder.getAdapterPosition() == checkedPos);
+            tvName.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    checkedPos = holder.getAdapterPosition();
+                    if (!rvOfficeArea.isComputingLayout()) {
+                        setEditText(bean.getKey(), etOfficeAreaMin, etOfficeAreaMax);
+                        notifyDataSetChanged();
+                    }
+                }
+            });
+        }
+    }
+
+    //租金
+    class OfficeRentAdapter extends CommonListAdapter<WantFindBean> {
+        private int checkedPos = -1;
+
+        public OfficeRentAdapter(Context context, String value, List<WantFindBean> list) {
+            super(context, R.layout.item_house_decroation, list);
+        }
+
+        @Override
+        public void convert(ViewHolder holder, final WantFindBean bean) {
+            CheckBox tvName = holder.getView(R.id.cb_item);
+            tvName.setText(bean.getValue());
+            tvName.setChecked(holder.getAdapterPosition() == checkedPos);
+            tvName.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    checkedPos = holder.getAdapterPosition();
+                    if (!rvOfficeRent.isComputingLayout()) {
+                        setEditText(bean.getKey(), etOfficeRentMin, etOfficeRentMax);
+                        notifyDataSetChanged();
+                    }
+                }
+            });
+        }
+    }
+
+    //工位
+    class OfficeSeatsAdapter extends CommonListAdapter<WantFindBean> {
+        private int checkedPos = -1;
+
+        public OfficeSeatsAdapter(Context context, String value, List<WantFindBean> list) {
+            super(context, R.layout.item_house_decroation, list);
+        }
+
+        @Override
+        public void convert(ViewHolder holder, final WantFindBean bean) {
+            CheckBox tvName = holder.getView(R.id.cb_item);
+            tvName.setText(bean.getValue());
+            tvName.setChecked(holder.getAdapterPosition() == checkedPos);
+            tvName.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    checkedPos = holder.getAdapterPosition();
+                    if (!rvOfficeSeats.isComputingLayout()) {
+                        setEditText(bean.getKey(), etOfficeSeatsMin, etOfficeSeatsMax);
+                        notifyDataSetChanged();
+                    }
+                }
+            });
+        }
+    }
+
+    //装修
+    class OfficeDecorationAdapter extends CommonListAdapter<DirectoryBean.DataBean> {
+        private int checkedPos = -1;
+
+        @SuppressLint("UseSparseArrays")
+        OfficeDecorationAdapter(Context context, List<DirectoryBean.DataBean> list) {
+            super(context, R.layout.item_house_unique, list);
+        }
+
+        @Override
+        public void convert(ViewHolder holder, final DirectoryBean.DataBean bean) {
+            CheckBox cbType = holder.getView(R.id.cb_item);
+            ImageView ivImage = holder.getView(R.id.iv_image);
+            Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getDictImg()).into(ivImage);
+            cbType.setText(bean.getDictCname());
+            cbType.setChecked(holder.getAdapterPosition() == checkedPos);
+            holder.itemView.setOnClickListener(view -> {
+                cbType.setChecked(true);
+                checkedPos = holder.getAdapterPosition();
+                if (!rvGardenDecorate.isComputingLayout()) {
+                    notifyDataSetChanged();
+                }
+            });
+        }
+    }
+
+    //特色
+    class OfficeUniqueAdapter extends CommonListAdapter<DirectoryBean.DataBean> {
+        private Map<Integer, String> map;
+
+        @SuppressLint("UseSparseArrays")
+        public OfficeUniqueAdapter(Context context, List<DirectoryBean.DataBean> list) {
+            super(context, R.layout.item_house_decroation, list);
+            map = new HashMap<>();
+        }
+
+        @Override
+        public void convert(ViewHolder holder, final DirectoryBean.DataBean bean) {
+            CheckBox tvName = holder.getView(R.id.cb_item);
+            tvName.setText(bean.getDictCname());
+            tvName.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    if (map.size() >= 4) {
+                        tvName.setChecked(false);
+                        ToastUtils.toastForShort(mContext, "最多选择4项");
+                        return;
+                    }
+                    if (!map.containsKey(bean.getDictValue())) {
+                        map.put(bean.getDictValue(), bean.getDictCname());
+                    }
+                } else {
+                    map.remove(bean.getDictValue());
+                }
+
+            });
+        }
+    }
+
+    /**
+     * 园区
+     */
+    //面积
+    class GardenAreaAdapter extends CommonListAdapter<WantFindBean> {
+        private int checkedPos = -1;
+
+        public GardenAreaAdapter(Context context, String value, List<WantFindBean> list) {
+            super(context, R.layout.item_house_decroation, list);
+        }
+
+        @Override
+        public void convert(ViewHolder holder, final WantFindBean bean) {
+            CheckBox tvName = holder.getView(R.id.cb_item);
+            tvName.setText(bean.getValue());
+            tvName.setChecked(holder.getAdapterPosition() == checkedPos);
+            tvName.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    checkedPos = holder.getAdapterPosition();
+                    if (!rvGardenArea.isComputingLayout()) {
+                        setEditText(bean.getKey(), etGardenAreaMin, etGardenAreaMax);
+                        notifyDataSetChanged();
+                    }
+                }
+            });
+        }
+    }
+
+    //租金
+    class GardenRentAdapter extends CommonListAdapter<WantFindBean> {
+        private int checkedPos = -1;
+
+        public GardenRentAdapter(Context context, String value, List<WantFindBean> list) {
+            super(context, R.layout.item_house_decroation, list);
+        }
+
+        @Override
+        public void convert(ViewHolder holder, final WantFindBean bean) {
+            CheckBox tvName = holder.getView(R.id.cb_item);
+            tvName.setText(bean.getValue());
+            tvName.setChecked(holder.getAdapterPosition() == checkedPos);
+            tvName.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    checkedPos = holder.getAdapterPosition();
+                    if (!rvGardenRent.isComputingLayout()) {
+                        setEditText(bean.getKey(), etGardenRentMin, etGardenRentMax);
+                        notifyDataSetChanged();
+                    }
+                }
+            });
+        }
+    }
+
+    //工位
+    class GardenSeatsAdapter extends CommonListAdapter<WantFindBean> {
+        private int checkedPos = -1;
+
+        public GardenSeatsAdapter(Context context, String value, List<WantFindBean> list) {
+            super(context, R.layout.item_house_decroation, list);
+        }
+
+        @Override
+        public void convert(ViewHolder holder, final WantFindBean bean) {
+            CheckBox tvName = holder.getView(R.id.cb_item);
+            tvName.setText(bean.getValue());
+            tvName.setChecked(holder.getAdapterPosition() == checkedPos);
+            tvName.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    checkedPos = holder.getAdapterPosition();
+                    if (!rvGardenSeats.isComputingLayout()) {
+                        setEditText(bean.getKey(), etGardenSeatsMin, etGardenSeatsMax);
+                        notifyDataSetChanged();
+                    }
+                }
+            });
+        }
+    }
+
+    //装修
+    class GardenDecorationAdapter extends CommonListAdapter<DirectoryBean.DataBean> {
+        private int checkedPos = -1;
+
+        @SuppressLint("UseSparseArrays")
+        GardenDecorationAdapter(Context context, List<DirectoryBean.DataBean> list) {
+            super(context, R.layout.item_house_unique, list);
+
+        }
+
+        @Override
+        public void convert(ViewHolder holder, final DirectoryBean.DataBean bean) {
+            CheckBox cbType = holder.getView(R.id.cb_item);
+            ImageView ivImage = holder.getView(R.id.iv_image);
+            Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getDictImg()).into(ivImage);
+            cbType.setText(bean.getDictCname());
+            cbType.setChecked(holder.getAdapterPosition() == checkedPos);
+            holder.itemView.setOnClickListener(view -> {
+                cbType.setChecked(true);
+                checkedPos = holder.getAdapterPosition();
+                if (!rvGardenDecorate.isComputingLayout()) {
+                    notifyDataSetChanged();
+                }
+            });
+        }
+    }
+
+    //特色
+    class GardenUniqueAdapter extends CommonListAdapter<DirectoryBean.DataBean> {
+        private Map<Integer, String> map;
+
+        @SuppressLint("UseSparseArrays")
+        public GardenUniqueAdapter(Context context, List<DirectoryBean.DataBean> list) {
+            super(context, R.layout.item_house_decroation, list);
+            map = new HashMap<>();
+        }
+
+        @Override
+        public void convert(ViewHolder holder, final DirectoryBean.DataBean bean) {
+            CheckBox cbType = holder.getView(R.id.cb_item);
+            cbType.setText(bean.getDictCname());
+            cbType.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    if (map.size() >= 4) {
+                        cbType.setChecked(false);
+                        ToastUtils.toastForShort(mContext, "最多选择4项");
+                        return;
+                    }
+                    if (!map.containsKey(bean.getDictValue())) {
+                        map.put(bean.getDictValue(), bean.getDictCname());
+                    }
+                } else {
+                    map.remove(bean.getDictValue());
+                }
+
+            });
+        }
+    }
+
+    private void setEditText(String value, EditText min, EditText max) {
+        String a = value.substring(0, value.indexOf(","));
+        String b = value.substring(a.length() + 1);
+        min.setText((TextUtils.equals("0", a)) ? "" : a);
+        max.setText((TextUtils.equals(CommonList.SEARCH_MAX, b)) ? "" : b);
+    }
 }

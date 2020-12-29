@@ -28,7 +28,7 @@
     <string name="str_order_price_down_up">价格从低到高</string>
     <string name="str_order_area_up_down">面积从大到小</string>
     <string name="str_order_area_down_up">面积从小到大</string>
-    <string name="str_clear">清除</string>
+    <string name="str_clear">重置</string>
     <string name="str_independent_office">独立办公室</string>
     <string name="str_open_work">开放工位</string>
     <string name="str_llook_more">查看更多</string>

@@ -10,6 +10,8 @@ import java.util.List;
  * Date 2020/12/24
  **/
 public class CommonList {
+    public static final String SEARCH_MAX = "99999999";
+
     //我想找-团队规模
     public static List<WantFindBean> peopleNumList() {
         List<WantFindBean> list = new ArrayList<>();
@@ -23,7 +25,7 @@ public class CommonList {
         list.add(bean3);
         WantFindBean bean4 = new WantFindBean("51-100人", "51,100");
         list.add(bean4);
-        WantFindBean bean5 = new WantFindBean("100人以上", "101,99999999");
+        WantFindBean bean5 = new WantFindBean("100人以上", "101," + SEARCH_MAX);
         list.add(bean5);
         return list;
     }
@@ -63,7 +65,7 @@ public class CommonList {
     //筛选面积
     public static List<WantFindBean> areaList() {
         List<WantFindBean> list = new ArrayList<>();
-        WantFindBean bean1 = new WantFindBean("0,99999999", "不限");
+        WantFindBean bean1 = new WantFindBean("0," + SEARCH_MAX, "不限");
         list.add(bean1);
         WantFindBean bean2 = new WantFindBean("0,20", "20㎡以下");
         list.add(bean2);
@@ -73,7 +75,7 @@ public class CommonList {
         list.add(bean4);
         WantFindBean bean5 = new WantFindBean("70,100", "70-100㎡");
         list.add(bean5);
-        WantFindBean bean6 = new WantFindBean("100,99999999", "100㎡以上");
+        WantFindBean bean6 = new WantFindBean("100," + SEARCH_MAX, "100㎡以上");
         list.add(bean6);
         return list;
     }
@@ -81,7 +83,7 @@ public class CommonList {
     //筛选租金
     public static List<WantFindBean> rentList() {
         List<WantFindBean> list = new ArrayList<>();
-        WantFindBean bean1 = new WantFindBean("0,99999999", "不限");
+        WantFindBean bean1 = new WantFindBean("0," + SEARCH_MAX, "不限");
         list.add(bean1);
         WantFindBean bean2 = new WantFindBean("0,2", "2以下");
         list.add(bean2);
@@ -91,7 +93,7 @@ public class CommonList {
         list.add(bean4);
         WantFindBean bean5 = new WantFindBean("10,15", "10-15");
         list.add(bean5);
-        WantFindBean bean6 = new WantFindBean("15,99999999", "15以上");
+        WantFindBean bean6 = new WantFindBean("15," + SEARCH_MAX, "15以上");
         list.add(bean6);
         return list;
     }
@@ -99,7 +101,7 @@ public class CommonList {
     //筛选工位
     public static List<WantFindBean> seatsList() {
         List<WantFindBean> list = new ArrayList<>();
-        WantFindBean bean1 = new WantFindBean("0,99999999", "不限");
+        WantFindBean bean1 = new WantFindBean("0," + SEARCH_MAX, "不限");
         list.add(bean1);
         WantFindBean bean2 = new WantFindBean("0,4", "5个以下");
         list.add(bean2);
@@ -109,7 +111,7 @@ public class CommonList {
         list.add(bean4);
         WantFindBean bean5 = new WantFindBean("20,30", "20-30个");
         list.add(bean5);
-        WantFindBean bean6 = new WantFindBean("30,99999999", "30个以上");
+        WantFindBean bean6 = new WantFindBean("30," + SEARCH_MAX, "30个以上");
         list.add(bean6);
         return list;
     }

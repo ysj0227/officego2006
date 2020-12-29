@@ -8,7 +8,7 @@
     <RelativeLayout
         android:id="@+id/rl_topview"
         android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_472"
+        android:layout_height="@dimen/dp_490"
         android:background="@color/white">
 
         <ScrollView
@@ -130,6 +130,13 @@
                     <include
                         android:id="@+id/include_office"
                         layout="@layout/popup_search_condition_office"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:visibility="gone" />
+
+                    <include
+                        android:id="@+id/include_garden"
+                        layout="@layout/popup_search_condition_garden"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:visibility="gone" />
