@@ -561,6 +561,9 @@ public class CommonHelper {
     }
 
     public static String getKey(Map<Integer, String> map) {
+        if (map == null) {
+            return "";
+        }
         StringBuilder key = new StringBuilder();
         for (Map.Entry<Integer, String> entry : map.entrySet()) {
             if (map.size() == 1) {

@@ -22,7 +22,7 @@
 
     <EditText
         android:id="@+id/et_joint_work_seats_min"
-        android:layout_width="@dimen/dp_160"
+        android:layout_width="@dimen/dp_158"
         android:layout_height="@dimen/dp_34"
         android:layout_below="@id/rv_joint_work_seats"
         android:background="@drawable/button_text_selector"
@@ -47,7 +47,7 @@
 
     <EditText
         android:id="@+id/et_joint_work_seats_max"
-        android:layout_width="@dimen/dp_160"
+        android:layout_width="@dimen/dp_158"
         android:layout_height="@dimen/dp_34"
         android:layout_below="@id/rv_joint_work_seats"
         android:layout_toEndOf="@id/tv_joint_work_seats_line"
@@ -80,7 +80,7 @@
 
     <EditText
         android:id="@+id/et_joint_work_rent_min"
-        android:layout_width="@dimen/dp_160"
+        android:layout_width="@dimen/dp_158"
         android:layout_height="@dimen/dp_34"
         android:layout_below="@id/rv_joint_work_rent"
         android:background="@drawable/button_text_selector"
@@ -105,7 +105,7 @@
 
     <EditText
         android:id="@+id/et_joint_work_rent_max"
-        android:layout_width="@dimen/dp_160"
+        android:layout_width="@dimen/dp_158"
         android:layout_height="@dimen/dp_34"
         android:layout_below="@id/rv_joint_work_rent"
         android:layout_toEndOf="@id/tv_joint_work_rent_line"

@@ -18,6 +18,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
+import android.widget.Switch;
 import android.widget.TextView;
 
 import androidx.core.content.ContextCompat;
@@ -39,6 +40,7 @@ import com.officego.commonlib.utils.log.LogCat;
 import com.officego.rpc.OfficegoApi;
 import com.officego.ui.find.WantFindBean;
 import com.officego.ui.home.model.BusinessCircleBean;
+import com.officego.ui.home.model.ConditionSearchBean;
 import com.officego.ui.home.model.MeterBean;
 import com.officego.utils.CommonList;
 import com.officego.utils.GridSpacingItemDecoration;
@@ -62,20 +64,7 @@ public class SearchPopupWindow extends PopupWindow implements
     private final int spacing = 15;
     private final Activity mContext;
     private final TextView mSetTitleView;
-
-    private HashSet<Integer> mHashSetLine, mHashSetBusiness;
-    private SparseBooleanArray mCheckStatesLine, mCheckStatesBusiness;//记录选中的位置
-    private String district = "", business = "";//商圈
-    private String line = "", nearbySubway = ""; //地铁
-    private int btype;//楼盘,网点
-    private String sort;//排序
-    //筛选
-    private List<DirectoryBean.DataBean> decorationList = new ArrayList<>();
-    private List<DirectoryBean.DataBean> buildingUniqueList = new ArrayList<>();
-    private List<DirectoryBean.DataBean> jointWorkUniqueList = new ArrayList<>();
-    private List<DirectoryBean.DataBean> brandList = new ArrayList<>();
-
-    //layout 类型
+    //layout
     private final int SEARCH_TYPE_AREA = 0;
     private final int SEARCH_TYPE_OFFICE = 1;
     private final int SEARCH_TYPE_ORDER = 2;
@@ -86,11 +75,63 @@ public class SearchPopupWindow extends PopupWindow implements
     //height
     private int screenHeight, statusBarHeight, titleBarHeight, searchHeight, bottomTabBarHeight;
 
-    //获取地铁列表
-    private List<MeterBean.DataBean> meterList = new ArrayList<>();
-    //商圈列表
-    private List<BusinessCircleBean.DataBean> businessCircleList = new ArrayList<>();
+    private View includeJointWork, includeOpenSeats, includeOffice, includeGarden;
+    //共享办公
+    private RecyclerView rvJointWorkRent, rvJointWorkSeats, rvJointWorkBrand, rvJointWorkCharacteristic;
+    private EditText etJointWorkRentMin, etJointWorkRentMax, etJointWorkSeatsMin, etJointWorkSeatsMax;
+    //开放工位
+    private RecyclerView rvOpenSeatsRent, rvOpenSeatsBrand, rvOpenSeatsCharacteristic;
+    private EditText etOpenSeatsRentMin, etOpenSeatsRentMax;
+    //办公室，园区
+    private RecyclerView rvOfficeArea, rvOfficeRent, rvOfficeSeats, rvOfficeDecorate, rvOfficeCharacteristic;
+    private EditText etOfficeAreaMin, etOfficeAreaMax, etOfficeRentMin, etOfficeRentMax, etOfficeSeatsMin, etOfficeSeatsMax;
+    //园区
+    private RecyclerView rvGardenArea, rvGardenRent, rvGardenSeats, rvGardenDecorate, rvGardenCharacteristic;
+    private EditText etGardenAreaMin, etGardenAreaMax, etGardenRentMin, etGardenRentMax, etGardenSeatsMin, etGardenSeatsMax;
+    //共享办公
+    private JointRentAdapter jointRentAdapter;
+    private JointSeatsAdapter jointSeatsAdapter;
+    private JointBrandAdapter jointBrandAdapter;
+    private JointUniqueAdapter jointUniqueAdapter;
+    //开放工位
+    private OpenRentAdapter openSeatRentAdapter;
+    private OpenBrandAdapter openBrandAdapter;
+    private OpenUniqueAdapter openSeatsUniqueAdapter;
+    //办公室
+    private OfficeAreaAdapter officeAreaAdapter;
+    private OfficeRentAdapter officeRentAdapter;
+    private OfficeSeatsAdapter officeSeatAdapter;
+    private OfficeDecorationAdapter officeDecorationAdapter;
+    private OfficeUniqueAdapter officeUniqueAdapter;
+    //园区
+    private GardenAreaAdapter gardenAreaAdapter;
+    private GardenRentAdapter gardenRentAdapter;
+    private GardenSeatsAdapter gardenSeatAdapter;
+    private GardenDecorationAdapter gardenDecorationAdapter;
+    private GardenUniqueAdapter gardenUniqueAdapter;
+    //地铁商圈
+    private HashSet<Integer> mHashSetLine, mHashSetBusiness;
+    private SparseBooleanArray mCheckStatesLine, mCheckStatesBusiness;//记录选中的位置
+    private String district = "", business = "";//商圈
+    private String line = "", nearbySubway = ""; //地铁
+    private int btype;//楼盘,网点
+    private String sort;//排序
+    private List<MeterBean.DataBean> meterList = new ArrayList<>(); //获取地铁列表
+    private List<BusinessCircleBean.DataBean> businessCircleList = new ArrayList<>();  //商圈列表
+    //筛选
+    private List<DirectoryBean.DataBean> decorationList = new ArrayList<>();
+    private List<DirectoryBean.DataBean> buildingUniqueList = new ArrayList<>();
+    private List<DirectoryBean.DataBean> jointWorkUniqueList = new ArrayList<>();
+    private List<DirectoryBean.DataBean> brandList = new ArrayList<>();
+    //共享办公
+    private Map<Integer, String> jointBrandMap, jointUniqueMap;
+    //开放工位特色
+    private Map<Integer, String> openBrandMap, openUniqueMap;
+    //办公室,园区
+    private int officeDecoration, gardenDecoration;
+    private Map<Integer, String> officeMap, gardenMap;
 
+    //自定义接口
     private onSureClickListener onSureClickListener;
 
     public SearchPopupWindow.onSureClickListener getOnSureClickListener() {
@@ -113,8 +154,7 @@ public class SearchPopupWindow extends PopupWindow implements
         void onOfficeOrderPopUpWindow(int searchType, String order);
 
         //筛选
-        void onConditionPopUpWindow(int searchType, int btype, String constructionArea, String rentPrice,
-                                    String simple, String decoration, String tags, Map<Integer, String> mMapDecoration);
+        void onConditionPopUpWindow(int btype, ConditionSearchBean bean);
     }
 
     //popupWindow设置参数
@@ -134,7 +174,6 @@ public class SearchPopupWindow extends PopupWindow implements
         this.setOnDismissListener(this);
     }
 
-
     /**
      * @param activity             activity
      * @param topToPopupWindowView topToPopupWindowView
@@ -150,7 +189,8 @@ public class SearchPopupWindow extends PopupWindow implements
                              List<DirectoryBean.DataBean> decorationList,
                              List<DirectoryBean.DataBean> buildingUniqueList,
                              List<DirectoryBean.DataBean> jointWorkUniqueList,
-                             List<DirectoryBean.DataBean> brandList) {
+                             List<DirectoryBean.DataBean> brandList,
+                             ConditionSearchBean searchData) {
         super();
         this.mContext = activity;
         this.mSetTitleView = setTextView;
@@ -185,8 +225,19 @@ public class SearchPopupWindow extends PopupWindow implements
         this.buildingUniqueList = buildingUniqueList;
         this.jointWorkUniqueList = jointWorkUniqueList;
         this.brandList = brandList;
-        LogCat.e("TAG", "11111111111 decorationList=" + decorationList.size() + "jointWorkUniqueList ="
-                + jointWorkUniqueList.size() + " buildingUniqueList=" + buildingUniqueList.size() + " brandList=" + brandList.size());
+
+        //类型区分取值
+//        if (searchData!=null){
+//            searchData.get
+//        }
+//        //共享办公
+//        private Map<Integer, String> jointBrandMap, jointUniqueMap;
+//        //开放工位特色
+//        private Map<Integer, String> openBrandMap, openUniqueMap;
+//        //办公室,园区
+//        private int officeDecoration, gardenDecoration;
+//        private Map<Integer, String> officeMap, gardenMap;
+
         //初始view
         initViews(topToPopupWindowView, searchType);
     }
@@ -325,7 +376,7 @@ public class SearchPopupWindow extends PopupWindow implements
             tvMeterText.setTextColor(ContextCompat.getColor(mContext, R.color.text_33));
         }
         //点击监听
-        View.OnClickListener clickListener = v -> {
+        @SuppressLint("NonConstantResourceId") View.OnClickListener clickListener = v -> {
             switch (v.getId()) {
                 case R.id.tv_shopping://商圈
                     clearSelectedItem();
@@ -524,50 +575,18 @@ public class SearchPopupWindow extends PopupWindow implements
         });
     }
 
-    private View includeJointWork, includeOpenSeats, includeOffice, includeGarden;
-    //共享办公
-    private RecyclerView rvJointWorkRent, rvJointWorkSeats, rvJointWorkBrand, rvJointWorkCharacteristic;
-    private EditText etJointWorkRentMin, etJointWorkRentMax, etJointWorkSeatsMin, etJointWorkSeatsMax;
-    //开放工位
-    private RecyclerView rvOpenSeatsRent, rvOpenSeatsBrand, rvOpenSeatsCharacteristic;
-    private EditText etOpenSeatsRentMin, etOpenSeatsRentMax;
-    //办公室，园区
-    private RecyclerView rvOfficeArea, rvOfficeRent, rvOfficeSeats, rvOfficeDecorate, rvOfficeCharacteristic;
-    private EditText etOfficeAreaMin, etOfficeAreaMax, etOfficeRentMin, etOfficeRentMax, etOfficeSeatsMin, etOfficeSeatsMax;
-    //园区
-    private RecyclerView rvGardenArea, rvGardenRent, rvGardenSeats, rvGardenDecorate, rvGardenCharacteristic;
-    private EditText etGardenAreaMin, etGardenAreaMax, etGardenRentMin, etGardenRentMax, etGardenSeatsMin, etGardenSeatsMax;
-    //共享办公
-    private JointRentAdapter jointRentAdapter;
-    private JointSeatsAdapter jointSeatsAdapter;
-    private JointBrandAdapter jointBrandAdapter;
-    private JointUniqueAdapter jointUniqueAdapter;
-    //开放工位
-    private OpenRentAdapter openSeatRentAdapter;
-    private OpenBrandAdapter openBrandAdapter;
-    private OpenUniqueAdapter openSeatsUniqueAdapter;
-    //办公室
-    private OfficeAreaAdapter officeAreaAdapter;
-    private OfficeRentAdapter officeRentAdapter;
-    private OfficeSeatsAdapter officeSeatAdapter;
-    private OfficeDecorationAdapter officeDecorationAdapter;
-    private OfficeUniqueAdapter officeUniqueAdapter;
-    //园区
-    private GardenAreaAdapter gardenAreaAdapter;
-    private GardenRentAdapter gardenRentAdapter;
-    private GardenSeatsAdapter gardenSeatAdapter;
-    private GardenDecorationAdapter gardenDecorationAdapter;
-    private GardenUniqueAdapter gardenUniqueAdapter;
-
     private void handleCondition(View viewLayout) {
         RadioButton rbJointWork = viewLayout.findViewById(R.id.rb_joint_work);
         RadioButton rbOpenSeats = viewLayout.findViewById(R.id.rb_open_seats);
         RadioButton rbOffice = viewLayout.findViewById(R.id.rb_office);
         RadioButton rbGarden = viewLayout.findViewById(R.id.rb_garden);
+        Switch swVR = viewLayout.findViewById(R.id.sw_open);
         includeJointWork = viewLayout.findViewById(R.id.include_joint_work);
         includeOpenSeats = viewLayout.findViewById(R.id.include_open_seats);
         includeOffice = viewLayout.findViewById(R.id.include_office);
         includeGarden = viewLayout.findViewById(R.id.include_garden);
+        Button btnClear = viewLayout.findViewById(R.id.btn_clear);
+        Button btnSure = viewLayout.findViewById(R.id.btn_sure);
 
         rbJointWork.setOnCheckedChangeListener((compoundButton, b) -> {
             if (b) showListViews(0);
@@ -592,6 +611,69 @@ public class SearchPopupWindow extends PopupWindow implements
         //初始化选中
         rbOffice.setChecked(true);
         showListViews(2);
+        //点击监听
+        @SuppressLint("NonConstantResourceId") View.OnClickListener clickListener = v -> {
+            switch (v.getId()) {
+                case R.id.btn_clear://清理
+                    ConditionSearchBean searchBean = new ConditionSearchBean();
+                    searchBean.setBrand("");
+                    searchBean.setUnique("");
+                    searchBean.setDecoration("");
+                    searchBean.setRent("0," + CommonList.SEARCH_MAX);
+                    searchBean.setArea("0," + CommonList.SEARCH_MAX);
+                    searchBean.setSeats("0," + CommonList.SEARCH_MAX);
+                    searchBean.setVr(false);
+                    if (onSureClickListener != null) {
+                        onSureClickListener.onConditionPopUpWindow(btype, searchBean);
+                    }
+                    dismiss();
+                    break;
+                case R.id.btn_sure://确定
+                    ConditionSearchBean bean = new ConditionSearchBean();
+                    if (rbJointWork.isChecked()) {
+                        bean.setSeats(setEditText(etJointWorkSeatsMin, etJointWorkSeatsMax));
+                        bean.setRent(setEditText(etJointWorkRentMin, etJointWorkRentMax));
+                        bean.setBrand(CommonHelper.getKey(jointBrandMap));
+                        bean.setUnique(CommonHelper.getKey(jointUniqueMap));
+                        //以下默认
+                        bean.setArea("0," + CommonList.SEARCH_MAX);
+                        bean.setDecoration("");
+                    } else if (rbOpenSeats.isChecked()) {
+                        bean.setRent(setEditText(etOpenSeatsRentMin, etOpenSeatsRentMax));
+                        bean.setBrand(CommonHelper.getKey(openBrandMap));
+                        bean.setUnique(CommonHelper.getKey(openUniqueMap));
+                        //以下默认
+                        bean.setArea("0," + CommonList.SEARCH_MAX);
+                        bean.setSeats("0," + CommonList.SEARCH_MAX);
+                        bean.setDecoration("");
+                    } else if (rbOffice.isChecked()) {
+                        bean.setArea(setEditText(etOfficeAreaMin, etOfficeAreaMax));
+                        bean.setSeats(setEditText(etOfficeSeatsMin, etOfficeSeatsMax));
+                        bean.setRent(setEditText(etOfficeRentMin, etOfficeRentMax));
+                        bean.setDecoration(officeDecoration + "");
+                        bean.setUnique(CommonHelper.getKey(officeMap));
+                        //以下默认
+                        bean.setBrand("");
+                    } else if (rbGarden.isChecked()) {
+                        bean.setArea(setEditText(etGardenAreaMin, etGardenAreaMax));
+                        bean.setSeats(setEditText(etGardenSeatsMin, etGardenSeatsMax));
+                        bean.setRent(setEditText(etGardenRentMin, etGardenRentMax));
+                        bean.setDecoration(gardenDecoration + "");
+                        bean.setUnique(CommonHelper.getKey(gardenMap));
+                        //以下默认
+                        bean.setBrand("");
+                    }
+                    bean.setVr(swVR.isChecked());
+                    if (onSureClickListener != null) {
+                        onSureClickListener.onConditionPopUpWindow(btype, bean);
+                    }
+                    dismiss();
+                    break;
+                default:
+            }
+        };
+        btnClear.setOnClickListener(clickListener);
+        btnSure.setOnClickListener(clickListener);
     }
 
     private void showListViews(int flag) {
@@ -754,7 +836,6 @@ public class SearchPopupWindow extends PopupWindow implements
     private Map<Integer, Boolean> mapMeter = new HashMap<>();
 
     private class MeterAdapter extends CommonListAdapter<MeterBean.DataBean> {
-
         private RecyclerView recyclerViewRight;
         private TextView tvNum;
         private boolean onBind;
@@ -1088,7 +1169,7 @@ public class SearchPopupWindow extends PopupWindow implements
                 if (isChecked) {
                     checkedPos = holder.getAdapterPosition();
                     if (!rvJointWorkSeats.isComputingLayout()) {
-                        setEditText(bean.getKey(), etJointWorkSeatsMin, etJointWorkSeatsMax);
+                        showEditText(bean.getKey(), etJointWorkSeatsMin, etJointWorkSeatsMax);
                         notifyDataSetChanged();
                     }
                 }
@@ -1113,7 +1194,7 @@ public class SearchPopupWindow extends PopupWindow implements
                 if (isChecked) {
                     checkedPos = holder.getAdapterPosition();
                     if (!rvJointWorkRent.isComputingLayout()) {
-                        setEditText(bean.getKey(), etJointWorkRentMin, etJointWorkRentMax);
+                        showEditText(bean.getKey(), etJointWorkRentMin, etJointWorkRentMax);
                         notifyDataSetChanged();
                     }
                 }
@@ -1123,12 +1204,13 @@ public class SearchPopupWindow extends PopupWindow implements
 
     //品牌
     class JointBrandAdapter extends CommonListAdapter<DirectoryBean.DataBean> {
-        private Map<Integer, String> map;
 
         @SuppressLint("UseSparseArrays")
         public JointBrandAdapter(Context context, List<DirectoryBean.DataBean> list) {
             super(context, R.layout.item_house_decroation, list);
-            map = new HashMap<>();
+            if (jointBrandMap == null) {
+                jointBrandMap = new HashMap<>();
+            }
         }
 
         @Override
@@ -1137,11 +1219,11 @@ public class SearchPopupWindow extends PopupWindow implements
             cbType.setText(bean.getDictCname());
             cbType.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (isChecked) {
-                    if (!map.containsKey(bean.getDictValue())) {
-                        map.put(bean.getDictValue(), bean.getDictCname());
+                    if (!jointBrandMap.containsKey(bean.getDictValue())) {
+                        jointBrandMap.put(bean.getDictValue(), bean.getDictCname());
                     }
                 } else {
-                    map.remove(bean.getDictValue());
+                    jointBrandMap.remove(bean.getDictValue());
                 }
             });
         }
@@ -1149,12 +1231,13 @@ public class SearchPopupWindow extends PopupWindow implements
 
     //特色
     class JointUniqueAdapter extends CommonListAdapter<DirectoryBean.DataBean> {
-        private Map<Integer, String> map;
 
         @SuppressLint("UseSparseArrays")
         public JointUniqueAdapter(Context context, List<DirectoryBean.DataBean> list) {
             super(context, R.layout.item_house_decroation, list);
-            map = new HashMap<>();
+            if (jointUniqueMap == null) {
+                jointUniqueMap = new HashMap<>();
+            }
         }
 
         @Override
@@ -1163,16 +1246,16 @@ public class SearchPopupWindow extends PopupWindow implements
             cbType.setText(bean.getDictCname());
             cbType.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (isChecked) {
-                    if (map.size() >= 4) {
+                    if (jointUniqueMap.size() >= 4) {
                         cbType.setChecked(false);
                         ToastUtils.toastForShort(mContext, "最多选择4项");
                         return;
                     }
-                    if (!map.containsKey(bean.getDictValue())) {
-                        map.put(bean.getDictValue(), bean.getDictCname());
+                    if (!jointUniqueMap.containsKey(bean.getDictValue())) {
+                        jointUniqueMap.put(bean.getDictValue(), bean.getDictCname());
                     }
                 } else {
-                    map.remove(bean.getDictValue());
+                    jointUniqueMap.remove(bean.getDictValue());
                 }
             });
         }
@@ -1198,7 +1281,7 @@ public class SearchPopupWindow extends PopupWindow implements
                 if (isChecked) {
                     checkedPos = holder.getAdapterPosition();
                     if (!rvOpenSeatsRent.isComputingLayout()) {
-                        setEditText(bean.getKey(), etOpenSeatsRentMin, etOpenSeatsRentMax);
+                        showEditText(bean.getKey(), etOpenSeatsRentMin, etOpenSeatsRentMax);
                         notifyDataSetChanged();
                     }
                 }
@@ -1208,12 +1291,13 @@ public class SearchPopupWindow extends PopupWindow implements
 
     //品牌
     class OpenBrandAdapter extends CommonListAdapter<DirectoryBean.DataBean> {
-        private Map<Integer, String> map;
 
         @SuppressLint("UseSparseArrays")
         public OpenBrandAdapter(Context context, List<DirectoryBean.DataBean> list) {
             super(context, R.layout.item_house_decroation, list);
-            map = new HashMap<>();
+            if (openBrandMap == null) {
+                openBrandMap = new HashMap<>();
+            }
         }
 
         @Override
@@ -1222,11 +1306,11 @@ public class SearchPopupWindow extends PopupWindow implements
             cbType.setText(bean.getDictCname());
             cbType.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (isChecked) {
-                    if (!map.containsKey(bean.getDictValue())) {
-                        map.put(bean.getDictValue(), bean.getDictCname());
+                    if (!openBrandMap.containsKey(bean.getDictValue())) {
+                        openBrandMap.put(bean.getDictValue(), bean.getDictCname());
                     }
                 } else {
-                    map.remove(bean.getDictValue());
+                    openBrandMap.remove(bean.getDictValue());
                 }
             });
         }
@@ -1234,12 +1318,13 @@ public class SearchPopupWindow extends PopupWindow implements
 
     //特色
     class OpenUniqueAdapter extends CommonListAdapter<DirectoryBean.DataBean> {
-        private Map<Integer, String> map;
 
         @SuppressLint("UseSparseArrays")
         public OpenUniqueAdapter(Context context, List<DirectoryBean.DataBean> list) {
             super(context, R.layout.item_house_decroation, list);
-            map = new HashMap<>();
+            if (openUniqueMap == null) {
+                openUniqueMap = new HashMap<>();
+            }
         }
 
         @Override
@@ -1248,16 +1333,16 @@ public class SearchPopupWindow extends PopupWindow implements
             cbType.setText(bean.getDictCname());
             cbType.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (isChecked) {
-                    if (map.size() >= 4) {
+                    if (openUniqueMap.size() >= 4) {
                         cbType.setChecked(false);
                         ToastUtils.toastForShort(mContext, "最多选择4项");
                         return;
                     }
-                    if (!map.containsKey(bean.getDictValue())) {
-                        map.put(bean.getDictValue(), bean.getDictCname());
+                    if (!openUniqueMap.containsKey(bean.getDictValue())) {
+                        openUniqueMap.put(bean.getDictValue(), bean.getDictCname());
                     }
                 } else {
-                    map.remove(bean.getDictValue());
+                    openUniqueMap.remove(bean.getDictValue());
                 }
             });
         }
@@ -1283,7 +1368,7 @@ public class SearchPopupWindow extends PopupWindow implements
                 if (isChecked) {
                     checkedPos = holder.getAdapterPosition();
                     if (!rvOfficeArea.isComputingLayout()) {
-                        setEditText(bean.getKey(), etOfficeAreaMin, etOfficeAreaMax);
+                        showEditText(bean.getKey(), etOfficeAreaMin, etOfficeAreaMax);
                         notifyDataSetChanged();
                     }
                 }
@@ -1308,7 +1393,7 @@ public class SearchPopupWindow extends PopupWindow implements
                 if (isChecked) {
                     checkedPos = holder.getAdapterPosition();
                     if (!rvOfficeRent.isComputingLayout()) {
-                        setEditText(bean.getKey(), etOfficeRentMin, etOfficeRentMax);
+                        showEditText(bean.getKey(), etOfficeRentMin, etOfficeRentMax);
                         notifyDataSetChanged();
                     }
                 }
@@ -1333,7 +1418,7 @@ public class SearchPopupWindow extends PopupWindow implements
                 if (isChecked) {
                     checkedPos = holder.getAdapterPosition();
                     if (!rvOfficeSeats.isComputingLayout()) {
-                        setEditText(bean.getKey(), etOfficeSeatsMin, etOfficeSeatsMax);
+                        showEditText(bean.getKey(), etOfficeSeatsMin, etOfficeSeatsMax);
                         notifyDataSetChanged();
                     }
                 }
@@ -1361,6 +1446,7 @@ public class SearchPopupWindow extends PopupWindow implements
                 cbType.setChecked(true);
                 checkedPos = holder.getAdapterPosition();
                 if (!rvGardenDecorate.isComputingLayout()) {
+                    officeDecoration = bean.getDictValue();
                     notifyDataSetChanged();
                 }
             });
@@ -1369,12 +1455,13 @@ public class SearchPopupWindow extends PopupWindow implements
 
     //特色
     class OfficeUniqueAdapter extends CommonListAdapter<DirectoryBean.DataBean> {
-        private Map<Integer, String> map;
 
         @SuppressLint("UseSparseArrays")
         public OfficeUniqueAdapter(Context context, List<DirectoryBean.DataBean> list) {
             super(context, R.layout.item_house_decroation, list);
-            map = new HashMap<>();
+            if (officeMap == null) {
+                officeMap = new HashMap<>();
+            }
         }
 
         @Override
@@ -1383,16 +1470,16 @@ public class SearchPopupWindow extends PopupWindow implements
             tvName.setText(bean.getDictCname());
             tvName.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (isChecked) {
-                    if (map.size() >= 4) {
+                    if (officeMap.size() >= 4) {
                         tvName.setChecked(false);
                         ToastUtils.toastForShort(mContext, "最多选择4项");
                         return;
                     }
-                    if (!map.containsKey(bean.getDictValue())) {
-                        map.put(bean.getDictValue(), bean.getDictCname());
+                    if (!officeMap.containsKey(bean.getDictValue())) {
+                        officeMap.put(bean.getDictValue(), bean.getDictCname());
                     }
                 } else {
-                    map.remove(bean.getDictValue());
+                    officeMap.remove(bean.getDictValue());
                 }
 
             });
@@ -1419,7 +1506,7 @@ public class SearchPopupWindow extends PopupWindow implements
                 if (isChecked) {
                     checkedPos = holder.getAdapterPosition();
                     if (!rvGardenArea.isComputingLayout()) {
-                        setEditText(bean.getKey(), etGardenAreaMin, etGardenAreaMax);
+                        showEditText(bean.getKey(), etGardenAreaMin, etGardenAreaMax);
                         notifyDataSetChanged();
                     }
                 }
@@ -1444,7 +1531,7 @@ public class SearchPopupWindow extends PopupWindow implements
                 if (isChecked) {
                     checkedPos = holder.getAdapterPosition();
                     if (!rvGardenRent.isComputingLayout()) {
-                        setEditText(bean.getKey(), etGardenRentMin, etGardenRentMax);
+                        showEditText(bean.getKey(), etGardenRentMin, etGardenRentMax);
                         notifyDataSetChanged();
                     }
                 }
@@ -1469,7 +1556,7 @@ public class SearchPopupWindow extends PopupWindow implements
                 if (isChecked) {
                     checkedPos = holder.getAdapterPosition();
                     if (!rvGardenSeats.isComputingLayout()) {
-                        setEditText(bean.getKey(), etGardenSeatsMin, etGardenSeatsMax);
+                        showEditText(bean.getKey(), etGardenSeatsMin, etGardenSeatsMax);
                         notifyDataSetChanged();
                     }
                 }
@@ -1498,6 +1585,7 @@ public class SearchPopupWindow extends PopupWindow implements
                 cbType.setChecked(true);
                 checkedPos = holder.getAdapterPosition();
                 if (!rvGardenDecorate.isComputingLayout()) {
+                    gardenDecoration = bean.getDictValue();
                     notifyDataSetChanged();
                 }
             });
@@ -1506,12 +1594,13 @@ public class SearchPopupWindow extends PopupWindow implements
 
     //特色
     class GardenUniqueAdapter extends CommonListAdapter<DirectoryBean.DataBean> {
-        private Map<Integer, String> map;
 
         @SuppressLint("UseSparseArrays")
         public GardenUniqueAdapter(Context context, List<DirectoryBean.DataBean> list) {
             super(context, R.layout.item_house_decroation, list);
-            map = new HashMap<>();
+            if (gardenMap == null) {
+                gardenMap = new HashMap<>();
+            }
         }
 
         @Override
@@ -1520,26 +1609,49 @@ public class SearchPopupWindow extends PopupWindow implements
             cbType.setText(bean.getDictCname());
             cbType.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (isChecked) {
-                    if (map.size() >= 4) {
+                    if (gardenMap.size() >= 4) {
                         cbType.setChecked(false);
                         ToastUtils.toastForShort(mContext, "最多选择4项");
                         return;
                     }
-                    if (!map.containsKey(bean.getDictValue())) {
-                        map.put(bean.getDictValue(), bean.getDictCname());
+                    if (!gardenMap.containsKey(bean.getDictValue())) {
+                        gardenMap.put(bean.getDictValue(), bean.getDictCname());
                     }
                 } else {
-                    map.remove(bean.getDictValue());
+                    gardenMap.remove(bean.getDictValue());
                 }
 
             });
         }
     }
 
-    private void setEditText(String value, EditText min, EditText max) {
+    private void showEditText(String value, EditText min, EditText max) {
         String a = value.substring(0, value.indexOf(","));
         String b = value.substring(a.length() + 1);
         min.setText((TextUtils.equals("0", a)) ? "" : a);
         max.setText((TextUtils.equals(CommonList.SEARCH_MAX, b)) ? "" : b);
+    }
+
+    private int getEditMin(EditText min) {
+        String text = min.getText().toString().trim();
+        if (TextUtils.isEmpty(text)) {
+            return 0;
+        }
+        return Integer.parseInt(text);
+    }
+
+    private int getEditMax(EditText max) {
+        String text = max.getText().toString().trim();
+        if (TextUtils.isEmpty(text)) {
+            return Integer.parseInt(CommonList.SEARCH_MAX);
+        }
+        return Integer.parseInt(text);
+    }
+
+    private String setEditText(EditText min, EditText max) {
+        if (getEditMin(min) > getEditMax(max)) {
+            return getEditMax(max) + "," + getEditMin(min);
+        }
+        return getEditMin(min) + "," + getEditMax(max);
     }
 }

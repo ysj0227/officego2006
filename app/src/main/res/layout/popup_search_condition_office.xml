@@ -22,7 +22,7 @@
 
     <EditText
         android:id="@+id/et_office_area_min"
-        android:layout_width="@dimen/dp_160"
+        android:layout_width="@dimen/dp_158"
         android:layout_height="@dimen/dp_34"
         android:layout_below="@id/rv_office_area"
         android:background="@drawable/button_text_selector"
@@ -47,7 +47,7 @@
 
     <EditText
         android:id="@+id/et_office_area_max"
-        android:layout_width="@dimen/dp_160"
+        android:layout_width="@dimen/dp_158"
         android:layout_height="@dimen/dp_34"
         android:layout_below="@id/rv_office_area"
         android:layout_toEndOf="@id/tv_office_area_line"
@@ -80,7 +80,7 @@
 
     <EditText
         android:id="@+id/et_office_rent_min"
-        android:layout_width="@dimen/dp_160"
+        android:layout_width="@dimen/dp_158"
         android:layout_height="@dimen/dp_34"
         android:layout_below="@id/rv_office_rent"
         android:background="@drawable/button_text_selector"
@@ -105,7 +105,7 @@
 
     <EditText
         android:id="@+id/et_office_rent_max"
-        android:layout_width="@dimen/dp_160"
+        android:layout_width="@dimen/dp_158"
         android:layout_height="@dimen/dp_34"
         android:layout_below="@id/rv_office_rent"
         android:layout_toEndOf="@id/tv_office_rent_line"
@@ -138,7 +138,7 @@
 
     <EditText
         android:id="@+id/et_office_seats_min"
-        android:layout_width="@dimen/dp_160"
+        android:layout_width="@dimen/dp_158"
         android:layout_height="@dimen/dp_34"
         android:layout_below="@id/rv_office_seats"
         android:background="@drawable/button_text_selector"
@@ -163,7 +163,7 @@
 
     <EditText
         android:id="@+id/et_office_seats_max"
-        android:layout_width="@dimen/dp_160"
+        android:layout_width="@dimen/dp_158"
         android:layout_height="@dimen/dp_34"
         android:layout_below="@id/rv_office_seats"
         android:layout_toEndOf="@id/tv_office_seats_line"

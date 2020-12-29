@@ -29,7 +29,9 @@ import com.officego.ui.home.contract.HomeContract;
 import com.officego.ui.home.model.BannerBean;
 import com.officego.ui.home.model.BuildingBean;
 import com.officego.ui.home.model.ConditionBean;
+import com.officego.ui.home.model.ConditionSearchBean;
 import com.officego.ui.home.presenter.HomePresenter;
+import com.officego.utils.CommonList;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -96,11 +98,11 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
     private boolean hasMore;
     //所有的筛选条件
     private int btype = 0;
-    private Map<Integer, String> mapDecoration;//装修类型
     private HashSet<Integer> hashSet;//地铁商圈的传值
     private SparseBooleanArray checkStates; //记录选中的位置
     private String district = "", business = "", line = "", nearbySubway = "",
             area = "", dayPrice = "", seats = "", decoration = "", houseTags = "", sort = "0";
+    private ConditionSearchBean mSearchData;
     private List<DirectoryBean.DataBean> decorationList;
     private List<DirectoryBean.DataBean> buildingUniqueList;
     private List<DirectoryBean.DataBean> jointWorkUniqueList;
@@ -150,30 +152,9 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
      * pageSize 	否 	int 	每页条数
      */
     private void getBuildingList() {
-        String mArea = "", mDayPrice = "", mSeats = "";
-        if (btype == 1) {
-            if (TextUtils.equals("", area) || TextUtils.equals("0,2000", area)) {
-                mArea = "0,999999999";
-            } else {
-                mArea = area;
-            }
-            if (TextUtils.equals("", dayPrice) || TextUtils.equals("0,50", dayPrice)) {
-                mDayPrice = "0,999999999";
-            } else {
-                mDayPrice = dayPrice;
-            }
-        } else if (btype == 2) {
-            if (TextUtils.equals("", dayPrice) || TextUtils.equals("0,50000", dayPrice)) {
-                mDayPrice = "0,999999999";
-            } else {
-                mDayPrice = dayPrice;
-            }
-            if (TextUtils.equals("", seats) || TextUtils.equals("0,30", seats)) {
-                mSeats = "0,999999999";
-            } else {
-                mSeats = seats;
-            }
-        }
+        String mArea = TextUtils.isEmpty(area) ? "0," + CommonList.SEARCH_MAX : area;
+        String mDayPrice = TextUtils.isEmpty(dayPrice) ? "0," + CommonList.SEARCH_MAX : dayPrice;
+        String mSeats = TextUtils.isEmpty(seats) ? "0," + CommonList.SEARCH_MAX : seats;
         mPresenter.getBuildingList(pageNum, String.valueOf(btype), district, business,
                 line, nearbySubway, mArea, mDayPrice, mSeats,
                 decoration, houseTags, sort, searchKeywords);
@@ -252,7 +233,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
                 ContextCompat.getDrawable(context, R.mipmap.ic_arrow_up_blue), null);
         popupWindow = new SearchPopupWindow(this, ctlSearch, textView, searchType,
                 btype, hashSet, checkStates, district, business, line, nearbySubway, sort,
-                decorationList, buildingUniqueList, jointWorkUniqueList, brandList);
+                decorationList, buildingUniqueList, jointWorkUniqueList, brandList,mSearchData);
         popupWindow.setOnSureClickListener(this);
     }
 
@@ -342,15 +323,14 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
 
     //筛选
     @Override
-    public void onConditionPopUpWindow(int searchType, int btype, String constructionArea,
-                                       String rentPrice, String simple, String decoration, String tags, Map<Integer, String> mapDecoration) {
+    public void onConditionPopUpWindow(int btype, ConditionSearchBean bean) {
+        mSearchData = bean;
         this.btype = btype;
-        this.area = constructionArea;
-        this.dayPrice = rentPrice;
-        this.seats = simple;
-        this.decoration = decoration;
-        this.houseTags = tags;
-        this.mapDecoration = mapDecoration;
+        this.area = bean.getArea();
+        this.dayPrice = bean.getRent();
+        this.seats = bean.getSeats();
+        this.decoration = bean.getDecoration();
+        this.houseTags = bean.getUnique();
         ConditionConfig.mConditionBean = setConditionBean();
         if (btype == 0) {
             tvSearchOffice.setText(R.string.str_house_all);

@@ -23,7 +23,7 @@
 
     <EditText
         android:id="@+id/et_open_seats_rent_min"
-        android:layout_width="@dimen/dp_160"
+        android:layout_width="@dimen/dp_158"
         android:layout_height="@dimen/dp_34"
         android:layout_below="@id/rv_open_seats_rent"
         android:background="@drawable/button_text_selector"
@@ -48,7 +48,7 @@
 
     <EditText
         android:id="@+id/et_open_seats_rent_max"
-        android:layout_width="@dimen/dp_160"
+        android:layout_width="@dimen/dp_158"
         android:layout_height="@dimen/dp_34"
         android:layout_below="@id/rv_open_seats_rent"
         android:layout_toEndOf="@id/tv_open_seats_rent_line"
