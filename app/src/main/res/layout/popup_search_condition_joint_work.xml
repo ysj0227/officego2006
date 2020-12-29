@@ -8,7 +8,6 @@
         android:id="@+id/tv_joint_work_seats"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_16"
         android:text="工位"
         android:textColor="@color/text_main"
         android:textSize="@dimen/sp_13"

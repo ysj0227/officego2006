@@ -17,6 +17,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
+import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
@@ -51,6 +52,10 @@ import java.util.Map;
 public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> implements
         HomeContract.View, SearchPopupWindow.onSureClickListener,
         SwipeRefreshLayout.OnRefreshListener, HouseAdapter.ClickItemListener {
+    private final int SEARCH_TYPE0 = 0;
+    private final int SEARCH_TYPE1 = 1;
+    private final int SEARCH_TYPE2 = 2;
+    private final int SEARCH_TYPE3 = 3;
     @ViewById(R.id.btn_back)
     LinearLayout btnBack;
     @ViewById(R.id.et_search)
@@ -96,6 +101,10 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
     private SparseBooleanArray checkStates; //记录选中的位置
     private String district = "", business = "", line = "", nearbySubway = "",
             area = "", dayPrice = "", seats = "", decoration = "", houseTags = "", sort = "0";
+    private List<DirectoryBean.DataBean> decorationList;
+    private List<DirectoryBean.DataBean> buildingUniqueList;
+    private List<DirectoryBean.DataBean> jointWorkUniqueList;
+    private List<DirectoryBean.DataBean> brandList;
 
     @AfterViews
     void init() {
@@ -197,22 +206,39 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
 
     @Click(R.id.rl_search_area)
     void searchAreaClick() {
-        popupWindowSearch(tvSearchArea, 0);
+        popupWindowSearch(tvSearchArea, SEARCH_TYPE0);
     }
 
     @Click(R.id.rl_search_office)
     void searchOfficeClick() {
-        popupWindowSearch(tvSearchOffice, 1);
+        popupWindowSearch(tvSearchOffice, SEARCH_TYPE1);
     }
 
     @Click(R.id.rl_search_order)
     void searchOrderClick() {
-        popupWindowSearch(tvSearchOrder, 2);
+        popupWindowSearch(tvSearchOrder, SEARCH_TYPE2);
     }
 
     @Click(R.id.rl_search_condition)
     void searchConditionClick() {
-        popupWindowSearch(tvSearchCondition, 3);
+        if (decorationList == null || buildingUniqueList == null ||
+                jointWorkUniqueList == null || brandList == null) {
+            mPresenter.getConditionList();
+        } else {
+            popupWindowSearch(tvSearchCondition, SEARCH_TYPE3);
+        }
+    }
+
+    @Override
+    public void conditionListSuccess(List<DirectoryBean.DataBean> decorationList,
+                                     List<DirectoryBean.DataBean> buildingUniqueList,
+                                     List<DirectoryBean.DataBean> jointWorkUniqueList,
+                                     List<DirectoryBean.DataBean> brandList) {
+        this.decorationList = decorationList;
+        this.buildingUniqueList = buildingUniqueList;
+        this.jointWorkUniqueList = jointWorkUniqueList;
+        this.brandList = brandList;
+        popupWindowSearch(tvSearchCondition, SEARCH_TYPE3);
     }
 
     private void popupWindowSearch(TextView textView, int searchType) {
@@ -225,8 +251,8 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
         textView.setCompoundDrawablesWithIntrinsicBounds(null, null,
                 ContextCompat.getDrawable(context, R.mipmap.ic_arrow_up_blue), null);
         popupWindow = new SearchPopupWindow(this, ctlSearch, textView, searchType,
-                btype, hashSet, checkStates, district, business,
-                line, nearbySubway, sort);
+                btype, hashSet, checkStates, district, business, line, nearbySubway, sort,
+                decorationList, buildingUniqueList, jointWorkUniqueList, brandList);
         popupWindow.setOnSureClickListener(this);
     }
 
@@ -250,11 +276,6 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
         initAdapter();
         buildingList.addAll(list);
         houseAdapter.notifyDataSetChanged();
-    }
-
-    @Override
-    public void BuildingListFail(int code, String msg) {
-        netException();
     }
 
     //初始化adapter
@@ -319,6 +340,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
         getList();
     }
 
+    //筛选
     @Override
     public void onConditionPopUpWindow(int searchType, int btype, String constructionArea,
                                        String rentPrice, String simple, String decoration, String tags, Map<Integer, String> mapDecoration) {

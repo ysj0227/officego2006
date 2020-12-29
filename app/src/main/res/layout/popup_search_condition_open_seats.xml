@@ -9,7 +9,6 @@
         android:id="@+id/tv_open_seats_rent"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_16"
         android:text="租金(元/工位/月)"
         android:textColor="@color/text_main"
         android:textSize="@dimen/sp_13"

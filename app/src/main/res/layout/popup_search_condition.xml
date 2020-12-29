@@ -132,7 +132,7 @@
                         layout="@layout/popup_search_condition_office"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:visibility="visible" />
+                        android:visibility="gone" />
 
                 </RelativeLayout>
 
