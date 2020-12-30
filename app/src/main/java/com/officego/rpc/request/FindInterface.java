@@ -33,7 +33,7 @@ public interface FindInterface {
 
     /**
      * @param
-     * @return 装修类型
+     * @return 类型
      */
     @Multipart
     @POST(path + "dictionary/getDictionary")

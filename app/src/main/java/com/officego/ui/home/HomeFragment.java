@@ -7,7 +7,6 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.GridLayoutManager;
@@ -16,7 +15,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.officego.R;
-import com.officego.commonlib.base.BaseFragment;
 import com.officego.commonlib.base.BaseMvpFragment;
 import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.common.sensors.SensorsTrack;
@@ -24,7 +22,6 @@ import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.update.VersionDialog;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.view.OnLoadMoreListener;
 import com.officego.h5.WebViewBannerActivity_;
 import com.officego.h5.WebViewCouponActivity_;
 import com.officego.ui.adapter.BrandAdapter;
@@ -33,6 +30,7 @@ import com.officego.ui.adapter.NewsAdapter;
 import com.officego.ui.home.animation.CustomRotateAnim;
 import com.officego.ui.home.contract.HomeContract;
 import com.officego.ui.home.model.BannerBean;
+import com.officego.ui.home.model.BrandRecommendBean;
 import com.officego.ui.home.model.TodayReadBean;
 import com.officego.ui.home.presenter.HomePresenter;
 import com.officego.utils.ImageLoaderUtils;
@@ -68,6 +66,8 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     Banner banner;
     @ViewById(R.id.rl_news)
     RelativeLayout rlNews;
+    @ViewById(R.id.rl_brand)
+    RelativeLayout rlBrand;
     @ViewById(R.id.rv_news)
     RecyclerView rvNews;
     @ViewById(R.id.rv_brand)
@@ -100,7 +100,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         initRefresh();
         new VersionDialog(mActivity);
         getData();
-        testBrand();
         testHotsList();
         showAnimation();
     }
@@ -120,12 +119,13 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         mSwipeRefreshLayout.setProgressViewOffset(true, -20, 160);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.common_blue_main_80a, R.color.common_blue_main);
         //解决下拉刷新快速滑动crash
-        rvHots.setOnTouchListener((view, motionEvent) -> mSwipeRefreshLayout != null && mSwipeRefreshLayout.isRefreshing());
+        nsvView.setOnTouchListener((view, motionEvent) -> mSwipeRefreshLayout != null && mSwipeRefreshLayout.isRefreshing());
     }
 
     private void getData() {
-        mPresenter.getTodayRead();
         mPresenter.getBannerList();
+        mPresenter.getTodayRead();
+        mPresenter.getBrandManagement();
     }
 
     @Click({R.id.tv_all_house, R.id.btn_query_more})
@@ -161,14 +161,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         isCloseIdentity = true;
         rlIdentity.clearAnimation();
         rlIdentity.setVisibility(View.GONE);
-    }
-
-    private void testBrand() {
-        List<String> listBrand = new ArrayList<>();
-        for (int i = 0; i < 4; i++) {
-            listBrand.add("https://img.officego.com/building/1600411301880.png?x-oss-process=style/small");
-        }
-        rvBrand.setAdapter(new BrandAdapter(mActivity, listBrand));
     }
 
     private void testHotsList() {
@@ -267,8 +259,21 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     }
 
     @Override
-    public void todayReadFail(boolean isShowView) {
+    public void todayReadFail() {
         rlNews.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void brandSuccess(boolean isShowView, List<BrandRecommendBean.DataBean> dataList) {
+        rlBrand.setVisibility(isShowView ? View.VISIBLE : View.GONE);
+        if (isShowView) {
+            rvBrand.setAdapter(new BrandAdapter(mActivity, dataList));
+        }
+    }
+
+    @Override
+    public void brandFail() {
+        rlBrand.setVisibility(View.GONE);
     }
 
     //下拉刷新
@@ -326,7 +331,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
             return;
         }
         //设置内置样式，共有六种可以点入方法内逐一体验使用。
-          banner.setBannerStyle(BannerConfig.NOT_INDICATOR);
+        banner.setBannerStyle(BannerConfig.NOT_INDICATOR);
         //设置图片加载器，图片加载器在下方
         banner.setImageLoader(new ImageLoaderUtils(mActivity));
         banner.setImages(bannerList);

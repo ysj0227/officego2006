@@ -28,6 +28,7 @@ import com.officego.rpc.request.SearchAreaInterface;
 import com.officego.ui.collect.model.CollectBuildingBean;
 import com.officego.ui.collect.model.CollectHouseBean;
 import com.officego.ui.home.model.BannerBean;
+import com.officego.ui.home.model.BrandRecommendBean;
 import com.officego.ui.home.model.BuildingBean;
 import com.officego.ui.home.model.BuildingDetailsBean;
 import com.officego.ui.home.model.BuildingDetailsChildBean;
@@ -156,31 +157,13 @@ public class OfficegoApi {
     }
 
     /**
-     * 我想找
-     * token 	是 	string 	根据token解析用户id
-     * btype 	是 	int 	类型,1:楼盘 写字楼,2:网点 共享办公
-     * area 	是 	String 	建筑面积 范围值,逗号分隔
-     * dayPrice 	是 	String 	租金 范围值,逗号分隔
-     * seats 	是 	String 	工位数范围,逗号分隔
-     * decoration 	是 	String 	装修类型 字典数据
-     * houseTags 	是 	String 	房源特色,字典数据
+     * 品牌
      */
-
-
-    public void wantToFind(String btype, String constructionArea, String rentPrice,
-                           String seats, String decoration, String houseTags,
-                           RetrofitCallback<Object> callback) {
-        LogCat.e(TAG, "Token=" + SpUtils.getSignToken());
+    public void brandList(RetrofitCallback<List<DirectoryBean.DataBean>> callback) {
         Map<String, RequestBody> map = new HashMap<>();
-        map.put("token", requestBody(SpUtils.getSignToken()));
-        map.put("btype", requestBody(btype)); //1:楼盘 写字楼,2:网点 共享办公
-        map.put("area", requestBody(constructionArea));
-        map.put("dayPrice", requestBody(rentPrice));
-        map.put("seats", requestBody(seats));
-        map.put("decoration", requestBody(decoration));
-        map.put("houseTags", requestBody(houseTags));
+        map.put("code", requestBody("brandManagement"));
         OfficegoRetrofitClient.getInstance().create(FindInterface.class)
-                .wantToFind(map)
+                .getDecoratedType(map)
                 .enqueue(callback);
     }
 
@@ -762,6 +745,18 @@ public class OfficegoApi {
         map.put("channel", requestBody("2"));
         OfficegoRetrofitClient.getInstance().create(HomeInterface.class)
                 .todayNews(map)
+                .enqueue(callback);
+    }
+
+    /**
+     * 品牌入驻
+     */
+    public void brandManagement(RetrofitCallback<List<BrandRecommendBean.DataBean>> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("channel", requestBody("2"));
+        OfficegoRetrofitClient.getInstance().create(HomeInterface.class)
+                .getBrandManagement(map)
                 .enqueue(callback);
     }
 

@@ -7,6 +7,7 @@ import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.rpc.OfficegoApi;
 import com.officego.ui.home.contract.HomeContract;
 import com.officego.ui.home.model.BannerBean;
+import com.officego.ui.home.model.BrandRecommendBean;
 import com.officego.ui.home.model.TodayReadBean;
 
 import java.util.ArrayList;
@@ -66,7 +67,28 @@ public class HomePresenter extends BasePresenter<HomeContract.View> implements H
             @Override
             public void onFail(int code, String msg, List<TodayReadBean.DataBean> data) {
                 if (isViewAttached()) {
-                    mView.todayReadFail(false);
+                    mView.todayReadFail();
+                    mView.endRefresh();
+                }
+            }
+        });
+    }
+    //品牌入驻
+    @Override
+    public void getBrandManagement() {
+        OfficegoApi.getInstance().brandManagement(new RetrofitCallback<List<BrandRecommendBean.DataBean>>() {
+            @Override
+            public void onSuccess(int code, String msg, List<BrandRecommendBean.DataBean> data) {
+                if (isViewAttached()) {
+                    mView.brandSuccess(data != null && data.size() > 0, data);
+                    mView.endRefresh();
+                }
+            }
+
+            @Override
+            public void onFail(int code, String msg, List<BrandRecommendBean.DataBean> data) {
+                if (isViewAttached()) {
+                    mView.brandFail();
                     mView.endRefresh();
                 }
             }

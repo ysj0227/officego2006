@@ -3,6 +3,7 @@ package com.officego.ui.home.contract;
 import com.officego.commonlib.base.BaseView;
 import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.ui.home.model.BannerBean;
+import com.officego.ui.home.model.BrandRecommendBean;
 import com.officego.ui.home.model.BuildingBean;
 import com.officego.ui.home.model.TodayReadBean;
 
@@ -23,7 +24,11 @@ public interface HomeContract {
 
         void todayReadSuccess(boolean isShowView, List<TodayReadBean.DataBean> dataList);
 
-        void todayReadFail(boolean isShowView);
+        void todayReadFail();
+
+        void brandSuccess(boolean isShowView, List<BrandRecommendBean.DataBean> dataList);
+
+        void brandFail();
     }
 
     interface Presenter {
@@ -31,6 +36,8 @@ public interface HomeContract {
         void getBannerList();
 
         void getTodayRead();
+
+        void getBrandManagement();
 
     }
 }

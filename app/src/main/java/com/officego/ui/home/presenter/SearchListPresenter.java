@@ -149,16 +149,10 @@ public class SearchListPresenter extends BasePresenter<SearchListContract.View> 
             }
         });
         //品牌
-        OfficegoApi.getInstance().getDecoratedType(new RetrofitCallback<List<DirectoryBean.DataBean>>() {
+        OfficegoApi.getInstance().brandList(new RetrofitCallback<List<DirectoryBean.DataBean>>() {
             @Override
             public void onSuccess(int code, String msg, List<DirectoryBean.DataBean> data) {
-                DirectoryBean.DataBean bean;
-                for (int i = 0; i < 5; i++) {
-                    bean=new DirectoryBean.DataBean();
-                    bean.setDictCname("品牌"+i);
-                    bean.setDictValue(i);
-                    brandList.add(bean);
-                }
+                brandList = data;
                 conditionListSuccess();
             }
 

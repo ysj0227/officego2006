@@ -1,6 +1,7 @@
 package com.officego.rpc.request;
 
 import com.officego.commonlib.retrofit.BaseResponse;
+import com.officego.ui.home.model.BrandRecommendBean;
 import com.officego.ui.home.model.BuildingBean;
 import com.officego.ui.home.model.BuildingDetailsBean;
 import com.officego.ui.home.model.BuildingDetailsChildBean;
@@ -123,13 +124,6 @@ public interface HomeInterface {
     @POST(path + "house/getHousebyHouseIdPreviewApp")
     Call<BaseResponse<HouseOfficeDetailsJointWorkBean>> selectHousebyJointWorkHouseIdOwner(@PartMap Map<String, RequestBody> params);
 
-    /**
-     * 今日看点
-     */
-    @Multipart
-    @POST(path + "building/getReadTodayById")
-    Call<BaseResponse<List<TodayReadBean.DataBean>>> todayNews(@PartMap Map<String, RequestBody> params);
-
 
     /**
      * 我想找
@@ -137,5 +131,19 @@ public interface HomeInterface {
     @Multipart
     @POST(path + "building/addWantGoBuildTemp")
     Call<BaseResponse<Object>> wantToFind(@PartMap Map<String, RequestBody> params);
+
+    /**
+     * 今日看点
+     */
+    @Multipart
+    @POST(path + "building/getReadTodayById")
+    Call<BaseResponse<List<TodayReadBean.DataBean>>> todayNews(@PartMap Map<String, RequestBody> params);
+
+    /**
+     * 品牌入驻
+     */
+    @Multipart
+    @POST(path + "building/getBrandManagement")
+    Call<BaseResponse<List<BrandRecommendBean.DataBean>>> getBrandManagement(@PartMap Map<String, RequestBody> params);
 
 }
