@@ -7,7 +7,9 @@ import com.officego.ui.home.model.BuildingDetailsChildBean;
 import com.officego.ui.home.model.BuildingJointWorkBean;
 import com.officego.ui.home.model.HouseOfficeDetailsBean;
 import com.officego.ui.home.model.HouseOfficeDetailsJointWorkBean;
+import com.officego.ui.home.model.TodayReadBean;
 
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.RequestBody;
@@ -126,7 +128,7 @@ public interface HomeInterface {
      */
     @Multipart
     @POST(path + "building/getReadTodayById")
-    Call<BaseResponse<HouseOfficeDetailsJointWorkBean>> todayNews(@PartMap Map<String, RequestBody> params);
+    Call<BaseResponse<List<TodayReadBean.DataBean>>> todayNews(@PartMap Map<String, RequestBody> params);
 
 
     /**

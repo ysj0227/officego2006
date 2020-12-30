@@ -37,6 +37,7 @@ import com.officego.ui.home.model.ChatsBean;
 import com.officego.ui.home.model.HouseOfficeDetailsBean;
 import com.officego.ui.home.model.HouseOfficeDetailsJointWorkBean;
 import com.officego.ui.home.model.MeterBean;
+import com.officego.ui.home.model.TodayReadBean;
 import com.officego.ui.mine.model.ViewingDateBean;
 import com.officego.ui.mine.model.ViewingDateDetailsBean;
 
@@ -740,9 +741,10 @@ public class OfficegoApi {
      * 我想找
      * seats=1&minimumLease=1个月&tag=1
      */
-    public void wantToFind(String seats,String minimumLease,String tag,RetrofitCallback<Object> callback) {
+    public void wantToFind(String seats, String minimumLease, String tag, RetrofitCallback<Object> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("channel", requestBody("2"));
         map.put("seats", requestBody(seats));
         map.put("minimumLease", requestBody(minimumLease));
         map.put("tag", requestBody(tag));
@@ -754,12 +756,13 @@ public class OfficegoApi {
     /**
      * 今日看点
      */
-//    public void todayNews(RetrofitCallback<Object> callback) {
-//        Map<String, RequestBody> map = new HashMap<>();
-//        map.put("token", requestBody(SpUtils.getSignToken()));
-//        OfficegoRetrofitClient.getInstance().create(HomeInterface.class)
-//                .todayNews(map)
-//                .enqueue(callback);
-//    }
+    public void todayRead(RetrofitCallback<List<TodayReadBean.DataBean>> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("channel", requestBody("2"));
+        OfficegoRetrofitClient.getInstance().create(HomeInterface.class)
+                .todayNews(map)
+                .enqueue(callback);
+    }
 
 }

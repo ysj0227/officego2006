@@ -26,12 +26,12 @@ import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.OnLoadMoreListener;
 import com.officego.config.ConditionConfig;
 import com.officego.ui.adapter.HouseAdapter;
-import com.officego.ui.home.contract.HomeContract;
+import com.officego.ui.home.contract.SearchListContract;
 import com.officego.ui.home.model.BannerBean;
 import com.officego.ui.home.model.BuildingBean;
 import com.officego.ui.home.model.ConditionBean;
 import com.officego.ui.home.model.ConditionSearchBean;
-import com.officego.ui.home.presenter.HomePresenter;
+import com.officego.ui.home.presenter.SearchListPresenter;
 import com.officego.utils.CommonList;
 
 import org.androidannotations.annotations.AfterViews;
@@ -51,8 +51,8 @@ import java.util.List;
  **/
 @SuppressLint("Registered,NonConstantResourceId")
 @EActivity(R.layout.home_activity_search_house_list)
-public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> implements
-        HomeContract.View, SearchPopupWindow.onSureClickListener,
+public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter> implements
+        SearchListContract.View, SearchPopupWindow.onSureClickListener,
         SwipeRefreshLayout.OnRefreshListener, HouseAdapter.ClickItemListener {
     private final int SEARCH_TYPE0 = 0;
     private final int SEARCH_TYPE1 = 1;
@@ -112,7 +112,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarFullTransparent(this);
-        mPresenter = new HomePresenter(context);
+        mPresenter = new SearchListPresenter(context);
         mPresenter.attachView(this);
         initRefresh();
         btnBack.setVisibility(View.VISIBLE);

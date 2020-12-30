@@ -30,7 +30,6 @@
             android:layout_alignParentBottom="true"
             android:layout_marginStart="@dimen/dp_6"
             android:paddingBottom="@dimen/dp_20"
-            android:text="#午间小憩#"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_12" />
 
@@ -41,7 +40,6 @@
             android:layout_alignParentBottom="true"
             android:layout_marginStart="@dimen/dp_6"
             android:paddingBottom="@dimen/dp_5"
-            android:text="你多久没运动了？"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_10" />
 
