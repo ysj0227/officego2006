@@ -49,6 +49,7 @@ import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Enumeration;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Locale;
 import java.util.Map;
@@ -578,6 +579,18 @@ public class CommonHelper {
         return key.toString();
     }
 
+    public static Map<Integer, String> stringToMap(String str) {
+        if (TextUtils.isEmpty(str)) {
+            return null;
+        }
+        Map<Integer, String> map = new HashMap<>();
+        String[] list = str.split(",");
+        for (String s : list) {
+            map.put(Integer.parseInt(s), "");
+        }
+        return map;
+    }
+
     public static List<String> stringList(String str) {
         List<String> result;
         if (!TextUtils.isEmpty(str)) {
@@ -624,4 +637,5 @@ public class CommonHelper {
         }
         return data;
     }
+
 }

@@ -13,7 +13,7 @@
         android:layout_marginTop="@dimen/dp_15"
         tools:ignore="ContentDescription" />
 
-    <CheckBox
+    <TextView
         android:id="@+id/cb_item"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

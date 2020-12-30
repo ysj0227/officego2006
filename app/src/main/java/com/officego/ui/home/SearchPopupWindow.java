@@ -36,7 +36,6 @@ import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.utils.ToastUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.rpc.OfficegoApi;
 import com.officego.ui.find.WantFindBean;
 import com.officego.ui.home.model.BusinessCircleBean;
@@ -75,6 +74,7 @@ public class SearchPopupWindow extends PopupWindow implements
     //height
     private int screenHeight, statusBarHeight, titleBarHeight, searchHeight, bottomTabBarHeight;
 
+    private RadioButton rbJointWork, rbOpenSeats, rbOffice, rbGarden;
     private View includeJointWork, includeOpenSeats, includeOffice, includeGarden;
     //共享办公
     private RecyclerView rvJointWorkRent, rvJointWorkSeats, rvJointWorkBrand, rvJointWorkCharacteristic;
@@ -130,6 +130,7 @@ public class SearchPopupWindow extends PopupWindow implements
     //办公室,园区
     private int officeDecoration, gardenDecoration;
     private Map<Integer, String> officeMap, gardenMap;
+    private ConditionSearchBean searchData;
 
     //自定义接口
     private onSureClickListener onSureClickListener;
@@ -154,7 +155,7 @@ public class SearchPopupWindow extends PopupWindow implements
         void onOfficeOrderPopUpWindow(int searchType, String order);
 
         //筛选
-        void onConditionPopUpWindow(int btype, ConditionSearchBean bean);
+        void onConditionPopUpWindow(int officeType, ConditionSearchBean bean);
     }
 
     //popupWindow设置参数
@@ -183,7 +184,7 @@ public class SearchPopupWindow extends PopupWindow implements
     @SuppressLint("ClickableViewAccessibility")
     public SearchPopupWindow(Activity activity, View topToPopupWindowView,
                              TextView setTextView, int searchType,
-                             int btype, HashSet<Integer> hashSet, SparseBooleanArray checkStates,
+                             int officeType, HashSet<Integer> hashSet, SparseBooleanArray checkStates,
                              String district, String business, String line,
                              String nearbySubway, String sort,
                              List<DirectoryBean.DataBean> decorationList,
@@ -195,7 +196,7 @@ public class SearchPopupWindow extends PopupWindow implements
         this.mContext = activity;
         this.mSetTitleView = setTextView;
         this.mSearchType = searchType;
-        this.btype = btype;
+        this.btype = officeType;
         if (TextUtils.isEmpty(district)) {
             this.mHashSetLine = hashSet;
             this.mCheckStatesLine = checkStates;
@@ -221,23 +222,27 @@ public class SearchPopupWindow extends PopupWindow implements
         this.nearbySubway = nearbySubway;
         this.sort = sort;
         //筛选
+        this.searchData = searchData;
         this.decorationList = decorationList;
         this.buildingUniqueList = buildingUniqueList;
         this.jointWorkUniqueList = jointWorkUniqueList;
         this.brandList = brandList;
-
-        //类型区分取值
-//        if (searchData!=null){
-//            searchData.get
-//        }
-//        //共享办公
-//        private Map<Integer, String> jointBrandMap, jointUniqueMap;
-//        //开放工位特色
-//        private Map<Integer, String> openBrandMap, openUniqueMap;
-//        //办公室,园区
-//        private int officeDecoration, gardenDecoration;
-//        private Map<Integer, String> officeMap, gardenMap;
-
+        //初始化设置筛选
+        if (mSearchType == 3 && searchData != null) {
+            if (btype == Constants.SEARCH_JOINT_WORK) {
+                jointBrandMap = CommonHelper.stringToMap(searchData.getBrand());
+                jointUniqueMap = CommonHelper.stringToMap(searchData.getUnique());
+            } else if (btype == Constants.SEARCH_OPEN_SEATS) {
+                openBrandMap = CommonHelper.stringToMap(searchData.getBrand());
+                openUniqueMap = CommonHelper.stringToMap(searchData.getUnique());
+            } else if (btype == Constants.SEARCH_OFFICE) {
+                officeDecoration = TextUtils.isEmpty(searchData.getDecoration()) ? 0 : Integer.parseInt(searchData.getDecoration());
+                officeMap = CommonHelper.stringToMap(searchData.getUnique());
+            } else if (btype == Constants.SEARCH_GARDEN) {
+                gardenDecoration = TextUtils.isEmpty(searchData.getDecoration()) ? 0 : Integer.parseInt(searchData.getDecoration());
+                gardenMap = CommonHelper.stringToMap(searchData.getUnique());
+            }
+        }
         //初始view
         initViews(topToPopupWindowView, searchType);
     }
@@ -512,26 +517,40 @@ public class SearchPopupWindow extends PopupWindow implements
     //写字楼,共享办公（网点） 类型1:楼盘,2:网点, 0全部
     private void handleOffice(View viewLayout) {
         TextView tvPopAll = viewLayout.findViewById(R.id.tv_pop_all);
-        TextView tvPopOffice = viewLayout.findViewById(R.id.tv_pop_office);
         TextView tvPopTenant = viewLayout.findViewById(R.id.tv_pop_tenant);
-        if (btype == 0) {
+        TextView tvPopOpenSeats = viewLayout.findViewById(R.id.tv_pop_open_seats);
+        TextView tvPopOffice = viewLayout.findViewById(R.id.tv_pop_office);
+        TextView tvPopGarden = viewLayout.findViewById(R.id.tv_pop_garden);
+        if (btype == Constants.SEARCH_ALL) {
             tvPopAll.setTextColor(ContextCompat.getColor(mContext, R.color.common_blue_main));
-        } else if (btype == 1) {
-            tvPopOffice.setTextColor(ContextCompat.getColor(mContext, R.color.common_blue_main));
-        } else if (btype == 2) {
+        } else if (btype == Constants.SEARCH_JOINT_WORK) {
             tvPopTenant.setTextColor(ContextCompat.getColor(mContext, R.color.common_blue_main));
+        } else if (btype == Constants.SEARCH_OPEN_SEATS) {
+            tvPopOpenSeats.setTextColor(ContextCompat.getColor(mContext, R.color.common_blue_main));
+        } else if (btype == Constants.SEARCH_OFFICE) {
+            tvPopOffice.setTextColor(ContextCompat.getColor(mContext, R.color.common_blue_main));
+        } else if (btype == Constants.SEARCH_GARDEN) {
+            tvPopGarden.setTextColor(ContextCompat.getColor(mContext, R.color.common_blue_main));
         }
         tvPopAll.setOnClickListener(v -> {
             dismiss();
-            onSureClickListener.onOfficeTypePopUpWindow(mSearchType, 0, R.string.str_house_all);
-        });
-        tvPopOffice.setOnClickListener(v -> {
-            dismiss();
-            onSureClickListener.onOfficeTypePopUpWindow(mSearchType, 1, R.string.str_house_office);
+            onSureClickListener.onOfficeTypePopUpWindow(mSearchType, Constants.SEARCH_ALL, R.string.str_house_all);
         });
         tvPopTenant.setOnClickListener(v -> {
             dismiss();
-            onSureClickListener.onOfficeTypePopUpWindow(mSearchType, 2, R.string.str_house_tenant);
+            onSureClickListener.onOfficeTypePopUpWindow(mSearchType, Constants.SEARCH_JOINT_WORK, R.string.str_house_tenant);
+        });
+        tvPopOpenSeats.setOnClickListener(v -> {
+            dismiss();
+            onSureClickListener.onOfficeTypePopUpWindow(mSearchType, Constants.SEARCH_OPEN_SEATS, R.string.str_house_open_seats);
+        });
+        tvPopOffice.setOnClickListener(v -> {
+            dismiss();
+            onSureClickListener.onOfficeTypePopUpWindow(mSearchType, Constants.SEARCH_OFFICE, R.string.str_house_office);
+        });
+        tvPopGarden.setOnClickListener(v -> {
+            dismiss();
+            onSureClickListener.onOfficeTypePopUpWindow(mSearchType, Constants.SEARCH_GARDEN, R.string.str_house_garden);
         });
     }
 
@@ -576,29 +595,28 @@ public class SearchPopupWindow extends PopupWindow implements
     }
 
     private void handleCondition(View viewLayout) {
-        RadioButton rbJointWork = viewLayout.findViewById(R.id.rb_joint_work);
-        RadioButton rbOpenSeats = viewLayout.findViewById(R.id.rb_open_seats);
-        RadioButton rbOffice = viewLayout.findViewById(R.id.rb_office);
-        RadioButton rbGarden = viewLayout.findViewById(R.id.rb_garden);
-        Switch swVR = viewLayout.findViewById(R.id.sw_open);
+        rbJointWork = viewLayout.findViewById(R.id.rb_joint_work);
+        rbOpenSeats = viewLayout.findViewById(R.id.rb_open_seats);
+        rbOffice = viewLayout.findViewById(R.id.rb_office);
+        rbGarden = viewLayout.findViewById(R.id.rb_garden);
         includeJointWork = viewLayout.findViewById(R.id.include_joint_work);
         includeOpenSeats = viewLayout.findViewById(R.id.include_open_seats);
         includeOffice = viewLayout.findViewById(R.id.include_office);
         includeGarden = viewLayout.findViewById(R.id.include_garden);
+        Switch swVR = viewLayout.findViewById(R.id.sw_open);
         Button btnClear = viewLayout.findViewById(R.id.btn_clear);
         Button btnSure = viewLayout.findViewById(R.id.btn_sure);
-
         rbJointWork.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (b) showListViews(0);
+            if (b) showListViews(Constants.SEARCH_JOINT_WORK);
         });
         rbOpenSeats.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (b) showListViews(1);
+            if (b) showListViews(Constants.SEARCH_OPEN_SEATS);
         });
         rbOffice.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (b) showListViews(2);
+            if (b) showListViews(Constants.SEARCH_OFFICE);
         });
         rbGarden.setOnCheckedChangeListener((compoundButton, b) -> {
-            if (b) showListViews(3);
+            if (b) showListViews(Constants.SEARCH_GARDEN);
         });
         //共享办公
         jointWorkViews(viewLayout);
@@ -608,9 +626,8 @@ public class SearchPopupWindow extends PopupWindow implements
         officeViews(viewLayout);
         //园区
         gardenViews(viewLayout);
-        //初始化选中
-        rbOffice.setChecked(true);
-        showListViews(2);
+        //初始化选中 默认办公室
+        showListViews(btype == Constants.SEARCH_ALL ? Constants.SEARCH_OFFICE : btype);
         //点击监听
         @SuppressLint("NonConstantResourceId") View.OnClickListener clickListener = v -> {
             switch (v.getId()) {
@@ -677,7 +694,9 @@ public class SearchPopupWindow extends PopupWindow implements
     }
 
     private void showListViews(int flag) {
-        if (flag == 0) {
+        if (flag == Constants.SEARCH_JOINT_WORK) {
+            btype = Constants.SEARCH_JOINT_WORK;
+            rbJointWork.setChecked(true);
             includeJointWork.setVisibility(View.VISIBLE);
             includeOpenSeats.setVisibility(View.GONE);
             includeOffice.setVisibility(View.GONE);
@@ -692,7 +711,9 @@ public class SearchPopupWindow extends PopupWindow implements
                 jointUniqueAdapter = new JointUniqueAdapter(mContext, jointWorkUniqueList);
                 rvJointWorkCharacteristic.setAdapter(jointUniqueAdapter);
             }
-        } else if (flag == 1) {
+        } else if (flag == Constants.SEARCH_OPEN_SEATS) {
+            btype = Constants.SEARCH_OPEN_SEATS;
+            rbOpenSeats.setChecked(true);
             includeJointWork.setVisibility(View.GONE);
             includeOpenSeats.setVisibility(View.VISIBLE);
             includeOffice.setVisibility(View.GONE);
@@ -705,7 +726,9 @@ public class SearchPopupWindow extends PopupWindow implements
                 openSeatsUniqueAdapter = new OpenUniqueAdapter(mContext, jointWorkUniqueList);
                 rvOpenSeatsCharacteristic.setAdapter(openSeatsUniqueAdapter);
             }
-        } else if (flag == 2) {
+        } else if (flag == Constants.SEARCH_OFFICE) {
+            btype = Constants.SEARCH_OFFICE;
+            rbOffice.setChecked(true);
             includeJointWork.setVisibility(View.GONE);
             includeOpenSeats.setVisibility(View.GONE);
             includeOffice.setVisibility(View.VISIBLE);
@@ -722,7 +745,9 @@ public class SearchPopupWindow extends PopupWindow implements
                 officeUniqueAdapter = new OfficeUniqueAdapter(mContext, buildingUniqueList);
                 rvOfficeCharacteristic.setAdapter(officeUniqueAdapter);
             }
-        } else if (flag == 3) {
+        } else if (flag == Constants.SEARCH_GARDEN) {
+            btype = Constants.SEARCH_GARDEN;
+            rbGarden.setChecked(true);
             includeJointWork.setVisibility(View.GONE);
             includeOpenSeats.setVisibility(View.GONE);
             includeOffice.setVisibility(View.GONE);
@@ -1098,21 +1123,6 @@ public class SearchPopupWindow extends PopupWindow implements
         return key.toString();
     }
 
-    private String getKey(Map<Integer, String> map) {
-        StringBuilder key = new StringBuilder();
-        for (Map.Entry<Integer, String> entry : map.entrySet()) {
-            if (map.size() == 1) {
-                key.append(entry.getKey());
-            } else {
-                key.append(entry.getKey()).append(",");
-            }
-        }
-        if (map.size() > 1) {
-            key = key.replace(key.length() - 1, key.length(), "");
-        }
-        return key.toString();
-    }
-
     //神策埋点装修类型
     private void sensorsDecorationEvent(Map<Integer, String> map) {
         StringBuilder keyName = new StringBuilder();
@@ -1158,6 +1168,7 @@ public class SearchPopupWindow extends PopupWindow implements
 
         public JointSeatsAdapter(Context context, String value, List<WantFindBean> list) {
             super(context, R.layout.item_house_decroation, list);
+            selectShowEditText(checkedPos, searchData.getSeats(), list,etJointWorkSeatsMin,etJointWorkSeatsMax);
         }
 
         @Override
@@ -1183,6 +1194,7 @@ public class SearchPopupWindow extends PopupWindow implements
 
         public JointRentAdapter(Context context, String value, List<WantFindBean> list) {
             super(context, R.layout.item_house_decroation, list);
+            selectShowEditText(checkedPos, searchData.getSeats(), list,etJointWorkRentMin,etJointWorkRentMax);
         }
 
         @Override
@@ -1217,6 +1229,9 @@ public class SearchPopupWindow extends PopupWindow implements
         public void convert(ViewHolder holder, final DirectoryBean.DataBean bean) {
             CheckBox cbType = holder.getView(R.id.cb_item);
             cbType.setText(bean.getDictCname());
+            if (jointBrandMap != null) {
+                cbType.setChecked(jointBrandMap.containsKey(bean.getDictValue()));
+            }
             cbType.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (isChecked) {
                     if (!jointBrandMap.containsKey(bean.getDictValue())) {
@@ -1244,6 +1259,9 @@ public class SearchPopupWindow extends PopupWindow implements
         public void convert(ViewHolder holder, final DirectoryBean.DataBean bean) {
             CheckBox cbType = holder.getView(R.id.cb_item);
             cbType.setText(bean.getDictCname());
+            if (jointUniqueMap != null) {
+                cbType.setChecked(jointUniqueMap.containsKey(bean.getDictValue()));
+            }
             cbType.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (isChecked) {
                     if (jointUniqueMap.size() >= 4) {
@@ -1270,6 +1288,7 @@ public class SearchPopupWindow extends PopupWindow implements
 
         public OpenRentAdapter(Context context, String value, List<WantFindBean> list) {
             super(context, R.layout.item_house_decroation, list);
+            selectShowEditText(checkedPos, searchData.getSeats(), list,etOpenSeatsRentMin,etOpenSeatsRentMax);
         }
 
         @Override
@@ -1304,6 +1323,9 @@ public class SearchPopupWindow extends PopupWindow implements
         public void convert(ViewHolder holder, final DirectoryBean.DataBean bean) {
             CheckBox cbType = holder.getView(R.id.cb_item);
             cbType.setText(bean.getDictCname());
+            if (openBrandMap != null) {
+                cbType.setChecked(openBrandMap.containsKey(bean.getDictValue()));
+            }
             cbType.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (isChecked) {
                     if (!openBrandMap.containsKey(bean.getDictValue())) {
@@ -1331,6 +1353,9 @@ public class SearchPopupWindow extends PopupWindow implements
         public void convert(ViewHolder holder, final DirectoryBean.DataBean bean) {
             CheckBox cbType = holder.getView(R.id.cb_item);
             cbType.setText(bean.getDictCname());
+            if (openUniqueMap != null) {
+                cbType.setChecked(openUniqueMap.containsKey(bean.getDictValue()));
+            }
             cbType.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (isChecked) {
                     if (openUniqueMap.size() >= 4) {
@@ -1357,6 +1382,7 @@ public class SearchPopupWindow extends PopupWindow implements
 
         public OfficeAreaAdapter(Context context, String value, List<WantFindBean> list) {
             super(context, R.layout.item_house_decroation, list);
+            selectShowEditText(checkedPos, searchData.getArea(), list,etOfficeAreaMin,etOfficeAreaMax);
         }
 
         @Override
@@ -1382,6 +1408,7 @@ public class SearchPopupWindow extends PopupWindow implements
 
         public OfficeRentAdapter(Context context, String value, List<WantFindBean> list) {
             super(context, R.layout.item_house_decroation, list);
+            selectShowEditText(checkedPos, searchData.getRent(), list,etOfficeRentMin,etOfficeRentMax);
         }
 
         @Override
@@ -1407,6 +1434,7 @@ public class SearchPopupWindow extends PopupWindow implements
 
         public OfficeSeatsAdapter(Context context, String value, List<WantFindBean> list) {
             super(context, R.layout.item_house_decroation, list);
+            selectShowEditText(checkedPos, searchData.getSeats(), list,etOfficeSeatsMin,etOfficeSeatsMax);
         }
 
         @Override
@@ -1433,19 +1461,29 @@ public class SearchPopupWindow extends PopupWindow implements
         @SuppressLint("UseSparseArrays")
         OfficeDecorationAdapter(Context context, List<DirectoryBean.DataBean> list) {
             super(context, R.layout.item_house_unique, list);
+            for (int i = 0; i < list.size(); i++) {
+                if (officeDecoration == list.get(i).getDictValue()) {
+                    checkedPos = i;
+                    break;
+                }
+            }
         }
 
         @Override
         public void convert(ViewHolder holder, final DirectoryBean.DataBean bean) {
-            CheckBox cbType = holder.getView(R.id.cb_item);
+            TextView cbType = holder.getView(R.id.cb_item);
             ImageView ivImage = holder.getView(R.id.iv_image);
-            Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getDictImg()).into(ivImage);
             cbType.setText(bean.getDictCname());
-            cbType.setChecked(holder.getAdapterPosition() == checkedPos);
+            if (holder.getAdapterPosition() == checkedPos) {
+                cbType.setTextColor(ContextCompat.getColor(mContext, R.color.common_blue_main));
+                Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getDictImgBlack()).into(ivImage);
+            } else {
+                cbType.setTextColor(ContextCompat.getColor(mContext, R.color.text_main));
+                Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getDictImg()).into(ivImage);
+            }
             holder.itemView.setOnClickListener(view -> {
-                cbType.setChecked(true);
                 checkedPos = holder.getAdapterPosition();
-                if (!rvGardenDecorate.isComputingLayout()) {
+                if (!rvOfficeDecorate.isComputingLayout()) {
                     officeDecoration = bean.getDictValue();
                     notifyDataSetChanged();
                 }
@@ -1468,6 +1506,9 @@ public class SearchPopupWindow extends PopupWindow implements
         public void convert(ViewHolder holder, final DirectoryBean.DataBean bean) {
             CheckBox tvName = holder.getView(R.id.cb_item);
             tvName.setText(bean.getDictCname());
+            if (officeMap != null) {
+                tvName.setChecked(officeMap.containsKey(bean.getDictValue()));
+            }
             tvName.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (isChecked) {
                     if (officeMap.size() >= 4) {
@@ -1495,6 +1536,7 @@ public class SearchPopupWindow extends PopupWindow implements
 
         public GardenAreaAdapter(Context context, String value, List<WantFindBean> list) {
             super(context, R.layout.item_house_decroation, list);
+            selectShowEditText(checkedPos, searchData.getSeats(), list,etGardenAreaMin,etGardenAreaMax);
         }
 
         @Override
@@ -1520,6 +1562,7 @@ public class SearchPopupWindow extends PopupWindow implements
 
         public GardenRentAdapter(Context context, String value, List<WantFindBean> list) {
             super(context, R.layout.item_house_decroation, list);
+            selectShowEditText(checkedPos, searchData.getSeats(), list,etGardenRentMin,etGardenRentMax);
         }
 
         @Override
@@ -1545,6 +1588,7 @@ public class SearchPopupWindow extends PopupWindow implements
 
         public GardenSeatsAdapter(Context context, String value, List<WantFindBean> list) {
             super(context, R.layout.item_house_decroation, list);
+            selectShowEditText(checkedPos, searchData.getSeats(), list,etGardenSeatsMin,etGardenSeatsMax);
         }
 
         @Override
@@ -1571,18 +1615,27 @@ public class SearchPopupWindow extends PopupWindow implements
         @SuppressLint("UseSparseArrays")
         GardenDecorationAdapter(Context context, List<DirectoryBean.DataBean> list) {
             super(context, R.layout.item_house_unique, list);
-
+            for (int i = 0; i < list.size(); i++) {
+                if (gardenDecoration == list.get(i).getDictValue()) {
+                    checkedPos = i;
+                    break;
+                }
+            }
         }
 
         @Override
         public void convert(ViewHolder holder, final DirectoryBean.DataBean bean) {
-            CheckBox cbType = holder.getView(R.id.cb_item);
+            TextView cbType = holder.getView(R.id.cb_item);
             ImageView ivImage = holder.getView(R.id.iv_image);
-            Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getDictImg()).into(ivImage);
             cbType.setText(bean.getDictCname());
-            cbType.setChecked(holder.getAdapterPosition() == checkedPos);
+            if (holder.getAdapterPosition() == checkedPos) {
+                cbType.setTextColor(ContextCompat.getColor(mContext, R.color.common_blue_main));
+                Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getDictImgBlack()).into(ivImage);
+            } else {
+                cbType.setTextColor(ContextCompat.getColor(mContext, R.color.text_main));
+                Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getDictImg()).into(ivImage);
+            }
             holder.itemView.setOnClickListener(view -> {
-                cbType.setChecked(true);
                 checkedPos = holder.getAdapterPosition();
                 if (!rvGardenDecorate.isComputingLayout()) {
                     gardenDecoration = bean.getDictValue();
@@ -1607,6 +1660,9 @@ public class SearchPopupWindow extends PopupWindow implements
         public void convert(ViewHolder holder, final DirectoryBean.DataBean bean) {
             CheckBox cbType = holder.getView(R.id.cb_item);
             cbType.setText(bean.getDictCname());
+            if (officeMap != null) {
+                cbType.setChecked(gardenMap.containsKey(bean.getDictValue()));
+            }
             cbType.setOnCheckedChangeListener((buttonView, isChecked) -> {
                 if (isChecked) {
                     if (gardenMap.size() >= 4) {
@@ -1620,7 +1676,6 @@ public class SearchPopupWindow extends PopupWindow implements
                 } else {
                     gardenMap.remove(bean.getDictValue());
                 }
-
             });
         }
     }
@@ -1653,5 +1708,18 @@ public class SearchPopupWindow extends PopupWindow implements
             return getEditMax(max) + "," + getEditMin(min);
         }
         return getEditMin(min) + "," + getEditMax(max);
+    }
+
+    //选择回显
+    private void selectShowEditText(int checkedPos, String data, List<WantFindBean> list,EditText min, EditText max) {
+        if (searchData != null && !TextUtils.isEmpty(data)) {
+            for (int i = 0; i < list.size(); i++) {
+                if (TextUtils.equals(data, list.get(i).getKey())) {
+                    checkedPos = i;
+                    break;
+                }
+            }
+            showEditText(data, min, max);
+        }
     }
 }

@@ -6,44 +6,66 @@
 
     <LinearLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="@dimen/dp_250"
         android:background="@color/white"
         android:gravity="center_horizontal"
         android:orientation="vertical">
 
         <TextView
-            android:background="@drawable/text_bg_selector"
             android:id="@+id/tv_pop_all"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_40"
+            android:layout_height="@dimen/dp_30"
+            android:layout_marginTop="@dimen/dp_30"
+            android:background="@drawable/text_bg_selector"
             android:gravity="center"
-            android:layout_marginTop="@dimen/dp_34"
             android:text="@string/str_house_all"
             android:textColor="@color/text_33"
-            android:textSize="@dimen/sp_15" />
+            android:textSize="@dimen/sp_14" />
 
         <TextView
-            android:background="@drawable/text_bg_selector"
-            android:id="@+id/tv_pop_office"
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_40"
-            android:gravity="center"
-            android:layout_marginTop="@dimen/dp_10"
-            android:text="@string/str_house_office"
-            android:textColor="@color/text_33"
-            android:textSize="@dimen/sp_15" />
-
-        <TextView
-            android:background="@drawable/text_bg_selector"
             android:id="@+id/tv_pop_tenant"
             android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_40"
-            android:gravity="center"
+            android:layout_height="@dimen/dp_30"
             android:layout_marginTop="@dimen/dp_10"
-            android:layout_marginBottom="@dimen/dp_40"
+            android:background="@drawable/text_bg_selector"
+            android:gravity="center"
             android:text="@string/str_house_tenant"
             android:textColor="@color/text_33"
-            android:textSize="@dimen/sp_15" />
+            android:textSize="@dimen/sp_14" />
+
+        <TextView
+            android:id="@+id/tv_pop_open_seats"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_30"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@drawable/text_bg_selector"
+            android:gravity="center"
+            android:text="@string/str_house_open_seats"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_14" />
+
+        <TextView
+            android:id="@+id/tv_pop_office"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_30"
+            android:layout_marginTop="@dimen/dp_10"
+            android:background="@drawable/text_bg_selector"
+            android:gravity="center"
+            android:text="@string/str_house_office"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_14" />
+
+        <TextView
+            android:id="@+id/tv_pop_garden"
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/dp_30"
+            android:layout_marginTop="@dimen/dp_10"
+            android:layout_marginBottom="@dimen/dp_10"
+            android:background="@drawable/text_bg_selector"
+            android:gravity="center"
+            android:text="@string/str_house_garden"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_14" />
 
     </LinearLayout>
 </RelativeLayout>

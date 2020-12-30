@@ -50,6 +50,12 @@ public class Constants {
     //楼盘，房源
     public static final int FLAG_BUILDING = 1000;
     public static final int FLAG_HOUSE = 1001;
+    // 搜索筛选类型
+    public static final int SEARCH_ALL = 0;//全部
+    public static final int SEARCH_JOINT_WORK = 1;//共享
+    public static final int SEARCH_OPEN_SEATS = 2;//开放工位
+    public static final int SEARCH_OFFICE = 3;//办公室
+    public static final int SEARCH_GARDEN = 4;//园区
     //h5 flags
     public final static int H5_HELP = 0;
     public final static int H5_PROTOCOL = 1;
@@ -91,7 +97,7 @@ public class Constants {
     //业主--首页列表重新认证和新认证刷新，当有房源时切换tab不刷新
     public static boolean IS_HOME_REFRESH;
     //当前楼盘，网点名称
-    public static String mCurrentBuildingName="";
+    public static String mCurrentBuildingName = "";
     //认证添加状态
     public final static int IDENTITY_FIRST = 1;
     public final static int IDENTITY_NO_FIRST = 2;

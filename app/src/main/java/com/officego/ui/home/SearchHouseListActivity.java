@@ -19,6 +19,7 @@ import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.commonlib.common.sensors.SensorsTrack;
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.ClearableEditText;
@@ -42,7 +43,6 @@ import org.androidannotations.annotations.ViewById;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
-import java.util.Map;
 
 /**
  * Created by YangShiJie
@@ -102,6 +102,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
     private SparseBooleanArray checkStates; //记录选中的位置
     private String district = "", business = "", line = "", nearbySubway = "",
             area = "", dayPrice = "", seats = "", decoration = "", houseTags = "", sort = "0";
+    private int officeType;//类型
     private ConditionSearchBean mSearchData;
     private List<DirectoryBean.DataBean> decorationList;
     private List<DirectoryBean.DataBean> buildingUniqueList;
@@ -126,7 +127,6 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
             netException();
             return;
         }
-        //列表
         getBuildingList();
 
     }
@@ -232,8 +232,8 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
         textView.setCompoundDrawablesWithIntrinsicBounds(null, null,
                 ContextCompat.getDrawable(context, R.mipmap.ic_arrow_up_blue), null);
         popupWindow = new SearchPopupWindow(this, ctlSearch, textView, searchType,
-                btype, hashSet, checkStates, district, business, line, nearbySubway, sort,
-                decorationList, buildingUniqueList, jointWorkUniqueList, brandList,mSearchData);
+                officeType, hashSet, checkStates, district, business, line, nearbySubway, sort,
+                decorationList, buildingUniqueList, jointWorkUniqueList, brandList, mSearchData);
         popupWindow.setOnSureClickListener(this);
     }
 
@@ -248,7 +248,6 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
     @Override
     public void BuildingListSuccess(List<BuildingBean.ListBean> list, boolean hasMore) {
         this.hasMore = hasMore;
-        //pageNum == 1首次请求且size==0
         if (list == null || pageNum == 1 && list.size() == 0) {
             noData();
             return;
@@ -301,7 +300,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
     //全部，写字楼，共享办公
     @Override
     public void onOfficeTypePopUpWindow(int searchType, int officeType, int text) {
-        btype = officeType;
+        this.officeType = officeType;
         tvSearchOffice.setText(text);
         //初始化选择的写字楼或共享办公
         area = "";
@@ -323,22 +322,26 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
 
     //筛选
     @Override
-    public void onConditionPopUpWindow(int btype, ConditionSearchBean bean) {
+    public void onConditionPopUpWindow(int officeType, ConditionSearchBean bean) {
         mSearchData = bean;
-        this.btype = btype;
+        this.officeType = officeType;
         this.area = bean.getArea();
         this.dayPrice = bean.getRent();
         this.seats = bean.getSeats();
         this.decoration = bean.getDecoration();
         this.houseTags = bean.getUnique();
-        ConditionConfig.mConditionBean = setConditionBean();
-        if (btype == 0) {
+        if (officeType == Constants.SEARCH_ALL) {
             tvSearchOffice.setText(R.string.str_house_all);
-        } else if (btype == 1) {
-            tvSearchOffice.setText(R.string.str_house_office);
-        } else if (btype == 2) {
+        } else if (officeType == Constants.SEARCH_JOINT_WORK) {
             tvSearchOffice.setText(R.string.str_house_tenant);
+        } else if (officeType == Constants.SEARCH_OPEN_SEATS) {
+            tvSearchOffice.setText(R.string.str_house_open_seats);
+        } else if (officeType == Constants.SEARCH_OFFICE) {
+            tvSearchOffice.setText(R.string.str_house_office);
+        } else if (officeType == Constants.SEARCH_GARDEN) {
+            tvSearchOffice.setText(R.string.str_house_garden);
         }
+        ConditionConfig.mConditionBean = setConditionBean();
         //查询列表
         getList();
     }
