@@ -62,58 +62,95 @@ public class CommonList {
         return list;
     }
 
-    //筛选面积
+    //筛选-写字楼面积
     public static List<WantFindBean> areaList() {
         List<WantFindBean> list = new ArrayList<>();
         WantFindBean bean1 = new WantFindBean("0," + SEARCH_MAX, "不限");
         list.add(bean1);
-        WantFindBean bean2 = new WantFindBean("0,20", "20㎡以下");
+        WantFindBean bean2 = new WantFindBean("0,100", "100㎡以下");
         list.add(bean2);
-        WantFindBean bean3 = new WantFindBean("20,50", "20-50㎡");
+        WantFindBean bean3 = new WantFindBean("100,200", "100-200㎡");
         list.add(bean3);
-        WantFindBean bean4 = new WantFindBean("50,70", "50-70㎡");
+        WantFindBean bean4 = new WantFindBean("200,300", "200-300㎡");
         list.add(bean4);
-        WantFindBean bean5 = new WantFindBean("70,100", "70-100㎡");
+        WantFindBean bean5 = new WantFindBean("300,500", "300-500㎡");
         list.add(bean5);
-        WantFindBean bean6 = new WantFindBean("100," + SEARCH_MAX, "100㎡以上");
+        WantFindBean bean6 = new WantFindBean("500," + SEARCH_MAX, "500㎡以上");
         list.add(bean6);
         return list;
     }
 
-    //筛选租金
+    //筛选写字楼租金
     public static List<WantFindBean> rentList() {
         List<WantFindBean> list = new ArrayList<>();
         WantFindBean bean1 = new WantFindBean("0," + SEARCH_MAX, "不限");
         list.add(bean1);
-        WantFindBean bean2 = new WantFindBean("0,2", "2以下");
+        WantFindBean bean2 = new WantFindBean("0,3", "3以下");
         list.add(bean2);
-        WantFindBean bean3 = new WantFindBean("2,5", "2-5");
+        WantFindBean bean3 = new WantFindBean("3,5", "3-5");
         list.add(bean3);
-        WantFindBean bean4 = new WantFindBean("5,10", "5-10");
+        WantFindBean bean4 = new WantFindBean("5,8", "5-8");
         list.add(bean4);
-        WantFindBean bean5 = new WantFindBean("10,15", "10-15");
+        WantFindBean bean5 = new WantFindBean("8,12", "8-12");
         list.add(bean5);
-        WantFindBean bean6 = new WantFindBean("15," + SEARCH_MAX, "15以上");
+        WantFindBean bean6 = new WantFindBean("12," + SEARCH_MAX, "12以上");
         list.add(bean6);
         return list;
     }
 
-    //筛选工位
+    //筛选写字楼工位
     public static List<WantFindBean> seatsList() {
         List<WantFindBean> list = new ArrayList<>();
         WantFindBean bean1 = new WantFindBean("0," + SEARCH_MAX, "不限");
         list.add(bean1);
-        WantFindBean bean2 = new WantFindBean("0,4", "5个以下");
+        WantFindBean bean2 = new WantFindBean("0,20", "20个以下");
+        list.add(bean2);
+        WantFindBean bean3 = new WantFindBean("20,50", "20-50个");
+        list.add(bean3);
+        WantFindBean bean4 = new WantFindBean("50,100", "50-100个");
+        list.add(bean4);
+        WantFindBean bean5 = new WantFindBean("100,200", "100-200个");
+        list.add(bean5);
+        WantFindBean bean6 = new WantFindBean("200," + SEARCH_MAX, "200个以上");
+        list.add(bean6);
+        return list;
+    }
+
+    //筛选写字楼租金
+    public static List<WantFindBean> rentJointList() {
+        List<WantFindBean> list = new ArrayList<>();
+        WantFindBean bean1 = new WantFindBean("0," + SEARCH_MAX, "不限");
+        list.add(bean1);
+        WantFindBean bean2 = new WantFindBean("0,1000", "1000以下");
+        list.add(bean2);
+        WantFindBean bean3 = new WantFindBean("1000,2000", "1000-2000");
+        list.add(bean3);
+        WantFindBean bean4 = new WantFindBean("2000,3000", "2000-3000");
+        list.add(bean4);
+        WantFindBean bean5 = new WantFindBean("3000,5000", "3000-5000");
+        list.add(bean5);
+        WantFindBean bean6 = new WantFindBean("5000," + SEARCH_MAX, "5000以上");
+        list.add(bean6);
+        return list;
+    }
+
+    //筛选写字楼工位
+    public static List<WantFindBean> seatsJointList() {
+        List<WantFindBean> list = new ArrayList<>();
+        WantFindBean bean1 = new WantFindBean("0," + SEARCH_MAX, "不限");
+        list.add(bean1);
+        WantFindBean bean2 = new WantFindBean("0,5", "5个以下");
         list.add(bean2);
         WantFindBean bean3 = new WantFindBean("5,10", "5-10个");
         list.add(bean3);
         WantFindBean bean4 = new WantFindBean("10,20", "10-20个");
         list.add(bean4);
-        WantFindBean bean5 = new WantFindBean("20,30", "20-30个");
+        WantFindBean bean5 = new WantFindBean("20,50", "20-50个");
         list.add(bean5);
-        WantFindBean bean6 = new WantFindBean("30," + SEARCH_MAX, "30个以上");
+        WantFindBean bean6 = new WantFindBean("50," + SEARCH_MAX, "50个以上");
         list.add(bean6);
         return list;
     }
+
 
 }

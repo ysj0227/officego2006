@@ -121,4 +121,19 @@ public interface HomeInterface {
     @POST(path + "house/getHousebyHouseIdPreviewApp")
     Call<BaseResponse<HouseOfficeDetailsJointWorkBean>> selectHousebyJointWorkHouseIdOwner(@PartMap Map<String, RequestBody> params);
 
+    /**
+     * 今日看点
+     */
+    @Multipart
+    @POST(path + "building/getReadTodayById")
+    Call<BaseResponse<HouseOfficeDetailsJointWorkBean>> todayNews(@PartMap Map<String, RequestBody> params);
+
+
+    /**
+     * 我想找
+     */
+    @Multipart
+    @POST(path + "building/addWantGoBuildTemp")
+    Call<BaseResponse<Object>> wantToFind(@PartMap Map<String, RequestBody> params);
+
 }

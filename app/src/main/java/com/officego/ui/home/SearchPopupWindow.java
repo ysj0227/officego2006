@@ -710,9 +710,9 @@ public class SearchPopupWindow extends PopupWindow implements
             includeOffice.setVisibility(View.GONE);
             includeGarden.setVisibility(View.GONE);
             if (jointRentAdapter == null) {
-                jointRentAdapter = new JointRentAdapter(mContext, "", CommonList.rentList());
+                jointRentAdapter = new JointRentAdapter(mContext, "", CommonList.rentJointList());
                 rvJointWorkRent.setAdapter(jointRentAdapter);
-                jointSeatsAdapter = new JointSeatsAdapter(mContext, "", CommonList.seatsList());
+                jointSeatsAdapter = new JointSeatsAdapter(mContext, "", CommonList.seatsJointList());
                 rvJointWorkSeats.setAdapter(jointSeatsAdapter);
                 jointBrandAdapter = new JointBrandAdapter(mContext, brandList);
                 rvJointWorkBrand.setAdapter(jointBrandAdapter);
@@ -726,7 +726,7 @@ public class SearchPopupWindow extends PopupWindow implements
             includeOffice.setVisibility(View.GONE);
             includeGarden.setVisibility(View.GONE);
             if (openSeatRentAdapter == null) {
-                openSeatRentAdapter = new OpenRentAdapter(mContext, "", CommonList.rentList());
+                openSeatRentAdapter = new OpenRentAdapter(mContext, "", CommonList.rentJointList());
                 rvOpenSeatsRent.setAdapter(openSeatRentAdapter);
                 openBrandAdapter = new OpenBrandAdapter(mContext, brandList);
                 rvOpenSeatsBrand.setAdapter(openBrandAdapter);

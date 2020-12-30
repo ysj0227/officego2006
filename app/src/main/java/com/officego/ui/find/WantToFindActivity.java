@@ -13,8 +13,10 @@ import com.officego.R;
 import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.rpc.OfficegoApi;
 import com.officego.ui.adapter.FactorAdapter;
 import com.officego.ui.adapter.PersonAdapter;
 import com.officego.ui.adapter.RentAdapter;
@@ -105,14 +107,11 @@ public class WantToFindActivity extends BaseActivity implements PersonAdapter.Pe
 
     @Click(R.id.btn_save)
     void saveClick() {
-        //保存成功后跳转 TODO
         if (TextUtils.isEmpty(mPerson) || TextUtils.isEmpty(mRent) || TextUtils.isEmpty(mFactor)) {
             shortTip("还有资料没填哦～");
             return;
         }
-        SpUtils.saveWantFind();
-        SpUtils.saveWantFindData(mPerson, mRent, mFactor);
-        gotoActivity();
+        wantFind();
     }
 
     private void gotoActivity() {
@@ -142,4 +141,32 @@ public class WantToFindActivity extends BaseActivity implements PersonAdapter.Pe
     public void rentResult(String value) {
         mRent = value;
     }
+
+    public void wantFind() {
+        if (TextUtils.isEmpty(SpUtils.getSignToken())) {
+            SpUtils.saveWantFind();
+            SpUtils.saveWantFindData(mPerson, mRent, mFactor);
+            gotoActivity();
+            return;
+        }
+        showLoadingDialog();
+        OfficegoApi.getInstance().wantToFind(mPerson, mRent, mFactor, new RetrofitCallback<Object>() {
+            @Override
+            public void onSuccess(int code, String msg, Object data) {
+                hideLoadingDialog();
+                SpUtils.saveWantFind();
+                SpUtils.saveWantFindData(mPerson, mRent, mFactor);
+                gotoActivity();
+            }
+
+            @Override
+            public void onFail(int code, String msg, Object data) {
+                hideLoadingDialog();
+                if (code == Constants.DEFAULT_ERROR_CODE) {
+                    shortTip(msg);
+                }
+            }
+        });
+    }
+
 }

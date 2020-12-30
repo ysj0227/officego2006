@@ -669,7 +669,7 @@ public class OfficegoApi {
     public void getTargetId3(int buildingId, RetrofitCallback<ChatsBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
-        map.put("buildingId", requestBody(buildingId+""));
+        map.put("buildingId", requestBody(buildingId + ""));
         map.put("ownerChattedType", requestBody("1"));
         OfficegoRetrofitClient.getInstance().create(ChatInterface.class)
                 .getTargetId(map)
@@ -735,5 +735,31 @@ public class OfficegoApi {
                 .switchId(map)
                 .enqueue(callback);
     }
+
+    /**
+     * 我想找
+     * seats=1&minimumLease=1个月&tag=1
+     */
+    public void wantToFind(String seats,String minimumLease,String tag,RetrofitCallback<Object> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("seats", requestBody(seats));
+        map.put("minimumLease", requestBody(minimumLease));
+        map.put("tag", requestBody(tag));
+        OfficegoRetrofitClient.getInstance().create(HomeInterface.class)
+                .wantToFind(map)
+                .enqueue(callback);
+    }
+
+    /**
+     * 今日看点
+     */
+//    public void todayNews(RetrofitCallback<Object> callback) {
+//        Map<String, RequestBody> map = new HashMap<>();
+//        map.put("token", requestBody(SpUtils.getSignToken()));
+//        OfficegoRetrofitClient.getInstance().create(HomeInterface.class)
+//                .todayNews(map)
+//                .enqueue(callback);
+//    }
 
 }
