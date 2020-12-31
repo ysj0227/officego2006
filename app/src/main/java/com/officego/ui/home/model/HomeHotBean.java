@@ -108,6 +108,8 @@ public class HomeHotBean {
             private BannerMapBean bannerMap;
             @SerializedName("officeType")
             private String officeType;
+            @SerializedName("vr")
+            private String vr;
             @SerializedName("tags")
             private List<TagsBean> tags;
 
@@ -173,6 +175,14 @@ public class HomeHotBean {
 
             public void setSeatMonthPrice(Integer seatMonthPrice) {
                 this.seatMonthPrice = seatMonthPrice;
+            }
+
+            public String getVr() {
+                return vr;
+            }
+
+            public void setVr(String vr) {
+                this.vr = vr;
             }
 
             public String getAddress() {

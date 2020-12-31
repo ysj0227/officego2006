@@ -98,16 +98,16 @@ public class HomePresenter extends BasePresenter<HomeContract.View> implements H
 
     @Override
     public void getHotList() {
-        OfficegoApi.getInstance().getHotsList(new RetrofitCallback<HomeHotBean>() {
+        OfficegoApi.getInstance().getHotsList(new RetrofitCallback<HomeHotBean.DataBean>() {
             @Override
-            public void onSuccess(int code, String msg, HomeHotBean data) {
+            public void onSuccess(int code, String msg, HomeHotBean.DataBean data) {
                 if (isViewAttached()) {
                    mView.hotListSuccess(data);
                 }
             }
 
             @Override
-            public void onFail(int code, String msg, HomeHotBean data) {
+            public void onFail(int code, String msg, HomeHotBean.DataBean data) {
                 if (isViewAttached()) {
                     mView.endRefresh();
                 }

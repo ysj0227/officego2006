@@ -29,7 +29,7 @@ public interface HomeContract {
 
         void brandFail();
 
-        void hotListSuccess(HomeHotBean data);
+        void hotListSuccess(HomeHotBean.DataBean data);
     }
 
     interface Presenter {

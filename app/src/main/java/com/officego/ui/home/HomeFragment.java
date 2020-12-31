@@ -22,6 +22,7 @@ import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.update.VersionDialog;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.h5.WebViewBannerActivity_;
 import com.officego.h5.WebViewCouponActivity_;
 import com.officego.ui.adapter.BrandAdapter;
@@ -101,7 +102,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         initRefresh();
         new VersionDialog(mActivity);
         getData();
-        testHotsList();
         showAnimation();
     }
 
@@ -194,19 +194,19 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         rlIdentity.setVisibility(View.GONE);
     }
 
-    private void testHotsList() {
-        List<String> listBrand = new ArrayList<>();
-        for (int i = 0; i < 10; i++) {
-            listBrand.add("https://img.officego.com/building/1600411301880.png?x-oss-process=style/small");
-        }
-        listBrand.add(2, "https://img.officego.com/building/1600411301880.png?x-oss-process=style/small");
-        listBrand.add(3, "https://img.officego.com/building/1600411301880.png?x-oss-process=style/small");
-        listBrand.add(5, "https://img.officego.com/building/1600411301880.png?x-oss-process=style/small");
-        listBrand.add(7, "https://img.officego.com/building/1600411301880.png?x-oss-process=style/small");
-        listBrand.add(9, "https://img.officego.com/building/1600411301880.png?x-oss-process=style/small");
-
-        rvHots.setAdapter(new HomeAdapter(mActivity, listBrand));
-    }
+//    private void testHotsList() {
+//        List<String> listBrand = new ArrayList<>();
+//        for (int i = 0; i < 10; i++) {
+//            listBrand.add("https://img.officego.com/building/1600411301880.png?x-oss-process=style/small");
+//        }
+//        listBrand.add(2, "https://img.officego.com/building/1600411301880.png?x-oss-process=style/small");
+//        listBrand.add(3, "https://img.officego.com/building/1600411301880.png?x-oss-process=style/small");
+//        listBrand.add(5, "https://img.officego.com/building/1600411301880.png?x-oss-process=style/small");
+//        listBrand.add(7, "https://img.officego.com/building/1600411301880.png?x-oss-process=style/small");
+//        listBrand.add(9, "https://img.officego.com/building/1600411301880.png?x-oss-process=style/small");
+//
+//        rvHots.setAdapter(new HomeAdapter(mActivity, listBrand));
+//    }
 
     @Override
     public void onDestroyView() {
@@ -308,8 +308,11 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     }
 
     @Override
-    public void hotListSuccess(HomeHotBean data) {
-
+    public void hotListSuccess(HomeHotBean.DataBean data) {
+        //todo 替换token
+        //1:楼盘重点版,2:楼盘文案版,3:网点版,4:房源特价
+        List<HomeHotBean.DataBean.ListBean> list = data.getList();
+        rvHots.setAdapter(new HomeAdapter(mActivity, list));
     }
 
     //下拉刷新

@@ -764,9 +764,10 @@ public class OfficegoApi {
     /**
      * 首页热门
      */
-    public void getHotsList(RetrofitCallback<HomeHotBean> callback) {
+    public void getHotsList(RetrofitCallback<HomeHotBean.DataBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
-        map.put("token", requestBody(SpUtils.getSignToken()));
+//        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("token", requestBody("MTM0X3N1bndlbGxfMTYwOTIxMDM3OF8w"));
         map.put("channel", requestBody("2"));
         OfficegoRetrofitClient.getInstance().create(HomeInterface.class)
                 .getHotList(map)

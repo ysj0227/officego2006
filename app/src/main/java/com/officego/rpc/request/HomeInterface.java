@@ -152,6 +152,6 @@ public interface HomeInterface {
      */
     @Multipart
     @POST(path + "building/getHot")
-    Call<BaseResponse<HomeHotBean>> getHotList(@PartMap Map<String, RequestBody> params);
+    Call<BaseResponse<HomeHotBean.DataBean>> getHotList(@PartMap Map<String, RequestBody> params);
 
 }
