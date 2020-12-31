@@ -114,7 +114,7 @@ public class SearchPopupWindow extends PopupWindow implements
     private SparseBooleanArray mCheckStatesLine, mCheckStatesBusiness;//记录选中的位置
     private String district = "", business = "";//商圈
     private String line = "", nearbySubway = ""; //地铁
-    private int btype; //搜索类型0,1,2,3，4
+    private int filterType; //搜索类型0,1,2,3，4
     private String sort;//排序
     private final List<MeterBean.DataBean> meterList = new ArrayList<>(); //获取地铁列表
     private final List<BusinessCircleBean.DataBean> businessCircleList = new ArrayList<>();  //商圈列表
@@ -192,7 +192,7 @@ public class SearchPopupWindow extends PopupWindow implements
         this.mContext = activity;
         this.mSetTitleView = setTextView;
         this.mSearchType = searchType;
-        this.btype = filterType;
+        this.filterType = filterType;
         if (TextUtils.isEmpty(district)) {
             this.mHashSetLine = hashSet;
             this.mCheckStatesLine = checkStates;
@@ -225,16 +225,16 @@ public class SearchPopupWindow extends PopupWindow implements
         this.brandList = brandList;
         //初始化设置筛选
         if (mSearchType == 3 && searchData != null) {
-            if (btype == Constants.SEARCH_JOINT_WORK) {
+            if (filterType == Constants.SEARCH_JOINT_WORK) {
                 jointBrandMap = CommonHelper.stringToMap(searchData.getBrand());
                 jointUniqueMap = CommonHelper.stringToMap(searchData.getUnique());
-            } else if (btype == Constants.SEARCH_OPEN_SEATS) {
+            } else if (filterType == Constants.SEARCH_OPEN_SEATS) {
                 openBrandMap = CommonHelper.stringToMap(searchData.getBrand());
                 openUniqueMap = CommonHelper.stringToMap(searchData.getUnique());
-            } else if (btype == Constants.SEARCH_OFFICE) {
+            } else if (filterType == Constants.SEARCH_OFFICE) {
                 officeDecoration = TextUtils.isEmpty(searchData.getDecoration()) ? 0 : Integer.parseInt(searchData.getDecoration());
                 officeMap = CommonHelper.stringToMap(searchData.getUnique());
-            } else if (btype == Constants.SEARCH_GARDEN) {
+            } else if (filterType == Constants.SEARCH_GARDEN) {
                 gardenDecoration = TextUtils.isEmpty(searchData.getDecoration()) ? 0 : Integer.parseInt(searchData.getDecoration());
                 gardenMap = CommonHelper.stringToMap(searchData.getUnique());
             }
@@ -517,15 +517,15 @@ public class SearchPopupWindow extends PopupWindow implements
         TextView tvPopOpenSeats = viewLayout.findViewById(R.id.tv_pop_open_seats);
         TextView tvPopOffice = viewLayout.findViewById(R.id.tv_pop_office);
         TextView tvPopGarden = viewLayout.findViewById(R.id.tv_pop_garden);
-        if (btype == Constants.SEARCH_ALL) {
+        if (filterType == Constants.SEARCH_ALL) {
             tvPopAll.setTextColor(ContextCompat.getColor(mContext, R.color.common_blue_main));
-        } else if (btype == Constants.SEARCH_JOINT_WORK) {
+        } else if (filterType == Constants.SEARCH_JOINT_WORK) {
             tvPopTenant.setTextColor(ContextCompat.getColor(mContext, R.color.common_blue_main));
-        } else if (btype == Constants.SEARCH_OPEN_SEATS) {
+        } else if (filterType == Constants.SEARCH_OPEN_SEATS) {
             tvPopOpenSeats.setTextColor(ContextCompat.getColor(mContext, R.color.common_blue_main));
-        } else if (btype == Constants.SEARCH_OFFICE) {
+        } else if (filterType == Constants.SEARCH_OFFICE) {
             tvPopOffice.setTextColor(ContextCompat.getColor(mContext, R.color.common_blue_main));
-        } else if (btype == Constants.SEARCH_GARDEN) {
+        } else if (filterType == Constants.SEARCH_GARDEN) {
             tvPopGarden.setTextColor(ContextCompat.getColor(mContext, R.color.common_blue_main));
         }
         tvPopAll.setOnClickListener(v -> {
@@ -628,7 +628,7 @@ public class SearchPopupWindow extends PopupWindow implements
         } else {
             swVR.setChecked(searchData.isVr());
         }
-        showListViews(btype == Constants.SEARCH_ALL ? Constants.SEARCH_OFFICE : btype);
+        showListViews(filterType == Constants.SEARCH_ALL ? Constants.SEARCH_OFFICE : filterType);
         //点击监听
         @SuppressLint("NonConstantResourceId") View.OnClickListener clickListener = v -> {
             switch (v.getId()) {
@@ -642,14 +642,14 @@ public class SearchPopupWindow extends PopupWindow implements
                     searchBean.setSeats("0," + CommonList.SEARCH_MAX);
                     searchBean.setVr(false);
                     if (onSureClickListener != null) {
-                        onSureClickListener.onConditionPopUpWindow(btype, searchBean);
+                        onSureClickListener.onConditionPopUpWindow(filterType, searchBean);
                     }
                     dismiss();
                     break;
                 case R.id.btn_sure://确定
                     ConditionSearchBean bean = new ConditionSearchBean();
                     if (rbJointWork.isChecked()) {
-                        btype = Constants.SEARCH_JOINT_WORK;
+                        filterType = Constants.SEARCH_JOINT_WORK;
                         bean.setSeats(setEditText(etJointWorkSeatsMin, etJointWorkSeatsMax));
                         bean.setRent(setEditText(etJointWorkRentMin, etJointWorkRentMax));
                         bean.setBrand(CommonHelper.getKey(jointBrandMap));
@@ -658,7 +658,7 @@ public class SearchPopupWindow extends PopupWindow implements
                         bean.setArea("0," + CommonList.SEARCH_MAX);
                         bean.setDecoration("");
                     } else if (rbOpenSeats.isChecked()) {
-                        btype = Constants.SEARCH_OPEN_SEATS;
+                        filterType = Constants.SEARCH_OPEN_SEATS;
                         bean.setRent(setEditText(etOpenSeatsRentMin, etOpenSeatsRentMax));
                         bean.setBrand(CommonHelper.getKey(openBrandMap));
                         bean.setUnique(CommonHelper.getKey(openUniqueMap));
@@ -667,7 +667,7 @@ public class SearchPopupWindow extends PopupWindow implements
                         bean.setSeats("0," + CommonList.SEARCH_MAX);
                         bean.setDecoration("");
                     } else if (rbOffice.isChecked()) {
-                        btype = Constants.SEARCH_OFFICE;
+                        filterType = Constants.SEARCH_OFFICE;
                         bean.setArea(setEditText(etOfficeAreaMin, etOfficeAreaMax));
                         bean.setSeats(setEditText(etOfficeSeatsMin, etOfficeSeatsMax));
                         bean.setRent(setEditText(etOfficeRentMin, etOfficeRentMax));
@@ -676,7 +676,7 @@ public class SearchPopupWindow extends PopupWindow implements
                         //以下默认
                         bean.setBrand("");
                     } else if (rbGarden.isChecked()) {
-                        btype = Constants.SEARCH_GARDEN;
+                        filterType = Constants.SEARCH_GARDEN;
                         bean.setArea(setEditText(etGardenAreaMin, etGardenAreaMax));
                         bean.setSeats(setEditText(etGardenSeatsMin, etGardenSeatsMax));
                         bean.setRent(setEditText(etGardenRentMin, etGardenRentMax));
@@ -687,7 +687,7 @@ public class SearchPopupWindow extends PopupWindow implements
                     }
                     bean.setVr(swVR.isChecked());
                     if (onSureClickListener != null) {
-                        onSureClickListener.onConditionPopUpWindow(btype, bean);
+                        onSureClickListener.onConditionPopUpWindow(filterType, bean);
                     }
                     dismiss();
                     break;
@@ -1169,7 +1169,7 @@ public class SearchPopupWindow extends PopupWindow implements
 
         public JointSeatsAdapter(Context context, String value, List<WantFindBean> list) {
             super(context, R.layout.item_house_decroation, list);
-            if (searchData != null && btype == Constants.SEARCH_JOINT_WORK && !TextUtils.isEmpty(searchData.getSeats())) {
+            if (searchData != null && filterType == Constants.SEARCH_JOINT_WORK && !TextUtils.isEmpty(searchData.getSeats())) {
                 checkedPos = selectShowEditText(searchData.getSeats(), list);
                 showEditText(searchData.getSeats(), etJointWorkSeatsMin, etJointWorkSeatsMax);
             }
@@ -1198,7 +1198,7 @@ public class SearchPopupWindow extends PopupWindow implements
 
         public JointRentAdapter(Context context, String value, List<WantFindBean> list) {
             super(context, R.layout.item_house_decroation, list);
-            if (searchData != null && btype == Constants.SEARCH_JOINT_WORK && !TextUtils.isEmpty(searchData.getRent())) {
+            if (searchData != null && filterType == Constants.SEARCH_JOINT_WORK && !TextUtils.isEmpty(searchData.getRent())) {
                 checkedPos = selectShowEditText(searchData.getRent(), list);
                 showEditText(searchData.getRent(), etJointWorkRentMin, etJointWorkRentMax);
             }
@@ -1295,7 +1295,7 @@ public class SearchPopupWindow extends PopupWindow implements
 
         public OpenRentAdapter(Context context, String value, List<WantFindBean> list) {
             super(context, R.layout.item_house_decroation, list);
-            if (searchData != null && btype == Constants.SEARCH_OPEN_SEATS && !TextUtils.isEmpty(searchData.getRent())) {
+            if (searchData != null && filterType == Constants.SEARCH_OPEN_SEATS && !TextUtils.isEmpty(searchData.getRent())) {
                 checkedPos = selectShowEditText(searchData.getRent(), list);
                 showEditText(searchData.getRent(), etOpenSeatsRentMin, etOpenSeatsRentMax);
             }
@@ -1392,7 +1392,7 @@ public class SearchPopupWindow extends PopupWindow implements
 
         public OfficeAreaAdapter(Context context, String value, List<WantFindBean> list) {
             super(context, R.layout.item_house_decroation, list);
-            if (searchData != null && btype == Constants.SEARCH_OFFICE && !TextUtils.isEmpty(searchData.getArea())) {
+            if (searchData != null && filterType == Constants.SEARCH_OFFICE && !TextUtils.isEmpty(searchData.getArea())) {
                 checkedPos = selectShowEditText(searchData.getArea(), list);
                 showEditText(searchData.getArea(), etOfficeAreaMin, etOfficeAreaMax);
             }
@@ -1421,7 +1421,7 @@ public class SearchPopupWindow extends PopupWindow implements
 
         public OfficeRentAdapter(Context context, String value, List<WantFindBean> list) {
             super(context, R.layout.item_house_decroation, list);
-            if (searchData != null && btype == Constants.SEARCH_OFFICE && !TextUtils.isEmpty(searchData.getRent())) {
+            if (searchData != null && filterType == Constants.SEARCH_OFFICE && !TextUtils.isEmpty(searchData.getRent())) {
                 checkedPos = selectShowEditText(searchData.getRent(), list);
                 showEditText(searchData.getRent(), etOfficeRentMin, etOfficeRentMax);
             }
@@ -1450,7 +1450,7 @@ public class SearchPopupWindow extends PopupWindow implements
 
         public OfficeSeatsAdapter(Context context, String value, List<WantFindBean> list) {
             super(context, R.layout.item_house_decroation, list);
-            if (searchData != null && btype == Constants.SEARCH_OFFICE && !TextUtils.isEmpty(searchData.getSeats())) {
+            if (searchData != null && filterType == Constants.SEARCH_OFFICE && !TextUtils.isEmpty(searchData.getSeats())) {
                 checkedPos = selectShowEditText(searchData.getSeats(), list);
                 showEditText(searchData.getSeats(), etOfficeSeatsMin, etOfficeSeatsMax);
             }
@@ -1555,7 +1555,7 @@ public class SearchPopupWindow extends PopupWindow implements
 
         public GardenAreaAdapter(Context context, String value, List<WantFindBean> list) {
             super(context, R.layout.item_house_decroation, list);
-            if (searchData != null && btype == Constants.SEARCH_GARDEN && !TextUtils.isEmpty(searchData.getArea())) {
+            if (searchData != null && filterType == Constants.SEARCH_GARDEN && !TextUtils.isEmpty(searchData.getArea())) {
                 checkedPos = selectShowEditText(searchData.getArea(), list);
                 showEditText(searchData.getArea(), etGardenAreaMin, etGardenAreaMax);
             }
@@ -1584,7 +1584,7 @@ public class SearchPopupWindow extends PopupWindow implements
 
         public GardenRentAdapter(Context context, String value, List<WantFindBean> list) {
             super(context, R.layout.item_house_decroation, list);
-            if (searchData != null && btype == Constants.SEARCH_GARDEN && !TextUtils.isEmpty(searchData.getRent())) {
+            if (searchData != null && filterType == Constants.SEARCH_GARDEN && !TextUtils.isEmpty(searchData.getRent())) {
                 checkedPos = selectShowEditText(searchData.getRent(), list);
                 showEditText(searchData.getRent(), etGardenRentMin, etGardenRentMax);
             }
@@ -1613,7 +1613,7 @@ public class SearchPopupWindow extends PopupWindow implements
 
         public GardenSeatsAdapter(Context context, String value, List<WantFindBean> list) {
             super(context, R.layout.item_house_decroation, list);
-            if (searchData != null && btype == Constants.SEARCH_GARDEN && !TextUtils.isEmpty(searchData.getSeats())) {
+            if (searchData != null && filterType == Constants.SEARCH_GARDEN && !TextUtils.isEmpty(searchData.getSeats())) {
                 checkedPos = selectShowEditText(searchData.getSeats(), list);
                 showEditText(searchData.getSeats(), etGardenSeatsMin, etGardenSeatsMax);
             }

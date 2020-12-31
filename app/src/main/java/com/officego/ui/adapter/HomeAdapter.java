@@ -31,8 +31,8 @@ import java.util.List;
  * Descriptions:
  **/
 public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    public List<String> mData;
-    private Activity context;
+    private final List<String> mData;
+    private final Activity context;
 
     public HomeAdapter(BaseActivity mActivity, List<String> data) {
         this.context = mActivity;
@@ -75,6 +75,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
+
         String bean = mData.get(position);
         if (holder instanceof HotsHolder) {
             hotsView(holder, bean);

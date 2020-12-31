@@ -1,10 +1,9 @@
 package com.officego.ui.home.contract;
 
 import com.officego.commonlib.base.BaseView;
-import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.ui.home.model.BannerBean;
 import com.officego.ui.home.model.BrandRecommendBean;
-import com.officego.ui.home.model.BuildingBean;
+import com.officego.ui.home.model.HomeHotBean;
 import com.officego.ui.home.model.TodayReadBean;
 
 import java.util.List;
@@ -29,6 +28,8 @@ public interface HomeContract {
         void brandSuccess(boolean isShowView, List<BrandRecommendBean.DataBean> dataList);
 
         void brandFail();
+
+        void hotListSuccess(HomeHotBean data);
     }
 
     interface Presenter {
@@ -39,5 +40,6 @@ public interface HomeContract {
 
         void getBrandManagement();
 
+        void getHotList();
     }
 }

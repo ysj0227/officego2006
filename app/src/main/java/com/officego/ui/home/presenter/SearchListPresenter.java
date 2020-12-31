@@ -9,7 +9,6 @@ import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.retrofit.RpcErrorCode;
 import com.officego.rpc.OfficegoApi;
 import com.officego.ui.home.contract.SearchListContract;
-import com.officego.ui.home.model.BannerBean;
 import com.officego.ui.home.model.BuildingBean;
 
 import java.util.ArrayList;
@@ -37,30 +36,26 @@ public class SearchListPresenter extends BasePresenter<SearchListContract.View> 
         this.context = context;
     }
 
-    @Override
-    public void getBannerList() {
-        OfficegoApi.getInstance().getBannerList(new RetrofitCallback<List<BannerBean.DataBean>>() {
-            @Override
-            public void onSuccess(int code, String msg, List<BannerBean.DataBean> data) {
-                if (isViewAttached()) {
-                    bannerList.clear();
-                    if (data != null) {
-                        for (int i = 0; i < data.size(); i++) {
-                            bannerList.add(data.get(i).getImg());
-                        }
-                        mView.bannerListSuccess(bannerList, data);
-                    }
-                }
-            }
-
-            @Override
-            public void onFail(int code, String msg, List<BannerBean.DataBean> data) {
-                if (isViewAttached()) {
-                }
-            }
-        });
-    }
-
+    /**
+     * 列表
+     * district 	否 	string 	大区
+     * business 	否 	string 	商圈 不限：0 多个英文逗号分隔Id
+     * nearbySubway 	否 	string 	地铁站名 ，不限：0 多个英文逗号分隔Id
+     * line 	否 	string 	地铁线
+     * area 	否 	string 	平方米区间英文逗号分隔
+     * dayPrice 	否 	string 	楼盘的时候是 每平方米单价区间英文逗号分隔 网点的时候是 每工位每月单价区间英文逗号分隔
+     * decoration 	否 	string 	装修类型id英文逗号分隔
+     * btype 	否 	string 	类型1:楼盘,2:网点, 0全部
+     * houseTags 	否 	string 	房源特色id英文逗号分隔
+     * vrFlag 	否 	int 	是否只看VR房源 0:不限1:只看VR房源
+     * sort 	否 	int 	排序0默认1价格从高到低2价格从低到高3面积从大到小4面积从小到大
+     * seats 	否 	string 	联合工位区间英文逗号分隔
+     * longitude 	否 	string 	经度
+     * latitude 	否 	string 	纬度
+     * keyWord 	否 	string 	关键字搜索
+     * pageNo 	否 	int 	当前页
+     * pageSize 	否 	int 	每页条数
+     */
     @Override
     public void getBuildingList(int pageNo, String btype, String district, String business, String line,
                                 String nearbySubway, String area, String dayPrice, String seats, String decoration,

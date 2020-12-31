@@ -31,6 +31,7 @@ import com.officego.ui.home.animation.CustomRotateAnim;
 import com.officego.ui.home.contract.HomeContract;
 import com.officego.ui.home.model.BannerBean;
 import com.officego.ui.home.model.BrandRecommendBean;
+import com.officego.ui.home.model.HomeHotBean;
 import com.officego.ui.home.model.TodayReadBean;
 import com.officego.ui.home.presenter.HomePresenter;
 import com.officego.utils.ImageLoaderUtils;
@@ -43,7 +44,6 @@ import com.youth.banner.listener.OnBannerListener;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
@@ -127,6 +127,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         mPresenter.getBannerList();
         mPresenter.getTodayRead();
         mPresenter.getBrandManagement();
+        mPresenter.getHotList();
     }
 
     @Click(R.id.ctl_search)
@@ -304,6 +305,11 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     @Override
     public void brandFail() {
         rlBrand.setVisibility(View.GONE);
+    }
+
+    @Override
+    public void hotListSuccess(HomeHotBean data) {
+
     }
 
     //下拉刷新

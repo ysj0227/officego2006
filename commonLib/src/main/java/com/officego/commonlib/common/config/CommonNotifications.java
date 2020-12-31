@@ -41,4 +41,6 @@ public class CommonNotifications {
     public static final int checkedIdentitySuccess = totalEvents++;
     //发送手机号
     public static final int JPushSendPhone = totalEvents++;
+    //搜索发送keywords
+    public static final int sendKeyWords = totalEvents++;
 }

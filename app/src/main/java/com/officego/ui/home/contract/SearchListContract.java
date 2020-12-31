@@ -18,8 +18,6 @@ public interface SearchListContract {
 
         void endRefresh();
 
-        void bannerListSuccess(List<String> bannerList, List<BannerBean.DataBean> data);
-
         void BuildingListSuccess(List<BuildingBean.ListBean> list, boolean hasMore);
 
         void conditionListSuccess(List<DirectoryBean.DataBean> decorationList, List<DirectoryBean.DataBean> buildingUniqueList,
@@ -27,8 +25,6 @@ public interface SearchListContract {
     }
 
     interface Presenter {
-
-        void getBannerList();
 
         void getBuildingList(int pageNo, String btype, String district, String business, String line,
                              String nearbySubway, String area, String dayPrice, String seats, String decoration,

@@ -35,6 +35,7 @@ import com.officego.ui.home.model.BuildingDetailsChildBean;
 import com.officego.ui.home.model.BuildingJointWorkBean;
 import com.officego.ui.home.model.BusinessCircleBean;
 import com.officego.ui.home.model.ChatsBean;
+import com.officego.ui.home.model.HomeHotBean;
 import com.officego.ui.home.model.HouseOfficeDetailsBean;
 import com.officego.ui.home.model.HouseOfficeDetailsJointWorkBean;
 import com.officego.ui.home.model.MeterBean;
@@ -757,6 +758,18 @@ public class OfficegoApi {
         map.put("channel", requestBody("2"));
         OfficegoRetrofitClient.getInstance().create(HomeInterface.class)
                 .getBrandManagement(map)
+                .enqueue(callback);
+    }
+
+    /**
+     * 首页热门
+     */
+    public void getHotsList(RetrofitCallback<HomeHotBean> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("channel", requestBody("2"));
+        OfficegoRetrofitClient.getInstance().create(HomeInterface.class)
+                .getHotList(map)
                 .enqueue(callback);
     }
 

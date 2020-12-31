@@ -17,18 +17,17 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
+import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.OnLoadMoreListener;
 import com.officego.config.ConditionConfig;
 import com.officego.ui.adapter.HouseAdapter;
 import com.officego.ui.home.contract.SearchListContract;
-import com.officego.ui.home.model.BannerBean;
 import com.officego.ui.home.model.BuildingBean;
 import com.officego.ui.home.model.ConditionSearchBean;
 import com.officego.ui.home.presenter.SearchListPresenter;
@@ -118,13 +117,11 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
         mPresenter = new SearchListPresenter(context);
         mPresenter.attachView(this);
         initRefresh();
-        ConditionConfig.showText(tvSearchOffice,filterType);
+        ConditionConfig.showText(tvSearchOffice, filterType);
         btnBack.setVisibility(View.VISIBLE);
         btnCancel.setVisibility(View.GONE);
-        btnBack.setOnClickListener(v -> finish());
         etSearch.setText(searchKeywords);
         etSearch.setFocusable(false);
-        etSearch.setOnClickListener(v -> finish());
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         rvHouse.setLayoutManager(layoutManager);
         if (!NetworkUtils.isNetworkAvailable(context)) {
@@ -132,29 +129,9 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
             return;
         }
         getBuildingList();
-
     }
 
-    /**
-     * 列表
-     * district 	否 	string 	大区
-     * business 	否 	string 	商圈 不限：0 多个英文逗号分隔Id
-     * nearbySubway 	否 	string 	地铁站名 ，不限：0 多个英文逗号分隔Id
-     * line 	否 	string 	地铁线
-     * area 	否 	string 	平方米区间英文逗号分隔
-     * dayPrice 	否 	string 	楼盘的时候是 每平方米单价区间英文逗号分隔 网点的时候是 每工位每月单价区间英文逗号分隔
-     * decoration 	否 	string 	装修类型id英文逗号分隔
-     * btype 	否 	string 	类型1:楼盘,2:网点, 0全部
-     * houseTags 	否 	string 	房源特色id英文逗号分隔
-     * vrFlag 	否 	int 	是否只看VR房源 0:不限1:只看VR房源
-     * sort 	否 	int 	排序0默认1价格从高到低2价格从低到高3面积从大到小4面积从小到大
-     * seats 	否 	string 	联合工位区间英文逗号分隔
-     * longitude 	否 	string 	经度
-     * latitude 	否 	string 	纬度
-     * keyWord 	否 	string 	关键字搜索
-     * pageNo 	否 	int 	当前页
-     * pageSize 	否 	int 	每页条数
-     */
+    //获取数据列表
     private void getBuildingList() {
         String mArea = TextUtils.isEmpty(area) ? ("0," + CommonList.SEARCH_MAX) : area;
         String mDayPrice = TextUtils.isEmpty(dayPrice) ? ("0," + CommonList.SEARCH_MAX) : dayPrice;
@@ -184,8 +161,12 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
         rvHouse.setOnTouchListener((view, motionEvent) -> mSwipeRefreshLayout != null && mSwipeRefreshLayout.isRefreshing());
     }
 
-    //搜索
-    @Click(R.id.tv_search)
+    @Click(R.id.btn_back)
+    void backClick() {
+        finish();
+    }
+
+    @Click(R.id.et_search)
     void searchClick() {
         SearchRecommendActivity_.intent(context).start();
     }
@@ -390,11 +371,6 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
         pullDownRefreshList();
     }
 
-    @Override
-    public void bannerListSuccess(List<String> bannerList, List<BannerBean.DataBean> data) {
-    }
-
-
     private void noData() {
         tvNoData.setVisibility(View.VISIBLE);
         rlException.setVisibility(View.GONE);
@@ -418,5 +394,20 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
         //神策
         SensorsTrack.clickSearchResultsPage(searchKeywords, btype, position, buildingId);
         SensorsTrack.visitBuildingDataPage(position, buildingId);
+    }
+
+    @Override
+    public int[] getStickNotificationId() {
+        return new int[]{CommonNotifications.sendKeyWords};
+    }
+
+    @Override
+    public void didReceivedNotification(int id, Object... args) {
+        super.didReceivedNotification(id, args);
+        if (id == CommonNotifications.sendKeyWords) {
+            searchKeywords = (String) args[0];
+            etSearch.setText(searchKeywords);
+            getList();
+        }
     }
 }

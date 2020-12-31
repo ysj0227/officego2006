@@ -18,17 +18,19 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.config.CommonNotifications;
+import com.officego.commonlib.common.model.DirectoryBean;
+import com.officego.commonlib.common.model.QueryHistoryKeywordsBean;
+import com.officego.commonlib.common.model.SearchListBean;
+import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.common.sensors.SensorsTrack;
+import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.LabelsView;
 import com.officego.ui.adapter.KeywordsAdapter;
-import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.ui.home.contract.SearchContract;
-import com.officego.commonlib.common.model.QueryHistoryKeywordsBean;
-import com.officego.commonlib.common.model.SearchListBean;
 import com.officego.ui.home.presenter.SearchKeywordsPresenter;
-import com.officego.commonlib.common.model.utils.BundleUtils;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -44,7 +46,7 @@ import java.util.Objects;
  * Data 2020/5/14.
  * Descriptions: 搜索推荐
  **/
-@SuppressLint("Registered")
+@SuppressLint({"Registered", "NonConstantResourceId"})
 @EActivity(R.layout.home_activity_search_recommend)
 public class SearchRecommendActivity extends BaseMvpActivity<SearchKeywordsPresenter>
         implements SearchContract.View, TextView.OnEditorActionListener,
@@ -97,9 +99,6 @@ public class SearchRecommendActivity extends BaseMvpActivity<SearchKeywordsPrese
         finish();
     }
 
-    /**
-     * clear
-     */
     @Click(R.id.iv_clear_history)
     void clearClick() {
         mPresenter.clearSearchKeywords();
@@ -167,6 +166,7 @@ public class SearchRecommendActivity extends BaseMvpActivity<SearchKeywordsPrese
     }
 
     private void gotoSearchList(String text) {
+        BaseNotification.newInstance().postNotificationName(CommonNotifications.sendKeyWords, text);
         //神策
         SensorsTrack.visitSearchResultsPage(sensorsClickType, text);
         //list结果

@@ -145,11 +145,11 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.home.SearchRecommendActivity_"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.home.SearchHouseListActivity_"
-            android:launchMode="singleTop"
+            android:launchMode="singleTask"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.mine.MineMessageActivity_"

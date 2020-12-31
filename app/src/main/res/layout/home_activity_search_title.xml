@@ -30,6 +30,7 @@
         </LinearLayout>
 
         <RelativeLayout
+            android:id="@+id/rl_search"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -75,6 +76,6 @@
             android:gravity="center"
             android:text="@string/sm_cancel"
             android:textColor="@color/white"
-            android:textSize="@dimen/sp_16" />
+            android:textSize="@dimen/sp_15" />
     </RelativeLayout>
 </RelativeLayout>
