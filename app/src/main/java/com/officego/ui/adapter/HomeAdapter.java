@@ -190,12 +190,15 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     //房源-单图
     private void house1View(RecyclerView.ViewHolder holder, HomeHotBean.DataBean.ListBean bean) {
-        List<String> list = new ArrayList();
-        list.add("#蓝色的天空#");
+        List<HomeHotBean.DataBean.ListBean.BannerMapBean.LabelIdBean> list = bean.getBannerMap().getLabelId();
+        if (list==null||list.size()==0){
+            ((House1Holder) holder).llLabelsHouse.setVisibility(View.GONE);
+        }else {
+            ((House1Holder) holder).llLabelsHouse.setVisibility(View.VISIBLE);
+            ((House1Holder) holder).llLabelsHouse.setLabels(list, (label, pos, data) -> "#" + data.getDictCname() + "#");
+        }
         Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options())
                 .load(bean.getBannerMap().getImg()).into(((House1Holder) holder).ivImage);
-        ((House1Holder) holder).llLabelsHouse.setLabels(list, (label, pos, data) -> data);
-
         ((House1Holder) holder).tvName.setText(bean.getBannerMap().getBannerName());
         ((House1Holder) holder).tvLocation.setText("2.0Km | 闵行区-莘庄");
         ((House1Holder) holder).tvLines.setText("步行20分钟到「2号线·龙阳路」");
