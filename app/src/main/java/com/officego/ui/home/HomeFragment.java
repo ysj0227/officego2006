@@ -43,6 +43,7 @@ import com.youth.banner.listener.OnBannerListener;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.ArrayList;
@@ -128,15 +129,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         mPresenter.getBrandManagement();
     }
 
-    @Click({R.id.tv_all_house, R.id.btn_query_more})
-    void moreHouseClick() {
-        if (isFastClick(1200)) {
-            return;
-        }
-        SearchHouseListActivity_.intent(mActivity)
-                .searchKeywords("").start();
-    }
-
     @Click(R.id.ctl_search)
     void searchClick() {
         if (isFastClick(1200)) {
@@ -144,6 +136,44 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         }
         SensorsTrack.searchButtonIndex();
         SearchRecommendActivity_.intent(mActivity).start();
+    }
+
+    @Click(R.id.rl_joint_work)
+    void jointWorkClick() {
+        goSearchActivity(Constants.SEARCH_JOINT_WORK);
+    }
+
+    @Click(R.id.rl_open_independent)
+    void openSeatsClick() {
+        goSearchActivity(Constants.SEARCH_OPEN_SEATS);
+    }
+
+    @Click(R.id.rl_office_type)
+    void officeClick() {
+        goSearchActivity(Constants.SEARCH_OFFICE);
+    }
+
+    @Click(R.id.rl_garden)
+    void gardenClick() {
+        goSearchActivity(Constants.SEARCH_GARDEN);
+    }
+
+    @Click(R.id.rl_meeting_room)
+    void meetingClick() {
+        WebViewCouponActivity_.intent(mActivity).amountRange("").start();
+    }
+
+    //搜索列表
+    private void goSearchActivity(int filterType) {
+        SearchHouseListActivity_.intent(mActivity).filterType(filterType).start();
+    }
+
+    @Click({R.id.tv_all_house, R.id.btn_query_more})
+    void moreHouseClick() {
+        if (isFastClick(1200)) {
+            return;
+        }
+        SearchHouseListActivity_.intent(mActivity).start();
     }
 
     @Click(R.id.iv_scroll_top)

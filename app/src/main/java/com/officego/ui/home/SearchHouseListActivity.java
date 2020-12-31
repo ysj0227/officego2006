@@ -87,6 +87,9 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
 
     @Extra
     String searchKeywords;
+    @Extra
+    int filterType;
+
     private SearchPopupWindow popupWindow;
     //adapter
     private HouseAdapter houseAdapter;
@@ -97,12 +100,12 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
     //list 是否有更多
     private boolean hasMore;
     //所有的筛选条件
-    private int btype = 0;
+    private int btype;
     private HashSet<Integer> hashSet;//地铁商圈的传值
     private SparseBooleanArray checkStates; //记录选中的位置
     private String district = "", business = "", line = "", nearbySubway = "",
             area = "", dayPrice = "", seats = "", decoration = "", houseTags = "", sort = "0";
-    private int filterType;//类型
+    private boolean isReviewVR;//是否只预览带VR
     private ConditionSearchBean mSearchData;
     private List<DirectoryBean.DataBean> decorationList;
     private List<DirectoryBean.DataBean> buildingUniqueList;
@@ -115,6 +118,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
         mPresenter = new SearchListPresenter(context);
         mPresenter.attachView(this);
         initRefresh();
+        ConditionConfig.showText(tvSearchOffice,filterType);
         btnBack.setVisibility(View.VISIBLE);
         btnCancel.setVisibility(View.GONE);
         btnBack.setOnClickListener(v -> finish());
@@ -152,12 +156,13 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
      * pageSize 	否 	int 	每页条数
      */
     private void getBuildingList() {
-        String mArea = TextUtils.isEmpty(area) ? "0," + CommonList.SEARCH_MAX : area;
-        String mDayPrice = TextUtils.isEmpty(dayPrice) ? "0," + CommonList.SEARCH_MAX : dayPrice;
-        String mSeats = TextUtils.isEmpty(seats) ? "0," + CommonList.SEARCH_MAX : seats;
+        String mArea = TextUtils.isEmpty(area) ? ("0," + CommonList.SEARCH_MAX) : area;
+        String mDayPrice = TextUtils.isEmpty(dayPrice) ? ("0," + CommonList.SEARCH_MAX) : dayPrice;
+        String mSeats = TextUtils.isEmpty(seats) ? ("0," + CommonList.SEARCH_MAX) : seats;
+        String mDecoration = TextUtils.equals("0", decoration) ? "" : decoration;
         mPresenter.getBuildingList(pageNum, String.valueOf(btype), district, business,
                 line, nearbySubway, mArea, mDayPrice, mSeats,
-                decoration, houseTags, sort, searchKeywords);
+                mDecoration, houseTags, sort, TextUtils.isEmpty(searchKeywords) ? "" : searchKeywords);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -331,6 +336,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
         this.seats = bean.getSeats();
         this.decoration = bean.getDecoration();
         this.houseTags = bean.getUnique();
+        this.isReviewVR = bean.isVr();
         bType(filterType);
         ConditionConfig.showText(tvSearchOffice, filterType);
         ConditionConfig.getConditionBean = ConditionConfig.setConditionBean(
