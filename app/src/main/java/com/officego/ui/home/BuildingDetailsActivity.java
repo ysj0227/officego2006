@@ -305,7 +305,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         mPresenter.attachView(this);
         rlRootHouseTitle.setPadding(0, CommonHelper.statusHeight(this), 0, 0);
         nsvView.setOnScrollChangeListener(this);
-        mConditionBean = ConditionConfig.mConditionBean;
+        mConditionBean = ConditionConfig.getConditionBean;
         if (BundleUtils.buildingBean(this) != null) {//聊天插入楼盘点击
             mBuildingBean = BundleUtils.buildingBean(this);
         }

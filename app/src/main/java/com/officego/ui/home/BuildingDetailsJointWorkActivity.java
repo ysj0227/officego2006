@@ -324,7 +324,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         rlRootHouseTitle.setPadding(0, CommonHelper.statusHeight(this), 0, 0);
         tvIndependentOffice.setVisibility(View.VISIBLE);
         ctlShareService.setVisibility(View.VISIBLE);
-        mConditionBean = ConditionConfig.mConditionBean;
+        mConditionBean = ConditionConfig.getConditionBean;
         if (BundleUtils.buildingBean(this) != null) {//聊天插入楼盘点击
             mBuildingBean = BundleUtils.buildingBean(this);
         }

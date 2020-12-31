@@ -136,7 +136,7 @@ public interface HomeInterface {
      * 今日看点
      */
     @Multipart
-    @POST(path + "building/getReadTodayById")
+    @POST(path + "building/getReadToday")
     Call<BaseResponse<List<TodayReadBean.DataBean>>> todayNews(@PartMap Map<String, RequestBody> params);
 
     /**

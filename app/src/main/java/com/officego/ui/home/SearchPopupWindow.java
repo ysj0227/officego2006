@@ -114,10 +114,10 @@ public class SearchPopupWindow extends PopupWindow implements
     private SparseBooleanArray mCheckStatesLine, mCheckStatesBusiness;//记录选中的位置
     private String district = "", business = "";//商圈
     private String line = "", nearbySubway = ""; //地铁
-    private int btype;//楼盘,网点
+    private int btype; //搜索类型0,1,2,3，4
     private String sort;//排序
-    private List<MeterBean.DataBean> meterList = new ArrayList<>(); //获取地铁列表
-    private List<BusinessCircleBean.DataBean> businessCircleList = new ArrayList<>();  //商圈列表
+    private final List<MeterBean.DataBean> meterList = new ArrayList<>(); //获取地铁列表
+    private final List<BusinessCircleBean.DataBean> businessCircleList = new ArrayList<>();  //商圈列表
     //筛选
     private List<DirectoryBean.DataBean> decorationList = new ArrayList<>();
     private List<DirectoryBean.DataBean> buildingUniqueList = new ArrayList<>();
@@ -130,14 +130,10 @@ public class SearchPopupWindow extends PopupWindow implements
     //办公室,园区
     private int officeDecoration, gardenDecoration;
     private Map<Integer, String> officeMap, gardenMap;
-    private ConditionSearchBean searchData;
+    private final ConditionSearchBean searchData;
 
     //自定义接口
     private onSureClickListener onSureClickListener;
-
-    public SearchPopupWindow.onSureClickListener getOnSureClickListener() {
-        return onSureClickListener;
-    }
 
     void setOnSureClickListener(SearchPopupWindow.onSureClickListener onSureClickListener) {
         this.onSureClickListener = onSureClickListener;
@@ -149,13 +145,13 @@ public class SearchPopupWindow extends PopupWindow implements
                                String data1, String data2);
 
         //办公
-        void onOfficeTypePopUpWindow(int searchType, int officeType, int officeText);
+        void onOfficeTypePopUpWindow(int filterType, int officeText);
 
         //排序
-        void onOfficeOrderPopUpWindow(int searchType, String order);
+        void onOfficeOrderPopUpWindow(String order);
 
         //筛选
-        void onConditionPopUpWindow(int officeType, ConditionSearchBean bean);
+        void onConditionPopUpWindow(int filterType, ConditionSearchBean bean);
     }
 
     //popupWindow设置参数
@@ -184,7 +180,7 @@ public class SearchPopupWindow extends PopupWindow implements
     @SuppressLint("ClickableViewAccessibility")
     public SearchPopupWindow(Activity activity, View topToPopupWindowView,
                              TextView setTextView, int searchType,
-                             int officeType, HashSet<Integer> hashSet, SparseBooleanArray checkStates,
+                             int filterType, HashSet<Integer> hashSet, SparseBooleanArray checkStates,
                              String district, String business, String line,
                              String nearbySubway, String sort,
                              List<DirectoryBean.DataBean> decorationList,
@@ -196,7 +192,7 @@ public class SearchPopupWindow extends PopupWindow implements
         this.mContext = activity;
         this.mSetTitleView = setTextView;
         this.mSearchType = searchType;
-        this.btype = officeType;
+        this.btype = filterType;
         if (TextUtils.isEmpty(district)) {
             this.mHashSetLine = hashSet;
             this.mCheckStatesLine = checkStates;
@@ -534,23 +530,23 @@ public class SearchPopupWindow extends PopupWindow implements
         }
         tvPopAll.setOnClickListener(v -> {
             dismiss();
-            onSureClickListener.onOfficeTypePopUpWindow(mSearchType, Constants.SEARCH_ALL, R.string.str_house_all);
+            onSureClickListener.onOfficeTypePopUpWindow(Constants.SEARCH_ALL, R.string.str_house_all);
         });
         tvPopTenant.setOnClickListener(v -> {
             dismiss();
-            onSureClickListener.onOfficeTypePopUpWindow(mSearchType, Constants.SEARCH_JOINT_WORK, R.string.str_house_tenant);
+            onSureClickListener.onOfficeTypePopUpWindow(Constants.SEARCH_JOINT_WORK, R.string.str_house_tenant);
         });
         tvPopOpenSeats.setOnClickListener(v -> {
             dismiss();
-            onSureClickListener.onOfficeTypePopUpWindow(mSearchType, Constants.SEARCH_OPEN_SEATS, R.string.str_house_open_seats);
+            onSureClickListener.onOfficeTypePopUpWindow(Constants.SEARCH_OPEN_SEATS, R.string.str_house_open_seats);
         });
         tvPopOffice.setOnClickListener(v -> {
             dismiss();
-            onSureClickListener.onOfficeTypePopUpWindow(mSearchType, Constants.SEARCH_OFFICE, R.string.str_house_office);
+            onSureClickListener.onOfficeTypePopUpWindow(Constants.SEARCH_OFFICE, R.string.str_house_office);
         });
         tvPopGarden.setOnClickListener(v -> {
             dismiss();
-            onSureClickListener.onOfficeTypePopUpWindow(mSearchType, Constants.SEARCH_GARDEN, R.string.str_house_garden);
+            onSureClickListener.onOfficeTypePopUpWindow(Constants.SEARCH_GARDEN, R.string.str_house_garden);
         });
     }
 
@@ -574,23 +570,23 @@ public class SearchPopupWindow extends PopupWindow implements
         }
         tvPopOrderDef.setOnClickListener(v -> {
             dismiss();
-            onSureClickListener.onOfficeOrderPopUpWindow(mSearchType, "0");
+            onSureClickListener.onOfficeOrderPopUpWindow("0");
         });
         tvPopPriceUpDown.setOnClickListener(v -> {
             dismiss();
-            onSureClickListener.onOfficeOrderPopUpWindow(mSearchType, "1");
+            onSureClickListener.onOfficeOrderPopUpWindow("1");
         });
         tvPopPriceDownUp.setOnClickListener(v -> {
             dismiss();
-            onSureClickListener.onOfficeOrderPopUpWindow(mSearchType, "2");
+            onSureClickListener.onOfficeOrderPopUpWindow("2");
         });
         tvPopAreaUpDown.setOnClickListener(v -> {
             dismiss();
-            onSureClickListener.onOfficeOrderPopUpWindow(mSearchType, "3");
+            onSureClickListener.onOfficeOrderPopUpWindow("3");
         });
         tvPopAreaDownUp.setOnClickListener(v -> {
             dismiss();
-            onSureClickListener.onOfficeOrderPopUpWindow(mSearchType, "4");
+            onSureClickListener.onOfficeOrderPopUpWindow("4");
         });
     }
 

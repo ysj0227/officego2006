@@ -22,6 +22,7 @@ import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.OnLoadMoreListener;
 import com.officego.config.ConditionConfig;
@@ -29,7 +30,6 @@ import com.officego.ui.adapter.HouseAdapter;
 import com.officego.ui.home.contract.SearchListContract;
 import com.officego.ui.home.model.BannerBean;
 import com.officego.ui.home.model.BuildingBean;
-import com.officego.ui.home.model.ConditionBean;
 import com.officego.ui.home.model.ConditionSearchBean;
 import com.officego.ui.home.presenter.SearchListPresenter;
 import com.officego.utils.CommonList;
@@ -102,7 +102,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
     private SparseBooleanArray checkStates; //记录选中的位置
     private String district = "", business = "", line = "", nearbySubway = "",
             area = "", dayPrice = "", seats = "", decoration = "", houseTags = "", sort = "0";
-    private int officeType;//类型
+    private int filterType;//类型
     private ConditionSearchBean mSearchData;
     private List<DirectoryBean.DataBean> decorationList;
     private List<DirectoryBean.DataBean> buildingUniqueList;
@@ -232,7 +232,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
         textView.setCompoundDrawablesWithIntrinsicBounds(null, null,
                 ContextCompat.getDrawable(context, R.mipmap.ic_arrow_up_blue), null);
         popupWindow = new SearchPopupWindow(this, ctlSearch, textView, searchType,
-                officeType, hashSet, checkStates, district, business, line, nearbySubway, sort,
+                filterType, hashSet, checkStates, district, business, line, nearbySubway, sort,
                 decorationList, buildingUniqueList, jointWorkUniqueList, brandList, mSearchData);
         popupWindow.setOnSureClickListener(this);
     }
@@ -261,7 +261,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
     //初始化adapter
     private void initAdapter() {
         if (houseAdapter == null) {
-            houseAdapter = new HouseAdapter(context, buildingList, setConditionBean());
+            houseAdapter = new HouseAdapter(context, buildingList, ConditionConfig.getConditionBean);
             rvHouse.setAdapter(houseAdapter);
         }
         houseAdapter.setItemListener(this);
@@ -299,8 +299,8 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
 
     //全部，写字楼，共享办公
     @Override
-    public void onOfficeTypePopUpWindow(int searchType, int officeType, int text) {
-        this.officeType = officeType;
+    public void onOfficeTypePopUpWindow(int filterType, int text) {
+        this.filterType = filterType;
         tvSearchOffice.setText(text);
         //初始化选择的写字楼或共享办公
         area = "";
@@ -308,13 +308,14 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
         dayPrice = "";
         decoration = "";
         houseTags = "";
+        bType(filterType);
         //查询列表
         getList();
     }
 
     //排序
     @Override
-    public void onOfficeOrderPopUpWindow(int searchType, String order) {
+    public void onOfficeOrderPopUpWindow(String order) {
         sort = order;
         //查询列表
         getList();
@@ -322,28 +323,31 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
 
     //筛选
     @Override
-    public void onConditionPopUpWindow(int officeType, ConditionSearchBean bean) {
+    public void onConditionPopUpWindow(int filterType, ConditionSearchBean bean) {
         mSearchData = bean;
-        this.officeType = officeType;
+        this.filterType = filterType;
         this.area = bean.getArea();
         this.dayPrice = bean.getRent();
         this.seats = bean.getSeats();
         this.decoration = bean.getDecoration();
         this.houseTags = bean.getUnique();
-        if (officeType == Constants.SEARCH_ALL) {
-            tvSearchOffice.setText(R.string.str_house_all);
-        } else if (officeType == Constants.SEARCH_JOINT_WORK) {
-            tvSearchOffice.setText(R.string.str_house_tenant);
-        } else if (officeType == Constants.SEARCH_OPEN_SEATS) {
-            tvSearchOffice.setText(R.string.str_house_open_seats);
-        } else if (officeType == Constants.SEARCH_OFFICE) {
-            tvSearchOffice.setText(R.string.str_house_office);
-        } else if (officeType == Constants.SEARCH_GARDEN) {
-            tvSearchOffice.setText(R.string.str_house_garden);
-        }
-        ConditionConfig.mConditionBean = setConditionBean();
+        bType(filterType);
+        ConditionConfig.showText(tvSearchOffice, filterType);
+        ConditionConfig.getConditionBean = ConditionConfig.setConditionBean(
+                btype, area, dayPrice, seats, decoration, houseTags);
         //查询列表
         getList();
+    }
+
+    //TODO
+    private void bType(int filterType) {
+        if (filterType == Constants.SEARCH_ALL) {
+            btype = 0;
+        } else if (filterType == Constants.SEARCH_JOINT_WORK || filterType == Constants.SEARCH_OPEN_SEATS) {
+            btype = Constants.TYPE_JOINTWORK;
+        } else if (filterType == Constants.SEARCH_OFFICE || filterType == Constants.SEARCH_GARDEN) {
+            btype = Constants.TYPE_BUILDING;
+        }
     }
 
     private void getList() {
@@ -374,7 +378,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
         mSwipeRefreshLayout.setRefreshing(false);
     }
 
-    //开始下拉刷新
+    //下拉刷新
     @Override
     public void onRefresh() {
         pullDownRefreshList();
@@ -384,53 +388,6 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
     public void bannerListSuccess(List<String> bannerList, List<BannerBean.DataBean> data) {
     }
 
-    private ConditionBean setConditionBean() {
-        ConditionBean bean = new ConditionBean();
-        //面积
-        if (TextUtils.equals("", this.area) || TextUtils.equals("0,2000", this.area)) {
-            this.area = "";
-        } else {
-            String start, end;
-            if (this.area.contains(",")) {
-                String str1 = this.area.substring(0, this.area.indexOf(","));
-                start = this.area.substring(0, str1.length());
-                end = this.area.substring(str1.length() + 1);
-                bean.setAreaValue(start + "-" + end + "㎡");
-            }
-        }
-        if (btype == 1) {//楼盘，办公室
-            if (TextUtils.equals("", this.seats) || TextUtils.equals("0,500", this.seats)) {
-                this.seats = "";
-            } else {
-                String start, end;
-                if (this.seats.contains(",")) {//工位
-                    String str1 = this.seats.substring(0, this.seats.indexOf(","));
-                    start = this.seats.substring(0, str1.length());
-                    end = this.seats.substring(str1.length() + 1);
-                    bean.setSeatsValue(start + "-" + end + "人");
-                }
-            }
-        } else if (btype == 2) {//网点 没有面积条件
-            if (TextUtils.equals("", this.seats) || TextUtils.equals("0,30", this.seats)) {
-                this.seats = "";
-                this.area = "";
-            } else {
-                String start, end;
-                if (this.seats.contains(",")) {//工位
-                    String str1 = this.seats.substring(0, this.seats.indexOf(","));
-                    start = this.seats.substring(0, str1.length());
-                    end = this.seats.substring(str1.length() + 1);
-                    bean.setSeatsValue(start + "-" + end + "人");
-                }
-            }
-        }
-        bean.setArea(this.area);
-        bean.setSeats(this.seats);
-        bean.setDayPrice(this.dayPrice);
-        bean.setDecoration(this.decoration);
-        bean.setHouseTags(this.houseTags);
-        return bean;
-    }
 
     private void noData() {
         tvNoData.setVisibility(View.VISIBLE);

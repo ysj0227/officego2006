@@ -56,7 +56,7 @@
                         android:button="@null"
                         android:checked="true"
                         android:gravity="center"
-                        android:text="共享办公"
+                        android:text="@string/str_house_tenant"
                         android:textColor="@color/text_selector_blue_black"
                         android:textSize="@dimen/sp_12" />
 
@@ -70,7 +70,7 @@
                         android:button="@null"
                         android:checked="false"
                         android:gravity="center"
-                        android:text="开放工位"
+                        android:text="@string/str_house_open_seats"
                         android:textColor="@color/text_selector_blue_black"
                         android:textSize="@dimen/sp_12" />
 
@@ -84,7 +84,7 @@
                         android:button="@null"
                         android:checked="true"
                         android:gravity="center"
-                        android:text="办公室"
+                        android:text="@string/str_house_office"
                         android:textColor="@color/text_selector_blue_black"
                         android:textSize="@dimen/sp_12" />
 
@@ -98,7 +98,7 @@
                         android:button="@null"
                         android:checked="false"
                         android:gravity="center"
-                        android:text="园区"
+                        android:text="@string/str_house_garden"
                         android:textColor="@color/text_selector_blue_black"
                         android:textSize="@dimen/sp_12" />
                 </RadioGroup>

@@ -67,7 +67,7 @@ public class CommonList {
         List<WantFindBean> list = new ArrayList<>();
         WantFindBean bean1 = new WantFindBean("0," + SEARCH_MAX, "不限");
         list.add(bean1);
-        WantFindBean bean2 = new WantFindBean("0,100", "100㎡以下");
+        WantFindBean bean2 = new WantFindBean("0,100", "0-100㎡");
         list.add(bean2);
         WantFindBean bean3 = new WantFindBean("100,200", "100-200㎡");
         list.add(bean3);
@@ -85,7 +85,7 @@ public class CommonList {
         List<WantFindBean> list = new ArrayList<>();
         WantFindBean bean1 = new WantFindBean("0," + SEARCH_MAX, "不限");
         list.add(bean1);
-        WantFindBean bean2 = new WantFindBean("0,3", "3以下");
+        WantFindBean bean2 = new WantFindBean("0,3", "0-3");
         list.add(bean2);
         WantFindBean bean3 = new WantFindBean("3,5", "3-5");
         list.add(bean3);
@@ -103,7 +103,7 @@ public class CommonList {
         List<WantFindBean> list = new ArrayList<>();
         WantFindBean bean1 = new WantFindBean("0," + SEARCH_MAX, "不限");
         list.add(bean1);
-        WantFindBean bean2 = new WantFindBean("0,20", "20个以下");
+        WantFindBean bean2 = new WantFindBean("0,20", "0-20个");
         list.add(bean2);
         WantFindBean bean3 = new WantFindBean("20,50", "20-50个");
         list.add(bean3);
@@ -121,7 +121,7 @@ public class CommonList {
         List<WantFindBean> list = new ArrayList<>();
         WantFindBean bean1 = new WantFindBean("0," + SEARCH_MAX, "不限");
         list.add(bean1);
-        WantFindBean bean2 = new WantFindBean("0,1000", "1000以下");
+        WantFindBean bean2 = new WantFindBean("0,1000", "0-1000");
         list.add(bean2);
         WantFindBean bean3 = new WantFindBean("1000,2000", "1000-2000");
         list.add(bean3);
@@ -139,7 +139,7 @@ public class CommonList {
         List<WantFindBean> list = new ArrayList<>();
         WantFindBean bean1 = new WantFindBean("0," + SEARCH_MAX, "不限");
         list.add(bean1);
-        WantFindBean bean2 = new WantFindBean("0,5", "5个以下");
+        WantFindBean bean2 = new WantFindBean("0,5", "0-5个");
         list.add(bean2);
         WantFindBean bean3 = new WantFindBean("5,10", "5-10个");
         list.add(bean3);
