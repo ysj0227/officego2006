@@ -1495,10 +1495,10 @@ public class SearchPopupWindow extends PopupWindow implements
             cbType.setText(bean.getDictCname());
             if (holder.getAdapterPosition() == checkedPos) {
                 cbType.setTextColor(ContextCompat.getColor(mContext, R.color.common_blue_main));
-                Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getDictImgBlack()).into(ivImage);
+                Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getDictImg()).into(ivImage);
             } else {
                 cbType.setTextColor(ContextCompat.getColor(mContext, R.color.text_main));
-                Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getDictImg()).into(ivImage);
+                Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getDictImgBlack()).into(ivImage);
             }
             holder.itemView.setOnClickListener(view -> {
                 checkedPos = holder.getAdapterPosition();
@@ -1658,10 +1658,10 @@ public class SearchPopupWindow extends PopupWindow implements
             cbType.setText(bean.getDictCname());
             if (holder.getAdapterPosition() == checkedPos) {
                 cbType.setTextColor(ContextCompat.getColor(mContext, R.color.common_blue_main));
-                Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getDictImgBlack()).into(ivImage);
+                Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getDictImg()).into(ivImage);
             } else {
                 cbType.setTextColor(ContextCompat.getColor(mContext, R.color.text_main));
-                Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getDictImg()).into(ivImage);
+                Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getDictImgBlack()).into(ivImage);
             }
             holder.itemView.setOnClickListener(view -> {
                 checkedPos = holder.getAdapterPosition();

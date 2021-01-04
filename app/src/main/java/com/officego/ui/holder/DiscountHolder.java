@@ -36,6 +36,5 @@ public class DiscountHolder extends RecyclerView.ViewHolder {
         // 设置中划线并加清晰
         tvDiscount.getPaint().setAntiAlias(true);//抗锯齿
         tvDiscount.getPaint().setFlags(Paint. STRIKE_THRU_TEXT_FLAG|Paint.ANTI_ALIAS_FLAG);
-
     }
 }

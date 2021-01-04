@@ -67,7 +67,7 @@ public class PersonAdapter extends CommonListAdapter<WantFindBean> {
             }
         });
         onBind = true;
-        tvName.setChecked(map != null && map.containsKey(position));
+        tvName.setChecked(map.containsKey(position));
         onBind = false;
     }
 

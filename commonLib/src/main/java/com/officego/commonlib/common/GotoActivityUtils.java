@@ -11,6 +11,15 @@ import android.content.Intent;
  * Descriptions:
  **/
 public class GotoActivityUtils {
+    /**
+     * 回到桌面
+     */
+    public static void gotoHome(Context context) {
+        Intent home = new Intent(Intent.ACTION_MAIN);
+        home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
+        home.addCategory(Intent.CATEGORY_HOME);
+        context.startActivity(home);
+    }
 
     public static void loginClearActivity(Context context) {
         ComponentName comp = new ComponentName(context, "com.officego.ui.login.LoginActivity_");

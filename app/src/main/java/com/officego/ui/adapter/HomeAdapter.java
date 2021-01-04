@@ -14,6 +14,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.base.BaseActivity;
+import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.GlideUtils;
 import com.officego.h5.WebViewCouponActivity_;
@@ -23,10 +24,11 @@ import com.officego.ui.holder.House1Holder;
 import com.officego.ui.holder.House2Holder;
 import com.officego.ui.holder.MeetingHolder;
 import com.officego.ui.holder.TipsHolder;
+import com.officego.ui.home.BuildingDetailsActivity_;
+import com.officego.ui.home.BuildingDetailsJointWorkActivity_;
 import com.officego.ui.home.model.HomeHotBean;
 import com.officego.ui.home.model.HomeMeetingBean;
 
-import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -38,6 +40,8 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private final HomeMeetingBean.DataBean meetData;
     private final List<HomeHotBean.DataBean.ListBean> mData;
     private final Activity context;
+    private final String DAY_UNIT = "/m²/天起";
+    private final String MONTH_UNIT = "/位/月起";
 
     public HomeAdapter(BaseActivity mActivity, HomeMeetingBean.DataBean meetData,
                        List<HomeHotBean.DataBean.ListBean> data) {
@@ -102,7 +106,8 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public int getItemViewType(int position) {
         HomeHotBean.DataBean.ListBean bean = mData.get(position);
         if (bean == null || bean.getBannerMap() == null || bean.getBannerMap().getLayoutType() == null) {
-            if (Integer.parseInt(meetData.getMeetingRoomLocation()) == position) {
+            if (!TextUtils.isEmpty(meetData.getMeetingRoomLocation()) &&
+                    Integer.parseInt(meetData.getMeetingRoomLocation()) == position) {
                 return ITEM_TYPE.ITEM_TYPE_MEETING.ordinal();
             }
             return ITEM_TYPE.ITEM_TYPE_HOT.ordinal();
@@ -126,6 +131,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     //热门
     private void hotsView(RecyclerView.ViewHolder holder, HomeHotBean.DataBean.ListBean bean) {
+        String mPrice = bean.getMinDayPrice() == null ? "0" : bean.getMinDayPrice().toString();
         String distance = TextUtils.isEmpty(bean.getDistance()) ? "" : bean.getDistance() + "Km | ";
         String business = bean.getBusinessDistrict();
         String line;
@@ -146,27 +152,31 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         ((HotsHolder) holder).tvLocation.setText(String.format("%s%s", distance, business));
         ((HotsHolder) holder).tvLines.setText(line);
         ((HotsHolder) holder).tvChatTime.setText(bean.getInfotext());
-        String mPrice = bean.getMinDayPrice() == null ? "0" : bean.getMinDayPrice().toString();
         ((HotsHolder) holder).tvRmbMoney.setText(mPrice);
-        if (bean.getIndependenceOffice() == 0) {
-            ((HotsHolder) holder).tvOfficeIndependent.setVisibility(View.GONE);
-        } else {
-            ((HotsHolder) holder).tvOfficeIndependent.setVisibility(View.VISIBLE);
-            String source = "办公室<font color='#46C3C2'>" + bean.getIndependenceOffice() + "</font>间";
-            ((HotsHolder) holder).tvOfficeIndependent.setText(Html.fromHtml(source));
-        }
+        ((HotsHolder) holder).tvUnit.setText(bean.getBtype() == Constants.TYPE_BUILDING ? DAY_UNIT : MONTH_UNIT);
         if (bean.getBtype() == Constants.TYPE_BUILDING) {
-            ((HotsHolder) holder).tvUnit.setText("/m²/天起");
             ((HotsHolder) holder).tvOpenSeats.setVisibility(View.GONE);
+            setOfficeCounts(holder, bean.getHouseCount() == null ? 0 : bean.getHouseCount());
         } else {
-            ((HotsHolder) holder).tvUnit.setText("/位/月起");
-            if (bean.getOpenStation() == 0) {
+            setOfficeCounts(holder, bean.getIndependenceOffice());
+            if (bean.getOpenStation() == null || bean.getOpenStation() == 0) {
                 ((HotsHolder) holder).tvOpenSeats.setVisibility(View.GONE);
             } else {
                 ((HotsHolder) holder).tvOpenSeats.setVisibility(View.VISIBLE);
                 String source = "开放工位<font color='#46C3C2'>" + bean.getOpenStation() + "</font>个";
                 ((HotsHolder) holder).tvOpenSeats.setText(Html.fromHtml(source));
             }
+        }
+        gotoDetails(holder, bean);
+    }
+
+    private void setOfficeCounts(RecyclerView.ViewHolder holder, int counts) {
+        if (counts == 0) {
+            ((HotsHolder) holder).tvOfficeIndependent.setVisibility(View.GONE);
+        } else {
+            ((HotsHolder) holder).tvOfficeIndependent.setVisibility(View.VISIBLE);
+            String source = "办公室<font color='#46C3C2'>" + counts + "</font>间";
+            ((HotsHolder) holder).tvOfficeIndependent.setText(Html.fromHtml(source));
         }
     }
 
@@ -187,6 +197,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((TipsHolder) holder).tvTips.setVisibility(View.VISIBLE);
             ((TipsHolder) holder).tvTips.setText(bean.getBannerMap().getRemark().toString());
         }
+        gotoDetails(holder, bean);
     }
 
     //房源-单图
@@ -218,29 +229,45 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         ((House1Holder) holder).tvLocation.setText(String.format("%s%s", distance, business));
         ((House1Holder) holder).tvLines.setText(line);
         ((House1Holder) holder).tvRmbMoney.setText(price);
-        ((House1Holder) holder).tvUnit.setText(bean.getBannerMap().getBtype() == Constants.TYPE_BUILDING ? "/m²/天起" : "/月起");
+        ((House1Holder) holder).tvUnit.setText(bean.getBannerMap().getBtype() == Constants.TYPE_BUILDING ? DAY_UNIT : MONTH_UNIT);
+        gotoDetails(holder, bean);
     }
 
     //房源-多图
     private void house2View(RecyclerView.ViewHolder holder, HomeHotBean.DataBean.ListBean bean) {
         String price = bean.getBannerMap().getDayPrice().toString();
-        List<String> list = new ArrayList();
-        list.add("#白月光#");
-        String a = "https://img.officego.com/building/1599535447621.jpg?x-oss-process=style/small";
-        String b = "https://img.officego.com/building/1591868828854.jpg?x-oss-process=style/small";
-        Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getBannerMap().getImg()).into(((House2Holder) holder).ivImage);
-        Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(a).into(((House2Holder) holder).rivHouseRightUp);
-        Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(b).into(((House2Holder) holder).rivHouseRightDown);
-        ((House2Holder) holder).llLabelsHouse.setLabels(list, (label, pos, data) -> data);
+        String mainImg = bean.getBannerMap().getImg();
+        List<HomeHotBean.DataBean.ListBean.BannerMapBean.LabelIdBean> list = bean.getBannerMap().getLabelId();
+        Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(mainImg).into(((House2Holder) holder).ivImage);
+        List<String> imgList = bean.getBannerMap().getImgList();
+        if (imgList != null) {
+            if (imgList.size() > 1) {
+                Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(imgList.get(0)).into(((House2Holder) holder).rivHouseRightUp);
+                Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(imgList.get(1)).into(((House2Holder) holder).rivHouseRightDown);
+            } else if (imgList.size() == 1) {
+                Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(imgList.get(0)).into(((House2Holder) holder).rivHouseRightUp);
+                Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(mainImg).into(((House2Holder) holder).rivHouseRightDown);
+            } else {
+                Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(mainImg).into(((House2Holder) holder).rivHouseRightUp);
+                Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(mainImg).into(((House2Holder) holder).rivHouseRightDown);
+            }
+        }
+        if (list == null || list.size() == 0) {
+            ((House2Holder) holder).llLabelsHouse.setVisibility(View.GONE);
+        } else {
+            ((House2Holder) holder).llLabelsHouse.setVisibility(View.VISIBLE);
+            ((House2Holder) holder).llLabelsHouse.setLabels(list, (label, pos, data) -> "#" + data.getDictCname() + "#");
+        }
         ((House2Holder) holder).tvName.setText(bean.getBannerMap().getBannerName());
         ((House2Holder) holder).tvRmbMoney.setText(price);
-        ((House2Holder) holder).tvUnit.setText(bean.getBannerMap().getBtype() == Constants.TYPE_BUILDING ? "/天起" : "/月起");
+        ((House2Holder) holder).tvUnit.setText(bean.getBannerMap().getBtype() == Constants.TYPE_BUILDING ? DAY_UNIT : MONTH_UNIT);
         if (bean.getBannerMap().getRemark() == null || TextUtils.isEmpty(bean.getBannerMap().getRemark().toString())) {
             ((House2Holder) holder).tvTips.setVisibility(View.GONE);
         } else {
             ((House2Holder) holder).tvTips.setVisibility(View.VISIBLE);
             ((House2Holder) holder).tvTips.setText(bean.getBannerMap().getRemark().toString());
         }
+        gotoDetails(holder, bean);
     }
 
     //会议室
@@ -249,6 +276,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         layoutManager.setOrientation(RecyclerView.HORIZONTAL);
         ((MeetingHolder) holder).rvMeeting.setLayoutManager(layoutManager);
         ((MeetingHolder) holder).rvMeeting.setAdapter(new MeetingAdapter(context, meetData.getList()));
+        ((MeetingHolder) holder).tvMeetingTitle.setText(meetData.getMeetingRoomTitle());
         ((MeetingHolder) holder).tvMeetingMore.setOnClickListener(view -> WebViewCouponActivity_.intent(context).amountRange("").start());
     }
 
@@ -284,11 +312,25 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         ((DiscountHolder) holder).tvLines.setText(line);
         ((DiscountHolder) holder).tvRmbMoney.setText(price);
         if (bean.getBannerMap().getBtype() == Constants.TYPE_BUILDING) {
-            ((DiscountHolder) holder).tvUnit.setText("/天起");
-            ((DiscountHolder) holder).tvDiscount.setText(String.format("¥%s/天起", salePrice));
+            ((DiscountHolder) holder).tvUnit.setText(DAY_UNIT);
+            ((DiscountHolder) holder).tvDiscount.setText(String.format("¥%s" + DAY_UNIT, salePrice));
         } else {
-            ((DiscountHolder) holder).tvUnit.setText("/月起");
-            ((DiscountHolder) holder).tvDiscount.setText(String.format("¥%s/月起", salePrice));
+            ((DiscountHolder) holder).tvUnit.setText(MONTH_UNIT);
+            ((DiscountHolder) holder).tvDiscount.setText(String.format("¥%s" + MONTH_UNIT, salePrice));
         }
+        gotoDetails(holder, bean);
+    }
+
+    //查看详情
+    private void gotoDetails(RecyclerView.ViewHolder holder, HomeHotBean.DataBean.ListBean bean) {
+        holder.itemView.setOnClickListener(v -> {
+            if (bean.getBtype() == Constants.TYPE_BUILDING) {
+                BuildingDetailsActivity_.intent(context).mConditionBean(null)
+                        .mBuildingBean(BundleUtils.BuildingMessage(Constants.TYPE_BUILDING, bean.getId())).start();
+            } else if (bean.getBtype() == Constants.TYPE_JOINTWORK) {
+                BuildingDetailsJointWorkActivity_.intent(context).mConditionBean(null)
+                        .mBuildingBean(BundleUtils.BuildingMessage(Constants.TYPE_JOINTWORK, bean.getId())).start();
+            }
+        });
     }
 }

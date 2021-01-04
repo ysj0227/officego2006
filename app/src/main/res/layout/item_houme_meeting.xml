@@ -80,6 +80,7 @@
             app:layout_constraintLeft_toRightOf="@id/tv_rmb_money" />
 
         <TextView
+            android:visibility="gone"
             android:id="@+id/tv_discount"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"

@@ -49,6 +49,7 @@ public class HomePresenter extends BasePresenter<HomeContract.View> implements H
             @Override
             public void onFail(int code, String msg, List<BannerBean.DataBean> data) {
                 if (isViewAttached()) {
+                    mView.endRefresh();
                 }
             }
         });
@@ -62,7 +63,6 @@ public class HomePresenter extends BasePresenter<HomeContract.View> implements H
             public void onSuccess(int code, String msg, List<TodayReadBean.DataBean> data) {
                 if (isViewAttached()) {
                     mView.todayReadSuccess(data != null && data.size() > 0, data);
-                    mView.endRefresh();
                 }
             }
 
@@ -83,7 +83,6 @@ public class HomePresenter extends BasePresenter<HomeContract.View> implements H
             public void onSuccess(int code, String msg, List<BrandRecommendBean.DataBean> data) {
                 if (isViewAttached()) {
                     mView.brandSuccess(data != null && data.size() > 0, data);
-                    mView.endRefresh();
                 }
             }
 
@@ -127,6 +126,7 @@ public class HomePresenter extends BasePresenter<HomeContract.View> implements H
                 if (isViewAttached()) {
                     mView.hideLoadingDialog();
                     mView.hotListSuccess(meetData,data);
+                    mView.endRefresh();
                 }
             }
 

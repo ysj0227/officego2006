@@ -4,14 +4,14 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.widget.CheckBox;
 
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.officego.R;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
 import com.officego.ui.find.WantFindBean;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Created by YangShiJie
@@ -19,8 +19,8 @@ import java.util.List;
  * Descriptions:
  **/
 public class RentAdapter extends CommonListAdapter<WantFindBean> {
-    private final RecyclerView rvRent;
-    private int checkedPos = -1;
+    private final Map<Integer, String> map = new HashMap<>();
+    private boolean onBind;
 
     public RentListener getListener() {
         return listener;
@@ -36,31 +36,36 @@ public class RentAdapter extends CommonListAdapter<WantFindBean> {
         void rentResult(String value);
     }
 
-    public RentAdapter(Context context, RecyclerView rvRent, String value, List<WantFindBean> list) {
+    public RentAdapter(Context context, String value, List<WantFindBean> list) {
         super(context, R.layout.item_find, list);
-        this.rvRent = rvRent;
         for (int i = 0; i < list.size(); i++) {
             if (TextUtils.equals(value, list.get(i).getValue())) {
-                this.checkedPos = i;
+                map.put(i, list.get(i).getKey());
             }
         }
     }
 
     @Override
     public void convert(ViewHolder holder, final WantFindBean bean) {
+        int position = holder.getAdapterPosition();
         CheckBox tvName = holder.getView(R.id.tv_name);
         tvName.setText(bean.getKey());
-        tvName.setChecked(holder.getAdapterPosition() == checkedPos);
         tvName.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
-                checkedPos = holder.getAdapterPosition();
+                map.clear();
+                map.put(position, bean.getKey());
                 if (listener != null) {
                     listener.rentResult(bean.getValue());
                 }
+            } else {
+                map.remove(position);
             }
-            if (!rvRent.isComputingLayout()) {
+            if (!onBind) {
                 notifyDataSetChanged();
             }
         });
+        onBind = true;
+        tvName.setChecked(map.containsKey(position));
+        onBind = false;
     }
 }

@@ -1,6 +1,7 @@
 package com.officego.ui.home;
 
 import android.annotation.SuppressLint;
+import android.text.TextUtils;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
@@ -16,14 +17,11 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpFragment;
-import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.common.sensors.SensorsTrack;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.update.VersionDialog;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
-import com.officego.h5.WebViewBannerActivity_;
 import com.officego.h5.WebViewCouponActivity_;
 import com.officego.ui.adapter.BrandAdapter;
 import com.officego.ui.adapter.HomeAdapter;
@@ -90,7 +88,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     private TranslateAnimation animationMove;
     private boolean isCloseIdentity;
     //轮播图
-    private List<BannerBean.DataBean> mBannerClickList = new ArrayList<>();
+    private final List<BannerBean.DataBean> mBannerClickList = new ArrayList<>();
 
     //暂无数据，网络异常 TODO
     @AfterViews
@@ -298,7 +296,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     @Override
     public void hotListSuccess(HomeMeetingBean.DataBean meetData, HomeHotBean.DataBean data) {
         List<HomeHotBean.DataBean.ListBean> list = data.getList();
-        if (meetData != null) {
+        if (meetData != null && !TextUtils.isEmpty(meetData.getMeetingRoomLocation())) {
             list.add(Integer.parseInt(meetData.getMeetingRoomLocation()), null);
         }
         rvHots.setAdapter(new HomeAdapter(mActivity, meetData, list));
@@ -319,37 +317,15 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
 
     @Override
     public void OnBannerClick(int position) {
-        if (mBannerClickList != null) {
+        if (mBannerClickList.size() > 0) {
             int type = mBannerClickList.get(position).getType();
             int pageType = mBannerClickList.get(position).getPageType() == null ? 0 :
                     Integer.parseInt(CommonHelper.bigDecimal(mBannerClickList.get(position).getPageType(), true));
             int pageId = mBannerClickList.get(position).getPageId() == null ? 0 :
                     Integer.parseInt(CommonHelper.bigDecimal(mBannerClickList.get(position).getPageId(), true));
-            if (type == 1) {
-                //pageType内链类型1：楼盘详情，2:网点详情 3:楼盘房源详情,4:网点房源详情 5会议室
-                if (pageType == 5) {//会议室
-                    WebViewCouponActivity_.intent(mActivity).amountRange("").start();
-                }
-                if (pageId != 0) {
-                    if (pageType == 1) {
-                        BuildingDetailsActivity_.intent(mActivity)
-                                .mBuildingBean(BundleUtils.BuildingMessage(Constants.TYPE_BUILDING, pageId)).start();
-                    } else if (pageType == 2) {
-                        BuildingDetailsJointWorkActivity_.intent(mActivity)
-                                .mBuildingBean(BundleUtils.BuildingMessage(Constants.TYPE_JOINTWORK, pageId)).start();
-                    } else if (pageType == 3) {
-                        BuildingDetailsChildActivity_.intent(mActivity)
-                                .mChildHouseBean(BundleUtils.houseMessage(Constants.TYPE_BUILDING, pageId)).start();
-                    } else if (pageType == 4) {
-                        BuildingDetailsJointWorkChildActivity_.intent(mActivity)
-                                .mChildHouseBean(BundleUtils.houseMessage(Constants.TYPE_JOINTWORK, pageId)).start();
-                    }
-                }
-            } else if (type == 3) {
-                //外链跳转
-                String wUrl = mBannerClickList.get(position).getWurl();
-                WebViewBannerActivity_.intent(getContext()).url(wUrl).start();
-            }
+            String wUrl = mBannerClickList.get(position).getWurl();
+            //跳转
+            BannerToActivity.toActivity(mActivity, type, pageType, pageId, wUrl);
         }
     }
 

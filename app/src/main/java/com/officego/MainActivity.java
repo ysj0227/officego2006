@@ -17,6 +17,7 @@ import androidx.fragment.app.FragmentTransaction;
 
 import com.officego.application.SchemeOpenApp;
 import com.officego.commonlib.base.BaseActivity;
+import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.rongcloud.ConnectRongCloudUtils;
@@ -31,7 +32,6 @@ import com.officego.ui.collect.CollectFragment_;
 import com.officego.ui.home.HomeFragment_;
 import com.officego.ui.message.MessageFragment_;
 import com.officego.ui.mine.MineFragment_;
-import com.officego.utils.GotoActivityUtils;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;

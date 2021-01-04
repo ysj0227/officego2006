@@ -11,6 +11,7 @@ import com.officego.commonlib.ViewHolder;
 import com.officego.commonlib.common.model.SearchListBean;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.GlideUtils;
+import com.officego.commonlib.utils.ToastUtils;
 import com.officego.commonlib.view.RoundImageView;
 import com.officego.ui.home.model.BrandRecommendBean;
 
@@ -42,7 +43,7 @@ public class BrandAdapter extends CommonListAdapter<BrandRecommendBean.DataBean>
             holder.itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-
+                    ToastUtils.toastForShort(context,"暂无跳转");
                 }
             });
         }

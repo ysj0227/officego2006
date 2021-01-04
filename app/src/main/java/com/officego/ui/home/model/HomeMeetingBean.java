@@ -33,6 +33,8 @@ public class HomeMeetingBean {
 
         @SerializedName("meetingRoomLocation")
         private String meetingRoomLocation;
+         @SerializedName("meetingRoomTitle")
+        private String meetingRoomTitle;
         @SerializedName("list")
         private List<ListBean> list;
 
@@ -42,6 +44,14 @@ public class HomeMeetingBean {
 
         public void setMeetingRoomLocation(String meetingRoomLocation) {
             this.meetingRoomLocation = meetingRoomLocation;
+        }
+
+        public String getMeetingRoomTitle() {
+            return meetingRoomTitle;
+        }
+
+        public void setMeetingRoomTitle(String meetingRoomTitle) {
+            this.meetingRoomTitle = meetingRoomTitle;
         }
 
         public List<ListBean> getList() {

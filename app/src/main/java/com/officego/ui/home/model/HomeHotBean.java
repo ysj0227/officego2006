@@ -104,6 +104,8 @@ public class HomeHotBean {
             private Object maxDayPrice;
             @SerializedName("openStation")
             private Integer openStation;
+            @SerializedName("houseCount")
+            private Integer houseCount;
             @SerializedName("bannerMap")
             private BannerMapBean bannerMap;
             @SerializedName("officeType")
@@ -249,6 +251,14 @@ public class HomeHotBean {
                 this.openStation = openStation;
             }
 
+            public Integer getHouseCount() {
+                return houseCount;
+            }
+
+            public void setHouseCount(Integer houseCount) {
+                this.houseCount = houseCount;
+            }
+
             public BannerMapBean getBannerMap() {
                 return bannerMap;
             }
@@ -328,9 +338,6 @@ public class HomeHotBean {
                  * layoutType : 1
                  * id : 19
                  */
-
-                @SerializedName("positionShow")
-                private Integer positionShow;
                 @SerializedName("img")
                 private String img;
                 @SerializedName("dayPrice")
@@ -367,13 +374,15 @@ public class HomeHotBean {
                 private Integer id;
                 @SerializedName("labelId")
                 private List<LabelIdBean> labelId;
+                @SerializedName("imgList")
+                private List<String> imgList;
 
-                public Integer getPositionShow() {
-                    return positionShow;
+                public List<String> getImgList() {
+                    return imgList;
                 }
 
-                public void setPositionShow(Integer positionShow) {
-                    this.positionShow = positionShow;
+                public void setImgList(List<String> imgList) {
+                    this.imgList = imgList;
                 }
 
                 public String getImg() {

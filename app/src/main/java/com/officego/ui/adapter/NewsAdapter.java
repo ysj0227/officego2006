@@ -8,9 +8,11 @@ import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
+import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.view.RoundImageView;
 import com.officego.h5.WebViewBannerActivity_;
+import com.officego.ui.home.BannerToActivity;
 import com.officego.ui.home.model.TodayReadBean;
 
 import java.util.List;
@@ -37,7 +39,12 @@ public class NewsAdapter extends CommonListAdapter<TodayReadBean.DataBean> {
         TextView tvDes = holder.getView(R.id.tv_des);
         tvLabel.setText(bean.getTitleName());
         tvDes.setText(bean.getSubTitleName());
-        holder.itemView.setOnClickListener(view ->
-                WebViewBannerActivity_.intent(context).url(bean.getWurl()).start());
+        holder.itemView.setOnClickListener(view -> {
+            int type = bean.getType();
+            int pageType = bean.getPageType() == null ? 0 : Integer.parseInt(CommonHelper.bigDecimal(bean.getPageType(), true));
+            int pageId = bean.getPageId() == null ? 0 : Integer.parseInt(CommonHelper.bigDecimal(bean.getPageId(), true));
+            String wUrl = bean.getWurl();
+            BannerToActivity.toActivity(context, type, pageType, pageId, wUrl);
+        });
     }
 }

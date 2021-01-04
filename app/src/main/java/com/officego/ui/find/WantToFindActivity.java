@@ -86,7 +86,7 @@ public class WantToFindActivity extends BaseActivity implements PersonAdapter.Pe
         PersonAdapter personAdapter = new PersonAdapter(context, mPerson, CommonList.peopleNumList());
         personAdapter.setListener(this);
         rvPerson.setAdapter(personAdapter);
-        RentAdapter rentAdapter = new RentAdapter(context, rvRent, mRent, CommonList.rentTimeList());
+        RentAdapter rentAdapter = new RentAdapter(context, mRent, CommonList.rentTimeList());
         rentAdapter.setListener(this);
         rvRent.setAdapter(rentAdapter);
         FactorAdapter factorAdapter = new FactorAdapter(context, factorMap, CommonList.factorList());
@@ -107,11 +107,19 @@ public class WantToFindActivity extends BaseActivity implements PersonAdapter.Pe
 
     @Click(R.id.btn_save)
     void saveClick() {
-        if (TextUtils.isEmpty(mPerson) || TextUtils.isEmpty(mRent) || TextUtils.isEmpty(mFactor)) {
+        if (TextUtils.isEmpty(mPerson) ||
+                TextUtils.isEmpty(mRent) ||
+                TextUtils.isEmpty(mFactor)) {
             shortTip("还有资料没填哦～");
             return;
         }
         wantFind();
+    }
+
+    private void saveData() {
+        SpUtils.saveWantFind();
+        SpUtils.saveWantFindData(mPerson, mRent, mFactor);
+        gotoActivity();
     }
 
     private void gotoActivity() {
@@ -144,9 +152,7 @@ public class WantToFindActivity extends BaseActivity implements PersonAdapter.Pe
 
     public void wantFind() {
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
-            SpUtils.saveWantFind();
-            SpUtils.saveWantFindData(mPerson, mRent, mFactor);
-            gotoActivity();
+            saveData();
             return;
         }
         showLoadingDialog();
@@ -154,9 +160,7 @@ public class WantToFindActivity extends BaseActivity implements PersonAdapter.Pe
             @Override
             public void onSuccess(int code, String msg, Object data) {
                 hideLoadingDialog();
-                SpUtils.saveWantFind();
-                SpUtils.saveWantFindData(mPerson, mRent, mFactor);
-                gotoActivity();
+                saveData();
             }
 
             @Override

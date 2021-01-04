@@ -1,7 +1,6 @@
 package com.officego;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.graphics.Color;
 import android.graphics.drawable.Drawable;
@@ -251,7 +250,7 @@ public class MainOwnerActivity extends BaseActivity implements RadioGroup.OnChec
                 shortTip(com.owner.R.string.toast_press_again_quit);
                 mExitTime = System.currentTimeMillis();
             } else {
-                gotoHome(context);
+                GotoActivityUtils.gotoHome(context);
             }
             return true;
         }
@@ -271,15 +270,6 @@ public class MainOwnerActivity extends BaseActivity implements RadioGroup.OnChec
         }
     }
 
-    /**
-     * 回到桌面
-     */
-    private void gotoHome(Context context) {
-        Intent home = new Intent(Intent.ACTION_MAIN);
-        home.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);
-        home.addCategory(Intent.CATEGORY_HOME);
-        context.startActivity(home);
-    }
 
     @Override
     public int[] getStickNotificationId() {

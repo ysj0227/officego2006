@@ -41,8 +41,8 @@
                 <include
                     layout="@layout/home_include_search"
                     android:layout_width="match_parent"
+                    style="@style/marginLeftRight20"
                     android:layout_height="@dimen/dp_32"
-                    android:layout_marginStart="@dimen/dp_18"
                     android:layout_marginTop="@dimen/dp_40"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
