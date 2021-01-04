@@ -36,6 +36,7 @@ import com.officego.ui.home.model.BuildingJointWorkBean;
 import com.officego.ui.home.model.BusinessCircleBean;
 import com.officego.ui.home.model.ChatsBean;
 import com.officego.ui.home.model.HomeHotBean;
+import com.officego.ui.home.model.HomeMeetingBean;
 import com.officego.ui.home.model.HouseOfficeDetailsBean;
 import com.officego.ui.home.model.HouseOfficeDetailsJointWorkBean;
 import com.officego.ui.home.model.MeterBean;
@@ -762,12 +763,23 @@ public class OfficegoApi {
     }
 
     /**
+     * 会议室推荐
+     */
+    public void getHomeMeeting(RetrofitCallback<HomeMeetingBean.DataBean> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("channel", requestBody("2"));
+        OfficegoRetrofitClient.getInstance().create(HomeInterface.class)
+                .getHomeMeeting(map)
+                .enqueue(callback);
+    }
+
+    /**
      * 首页热门
      */
     public void getHotsList(RetrofitCallback<HomeHotBean.DataBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
-//        map.put("token", requestBody(SpUtils.getSignToken()));
-        map.put("token", requestBody("MTM0X3N1bndlbGxfMTYwOTIxMDM3OF8w"));
+        map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("channel", requestBody("2"));
         OfficegoRetrofitClient.getInstance().create(HomeInterface.class)
                 .getHotList(map)

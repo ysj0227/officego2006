@@ -334,7 +334,7 @@ public class HomeHotBean {
                 @SerializedName("img")
                 private String img;
                 @SerializedName("dayPrice")
-                private Integer dayPrice;
+                private Object dayPrice;
                 @SerializedName("distance")
                 private String distance;
                 @SerializedName("salePrice")
@@ -384,11 +384,11 @@ public class HomeHotBean {
                     this.img = img;
                 }
 
-                public Integer getDayPrice() {
+                public Object getDayPrice() {
                     return dayPrice;
                 }
 
-                public void setDayPrice(Integer dayPrice) {
+                public void setDayPrice(Object dayPrice) {
                     this.dayPrice = dayPrice;
                 }
 

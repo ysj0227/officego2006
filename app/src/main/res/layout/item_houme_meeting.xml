@@ -15,6 +15,7 @@
         android:scaleType="centerCrop" />
 
     <View
+        android:id="@+id/v_shadow"
         android:layout_width="@dimen/dp_104"
         android:layout_height="@dimen/dp_16"
         android:layout_alignBottom="@id/riv_image"
@@ -23,11 +24,18 @@
 
     <TextView
         android:id="@+id/tv_label"
+        android:gravity="center_horizontal"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:layout_alignStart="@id/riv_image"
+        android:layout_alignEnd="@id/riv_image"
         android:layout_alignBottom="@id/riv_image"
         android:layout_centerHorizontal="true"
-        android:paddingBottom="@dimen/dp_3"
+        android:ellipsize="end"
+        android:paddingStart="@dimen/dp_1"
+        android:paddingEnd="@dimen/dp_1"
+        android:paddingBottom="@dimen/dp_2"
+        android:singleLine="true"
         android:textColor="@color/white"
         android:textSize="@dimen/sp_10" />
 
@@ -35,9 +43,9 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/riv_image"
-        android:layout_marginBottom="@dimen/dp_10"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="@dimen/dp_7">
+        android:layout_marginTop="@dimen/dp_7"
+        android:layout_marginBottom="@dimen/dp_10">
 
         <TextView
             android:id="@+id/tv_rmb"

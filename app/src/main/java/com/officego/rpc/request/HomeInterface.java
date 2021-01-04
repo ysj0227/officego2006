@@ -7,6 +7,7 @@ import com.officego.ui.home.model.BuildingDetailsBean;
 import com.officego.ui.home.model.BuildingDetailsChildBean;
 import com.officego.ui.home.model.BuildingJointWorkBean;
 import com.officego.ui.home.model.HomeHotBean;
+import com.officego.ui.home.model.HomeMeetingBean;
 import com.officego.ui.home.model.HouseOfficeDetailsBean;
 import com.officego.ui.home.model.HouseOfficeDetailsJointWorkBean;
 import com.officego.ui.home.model.TodayReadBean;
@@ -146,6 +147,14 @@ public interface HomeInterface {
     @Multipart
     @POST(path + "building/getBrandManagement")
     Call<BaseResponse<List<BrandRecommendBean.DataBean>>> getBrandManagement(@PartMap Map<String, RequestBody> params);
+
+    /**
+     * 会议室
+     */
+    @Multipart
+    @POST(path + "building/getBuildingMeetingroom")
+    Call<BaseResponse<HomeMeetingBean.DataBean>> getHomeMeeting(@PartMap Map<String, RequestBody> params);
+
 
     /**
      * 热门推荐

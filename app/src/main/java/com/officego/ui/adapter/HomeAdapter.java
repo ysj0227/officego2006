@@ -24,6 +24,7 @@ import com.officego.ui.holder.House2Holder;
 import com.officego.ui.holder.MeetingHolder;
 import com.officego.ui.holder.TipsHolder;
 import com.officego.ui.home.model.HomeHotBean;
+import com.officego.ui.home.model.HomeMeetingBean;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -34,11 +35,14 @@ import java.util.List;
  * Descriptions:
  **/
 public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
+    private final HomeMeetingBean.DataBean meetData;
     private final List<HomeHotBean.DataBean.ListBean> mData;
     private final Activity context;
 
-    public HomeAdapter(BaseActivity mActivity, List<HomeHotBean.DataBean.ListBean> data) {
+    public HomeAdapter(BaseActivity mActivity, HomeMeetingBean.DataBean meetData,
+                       List<HomeHotBean.DataBean.ListBean> data) {
         this.context = mActivity;
+        this.meetData = meetData;
         this.mData = data;
     }
 
@@ -88,7 +92,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         } else if (holder instanceof House2Holder) {
             house2View(holder, bean);
         } else if (holder instanceof MeetingHolder) {
-            meetingView(holder, bean);
+            meetingView(holder);
         } else if (holder instanceof DiscountHolder) {
             discountView(holder, bean);
         }
@@ -97,7 +101,10 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     //1:楼盘重点版,2:楼盘文案版,3:网点版,4:房源特价
     public int getItemViewType(int position) {
         HomeHotBean.DataBean.ListBean bean = mData.get(position);
-        if (bean.getBannerMap() == null || bean.getBannerMap().getLayoutType() == null) {
+        if (bean == null || bean.getBannerMap() == null || bean.getBannerMap().getLayoutType() == null) {
+            if (Integer.parseInt(meetData.getMeetingRoomLocation()) == position) {
+                return ITEM_TYPE.ITEM_TYPE_MEETING.ordinal();
+            }
             return ITEM_TYPE.ITEM_TYPE_HOT.ordinal();
         } else if (TextUtils.equals("1", bean.getBannerMap().getLayoutType())) {
             return ITEM_TYPE.ITEM_TYPE_HOUSE1.ordinal();
@@ -110,20 +117,6 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         } else {
             return ITEM_TYPE.ITEM_TYPE_HOT.ordinal();
         }
-
-//        if (position == 2) {
-//            return ITEM_TYPE.ITEM_TYPE_TIPS.ordinal();
-//        } else if (position == 3) {
-//            return ITEM_TYPE.ITEM_TYPE_MEETING.ordinal();
-//        } else if (position == 5) {
-//            return ITEM_TYPE.ITEM_TYPE_HOUSE1.ordinal();
-//        } else if (position == 7) {
-//            return ITEM_TYPE.ITEM_TYPE_HOUSE2.ordinal();
-//        } else if (position == 9) {
-//            return ITEM_TYPE.ITEM_TYPE_DISCOUNT.ordinal();
-//        } else {
-//            return ITEM_TYPE.ITEM_TYPE_HOT.ordinal();
-//        }
     }
 
     @Override
@@ -159,8 +152,8 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((HotsHolder) holder).tvOfficeIndependent.setVisibility(View.GONE);
         } else {
             ((HotsHolder) holder).tvOfficeIndependent.setVisibility(View.VISIBLE);
-            ((HotsHolder) holder).tvOfficeIndependent.setText(Html.fromHtml(
-                    "办公室<font color='#46C3C2'>" + bean.getIndependenceOffice() + "</font>间"));
+            String source = "办公室<font color='#46C3C2'>" + bean.getIndependenceOffice() + "</font>间";
+            ((HotsHolder) holder).tvOfficeIndependent.setText(Html.fromHtml(source));
         }
         if (bean.getBtype() == Constants.TYPE_BUILDING) {
             ((HotsHolder) holder).tvUnit.setText("/m²/天起");
@@ -171,43 +164,66 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 ((HotsHolder) holder).tvOpenSeats.setVisibility(View.GONE);
             } else {
                 ((HotsHolder) holder).tvOpenSeats.setVisibility(View.VISIBLE);
-                ((HotsHolder) holder).tvOpenSeats.setText(Html.fromHtml(
-                        "开放工位<font color='#46C3C2'>" + bean.getOpenStation() + "</font>个"));
+                String source = "开放工位<font color='#46C3C2'>" + bean.getOpenStation() + "</font>个";
+                ((HotsHolder) holder).tvOpenSeats.setText(Html.fromHtml(source));
             }
         }
     }
 
-    //生活小知识
+    //生活小知识_文案版
     private void tipsView(RecyclerView.ViewHolder holder, HomeHotBean.DataBean.ListBean bean) {
-        List<String> list = new ArrayList();
-        list.add("#白月光#");
-        list.add("#蓝色的天空#");
         Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).
                 load(bean.getBannerMap().getImg()).into(((TipsHolder) holder).ivImageTips);
-        ((TipsHolder) holder).llLabelsTips.setLabels(list, (label, pos, data) -> data);
-        ((TipsHolder) holder).tvTips.setText("大家都知道价格、位置、交通、物业等决定着你的企业选址的重要因素。但如果某些写字楼、产业园、创意园能受到政策的扶持，比如能享受到减免税费、折扣租…");
+        List<HomeHotBean.DataBean.ListBean.BannerMapBean.LabelIdBean> list = bean.getBannerMap().getLabelId();
+        if (list == null || list.size() == 0) {
+            ((TipsHolder) holder).llLabelsTips.setVisibility(View.GONE);
+        } else {
+            ((TipsHolder) holder).llLabelsTips.setVisibility(View.VISIBLE);
+            ((TipsHolder) holder).llLabelsTips.setLabels(list, (label, pos, data) -> "#" + data.getDictCname() + "#");
+        }
+        if (bean.getBannerMap().getRemark() == null || TextUtils.isEmpty(bean.getBannerMap().getRemark().toString())) {
+            ((TipsHolder) holder).tvTips.setVisibility(View.GONE);
+        } else {
+            ((TipsHolder) holder).tvTips.setVisibility(View.VISIBLE);
+            ((TipsHolder) holder).tvTips.setText(bean.getBannerMap().getRemark().toString());
+        }
     }
 
     //房源-单图
     private void house1View(RecyclerView.ViewHolder holder, HomeHotBean.DataBean.ListBean bean) {
+        String price = bean.getBannerMap().getDayPrice().toString();
+        String distance = TextUtils.isEmpty(bean.getDistance()) ? "" : bean.getDistance() + "Km | ";
+        String business = bean.getBusinessDistrict();
+        String line;
+        if (bean.getBuildingMap() != null && bean.getBuildingMap().getStationline().size() > 0) {
+            String workTime = bean.getBuildingMap().getNearbySubwayTime().get(0);
+            String stationLine = bean.getBuildingMap().getStationline().get(0);
+            String stationName = bean.getBuildingMap().getStationNames().get(0);
+            line = "步行" + workTime + "分钟到 | " + stationLine + "号线 ·" + stationName;
+            ((House1Holder) holder).tvLines.setVisibility(View.VISIBLE);
+        } else {
+            line = "";
+            ((House1Holder) holder).tvLines.setVisibility(View.GONE);
+        }
         List<HomeHotBean.DataBean.ListBean.BannerMapBean.LabelIdBean> list = bean.getBannerMap().getLabelId();
-        if (list==null||list.size()==0){
+        if (list == null || list.size() == 0) {
             ((House1Holder) holder).llLabelsHouse.setVisibility(View.GONE);
-        }else {
+        } else {
             ((House1Holder) holder).llLabelsHouse.setVisibility(View.VISIBLE);
             ((House1Holder) holder).llLabelsHouse.setLabels(list, (label, pos, data) -> "#" + data.getDictCname() + "#");
         }
         Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options())
                 .load(bean.getBannerMap().getImg()).into(((House1Holder) holder).ivImage);
         ((House1Holder) holder).tvName.setText(bean.getBannerMap().getBannerName());
-        ((House1Holder) holder).tvLocation.setText("2.0Km | 闵行区-莘庄");
-        ((House1Holder) holder).tvLines.setText("步行20分钟到「2号线·龙阳路」");
-        ((House1Holder) holder).tvRmbMoney.setText("1000");
-        ((House1Holder) holder).tvUnit.setText("/月/起");
+        ((House1Holder) holder).tvLocation.setText(String.format("%s%s", distance, business));
+        ((House1Holder) holder).tvLines.setText(line);
+        ((House1Holder) holder).tvRmbMoney.setText(price);
+        ((House1Holder) holder).tvUnit.setText(bean.getBannerMap().getBtype() == Constants.TYPE_BUILDING ? "/m²/天起" : "/月起");
     }
 
     //房源-多图
     private void house2View(RecyclerView.ViewHolder holder, HomeHotBean.DataBean.ListBean bean) {
+        String price = bean.getBannerMap().getDayPrice().toString();
         List<String> list = new ArrayList();
         list.add("#白月光#");
         String a = "https://img.officego.com/building/1599535447621.jpg?x-oss-process=style/small";
@@ -217,38 +233,62 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(b).into(((House2Holder) holder).rivHouseRightDown);
         ((House2Holder) holder).llLabelsHouse.setLabels(list, (label, pos, data) -> data);
         ((House2Holder) holder).tvName.setText(bean.getBannerMap().getBannerName());
-        ((House2Holder) holder).tvRmbMoney.setText("6600");
-        ((House2Holder) holder).tvUnit.setText("/月/起");
-        ((House2Holder) holder).tvTips.setText("嘉华中心是一座 45 层的甲级办公楼，位于淮海中路战略要地。作为上海最著名的商务区之一");
+        ((House2Holder) holder).tvRmbMoney.setText(price);
+        ((House2Holder) holder).tvUnit.setText(bean.getBannerMap().getBtype() == Constants.TYPE_BUILDING ? "/天起" : "/月起");
+        if (bean.getBannerMap().getRemark() == null || TextUtils.isEmpty(bean.getBannerMap().getRemark().toString())) {
+            ((House2Holder) holder).tvTips.setVisibility(View.GONE);
+        } else {
+            ((House2Holder) holder).tvTips.setVisibility(View.VISIBLE);
+            ((House2Holder) holder).tvTips.setText(bean.getBannerMap().getRemark().toString());
+        }
     }
 
     //会议室
-    private void meetingView(RecyclerView.ViewHolder holder, HomeHotBean.DataBean.ListBean bean) {
+    private void meetingView(RecyclerView.ViewHolder holder) {
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         layoutManager.setOrientation(RecyclerView.HORIZONTAL);
         ((MeetingHolder) holder).rvMeeting.setLayoutManager(layoutManager);
-        List<String> listBrand = new ArrayList<>();
-        for (int i = 0; i < 15; i++) {
-            listBrand.add("https://img.officego.com/building/1594194990729.jpg?x-oss-process=style/small");
-        }
-        ((MeetingHolder) holder).rvMeeting.setAdapter(new MeetingAdapter(context, listBrand));
+        ((MeetingHolder) holder).rvMeeting.setAdapter(new MeetingAdapter(context, meetData.getList()));
         ((MeetingHolder) holder).tvMeetingMore.setOnClickListener(view -> WebViewCouponActivity_.intent(context).amountRange("").start());
     }
 
     //打折
     private void discountView(RecyclerView.ViewHolder holder, HomeHotBean.DataBean.ListBean bean) {
-        List<String> lists = new ArrayList();
-        lists.add("地铁上盖");
-        lists.add("精装修");
+        String price = bean.getBannerMap().getDayPrice().toString();
+        String salePrice = bean.getBannerMap().getSalePrice().toString();
+        String distance = TextUtils.isEmpty(bean.getDistance()) ? "" : bean.getDistance() + "Km | ";
+        String business = bean.getBusinessDistrict();
+        String line;
+        if (bean.getBuildingMap() != null && bean.getBuildingMap().getStationline().size() > 0) {
+            String workTime = bean.getBuildingMap().getNearbySubwayTime().get(0);
+            String stationLine = bean.getBuildingMap().getStationline().get(0);
+            String stationName = bean.getBuildingMap().getStationNames().get(0);
+            line = "步行" + workTime + "分钟到 | " + stationLine + "号线 ·" + stationName;
+            ((DiscountHolder) holder).tvLines.setVisibility(View.VISIBLE);
+        } else {
+            line = "";
+            ((DiscountHolder) holder).tvLines.setVisibility(View.GONE);
+        }
+        List<HomeHotBean.DataBean.ListBean.BannerMapBean.LabelIdBean> list = bean.getBannerMap().getLabelId();
+        if (list == null || list.size() == 0) {
+            ((DiscountHolder) holder).llLabelsDiscount.setVisibility(View.GONE);
+        } else {
+            ((DiscountHolder) holder).llLabelsDiscount.setVisibility(View.VISIBLE);
+            ((DiscountHolder) holder).llLabelsDiscount.setLabels(list, (label, pos, data) -> data.getDictCname());
+        }
         Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options())
                 .load(bean.getBannerMap().getImg()).into(((DiscountHolder) holder).ivHouse);
-        ((DiscountHolder) holder).llLabelsDiscount.setLabels(lists, (label, pos, data) -> data);
+        ((DiscountHolder) holder).ivVrFlag.setVisibility(TextUtils.equals("1", bean.getVr()) ? View.GONE : View.VISIBLE);
         ((DiscountHolder) holder).tvName.setText(bean.getBannerMap().getBannerName());
-        ((DiscountHolder) holder).tvLocation.setText("2.0Km | 闵行区-莘庄");
-        ((DiscountHolder) holder).tvLines.setText("步行20分钟到「2号线·龙阳路」");
-        ((DiscountHolder) holder).tvRmbMoney.setText("1000");
-        ((DiscountHolder) holder).tvUnit.setText("/月/起");
-        ((DiscountHolder) holder).tvDiscount.setText("¥2100.0/月起");
+        ((DiscountHolder) holder).tvLocation.setText(String.format("%s%s", distance, business));
+        ((DiscountHolder) holder).tvLines.setText(line);
+        ((DiscountHolder) holder).tvRmbMoney.setText(price);
+        if (bean.getBannerMap().getBtype() == Constants.TYPE_BUILDING) {
+            ((DiscountHolder) holder).tvUnit.setText("/天起");
+            ((DiscountHolder) holder).tvDiscount.setText(String.format("¥%s/天起", salePrice));
+        } else {
+            ((DiscountHolder) holder).tvUnit.setText("/月起");
+            ((DiscountHolder) holder).tvDiscount.setText(String.format("¥%s/月起", salePrice));
+        }
     }
-
 }

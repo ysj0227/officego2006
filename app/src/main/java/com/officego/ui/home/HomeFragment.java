@@ -33,6 +33,7 @@ import com.officego.ui.home.contract.HomeContract;
 import com.officego.ui.home.model.BannerBean;
 import com.officego.ui.home.model.BrandRecommendBean;
 import com.officego.ui.home.model.HomeHotBean;
+import com.officego.ui.home.model.HomeMeetingBean;
 import com.officego.ui.home.model.TodayReadBean;
 import com.officego.ui.home.presenter.HomePresenter;
 import com.officego.utils.ImageLoaderUtils;
@@ -194,20 +195,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         rlIdentity.setVisibility(View.GONE);
     }
 
-//    private void testHotsList() {
-//        List<String> listBrand = new ArrayList<>();
-//        for (int i = 0; i < 10; i++) {
-//            listBrand.add("https://img.officego.com/building/1600411301880.png?x-oss-process=style/small");
-//        }
-//        listBrand.add(2, "https://img.officego.com/building/1600411301880.png?x-oss-process=style/small");
-//        listBrand.add(3, "https://img.officego.com/building/1600411301880.png?x-oss-process=style/small");
-//        listBrand.add(5, "https://img.officego.com/building/1600411301880.png?x-oss-process=style/small");
-//        listBrand.add(7, "https://img.officego.com/building/1600411301880.png?x-oss-process=style/small");
-//        listBrand.add(9, "https://img.officego.com/building/1600411301880.png?x-oss-process=style/small");
-//
-//        rvHots.setAdapter(new HomeAdapter(mActivity, listBrand));
-//    }
-
     @Override
     public void onDestroyView() {
         super.onDestroyView();
@@ -307,12 +294,14 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         rlBrand.setVisibility(View.GONE);
     }
 
+    //1:楼盘重点版,2:楼盘文案版,3:网点版（三张图片）,4:房源特价
     @Override
-    public void hotListSuccess(HomeHotBean.DataBean data) {
-        //todo 替换token
-        //1:楼盘重点版,2:楼盘文案版,3:网点版,4:房源特价
+    public void hotListSuccess(HomeMeetingBean.DataBean meetData, HomeHotBean.DataBean data) {
         List<HomeHotBean.DataBean.ListBean> list = data.getList();
-        rvHots.setAdapter(new HomeAdapter(mActivity, list));
+        if (meetData != null) {
+            list.add(Integer.parseInt(meetData.getMeetingRoomLocation()), null);
+        }
+        rvHots.setAdapter(new HomeAdapter(mActivity, meetData, list));
     }
 
     //下拉刷新

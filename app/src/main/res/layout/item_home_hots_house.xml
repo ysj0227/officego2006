@@ -36,7 +36,7 @@
         android:background="@drawable/text_label_blue_no_stroke"
         android:paddingLeft="@dimen/dp_2"
         android:paddingRight="@dimen/dp_2"
-        android:text="共享办公"
+        android:text="@string/str_house_tenant"
         android:textColor="@color/white"
         android:textSize="@dimen/sp_10"
         android:visibility="visible"

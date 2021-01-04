@@ -9,6 +9,7 @@ import com.officego.ui.home.contract.HomeContract;
 import com.officego.ui.home.model.BannerBean;
 import com.officego.ui.home.model.BrandRecommendBean;
 import com.officego.ui.home.model.HomeHotBean;
+import com.officego.ui.home.model.HomeMeetingBean;
 import com.officego.ui.home.model.TodayReadBean;
 
 import java.util.ArrayList;
@@ -96,19 +97,43 @@ public class HomePresenter extends BasePresenter<HomeContract.View> implements H
         });
     }
 
+    //先获取会议室再获取热门推荐
     @Override
     public void getHotList() {
+        mView.showLoadingDialog();
+        OfficegoApi.getInstance().getHomeMeeting(new RetrofitCallback<HomeMeetingBean.DataBean>() {
+            @Override
+            public void onSuccess(int code, String msg, HomeMeetingBean.DataBean data) {
+                if (isViewAttached()) {
+                    getHot(data);
+                }
+            }
+
+            @Override
+            public void onFail(int code, String msg, HomeMeetingBean.DataBean data) {
+                if (isViewAttached()) {
+                    mView.hideLoadingDialog();
+                    mView.endRefresh();
+                }
+            }
+        });
+
+    }
+
+    public void getHot(HomeMeetingBean.DataBean meetData) {
         OfficegoApi.getInstance().getHotsList(new RetrofitCallback<HomeHotBean.DataBean>() {
             @Override
             public void onSuccess(int code, String msg, HomeHotBean.DataBean data) {
                 if (isViewAttached()) {
-                   mView.hotListSuccess(data);
+                    mView.hideLoadingDialog();
+                    mView.hotListSuccess(meetData,data);
                 }
             }
 
             @Override
             public void onFail(int code, String msg, HomeHotBean.DataBean data) {
                 if (isViewAttached()) {
+                    mView.hideLoadingDialog();
                     mView.endRefresh();
                 }
             }

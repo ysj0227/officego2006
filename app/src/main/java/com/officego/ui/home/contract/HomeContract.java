@@ -4,6 +4,7 @@ import com.officego.commonlib.base.BaseView;
 import com.officego.ui.home.model.BannerBean;
 import com.officego.ui.home.model.BrandRecommendBean;
 import com.officego.ui.home.model.HomeHotBean;
+import com.officego.ui.home.model.HomeMeetingBean;
 import com.officego.ui.home.model.TodayReadBean;
 
 import java.util.List;
@@ -29,7 +30,8 @@ public interface HomeContract {
 
         void brandFail();
 
-        void hotListSuccess(HomeHotBean.DataBean data);
+        void hotListSuccess(HomeMeetingBean.DataBean meetData, HomeHotBean.DataBean data);
+
     }
 
     interface Presenter {
