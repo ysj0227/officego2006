@@ -11,11 +11,11 @@
         android:layout_height="@dimen/dp_490"
         android:background="@color/white">
 
-        <ScrollView
+        <androidx.core.widget.NestedScrollView
             android:id="@+id/sv_view"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_marginBottom="@dimen/dp_64"
+            android:layout_marginBottom="@dimen/dp_54"
             android:scrollbars="none">
 
             <androidx.constraintlayout.widget.ConstraintLayout
@@ -166,7 +166,7 @@
                     app:layout_constraintTop_toTopOf="@id/tv_vr" />
 
             </androidx.constraintlayout.widget.ConstraintLayout>
-        </ScrollView>
+        </androidx.core.widget.NestedScrollView>
 
         <RelativeLayout
             android:id="@+id/rl_btn"

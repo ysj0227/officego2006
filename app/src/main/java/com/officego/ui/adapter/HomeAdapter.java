@@ -133,14 +133,14 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     //热门
     private void hotsView(RecyclerView.ViewHolder holder, HomeHotBean.DataBean.ListBean bean) {
         String mPrice = bean.getMinDayPrice() == null ? "0" : bean.getMinDayPrice().toString();
-        String distance = TextUtils.isEmpty(bean.getDistance()) ? "" : bean.getDistance() + "Km | ";
+        String distance = TextUtils.isEmpty(bean.getDistance()) ? "" : bean.getDistance() + " | ";
         String business = bean.getBusinessDistrict();
         String line;
         if (bean.getBuildingMap() != null && bean.getBuildingMap().getStationline().size() > 0) {
             String workTime = bean.getBuildingMap().getNearbySubwayTime().get(0);
             String stationLine = bean.getBuildingMap().getStationline().get(0);
             String stationName = bean.getBuildingMap().getStationNames().get(0);
-            line = "步行" + workTime + "分钟到「" + stationLine + "号线 ·" + stationName+"」";
+            line = "步行" + workTime + "分钟到「" + stationLine + "号线 · " + stationName+"」";
             ((HotsHolder) holder).tvLines.setVisibility(View.VISIBLE);
         } else {
             line = "";
@@ -204,14 +204,14 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     //房源-单图
     private void house1View(RecyclerView.ViewHolder holder, HomeHotBean.DataBean.ListBean bean) {
         String price = bean.getBannerMap().getDayPrice().toString();
-        String distance = TextUtils.isEmpty(bean.getBannerMap().getDistance()) ? "" : bean.getBannerMap().getDistance() + "Km | ";
+        String distance = TextUtils.isEmpty(bean.getBannerMap().getDistance()) ? "" : bean.getBannerMap().getDistance() + " | ";
         String business = bean.getBannerMap().getBusinessDistrict();
         String line;
         if (bean.getBannerMap().getSubwayMapBean() != null && bean.getBannerMap().getSubwayMapBean().getStationline().size() > 0) {
             String workTime = bean.getBannerMap().getSubwayMapBean().getNearbySubwayTime().get(0);
             String stationLine = bean.getBannerMap().getSubwayMapBean().getStationline().get(0);
             String stationName = bean.getBannerMap().getSubwayMapBean().getStationNames().get(0);
-            line = "步行" + workTime + "分钟到「" + stationLine + "号线 ·" + stationName+"」";
+            line = "步行" + workTime + "分钟到「" + stationLine + "号线 · " + stationName+"」";
             ((House1Holder) holder).tvLines.setVisibility(View.VISIBLE);
         } else {
             line = "";
@@ -285,14 +285,14 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private void discountView(RecyclerView.ViewHolder holder, HomeHotBean.DataBean.ListBean bean) {
         String price = bean.getBannerMap().getDayPrice().toString();
         String salePrice = bean.getBannerMap().getSalePrice().toString();
-        String distance = TextUtils.isEmpty(bean.getBannerMap().getDistance()) ? "" : bean.getBannerMap().getDistance() + "Km | ";
+        String distance = TextUtils.isEmpty(bean.getBannerMap().getDistance()) ? "" : bean.getBannerMap().getDistance() + " | ";
         String business = bean.getBannerMap().getBusinessDistrict();
         String line;
         if (bean.getBannerMap().getSubwayMapBean() != null && bean.getBannerMap().getSubwayMapBean().getStationline().size() > 0) {
             String workTime = bean.getBannerMap().getSubwayMapBean().getNearbySubwayTime().get(0);
             String stationLine = bean.getBannerMap().getSubwayMapBean().getStationline().get(0);
             String stationName = bean.getBannerMap().getSubwayMapBean().getStationNames().get(0);
-            line = "步行" + workTime + "分钟到「" + stationLine + "号线 ·" + stationName+"」";
+            line = "步行" + workTime + "分钟到「" + stationLine + "号线 · " + stationName+"」";
             ((DiscountHolder) holder).tvLines.setVisibility(View.VISIBLE);
         } else {
             line = "";
