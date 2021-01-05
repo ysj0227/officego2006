@@ -60,12 +60,11 @@ public class GlideUtils {
 
     //获取数据
     public static void loadCheckBoxDrawable(Context context, String path, CheckBox view) {
-        final int imageWidth = CommonHelper.px2dp(context, 128);
         RoundedCorners roundedCorners = new RoundedCorners(6);
         Glide.with(context).load(path).apply(new RequestOptions()
                 .bitmapTransform(roundedCorners)
                 .diskCacheStrategy(DiskCacheStrategy.DATA)
-                .override(imageWidth, imageWidth)).into(new ViewTarget<TextView, Drawable>(view) {
+                .override(38, 38)).into(new ViewTarget<TextView, Drawable>(view) {
             @Override
             public void onResourceReady(@NonNull Drawable resource, @Nullable Transition<? super Drawable> transition) {
                 view.setCompoundDrawablesWithIntrinsicBounds(null, resource, null, null);

@@ -13,7 +13,7 @@
         android:layout_width="@dimen/dp_12"
         android:layout_height="@dimen/dp_14"
         android:layout_marginStart="@dimen/dp_18"
-        android:layout_marginTop="@dimen/dp_55"
+        android:layout_marginTop="@dimen/dp_52"
         android:layout_marginBottom="@dimen/dp_18"
         android:background="@mipmap/ic_location"
         app:layout_constraintBottom_toBottomOf="parent"
