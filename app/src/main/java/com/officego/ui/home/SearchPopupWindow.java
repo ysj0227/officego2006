@@ -158,6 +158,7 @@ public class SearchPopupWindow extends PopupWindow implements
         ColorDrawable cd = new ColorDrawable(0x99000000);
         setBackgroundDrawable(cd);
         setInputMethodMode(PopupWindow.INPUT_METHOD_NEEDED);
+        setClippingEnabled(true);
         setTouchable(true);
         setOutsideTouchable(true);
         //获取isShowing()的状态
