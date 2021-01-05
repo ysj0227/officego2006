@@ -57,13 +57,14 @@ public class SearchListPresenter extends BasePresenter<SearchListContract.View> 
      * pageSize 	否 	int 	每页条数
      */
     @Override
-    public void getBuildingList(int pageNo, String btype, String district, String business, String line,
+    public void getBuildingList(int pageNo, int filterType, String district, String business, String line,
                                 String nearbySubway, String area, String dayPrice, String seats, String decoration,
-                                String houseTags, String sort, String keyWord) {
+                                String houseTags, String sort, String brandId,boolean isVr,String keyWord) {
         mView.showLoadingDialog();
-        OfficegoApi.getInstance().getBuildingList(pageNo, btype, district, business,
+        OfficegoApi.getInstance().getBuildingList(pageNo, filterType, district, business,
                 line, nearbySubway, area, dayPrice, seats, decoration,
-                houseTags, sort, keyWord, Constants.LONGITUDE, Constants.LATITUDE, new RetrofitCallback<BuildingBean>() {
+                houseTags, sort, brandId,isVr,
+                keyWord, Constants.LONGITUDE, Constants.LATITUDE, new RetrofitCallback<BuildingBean>() {
                     @Override
                     public void onSuccess(int code, String msg, BuildingBean data) {
                         if (isViewAttached()) {

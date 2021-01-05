@@ -26,9 +26,9 @@ public interface SearchListContract {
 
     interface Presenter {
 
-        void getBuildingList(int pageNo, String btype, String district, String business, String line,
+        void getBuildingList(int pageNo, int filterType, String district, String business, String line,
                              String nearbySubway, String area, String dayPrice, String seats, String decoration,
-                             String houseTags, String sort, String keyWord);
+                             String houseTags, String sort, String brandId, boolean isVr, String keyWord);
 
         void getConditionList();
     }

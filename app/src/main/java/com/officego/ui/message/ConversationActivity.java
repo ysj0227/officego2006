@@ -193,10 +193,10 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         refreshChatUserInfo(data);
         mData = data;
         isFirstChat = data.getIsChat() == 0; //是否第一次聊天
-        //租户第一次聊天,发送默认消息,且对方是房东
+        //租户第一次聊天,发送默认消息,且对方是房东,当会议室咨询时不弹框
         if (isFirstChat && (!TextUtils.isEmpty(targetId) &&
                 TextUtils.equals(Constants.TYPE_OWNER, targetId.substring(targetId.length() - 1))) &&
-                TextUtils.equals(Constants.TYPE_TENANT, SpUtils.getRole())) {
+                TextUtils.equals(Constants.TYPE_TENANT, SpUtils.getRole()) && !isMeetingEnter) {
             SendMessageManager.getInstance().sendTextMessage(targetId, "我对你发布的房源有兴趣，能聊聊吗？");
         }
     }
@@ -444,7 +444,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             //拒绝认证申请
             SendMessageManager.getInstance().sendIdApplyStatusMessage(false, targetId, "我已拒绝你加入公司", "");
             SendMessageManager.getInstance().sendTextMessage(targetId, "我已拒绝你加入公司");
-        }else if (id == CommonNotifications.conversationPhoneEncrypted) {
+        } else if (id == CommonNotifications.conversationPhoneEncrypted) {
             //手机号加密
             SendMessageManager.getInstance().insertPhoneEncryptedMessage(PhoneEncryptedInfo.setData(""), targetId);
         }

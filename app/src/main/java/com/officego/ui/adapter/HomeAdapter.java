@@ -130,7 +130,6 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     public int getItemCount() {
         return mData.size();
     }
-
     //热门
     private void hotsView(RecyclerView.ViewHolder holder, HomeHotBean.DataBean.ListBean bean) {
         String mPrice = bean.getMinDayPrice() == null ? "0" : bean.getMinDayPrice().toString();
@@ -141,7 +140,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             String workTime = bean.getBuildingMap().getNearbySubwayTime().get(0);
             String stationLine = bean.getBuildingMap().getStationline().get(0);
             String stationName = bean.getBuildingMap().getStationNames().get(0);
-            line = "步行" + workTime + "分钟到 | " + stationLine + "号线 ·" + stationName;
+            line = "步行" + workTime + "分钟到「" + stationLine + "号线 ·" + stationName+"」";
             ((HotsHolder) holder).tvLines.setVisibility(View.VISIBLE);
         } else {
             line = "";
@@ -212,7 +211,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             String workTime = bean.getBannerMap().getSubwayMapBean().getNearbySubwayTime().get(0);
             String stationLine = bean.getBannerMap().getSubwayMapBean().getStationline().get(0);
             String stationName = bean.getBannerMap().getSubwayMapBean().getStationNames().get(0);
-            line = "步行" + workTime + "分钟到 | " + stationLine + "号线 ·" + stationName;
+            line = "步行" + workTime + "分钟到「" + stationLine + "号线 ·" + stationName+"」";
             ((House1Holder) holder).tvLines.setVisibility(View.VISIBLE);
         } else {
             line = "";
@@ -293,7 +292,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             String workTime = bean.getBannerMap().getSubwayMapBean().getNearbySubwayTime().get(0);
             String stationLine = bean.getBannerMap().getSubwayMapBean().getStationline().get(0);
             String stationName = bean.getBannerMap().getSubwayMapBean().getStationNames().get(0);
-            line = "步行" + workTime + "分钟到 | " + stationLine + "号线 ·" + stationName;
+            line = "步行" + workTime + "分钟到「" + stationLine + "号线 ·" + stationName+"」";
             ((DiscountHolder) holder).tvLines.setVisibility(View.VISIBLE);
         } else {
             line = "";

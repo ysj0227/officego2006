@@ -67,7 +67,6 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
     SwipeRefreshLayout mSwipeRefreshLayout;
     @ViewById(R.id.rv_house)
     RecyclerView rvHouse;
-    //暂无数据，网络异常
     @ViewById(R.id.tv_no_data)
     TextView tvNoData;
     @ViewById(R.id.rl_exception)
@@ -88,12 +87,14 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
     String searchKeywords;
     @Extra
     int filterType;
+    @Extra
+    String brandId;
 
     private SearchPopupWindow popupWindow;
     //adapter
     private HouseAdapter houseAdapter;
     //首页列表数据
-    private List<BuildingBean.ListBean> buildingList = new ArrayList<>();
+    private final List<BuildingBean.ListBean> buildingList = new ArrayList<>();
     //当前页码
     private int pageNum = 1;
     //list 是否有更多
@@ -105,6 +106,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
     private String district = "", business = "", line = "", nearbySubway = "",
             area = "", dayPrice = "", seats = "", decoration = "", houseTags = "", sort = "0";
     private boolean isReviewVR;//是否只预览带VR
+
     private ConditionSearchBean mSearchData;
     private List<DirectoryBean.DataBean> decorationList;
     private List<DirectoryBean.DataBean> buildingUniqueList;
@@ -137,9 +139,9 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
         String mDayPrice = TextUtils.isEmpty(dayPrice) ? ("0," + CommonList.SEARCH_MAX) : dayPrice;
         String mSeats = TextUtils.isEmpty(seats) ? ("0," + CommonList.SEARCH_MAX) : seats;
         String mDecoration = TextUtils.equals("0", decoration) ? "" : decoration;
-        mPresenter.getBuildingList(pageNum, String.valueOf(btype), district, business,
+        mPresenter.getBuildingList(pageNum, filterType, district, business,
                 line, nearbySubway, mArea, mDayPrice, mSeats,
-                mDecoration, houseTags, sort, TextUtils.isEmpty(searchKeywords) ? "" : searchKeywords);
+                mDecoration, houseTags, sort, brandId, isReviewVR,searchKeywords);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -318,9 +320,10 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
         this.decoration = bean.getDecoration();
         this.houseTags = bean.getUnique();
         this.isReviewVR = bean.isVr();
+        this.brandId=bean.getBrand();
         bType(filterType);
         ConditionConfig.showText(tvSearchOffice, filterType);
-        ConditionConfig.getConditionBean = ConditionConfig.setConditionBean(
+        ConditionConfig.getConditionBean = ConditionConfig.setConditionBean(filterType,
                 btype, area, dayPrice, seats, decoration, houseTags);
         //查询列表
         getList();

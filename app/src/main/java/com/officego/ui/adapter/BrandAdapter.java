@@ -1,23 +1,18 @@
 package com.officego.ui.adapter;
 
 import android.content.Context;
-import android.view.View;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
-import com.officego.commonlib.common.model.SearchListBean;
-import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.GlideUtils;
-import com.officego.commonlib.utils.ToastUtils;
 import com.officego.commonlib.view.RoundImageView;
+import com.officego.ui.home.SearchHouseListActivity_;
 import com.officego.ui.home.model.BrandRecommendBean;
 
 import java.util.List;
-
-import static com.owner.utils.CommUtils.searchHtmlTextView;
 
 /**
  * Created by YangShiJie
@@ -40,12 +35,8 @@ public class BrandAdapter extends CommonListAdapter<BrandRecommendBean.DataBean>
                     load(bean.getImg() != null ? bean.getImg() : "").into(ivBrand);
             TextView tvName = holder.getView(R.id.tv_name);
             tvName.setText(bean.getTitleName() != null ? bean.getTitleName() : "");
-            holder.itemView.setOnClickListener(new View.OnClickListener() {
-                @Override
-                public void onClick(View view) {
-                    ToastUtils.toastForShort(context,"暂无跳转");
-                }
-            });
+            holder.itemView.setOnClickListener(view -> SearchHouseListActivity_
+                    .intent(context).brandId(String.valueOf(bean.getId())).start());
         }
     }
 }

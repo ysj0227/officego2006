@@ -5,7 +5,6 @@ import android.widget.TextView;
 
 import com.officego.R;
 import com.officego.commonlib.constant.Constants;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.ui.home.model.ConditionBean;
 
 /**
@@ -16,21 +15,21 @@ import com.officego.ui.home.model.ConditionBean;
 public class ConditionConfig {
     public static ConditionBean getConditionBean;
 
-    public static void showText(TextView tvSearchOffice,int filterType ){
-        if (filterType  == Constants.SEARCH_ALL) {
+    public static void showText(TextView tvSearchOffice, int filterType) {
+        if (filterType == Constants.SEARCH_ALL) {
             tvSearchOffice.setText(R.string.str_house_all);
-        } else if (filterType  == Constants.SEARCH_JOINT_WORK) {
+        } else if (filterType == Constants.SEARCH_JOINT_WORK) {
             tvSearchOffice.setText(R.string.str_house_tenant);
-        } else if (filterType  == Constants.SEARCH_OPEN_SEATS) {
+        } else if (filterType == Constants.SEARCH_OPEN_SEATS) {
             tvSearchOffice.setText(R.string.str_house_open_seats);
-        } else if (filterType  == Constants.SEARCH_OFFICE) {
+        } else if (filterType == Constants.SEARCH_OFFICE) {
             tvSearchOffice.setText(R.string.str_house_office);
-        } else if (filterType  == Constants.SEARCH_GARDEN) {
+        } else if (filterType == Constants.SEARCH_GARDEN) {
             tvSearchOffice.setText(R.string.str_house_garden);
         }
     }
 
-    public static ConditionBean setConditionBean(int btype, String area, String dayPrice, String seats,
+    public static ConditionBean setConditionBean(int filterType, int btype, String area, String dayPrice, String seats,
                                                  String decoration, String houseTags) {
         ConditionBean bean = new ConditionBean();
         String max = "0,99999999";
@@ -84,6 +83,9 @@ public class ConditionConfig {
                     }
                 }
             }
+        }
+        if (filterType == 2) {//开放工位
+            return null;
         }
         bean.setArea(area);
         bean.setSeats(seats);

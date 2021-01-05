@@ -240,7 +240,7 @@ public class WebViewCouponActivity extends BaseActivity {
     }
 
     private class JsInterface {
-        private Context context;
+        private final Context context;
 
         JsInterface(Context context) {
             this.context = context;
@@ -253,7 +253,6 @@ public class WebViewCouponActivity extends BaseActivity {
 
         @JavascriptInterface
         public void shareClick(String json) throws JSONException {
-            //shortTip(json);
             JSONObject object = new JSONObject(json);
             String officeTitle = object.getString("officeTitle");
             String url = object.getString("url");

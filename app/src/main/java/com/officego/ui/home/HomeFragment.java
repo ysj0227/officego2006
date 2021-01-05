@@ -8,7 +8,10 @@ import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -63,6 +66,16 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     SuperSwipeRefreshLayout mSwipeRefreshLayout;
     @ViewById(R.id.nsv_view)
     NestedScrollView nsvView;
+    @ViewById(R.id.ctl_search)
+    ConstraintLayout ctlSearch;
+    @ViewById(R.id.iv_location)
+    ImageView ivLocation;
+    @ViewById(R.id.tv_location)
+    TextView tvLocation;
+    @ViewById(R.id.tv_search)
+    TextView tvSearch;
+    @ViewById(R.id.v_line_bottom)
+    View vLineBottom;
     @ViewById(R.id.banner)
     Banner banner;
     @ViewById(R.id.rl_news)
@@ -258,6 +271,26 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         } else if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
             // 滚动到底
             ivScrollTop.setVisibility(View.VISIBLE);
+        }
+        //搜索底色
+        if (scrollY > oldScrollY) {//向下滚动
+            if (scrollY > getResources().getDimensionPixelSize(R.dimen.dp_200)) {
+                StatusBarUtils.setStatusBarColor(mActivity);
+                ctlSearch.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.white));
+                tvLocation.setTextColor(ContextCompat.getColor(mActivity, R.color.text_33));
+                tvSearch.setBackground(ContextCompat.getDrawable(mActivity, R.drawable.button_corners16_solid_gray));
+                ivLocation.setBackgroundResource(R.mipmap.ic_location_black);
+                vLineBottom.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.text_f7));
+            }
+        } else if (scrollY < oldScrollY || scrollY == 0) {//向上滚动 scrollY == 0 滚动到顶
+            if (scrollY < getResources().getDimensionPixelSize(R.dimen.dp_200)) {
+                StatusBarUtils.setStatusBarFullTransparent(mActivity);
+                ctlSearch.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.transparent));
+                tvLocation.setTextColor(ContextCompat.getColor(mActivity, R.color.white));
+                tvSearch.setBackground(ContextCompat.getDrawable(mActivity, R.drawable.button_corners16_solid_white));
+                ivLocation.setBackgroundResource(R.mipmap.ic_location);
+                vLineBottom.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.transparent));
+            }
         }
     }
 

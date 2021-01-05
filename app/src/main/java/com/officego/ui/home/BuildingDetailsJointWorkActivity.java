@@ -687,6 +687,9 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
                 mConditionBean == null || TextUtils.isEmpty(mConditionBean.getHouseTags()) ? "" : mConditionBean.getHouseTags(),
                 currentSeatsValue);
     }
+//    private void getBuildingSelectList(){
+//
+//    }
 
     private void showSetAreaView() {
         rvHorizontalAll.setVisibility(View.GONE);

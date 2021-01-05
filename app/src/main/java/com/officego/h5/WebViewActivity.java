@@ -40,7 +40,7 @@ import org.androidannotations.annotations.ViewById;
  * Data 2020/5/26.
  * Descriptions:WebView
  **/
-@SuppressLint("Registered")
+@SuppressLint({"Registered", "NonConstantResourceId"})
 @EActivity(R.layout.activity_webview)
 public class WebViewActivity extends BaseActivity {
     @ViewById(R.id.wv_view)

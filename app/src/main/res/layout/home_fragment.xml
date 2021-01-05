@@ -37,15 +37,6 @@
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"
                     app:title_height="@dimen/dp_8" />
-                <!--搜索-->
-                <include
-                    layout="@layout/home_include_search"
-                    android:layout_width="match_parent"
-                    style="@style/marginLeftRight20"
-                    android:layout_height="@dimen/dp_32"
-                    android:layout_marginTop="@dimen/dp_40"
-                    app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
                 <!--类型-->
                 <include
                     style="@style/marginLeftRight16"
@@ -149,7 +140,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:layout_below="@+id/tv_hots"
-                        android:layout_marginTop="@dimen/dp_8" />
+                        android:layout_marginTop="@dimen/dp_4" />
 
                 </RelativeLayout>
 
@@ -172,6 +163,13 @@
             </androidx.constraintlayout.widget.ConstraintLayout>
         </androidx.core.widget.NestedScrollView>
     </com.officego.utils.SuperSwipeRefreshLayout>
+    <!--搜索-->
+    <include
+        layout="@layout/home_search"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
 
     <RelativeLayout
         android:id="@+id/rl_identity"

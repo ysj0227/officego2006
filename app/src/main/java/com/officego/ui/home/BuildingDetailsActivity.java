@@ -86,7 +86,7 @@ import tv.danmaku.ijk.media.player.IMediaPlayer;
  * Data 2020/5/14.
  * Descriptions: 楼盘，办公室详情
  **/
-@SuppressLint("Registered")
+@SuppressLint({"Registered", "NonConstantResourceId"})
 @EActivity(R.layout.home_activity_house_details)
 public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPresenter> implements
         OnBannerListener,

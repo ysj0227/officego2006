@@ -228,13 +228,14 @@ public class OfficegoApi {
      * latitude 	否 	string 	纬度
      * keyWord 	否
      */
-    public void getBuildingList(int pageNo, String btype, String district, String business, String line,
+    public void getBuildingList(int pageNo, int filterType, String district, String business, String line,
                                 String nearbySubway, String area, String dayPrice, String seats, String decoration,
-                                String houseTags, String sort, String keyWord, String longitude, String latitude,
+                                String houseTags, String sort, String brandId, boolean isVr,
+                                String keyWord, String longitude, String latitude,
                                 RetrofitCallback<BuildingBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
-        map.put("token", requestBody(""));
-        map.put("btype", requestBody(btype));
+        map.put("token", requestBody(TextUtils.isEmpty(SpUtils.getSignToken()) ? "" : SpUtils.getSignToken()));
+        map.put("filterType", requestBody(filterType + ""));
         map.put("district", requestBody(district));
         map.put("business", requestBody(business));
         map.put("line", requestBody(line));
@@ -245,13 +246,15 @@ public class OfficegoApi {
         map.put("houseTags", requestBody(houseTags));
         map.put("sort", requestBody(sort));
         map.put("seats", requestBody(seats));
-        if (!TextUtils.isEmpty(keyWord)) {
-            map.put("keyWord", requestBody(keyWord));
-        }
+        map.put("brandId", requestBody(TextUtils.isEmpty(brandId) ? "" : brandId));
+        map.put("vrFlag", requestBody(isVr ? "1" : "0"));//1看vr 0所有
         map.put("pageNo", requestBody(pageNo + ""));
         map.put("pageSize", requestBody("10"));
         map.put("longitude", requestBody(longitude));
         map.put("latitude", requestBody(latitude));
+        if (!TextUtils.isEmpty(keyWord)) {
+            map.put("keyWord", requestBody(keyWord));
+        }
         OfficegoRetrofitClient.getInstance().create(HomeInterface.class)
                 .getBuildingList(map)
                 .enqueue(callback);
@@ -451,8 +454,8 @@ public class OfficegoApi {
         map.put("dayPrice", requestBody(dayPrice));
         map.put("decoration", requestBody(decoration));
         map.put("houseTags", requestBody(houseTags));
-        map.put("vrFlag", requestBody("0"));
         map.put("seats", requestBody(seats));
+        map.put("vrFlag", requestBody("0"));
         map.put("pageNo", requestBody(pageNo + ""));
         map.put("pageSize", requestBody("10"));
         OfficegoRetrofitClient.getInstance().create(HomeInterface.class)
