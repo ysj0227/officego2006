@@ -16,6 +16,7 @@ import com.officego.R;
 import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.GlideUtils;
 import com.officego.h5.WebViewCouponActivity_;
 import com.officego.ui.holder.DiscountHolder;
@@ -24,6 +25,7 @@ import com.officego.ui.holder.House1Holder;
 import com.officego.ui.holder.House2Holder;
 import com.officego.ui.holder.MeetingHolder;
 import com.officego.ui.holder.TipsHolder;
+import com.officego.ui.home.BannerToActivity;
 import com.officego.ui.home.BuildingDetailsActivity_;
 import com.officego.ui.home.BuildingDetailsJointWorkActivity_;
 import com.officego.ui.home.model.HomeHotBean;
@@ -189,7 +191,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((TipsHolder) holder).llLabelsTips.setVisibility(View.GONE);
         } else {
             ((TipsHolder) holder).llLabelsTips.setVisibility(View.VISIBLE);
-            ((TipsHolder) holder).llLabelsTips.setLabels(list, (label, pos, data) -> "#" + data.getDictCname() + "#");
+            ((TipsHolder) holder).llLabelsTips.setLabels(list, (label, pos, data) -> data.getDictCname());
         }
         if (bean.getBannerMap().getRemark() == null || TextUtils.isEmpty(bean.getBannerMap().getRemark().toString())) {
             ((TipsHolder) holder).tvTips.setVisibility(View.GONE);
@@ -197,19 +199,19 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((TipsHolder) holder).tvTips.setVisibility(View.VISIBLE);
             ((TipsHolder) holder).tvTips.setText(bean.getBannerMap().getRemark().toString());
         }
-        gotoDetails(holder, bean);
+        gotoBannerDetails(holder, bean);
     }
 
     //房源-单图
     private void house1View(RecyclerView.ViewHolder holder, HomeHotBean.DataBean.ListBean bean) {
         String price = bean.getBannerMap().getDayPrice().toString();
-        String distance = TextUtils.isEmpty(bean.getDistance()) ? "" : bean.getDistance() + "Km | ";
-        String business = bean.getBusinessDistrict();
+        String distance = TextUtils.isEmpty(bean.getBannerMap().getDistance()) ? "" : bean.getBannerMap().getDistance() + "Km | ";
+        String business = bean.getBannerMap().getBusinessDistrict();
         String line;
-        if (bean.getBuildingMap() != null && bean.getBuildingMap().getStationline().size() > 0) {
-            String workTime = bean.getBuildingMap().getNearbySubwayTime().get(0);
-            String stationLine = bean.getBuildingMap().getStationline().get(0);
-            String stationName = bean.getBuildingMap().getStationNames().get(0);
+        if (bean.getBannerMap().getSubwayMapBean() != null && bean.getBannerMap().getSubwayMapBean().getStationline().size() > 0) {
+            String workTime = bean.getBannerMap().getSubwayMapBean().getNearbySubwayTime().get(0);
+            String stationLine = bean.getBannerMap().getSubwayMapBean().getStationline().get(0);
+            String stationName = bean.getBannerMap().getSubwayMapBean().getStationNames().get(0);
             line = "步行" + workTime + "分钟到 | " + stationLine + "号线 ·" + stationName;
             ((House1Holder) holder).tvLines.setVisibility(View.VISIBLE);
         } else {
@@ -221,16 +223,16 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((House1Holder) holder).llLabelsHouse.setVisibility(View.GONE);
         } else {
             ((House1Holder) holder).llLabelsHouse.setVisibility(View.VISIBLE);
-            ((House1Holder) holder).llLabelsHouse.setLabels(list, (label, pos, data) -> "#" + data.getDictCname() + "#");
+            ((House1Holder) holder).llLabelsHouse.setLabels(list, (label, pos, data) -> data.getDictCname());
         }
         Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options())
                 .load(bean.getBannerMap().getImg()).into(((House1Holder) holder).ivImage);
-        ((House1Holder) holder).tvName.setText(bean.getBannerMap().getBannerName());
+        ((House1Holder) holder).tvName.setText(bean.getBannerMap().getName());
         ((House1Holder) holder).tvLocation.setText(String.format("%s%s", distance, business));
         ((House1Holder) holder).tvLines.setText(line);
         ((House1Holder) holder).tvRmbMoney.setText(price);
         ((House1Holder) holder).tvUnit.setText(bean.getBannerMap().getBtype() == Constants.TYPE_BUILDING ? DAY_UNIT : MONTH_UNIT);
-        gotoDetails(holder, bean);
+        gotoBannerDetails(holder, bean);
     }
 
     //房源-多图
@@ -256,9 +258,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((House2Holder) holder).llLabelsHouse.setVisibility(View.GONE);
         } else {
             ((House2Holder) holder).llLabelsHouse.setVisibility(View.VISIBLE);
-            ((House2Holder) holder).llLabelsHouse.setLabels(list, (label, pos, data) -> "#" + data.getDictCname() + "#");
+            ((House2Holder) holder).llLabelsHouse.setLabels(list, (label, pos, data) -> data.getDictCname());
         }
-        ((House2Holder) holder).tvName.setText(bean.getBannerMap().getBannerName());
+        ((House2Holder) holder).tvName.setText(bean.getBannerMap().getName());
         ((House2Holder) holder).tvRmbMoney.setText(price);
         ((House2Holder) holder).tvUnit.setText(bean.getBannerMap().getBtype() == Constants.TYPE_BUILDING ? DAY_UNIT : MONTH_UNIT);
         if (bean.getBannerMap().getRemark() == null || TextUtils.isEmpty(bean.getBannerMap().getRemark().toString())) {
@@ -267,7 +269,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((House2Holder) holder).tvTips.setVisibility(View.VISIBLE);
             ((House2Holder) holder).tvTips.setText(bean.getBannerMap().getRemark().toString());
         }
-        gotoDetails(holder, bean);
+        gotoBannerDetails(holder, bean);
     }
 
     //会议室
@@ -284,13 +286,13 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     private void discountView(RecyclerView.ViewHolder holder, HomeHotBean.DataBean.ListBean bean) {
         String price = bean.getBannerMap().getDayPrice().toString();
         String salePrice = bean.getBannerMap().getSalePrice().toString();
-        String distance = TextUtils.isEmpty(bean.getDistance()) ? "" : bean.getDistance() + "Km | ";
-        String business = bean.getBusinessDistrict();
+        String distance = TextUtils.isEmpty(bean.getBannerMap().getDistance()) ? "" : bean.getBannerMap().getDistance() + "Km | ";
+        String business = bean.getBannerMap().getBusinessDistrict();
         String line;
-        if (bean.getBuildingMap() != null && bean.getBuildingMap().getStationline().size() > 0) {
-            String workTime = bean.getBuildingMap().getNearbySubwayTime().get(0);
-            String stationLine = bean.getBuildingMap().getStationline().get(0);
-            String stationName = bean.getBuildingMap().getStationNames().get(0);
+        if (bean.getBannerMap().getSubwayMapBean() != null && bean.getBannerMap().getSubwayMapBean().getStationline().size() > 0) {
+            String workTime = bean.getBannerMap().getSubwayMapBean().getNearbySubwayTime().get(0);
+            String stationLine = bean.getBannerMap().getSubwayMapBean().getStationline().get(0);
+            String stationName = bean.getBannerMap().getSubwayMapBean().getStationNames().get(0);
             line = "步行" + workTime + "分钟到 | " + stationLine + "号线 ·" + stationName;
             ((DiscountHolder) holder).tvLines.setVisibility(View.VISIBLE);
         } else {
@@ -306,8 +308,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
         Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options())
                 .load(bean.getBannerMap().getImg()).into(((DiscountHolder) holder).ivHouse);
-        ((DiscountHolder) holder).ivVrFlag.setVisibility(TextUtils.equals("1", bean.getVr()) ? View.GONE : View.VISIBLE);
-        ((DiscountHolder) holder).tvName.setText(bean.getBannerMap().getBannerName());
+        ((DiscountHolder) holder).tvName.setText(bean.getBannerMap().getName());
         ((DiscountHolder) holder).tvLocation.setText(String.format("%s%s", distance, business));
         ((DiscountHolder) holder).tvLines.setText(line);
         ((DiscountHolder) holder).tvRmbMoney.setText(price);
@@ -318,10 +319,10 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((DiscountHolder) holder).tvUnit.setText(MONTH_UNIT);
             ((DiscountHolder) holder).tvDiscount.setText(String.format("¥%s" + MONTH_UNIT, salePrice));
         }
-        gotoDetails(holder, bean);
+        gotoBannerDetails(holder, bean);
     }
 
-    //查看详情
+    //hot查看详情
     private void gotoDetails(RecyclerView.ViewHolder holder, HomeHotBean.DataBean.ListBean bean) {
         holder.itemView.setOnClickListener(v -> {
             if (bean.getBtype() == Constants.TYPE_BUILDING) {
@@ -331,6 +332,19 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
                 BuildingDetailsJointWorkActivity_.intent(context).mConditionBean(null)
                         .mBuildingBean(BundleUtils.BuildingMessage(Constants.TYPE_JOINTWORK, bean.getId())).start();
             }
+        });
+    }
+
+    //插入banner查看详情
+    private void gotoBannerDetails(RecyclerView.ViewHolder holder, HomeHotBean.DataBean.ListBean bean) {
+        holder.itemView.setOnClickListener(v -> {
+            int type = bean.getBannerMap().getType();
+            int pageType = bean.getBannerMap().getPageType() == null ? 0 :
+                    Integer.parseInt(CommonHelper.bigDecimal(bean.getBannerMap().getPageType(), true));
+            int pageId = bean.getBannerMap().getPageId() == null ? 0 :
+                    Integer.parseInt(CommonHelper.bigDecimal(bean.getBannerMap().getPageId(), true));
+            String wUrl = bean.getBannerMap().getWurl();
+            BannerToActivity.toActivity(context, type, pageType, pageId, wUrl);
         });
     }
 }

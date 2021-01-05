@@ -11,6 +11,7 @@ import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.GlideUtils;
+import com.officego.commonlib.utils.ToastUtils;
 import com.officego.commonlib.view.RoundImageView;
 import com.officego.ui.home.model.HomeMeetingBean;
 
@@ -23,8 +24,10 @@ import java.util.List;
  **/
 public class MeetingAdapter extends CommonListAdapter<HomeMeetingBean.DataBean.ListBean> {
 
+    private Context context;
     public MeetingAdapter(Context context, List<HomeMeetingBean.DataBean.ListBean> list) {
         super(context, R.layout.item_houme_meeting, list);
+        this.context=context;
     }
 
     @Override
@@ -33,16 +36,15 @@ public class MeetingAdapter extends CommonListAdapter<HomeMeetingBean.DataBean.L
         Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getImg()).into(ivImage);
         TextView tvLabel = holder.getView(R.id.tv_label);
         TextView tvRmbMoney = holder.getView(R.id.tv_rmb_money);
-        TextView tvDiscount = holder.getView(R.id.tv_discount);
-        tvDiscount.getPaint().setAntiAlias(true);//抗锯齿
-        tvDiscount.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);  // 设置中划线并加清晰
+        //TextView tvDiscount = holder.getView(R.id.tv_discount);
+        //tvDiscount.getPaint().setAntiAlias(true);//抗锯齿
+        //tvDiscount.getPaint().setFlags(Paint.STRIKE_THRU_TEXT_FLAG | Paint.ANTI_ALIAS_FLAG);  // 设置中划线并加清晰
         tvLabel.setText(bean.getTitle());
         tvRmbMoney.setText(CommonHelper.bigDecimal(bean.getPrice(), true));
-        //tvDiscount.setText(String.format("¥%s/时", 200));
         holder.itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                ToastUtils.toastForShort(context,"H5会议室详情");
             }
         });
     }

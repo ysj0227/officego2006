@@ -183,7 +183,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
 
     @Click(R.id.iv_identity)
     void identityClick() {
-        shortTip("aa");
+        shortTip("H5认证");
     }
 
     @Click(R.id.iv_identity_close)

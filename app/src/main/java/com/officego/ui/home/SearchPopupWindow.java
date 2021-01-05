@@ -15,7 +15,6 @@ import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RadioButton;
 import android.widget.Switch;
@@ -26,7 +25,6 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
@@ -115,7 +113,7 @@ public class SearchPopupWindow extends PopupWindow implements
     private String district = "", business = "";//商圈
     private String line = "", nearbySubway = ""; //地铁
     private int filterType; //搜索类型0,1,2,3，4
-    private String sort;//排序
+    private final String sort;//排序
     private final List<MeterBean.DataBean> meterList = new ArrayList<>(); //获取地铁列表
     private final List<BusinessCircleBean.DataBean> businessCircleList = new ArrayList<>();  //商圈列表
     //筛选
@@ -787,7 +785,6 @@ public class SearchPopupWindow extends PopupWindow implements
         rvJointWorkSeats.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, false));
         rvJointWorkBrand.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, false));
         rvJointWorkCharacteristic.addItemDecoration(new GridSpacingItemDecoration(spanCount, spacing, false));
-
     }
 
     private void openSeatViews(View viewLayout) {
@@ -859,11 +856,11 @@ public class SearchPopupWindow extends PopupWindow implements
     }
 
     //地铁数据
-    private Map<Integer, Boolean> mapMeter = new HashMap<>();
+    private final Map<Integer, Boolean> mapMeter = new HashMap<>();
 
     private class MeterAdapter extends CommonListAdapter<MeterBean.DataBean> {
-        private RecyclerView recyclerViewRight;
-        private TextView tvNum;
+        private final RecyclerView recyclerViewRight;
+        private final TextView tvNum;
         private boolean onBind;
 
         public MeterAdapter(Context context, TextView tvNum, List<MeterBean.DataBean> list, RecyclerView recyclerViewRight) {
@@ -933,9 +930,9 @@ public class SearchPopupWindow extends PopupWindow implements
     //地铁站详情
     private class StationAdapter extends CommonListAdapter<MeterBean.DataBean.ListBean> {
         private SparseBooleanArray checkStates = new SparseBooleanArray();
-        private HashSet<Integer> hashSet; //当前选中的数据列表
-        private Map<Integer, String> map = new HashMap<>();//记录神策文本
-        private TextView tvNum;
+        private final HashSet<Integer> hashSet; //当前选中的数据列表
+        private final Map<Integer, String> map = new HashMap<>();//记录神策文本
+        private final TextView tvNum;
 
         StationAdapter(Context context, final TextView tvNum, List<MeterBean.DataBean.ListBean> list) {
             super(context, R.layout.item_search_station, list);
@@ -984,11 +981,11 @@ public class SearchPopupWindow extends PopupWindow implements
     }
 
     //商圈
-    private Map<Integer, Boolean> mapBusiness = new HashMap<>();
+    private final Map<Integer, Boolean> mapBusiness = new HashMap<>();
 
     private class BusinessCircleAdapter extends CommonListAdapter<BusinessCircleBean.DataBean> {
-        private RecyclerView recyclerViewRight;
-        private TextView tvNum;
+        private final RecyclerView recyclerViewRight;
+        private final TextView tvNum;
         private boolean onBind;
 
         BusinessCircleAdapter(Context context, TextView tvNum, List<BusinessCircleBean.DataBean> list, RecyclerView recyclerViewRight) {
@@ -1056,9 +1053,9 @@ public class SearchPopupWindow extends PopupWindow implements
     //商圈详情
     private class BusinessCircleDetailsAdapter extends CommonListAdapter<BusinessCircleBean.DataBean.ListBean> {
         private SparseBooleanArray checkStates = new SparseBooleanArray();
-        private HashSet<Integer> hashSet; //当前选中的数据列表
-        private Map<Integer, String> map = new HashMap<>(); //神策埋点文本
-        private TextView tvNum;
+        private final HashSet<Integer> hashSet; //当前选中的数据列表
+        private final Map<Integer, String> map = new HashMap<>(); //神策埋点文本
+        private final TextView tvNum;
 
         BusinessCircleDetailsAdapter(Context context, final TextView tvNum, List<BusinessCircleBean.DataBean.ListBean> list) {
             super(context, R.layout.item_search_station, list);
@@ -1475,38 +1472,44 @@ public class SearchPopupWindow extends PopupWindow implements
 
     //装修
     class OfficeDecorationAdapter extends CommonListAdapter<DirectoryBean.DataBean> {
-        private int checkedPos = -1;
+        private final Map<Integer, String> map = new HashMap<>();
+        private boolean onBind;
 
         @SuppressLint("UseSparseArrays")
         OfficeDecorationAdapter(Context context, List<DirectoryBean.DataBean> list) {
-            super(context, R.layout.item_house_unique, list);
+            super(context, R.layout.item_house_decroation, list);
             for (int i = 0; i < list.size(); i++) {
                 if (officeDecoration == list.get(i).getDictValue()) {
-                    checkedPos = i;
-                    break;
+                    map.put(i, list.get(i).getDictCname());
                 }
             }
         }
 
         @Override
         public void convert(ViewHolder holder, final DirectoryBean.DataBean bean) {
-            TextView cbType = holder.getView(R.id.cb_item);
-            ImageView ivImage = holder.getView(R.id.iv_image);
-            cbType.setText(bean.getDictCname());
-            if (holder.getAdapterPosition() == checkedPos) {
-                cbType.setTextColor(ContextCompat.getColor(mContext, R.color.common_blue_main));
-                Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getDictImg()).into(ivImage);
-            } else {
-                cbType.setTextColor(ContextCompat.getColor(mContext, R.color.text_main));
-                Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getDictImgBlack()).into(ivImage);
-            }
-            holder.itemView.setOnClickListener(view -> {
-                checkedPos = holder.getAdapterPosition();
-                if (!rvOfficeDecorate.isComputingLayout()) {
+            int position = holder.getAdapterPosition();
+            CheckBox tvName = holder.getView(R.id.cb_item);
+            tvName.setText(bean.getDictCname());
+            tvName.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    map.clear();
+                    map.put(position, bean.getDictCname());
                     officeDecoration = bean.getDictValue();
+                } else {
+                    map.remove(position);
+                    if (!rvOfficeDecorate.isComputingLayout()) {
+                        officeDecoration = 0;
+                    }
+                }
+                if (!onBind) {
                     notifyDataSetChanged();
                 }
             });
+            onBind = true;
+            tvName.setChecked(map.containsKey(position));
+            GlideUtils.loadCheckBoxDrawable(mContext,
+                    tvName.isChecked() ? bean.getDictImg() : bean.getDictImgBlack(), tvName);
+            onBind = false;
         }
     }
 
@@ -1638,38 +1641,44 @@ public class SearchPopupWindow extends PopupWindow implements
 
     //装修
     class GardenDecorationAdapter extends CommonListAdapter<DirectoryBean.DataBean> {
-        private int checkedPos = -1;
+        private final Map<Integer, String> map = new HashMap<>();
+        private boolean onBind;
 
         @SuppressLint("UseSparseArrays")
         GardenDecorationAdapter(Context context, List<DirectoryBean.DataBean> list) {
-            super(context, R.layout.item_house_unique, list);
+            super(context, R.layout.item_house_decroation, list);
             for (int i = 0; i < list.size(); i++) {
                 if (gardenDecoration == list.get(i).getDictValue()) {
-                    checkedPos = i;
-                    break;
+                    map.put(i, list.get(i).getDictCname());
                 }
             }
         }
 
         @Override
         public void convert(ViewHolder holder, final DirectoryBean.DataBean bean) {
-            TextView cbType = holder.getView(R.id.cb_item);
-            ImageView ivImage = holder.getView(R.id.iv_image);
-            cbType.setText(bean.getDictCname());
-            if (holder.getAdapterPosition() == checkedPos) {
-                cbType.setTextColor(ContextCompat.getColor(mContext, R.color.common_blue_main));
-                Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getDictImg()).into(ivImage);
-            } else {
-                cbType.setTextColor(ContextCompat.getColor(mContext, R.color.text_main));
-                Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getDictImgBlack()).into(ivImage);
-            }
-            holder.itemView.setOnClickListener(view -> {
-                checkedPos = holder.getAdapterPosition();
-                if (!rvGardenDecorate.isComputingLayout()) {
+            int position = holder.getAdapterPosition();
+            CheckBox tvName = holder.getView(R.id.cb_item);
+            tvName.setText(bean.getDictCname());
+            tvName.setOnCheckedChangeListener((buttonView, isChecked) -> {
+                if (isChecked) {
+                    map.clear();
+                    map.put(position, bean.getDictCname());
                     gardenDecoration = bean.getDictValue();
+                } else {
+                    map.remove(position);
+                    if (!rvGardenDecorate.isComputingLayout()) {
+                        gardenDecoration = 0;
+                    }
+                }
+                if (!onBind) {
                     notifyDataSetChanged();
                 }
             });
+            onBind = true;
+            tvName.setChecked(map.containsKey(position));
+            GlideUtils.loadCheckBoxDrawable(mContext,
+                    tvName.isChecked() ? bean.getDictImg() : bean.getDictImgBlack(), tvName);
+            onBind = false;
         }
     }
 
@@ -1706,6 +1715,7 @@ public class SearchPopupWindow extends PopupWindow implements
                 }
             });
         }
+
     }
 
     private void showEditText(String value, EditText min, EditText max) {
@@ -1738,7 +1748,6 @@ public class SearchPopupWindow extends PopupWindow implements
         return getEditMin(min) + "," + getEditMax(max);
     }
 
-    //选择回显
     private int selectShowEditText(String data, List<WantFindBean> list) {
         for (int i = 0; i < list.size(); i++) {
             if (TextUtils.equals(data, list.get(i).getKey())) {
@@ -1747,4 +1756,5 @@ public class SearchPopupWindow extends PopupWindow implements
         }
         return -1;
     }
+
 }
