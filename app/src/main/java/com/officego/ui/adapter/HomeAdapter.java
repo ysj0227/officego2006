@@ -65,25 +65,23 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         if (viewType == ITEM_TYPE.ITEM_TYPE_HOT.ordinal()) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.item_home_hots_house, parent, false);
-            return new HotsHolder(view);
+            return new HotsHolder(view(parent, R.layout.item_home_hots_house));
         } else if (viewType == ITEM_TYPE.ITEM_TYPE_TIPS.ordinal()) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_banner_type_tips, parent, false);
-            return new TipsHolder(view);
+            return new TipsHolder(view(parent, R.layout.home_banner_type_tips));
         } else if (viewType == ITEM_TYPE.ITEM_TYPE_HOUSE1.ordinal()) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_banner_type_house1, parent, false);
-            return new House1Holder(view);
+            return new House1Holder(view(parent, R.layout.home_banner_type_house1));
         } else if (viewType == ITEM_TYPE.ITEM_TYPE_HOUSE2.ordinal()) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_banner_type_house2, parent, false);
-            return new House2Holder(view);
+            return new House2Holder(view(parent, R.layout.home_banner_type_house2));
         } else if (viewType == ITEM_TYPE.ITEM_TYPE_MEETING.ordinal()) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_banner_type_meeting, parent, false);
-            return new MeetingHolder(view);
+            return new MeetingHolder(view(parent, R.layout.home_banner_type_meeting));
         } else if (viewType == ITEM_TYPE.ITEM_TYPE_DISCOUNT.ordinal()) {
-            View view = LayoutInflater.from(parent.getContext()).inflate(R.layout.home_banner_type_discount, parent, false);
-            return new DiscountHolder(view);
+            return new DiscountHolder(view(parent, R.layout.home_banner_type_discount));
         }
         return null;
+    }
+
+    private View view(@NonNull ViewGroup parent, int layoutView) {
+        return LayoutInflater.from(parent.getContext()).inflate(layoutView, parent, false);
     }
 
     @Override
@@ -161,25 +159,9 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             setOfficeCounts(holder, bean.getHouseCount() == null ? 0 : bean.getHouseCount());
         } else {
             setOfficeCounts(holder, bean.getIndependenceOffice());
-            if (bean.getOpenStation() == null || bean.getOpenStation() == 0) {
-                ((HotsHolder) holder).tvOpenSeats.setVisibility(View.GONE);
-            } else {
-                ((HotsHolder) holder).tvOpenSeats.setVisibility(View.VISIBLE);
-                String source = "开放工位<font color='#46C3C2'>" + bean.getOpenStation() + "</font>个";
-                ((HotsHolder) holder).tvOpenSeats.setText(Html.fromHtml(source));
-            }
+            setOpenSeatsCounts(holder, bean.getOpenStation());
         }
         gotoDetails(holder, bean);
-    }
-
-    private void setOfficeCounts(RecyclerView.ViewHolder holder, int counts) {
-        if (counts == 0) {
-            ((HotsHolder) holder).tvOfficeIndependent.setVisibility(View.GONE);
-        } else {
-            ((HotsHolder) holder).tvOfficeIndependent.setVisibility(View.VISIBLE);
-            String source = "办公室<font color='#46C3C2'>" + counts + "</font>间";
-            ((HotsHolder) holder).tvOfficeIndependent.setText(Html.fromHtml(source));
-        }
     }
 
     //生活小知识_文案版
@@ -321,7 +303,25 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
         gotoBannerDetails(holder, bean);
     }
+    private void setOfficeCounts(RecyclerView.ViewHolder holder, int counts) {
+        if (counts == 0) {
+            ((HotsHolder) holder).tvOfficeIndependent.setVisibility(View.GONE);
+        } else {
+            ((HotsHolder) holder).tvOfficeIndependent.setVisibility(View.VISIBLE);
+            String source = "办公室<font color='#46C3C2'>" + counts + "</font>间";
+            ((HotsHolder) holder).tvOfficeIndependent.setText(Html.fromHtml(source));
+        }
+    }
 
+    private void setOpenSeatsCounts(RecyclerView.ViewHolder holder, int counts) {
+        if (counts == 0) {
+            ((HotsHolder) holder).tvOpenSeats.setVisibility(View.GONE);
+        } else {
+            ((HotsHolder) holder).tvOpenSeats.setVisibility(View.VISIBLE);
+            String source = "开放工位<font color='#46C3C2'>" + counts + "</font>个";
+            ((HotsHolder) holder).tvOpenSeats.setText(Html.fromHtml(source));
+        }
+    }
     //hot查看详情
     private void gotoDetails(RecyclerView.ViewHolder holder, HomeHotBean.DataBean.ListBean bean) {
         holder.itemView.setOnClickListener(v -> {
