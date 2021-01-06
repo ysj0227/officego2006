@@ -7,6 +7,7 @@ import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
 import android.webkit.CookieManager;
+import android.webkit.GeolocationPermissions;
 import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
@@ -79,6 +80,11 @@ public class WebViewBannerActivity extends BaseActivity {
                     titleBar.getAppTitle().setText(title);
                 }
                 exceptionPageReceivedTitle(view, title);
+            }
+            @Override
+            public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
+                callback.invoke(origin, true, true);
+                super.onGeolocationPermissionsShowPrompt(origin, callback);
             }
         });
     }
