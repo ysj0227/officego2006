@@ -33,7 +33,7 @@ import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.dialog.MapDialog;
 import com.officego.commonlib.common.model.HouseIdBundleBean;
 import com.officego.commonlib.common.model.utils.BundleUtils;
-import com.officego.commonlib.common.sensors.SensorsTrack;
+import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.utils.NetworkUtils;

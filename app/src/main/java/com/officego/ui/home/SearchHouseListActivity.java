@@ -19,7 +19,7 @@ import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.model.DirectoryBean;
-import com.officego.commonlib.common.sensors.SensorsTrack;
+import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;

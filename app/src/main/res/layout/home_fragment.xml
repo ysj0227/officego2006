@@ -62,7 +62,7 @@
                         android:id="@+id/tv_news"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="今日看点"
+                        android:text="@string/str_today_read"
                         android:textColor="@color/text_33"
                         android:textSize="@dimen/sp_16"
                         android:textStyle="bold" />
@@ -90,7 +90,7 @@
                         style="@style/marginLeftRight16"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="品牌入驻"
+                        android:text="@string/str_brand_joint"
                         android:textColor="@color/text_33"
                         android:textSize="@dimen/sp_16"
                         android:textStyle="bold" />
@@ -119,7 +119,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dp_16"
-                        android:text="热门推荐"
+                        android:text="@string/str_hot_recommend"
                         android:textColor="@color/text_33"
                         android:textSize="@dimen/sp_16"
                         android:textStyle="bold" />
@@ -131,7 +131,7 @@
                         android:layout_alignBottom="@id/tv_hots"
                         android:layout_alignParentEnd="true"
                         android:layout_marginEnd="@dimen/dp_16"
-                        android:text="全部房源"
+                        android:text="@string/str_all_house"
                         android:textColor="@color/text_66"
                         android:textSize="@dimen/sp_12" />
 
@@ -139,8 +139,7 @@
                         android:id="@+id/rv_hots"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:layout_below="@+id/tv_hots"
-                        android:layout_marginTop="@dimen/dp_4" />
+                        android:layout_below="@+id/tv_hots" />
 
                 </RelativeLayout>
 
@@ -152,7 +151,7 @@
                     android:layout_marginTop="@dimen/dp_46"
                     android:layout_marginBottom="@dimen/dp_54"
                     android:background="@drawable/btn_common_bg_edge_gray6"
-                    android:text="查看全部房源"
+                    android:text="@string/str_query_all_house"
                     android:textColor="@color/text_66_p50"
                     android:textSize="@dimen/sp_13"
                     app:layout_constraintBottom_toBottomOf="parent"

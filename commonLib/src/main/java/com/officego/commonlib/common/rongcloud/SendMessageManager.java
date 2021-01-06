@@ -14,7 +14,7 @@ import com.officego.commonlib.common.message.ViewingDateInfo;
 import com.officego.commonlib.common.message.ViewingDateStatusInfo;
 import com.officego.commonlib.common.message.WeChatInfo;
 import com.officego.commonlib.common.model.ChatHouseBean;
-import com.officego.commonlib.common.sensors.SensorsTrack;
+import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.commonlib.utils.log.LogCat;

@@ -15,7 +15,7 @@ import com.officego.commonlib.common.model.ChatHouseBean;
 import com.officego.commonlib.common.model.RenterBean;
 import com.officego.commonlib.common.presenter.ConversationViewDatePresenter;
 import com.officego.commonlib.common.rongcloud.SendMessageManager;
-import com.officego.commonlib.common.sensors.SensorsTrack;
+import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.DateTimeUtils;

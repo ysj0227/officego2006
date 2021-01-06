@@ -8,7 +8,7 @@ import android.widget.TextView;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.SpUtils;
-import com.officego.commonlib.common.sensors.SensorsTrack;
+import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.RegexUtils;
 import com.officego.commonlib.utils.StatusBarUtils;

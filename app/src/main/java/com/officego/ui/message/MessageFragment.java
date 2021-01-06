@@ -1,7 +1,6 @@
 package com.officego.ui.message;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
@@ -16,24 +15,20 @@ import com.officego.R;
 import com.officego.commonlib.base.BaseFragment;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
-import com.officego.commonlib.common.sensors.SensorsTrack;
+import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.ui.chatlist.MessageListActivity;
 import com.officego.ui.chatlist.MessageListActivity_;
 import com.officego.ui.login.LoginActivity_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EFragment;
-import org.androidannotations.annotations.OnActivityResult;
 import org.androidannotations.annotations.UiThread;
 import org.androidannotations.annotations.ViewById;
 
 import io.rong.imkit.fragment.ConversationListFragment;
 import io.rong.imlib.model.Conversation;
-
-import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by YangShiJie

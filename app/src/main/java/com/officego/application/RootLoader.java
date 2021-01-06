@@ -6,7 +6,7 @@ import android.text.TextUtils;
 
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.rongcloud.IMManager;
-import com.officego.commonlib.common.sensors.SensorsTrack;
+import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.constant.AppConfig;
 import com.officego.commonlib.utils.FileHelper;
 import com.officego.commonlib.utils.HttpsUtils;
@@ -27,7 +27,6 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 import cn.jiguang.verifysdk.api.JVerificationInterface;
-import cn.jiguang.verifysdk.api.RequestCallback;
 
 /**
  * Created by YangShiJie

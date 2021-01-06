@@ -23,7 +23,7 @@ import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.commonlib.common.model.QueryHistoryKeywordsBean;
 import com.officego.commonlib.common.model.SearchListBean;
 import com.officego.commonlib.common.model.utils.BundleUtils;
-import com.officego.commonlib.common.sensors.SensorsTrack;
+import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.ClearableEditText;

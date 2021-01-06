@@ -49,7 +49,7 @@ import org.json.JSONObject;
  * Data 2020/5/26.
  * Descriptions:WebView
  **/
-@SuppressLint("Registered")
+@SuppressLint({"Registered", "NonConstantResourceId"})
 @EActivity(R.layout.activity_webview_coupon)
 public class WebViewCouponActivity extends BaseActivity {
     @ViewById(R.id.wv_view)
@@ -76,7 +76,7 @@ public class WebViewCouponActivity extends BaseActivity {
     private String strMap() {
         return "?channel=2" +
                 "&token=" + SpUtils.getSignToken() +
-                "&amountRange=" + amountRange;
+                "&amountRange=" + (TextUtils.isEmpty(amountRange) ? "" : amountRange);
     }
 
     private void setWebChromeClient() {

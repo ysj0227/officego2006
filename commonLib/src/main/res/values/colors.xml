@@ -45,7 +45,7 @@
     <color name="common_yellow">#FDA82A</color>
     <color name="common_yellow_trans">#1AFDA82A</color>
     <color name="common_blue">#1F8AF8</color>
-    <color name="trans_common_35">#80353B3B</color>   <!--透明度50%-->
+    <color name="trans_common_35">#4D353B3B</color>   <!--透明度50%-->
     <color name="common_red">#FF424F</color>          <!--红色-->
 
     <color name="assist_primary">#3065F5</color>     <!--辅助色-->

@@ -18,7 +18,7 @@ public class BannerToActivity {
         if (context == null) return;
         if (type == 1) {
             if (pageType == 5) {//会议室
-                WebViewCouponActivity_.intent(context).amountRange("").start();
+                WebViewCouponActivity_.intent(context).start();
             }
             if (pageId != 0) {
                 if (pageType == 1) {

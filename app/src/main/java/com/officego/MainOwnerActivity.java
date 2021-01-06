@@ -247,7 +247,7 @@ public class MainOwnerActivity extends BaseActivity implements RadioGroup.OnChec
     public boolean onKeyDown(int keyCode, KeyEvent event) {
         if (keyCode == KeyEvent.KEYCODE_BACK && event.getAction() == KeyEvent.ACTION_DOWN) {
             if ((System.currentTimeMillis() - mExitTime) > 2000) {
-                shortTip(com.owner.R.string.toast_press_again_quit);
+                shortTip(R.string.toast_press_again_quit);
                 mExitTime = System.currentTimeMillis();
             } else {
                 GotoActivityUtils.gotoHome(context);

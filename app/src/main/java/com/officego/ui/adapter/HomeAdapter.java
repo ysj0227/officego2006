@@ -278,7 +278,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         ((MeetingHolder) holder).rvMeeting.setLayoutManager(layoutManager);
         ((MeetingHolder) holder).rvMeeting.setAdapter(new MeetingAdapter(context, meetData.getList()));
         ((MeetingHolder) holder).tvMeetingTitle.setText(meetData.getMeetingRoomTitle());
-        ((MeetingHolder) holder).tvMeetingMore.setOnClickListener(view -> WebViewCouponActivity_.intent(context).amountRange("").start());
+        ((MeetingHolder) holder).tvMeetingMore.setOnClickListener(view -> WebViewCouponActivity_.intent(context).start());
     }
 
     //打折

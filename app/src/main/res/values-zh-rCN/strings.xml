@@ -19,7 +19,7 @@
     <string name="str_count_down_second">s</string>
     <string name="str_resend">重新发送</string>
     <string name="str_get_code">获取短信验证码</string>
-    <string name="toast_press_again_quit">再按一次退出</string>
+    <string name="toast_press_again_quit">再按一次退出桌面</string>
     <string name="str_house_all">全部</string>
     <string name="str_house_office">写字楼</string>
     <string name="str_house_tenant">共享办公</string>
@@ -86,4 +86,8 @@
         · 4.每张优惠券只能使用一次，抵价金额未用完下次也不能继续使用；</string>
     <string name="str_house_open_seats">开放工位</string>
     <string name="str_house_garden">园区</string>
+    <string name="str_today_read">今日看点</string>
+    <string name="str_brand_joint">品牌入驻</string>
+    <string name="str_all_house">全部房源</string>
+    <string name="str_query_all_house">查看全部房源</string>
 </resources>

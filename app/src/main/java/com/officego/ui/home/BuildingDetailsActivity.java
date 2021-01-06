@@ -37,7 +37,7 @@ import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.dialog.MapDialog;
 import com.officego.commonlib.common.model.BuildingIdBundleBean;
 import com.officego.commonlib.common.model.utils.BundleUtils;
-import com.officego.commonlib.common.sensors.SensorsTrack;
+import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;

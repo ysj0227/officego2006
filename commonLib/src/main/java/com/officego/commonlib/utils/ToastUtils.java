@@ -133,7 +133,7 @@ public class ToastUtils {
         });
     }
 
-    public static void showCenterToast(String text, Context context) {
+    public static void showCenterToast(Context context, String text) {
         showCenterToast(text, context, 0);
     }
 

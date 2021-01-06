@@ -9,7 +9,7 @@ import androidx.annotation.Nullable;
 
 import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.SpUtils;
-import com.officego.commonlib.common.sensors.SensorsTrack;
+import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.StatusBarUtils;

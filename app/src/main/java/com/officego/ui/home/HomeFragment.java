@@ -20,7 +20,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpFragment;
-import com.officego.commonlib.common.sensors.SensorsTrack;
+import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.update.VersionDialog;
 import com.officego.commonlib.utils.CommonHelper;
@@ -173,7 +173,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
 
     @Click(R.id.rl_meeting_room)
     void meetingClick() {
-        WebViewCouponActivity_.intent(mActivity).amountRange("").start();
+        WebViewCouponActivity_.intent(mActivity).start();
     }
 
     //搜索列表

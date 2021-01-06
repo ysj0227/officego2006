@@ -1,4 +1,4 @@
-package com.officego.commonlib.common.sensors;
+package com.officego.commonlib.common.analytics;
 
 import android.content.Context;
 import android.text.TextUtils;

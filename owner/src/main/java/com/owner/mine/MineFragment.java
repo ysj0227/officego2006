@@ -23,7 +23,7 @@ import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.model.UserMessageBean;
 import com.officego.commonlib.common.rongcloud.ConnectRongCloudUtils;
 import com.officego.commonlib.common.rongcloud.RongCloudSetUserInfoUtils;
-import com.officego.commonlib.common.sensors.SensorsTrack;
+import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.update.VersionDialog;

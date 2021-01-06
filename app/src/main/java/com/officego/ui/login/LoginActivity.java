@@ -21,7 +21,7 @@ import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
-import com.officego.commonlib.common.sensors.SensorsTrack;
+import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.NotificationUtil;
 import com.officego.commonlib.utils.PermissionUtils;
