@@ -4,6 +4,7 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.text.TextUtils;
 
+import com.officego.GoogleTrack;
 import com.officego.commonlib.base.BasePresenter;
 import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
@@ -46,8 +47,6 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
 
     /**
      * 获取验证码
-     *
-     * @param mobile
      */
     @Override
     public void sendSmsCode(String mobile) {

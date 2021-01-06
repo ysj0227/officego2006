@@ -30,6 +30,7 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.officego.GoogleTrack;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
@@ -521,6 +522,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             return;
         }
         if (mBuildingBean != null) {
+            GoogleTrack.buildingCollect(context);
             //神策
             SensorsTrack.clickFavoritesButton(mBuildingBean.getBuildingId(), !isFavorite);
             //收藏
@@ -550,6 +552,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         if (isFastClick(1200)) {
             return;
         }
+        GoogleTrack.buildingDetailChat(context);
         //未登录
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
             new LoginTenantUtils(context);

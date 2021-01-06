@@ -14,6 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
+import com.officego.GoogleTrack;
 import com.officego.MainActivity_;
 import com.officego.MainOwnerActivity_;
 import com.officego.R;
@@ -127,6 +128,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
                 shortTip(R.string.str_please_input_sms_code);
                 return;
             }
+            GoogleTrack.login(context);
             mPresenter.login(mobile, code); //登录
         } else {
             SensorsTrack.smsCode(); //神策
@@ -145,6 +147,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
      */
     @Click(R.id.btn_login_no_password)
     void loginNoPasswordClick() {
+        GoogleTrack.keyLogin(context);
         loginOnlyPhone();
     }
 
@@ -219,6 +222,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
 
     @Override
     public void loginSuccess(LoginBean data) {
+        GoogleTrack.setUserProperty(context);
         //神策
         SensorsTrack.sensorsLogin(data.getUid());
         //登录成功跳转

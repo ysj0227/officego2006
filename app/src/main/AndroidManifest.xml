@@ -455,7 +455,7 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".h5.WebViewCouponActivity_"
+            android:name=".h5.WebViewMeetingActivity_"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity

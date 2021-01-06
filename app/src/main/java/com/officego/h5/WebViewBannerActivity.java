@@ -1,11 +1,13 @@
 package com.officego.h5;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
 import android.webkit.CookieManager;
+import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -17,15 +19,24 @@ import android.widget.RelativeLayout;
 
 import com.officego.R;
 import com.officego.commonlib.base.BaseActivity;
+import com.officego.commonlib.common.model.utils.BundleUtils;
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.TitleBarView;
+import com.officego.ui.home.BuildingDetailsActivity_;
+import com.officego.ui.home.BuildingDetailsChildActivity_;
+import com.officego.ui.home.BuildingDetailsJointWorkActivity_;
+import com.officego.ui.home.BuildingDetailsJointWorkChildActivity_;
+import com.officego.ui.message.ConversationActivity_;
 import com.officego.view.webview.SMWebViewClient;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by YangShiJie
@@ -97,9 +108,14 @@ public class WebViewBannerActivity extends BaseActivity {
         webSetting.setLoadWithOverviewMode(true);
         webSetting.setBlockNetworkImage(false);//解决图片不显示
         //webview在5.0后默认关闭混合加载http不能加载https资源
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             webSetting.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
+        //高德地图
+        String dir = this.getApplicationContext().getDir("database", Context.MODE_PRIVATE).getPath();
+        webSetting.setGeolocationEnabled(true);
+        webSetting.setGeolocationDatabasePath(dir);
+        webView.addJavascriptInterface(new JsBannerCall(this), "android");
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         webView.loadUrl(url);
         webView.setWebViewClient(new SMWebViewClient(this) {
@@ -138,6 +154,8 @@ public class WebViewBannerActivity extends BaseActivity {
 
     /**
      * 网络异常
+     *
+     * @param view
      */
     private void receiverExceptionError(WebView view) {
         webView.setVisibility(View.GONE);
@@ -207,6 +225,64 @@ public class WebViewBannerActivity extends BaseActivity {
             view.loadUrl("about:blank");// 避免出现默认的错误界面
             view.removeAllViews();
             receiverExceptionError(view);
+        }
+    }
+
+    private class JsBannerCall {
+        private Context context;
+
+        JsBannerCall(Context context) {
+            this.context = context;
+        }
+
+        @JavascriptInterface
+        public void closeView() {
+            finish();
+        }
+
+        //楼盘详情
+        @JavascriptInterface
+        public void buildingDetail(String json) throws JSONException {
+            JSONObject object = new JSONObject(json);
+            int id = object.getInt("id");
+            BuildingDetailsActivity_.intent(context).mConditionBean(null)
+                    .mBuildingBean(BundleUtils.BuildingMessage(Constants.TYPE_BUILDING, id)).start();
+        }
+
+        //网点详情
+        @JavascriptInterface
+        public void jointWorkDetail(String json) throws JSONException {
+            JSONObject object = new JSONObject(json);
+            int id = object.getInt("id");
+            BuildingDetailsJointWorkActivity_.intent(context).mConditionBean(null)
+                    .mBuildingBean(BundleUtils.BuildingMessage(Constants.TYPE_JOINTWORK, id)).start();
+        }
+
+        //楼盘房源详情
+        @JavascriptInterface
+        public void buildingHouseDetail(String json) throws JSONException {
+            JSONObject object = new JSONObject(json);
+            int id = object.getInt("id");
+            BuildingDetailsChildActivity_.intent(context)
+                    .mChildHouseBean(BundleUtils.houseMessage(Constants.TYPE_BUILDING, id)).start();
+        }
+
+        //网点房源详情
+        @JavascriptInterface
+        public void jointWorkHouseDetail(String json) throws JSONException {
+            JSONObject object = new JSONObject(json);
+            int id = object.getInt("id");
+            BuildingDetailsJointWorkChildActivity_.intent(context)
+                    .mChildHouseBean(BundleUtils.houseMessage(Constants.TYPE_JOINTWORK, id)).start();
+        }
+
+        @JavascriptInterface
+        public void chatClick(String json) throws JSONException {
+            JSONObject object = new JSONObject(json);
+            String targetId = object.getString("targetId");
+            int buildingId = object.getInt("buildingId");
+            ConversationActivity_.intent(context).buildingId(buildingId)
+                    .targetId(targetId).start();
         }
     }
 }

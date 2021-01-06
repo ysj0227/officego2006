@@ -18,7 +18,7 @@ import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.GlideUtils;
-import com.officego.h5.WebViewCouponActivity_;
+import com.officego.h5.WebViewMeetingActivity_;
 import com.officego.ui.holder.DiscountHolder;
 import com.officego.ui.holder.HotsHolder;
 import com.officego.ui.holder.House1Holder;
@@ -261,7 +261,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         ((MeetingHolder) holder).rvMeeting.setLayoutManager(layoutManager);
         ((MeetingHolder) holder).rvMeeting.setAdapter(new MeetingAdapter(context, meetData.getList()));
         ((MeetingHolder) holder).tvMeetingTitle.setText(meetData.getMeetingRoomTitle());
-        ((MeetingHolder) holder).tvMeetingMore.setOnClickListener(view -> WebViewCouponActivity_.intent(context).start());
+        ((MeetingHolder) holder).tvMeetingMore.setOnClickListener(view -> WebViewMeetingActivity_.intent(context).start());
     }
 
     //打折

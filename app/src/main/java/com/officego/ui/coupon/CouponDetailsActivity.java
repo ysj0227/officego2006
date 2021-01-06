@@ -13,7 +13,7 @@ import com.officego.commonlib.common.model.CouponListBean;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.widget.AutoFitTextView;
-import com.officego.h5.WebViewCouponActivity_;
+import com.officego.h5.WebViewMeetingActivity_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -104,7 +104,7 @@ public class CouponDetailsActivity extends BaseActivity {
 
     @Click(R.id.tv_can_use_meeting_room)
     void queryMeetingRoomOnClick() {
-        WebViewCouponActivity_.intent(context).amountRange(couponBean.getAmountRange()).start();
+        WebViewMeetingActivity_.intent(context).amountRange(couponBean.getAmountRange()).start();
     }
 
     private void createQR() {

@@ -29,9 +29,11 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.officego.GoogleTrack;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.dialog.MapDialog;
 import com.officego.commonlib.common.dialog.WeChatShareDialog;
@@ -39,7 +41,6 @@ import com.officego.commonlib.common.model.BuildingIdBundleBean;
 import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.commonlib.common.model.ShareBean;
 import com.officego.commonlib.common.model.utils.BundleUtils;
-import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
@@ -574,6 +575,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
             return;
         }
         if (mBuildingBean != null) {
+            GoogleTrack.buildingCollect(context);
             //神策
             SensorsTrack.clickFavoritesButton(mBuildingBean.getBuildingId(), !isFavorite);
             //收藏
@@ -603,6 +605,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         if (isFastClick(1200)) {
             return;
         }
+        GoogleTrack.buildingDetailChat(context);
         //未登录
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
             new LoginTenantUtils(context);

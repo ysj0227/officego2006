@@ -51,7 +51,7 @@ import org.json.JSONObject;
  **/
 @SuppressLint({"Registered", "NonConstantResourceId"})
 @EActivity(R.layout.activity_webview_coupon)
-public class WebViewCouponActivity extends BaseActivity {
+public class WebViewMeetingActivity extends BaseActivity {
     @ViewById(R.id.wv_view)
     WebView webView;
     @ViewById(R.id.rl_exception)

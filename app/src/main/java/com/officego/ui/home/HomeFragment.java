@@ -25,7 +25,7 @@ import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.update.VersionDialog;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.h5.WebViewCouponActivity_;
+import com.officego.h5.WebViewMeetingActivity_;
 import com.officego.ui.adapter.BrandAdapter;
 import com.officego.ui.adapter.HomeAdapter;
 import com.officego.ui.adapter.NewsAdapter;
@@ -173,7 +173,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
 
     @Click(R.id.rl_meeting_room)
     void meetingClick() {
-        WebViewCouponActivity_.intent(mActivity).start();
+        WebViewMeetingActivity_.intent(mActivity).start();
     }
 
     //搜索列表
