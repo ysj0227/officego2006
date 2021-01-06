@@ -69,22 +69,8 @@ public class BannerBean {
         private String positionDuan;
         @SerializedName("duration")
         private int duration;
-        @SerializedName("ordernum")
-        private int ordernum;
-        @SerializedName("online")
-        private int online;
-        @SerializedName("offline")
-        private int offline;
         @SerializedName("status")
         private int status;
-        @SerializedName("createUser")
-        private Object createUser;
-        @SerializedName("updateUser")
-        private Object updateUser;
-        @SerializedName("createTime")
-        private int createTime;
-        @SerializedName("updateTime")
-        private int updateTime;
 
         public int getId() {
             return id;
@@ -182,30 +168,6 @@ public class BannerBean {
             this.duration = duration;
         }
 
-        public int getOrdernum() {
-            return ordernum;
-        }
-
-        public void setOrdernum(int ordernum) {
-            this.ordernum = ordernum;
-        }
-
-        public int getOnline() {
-            return online;
-        }
-
-        public void setOnline(int online) {
-            this.online = online;
-        }
-
-        public int getOffline() {
-            return offline;
-        }
-
-        public void setOffline(int offline) {
-            this.offline = offline;
-        }
-
         public int getStatus() {
             return status;
         }
@@ -214,36 +176,5 @@ public class BannerBean {
             this.status = status;
         }
 
-        public Object getCreateUser() {
-            return createUser;
-        }
-
-        public void setCreateUser(Object createUser) {
-            this.createUser = createUser;
-        }
-
-        public Object getUpdateUser() {
-            return updateUser;
-        }
-
-        public void setUpdateUser(Object updateUser) {
-            this.updateUser = updateUser;
-        }
-
-        public int getCreateTime() {
-            return createTime;
-        }
-
-        public void setCreateTime(int createTime) {
-            this.createTime = createTime;
-        }
-
-        public int getUpdateTime() {
-            return updateTime;
-        }
-
-        public void setUpdateTime(int updateTime) {
-            this.updateTime = updateTime;
-        }
     }
 }

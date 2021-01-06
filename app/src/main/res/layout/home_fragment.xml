@@ -152,7 +152,7 @@
                     android:layout_marginBottom="@dimen/dp_54"
                     android:background="@drawable/btn_common_bg_edge_gray6"
                     android:text="@string/str_query_all_house"
-                    android:textColor="@color/text_66_p50"
+                    android:textColor="@color/text_66"
                     android:textSize="@dimen/sp_13"
                     app:layout_constraintBottom_toBottomOf="parent"
                     app:layout_constraintEnd_toEndOf="parent"
