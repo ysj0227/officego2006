@@ -24,7 +24,7 @@ import org.json.JSONObject;
  * banner 跳转
  **/
 public class JSBannerCall {
-    private Activity context;
+    private final Activity context;
 
     public JSBannerCall(Activity context) {
         this.context = context;
