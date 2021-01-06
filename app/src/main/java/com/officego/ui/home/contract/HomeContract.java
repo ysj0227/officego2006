@@ -1,5 +1,7 @@
 package com.officego.ui.home.contract;
 
+import android.content.Context;
+
 import com.officego.commonlib.base.BaseView;
 import com.officego.ui.home.model.BannerBean;
 import com.officego.ui.home.model.BuildingBean;
@@ -28,7 +30,7 @@ public interface HomeContract {
 
         void getBannerList();
 
-        void getBuildingList(int pageNo, String btype, String district, String business, String line,
+        void getBuildingList(Context context,int pageNo, String btype, String district, String business, String line,
                              String nearbySubway, String area, String dayPrice, String seats, String decoration,
                              String houseTags, String sort, String keyWord);
     }

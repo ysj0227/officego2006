@@ -165,7 +165,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<HomePresenter> impl
                 mSeats = seats;
             }
         }
-        mPresenter.getBuildingList(pageNum, String.valueOf(btype), district, business,
+        mPresenter.getBuildingList(context,pageNum, String.valueOf(btype), district, business,
                 line, nearbySubway, mArea, mDayPrice, mSeats,
                 decoration, houseTags, sort, searchKeywords);
     }

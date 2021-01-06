@@ -236,7 +236,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
                 mSeats = seats;
             }
         }
-        mPresenter.getBuildingList(pageNum, String.valueOf(btype), district, business,
+        mPresenter.getBuildingList(mActivity,pageNum, String.valueOf(btype), district, business,
                 line, nearbySubway, mArea, mDayPrice, mSeats,
                 decoration, houseTags, sort, "");
         //神策

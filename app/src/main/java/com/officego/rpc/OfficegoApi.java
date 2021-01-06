@@ -242,7 +242,7 @@ public class OfficegoApi {
      * latitude 	否 	string 	纬度
      * keyWord 	否
      */
-    public void getBuildingList(int pageNo, String btype, String district, String business, String line,
+    public void getBuildingList(Context context,int pageNo, String btype, String district, String business, String line,
                                 String nearbySubway, String area, String dayPrice, String seats, String decoration,
                                 String houseTags, String sort, String keyWord, String longitude, String latitude,
                                 RetrofitCallback<BuildingBean> callback) {
@@ -266,6 +266,8 @@ public class OfficegoApi {
         map.put("pageSize", requestBody("10"));
         map.put("longitude", requestBody(longitude));
         map.put("latitude", requestBody(latitude));
+        map.put("imei", requestBody(CommonHelper.getIMEI(context)));
+        map.put("channel", requestBody("2"));
         OfficegoRetrofitClient.getInstance().create(HomeInterface.class)
                 .getBuildingList(map)
                 .enqueue(callback);

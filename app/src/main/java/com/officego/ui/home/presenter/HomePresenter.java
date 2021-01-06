@@ -55,11 +55,11 @@ public class HomePresenter extends BasePresenter<HomeContract.View> implements H
     }
 
     @Override
-    public void getBuildingList(int pageNo, String btype, String district, String business, String line,
+    public void getBuildingList(Context context,int pageNo, String btype, String district, String business, String line,
                                 String nearbySubway, String area, String dayPrice, String seats, String decoration,
                                 String houseTags, String sort, String keyWord) {
         mView.showLoadingDialog();
-        OfficegoApi.getInstance().getBuildingList(pageNo, btype, district, business,
+        OfficegoApi.getInstance().getBuildingList(context,pageNo, btype, district, business,
                 line, nearbySubway, area, dayPrice, seats, decoration,
                 houseTags, sort, keyWord,  Constants.LONGITUDE, Constants.LATITUDE,new RetrofitCallback<BuildingBean>() {
                     @Override
