@@ -257,8 +257,8 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
         if (houseAdapter == null) {
             houseAdapter = new HouseAdapter(context, buildingList, ConditionConfig.getConditionBean);
             rvHouse.setAdapter(houseAdapter);
+            houseAdapter.setItemListener(this);
         }
-        houseAdapter.setItemListener(this);
     }
 
     /**
@@ -349,7 +349,9 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
     private void getList() {
         pageNum = 1;
         buildingList.clear();
-        houseAdapter = null;
+        if (houseAdapter != null) {
+            houseAdapter.notifyDataSetChanged();
+        }
         getBuildingList();
     }
 

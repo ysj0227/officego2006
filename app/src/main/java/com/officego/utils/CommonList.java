@@ -44,24 +44,6 @@ public class CommonList {
         return list;
     }
 
-    //我想找-因素
-    public static List<WantFindBean> factorList() {
-        List<WantFindBean> list = new ArrayList<>();
-        WantFindBean bean1 = new WantFindBean("1", "交通便利");
-        list.add(bean1);
-        WantFindBean bean2 = new WantFindBean("2", "拎包入住");
-        list.add(bean2);
-        WantFindBean bean3 = new WantFindBean("3", "折扣特价");
-        list.add(bean3);
-        WantFindBean bean4 = new WantFindBean("4", "核心商圈");
-        list.add(bean4);
-        WantFindBean bean5 = new WantFindBean("5", "优惠政策");
-        list.add(bean5);
-        WantFindBean bean6 = new WantFindBean("6", "金牌物业");
-        list.add(bean6);
-        return list;
-    }
-
     //筛选-写字楼面积
     public static List<WantFindBean> areaList() {
         List<WantFindBean> list = new ArrayList<>();
