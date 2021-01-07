@@ -103,6 +103,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
         unreadMessage.setLayoutParams(params);
         //外部链接唤起app
         new SchemeOpenApp(this);
+        SpUtils.saveImei(context);
     }
 
     @Override

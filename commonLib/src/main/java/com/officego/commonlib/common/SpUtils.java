@@ -1,10 +1,12 @@
 package com.officego.commonlib.common;
 
+import android.content.Context;
 import android.content.SharedPreferences;
 import android.text.TextUtils;
 
 import com.officego.commonlib.base.BaseApplication;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.SharedManager;
 
 import io.rong.imkit.RongIM;
@@ -13,6 +15,7 @@ public class SpUtils {
 
     private final static String PACKAGE_NAME = "OFFICEGO_";
     private static final String USER_ID = PACKAGE_NAME + "USER_ID";
+    private static final String PHONE_IMEI = PACKAGE_NAME + "PHONE_IMEI";
     private static final String RONG_CLOUD_TOKEN = PACKAGE_NAME + "RONG_CLOUD_TOKEN";
     private static final String RONG_CLOUD_ID = PACKAGE_NAME + "RONG_CLOUD_ID";
     private static final String SIGN_TOKEN = PACKAGE_NAME + "SIGN_TOKEN";
@@ -89,7 +92,13 @@ public class SpUtils {
     public static String getUserId() {
         return SharedManager.getValue(BaseApplication.getContext(), USER_ID);
     }
+    public static void saveImei(Context context) {
+        SharedManager.putValue(BaseApplication.getContext(), PHONE_IMEI, CommonHelper.getIMEI(context));
+    }
 
+    public static String getImei() {
+        return SharedManager.getValue(BaseApplication.getContext(), PHONE_IMEI);
+    }
     //用户签名token
     public static void saveSignToken(String token) {
         SharedManager.putValue(BaseApplication.getContext(), SIGN_TOKEN, token);

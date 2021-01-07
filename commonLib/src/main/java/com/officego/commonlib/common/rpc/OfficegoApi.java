@@ -64,7 +64,15 @@ public class OfficegoApi {
     private RequestBody requestBody(String content) {
         return RequestBody.create(MediaType.parse("text/plain"), content);
     }
-
+    /**
+     * 接口公共参数
+     */
+    private Map<String, RequestBody> map() {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("imei", requestBody(TextUtils.isEmpty(SpUtils.getImei()) ? "" : SpUtils.getImei()));
+        map.put("channel", requestBody("2"));
+        return map;
+    }
     /**
      * 版本更新
      */
@@ -72,6 +80,7 @@ public class OfficegoApi {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("versioncode", requestBody(versioncode));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
                 .updateVersion(map)
                 .enqueue(callback);
@@ -87,6 +96,7 @@ public class OfficegoApi {
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("id", requestBody(id + ""));
         map.put("auditStatus", requestBody(auditStatus + ""));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(ScheduleInterface.class)
                 .updateAuditStatus(map)
                 .enqueue(callback);
@@ -102,7 +112,7 @@ public class OfficegoApi {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("wxId", requestBody(wxId));
-        map.put("channel", requestBody("2"));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
                 .bindWechat(map)
                 .enqueue(callback);
@@ -116,15 +126,12 @@ public class OfficegoApi {
      * 获取大楼详情
      */
     public void getChatHouseDetails(int buildingId, int houseId, String targetId, RetrofitCallback<ChatHouseBean> callback) {
-        LogCat.e(TAG, "token=" + SpUtils.getSignToken() +
-                " uid=" + targetId +
-                " buildingId=" + (buildingId == 0 ? "" : buildingId) +
-                " houseId=" + (houseId == 0 ? "" : String.valueOf(houseId)));
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("uid", requestBody(targetId));
         map.put("buildingId", requestBody(buildingId == 0 ? "" : String.valueOf(buildingId)));
         map.put("houseId", requestBody(houseId == 0 ? "" : String.valueOf(houseId)));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(ChatInterface.class)
                 .getChatHouseDetails(map)
                 .enqueue(callback);
@@ -136,6 +143,7 @@ public class OfficegoApi {
     public void getRongCloudToken(RetrofitCallback<Object> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(ChatInterface.class)
                 .getRongCloudToken(map)
                 .enqueue(callback);
@@ -150,6 +158,7 @@ public class OfficegoApi {
         map.put("uid", requestBody(targetId));
         map.put("buildingId", requestBody(buildingId == 0 ? "" : String.valueOf(buildingId)));
         map.put("houseId", requestBody(houseId == 0 ? "" : String.valueOf(houseId)));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(ChatInterface.class)
                 .isChat(map)
                 .enqueue(callback);
@@ -159,10 +168,10 @@ public class OfficegoApi {
      * 判断是否可以交换手机和微信
      */
     public void exchangeContactsVerification(String targetId, RetrofitCallback<ExchangeContactsBean> callback) {
-        LogCat.e(TAG, "111  token=" + SpUtils.getSignToken() + "  targetId=" + targetId);
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("targetId", requestBody(targetId));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(ChatInterface.class)
                 .exchangeContactsVerification(map)
                 .enqueue(callback);
@@ -180,6 +189,7 @@ public class OfficegoApi {
         map.put("id", requestBody(id + ""));
         map.put("licenceId", requestBody(licenceId + ""));
         map.put("auditStatus", requestBody(auditStatus + ""));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(LicenceInterface.class)
                 .updateAuditStatusApp(map)
                 .enqueue(callback);
@@ -193,6 +203,7 @@ public class OfficegoApi {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("targetId", requestBody(targetId));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(ChatInterface.class)
                 .identityChattedMsg(map)
                 .enqueue(callback);
@@ -204,6 +215,7 @@ public class OfficegoApi {
     public void getRongUserInfo(String targetId, RetrofitCallback<RongUserInfoBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("targetId", requestBody(targetId));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(ChatInterface.class)
                 .getRongUserInfo(map)
                 .enqueue(callback);
@@ -215,6 +227,7 @@ public class OfficegoApi {
     public void getChatList(RetrofitCallback<ChatListBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(ChatInterface.class)
                 .getChatList(map)
                 .enqueue(callback);
@@ -228,6 +241,7 @@ public class OfficegoApi {
     public void getBuildingUnique(RetrofitCallback<List<DirectoryBean.DataBean>> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("code", requestBody("buildingUnique"));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(DirectoryInterface.class)
                 .getDictionary(map)
                 .enqueue(callback);
@@ -241,6 +255,7 @@ public class OfficegoApi {
     public void getBranchUnique(RetrofitCallback<List<DirectoryBean.DataBean>> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("code", requestBody("branchUnique"));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(DirectoryInterface.class)
                 .getDictionary(map)
                 .enqueue(callback);
@@ -254,6 +269,7 @@ public class OfficegoApi {
     public void getHouseUnique(RetrofitCallback<List<DirectoryBean.DataBean>> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("code", requestBody("houseUnique"));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(DirectoryInterface.class)
                 .getDictionary(map)
                 .enqueue(callback);
@@ -267,6 +283,7 @@ public class OfficegoApi {
     public void getDecoratedType(RetrofitCallback<List<DirectoryBean.DataBean>> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("code", requestBody("decoratedType"));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(DirectoryInterface.class)
                 .getDictionary(map)
                 .enqueue(callback);
@@ -280,6 +297,7 @@ public class OfficegoApi {
     public void getBasicServices(RetrofitCallback<List<DirectoryBean.DataBean>> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("code", requestBody("basicServices"));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(DirectoryInterface.class)
                 .getDictionary(map)
                 .enqueue(callback);
@@ -293,6 +311,7 @@ public class OfficegoApi {
     public void getCompanyService(RetrofitCallback<List<DirectoryBean.DataBean>> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("code", requestBody("companyService"));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(DirectoryInterface.class)
                 .getDictionary(map)
                 .enqueue(callback);
@@ -306,6 +325,7 @@ public class OfficegoApi {
     public void roomMatchingService(RetrofitCallback<List<DirectoryBean.DataBean>> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("code", requestBody("roomMatchingUnique"));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(DirectoryInterface.class)
                 .getDictionary(map)
                 .enqueue(callback);
@@ -321,6 +341,7 @@ public class OfficegoApi {
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("pageNo", requestBody("1"));
         map.put("pageSize", requestBody("99999"));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
                 .getBuildingJointWorkList(map)
                 .enqueue(callback);
@@ -344,6 +365,7 @@ public class OfficegoApi {
         map.put("isTemp", requestBody(isTemp + ""));
         map.put("pageNo", requestBody(pageNo + ""));
         map.put("pageSize", requestBody("10"));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
                 .getHouseList(map)
                 .enqueue(callback);
@@ -360,6 +382,7 @@ public class OfficegoApi {
         map.put("houseId", requestBody(houseId + ""));
         map.put("isRelease", requestBody(isRelease + ""));
         map.put("isTemp", requestBody(isTemp + ""));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
                 .getHouseRelease(map)
                 .enqueue(callback);
@@ -375,6 +398,7 @@ public class OfficegoApi {
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("houseId", requestBody(houseId + ""));
         map.put("isTemp", requestBody(isTemp + ""));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
                 .getHouseDelete(map)
                 .enqueue(callback);
@@ -388,6 +412,7 @@ public class OfficegoApi {
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("buildingId", requestBody(buildingId + ""));
         map.put("isTemp", requestBody(isTemp + ""));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
                 .getBuildingEdit(map)
                 .enqueue(callback);
@@ -401,6 +426,7 @@ public class OfficegoApi {
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("houseId", requestBody(houseId + ""));
         map.put("isTemp", requestBody(isTemp + ""));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
                 .getHouseEdit(map)
                 .enqueue(callback);
@@ -471,6 +497,7 @@ public class OfficegoApi {
         map.put("mainPic", requestBody(mainPic + ""));
         map.put("addImgUrl", requestBody(addImgUrl + ""));
         map.put("delImgUrl", requestBody(delImgUrl + ""));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
                 .buildingEditSave(map)
                 .enqueue(callback);
@@ -525,6 +552,7 @@ public class OfficegoApi {
         map.put("mainPic", requestBody(mainPic + ""));
         map.put("addImgUrl", requestBody(addImgUrl + ""));
         map.put("delImgUrl", requestBody(delImgUrl + ""));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
                 .buildingEditSave(map)
                 .enqueue(callback);
@@ -568,6 +596,7 @@ public class OfficegoApi {
         map.put("mainPic", requestBody(mainPic + ""));
         map.put("addImgUrl", requestBody(addImgUrl + ""));
         map.put("delImgUrl", requestBody(delImgUrl + ""));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
                 .houseEditSave(map)
                 .enqueue(callback);
@@ -612,6 +641,7 @@ public class OfficegoApi {
         map.put("mainPic", requestBody(mainPic + ""));
         map.put("addImgUrl", requestBody(addImgUrl + ""));
         map.put("delImgUrl", requestBody(delImgUrl + ""));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
                 .houseAdd(map)
                 .enqueue(callback);
@@ -651,6 +681,7 @@ public class OfficegoApi {
         map.put("mainPic", requestBody(mainPic + ""));
         map.put("addImgUrl", requestBody(addImgUrl + ""));
         map.put("delImgUrl", requestBody(delImgUrl + ""));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
                 .houseEditSave(map)
                 .enqueue(callback);
@@ -687,6 +718,7 @@ public class OfficegoApi {
         map.put("mainPic", requestBody(mainPic + ""));
         map.put("addImgUrl", requestBody(addImgUrl + ""));
         map.put("delImgUrl", requestBody(delImgUrl + ""));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
                 .houseAdd(map)
                 .enqueue(callback);
@@ -718,6 +750,7 @@ public class OfficegoApi {
         map.put("mainPic", requestBody(mainPic + ""));
         map.put("addImgUrl", requestBody(addImgUrl + ""));
         map.put("delImgUrl", requestBody(delImgUrl + ""));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
                 .houseEditSave(map)
                 .enqueue(callback);
@@ -731,6 +764,7 @@ public class OfficegoApi {
         map.put("buildingId", requestBody(buildingId + ""));
         map.put("isTemp", requestBody(isTemp + ""));
         map.put("vr", requestBody(vr + ""));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
                 .buildingPublishVr(map)
                 .enqueue(callback);
@@ -744,6 +778,7 @@ public class OfficegoApi {
         map.put("houseId", requestBody(houseId + ""));
         //map.put("isTemp", requestBody(isTemp + ""));
         map.put("vr", requestBody(vr + ""));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
                 .housePublishVr(map)
                 .enqueue(callback);
@@ -790,7 +825,7 @@ public class OfficegoApi {
     public void getUserMsg(RetrofitCallback<UserMessageBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
-        map.put("channel", requestBody("2"));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
                 .getUserMsg(map)
                 .enqueue(callback);
@@ -808,6 +843,7 @@ public class OfficegoApi {
         map.put("sex", requestBody(sex));
         map.put("job", requestBody(job));
         map.put("wxId", requestBody(wx));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
                 .updateUserInfo(map)
                 .enqueue(callback);
@@ -826,6 +862,7 @@ public class OfficegoApi {
         map.put("job", requestBody(job));
         map.put("wxId", requestBody(wx));
         map.put("isCard", requestBody("1"));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
                 .updateUserInfo(map)
                 .enqueue(callback);
@@ -841,6 +878,7 @@ public class OfficegoApi {
         map.put("nickname", requestBody(nickname));
         map.put("sex", requestBody(sex));
         map.put("wxId", requestBody(wx));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
                 .updateUserInfo(map)
                 .enqueue(callback);
@@ -852,6 +890,7 @@ public class OfficegoApi {
     public void searchList(String keywords, RetrofitCallback<List<SearchListBean.DataBean>> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("keywords", requestBody(keywords));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(SearchInterface.class)
                 .searchList(map)
                 .enqueue(callback);
@@ -863,6 +902,7 @@ public class OfficegoApi {
     public void searchList2(String keywords, RetrofitCallback<List<SearchListBean.DataBean>> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("keywords", requestBody(keywords));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(SearchInterface.class)
                 .searchList2(map)
                 .enqueue(callback);
@@ -877,10 +917,10 @@ public class OfficegoApi {
     public void getCouponList(int status, RetrofitCallback<CouponListBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
-        map.put("channel", requestBody("2"));
         map.put("status", requestBody(status + ""));
         map.put("pageSize", requestBody("99999"));
         map.put("pageNo", requestBody("1"));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(CouponInterface.class)
                 .getCouponList(map)
                 .enqueue(callback);
@@ -892,8 +932,8 @@ public class OfficegoApi {
     public void getCouponDetails(String batchCode, RetrofitCallback<CouponDetailsBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
-        map.put("channel", requestBody("2"));
         map.put("batchCode", requestBody(batchCode));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(CouponInterface.class)
                 .getCouponCodeDetails(map)
                 .enqueue(callback);
@@ -907,9 +947,9 @@ public class OfficegoApi {
     public void couponSureWriteOff(int couponId, int roomId, RetrofitCallback<CouponWriteOffBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
-        map.put("channel", requestBody("2"));
         map.put("id", requestBody(couponId + ""));
         map.put("roomId", requestBody(roomId + ""));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(CouponInterface.class)
                 .sureWriteOffCoupon(map)
                 .enqueue(callback);
@@ -921,9 +961,9 @@ public class OfficegoApi {
     public void couponSureWriteOffList(int pageNo, RetrofitCallback<CouponWriteOffListBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
-        map.put("channel", requestBody("2"));
         map.put("pageSize", requestBody("10"));
         map.put("pageNo", requestBody(pageNo + ""));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(CouponInterface.class)
                 .getCouponUserList(map)
                 .enqueue(callback);
@@ -935,6 +975,7 @@ public class OfficegoApi {
     public void jPushLogin(String loginToken, RetrofitCallback<JPushLoginBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("loginToken", requestBody(loginToken));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(JPushOneKeyLoginInterface.class)
                 .getJPushPhone(map)
                 .enqueue(callback);

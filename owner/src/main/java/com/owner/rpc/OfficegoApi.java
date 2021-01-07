@@ -47,6 +47,16 @@ public class OfficegoApi {
     }
 
     /**
+     * 接口公共参数
+     */
+    private Map<String, RequestBody> map() {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("imei", requestBody(TextUtils.isEmpty(SpUtils.getImei()) ? "" : SpUtils.getImei()));
+        map.put("channel", requestBody("2"));
+        return map;
+    }
+
+    /**
      * 登录
      *
      * @param phone 是	string	手机号
@@ -54,6 +64,7 @@ public class OfficegoApi {
     public void getSmsCode(String phone, RetrofitCallback<Object> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("phone", requestBody(phone));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(LoginInterface.class)
                 .getSmsCode(map)
                 .enqueue(callback);
@@ -67,7 +78,7 @@ public class OfficegoApi {
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("newPhone", requestBody(mobile));
         map.put("code", requestBody(code));
-        map.put("channel", requestBody("2"));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
                 .modifyMobile(map)
                 .enqueue(callback);
@@ -84,6 +95,7 @@ public class OfficegoApi {
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("startTime", requestBody(startTime + ""));
         map.put("endTime", requestBody(endTime + ""));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(ScheduleInterface.class)
                 .getScheduleList(map)
                 .enqueue(callback);
@@ -99,6 +111,7 @@ public class OfficegoApi {
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("startTime", requestBody(startTime + ""));
         map.put("endTime", requestBody(endTime + ""));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(ScheduleInterface.class)
                 .getOldScheduleList(map)
                 .enqueue(callback);
@@ -114,6 +127,7 @@ public class OfficegoApi {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("roleType", requestBody(roleType));
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
                 .switchId(map)
                 .enqueue(callback);
@@ -127,8 +141,8 @@ public class OfficegoApi {
      */
     public void getDistrictList(RetrofitCallback<List<BusinessCircleBean.DataBean>> callback) {
         Map<String, RequestBody> map = new HashMap<>();
-//        map.put("city", requestBody("上海市"));
         map.put("type", requestBody("1")); //1：全部，0：系统已有楼盘的地铁
+        map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(IdentitySearchInterface.class)
                 .getDistrictList(map)
                 .enqueue(callback);
@@ -141,6 +155,7 @@ public class OfficegoApi {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("uid", requestBody(SpUtils.getUserId()));
         map.put("token", requestBody(content));
+        map.putAll(map());
         OfficegoRetrofitClientWeb.getInstance().create(LoginInterface.class)
                 .scanLogin(map)
                 .enqueue(callback);
@@ -222,6 +237,7 @@ public class OfficegoApi {
         if (buildingId != 0) {
             map.put("buildingId", requestBody(buildingId + ""));
         }
+        map.putAll(map());
         OfficegoRetrofitClient1.getInstance().create(BuildingJointWorkInterface.class)
                 .addAttestationApp(map)
                 .enqueue(callback);
@@ -232,6 +248,7 @@ public class OfficegoApi {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("buildingId", requestBody(buildingId + ""));
+        map.putAll(map());
         OfficegoRetrofitClient1.getInstance().create(BuildingJointWorkInterface.class)
                 .getAttestation(map)
                 .enqueue(callback);

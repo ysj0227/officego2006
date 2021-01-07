@@ -29,6 +29,7 @@ public class LaunchActivity extends BaseActivity
         LocationUtils.getInstance().initLocation(context);
         PermissionUtils.getLocationPermission(this);
         LocationUtils.getInstance().startLocation();
+
         if (!isTaskRoot()) {
             finish();
             return;

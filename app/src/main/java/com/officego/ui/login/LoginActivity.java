@@ -88,6 +88,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         mPresenter = new LoginPresenter(context);
         mPresenter.attachView(this);
         initViews();
+        SpUtils.saveImei(context);
     }
 
     private void initViews() {
@@ -222,6 +223,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
 
     @Override
     public void loginSuccess(LoginBean data) {
+        //google时间分析
         GoogleTrack.setUserProperty(context);
         //神策
         SensorsTrack.sensorsLogin(data.getUid());
