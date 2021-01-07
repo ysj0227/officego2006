@@ -103,7 +103,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     //轮播图
     private final List<BannerBean.DataBean> mBannerClickList = new ArrayList<>();
 
-    //暂无数据，网络异常 TODO
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarFullTransparent(mActivity);
@@ -268,8 +267,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         //滚动到顶
         if (scrollY == 0) {
             ivScrollTop.setVisibility(View.GONE);
-        } else if (scrollY == (v.getChildAt(0).getMeasuredHeight() - v.getMeasuredHeight())) {
-            // 滚动到底
+        } else if (scrollY >= getResources().getDimensionPixelSize(R.dimen.dp_720)) {
             ivScrollTop.setVisibility(View.VISIBLE);
         }
         //搜索底色
