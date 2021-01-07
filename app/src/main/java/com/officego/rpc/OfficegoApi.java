@@ -13,7 +13,6 @@ import com.officego.commonlib.common.model.SearchListBean;
 import com.officego.commonlib.common.rpc.request.SearchInterface;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
-import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.commonlib.utils.log.LogCat;
 import com.officego.rpc.request.BannerInterface;
@@ -487,7 +486,7 @@ public class OfficegoApi {
         map.put("btype", requestBody(btype));
         map.put("area", requestBody(area));
         map.put("dayPrice", requestBody(dayPrice));
-        map.put("decoration", requestBody(decoration));
+        map.put("decoration", requestBody(TextUtils.isEmpty(decoration) || TextUtils.equals("0", decoration) ? "" : decoration));
         map.put("houseTags", requestBody(houseTags));
         map.put("seats", requestBody(seats));
         map.put("vrFlag", requestBody("0"));
