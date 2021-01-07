@@ -4,7 +4,7 @@ import android.content.Context;
 import android.content.res.AssetManager;
 import android.text.TextUtils;
 
-import com.officego.GoogleTrack;
+import com.officego.commonlib.common.analytics.GoogleTrack;
 import com.officego.commonlib.base.BasePresenter;
 import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;

@@ -17,6 +17,8 @@ import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.analytics.GoogleTrack;
+import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.dialog.ConfirmDialog;
 import com.officego.commonlib.common.dialog.InputContactsDialog;
@@ -28,7 +30,6 @@ import com.officego.commonlib.common.model.RongUserInfoBean;
 import com.officego.commonlib.common.rongcloud.RongCloudSetUserInfoUtils;
 import com.officego.commonlib.common.rongcloud.SendMessageManager;
 import com.officego.commonlib.common.rongcloud.kickDialog;
-import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.DateTimeUtils;
@@ -53,7 +54,7 @@ import io.rong.imlib.model.Message;
  * Data 2020/5/22.
  * Descriptions:
  **/
-@SuppressLint("Registered")
+@SuppressLint({"Registered", "NonConstantResourceId"})
 @EActivity(R.layout.conversation)
 public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         implements ConversationContract.View, RongIM.OnSendMessageListener {
@@ -292,6 +293,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         if (isFastClick(3000)) {
             return;
         }
+        GoogleTrack.exchangePhone(context, isCanExchange);
         //聊天次数是否可以交换手机微信
         if (!isCanExchange) {
             isOnClickExchangeContacts = true;
@@ -313,6 +315,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         if (isFastClick(3000)) {
             return;
         }
+        GoogleTrack.exchangeWechat(context, isCanExchange);
         //聊天次数是否可以交换手机微信
         if (!isCanExchange) {
             isOnClickExchangeContacts = true;
@@ -336,6 +339,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         if (isFastClick(1500)) {
             return;
         }
+        GoogleTrack.seeHouse(context);
         //神策
         String sensorEventDate = String.valueOf(DateTimeUtils.currentTimeSecond());
         SensorsTrack.clickImOrderSeeHouseButton(String.valueOf(buildingId), String.valueOf(houseId),

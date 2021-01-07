@@ -369,6 +369,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         }
         //设置内置样式，共有六种可以点入方法内逐一体验使用。
         banner.setBannerStyle(BannerConfig.NOT_INDICATOR);
+//        banner.setBannerStyle(BannerConfig.NUM_INDICATOR);
         //设置图片加载器，图片加载器在下方
         banner.setImageLoader(new ImageLoaderUtils(mActivity));
         banner.setImages(bannerList);

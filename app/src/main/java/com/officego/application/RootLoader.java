@@ -5,8 +5,8 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.officego.commonlib.common.SpUtils;
-import com.officego.commonlib.common.rongcloud.IMManager;
 import com.officego.commonlib.common.analytics.SensorsTrack;
+import com.officego.commonlib.common.rongcloud.IMManager;
 import com.officego.commonlib.constant.AppConfig;
 import com.officego.commonlib.utils.FileHelper;
 import com.officego.commonlib.utils.HttpsUtils;
@@ -93,7 +93,7 @@ public class RootLoader {
         final long start = System.currentTimeMillis();
         JVerificationInterface.init(context, (code, result) ->
                 LogCat.d("RootLoader", "[JPush init] code = " + code + " result = " +
-                result + " consists = " + (System.currentTimeMillis() - start)));
+                        result + " consists = " + (System.currentTimeMillis() - start)));
     }
 
     //Glide加载https部分失败，设置信任证书

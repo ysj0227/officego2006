@@ -16,6 +16,7 @@ import com.officego.commonlib.base.BaseMvpFragment;
 import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.analytics.GoogleTrack;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.model.UserMessageBean;
 import com.officego.commonlib.common.rongcloud.ConnectRongCloudUtils;
@@ -199,6 +200,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
 
     @Click(R.id.rl_switch_id)
     void switchClick() {
+        GoogleTrack.switchId(mActivity);
         if (isToLogin()) return;
         switchDialog();
     }

@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.officego.commonlib.common.analytics.GoogleTrack;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
@@ -510,6 +511,8 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         if (isFastClick(1500)) {
             return;
         }
+        //google
+        GoogleTrack.buildingHouseDetailChat(context);
         //未登录
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
             new LoginTenantUtils(context);
@@ -551,6 +554,7 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
             new LoginTenantUtils(context);
             return;
         }
+        GoogleTrack.buildingHouseCollect(context);
         //神策
         SensorsTrack.clickFavoritesButtonChild(houseId, !isFavorite);
         mPresenter.favoriteChild(houseId, isFavorite ? 1 : 0);

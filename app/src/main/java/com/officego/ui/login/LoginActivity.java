@@ -14,7 +14,7 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
-import com.officego.GoogleTrack;
+import com.officego.commonlib.common.analytics.GoogleTrack;
 import com.officego.MainActivity_;
 import com.officego.MainOwnerActivity_;
 import com.officego.R;
@@ -120,6 +120,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         if (isFastClick(1500)) {
             return;
         }
+        GoogleTrack.login(context);
         mobile = RegexUtils.handleIllegalCharacter(etMobile.getText() == null ? "" :
                 etMobile.getText().toString().trim());
         if (rlCode.isShown()) {
@@ -129,7 +130,6 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
                 shortTip(R.string.str_please_input_sms_code);
                 return;
             }
-            GoogleTrack.login(context);
             mPresenter.login(mobile, code); //登录
         } else {
             SensorsTrack.smsCode(); //神策

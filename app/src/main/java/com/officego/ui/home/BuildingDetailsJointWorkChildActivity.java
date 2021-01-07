@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
+import com.officego.commonlib.common.analytics.GoogleTrack;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
@@ -74,7 +75,7 @@ import tv.danmaku.ijk.media.player.IMediaPlayer;
  * Data 2020/5/14.
  * Descriptions:
  **/
-@SuppressLint("Registered")
+@SuppressLint({"Registered", "NonConstantResourceId"})
 @EActivity(R.layout.home_activity_house_details_child)
 public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<BuildingDetailsChildJointWorkPresenter>
         implements OnBannerListener, BuildingDetailsChildJointWorkContract.View,
@@ -477,6 +478,7 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
             new LoginTenantUtils(context);
             return;
         }
+        GoogleTrack.jointWorkHouseCollect(context);
         //神策
         SensorsTrack.clickFavoritesButtonChild(houseId, !isFavorite);
         mPresenter.favoriteChild(houseId, isFavorite ? 1 : 0);
@@ -494,6 +496,7 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         if (isFastClick(1500)) {
             return;
         }
+        GoogleTrack.jointWorkHouseDetailChat(context);
         //未登录
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
             new LoginTenantUtils(context);
