@@ -34,7 +34,6 @@ import com.officego.commonlib.common.rpc.request.MineMsgInterface;
 import com.officego.commonlib.common.rpc.request.ScheduleInterface;
 import com.officego.commonlib.common.rpc.request.SearchInterface;
 import com.officego.commonlib.retrofit.RetrofitCallback;
-import com.officego.commonlib.utils.log.LogCat;
 
 import java.io.File;
 import java.util.HashMap;
@@ -64,6 +63,7 @@ public class OfficegoApi {
     private RequestBody requestBody(String content) {
         return RequestBody.create(MediaType.parse("text/plain"), content);
     }
+
     /**
      * 接口公共参数
      */
@@ -73,6 +73,7 @@ public class OfficegoApi {
         map.put("channel", requestBody("2"));
         return map;
     }
+
     /**
      * 版本更新
      */
@@ -855,12 +856,12 @@ public class OfficegoApi {
     public void updateUserInfoCard(String avatar, String nickname, String sex,
                                    String job, String wx, RetrofitCallback<Object> callback) {
         Map<String, RequestBody> map = new HashMap<>();
-        map.put("token", requestBody(SpUtils.getSignToken()));
-        map.put("avatar", requestBody(avatar + ""));
-        map.put("nickname", requestBody(nickname));
-        map.put("sex", requestBody(sex));
-        map.put("job", requestBody(job));
-        map.put("wxId", requestBody(wx));
+        map.put("token", requestBody(TextUtils.isEmpty(SpUtils.getSignToken()) ? "" : SpUtils.getSignToken()));
+        map.put("avatar", requestBody(TextUtils.isEmpty(avatar) ? "" : avatar));
+        map.put("nickname", requestBody(TextUtils.isEmpty(nickname) ? "" : nickname));
+        map.put("sex", requestBody(TextUtils.isEmpty(sex) ? "" : sex));
+        map.put("job", requestBody(TextUtils.isEmpty(job) ? "" : job));
+        map.put("wxId", requestBody(TextUtils.isEmpty(wx) ? "" : wx));
         map.put("isCard", requestBody("1"));
         map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
@@ -873,11 +874,11 @@ public class OfficegoApi {
      */
     public void updateUserInfo(String avatar, String nickname, String sex, String wx, RetrofitCallback<Object> callback) {
         Map<String, RequestBody> map = new HashMap<>();
-        map.put("token", requestBody(SpUtils.getSignToken()));
-        map.put("avatar", requestBody(avatar + ""));
-        map.put("nickname", requestBody(nickname));
-        map.put("sex", requestBody(sex));
-        map.put("wxId", requestBody(wx));
+        map.put("token", requestBody(TextUtils.isEmpty(SpUtils.getSignToken()) ? "" : SpUtils.getSignToken()));
+        map.put("avatar", requestBody(TextUtils.isEmpty(avatar) ? "" : avatar));
+        map.put("nickname", requestBody(TextUtils.isEmpty(nickname) ? "" : nickname));
+        map.put("sex", requestBody(TextUtils.isEmpty(sex) ? "" : sex));
+        map.put("wxId", requestBody(TextUtils.isEmpty(wx) ? "" : wx));
         map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
                 .updateUserInfo(map)

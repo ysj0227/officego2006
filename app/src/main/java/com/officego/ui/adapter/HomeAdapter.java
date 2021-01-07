@@ -186,7 +186,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     //房源-单图
     private void house1View(RecyclerView.ViewHolder holder, HomeHotBean.DataBean.ListBean bean) {
-        String price = bean.getBannerMap().getDayPrice().toString();
+        String price = bean.getBannerMap().getDayPrice() == null ? "" : bean.getBannerMap().getDayPrice().toString();
         String distance = TextUtils.isEmpty(bean.getBannerMap().getDistance()) ? "" : bean.getBannerMap().getDistance() + " | ";
         String business = bean.getBannerMap().getBusinessDistrict();
         String line;
@@ -219,7 +219,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     //房源-多图
     private void house2View(RecyclerView.ViewHolder holder, HomeHotBean.DataBean.ListBean bean) {
-        String price = bean.getBannerMap().getDayPrice().toString();
+        String price = bean.getBannerMap().getDayPrice() == null ? "" : bean.getBannerMap().getDayPrice().toString();
         String mainImg = bean.getBannerMap().getImg();
         List<HomeHotBean.DataBean.ListBean.BannerMapBean.LabelIdBean> list = bean.getBannerMap().getLabelId();
         Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(mainImg).into(((House2Holder) holder).ivImage);
@@ -266,7 +266,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
 
     //打折
     private void discountView(RecyclerView.ViewHolder holder, HomeHotBean.DataBean.ListBean bean) {
-        String price = bean.getBannerMap().getDayPrice().toString();
+        String price = bean.getBannerMap().getDayPrice() == null ? "" : bean.getBannerMap().getDayPrice().toString();
         String salePrice = bean.getBannerMap().getSalePrice() == null ? "" : bean.getBannerMap().getSalePrice().toString();
         String distance = TextUtils.isEmpty(bean.getBannerMap().getDistance()) ? "" : bean.getBannerMap().getDistance() + " | ";
         String business = bean.getBannerMap().getBusinessDistrict();
@@ -303,6 +303,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         }
         gotoBannerDetails(holder, bean);
     }
+
     private void setOfficeCounts(RecyclerView.ViewHolder holder, int counts) {
         if (counts == 0) {
             ((HotsHolder) holder).tvOfficeIndependent.setVisibility(View.GONE);
@@ -322,6 +323,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((HotsHolder) holder).tvOpenSeats.setText(Html.fromHtml(source));
         }
     }
+
     //hot查看详情
     private void gotoDetails(RecyclerView.ViewHolder holder, HomeHotBean.DataBean.ListBean bean) {
         holder.itemView.setOnClickListener(v -> {

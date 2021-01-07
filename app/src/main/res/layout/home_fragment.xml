@@ -22,6 +22,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
+
                 <com.youth.banner.Banner
                     android:id="@+id/banner"
                     android:layout_width="0dp"
@@ -30,9 +31,9 @@
                     app:image_scale_type="center_crop"
                     app:indicator_drawable_selected="@drawable/oval_white"
                     app:indicator_drawable_unselected="@drawable/oval_gray_light"
-                    app:indicator_height="@dimen/dp_6"
+                    app:indicator_height="@dimen/dp_5"
                     app:indicator_margin="@dimen/dp_3"
-                    app:indicator_width="@dimen/dp_6"
+                    app:indicator_width="@dimen/dp_5"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent"

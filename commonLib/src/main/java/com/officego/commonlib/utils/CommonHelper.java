@@ -529,6 +529,9 @@ public class CommonHelper {
 
     //object 转小数
     public static String bigDecimal(Object Obj, boolean isInteger) {
+        if (Obj == null) {
+            return "";
+        }
 //        Object Obj =“10423232.1024”;
         //构造以字符串内容为值的BigDecimal类型的变量bd
         BigDecimal bd = new BigDecimal(Obj.toString());

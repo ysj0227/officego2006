@@ -157,6 +157,18 @@ public class OfficegoApi {
     }
 
     /**
+     * 我想找 因素
+     */
+    public void getFactor(RetrofitCallback<List<DirectoryBean.DataBean>> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("code", requestBody("wantGoCode"));
+        map.putAll(map());
+        OfficegoRetrofitClient.getInstance().create(FindInterface.class)
+                .getDecoratedType(map)
+                .enqueue(callback);
+    }
+
+    /**
      * 热门
      *
      * @param callback
@@ -770,8 +782,7 @@ public class OfficegoApi {
      */
     public void wantToFind(String seats, String minimumLease, String tag, RetrofitCallback<Object> callback) {
         Map<String, RequestBody> map = new HashMap<>();
-        map.put("token", requestBody(SpUtils.getSignToken()));
-        map.put("channel", requestBody("2"));
+        map.put("token", requestBody(TextUtils.isEmpty(SpUtils.getSignToken()) ? "" : SpUtils.getSignToken()));
         map.put("seats", requestBody(seats));
         map.put("minimumLease", requestBody(minimumLease));
         map.put("tag", requestBody(tag));

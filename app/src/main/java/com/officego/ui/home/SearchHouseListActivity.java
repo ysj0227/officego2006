@@ -17,9 +17,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
+import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.model.DirectoryBean;
-import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
@@ -141,7 +141,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
         String mDecoration = TextUtils.equals("0", decoration) ? "" : decoration;
         mPresenter.getBuildingList(pageNum, filterType, district, business,
                 line, nearbySubway, mArea, mDayPrice, mSeats,
-                mDecoration, houseTags, sort, brandId, isReviewVR,searchKeywords);
+                mDecoration, houseTags, sort, brandId, isReviewVR, searchKeywords);
     }
 
     @SuppressLint("ClickableViewAccessibility")
@@ -165,7 +165,13 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
 
     @Click(R.id.btn_back)
     void backClick() {
-        finish();
+        onBackPressed();
+    }
+
+    @Override
+    public void onBackPressed() {
+        super.onBackPressed();
+        ConditionConfig.getConditionBean = null;
     }
 
     @Click(R.id.et_search)
@@ -320,7 +326,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
         this.decoration = bean.getDecoration();
         this.houseTags = bean.getUnique();
         this.isReviewVR = bean.isVr();
-        this.brandId=bean.getBrand();
+        this.brandId = bean.getBrand();
         bType(filterType);
         ConditionConfig.showText(tvSearchOffice, filterType);
         ConditionConfig.getConditionBean = ConditionConfig.setConditionBean(filterType,

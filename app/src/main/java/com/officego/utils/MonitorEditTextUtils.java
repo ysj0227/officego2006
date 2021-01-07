@@ -21,9 +21,13 @@ public class MonitorEditTextUtils {
         this.button = button;
         this.editText = editText;
         //初始化
-        button.setBackgroundResource(R.drawable.btn_common_bg_primary_disable);
-        button.setEnabled(Boolean.FALSE);//不启用按钮
-        setEdit(button, editText);
+        try {
+            this.button.setBackgroundResource(R.drawable.btn_common_bg_primary_disable);
+            this.button.setEnabled(Boolean.FALSE);//不启用按钮
+            setEdit(this.button, this.editText);
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
     }
 
     private void setEdit(Button button, EditText editText) {
@@ -35,12 +39,16 @@ public class MonitorEditTextUtils {
 
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
-                if (TextUtils.isEmpty(s.toString())) {
-                    button.setBackgroundResource(R.drawable.btn_common_bg_primary_disable);
-                    button.setEnabled(Boolean.FALSE);//不启用按钮
-                } else {
-                    button.setBackgroundResource(R.drawable.btn_common_bg_primary_normal);
-                    button.setEnabled(Boolean.TRUE);//启用按钮
+                try {
+                    if (TextUtils.isEmpty(s.toString())) {
+                        button.setBackgroundResource(R.drawable.btn_common_bg_primary_disable);
+                        button.setEnabled(Boolean.FALSE);//不启用按钮
+                    } else {
+                        button.setBackgroundResource(R.drawable.btn_common_bg_primary_normal);
+                        button.setEnabled(Boolean.TRUE);//启用按钮
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
                 }
             }
 

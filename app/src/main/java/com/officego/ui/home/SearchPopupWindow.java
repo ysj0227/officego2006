@@ -34,6 +34,7 @@ import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.utils.ToastUtils;
+import com.officego.config.ConditionConfig;
 import com.officego.rpc.OfficegoApi;
 import com.officego.ui.find.WantFindBean;
 import com.officego.ui.home.model.BusinessCircleBean;
@@ -643,6 +644,7 @@ public class SearchPopupWindow extends PopupWindow implements
                     if (onSureClickListener != null) {
                         onSureClickListener.onConditionPopUpWindow(filterType, searchBean);
                     }
+                    ConditionConfig.getConditionBean = null;
                     dismiss();
                     break;
                 case R.id.btn_sure://确定

@@ -10,13 +10,13 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.officego.MainActivity_;
 import com.officego.R;
-import com.officego.commonlib.base.BaseActivity;
+import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.commonlib.constant.Constants;
-import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.rpc.OfficegoApi;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.ui.adapter.FactorAdapter;
 import com.officego.ui.adapter.PersonAdapter;
 import com.officego.ui.adapter.RentAdapter;
@@ -30,6 +30,7 @@ import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -38,7 +39,8 @@ import java.util.Map;
  **/
 @SuppressLint("NonConstantResourceId")
 @EActivity(R.layout.activity_want_to_find)
-public class WantToFindActivity extends BaseActivity implements PersonAdapter.PersonListener,
+public class WantToFindActivity extends BaseMvpActivity<WantFindPresenter>
+        implements WantFindContract.View, PersonAdapter.PersonListener,
         RentAdapter.RentListener, FactorAdapter.FactorListener {
     @ViewById(R.id.rv_rent)
     RecyclerView rvRent;
@@ -57,9 +59,12 @@ public class WantToFindActivity extends BaseActivity implements PersonAdapter.Pe
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarFullTransparent(this);
+        mPresenter = new WantFindPresenter();
+        mPresenter.attachView(this);
         ivClose.setVisibility(isBack ? View.VISIBLE : View.GONE);
         initViews();
         data();
+        mPresenter.getFactorList();
     }
 
     private void initViews() {
@@ -89,9 +94,6 @@ public class WantToFindActivity extends BaseActivity implements PersonAdapter.Pe
         RentAdapter rentAdapter = new RentAdapter(context, mRent, CommonList.rentTimeList());
         rentAdapter.setListener(this);
         rvRent.setAdapter(rentAdapter);
-        FactorAdapter factorAdapter = new FactorAdapter(context, factorMap, CommonList.factorList());
-        factorAdapter.setListener(this);
-        rvFactor.setAdapter(factorAdapter);
     }
 
     @Click(R.id.iv_close)
@@ -113,7 +115,7 @@ public class WantToFindActivity extends BaseActivity implements PersonAdapter.Pe
             shortTip("还有资料没填哦～");
             return;
         }
-        wantFind();
+        mPresenter.save(mPerson, mRent, mFactor);
     }
 
     private void saveData() {
@@ -150,27 +152,15 @@ public class WantToFindActivity extends BaseActivity implements PersonAdapter.Pe
         mRent = value;
     }
 
-    public void wantFind() {
-        if (TextUtils.isEmpty(SpUtils.getSignToken())) {
-            saveData();
-            return;
-        }
-        showLoadingDialog();
-        OfficegoApi.getInstance().wantToFind(mPerson, mRent, mFactor, new RetrofitCallback<Object>() {
-            @Override
-            public void onSuccess(int code, String msg, Object data) {
-                hideLoadingDialog();
-                saveData();
-            }
-
-            @Override
-            public void onFail(int code, String msg, Object data) {
-                hideLoadingDialog();
-                if (code == Constants.DEFAULT_ERROR_CODE) {
-                    shortTip(msg);
-                }
-            }
-        });
+    @Override
+    public void factorSuccess(List<DirectoryBean.DataBean> list) {
+        FactorAdapter factorAdapter = new FactorAdapter(context, factorMap, list);
+        factorAdapter.setListener(this);
+        rvFactor.setAdapter(factorAdapter);
     }
 
+    @Override
+    public void saveSuccess() {
+        saveData();
+    }
 }

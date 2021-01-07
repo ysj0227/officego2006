@@ -119,7 +119,6 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
 
     @Click(R.id.rl_want)
     void findClick() {
-        if (isToLogin()) return;
         WantToFindActivity_.intent(mActivity).isBack(true).start();
     }
 
