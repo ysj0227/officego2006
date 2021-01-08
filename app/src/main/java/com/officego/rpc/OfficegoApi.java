@@ -804,11 +804,12 @@ public class OfficegoApi {
     }
 
     /**
-     * 品牌入驻
+     * 品牌入驻  type1首页2筛选
      */
-    public void brandManagement(RetrofitCallback<List<BrandRecommendBean.DataBean>> callback) {
+    public void brandManagement(int type, RetrofitCallback<List<BrandRecommendBean.DataBean>> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("type", requestBody(type + ""));
         map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(HomeInterface.class)
                 .getBrandManagement(map)

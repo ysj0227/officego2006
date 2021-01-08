@@ -119,18 +119,28 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
         mPresenter = new SearchListPresenter(context);
         mPresenter.attachView(this);
         initRefresh();
-        ConditionConfig.showText(tvSearchOffice, filterType);
+        initViews();
+        if (!NetworkUtils.isNetworkAvailable(context)) {
+            netException();
+            return;
+        }
+        getBuildingList();
+    }
+
+    private void initViews() {
         btnBack.setVisibility(View.VISIBLE);
         btnCancel.setVisibility(View.GONE);
         etSearch.setText(searchKeywords);
         etSearch.setFocusable(false);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         rvHouse.setLayoutManager(layoutManager);
-        if (!NetworkUtils.isNetworkAvailable(context)) {
-            netException();
-            return;
+        if (!TextUtils.isEmpty(brandId)) {
+            //首页点击品牌进入
+            filterType = Constants.SEARCH_JOINT_WORK;
+            mSearchData=new ConditionSearchBean();
+            mSearchData.setBrand(brandId);
         }
-        getBuildingList();
+        ConditionConfig.showText(tvSearchOffice, filterType);
     }
 
     //获取数据列表

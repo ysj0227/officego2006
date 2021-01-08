@@ -75,10 +75,10 @@ public class HomePresenter extends BasePresenter<HomeContract.View> implements H
             }
         });
     }
-    //品牌入驻
+    //品牌入驻 type 1首页2筛选
     @Override
     public void getBrandManagement() {
-        OfficegoApi.getInstance().brandManagement(new RetrofitCallback<List<BrandRecommendBean.DataBean>>() {
+        OfficegoApi.getInstance().brandManagement(1,new RetrofitCallback<List<BrandRecommendBean.DataBean>>() {
             @Override
             public void onSuccess(int code, String msg, List<BrandRecommendBean.DataBean> data) {
                 if (isViewAttached()) {

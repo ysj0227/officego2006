@@ -9,6 +9,7 @@ import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.retrofit.RpcErrorCode;
 import com.officego.rpc.OfficegoApi;
 import com.officego.ui.home.contract.SearchListContract;
+import com.officego.ui.home.model.BrandRecommendBean;
 import com.officego.ui.home.model.BuildingBean;
 
 import java.util.ArrayList;
@@ -59,11 +60,11 @@ public class SearchListPresenter extends BasePresenter<SearchListContract.View> 
     @Override
     public void getBuildingList(int pageNo, int filterType, String district, String business, String line,
                                 String nearbySubway, String area, String dayPrice, String seats, String decoration,
-                                String houseTags, String sort, String brandId,boolean isVr,String keyWord) {
+                                String houseTags, String sort, String brandId, boolean isVr, String keyWord) {
         mView.showLoadingDialog();
         OfficegoApi.getInstance().getBuildingList(pageNo, filterType, district, business,
                 line, nearbySubway, area, dayPrice, seats, decoration,
-                houseTags, sort, brandId,isVr,
+                houseTags, sort, brandId, isVr,
                 keyWord, Constants.LONGITUDE, Constants.LATITUDE, new RetrofitCallback<BuildingBean>() {
                     @Override
                     public void onSuccess(int code, String msg, BuildingBean data) {
@@ -145,15 +146,26 @@ public class SearchListPresenter extends BasePresenter<SearchListContract.View> 
             }
         });
         //品牌
-        OfficegoApi.getInstance().brandList(new RetrofitCallback<List<DirectoryBean.DataBean>>() {
+        OfficegoApi.getInstance().brandManagement(2, new RetrofitCallback<List<BrandRecommendBean.DataBean>>() {
             @Override
-            public void onSuccess(int code, String msg, List<DirectoryBean.DataBean> data) {
-                brandList = data;
-                conditionListSuccess();
+            public void onSuccess(int code, String msg, List<BrandRecommendBean.DataBean> data) {
+                if (isViewAttached()) {
+                    if (data != null) {
+                        brandList.clear();
+                        DirectoryBean.DataBean bean;
+                        for (int i = 0; i < data.size(); i++) {
+                            bean = new DirectoryBean.DataBean();
+                            bean.setDictValue(data.get(i).getId());
+                            bean.setDictCname(data.get(i).getTitleName());
+                            brandList.add(bean);
+                        }
+                    }
+                    conditionListSuccess();
+                }
             }
 
             @Override
-            public void onFail(int code, String msg, List<DirectoryBean.DataBean> data) {
+            public void onFail(int code, String msg, List<BrandRecommendBean.DataBean> data) {
                 if (isViewAttached()) {
                     mView.hideLoadingDialog();
                 }
