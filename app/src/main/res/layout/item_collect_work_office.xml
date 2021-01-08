@@ -53,9 +53,8 @@
         android:layout_marginTop="@dimen/dp_13"
         android:layout_toEndOf="@id/fl_collect_img"
         android:text="@string/str_text_line"
-        android:textColor="@color/text_main"
-        android:textSize="@dimen/sp_15"
-        android:textStyle="bold" />
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_15" />
 
     <TextView
         android:id="@+id/tv_location"
@@ -67,7 +66,7 @@
         android:layout_toEndOf="@id/fl_collect_img"
         android:drawableStart="@mipmap/ic_small_location"
         android:drawablePadding="@dimen/dp_5"
-        android:textColor="@color/text_main"
+        android:textColor="@color/text_66"
         android:textSize="@dimen/sp_11" />
 
 
