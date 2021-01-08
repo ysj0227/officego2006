@@ -267,7 +267,7 @@ public class OfficegoApi {
         map.put("nearbySubway", requestBody(nearbySubway));
         map.put("area", requestBody(area));
         map.put("dayPrice", requestBody(dayPrice));
-        map.put("decoration", requestBody(decoration));
+        map.put("decoration", requestBody(TextUtils.isEmpty(decoration) || TextUtils.equals("0", decoration) ? "" : decoration));
         map.put("houseTags", requestBody(houseTags));
         map.put("sort", requestBody(sort));
         map.put("seats", requestBody(seats));
@@ -307,7 +307,7 @@ public class OfficegoApi {
         map.put("buildingId", requestBody(buildingId));
         map.put("area", requestBody(area));
         map.put("dayPrice", requestBody(dayPrice));
-        map.put("decoration", requestBody(decoration));
+        map.put("decoration", requestBody(TextUtils.isEmpty(decoration) || TextUtils.equals("0", decoration) ? "" : decoration));
         map.put("houseTags", requestBody(houseTags));
         map.put("seats", requestBody(seats));
         map.put("vrFlag", requestBody("0"));
@@ -338,7 +338,7 @@ public class OfficegoApi {
         map.put("buildingId", requestBody(buildingId));
         map.put("area", requestBody(area));
         map.put("dayPrice", requestBody(dayPrice));
-        map.put("decoration", requestBody(decoration));
+        map.put("decoration", requestBody(TextUtils.isEmpty(decoration) || TextUtils.equals("0", decoration) ? "" : decoration));
         map.put("houseTags", requestBody(houseTags));
         map.put("seats", requestBody(seats));
         map.put("vrFlag", requestBody("0"));
