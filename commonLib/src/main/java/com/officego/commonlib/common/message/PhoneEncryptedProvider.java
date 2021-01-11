@@ -26,12 +26,10 @@ import io.rong.imlib.model.Message;
  */
 @ProviderTag(messageContent = PhoneEncryptedInfo.class, showPortrait = false, centerInHorizontal = true)
 public class PhoneEncryptedProvider extends IContainerItemProvider.MessageProvider<PhoneEncryptedInfo> {
-    private Context context;
-    private String str = "发送的信息包含用户隐私";
+    private final String str = "平台暂不支持直接发送手机号、微信等联系方式，请使用页面上交换功能";
 
     @Override
     public View newView(Context context, ViewGroup viewGroup) {
-        this.context = context;
         View view = LayoutInflater.from(context).inflate(R.layout.conversation_item_phone_enterypted_message, viewGroup, false);
         PhoneEncryptedHolder holder = new PhoneEncryptedHolder();
         holder.tvContent = view.findViewById(R.id.tv_content);
@@ -43,14 +41,12 @@ public class PhoneEncryptedProvider extends IContainerItemProvider.MessageProvid
     public void bindView(View view, int i, PhoneEncryptedInfo info, UIMessage uiMessage) {
         PhoneEncryptedHolder holder = (PhoneEncryptedHolder) view.getTag();
         if (uiMessage.getMessageDirection() == Message.MessageDirection.RECEIVE) {
-//            holder.tvContent.setText(info.getContent());
             holder.tvContent.setText(str);
         }
     }
 
     @Override //这里意思是你的这个自定义消息显示的内容
     public Spannable getContentSummary(PhoneEncryptedInfo PhoneEncryptedInfo) {
-//        return new SpannableString(PhoneEncryptedInfo.getContent());
         return new SpannableString(str);
     }
 

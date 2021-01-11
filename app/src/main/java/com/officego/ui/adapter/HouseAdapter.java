@@ -40,10 +40,6 @@ public class HouseAdapter extends CommonListAdapter<BuildingBean.ListBean> {
 
     private ClickItemListener itemListener;
 
-    public ClickItemListener getItemListener() {
-        return itemListener;
-    }
-
     public void setItemListener(ClickItemListener itemListener) {
         this.itemListener = itemListener;
     }
@@ -129,7 +125,8 @@ public class HouseAdapter extends CommonListAdapter<BuildingBean.ListBean> {
             } else {
                 labelsView.setVisibility(View.GONE);
             }
-            labelsView.setLabels(areaMap, (label, position, data) -> data == null ? "0m²" : CommonHelper.bigDecimal(data.toString(), true) + "m²");
+            labelsView.setLabels(areaMap, (label, position, data) -> data == null ? "0m²" :
+                    CommonHelper.bigDecimal(data.toString(), true) + "m²");
         } else {//2:网点 共享办公
             labelsView.setLabelTextSize(CommonHelper.sp2px(context, 12));
             labelsView.setWordMargin(40);
@@ -158,6 +155,7 @@ public class HouseAdapter extends CommonListAdapter<BuildingBean.ListBean> {
         List<BuildingBean.ListBean.TagsBean> tagsList = bean.getTags();
         if (tagsList == null || tagsList.size() == 0) {
             lvHouseTags.setVisibility(View.GONE);
+            tvTagMore.setVisibility(View.GONE);
         } else if (tagsList.size() <= 4) {
             lvHouseTags.setVisibility(View.VISIBLE);
             tvTagMore.setVisibility(View.GONE);
@@ -174,8 +172,6 @@ public class HouseAdapter extends CommonListAdapter<BuildingBean.ListBean> {
 
     /**
      * 进入详情
-     *
-     * @param holder
      */
     private void gotoDetails(ViewHolder holder, BuildingBean.ListBean bean) {
         holder.itemView.setOnClickListener(v -> {
