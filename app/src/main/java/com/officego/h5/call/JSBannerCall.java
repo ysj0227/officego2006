@@ -1,4 +1,4 @@
-package com.officego.h5.jscall;
+package com.officego.h5.call;
 
 import android.app.Activity;
 import android.webkit.JavascriptInterface;

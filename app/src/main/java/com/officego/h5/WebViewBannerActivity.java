@@ -22,7 +22,7 @@ import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.TitleBarView;
-import com.officego.h5.jscall.JSBannerCall;
+import com.officego.h5.call.JSBannerCall;
 import com.officego.view.webview.SMWebViewClient;
 
 import org.androidannotations.annotations.AfterViews;

@@ -33,7 +33,7 @@ public class HomeMeetingBean {
 
         @SerializedName("meetingRoomLocation")
         private String meetingRoomLocation;
-         @SerializedName("meetingRoomTitle")
+        @SerializedName("meetingRoomTitle")
         private String meetingRoomTitle;
         @SerializedName("list")
         private List<ListBean> list;
@@ -69,7 +69,7 @@ public class HomeMeetingBean {
              * buildingId : 4197
              * buildingName : 金葵科技
              * availableTime : post会议室
-             post会议室
+             * post会议室
              * price : 200
              * id : 2
              */
@@ -88,6 +88,8 @@ public class HomeMeetingBean {
             private Object price;
             @SerializedName("id")
             private Integer id;
+            @SerializedName("type")
+            private List<TypeBean> typeBean;
 
             public String getImg() {
                 return img;
@@ -143,6 +145,27 @@ public class HomeMeetingBean {
 
             public void setId(Integer id) {
                 this.id = id;
+            }
+
+            public List<TypeBean> getTypeBean() {
+                return typeBean;
+            }
+
+            public void setTypeBean(List<TypeBean> typeBean) {
+                this.typeBean = typeBean;
+            }
+
+            public static class TypeBean {
+                @SerializedName("dictCname")
+                private String dictCname;
+
+                public String getDictCname() {
+                    return dictCname;
+                }
+
+                public void setDictCname(String dictCname) {
+                    this.dictCname = dictCname;
+                }
             }
         }
     }

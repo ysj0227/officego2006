@@ -38,8 +38,10 @@ public class AppConfig extends BaseConfig {
     public static final String JPHSH_SECRET = "ca6f1e8e34b0e72a77538df0";
     //神策数据
     public static String SA_SERVER_URL = "";
-    //免费会议室
+    //会议室
     public static String MEETING_ROOM_URL = "";
+    //会议室详情
+    public static String MEETING_ROOM_DETAIL_URL = "";
 
     //测试
     @Override
@@ -61,6 +63,7 @@ public class AppConfig extends BaseConfig {
         H5_VR_RECORD = APP_URL_MAIN + "owner/vr.html";
         //会议室
         MEETING_ROOM_URL = "http://meeting.officego.com.cn/";
+        MEETING_ROOM_DETAIL_URL = "http://meeting.officego.com.cn/";
         //融云IM test
         RC_APPKEY = "kj7swf8oknm02";
         RC_APPSECRET = "OF78PpILjjRk4";
@@ -88,6 +91,7 @@ public class AppConfig extends BaseConfig {
         H5_VR_RECORD = APP_URL_MAIN + "owner/vr.html";
         //会议室
         MEETING_ROOM_URL = "http://meeting.officego.com.cn/";
+        MEETING_ROOM_DETAIL_URL = "http://meeting.officego.com.cn/";
         //融云IM test
         RC_APPKEY = "kj7swf8oknm02";
         RC_APPSECRET = "OF78PpILjjRk4";
@@ -114,6 +118,7 @@ public class AppConfig extends BaseConfig {
         H5_VR_RECORD = APP_URL_MAIN + "owner/vr.html";
         //会议室
         MEETING_ROOM_URL = "https://meeting.officego.com/";
+        MEETING_ROOM_DETAIL_URL = "https://meeting.officego.com/";
         //融云IM release
         RC_APPKEY = "qf3d5gbjq94mh";
         RC_APPSECRET = "xtDkNCjJse";

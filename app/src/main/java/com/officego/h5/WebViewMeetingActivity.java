@@ -24,7 +24,7 @@ import com.officego.commonlib.constant.AppConfig;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.h5.jscall.JSMeetingCall;
+import com.officego.h5.call.JSMeetingCall;
 import com.officego.view.webview.SMWebViewClient;
 
 import org.androidannotations.annotations.AfterViews;
@@ -48,6 +48,8 @@ public class WebViewMeetingActivity extends BaseActivity {
     Button btnAgain;
     @Extra
     String amountRange;
+    @Extra
+    boolean isMeetingDetail;
 
     @AfterViews
     void init() {
@@ -55,14 +57,23 @@ public class WebViewMeetingActivity extends BaseActivity {
         CommonHelper.setRelativeLayoutParams(context, webView, 8);
         setWebChromeClient();
         if (NetworkUtils.isNetworkAvailable(context)) {
-            loadWebView(AppConfig.MEETING_ROOM_URL + strMap());
+            loadWebView(strPath());
         } else {
             receiverExceptionError(webView);
         }
     }
 
-    private String strMap() {
-        return "?channel=2" +
+    private String strPath() {
+        //会议室详情
+        if (isMeetingDetail) {
+            return AppConfig.MEETING_ROOM_DETAIL_URL +
+                    "?channel=2" +
+                    "&token=" + SpUtils.getSignToken() +
+                    "&amountRange=" + (TextUtils.isEmpty(amountRange) ? "" : amountRange);
+        }
+        //会议室列表
+        return AppConfig.MEETING_ROOM_URL +
+                "?channel=2" +
                 "&token=" + SpUtils.getSignToken() +
                 "&amountRange=" + (TextUtils.isEmpty(amountRange) ? "" : amountRange);
     }
