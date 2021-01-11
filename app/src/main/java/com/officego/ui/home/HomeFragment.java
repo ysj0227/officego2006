@@ -106,7 +106,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarFullTransparent(mActivity);
-        mPresenter = new HomePresenter(mActivity);
+        mPresenter = new HomePresenter(mSwipeRefreshLayout);
         mPresenter.attachView(this);
         nsvView.setOnScrollChangeListener(this);
         initViews();
@@ -128,7 +128,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
 
     private void initRefresh() {
         mSwipeRefreshLayout.setOnRefreshListener(this);
-        mSwipeRefreshLayout.setProgressViewOffset(true, -20, 160);
+        mSwipeRefreshLayout.setProgressViewOffset(true, 0, 220);
         mSwipeRefreshLayout.setColorSchemeResources(R.color.common_blue_main_80a, R.color.common_blue_main);
         //解决下拉刷新快速滑动crash
         nsvView.setOnTouchListener((view, motionEvent) -> mSwipeRefreshLayout != null && mSwipeRefreshLayout.isRefreshing());

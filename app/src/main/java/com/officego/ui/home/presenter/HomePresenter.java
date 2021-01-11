@@ -1,7 +1,5 @@
 package com.officego.ui.home.presenter;
 
-import android.content.Context;
-
 import com.officego.commonlib.base.BasePresenter;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.rpc.OfficegoApi;
@@ -11,6 +9,7 @@ import com.officego.ui.home.model.BrandRecommendBean;
 import com.officego.ui.home.model.HomeHotBean;
 import com.officego.ui.home.model.HomeMeetingBean;
 import com.officego.ui.home.model.TodayReadBean;
+import com.officego.utils.SuperSwipeRefreshLayout;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -23,11 +22,11 @@ import java.util.List;
 public class HomePresenter extends BasePresenter<HomeContract.View> implements HomeContract.Presenter {
     private final String TAG = this.getClass().getSimpleName();
 
-    private Context context;
+    private final SuperSwipeRefreshLayout mSwipeRefreshLayout;
     private List<String> bannerList = new ArrayList<>();
 
-    public HomePresenter(Context context) {
-        this.context = context;
+    public HomePresenter(SuperSwipeRefreshLayout mSwipeRefreshLayout) {
+        this.mSwipeRefreshLayout = mSwipeRefreshLayout;
     }
 
     @Override
@@ -75,10 +74,11 @@ public class HomePresenter extends BasePresenter<HomeContract.View> implements H
             }
         });
     }
+
     //品牌入驻 type 1首页2筛选
     @Override
     public void getBrandManagement() {
-        OfficegoApi.getInstance().brandManagement(1,new RetrofitCallback<List<BrandRecommendBean.DataBean>>() {
+        OfficegoApi.getInstance().brandManagement(1, new RetrofitCallback<List<BrandRecommendBean.DataBean>>() {
             @Override
             public void onSuccess(int code, String msg, List<BrandRecommendBean.DataBean> data) {
                 if (isViewAttached()) {
@@ -99,7 +99,9 @@ public class HomePresenter extends BasePresenter<HomeContract.View> implements H
     //先获取会议室再获取热门推荐
     @Override
     public void getHotList() {
-        mView.showLoadingDialog();
+        if (mSwipeRefreshLayout == null || !mSwipeRefreshLayout.isRefreshing()) {
+            mView.showLoadingDialog();
+        }
         OfficegoApi.getInstance().getHomeMeeting(new RetrofitCallback<HomeMeetingBean.DataBean>() {
             @Override
             public void onSuccess(int code, String msg, HomeMeetingBean.DataBean data) {
@@ -125,7 +127,7 @@ public class HomePresenter extends BasePresenter<HomeContract.View> implements H
             public void onSuccess(int code, String msg, HomeHotBean.DataBean data) {
                 if (isViewAttached()) {
                     mView.hideLoadingDialog();
-                    mView.hotListSuccess(meetData,data);
+                    mView.hotListSuccess(meetData, data);
                     mView.endRefresh();
                 }
             }

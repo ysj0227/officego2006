@@ -2,6 +2,8 @@ package com.officego.ui.home.presenter;
 
 import android.content.Context;
 
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
+
 import com.officego.commonlib.base.BasePresenter;
 import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.commonlib.constant.Constants;
@@ -23,9 +25,7 @@ import java.util.List;
 public class SearchListPresenter extends BasePresenter<SearchListContract.View> implements SearchListContract.Presenter {
     private final String TAG = this.getClass().getSimpleName();
 
-    private Context context;
-    //banner list
-    private List<String> bannerList = new ArrayList<>();
+    private final SwipeRefreshLayout mSwipeRefreshLayout;
     //筛选条件列表
     private int index;
     private List<DirectoryBean.DataBean> decorationList = new ArrayList<>();
@@ -33,8 +33,8 @@ public class SearchListPresenter extends BasePresenter<SearchListContract.View> 
     private List<DirectoryBean.DataBean> jointWorkUniqueList = new ArrayList<>();
     private List<DirectoryBean.DataBean> brandList = new ArrayList<>();
 
-    public SearchListPresenter(Context context) {
-        this.context = context;
+    public SearchListPresenter(SwipeRefreshLayout mSwipeRefreshLayout) {
+        this.mSwipeRefreshLayout = mSwipeRefreshLayout;
     }
 
     /**
@@ -61,7 +61,9 @@ public class SearchListPresenter extends BasePresenter<SearchListContract.View> 
     public void getBuildingList(int pageNo, int filterType, String district, String business, String line,
                                 String nearbySubway, String area, String dayPrice, String seats, String decoration,
                                 String houseTags, String sort, String brandId, boolean isVr, String keyWord) {
-        mView.showLoadingDialog();
+        if (mSwipeRefreshLayout == null || !mSwipeRefreshLayout.isRefreshing()) {
+            mView.showLoadingDialog();
+        }
         OfficegoApi.getInstance().getBuildingList(pageNo, filterType, district, business,
                 line, nearbySubway, area, dayPrice, seats, decoration,
                 houseTags, sort, brandId, isVr,

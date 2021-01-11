@@ -14,7 +14,7 @@
         android:background="@mipmap/ic_card_discount"
         android:paddingStart="@dimen/dp_18"
         android:paddingTop="@dimen/dp_20"
-        android:paddingBottom="@dimen/dp_20"
+        android:paddingBottom="@dimen/dp_25"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">

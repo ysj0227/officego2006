@@ -116,7 +116,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarFullTransparent(this);
-        mPresenter = new SearchListPresenter(context);
+        mPresenter = new SearchListPresenter(mSwipeRefreshLayout);
         mPresenter.attachView(this);
         initRefresh();
         initViews();
@@ -137,7 +137,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
         if (!TextUtils.isEmpty(brandId)) {
             //首页点击品牌进入
             filterType = Constants.SEARCH_JOINT_WORK;
-            mSearchData=new ConditionSearchBean();
+            mSearchData = new ConditionSearchBean();
             mSearchData.setBrand(brandId);
         }
         ConditionConfig.showText(tvSearchOffice, filterType);
