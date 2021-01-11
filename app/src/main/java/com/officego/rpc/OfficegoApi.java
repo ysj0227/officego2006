@@ -5,7 +5,6 @@ import android.text.TextUtils;
 
 import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
-import com.officego.commonlib.common.model.ChatHouseBean;
 import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.commonlib.common.model.QueryHistoryKeywordsBean;
 import com.officego.commonlib.common.model.RenterBean;
@@ -223,8 +222,6 @@ public class OfficegoApi {
 
     /**
      * 商圈
-     *
-     * @param callback
      */
     public void getDistrictList(RetrofitCallback<List<BusinessCircleBean.DataBean>> callback) {
         Map<String, RequestBody> map = new HashMap<>();
@@ -715,21 +712,6 @@ public class OfficegoApi {
     }
 
     /**
-     * uid 	是 	int 	targetId 聊天对方的id
-     * token 	是 	是 	token
-     * 获取大楼详情
-     */
-    public void getChatHouseDetails(String targetId, RetrofitCallback<ChatHouseBean> callback) {
-        Map<String, RequestBody> map = new HashMap<>();
-        map.put("token", requestBody(SpUtils.getSignToken()));
-        map.put("uid", requestBody(targetId));
-        map.putAll(map());
-        OfficegoRetrofitClient.getInstance().create(ChatInterface.class)
-                .getChatHouseDetails(map)
-                .enqueue(callback);
-    }
-
-    /**
      * 添加预约看房
      * buildingId 	是 	int 	楼盘id
      * houseIds 	是 	String 	房源id （英文逗号分隔）
@@ -743,7 +725,6 @@ public class OfficegoApi {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("buildingId", requestBody(buildingId + ""));
-//        map.put("houseIds", requestBody(houseIds + ""));
         map.put("time", requestBody(time));
         map.put("times", requestBody(String.valueOf(DateTimeUtils.currentTimeSecond())));//时间戳
         map.put("chatUserId", requestBody(targetId));//聊天界面对方用户id

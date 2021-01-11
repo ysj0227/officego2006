@@ -63,5 +63,4 @@ public class WantFindPresenter extends BasePresenter<WantFindContract.View> impl
             }
         });
     }
-
 }

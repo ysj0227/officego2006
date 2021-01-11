@@ -8,4 +8,8 @@
         android:bottomRightRadius="@dimen/dp_8"
         android:topLeftRadius="@dimen/dp_5" />
 
+    <gradient
+        android:angle="270"
+        android:endColor="#46C3C2"
+        android:startColor="#37E5E4" />
 </shape>

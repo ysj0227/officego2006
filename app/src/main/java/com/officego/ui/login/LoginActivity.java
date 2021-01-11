@@ -148,24 +148,14 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
      */
     @Click(R.id.btn_login_no_password)
     void loginNoPasswordClick() {
-        GoogleTrack.keyLogin(context);
-        loginOnlyPhone();
-    }
-
-    private void loginOnlyPhone() {
         if (isFastClick(1500)) {
             return;
         }
-        //手机权限
+        GoogleTrack.keyLogin(context);
+        SensorsTrack.login();//神策
         if (PermissionUtils.checkPhonePermission(this)) {
-            SensorsTrack.login();//神策
             JPushAuthLoginRequest.getInstance().authLogin(context);
         }
-    }
-
-    @Click(R.id.btn_test)
-    void testClick() {
-        //new TestLoginDialog(context,mPresenter);
     }
 
     @Click(R.id.tv_get_code)
@@ -205,6 +195,10 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         WebViewActivity_.intent(context).flags(Constants.H5_PROTOCOL).start();
     }
 
+    @Click(R.id.btn_test)
+    void testClick() {
+        //new TestLoginDialog(context,mPresenter);
+    }
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,

@@ -4,8 +4,6 @@ import android.content.Context;
 import android.text.TextUtils;
 import android.widget.CheckBox;
 
-import androidx.recyclerview.widget.RecyclerView;
-
 import com.officego.R;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
@@ -39,7 +37,7 @@ public class PersonAdapter extends CommonListAdapter<WantFindBean> {
     }
 
     public PersonAdapter(Context context,  String value, List<WantFindBean> list) {
-        super(context, R.layout.item_find, list);
+        super(context, R.layout.item_find2, list);
         for (int i = 0; i < list.size(); i++) {
             if (TextUtils.equals(value, list.get(i).getValue())) {
                 map.put(i, list.get(i).getKey());

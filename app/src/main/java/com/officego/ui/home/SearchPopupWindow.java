@@ -75,6 +75,7 @@ public class SearchPopupWindow extends PopupWindow implements
 
     private RadioButton rbJointWork, rbOpenSeats, rbOffice, rbGarden;
     private View includeJointWork, includeOpenSeats, includeOffice, includeGarden;
+    private Switch swVR;
     //共享办公
     private RecyclerView rvJointWorkRent, rvJointWorkSeats, rvJointWorkBrand, rvJointWorkCharacteristic;
     private EditText etJointWorkRentMin, etJointWorkRentMax, etJointWorkSeatsMin, etJointWorkSeatsMax;
@@ -599,7 +600,7 @@ public class SearchPopupWindow extends PopupWindow implements
         includeOpenSeats = viewLayout.findViewById(R.id.include_open_seats);
         includeOffice = viewLayout.findViewById(R.id.include_office);
         includeGarden = viewLayout.findViewById(R.id.include_garden);
-        Switch swVR = viewLayout.findViewById(R.id.sw_open);
+        swVR = viewLayout.findViewById(R.id.sw_open);
         Button btnClear = viewLayout.findViewById(R.id.btn_clear);
         Button btnSure = viewLayout.findViewById(R.id.btn_sure);
         rbJointWork.setOnCheckedChangeListener((compoundButton, b) -> {
@@ -623,12 +624,9 @@ public class SearchPopupWindow extends PopupWindow implements
         //园区
         gardenViews(viewLayout);
         //初始化选中 默认办公室
-        if (searchData == null) {
-            swVR.setChecked(false);
-        } else {
-            swVR.setChecked(searchData.isVr());
-        }
         showListViews(filterType == Constants.SEARCH_ALL ? Constants.SEARCH_OFFICE : filterType);
+        //是否只看vr
+        swVR.setChecked(searchData != null && searchData.isVr());
         //点击监听
         @SuppressLint("NonConstantResourceId") View.OnClickListener clickListener = v -> {
             switch (v.getId()) {

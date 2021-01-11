@@ -1,10 +1,8 @@
 package com.officego.ui.login.presenter;
 
 import android.content.Context;
-import android.content.res.AssetManager;
 import android.text.TextUtils;
 
-import com.officego.commonlib.common.analytics.GoogleTrack;
 import com.officego.commonlib.base.BasePresenter;
 import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
@@ -14,22 +12,8 @@ import com.officego.commonlib.common.rongcloud.ConnectRongCloudUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.retrofit.RetrofitCallback;
-import com.officego.commonlib.utils.ToastUtils;
 import com.officego.rpc.OfficegoApi;
 import com.officego.ui.login.contract.LoginContract;
-
-import org.json.JSONObject;
-
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.security.KeyFactory;
-import java.security.PrivateKey;
-import java.security.spec.PKCS8EncodedKeySpec;
-
-import javax.crypto.Cipher;
-
-import sun.misc.BASE64Decoder;
 
 /**
  * Created by YangShiJie
@@ -68,6 +52,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
             @Override
             public void onSuccess(int code, String msg, LoginBean data) {
                 if (isViewAttached()) {
+                    saveWantFind();
                     BaseNotification.newInstance().postNotificationName(
                             CommonNotifications.loginIn, "loginIn");
                     SpUtils.saveLoginInfo(data, mobile);
@@ -99,6 +84,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
             @Override
             public void onSuccess(int code, String msg, LoginBean data) {
                 if (isViewAttached()) {
+                    saveWantFind();
                     mView.hideLoadingDialog();
                     BaseNotification.newInstance().postNotificationName(
                             CommonNotifications.loginIn, "loginIn");
@@ -119,6 +105,27 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
     }
 
     /**
+     * 保存我想找
+     */
+    public void saveWantFind() {
+        if (TextUtils.isEmpty(SpUtils.getImei()) &&
+                TextUtils.isEmpty(SpUtils.getLoginWantFind()) &&
+                !TextUtils.isEmpty(SpUtils.getWantFind())) {
+            OfficegoApi.getInstance().wantToFind(SpUtils.getWantFindPerson(), SpUtils.getWantFindRent(),
+                    SpUtils.getWantFindFactor(), new RetrofitCallback<Object>() {
+                        @Override
+                        public void onSuccess(int code, String msg, Object data) {
+                            SpUtils.saveLoginWantFind();
+                        }
+
+                        @Override
+                        public void onFail(int code, String msg, Object data) {
+                        }
+                    });
+        }
+    }
+
+    /**
      * 一键登录 获取手机号
      */
     @Override
@@ -126,23 +133,23 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
         mView.showLoadingDialog();
         com.officego.commonlib.common.rpc.OfficegoApi.getInstance().jPushLogin(
                 loginToken, new RetrofitCallback<JPushLoginBean>() {
-            @Override
-            public void onSuccess(int code, String msg, JPushLoginBean data) {
-                if (isViewAttached()) {
-                    loginOnlyPhone(data.getPhone());//免密登录
-                }
-            }
-
-            @Override
-            public void onFail(int code, String msg, JPushLoginBean data) {
-                if (isViewAttached()) {
-                    mView.hideLoadingDialog();
-                    if (code == Constants.DEFAULT_ERROR_CODE) {
-                        mView.shortTip(msg);
+                    @Override
+                    public void onSuccess(int code, String msg, JPushLoginBean data) {
+                        if (isViewAttached()) {
+                            loginOnlyPhone(data.getPhone());//免密登录
+                        }
                     }
-                }
-            }
-        });
+
+                    @Override
+                    public void onFail(int code, String msg, JPushLoginBean data) {
+                        if (isViewAttached()) {
+                            mView.hideLoadingDialog();
+                            if (code == Constants.DEFAULT_ERROR_CODE) {
+                                mView.shortTip(msg);
+                            }
+                        }
+                    }
+                });
     }
 
 //    /**

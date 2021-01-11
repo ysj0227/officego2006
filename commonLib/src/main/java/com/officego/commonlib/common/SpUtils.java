@@ -25,16 +25,12 @@ public class SpUtils {
     //头像图片
     private static final String HEADER_IMG = PACKAGE_NAME + "HEADER_IMG";
     private static final String NICK_NAME = PACKAGE_NAME + "NICK_NAME";
-    //聊天插入楼盘消息
-    private static final String CHAT_INSERT_BUILDING_INFO = PACKAGE_NAME + "CHAT_INSERT_BUILDING_INFO";
     //是否取消更新
     private static final String CANCEL_UPDATE = PACKAGE_NAME + "CANCEL_UPDATE";
     //保存引导页
     private static final String LEAD_PAGES = PACKAGE_NAME + "LEAD_PAGES";
     //协议
     private static final String AGREE_PROTOCOL = PACKAGE_NAME + "AGREE_PROTOCOL";
-    //是否去网页编辑
-    private static final String EDIT_TO_WEB = PACKAGE_NAME + "EDIT_TO_WEB";
     //去认证dialog
     private static final String TO_IDENTITY = PACKAGE_NAME + "TO_IDENTITY";
     //审核成功添加房源引导
@@ -49,6 +45,8 @@ public class SpUtils {
     private static final String WANT_FIND_RENT = PACKAGE_NAME + "WANT_FIND_RENT";
     //因素
     private static final String WANT_FIND_FACTOR = PACKAGE_NAME + "WANT_FIND_FACTOR";
+    //登录成功是否自动保存了我想找
+    private static final String LOGIN_WANT_FIND_SAVE = PACKAGE_NAME + "LOGIN_WANT_FIND_SAVE";
 
     private static SharedPreferences getSharedPreference() {
         return SharedManager.getSharedPreference(BaseApplication.getContext());
@@ -92,6 +90,7 @@ public class SpUtils {
     public static String getUserId() {
         return SharedManager.getValue(BaseApplication.getContext(), USER_ID);
     }
+
     public static void saveImei(Context context) {
         SharedManager.putValue(BaseApplication.getContext(), PHONE_IMEI, CommonHelper.getIMEI(context));
     }
@@ -99,6 +98,7 @@ public class SpUtils {
     public static String getImei() {
         return SharedManager.getValue(BaseApplication.getContext(), PHONE_IMEI);
     }
+
     //用户签名token
     public static void saveSignToken(String token) {
         SharedManager.putValue(BaseApplication.getContext(), SIGN_TOKEN, token);
@@ -258,4 +258,15 @@ public class SpUtils {
     public static String getWantFindFactor() {
         return SharedManager.getValue(BaseApplication.getContext(), WANT_FIND_FACTOR);
     }
+
+    //登录后自动保存我想找 当手机IMEI为空时
+    public static void saveLoginWantFind() {
+        SharedManager.putValue(BaseApplication.getContext(), LOGIN_WANT_FIND_SAVE, "Y");
+    }
+
+    //获取自动保存我想找 当手机IMEI为空时
+    public static String getLoginWantFind() {
+        return SharedManager.getValue(BaseApplication.getContext(), LOGIN_WANT_FIND_SAVE);
+    }
+
 }

@@ -68,7 +68,7 @@ public class WantToFindActivity extends BaseMvpActivity<WantFindPresenter>
     }
 
     private void initViews() {
-        GridLayoutManager layoutManager1 = new GridLayoutManager(context, 2);
+        GridLayoutManager layoutManager1 = new GridLayoutManager(context, 3);
         rvPerson.setLayoutManager(layoutManager1);
         GridLayoutManager layoutManager2 = new GridLayoutManager(context, 2);
         rvRent.setLayoutManager(layoutManager2);
