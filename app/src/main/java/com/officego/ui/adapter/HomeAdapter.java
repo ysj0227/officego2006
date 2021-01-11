@@ -139,7 +139,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             String workTime = bean.getBuildingMap().getNearbySubwayTime().get(0);
             String stationLine = bean.getBuildingMap().getStationline().get(0);
             String stationName = bean.getBuildingMap().getStationNames().get(0);
-            line = "步行" + workTime + "分钟到「" + stationLine + "号线 · " + stationName + "」";
+            line = lines(workTime, stationLine, stationName);
             ((HotsHolder) holder).tvLines.setVisibility(View.VISIBLE);
         } else {
             line = "";
@@ -194,7 +194,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             String workTime = bean.getBannerMap().getSubwayMapBean().getNearbySubwayTime().get(0);
             String stationLine = bean.getBannerMap().getSubwayMapBean().getStationline().get(0);
             String stationName = bean.getBannerMap().getSubwayMapBean().getStationNames().get(0);
-            line = "步行" + workTime + "分钟到「" + stationLine + "号线 · " + stationName + "」";
+            line = lines(workTime, stationLine, stationName);
             ((House1Holder) holder).tvLines.setVisibility(View.VISIBLE);
         } else {
             line = "";
@@ -275,7 +275,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             String workTime = bean.getBannerMap().getSubwayMapBean().getNearbySubwayTime().get(0);
             String stationLine = bean.getBannerMap().getSubwayMapBean().getStationline().get(0);
             String stationName = bean.getBannerMap().getSubwayMapBean().getStationNames().get(0);
-            line = "步行" + workTime + "分钟到「" + stationLine + "号线 · " + stationName + "」";
+            line = lines(workTime, stationLine, stationName);
             ((DiscountHolder) holder).tvLines.setVisibility(View.VISIBLE);
         } else {
             line = "";
@@ -302,6 +302,10 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((DiscountHolder) holder).tvDiscount.setText(String.format("¥%s" + MONTH_UNIT, salePrice));
         }
         gotoBannerDetails(holder, bean);
+    }
+
+    private String lines(String workTime, String stationLine, String stationName) {
+        return "步行" + workTime + "分钟到「" + stationLine + "号线 · " + stationName + "」";
     }
 
     private void setOfficeCounts(RecyclerView.ViewHolder holder, int counts) {

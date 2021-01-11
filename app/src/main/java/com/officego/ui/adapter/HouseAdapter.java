@@ -81,7 +81,7 @@ public class HouseAdapter extends CommonListAdapter<BuildingBean.ListBean> {
             String workTime = bean.getBuildingMap().getNearbySubwayTime().get(0);
             String stationLine = bean.getBuildingMap().getStationline().get(0);
             String stationName = bean.getBuildingMap().getStationNames().get(0);
-            line = "步行" + workTime + "分钟到 | " + stationLine + "号线 ·" + stationName;
+            line = "步行" + workTime + "分钟到「" + stationLine + "号线 · " + stationName + "」";
             tvBus.setVisibility(View.VISIBLE);
         } else {
             tvBus.setVisibility(View.GONE);

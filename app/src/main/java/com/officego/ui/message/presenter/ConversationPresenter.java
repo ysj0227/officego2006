@@ -29,7 +29,7 @@ public class ConversationPresenter extends BasePresenter<ConversationContract.Vi
         implements ConversationContract.Presenter {
     private final String TAG = this.getClass().getSimpleName();
 
-    private boolean isMeetingEnter;
+    private final boolean isMeetingEnter;
 
     public ConversationPresenter(boolean isMeetingEnter) {
         super();
@@ -194,7 +194,7 @@ public class ConversationPresenter extends BasePresenter<ConversationContract.Vi
         if (TextUtils.isEmpty(data.getCreateTime().toString()) || TextUtils.equals("0", data.getCreateTime().toString())) {
             mDate = DateTimeUtils.getStringDateTimeByStringPattern(DateTimeUtils.DateTimePattern.LONG_DATETIME_2);
         } else {
-            mDate = DateTimeUtils.secondToDate(Long.valueOf(CommonHelper.bigDecimal(data.getCreateTime(), true)), "yyyy-MM-dd HH:mm");
+            mDate = DateTimeUtils.secondToDate(Long.parseLong(CommonHelper.bigDecimal(data.getCreateTime(), true)), "yyyy-MM-dd HH:mm");
         }
         info.setCreateTime(mDate + " 由" + showUser + "发起沟通");
         //1 楼盘网点 2房源
@@ -209,7 +209,7 @@ public class ConversationPresenter extends BasePresenter<ConversationContract.Vi
                 String workTime = data.getBuilding().getNearbySubwayTime().get(0);
                 String stationLine = data.getBuilding().getStationline().get(0);
                 String stationName = data.getBuilding().getStationNames().get(0);
-                info.setRouteMap("步行" + workTime + "分钟到 | " + stationLine + "号线 ·" + stationName);
+                info.setRouteMap("步行" + workTime + "分钟到「" + stationLine + "号线 · " + stationName + "」");
             }
             if (data.getBuilding().getMinSinglePrice() != null) {
                 if (data.getBuilding().getBtype() == Constants.TYPE_BUILDING) {
@@ -238,7 +238,7 @@ public class ConversationPresenter extends BasePresenter<ConversationContract.Vi
                     String workTime = data.getHouse().getNearbySubwayTime().get(0);
                     String stationLine = data.getHouse().getStationline().get(0);
                     String stationName = data.getHouse().getStationNames().get(0);
-                    info.setRouteMap("步行" + workTime + "分钟到 | " + stationLine + "号线 ·" + stationName);
+                    info.setRouteMap("步行" + workTime + "分钟到「" + stationLine + "号线 · " + stationName + "」");
                 }
                 if (data.getHouse().getBtype() == Constants.TYPE_BUILDING) {
                     info.setMinSinglePrice("¥" + (data.getHouse().getMinSinglePrice() == null ? "0.0" : data.getHouse().getMinSinglePrice()) + "/㎡/天");
