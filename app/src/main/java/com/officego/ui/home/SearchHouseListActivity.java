@@ -341,19 +341,9 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
         this.brandId = bean.getBrand();
         ConditionConfig.showText(tvSearchOffice, filterType);
         ConditionConfig.getConditionBean = ConditionConfig.setConditionBean(filterType,
-                bType(filterType), area, dayPrice, seats, decoration, houseTags);
+                 area, dayPrice, seats, decoration, houseTags);
         //查询列表
         getList();
-    }
-
-
-    private int bType(int filterType) {
-        if (filterType == Constants.SEARCH_JOINT_WORK || filterType == Constants.SEARCH_OPEN_SEATS) {
-            return Constants.TYPE_JOINTWORK;
-        } else if (filterType == Constants.SEARCH_OFFICE || filterType == Constants.SEARCH_GARDEN) {
-            return Constants.TYPE_BUILDING;
-        }
-        return 0;
     }
 
     private void getList() {

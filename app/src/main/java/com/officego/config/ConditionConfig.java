@@ -6,6 +6,7 @@ import android.widget.TextView;
 import com.officego.R;
 import com.officego.commonlib.constant.Constants;
 import com.officego.ui.home.model.ConditionBean;
+import com.officego.utils.CommonList;
 
 /**
  * Created by YangShiJie
@@ -29,11 +30,11 @@ public class ConditionConfig {
         }
     }
 
-    public static ConditionBean setConditionBean(int filterType, int btype, String area, String dayPrice, String seats,
+    public static ConditionBean setConditionBean(int filterType,  String area, String dayPrice, String seats,
                                                  String decoration, String houseTags) {
         ConditionBean bean = new ConditionBean();
-        String max = "0,99999999";
-        int intMax = 99999999;
+        String max = CommonList.SEARCH_RANGE_MAX_INT;
+        int intMax = CommonList.SEARCH_MAX_INT;
         if (filterType == Constants.SEARCH_OFFICE || filterType == Constants.SEARCH_GARDEN) {
             //面积 写字楼和园区
             if (TextUtils.equals("", area) || TextUtils.equals(max, area)) {

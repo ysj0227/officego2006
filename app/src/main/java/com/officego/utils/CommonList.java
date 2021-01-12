@@ -11,6 +11,8 @@ import java.util.List;
  **/
 public class CommonList {
     public static final String SEARCH_MAX = "99999999";
+    public static final int SEARCH_MAX_INT = 99999999;
+    public static final String SEARCH_RANGE_MAX_INT = "0,99999999";
 
     //我想找-团队规模
     public static List<WantFindBean> peopleNumList() {
