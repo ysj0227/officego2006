@@ -65,7 +65,7 @@ public class LocationUtils {
     /**
      * 定位监听
      */
-    private AMapLocationListener locationListener = location -> {
+    private final AMapLocationListener locationListener = location -> {
         if (null != location) {
             //errCode等于0代表定位成功，其他的为定位失败，具体的可以参照官网定位错误码说明
             if (location.getErrorCode() == 0) {

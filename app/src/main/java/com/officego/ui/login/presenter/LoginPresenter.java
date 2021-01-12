@@ -23,7 +23,7 @@ import com.officego.ui.login.contract.LoginContract;
 public class LoginPresenter extends BasePresenter<LoginContract.View> implements LoginContract.Presenter {
     private final String TAG = this.getClass().getSimpleName();
 
-    private Context context;
+    private final Context context;
 
     public LoginPresenter(Context context) {
         this.context = context;
@@ -48,7 +48,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
     @Override
     public void login(String mobile, String code) {
         mView.showLoadingDialog();
-        OfficegoApi.getInstance().login(context, mobile, code, new RetrofitCallback<LoginBean>() {
+        OfficegoApi.getInstance().login(mobile, code, new RetrofitCallback<LoginBean>() {
             @Override
             public void onSuccess(int code, String msg, LoginBean data) {
                 if (isViewAttached()) {
@@ -80,7 +80,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
     @Override
     public void loginOnlyPhone(String mobile) {
         mView.showLoadingDialog();
-        OfficegoApi.getInstance().loginOnlyPhone(context, mobile, new RetrofitCallback<LoginBean>() {
+        OfficegoApi.getInstance().loginOnlyPhone(mobile, new RetrofitCallback<LoginBean>() {
             @Override
             public void onSuccess(int code, String msg, LoginBean data) {
                 if (isViewAttached()) {

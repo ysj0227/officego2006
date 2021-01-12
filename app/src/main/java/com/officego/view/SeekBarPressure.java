@@ -32,22 +32,22 @@ public class SeekBarPressure extends View {
     private static final int[] STATE_PRESSED = {
             android.R.attr.state_pressed, android.R.attr.state_window_focused,
     };
-    private Drawable hasScrollBarBg;        //滑动条滑动后背景图
-    private Drawable notScrollBarBg;        //滑动条未滑动背景图
-    private Drawable mThumbLow;         //前滑块
-    private Drawable mThumbHigh;        //后滑块
+    private final Drawable hasScrollBarBg;        //滑动条滑动后背景图
+    private final Drawable notScrollBarBg;        //滑动条未滑动背景图
+    private final Drawable mThumbLow;         //前滑块
+    private final Drawable mThumbHigh;        //后滑块
 
     private int mScollBarWidth;     //控件宽度=滑动条宽度+滑动块宽度
-    private int mScollBarHeight;    //滑动条高度
+    private final int mScollBarHeight;    //滑动条高度
 
-    private int mThumbWidth;        //滑动块宽度
-    private int mThumbHeight;       //滑动块高度
+    private final int mThumbWidth;        //滑动块宽度
+    private final int mThumbHeight;       //滑动块高度
 
     private double mOffsetLow = 0;     //前滑块中心坐标
     private double mOffsetHigh = 0;    //后滑块中心坐标
     private int mDistance = 0;      //总刻度是固定距离 两边各去掉半个滑块距离
 
-    private int mThumbMarginTop = 30;   //滑动块顶部距离上边框距离，也就是距离字体顶部的距离
+    private final int mThumbMarginTop = 30;   //滑动块顶部距离上边框距离，也就是距离字体顶部的距离
 
     private int mFlag = CLICK_INVAILD;
     private OnSeekBarChangeListener mBarChangeListener;

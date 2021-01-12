@@ -33,7 +33,7 @@ import cn.jiguang.verifysdk.api.JVerificationInterface;
  * Data 2020/5/7.
  **/
 public class RootLoader {
-    private Context context;
+    private final Context context;
 
     public RootLoader(Context context) {
         this.context = context;

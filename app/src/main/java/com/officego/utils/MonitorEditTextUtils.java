@@ -14,8 +14,8 @@ import com.officego.R;
  * Descriptions:
  **/
 public class MonitorEditTextUtils {
-    private Button button;
-    private EditText editText;
+    private final Button button;
+    private final EditText editText;
 
     public MonitorEditTextUtils(Button button, EditText editText) {
         this.button = button;

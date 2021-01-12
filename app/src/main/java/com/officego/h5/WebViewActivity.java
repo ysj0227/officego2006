@@ -268,7 +268,7 @@ public class WebViewActivity extends BaseActivity {
 
     //js传递给Android
     private class JsInterface {
-        private Context mContext;
+        private final Context mContext;
 
         JsInterface(Context context) {
             this.mContext = context;

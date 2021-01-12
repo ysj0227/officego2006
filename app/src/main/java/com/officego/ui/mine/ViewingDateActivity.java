@@ -66,9 +66,9 @@ public class ViewingDateActivity extends BaseMvpActivity<ViewingDatePresenter>
     //adapter
     ViewingDateAdapter viewingDateAdapter;
     //数据列表
-    private List<ViewingDateBean.DataBean> viewingDateAllList = new ArrayList<>();
+    private final List<ViewingDateBean.DataBean> viewingDateAllList = new ArrayList<>();
     //某天数据列表
-    private List<ViewingDateBean.DataBean.ScheduleListBean> viewingDateDayList = new ArrayList<>();
+    private final List<ViewingDateBean.DataBean.ScheduleListBean> viewingDateDayList = new ArrayList<>();
     //滑动显示的年月
     private int mSelectedYear, mSelectedMonth;
     //今天日期

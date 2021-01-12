@@ -31,7 +31,7 @@ public class SearchListPresenter extends BasePresenter<SearchListContract.View> 
     private List<DirectoryBean.DataBean> decorationList = new ArrayList<>();
     private List<DirectoryBean.DataBean> buildingUniqueList = new ArrayList<>();
     private List<DirectoryBean.DataBean> jointWorkUniqueList = new ArrayList<>();
-    private List<DirectoryBean.DataBean> brandList = new ArrayList<>();
+    private final List<DirectoryBean.DataBean> brandList = new ArrayList<>();
 
     public SearchListPresenter(SwipeRefreshLayout mSwipeRefreshLayout) {
         this.mSwipeRefreshLayout = mSwipeRefreshLayout;

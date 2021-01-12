@@ -276,7 +276,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     private String videoUrl;
     //String videoUrl = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
     //video 消息处理
-    private Handler mHandler = new Handler(Looper.getMainLooper()) {
+    private final Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == MESSAGE_SHOW_PROGRESS) {
@@ -290,7 +290,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     };
     //************************************************
     //服务
-    private List<DirectoryBean.DataBean> serviceList = new ArrayList<>();
+    private final List<DirectoryBean.DataBean> serviceList = new ArrayList<>();
     private List<BuildingJointWorkBean.BuildingBean.CorporateServicesBean> corporateServicesList = new ArrayList<>();
     private List<BuildingJointWorkBean.BuildingBean.BasicServicesBean> basicServicesList = new ArrayList<>();
     @Extra
@@ -300,7 +300,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     //是否已经收藏
     private boolean isFavorite;
     //显示child子项列表
-    private List<BuildingDetailsChildBean.ListBean> childList = new ArrayList<>();
+    private final List<BuildingDetailsChildBean.ListBean> childList = new ArrayList<>();
     private JointWorkAllChildAdapter childAdapter;
     //工位区间,当前页码
     private String currentSeatsValue = "";
@@ -1342,7 +1342,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     /**
      * 轮播图
      */
-    private List<String> mBannerList = new ArrayList<>();
+    private final List<String> mBannerList = new ArrayList<>();
 
     private void playBanner(List<BuildingJointWorkBean.ImgUrlBean> list) {
         mBannerList.clear();

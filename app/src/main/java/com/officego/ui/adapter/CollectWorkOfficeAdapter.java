@@ -34,7 +34,7 @@ import java.util.List;
  **/
 public class CollectWorkOfficeAdapter extends CommonListAdapter<CollectHouseBean.ListBean> {
 
-    private Context context;
+    private final Context context;
 
     public CollectWorkOfficeAdapter(Context context, List<CollectHouseBean.ListBean> childList) {
         super(context, R.layout.item_collect_work_office, childList);

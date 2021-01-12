@@ -25,8 +25,8 @@ import java.util.List;
  **/
 public class ViewingDateAdapter extends CommonListAdapter<ViewingDateBean.DataBean.ScheduleListBean> {
 
-    private Context context;
-    private List<ViewingDateBean.DataBean.ScheduleListBean> list;
+    private final Context context;
+    private final List<ViewingDateBean.DataBean.ScheduleListBean> list;
 
     public ViewingDateAdapter(Context context, List<ViewingDateBean.DataBean.ScheduleListBean> list) {
         super(context, R.layout.mine_item_viewing_date, list);

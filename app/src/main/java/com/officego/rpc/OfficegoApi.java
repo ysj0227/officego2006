@@ -75,7 +75,7 @@ public class OfficegoApi {
     private Map<String, RequestBody> map() {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("imei", requestBody(TextUtils.isEmpty(SpUtils.getImei()) ? "" : SpUtils.getImei()));
-        map.put("channel", requestBody("2"));
+        map.put("channel", requestBody("2"));//android渠道2
         return map;
     }
 
@@ -99,7 +99,7 @@ public class OfficegoApi {
      * @param mobile 是	string	手机号
      * @param code   是	string	code
      */
-    public void login(Context context, String mobile, String code, RetrofitCallback<LoginBean> callback) {
+    public void login(String mobile, String code, RetrofitCallback<LoginBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("phone", requestBody(mobile));
         map.put("code", requestBody(code));
@@ -116,7 +116,7 @@ public class OfficegoApi {
      * @param mobile   mobile
      * @param callback callback
      */
-    public void loginOnlyPhone(Context context, String mobile, RetrofitCallback<LoginBean> callback) {
+    public void loginOnlyPhone(String mobile, RetrofitCallback<LoginBean> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("phone", requestBody(mobile));
         map.put("idType", requestBody(TextUtils.isEmpty(SpUtils.getRole()) ? Constants.TYPE_TENANT : SpUtils.getRole()));

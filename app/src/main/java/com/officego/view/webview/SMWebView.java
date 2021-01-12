@@ -31,9 +31,9 @@ public class SMWebView extends WebView {
     private static final String[] mFilterMethods = {"getClass", "hashCode",
             "notify", "notifyAll", "equals", "toString", "wait",};
     public OnScrollChangeListener listener;
-    private HashMap<String, Object> mJsInterfaceMap = new HashMap<String, Object>();
+    private final HashMap<String, Object> mJsInterfaceMap = new HashMap<String, Object>();
     private String mJsStringCache = null;
-    private Context mContext;
+    private final Context mContext;
 
     public SMWebView(Context context) {
         super(context);

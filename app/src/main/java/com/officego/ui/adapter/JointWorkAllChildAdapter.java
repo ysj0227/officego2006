@@ -28,7 +28,7 @@ import java.util.List;
  **/
 public class JointWorkAllChildAdapter extends CommonListAdapter<BuildingDetailsChildBean.ListBean> {
 
-    private Context context;
+    private final Context context;
 
     public JointWorkAllChildAdapter(Context context, List<BuildingDetailsChildBean.ListBean> childList) {
         super(context, R.layout.home_include_house_independent_office_list_item_child, childList);

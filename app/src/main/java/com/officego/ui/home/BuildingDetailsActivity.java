@@ -262,7 +262,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     // String videoUrl = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
     private boolean isSetVideoRate;
     //Video 消息处理
-    private Handler mHandler = new Handler(Looper.getMainLooper()) {
+    private final Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
             if (msg.what == MESSAGE_SHOW_PROGRESS) {
@@ -282,7 +282,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     //是否已经收藏
     private boolean isFavorite;
     //显示child子项列表
-    private List<BuildingDetailsChildBean.ListBean> childList = new ArrayList<>();
+    private final List<BuildingDetailsChildBean.ListBean> childList = new ArrayList<>();
     private IndependentAllChildAdapter childAdapter;
     //当前页码
     private int pageNum = 1;
@@ -1213,7 +1213,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     /**
      * 轮播图
      */
-    private List<String> mBannerList = new ArrayList<>();
+    private final List<String> mBannerList = new ArrayList<>();
 
     private void playBanner(List<BuildingDetailsBean.ImgUrlBean> list) {
         //视频设置第一张图为默认背景

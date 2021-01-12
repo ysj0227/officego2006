@@ -28,7 +28,7 @@ import io.rong.imlib.model.Conversation;
  **/
 public class ChatListAdapter extends CommonListAdapter<ChatListBean.ListBean> {
 
-    private Context context;
+    private final Context context;
 
     public ChatListAdapter(Context context, List<ChatListBean.ListBean> list) {
         super(context, R.layout.item_chat_list, list);

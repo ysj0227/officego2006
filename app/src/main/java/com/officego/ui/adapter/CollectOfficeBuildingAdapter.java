@@ -34,7 +34,7 @@ import java.util.List;
  **/
 public class CollectOfficeBuildingAdapter extends CommonListAdapter<CollectBuildingBean.ListBean> {
 
-    private Context context;
+    private final Context context;
     private View view;
 
     public CollectOfficeBuildingAdapter(Context context, List<CollectBuildingBean.ListBean> list) {

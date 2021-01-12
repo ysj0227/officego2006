@@ -22,7 +22,7 @@ import java.util.List;
  **/
 public class SearchKeywordsPresenter extends BasePresenter<SearchContract.View>
         implements SearchContract.Presenter {
-    private Context context;
+    private final Context context;
 
     public SearchKeywordsPresenter(Context context) {
         this.context = context;

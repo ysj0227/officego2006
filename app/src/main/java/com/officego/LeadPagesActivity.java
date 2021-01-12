@@ -48,7 +48,7 @@ public class LeadPagesActivity extends BaseActivity {
     @ViewById(R.id.point4)
     RadioButton point4;
 
-    private SparseArray<View> mPageCache = new SparseArray<>();
+    private final SparseArray<View> mPageCache = new SparseArray<>();
     private final int mCount = 4;//page数量
 
     @AfterViews
@@ -62,7 +62,7 @@ public class LeadPagesActivity extends BaseActivity {
     }
 
     private class ViewPagerAdapter extends PagerAdapter {
-        private LayoutInflater mInflater;
+        private final LayoutInflater mInflater;
 
         private ViewPagerAdapter(Context context) {
             mInflater = LayoutInflater.from(context);

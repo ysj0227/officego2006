@@ -25,9 +25,9 @@ import java.util.Map;
  **/
 public class HouseItemAllAdapter extends CommonListAdapter<BuildingConditionItem> {
 
-    private Context context;
+    private final Context context;
     @SuppressLint("UseSparseArrays")
-    private Map<Integer, Boolean> map = new HashMap<>();
+    private final Map<Integer, Boolean> map = new HashMap<>();
     private boolean onBind;
     private int checkedPosition = 0;//默认选中第一个
 
@@ -57,11 +57,7 @@ public class HouseItemAllAdapter extends CommonListAdapter<BuildingConditionItem
         });
         //显示选中的文本
         onBind = true;
-        if (map != null && map.containsKey(holder.getAdapterPosition())) {
-            setBackGroundColor(true, rlItemHouseAll, tvTop, tvBottom);
-        } else {
-            setBackGroundColor(false, rlItemHouseAll, tvTop, tvBottom);
-        }
+        setBackGroundColor(map != null && map.containsKey(holder.getAdapterPosition()), rlItemHouseAll, tvTop, tvBottom);
         onBind = false;
     }
 

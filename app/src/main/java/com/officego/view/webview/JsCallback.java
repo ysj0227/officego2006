@@ -7,11 +7,11 @@ import java.lang.ref.WeakReference;
 
 public class JsCallback {
     private static final String CALLBACK_JS_FORMAT = "javascript:%s.callback(%d, %d %s);";
-    private int mIndex;
+    private final int mIndex;
     private boolean mCouldGoOn;
-    private WeakReference<WebView> mWebViewRef;
+    private final WeakReference<WebView> mWebViewRef;
     private int mIsPermanent;
-    private String mInjectedName;
+    private final String mInjectedName;
 
     public JsCallback(WebView view, String injectedName, int index) {
         mCouldGoOn = true;

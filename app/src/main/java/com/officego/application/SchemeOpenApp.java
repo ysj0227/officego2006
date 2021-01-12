@@ -16,7 +16,7 @@ import com.officego.ui.home.BuildingDetailsJointWorkChildActivity_;
  * web 外链唤醒app
  */
 public class SchemeOpenApp {
-    private Activity context;
+    private final Activity context;
 
     public SchemeOpenApp(Activity context) {
         this.context = context;

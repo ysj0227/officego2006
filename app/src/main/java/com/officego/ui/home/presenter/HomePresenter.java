@@ -23,7 +23,7 @@ public class HomePresenter extends BasePresenter<HomeContract.View> implements H
     private final String TAG = this.getClass().getSimpleName();
 
     private final SuperSwipeRefreshLayout mSwipeRefreshLayout;
-    private List<String> bannerList = new ArrayList<>();
+    private final List<String> bannerList = new ArrayList<>();
 
     public HomePresenter(SuperSwipeRefreshLayout mSwipeRefreshLayout) {
         this.mSwipeRefreshLayout = mSwipeRefreshLayout;

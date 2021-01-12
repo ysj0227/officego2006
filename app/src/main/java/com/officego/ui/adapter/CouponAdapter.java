@@ -25,8 +25,8 @@ import java.util.List;
  * Date 2020/12/4
  **/
 public class CouponAdapter extends CommonListAdapter<CouponListBean.ListBean> {
-    private Context context;
-    private boolean isValid;
+    private final Context context;
+    private final boolean isValid;
 
     /**
      * @param context 上下文

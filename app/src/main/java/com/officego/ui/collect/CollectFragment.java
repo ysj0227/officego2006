@@ -72,9 +72,9 @@ public class CollectFragment extends BaseMvpFragment<CollectedPresenter>
     private boolean hasMore;
     //adapter
     private CollectOfficeBuildingAdapter collectOfficeBuildingAdapter;
-    private List<CollectBuildingBean.ListBean> collectBuildingList = new ArrayList<>();
+    private final List<CollectBuildingBean.ListBean> collectBuildingList = new ArrayList<>();
     private CollectWorkOfficeAdapter workOfficeAdapter;
-    private List<CollectHouseBean.ListBean> workOfficeList = new ArrayList<>();
+    private final List<CollectHouseBean.ListBean> workOfficeList = new ArrayList<>();
     private boolean isOffice = true;
 
     @SuppressLint("ClickableViewAccessibility")

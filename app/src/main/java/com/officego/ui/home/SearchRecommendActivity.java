@@ -149,7 +149,7 @@ public class SearchRecommendActivity extends BaseMvpActivity<SearchKeywordsPrese
 
 
     private KeywordsAdapter keywordsAdapter;
-    private List<SearchListBean.DataBean> keyList = new ArrayList<>();
+    private final List<SearchListBean.DataBean> keyList = new ArrayList<>();
 
     @Override
     public void searchListSuccess(List<SearchListBean.DataBean> list) {

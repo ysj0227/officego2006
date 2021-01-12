@@ -35,8 +35,8 @@ import java.util.List;
  **/
 public class HouseAdapter extends CommonListAdapter<BuildingBean.ListBean> {
 
-    private Context context;
-    private ConditionBean conditionBean; //传入的筛选条件
+    private final Context context;
+    private final ConditionBean conditionBean; //传入的筛选条件
 
     private ClickItemListener itemListener;
 

@@ -16,7 +16,7 @@ import com.officego.commonlib.utils.log.LogCat;
  **/
 public class SpaceItemDecoration extends RecyclerView.ItemDecoration {
     private final int column;
-    private Context context;
+    private final Context context;
 
 
     public SpaceItemDecoration(Context context, int column) {

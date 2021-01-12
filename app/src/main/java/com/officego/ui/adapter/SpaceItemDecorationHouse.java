@@ -15,7 +15,7 @@ import com.officego.commonlib.utils.CommonHelper;
  **/
 public class SpaceItemDecorationHouse extends RecyclerView.ItemDecoration {
     private final int column;
-    private Context context;
+    private final Context context;
 
 
     public SpaceItemDecorationHouse(Context context, int column) {

@@ -34,7 +34,7 @@ public class SMWebChromeClient extends WebChromeClient {
     private static final int REQUEST_CAMERA = 0xa1;
     private ValueCallback<Uri> filePathCallback;
     private ValueCallback<Uri[]> filePathCallbacks;
-    private BaseActivity mActivity;
+    private final BaseActivity mActivity;
 
     private boolean mIsInjectedJS;
     private Callback callback;
@@ -201,11 +201,7 @@ public class SMWebChromeClient extends WebChromeClient {
             }
         }
         if (filePathCallback != null) {
-            if (result != null) {
-                filePathCallback.onReceiveValue(result);
-            } else {
-                filePathCallback.onReceiveValue(null);
-            }
+            filePathCallback.onReceiveValue(result);
         }
         if (filePathCallbacks != null) {
             if (result != null) {

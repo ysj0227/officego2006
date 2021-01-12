@@ -25,7 +25,7 @@ import java.util.Locale;
  * Descriptions:
  **/
 public class PreImageDialog {
-    private Context context;
+    private final Context context;
     private int current;
 
     public PreImageDialog(Context context, ArrayList<String> list, int current) {

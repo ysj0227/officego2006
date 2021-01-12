@@ -12,7 +12,7 @@ import com.youth.banner.loader.ImageLoader;
  * Descriptions:
  **/
 public class ImageLoaderUtils extends ImageLoader {
-    private Context mContext;
+    private final Context mContext;
     public ImageLoaderUtils(Context context){
         this.mContext=context;
     }

@@ -19,7 +19,7 @@ import java.util.List;
  **/
 public class ServiceBaseLogoAdapter extends CommonListAdapter<BuildingJointWorkBean.BuildingBean.BasicServicesBean> {
 
-    private Context context;
+    private final Context context;
 
     public ServiceBaseLogoAdapter(Context context, List<BuildingJointWorkBean.BuildingBean.BasicServicesBean> list) {
         super(context, R.layout.home_include_house_service_item_logo, list);

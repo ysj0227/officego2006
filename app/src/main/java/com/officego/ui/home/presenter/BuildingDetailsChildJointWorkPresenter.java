@@ -21,7 +21,7 @@ public class BuildingDetailsChildJointWorkPresenter extends BasePresenter<Buildi
         implements BuildingDetailsChildJointWorkContract.Presenter {
     private final String TAG = this.getClass().getSimpleName();
 
-    private Context context;
+    private final Context context;
 
     public BuildingDetailsChildJointWorkPresenter(Context context) {
         this.context = context;

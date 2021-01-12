@@ -22,7 +22,7 @@ import java.util.Map;
 public class DecorationTypeAdapter extends CommonListAdapter<DirectoryBean.DataBean> {
 
     //当前选中的数据列表
-    private Map<Integer, String> map;
+    private final Map<Integer, String> map;
 
     @SuppressLint("UseSparseArrays")
     public DecorationTypeAdapter(Context context, List<DirectoryBean.DataBean> list) {

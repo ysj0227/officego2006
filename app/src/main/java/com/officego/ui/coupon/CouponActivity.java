@@ -45,7 +45,7 @@ public class CouponActivity extends BaseMvpActivity<CouponListPresenter> impleme
 
     //卡券类型
     private int mStatus = 1;
-    private List<CouponListBean.ListBean> list = new ArrayList<>();
+    private final List<CouponListBean.ListBean> list = new ArrayList<>();
     private CouponAdapter adapter;
 
     @AfterViews

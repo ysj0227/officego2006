@@ -18,7 +18,7 @@ import java.util.List;
  **/
 public class HouseServiceAdapter extends CommonListAdapter<DirectoryBean.DataBean> {
 
-    private Context context;
+    private final Context context;
 
     public HouseServiceAdapter(Context context, List<DirectoryBean.DataBean> list) {
         super(context, R.layout.home_include_house_service_item_logo_details, list);

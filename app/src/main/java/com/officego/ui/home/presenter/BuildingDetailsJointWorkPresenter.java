@@ -23,7 +23,7 @@ public class BuildingDetailsJointWorkPresenter extends BasePresenter<BuildingDet
         implements BuildingDetailsJointWorkContract.Presenter {
     private final String TAG = this.getClass().getSimpleName();
 
-    private Context context;
+    private final Context context;
 
     public BuildingDetailsJointWorkPresenter(Context context) {
         this.context = context;

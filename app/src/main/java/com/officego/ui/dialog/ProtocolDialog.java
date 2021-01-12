@@ -22,7 +22,7 @@ import com.officego.h5.WebViewActivity_;
 
 public class ProtocolDialog {
 
-    private Context context;
+    private final Context context;
 
     public AgreeProtocolListener getListener() {
         return listener;
@@ -103,8 +103,8 @@ public class ProtocolDialog {
 
 
     class TextClickableSpan extends ClickableSpan {
-        private Context context;
-        private int type;
+        private final Context context;
+        private final int type;
 
         TextClickableSpan(Context context, int type) {
             this.context = context;
