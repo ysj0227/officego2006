@@ -6,6 +6,7 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -298,11 +299,10 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         ((DiscountHolder) holder).tvRmbMoney.setText(price);
         if (bean.getBannerMap().getBtype() == Constants.TYPE_BUILDING) {
             ((DiscountHolder) holder).tvUnit.setText(DAY_UNIT);
-            ((DiscountHolder) holder).tvDiscount.setText(String.format("¥%s" + DAY_UNIT, salePrice));
         } else {
             ((DiscountHolder) holder).tvUnit.setText(MONTH_UNIT);
-            ((DiscountHolder) holder).tvDiscount.setText(String.format("¥%s" + MONTH_UNIT, salePrice));
         }
+        ((DiscountHolder) holder).tvDiscount.setText(String.format(" ¥%s", salePrice));
         gotoBannerDetails(holder, bean);
     }
 
