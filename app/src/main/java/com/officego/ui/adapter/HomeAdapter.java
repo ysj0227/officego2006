@@ -200,6 +200,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             line = "";
             ((House1Holder) holder).tvLines.setVisibility(View.GONE);
         }
+
         List<HomeHotBean.DataBean.ListBean.BannerMapBean.LabelIdBean> list = bean.getBannerMap().getLabelId();
         if (list == null || list.size() == 0) {
             ((House1Holder) holder).llLabelsHouse.setVisibility(View.GONE);
@@ -288,6 +289,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             ((DiscountHolder) holder).llLabelsDiscount.setVisibility(View.VISIBLE);
             ((DiscountHolder) holder).llLabelsDiscount.setLabels(list, (label, pos, data) -> data.getDictCname());
         }
+        ((DiscountHolder) holder).tvType.setVisibility(bean.getBannerMap().getBtype() == Constants.TYPE_JOINTWORK ? View.VISIBLE : View.GONE);
         Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options())
                 .load(bean.getBannerMap().getImg()).into(((DiscountHolder) holder).ivHouse);
         ((DiscountHolder) holder).tvName.setText(bean.getBannerMap().getName());

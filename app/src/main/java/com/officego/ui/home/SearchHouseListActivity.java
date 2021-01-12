@@ -314,7 +314,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
         this.houseTags = "";
         this.isReviewVR = false;
         this.brandId = "";
-        ConditionConfig.getConditionBean = null;
+        this.mSearchData = null;
         //查询列表
         getList();
     }

@@ -27,7 +27,6 @@ import com.officego.commonlib.common.rongcloud.ConnectRongCloudUtils;
 import com.officego.commonlib.constant.AppConfig;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
-import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.dialog.CommonDialog;
@@ -148,8 +147,6 @@ public class WebViewIdentityActivity extends BaseActivity implements
 
     /**
      * 网络异常
-     *
-     * @param view
      */
     private void receiverExceptionError(WebView view) {
         webView.setVisibility(View.GONE);

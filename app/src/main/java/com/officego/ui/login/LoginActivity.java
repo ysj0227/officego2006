@@ -14,13 +14,13 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.core.app.ActivityCompat;
 
-import com.officego.commonlib.common.analytics.GoogleTrack;
 import com.officego.MainActivity_;
 import com.officego.MainOwnerActivity_;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.analytics.GoogleTrack;
 import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.constant.Constants;
@@ -217,8 +217,6 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
 
     @Override
     public void loginSuccess(LoginBean data) {
-        //google时间分析
-        GoogleTrack.setUserProperty(context);
         //神策
         SensorsTrack.sensorsLogin(data.getUid());
         //登录成功跳转

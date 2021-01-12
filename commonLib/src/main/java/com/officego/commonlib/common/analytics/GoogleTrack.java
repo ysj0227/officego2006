@@ -29,6 +29,8 @@ public class GoogleTrack {
     private static Bundle bundle() {
         Bundle bundle = new Bundle();
         bundle.putString("phone", TextUtils.isEmpty(SpUtils.getPhoneNum()) ? "" : SpUtils.getPhoneNum());
+        bundle.putString("role", (TextUtils.isEmpty(SpUtils.getRole()) || TextUtils.equals("0", SpUtils.getRole())) ? "租户" : "房东");
+        bundle.putString("channel", "android");
         return bundle;
     }
 
@@ -38,7 +40,11 @@ public class GoogleTrack {
      */
     public static void login(Context context) {
         FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(context);
-        firebaseAnalytics.logEvent("login", bundle());
+        Bundle bundle = new Bundle();
+        bundle.putString("phone", TextUtils.isEmpty(SpUtils.getPhoneNum()) ? "" : SpUtils.getPhoneNum());
+        bundle.putString("role", (TextUtils.isEmpty(SpUtils.getRole()) || TextUtils.equals("0", SpUtils.getRole())) ? "租户" : "房东");
+        bundle.putString("channel", "android");
+        firebaseAnalytics.logEvent("login", bundle);
     }
 
     /**
@@ -112,9 +118,8 @@ public class GoogleTrack {
     }
 
     /**
-     * 租户端对话
+     * 交换手机
      */
-    //交换手机
     public static void exchangePhone(Context context, boolean isClick) {
         FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(context);
         if (TextUtils.equals("1", SpUtils.getRole())) {
