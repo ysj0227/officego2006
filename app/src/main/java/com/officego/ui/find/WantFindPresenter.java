@@ -1,7 +1,5 @@
 package com.officego.ui.find;
 
-import android.content.Context;
-
 import com.officego.commonlib.base.BasePresenter;
 import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.commonlib.constant.Constants;
@@ -45,7 +43,7 @@ public class WantFindPresenter extends BasePresenter<WantFindContract.View> impl
     @Override
     public void save(String person, String rent, String factor) {
         mView.showLoadingDialog();
-        OfficegoApi.getInstance().wantToFind(person, person, person, new RetrofitCallback<Object>() {
+        OfficegoApi.getInstance().wantToFind(person, rent, factor, new RetrofitCallback<Object>() {
             @Override
             public void onSuccess(int code, String msg, Object data) {
                 if (isViewAttached()) {
