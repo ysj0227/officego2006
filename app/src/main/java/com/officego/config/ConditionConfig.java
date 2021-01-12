@@ -34,39 +34,25 @@ public class ConditionConfig {
         ConditionBean bean = new ConditionBean();
         String max = "0,99999999";
         int intMax = 99999999;
-        //面积 写字楼和园区
-        if (TextUtils.equals("", area) || TextUtils.equals(max, area)) {
-            area = "";
-        } else {
-            String start, end;
-            if (area.contains(",")) {
-                String str1 = area.substring(0, area.indexOf(","));
-                start = area.substring(0, str1.length());
-                end = area.substring(str1.length() + 1);
-                if (Integer.parseInt(start) > 0 && Integer.parseInt(end) == intMax) {
-                    bean.setAreaValue(start + "㎡以上");
-                } else {
-                    bean.setAreaValue(start + "-" + end + "㎡");
-                }
-            }
-        }
-        if (btype == Constants.TYPE_BUILDING) {//楼盘，办公室
-            if (TextUtils.equals("", seats) || TextUtils.equals(max, seats)) {
-                seats = "";
+        if (filterType == Constants.SEARCH_OFFICE || filterType == Constants.SEARCH_GARDEN) {
+            //面积 写字楼和园区
+            if (TextUtils.equals("", area) || TextUtils.equals(max, area)) {
+                area = "";
             } else {
                 String start, end;
-                if (seats.contains(",")) {//工位
-                    String str1 = seats.substring(0, seats.indexOf(","));
-                    start = seats.substring(0, str1.length());
-                    end = seats.substring(str1.length() + 1);
+                if (area.contains(",")) {
+                    String str1 = area.substring(0, area.indexOf(","));
+                    start = area.substring(0, str1.length());
+                    end = area.substring(str1.length() + 1);
                     if (Integer.parseInt(start) > 0 && Integer.parseInt(end) == intMax) {
-                        bean.setSeatsValue(start + "人以上");
+                        bean.setAreaValue(start + "㎡以上");
                     } else {
-                        bean.setSeatsValue(start + "-" + end + "人");
+                        bean.setAreaValue(start + "-" + end + "㎡");
                     }
                 }
             }
-        } else if (btype == Constants.TYPE_JOINTWORK) {//网点 没有面积条件
+        } else if (filterType == Constants.SEARCH_JOINT_WORK) {
+            //工位
             if (TextUtils.equals("", seats) || TextUtils.equals(max, seats)) {
                 seats = "";
                 area = "";
@@ -83,8 +69,7 @@ public class ConditionConfig {
                     }
                 }
             }
-        }
-        if (filterType == 2) {//开放工位
+        }else {//开放工位或默认全部
             return null;
         }
         bean.setArea(area);

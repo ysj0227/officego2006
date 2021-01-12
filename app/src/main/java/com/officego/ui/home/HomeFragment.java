@@ -25,6 +25,7 @@ import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.update.VersionDialog;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.h5.WebViewIdentityActivity_;
 import com.officego.h5.WebViewMeetingActivity_;
 import com.officego.ui.adapter.BrandAdapter;
 import com.officego.ui.adapter.HomeAdapter;
@@ -195,7 +196,10 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
 
     @Click(R.id.iv_identity)
     void identityClick() {
-        shortTip("H5认证");
+        if (isFastClick(1200)) {
+            return;
+        }
+        WebViewIdentityActivity_.intent(mActivity).start();
     }
 
     @Click(R.id.iv_identity_close)

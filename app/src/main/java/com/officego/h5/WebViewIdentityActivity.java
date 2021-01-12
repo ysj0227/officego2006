@@ -1,13 +1,11 @@
 package com.officego.h5;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.text.TextUtils;
 import android.view.View;
 import android.webkit.CookieManager;
-import android.webkit.GeolocationPermissions;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -16,21 +14,29 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
+import com.officego.MainOwnerActivity_;
 import com.officego.R;
 import com.officego.commonlib.base.BaseActivity;
+import com.officego.commonlib.common.GotoActivityUtils;
+import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.analytics.SensorsTrack;
+import com.officego.commonlib.common.rongcloud.ConnectRongCloudUtils;
 import com.officego.commonlib.constant.AppConfig;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.h5.call.JSMeetingCall;
+import com.officego.commonlib.view.dialog.CommonDialog;
+import com.officego.h5.call.JSIdentityCall;
+import com.officego.rpc.OfficegoApi;
 import com.officego.view.webview.SMWebViewClient;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 /**
@@ -40,62 +46,36 @@ import org.androidannotations.annotations.ViewById;
  **/
 @SuppressLint({"Registered", "NonConstantResourceId"})
 @EActivity(R.layout.activity_webview_coupon)
-public class WebViewMeetingActivity extends BaseActivity {
+public class WebViewIdentityActivity extends BaseActivity implements
+        JSIdentityCall.JSIdentityCallListener {
     @ViewById(R.id.wv_view)
     WebView webView;
     @ViewById(R.id.rl_exception)
     RelativeLayout rlException;
     @ViewById(R.id.btn_again)
     Button btnAgain;
-    @Extra
-    String amountRange;
-    @Extra
-    boolean isMeetingDetail;
-    @Extra
-    int id;
 
+    @SuppressLint("SetTextI18n")
     @AfterViews
     void init() {
-        StatusBarUtils.setStatusBarColor(this);
-        CommonHelper.setRelativeLayoutParams(context, webView, 8);
+        StatusBarUtils.setStatusBarFullTransparent(this);
         setWebChromeClient();
-        if (NetworkUtils.isNetworkAvailable(context)) {
-            loadWebView(strPath());
-        } else {
-            receiverExceptionError(webView);
-        }
+        loadWebView(strPath());
     }
 
     private String strPath() {
-        //会议室详情
-        if (isMeetingDetail) {
-            return AppConfig.MEETING_ROOM_DETAIL_URL +
-                    "?channel=2" +
-                    "&token=" + SpUtils.getSignToken() +
-                    "&id=" + id +
-                    "&latitude=" + Constants.LATITUDE +
-                    "&longitude=" + Constants.LONGITUDE +
-                    "&isApp=1";
-        }
-        //会议室列表
-        return AppConfig.MEETING_ROOM_URL +
+        return AppConfig.TO_IDENTITY_URL +
                 "?channel=2" +
-                "&token=" + SpUtils.getSignToken() +
-                "&amountRange=" + (TextUtils.isEmpty(amountRange) ? "" : amountRange);
+                "&token=" + (TextUtils.isEmpty(SpUtils.getSignToken()) ? "" : SpUtils.getSignToken());
     }
 
+    //设置setWebChromeClient对象
     private void setWebChromeClient() {
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
                 exceptionPageReceivedTitle(view, title);
-            }
-
-            @Override
-            public void onGeolocationPermissionsShowPrompt(String origin, GeolocationPermissions.Callback callback) {
-                callback.invoke(origin, true, true);
-                super.onGeolocationPermissionsShowPrompt(origin, callback);
             }
         });
     }
@@ -109,7 +89,7 @@ public class WebViewMeetingActivity extends BaseActivity {
         }
     }
 
-    @SuppressLint({"SetJavaScriptEnabled", "JavascriptInterface"})
+    @SuppressLint("SetJavaScriptEnabled")
     private void loadWebView(String url) {
         showLoadingDialog();
         WebSettings webSetting = webView.getSettings();
@@ -124,15 +104,13 @@ public class WebViewMeetingActivity extends BaseActivity {
         webSetting.setAllowFileAccess(true);// 设置允许访问文件数据
         webSetting.setLoadWithOverviewMode(true);
         webSetting.setBlockNetworkImage(false);//解决图片不显示
-        //webView在5.0后默认关闭混合加载http不能加载https资源
+        //webview在5.0后默认关闭混合加载http不能加载https资源
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             webSetting.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
-        //高德地图
-        String dir = this.getApplicationContext().getDir("database", Context.MODE_PRIVATE).getPath();
-        webSetting.setGeolocationEnabled(true);
-        webSetting.setGeolocationDatabasePath(dir);
-        webView.addJavascriptInterface(new JSMeetingCall(this), "android");
+        JSIdentityCall jsIdentityCall = new JSIdentityCall(this);
+        jsIdentityCall.setListener(this);
+        webView.addJavascriptInterface(jsIdentityCall, "android");
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         webView.loadUrl(url);
         webView.setWebViewClient(new SMWebViewClient(this) {
@@ -144,7 +122,6 @@ public class WebViewMeetingActivity extends BaseActivity {
 
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
-                showLoadingDialog();
                 super.onPageStarted(view, url, favicon);
             }
 
@@ -168,8 +145,11 @@ public class WebViewMeetingActivity extends BaseActivity {
         });
     }
 
+
     /**
      * 网络异常
+     *
+     * @param view
      */
     private void receiverExceptionError(WebView view) {
         webView.setVisibility(View.GONE);
@@ -183,7 +163,7 @@ public class WebViewMeetingActivity extends BaseActivity {
             rlException.setVisibility(View.GONE);
             view.clearCache(true);
             view.clearHistory();
-            webView.loadUrl(AppConfig.MEETING_ROOM_URL);
+            webView.loadUrl(AppConfig.TO_IDENTITY_URL);
         });
     }
 
@@ -193,18 +173,6 @@ public class WebViewMeetingActivity extends BaseActivity {
         webView.clearFormData();
         CookieManager cookieManager = CookieManager.getInstance();
         cookieManager.removeSessionCookies(null);
-    }
-
-    @Override
-    protected void onResume() {
-        super.onResume();
-        webView.onResume();
-    }
-
-    @Override
-    protected void onPause() {
-        super.onPause();
-        webView.onPause();
     }
 
     @Override
@@ -242,5 +210,69 @@ public class WebViewMeetingActivity extends BaseActivity {
             view.removeAllViews();
             receiverExceptionError(view);// 加载自定义错误页面
         }
+    }
+
+    /**
+     * Android 6.0以上处理方法
+     * onReceivedHttpError
+     */
+    @SuppressLint("SetTextI18n")
+    private void exceptionPageHttpError(WebView view, WebResourceResponse errorResponse) {
+        int statusCode = errorResponse.getStatusCode();
+        if (404 == statusCode || 500 == statusCode) {
+            view.loadUrl("about:blank");// 避免出现默认的错误界面
+            view.removeAllViews();
+            receiverExceptionError(view);
+            TextView tv = findViewById(R.id.tv_net_tip);
+            Button button = findViewById(R.id.btn_again);
+            tv.setText("VR链接打开异常 \n 请稍后再试");
+            button.setVisibility(View.GONE);
+        }
+    }
+
+    @Override
+    public void toSwitchOwner() {
+        switchDialog();
+    }
+
+    private void switchDialog() {
+        CommonDialog dialog = new CommonDialog.Builder(context)
+                .setTitle(R.string.are_you_sure_switch_owner)
+                .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
+                    switchId();
+                    //神策
+                    SensorsTrack.tenantToOwner();
+                })
+                .setCancelButton(R.string.sm_cancel, (dialog1, which) -> dialog1.dismiss()).create();
+        dialog.showWithOutTouchable(false);
+    }
+
+    //租户端---用户身份标：0租户，1户主
+    private void switchId() {
+        showLoadingDialog();
+        OfficegoApi.getInstance().switchId(Constants.TYPE_OWNER, new RetrofitCallback<LoginBean>() {
+            @Override
+            public void onSuccess(int code, String msg, LoginBean data) {
+                hideLoadingDialog();
+                SpUtils.saveLoginInfo(data, SpUtils.getPhoneNum());
+                SpUtils.saveRole(String.valueOf(data.getRid()));
+                new ConnectRongCloudUtils();//连接融云
+                if (TextUtils.equals(Constants.TYPE_TENANT, String.valueOf(data.getRid()))) {
+                    GotoActivityUtils.mainActivity(context); //跳转租户首页
+                } else if (TextUtils.equals(Constants.TYPE_OWNER, String.valueOf(data.getRid()))) {
+                    MainOwnerActivity_.intent(context).start(); //租户切换房东
+                }
+            }
+
+            @Override
+            public void onFail(int code, String msg, LoginBean data) {
+                if (code == Constants.ERROR_CODE_5009) {
+                    hideLoadingDialog();
+                    shortTip(msg);
+                    SpUtils.clearLoginInfo();
+                    GotoActivityUtils.loginClearActivity(context, false);
+                }
+            }
+        });
     }
 }

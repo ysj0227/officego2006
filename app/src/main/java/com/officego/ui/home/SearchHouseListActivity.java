@@ -100,7 +100,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
     //list 是否有更多
     private boolean hasMore;
     //所有的筛选条件
-    private int btype;
+//    private int btype;
     private HashSet<Integer> hashSet;//地铁商圈的传值
     private SparseBooleanArray checkStates; //记录选中的位置
     private String district = "", business = "", line = "", nearbySubway = "",
@@ -304,15 +304,17 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
     //全部，写字楼，共享办公
     @Override
     public void onOfficeTypePopUpWindow(int filterType, int text) {
-        this.filterType = filterType;
         tvSearchOffice.setText(text);
         //初始化选择的写字楼或共享办公
-        area = "";
-        seats = "";
-        dayPrice = "";
-        decoration = "";
-        houseTags = "";
-        bType(filterType);
+        this.filterType = filterType;
+        this.area = "";
+        this.dayPrice = "";
+        this.seats = "";
+        this.decoration = "";
+        this.houseTags = "";
+        this.isReviewVR = false;
+        this.brandId = "";
+        ConditionConfig.getConditionBean = null;
         //查询列表
         getList();
     }
@@ -328,7 +330,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
     //筛选
     @Override
     public void onConditionPopUpWindow(int filterType, ConditionSearchBean bean) {
-        mSearchData = bean;
+        this.mSearchData = bean;
         this.filterType = filterType;
         this.area = bean.getArea();
         this.dayPrice = bean.getRent();
@@ -337,23 +339,21 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
         this.houseTags = bean.getUnique();
         this.isReviewVR = bean.isVr();
         this.brandId = bean.getBrand();
-        bType(filterType);
         ConditionConfig.showText(tvSearchOffice, filterType);
         ConditionConfig.getConditionBean = ConditionConfig.setConditionBean(filterType,
-                btype, area, dayPrice, seats, decoration, houseTags);
+                bType(filterType), area, dayPrice, seats, decoration, houseTags);
         //查询列表
         getList();
     }
 
-    //TODO
-    private void bType(int filterType) {
-        if (filterType == Constants.SEARCH_ALL) {
-            btype = 0;
-        } else if (filterType == Constants.SEARCH_JOINT_WORK || filterType == Constants.SEARCH_OPEN_SEATS) {
-            btype = Constants.TYPE_JOINTWORK;
+
+    private int bType(int filterType) {
+        if (filterType == Constants.SEARCH_JOINT_WORK || filterType == Constants.SEARCH_OPEN_SEATS) {
+            return Constants.TYPE_JOINTWORK;
         } else if (filterType == Constants.SEARCH_OFFICE || filterType == Constants.SEARCH_GARDEN) {
-            btype = Constants.TYPE_BUILDING;
+            return Constants.TYPE_BUILDING;
         }
+        return 0;
     }
 
     private void getList() {

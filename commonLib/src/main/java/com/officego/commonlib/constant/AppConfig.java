@@ -42,6 +42,8 @@ public class AppConfig extends BaseConfig {
     public static String MEETING_ROOM_URL = "";
     //会议室详情
     public static String MEETING_ROOM_DETAIL_URL = "";
+    //租户首页去认证
+    public static String TO_IDENTITY_URL = "";
 
     //测试
     @Override
@@ -63,7 +65,9 @@ public class AppConfig extends BaseConfig {
         H5_VR_RECORD = APP_URL_MAIN + "owner/vr.html";
         //会议室
         MEETING_ROOM_URL = "http://meeting.officego.com.cn/";
-        MEETING_ROOM_DETAIL_URL = "http://meeting.officego.com.cn/";
+        MEETING_ROOM_DETAIL_URL = MEETING_ROOM_URL + "pages/details/details";
+        //去认证
+        TO_IDENTITY_URL = APP_URL_MAIN + "lessee/steps.html";
         //融云IM test
         RC_APPKEY = "kj7swf8oknm02";
         RC_APPSECRET = "OF78PpILjjRk4";
@@ -91,7 +95,9 @@ public class AppConfig extends BaseConfig {
         H5_VR_RECORD = APP_URL_MAIN + "owner/vr.html";
         //会议室
         MEETING_ROOM_URL = "http://meeting.officego.com.cn/";
-        MEETING_ROOM_DETAIL_URL = "http://meeting.officego.com.cn/";
+        MEETING_ROOM_DETAIL_URL =  MEETING_ROOM_URL + "pages/details/details";
+        //去认证
+        TO_IDENTITY_URL = APP_URL_MAIN + "lessee/steps.html";
         //融云IM test
         RC_APPKEY = "kj7swf8oknm02";
         RC_APPSECRET = "OF78PpILjjRk4";
@@ -118,7 +124,10 @@ public class AppConfig extends BaseConfig {
         H5_VR_RECORD = APP_URL_MAIN + "owner/vr.html";
         //会议室
         MEETING_ROOM_URL = "https://meeting.officego.com/";
-        MEETING_ROOM_DETAIL_URL = "https://meeting.officego.com/";
+        //会议室详情
+        MEETING_ROOM_DETAIL_URL =  MEETING_ROOM_URL + "pages/details/details";
+        //去认证
+        TO_IDENTITY_URL = APP_URL_MAIN + "lessee/steps.html";
         //融云IM release
         RC_APPKEY = "qf3d5gbjq94mh";
         RC_APPSECRET = "xtDkNCjJse";

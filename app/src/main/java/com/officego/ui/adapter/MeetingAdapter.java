@@ -47,6 +47,8 @@ public class MeetingAdapter extends CommonListAdapter<HomeMeetingBean.DataBean.L
             vShadow.setVisibility(View.VISIBLE);
             tvLabel.setText(bean.getTypeBean().get(0).getDictCname());
         }
-        holder.itemView.setOnClickListener(view -> WebViewMeetingActivity_.intent(context).isMeetingDetail(true).start());
+        //会议室详情
+        holder.itemView.setOnClickListener(view -> WebViewMeetingActivity_
+                .intent(context).id(bean.getId()).isMeetingDetail(true).start());
     }
 }
