@@ -24,6 +24,7 @@ import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.update.VersionDialog;
 import com.officego.commonlib.utils.CommonHelper;
+import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.h5.WebViewIdentityActivity_;
 import com.officego.h5.WebViewMeetingActivity_;
@@ -340,6 +341,9 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     //下拉刷新
     @Override
     public void onRefresh() {
+        if (!NetworkUtils.isNetworkAvailable(mActivity)) {
+            shortTip(R.string.network_error_tip);
+        }
         getData();
     }
 
@@ -377,7 +381,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         banner.setBannerAnimation(Transformer.Default);
         banner.setDelayTime(3000);
         banner.isAutoPlay(true);
-        //设置指示器的位置，小点点，左中右。
         banner.setIndicatorGravity(BannerConfig.CENTER)
                 .setOnBannerListener(this)
                 .start();
