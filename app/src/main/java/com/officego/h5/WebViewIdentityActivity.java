@@ -32,6 +32,7 @@ import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.h5.call.JSIdentityCall;
 import com.officego.rpc.OfficegoApi;
+import com.officego.ui.login.LoginActivity_;
 import com.officego.view.webview.SMWebViewClient;
 
 import org.androidannotations.annotations.AfterViews;
@@ -229,6 +230,10 @@ public class WebViewIdentityActivity extends BaseActivity implements
 
     @Override
     public void toSwitchOwner() {
+        if (TextUtils.isEmpty(SpUtils.getSignToken())) {
+            LoginActivity_.intent(context).isFinishCurrentView(true).start();
+            return;
+        }
         switchDialog();
     }
 
