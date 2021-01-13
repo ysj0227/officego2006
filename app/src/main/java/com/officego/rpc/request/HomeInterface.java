@@ -131,7 +131,7 @@ public interface HomeInterface {
      * 我想找
      */
     @Multipart
-    @POST(path + "building/addWantGoBuildTemp")
+    @POST(path + "building/addWantGoBuild")
     Call<BaseResponse<Object>> wantToFind(@PartMap Map<String, RequestBody> params);
 
     /**
