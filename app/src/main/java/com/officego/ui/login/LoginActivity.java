@@ -217,6 +217,8 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
 
     @Override
     public void loginSuccess(LoginBean data) {
+        //google用户id
+        GoogleTrack.setUserId(context);
         //神策
         SensorsTrack.sensorsLogin(data.getUid());
         //登录成功跳转

@@ -108,7 +108,7 @@ public class AppConfig extends BaseConfig {
     //生产
     @Override
     protected void initRelease(Context context, String env) {
-        //URL
+        //生产URL
         APP_URL = "https://api.officego.com/";
         APP_URL_MAIN = "https://m.officego.com/";
         WEB_URL_SCAN_LOGIN = "http://webapi.officego.com/";

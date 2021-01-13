@@ -15,17 +15,27 @@ import com.officego.commonlib.common.SpUtils;
 public class GoogleTrack {
 
     /**
+     * 用户id
+     */
+    public static void setUserId(Context context) {
+        FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(context);
+        firebaseAnalytics.setUserId(SpUtils.getSignToken());//设置userId属性
+    }
+
+    /**
      * 用户属性上报
      */
     public static void setUserProperty(Context context) {
         FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(context);
-        firebaseAnalytics.setUserId(SpUtils.getSignToken());//设置userId属性
         firebaseAnalytics.setUserProperty("userNick", SpUtils.getNickName());
         firebaseAnalytics.setUserProperty("phone", SpUtils.getPhoneNum());
         firebaseAnalytics.setUserProperty("role", TextUtils.equals("0", SpUtils.getRole()) ? "租户" : "房东");
         firebaseAnalytics.setUserProperty("channel", "android");
     }
 
+    /**
+     * Bundle 公共参数
+     */
     private static Bundle bundle() {
         Bundle bundle = new Bundle();
         bundle.putString("phone", TextUtils.isEmpty(SpUtils.getPhoneNum()) ? "" : SpUtils.getPhoneNum());
@@ -33,7 +43,6 @@ public class GoogleTrack {
         bundle.putString("channel", "android");
         return bundle;
     }
-
 
     /**
      * 登录事件名：login
@@ -52,69 +61,75 @@ public class GoogleTrack {
      */
     public static void keyLogin(Context context) {
         FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(context);
-        firebaseAnalytics.logEvent("local_tel_login", bundle());
+        firebaseAnalytics.logEvent("localtellogin", bundle());
     }
 
     /**
-     * 楼盘网点详情事件：
+     * 楼盘详情事件：
      * 找房东聊
-     * 楼盘详情：talk_building_detail
-     * 网点详情：talk_shared_detail
      */
     public static void buildingDetailChat(Context context) {
         FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(context);
-        firebaseAnalytics.logEvent("talk_building_detail", bundle());
-    }
-
-    public static void jointWorkDetailChat(Context context) {
-        FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(context);
-        firebaseAnalytics.logEvent("talk_shared_detail", bundle());
+        firebaseAnalytics.logEvent("talk_buildingdetail", bundle());
     }
 
     /**
-     * 收藏
-     * 楼盘：storeup_building_detail
-     * 网点：storeup_shared_detail
+     * 网点详情事件：
+     * 找房东聊
+     */
+    public static void jointWorkDetailChat(Context context) {
+        FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(context);
+        firebaseAnalytics.logEvent("talk_shareddetail", bundle());
+    }
+
+    /**
+     * 楼盘收藏
      */
     public static void buildingCollect(Context context) {
         FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(context);
-        firebaseAnalytics.logEvent("storeup_building_detail", bundle());
-    }
-
-    public static void jointWorkCollect(Context context) {
-        FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(context);
-        firebaseAnalytics.logEvent("storeup_shared_detail", bundle());
+        firebaseAnalytics.logEvent("storeup_buildingdetail", bundle());
     }
 
     /**
-     * 房源详情事件：
+     * 网点收藏
+     */
+    public static void jointWorkCollect(Context context) {
+        FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(context);
+        firebaseAnalytics.logEvent("storeup_shareddetail", bundle());
+    }
+
+    /**
+     * 楼盘 房源详情事件：
      * 找房东聊
-     * 楼盘详情：talk_building_detail
-     * 网点详情：talk_shared_detail
      */
     public static void buildingHouseDetailChat(Context context) {
         FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(context);
-        firebaseAnalytics.logEvent("talk_building_officedetail", bundle());
-    }
-
-    public static void jointWorkHouseDetailChat(Context context) {
-        FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(context);
-        firebaseAnalytics.logEvent("talk_shared_officedetail", bundle());
+        firebaseAnalytics.logEvent("talk_buildingofficedetail", bundle());
     }
 
     /**
-     * 房源收藏
-     * 楼盘：storeup_building_detail
-     * 网点：storeup_shared_detail
+     * 网点 房源详情事件：
+     * 找房东聊
+     */
+    public static void jointWorkHouseDetailChat(Context context) {
+        FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(context);
+        firebaseAnalytics.logEvent("talk_sharedofficedetail", bundle());
+    }
+
+    /**
+     * 楼盘房源收藏
      */
     public static void buildingHouseCollect(Context context) {
         FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(context);
-        firebaseAnalytics.logEvent("storeup_building_officedetail", bundle());
+        firebaseAnalytics.logEvent("storeup_buildingofficedetail", bundle());
     }
 
+    /**
+     * 网点房源收藏
+     */
     public static void jointWorkHouseCollect(Context context) {
         FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(context);
-        firebaseAnalytics.logEvent("storeup_shared_officedetail", bundle());
+        firebaseAnalytics.logEvent("storeup_sharedofficedetail", bundle());
     }
 
     /**
@@ -123,33 +138,39 @@ public class GoogleTrack {
     public static void exchangePhone(Context context, boolean isClick) {
         FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(context);
         if (TextUtils.equals("1", SpUtils.getRole())) {
-            firebaseAnalytics.logEvent(isClick ? "owner_click_exchangephone" : "owner_clickdisable_exchangephone", bundle());
+            firebaseAnalytics.logEvent(isClick ? "exchangephone_enable_owner" : "exchangephone_disable_owner", bundle());
         } else {
-            firebaseAnalytics.logEvent(isClick ? "customer_click_exchangephone" : "customer_clickdisable_exchangephone", bundle());
+            firebaseAnalytics.logEvent(isClick ? "exchangephone_enable_customer" : "exchangephone_disable_customer", bundle());
         }
     }
 
-    //交换微信
+    /**
+     * 交换微信
+     */
     public static void exchangeWechat(Context context, boolean isClick) {
         FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(context);
         if (TextUtils.equals("1", SpUtils.getRole())) {
-            firebaseAnalytics.logEvent(isClick ? "owner_click_exchangewechat" : "owner_clickdisable_exchangewechat", bundle());
+            firebaseAnalytics.logEvent(isClick ? "exchangewechat_enable_owner" : "exchangewechat_disable_owner", bundle());
         } else {
-            firebaseAnalytics.logEvent(isClick ? "customer_click_exchangewechat" : "customer_clickdisable_exchangewechat", bundle());
+            firebaseAnalytics.logEvent(isClick ? "exchangewechat_enable_customer" : "exchangewechat_disable_customer", bundle());
         }
     }
 
-    //看房
+    /**
+     * 看房
+     */
     public static void seeHouse(Context context) {
         FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(context);
         if (TextUtils.equals("1", SpUtils.getRole())) {
-            firebaseAnalytics.logEvent("owner_click_seehouse", bundle());
+            firebaseAnalytics.logEvent("seehouse_owner", bundle());
         } else {
-            firebaseAnalytics.logEvent("customer_click_seehouse", bundle());
+            firebaseAnalytics.logEvent("seehouse_customer", bundle());
         }
     }
 
-    //切换身份
+    /**
+     * 切换身份
+     */
     public static void switchId(Context context) {
         FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(context);
         if (TextUtils.equals("1", SpUtils.getRole())) {
