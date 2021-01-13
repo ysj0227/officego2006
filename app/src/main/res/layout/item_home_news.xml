@@ -25,24 +25,27 @@
 
         <TextView
             android:id="@+id/tv_label"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="@dimen/dp_6"
+            android:ellipsize="end"
             android:paddingBottom="@dimen/dp_20"
+            android:singleLine="true"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_12" />
 
         <TextView
             android:id="@+id/tv_des"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignParentBottom="true"
             android:layout_marginStart="@dimen/dp_6"
+            android:ellipsize="end"
             android:paddingBottom="@dimen/dp_5"
+            android:singleLine="true"
             android:textColor="@color/white"
             android:textSize="@dimen/sp_10" />
-
     </RelativeLayout>
 
 </androidx.cardview.widget.CardView>
