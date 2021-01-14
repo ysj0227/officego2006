@@ -45,9 +45,9 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_8"
         android:ellipsize="end"
-        android:text="陆家嘴世纪金融广场3号楼"
         android:textColor="@color/black"
         android:textSize="@dimen/sp_15"
+        android:singleLine="true"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/riv_house" />
