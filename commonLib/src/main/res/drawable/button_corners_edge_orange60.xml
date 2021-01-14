@@ -4,7 +4,7 @@
 
     <stroke
         android:width="@dimen/dp_1"
-        android:color="@color/common_blue_main_60a" />
+        android:color="@color/common_blue_main_60" />
 
     <solid android:color="@android:color/transparent" />
 

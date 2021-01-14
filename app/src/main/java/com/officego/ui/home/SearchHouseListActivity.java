@@ -158,7 +158,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
     private void initRefresh() {
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setProgressViewOffset(true, -20, 100);
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.common_blue_main_80a, R.color.common_blue_main);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.common_blue_main_80, R.color.common_blue_main);
         //加载更多
         rvHouse.addOnScrollListener(new OnLoadMoreListener() {
             @Override

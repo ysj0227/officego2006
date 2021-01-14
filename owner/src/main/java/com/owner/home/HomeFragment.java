@@ -151,7 +151,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     private void initRefresh() {
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setProgressViewOffset(true, -20, 100);
-        mSwipeRefreshLayout.setColorSchemeResources(R.color.common_blue_main_80a, R.color.common_blue_main);
+        mSwipeRefreshLayout.setColorSchemeResources(R.color.common_blue_main_80, R.color.common_blue_main);
         rvView.addOnScrollListener(new OnLoadMoreListener() {
             @Override
             protected void onLoading(int countItem, int lastItem) {

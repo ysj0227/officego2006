@@ -73,7 +73,7 @@ public class CouponActivity extends BaseMvpActivity<CouponListPresenter> impleme
     private void initRefresh() {
         mSwipeRefreshLayout.setOnRefreshListener(this);
         mSwipeRefreshLayout.setProgressViewOffset(true, -20, 100);
-        mSwipeRefreshLayout.setColorSchemeResources(com.owner.R.color.common_blue_main_80a, com.owner.R.color.common_blue_main);
+        mSwipeRefreshLayout.setColorSchemeResources(com.owner.R.color.common_blue_main_80, com.owner.R.color.common_blue_main);
         //解决下拉刷新快速滑动crash
         rvView.setOnTouchListener((view, motionEvent) -> mSwipeRefreshLayout != null && mSwipeRefreshLayout.isRefreshing());
     }

@@ -10,7 +10,7 @@
         android:thicknessRatio="80"
         android:useLevel="false">
         <gradient
-            android:centerColor="@color/common_blue_main_60a"
+            android:centerColor="@color/common_blue_main_60"
             android:centerY="0.50"
             android:endColor="@color/common_blue_main"
             android:startColor="@color/c_white"
