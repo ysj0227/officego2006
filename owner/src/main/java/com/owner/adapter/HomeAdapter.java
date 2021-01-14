@@ -63,7 +63,7 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
     @Override
     public void convert(ViewHolder holder, HouseBean.ListBean bean) {
         onClick(holder, bean);
-        ImageView ivFlay = holder.getView(R.id.tv_type);
+        TextView ivFlay = holder.getView(R.id.tv_type);
         TextView tvArea = holder.getView(R.id.tv_area);
         RoundImageView ivHouse = holder.getView(R.id.iv_house);
         TextView tvUnit = holder.getView(R.id.tv_unit);
@@ -79,7 +79,9 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
             tvUnit.setText("/位/月");
             //网点下房源 1是独立办公室，2是开放工位
             ivFlay.setVisibility(View.VISIBLE);
-            ivFlay.setBackgroundResource(bean.getOfficeType() == 1 ? R.mipmap.ic_label_independent : R.mipmap.ic_label_open_seats);
+            ivFlay.setText(bean.getOfficeType() == 1 ? "独立办公室" : "开放工位");
+            ivFlay.setBackgroundResource(bean.getOfficeType() == 1 ? R.drawable.text_label_green_no_stroke
+                    : R.drawable.text_label_purple_no_stroke);
         }
         if (Constants.TYPE_JOINTWORK == bean.getBtype() && bean.getOfficeType() == 2) {
             tvArea.setText("共" + bean.getSeats() + "工位");
@@ -152,7 +154,7 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
         if (Constants.TYPE_JOINTWORK == bean.getBtype() && bean.getOfficeType() == 2) {
             return;
         }
-        BundleUtils.ownerGotoDetailsActivity(mContext, bean.getHouseStatus() !=1, false,
+        BundleUtils.ownerGotoDetailsActivity(mContext, bean.getHouseStatus() != 1, false,
                 bean.getBtype(), bean.getHouseId(), bean.getIsTemp());
     }
 

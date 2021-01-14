@@ -9,7 +9,7 @@
 
     <com.officego.commonlib.view.RoundImageView
         android:id="@+id/iv_house"
-        android:layout_width="@dimen/dp_88"
+        android:layout_width="@dimen/dp_115"
         android:layout_height="@dimen/dp_88"
         android:layout_marginStart="@dimen/dp_20"
         android:layout_marginTop="@dimen/dp_18"
@@ -18,13 +18,18 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <ImageView
+    <TextView
         android:id="@+id/tv_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_20"
         android:layout_marginTop="@dimen/dp_18"
-        android:background="@mipmap/ic_label_independent"
+        android:background="@drawable/text_label_green_no_stroke"
+        android:paddingStart="@dimen/dp_3"
+        android:paddingEnd="@dimen/dp_4"
+        android:text="独立办公室"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_10"
         android:visibility="visible"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
@@ -217,13 +222,13 @@
             android:textSize="@dimen/sp_12" />
 
         <ImageView
-            android:visibility="visible"
             android:id="@+id/tv_more"
             android:layout_width="@dimen/dp_23"
             android:layout_height="@dimen/dp_23"
             android:layout_alignParentEnd="true"
             android:layout_marginEnd="@dimen/dp_30"
             android:background="@mipmap/ic_circle_more"
+            android:visibility="visible"
             tools:ignore="ContentDescription" />
     </RelativeLayout>
 
