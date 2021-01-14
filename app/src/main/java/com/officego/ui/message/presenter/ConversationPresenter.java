@@ -113,8 +113,6 @@ public class ConversationPresenter extends BasePresenter<ConversationContract.Vi
 
                     @Override
                     public void onFail(int code, String msg, FirstChatBean data) {
-                        if (isViewAttached()) {
-                        }
                     }
                 });
     }
@@ -132,8 +130,6 @@ public class ConversationPresenter extends BasePresenter<ConversationContract.Vi
 
                     @Override
                     public void onFail(int code, String msg, IdentitychattedMsgBean data) {
-                        if (isViewAttached()) {
-                        }
                     }
                 });
     }
