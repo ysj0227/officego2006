@@ -35,8 +35,16 @@
     <color name="text_f4">#F4F8F7</color>
     <color name="text_e5">#E5E9EF</color>
     <color name="text_ea">#FFEAEA</color>
-    <color name="divider_gray">#DCE2EB</color>
+
+    <color name="transparent">#00000000</color>      <!--透明-->
     <color name="pop_background">#99000000</color>          <!--透明度-->
+    <color name="edit_bottom_line">#D8D8D8</color>     <!--分割线-->
+    <color name="divider_gray">#DCE2EB</color>
+    <color name="c_white">#FFFFFF</color>            <!--白色-->
+    <color name="c_black">#000000</color>            <!--黑色-->
+    <color name="trans_bg">#44000000</color>
+    <color name="trans_common_35">#4D353B3B</color>   <!--透明度50%-->
+    <color name="common_777E8C">#A3777E8C</color>
     <!--其他通用-->
     <color name="common_bg">#FAFAFA</color>          <!--背景-->
     <color name="common_fill">#F5F7FA</color>
@@ -45,7 +53,6 @@
     <color name="common_yellow">#FDA82A</color>
     <color name="common_yellow_trans">#1AFDA82A</color>
     <color name="common_blue">#1F8AF8</color>
-    <color name="trans_common_35">#4D353B3B</color>   <!--透明度50%-->
     <color name="common_red">#FF424F</color>          <!--红色-->
 
     <color name="assist_primary">#3065F5</color>     <!--辅助色-->
@@ -54,10 +61,13 @@
     <color name="assist_secondary">#5A97FC</color>   <!--点缀色1-->
     <color name="caution_secondary">#FF6680</color>  <!--点缀色2-->
     <color name="success_secondary">#4CC3FF</color>  <!--点缀色3-->
+    <color name="assist_primary_light">#4BA2FA</color> <!--辅助色渐变浅-->
 
-    <color name="transparent">#00000000</color>      <!--透明-->
-    <color name="c_white">#FFFFFF</color>            <!--白色-->
-    <color name="c_black">#000000</color>            <!--黑色-->
+    <!-- 金色 开通按钮渐变 -->
+    <color name="golden_light">#EDBA77</color>
+    <color name="golden_dark">#B37A40</color>
+    <color name="golden_pressed_light">#CCA066</color>
+    <color name="golden_pressed_dark">#996937</color>
 
     <!--白色 各种透明度-->
     <color name="white_5a">#0DFFFFFF</color>
@@ -81,6 +91,6 @@
     <color name="black_50">#80000000</color>
     <color name="black_60">#99000000</color>
     <color name="black_70">#B3000000</color>
+    <color name="black">#000000</color>
 
-    <color name="trans_bg">#44000000</color>
 </resources>
