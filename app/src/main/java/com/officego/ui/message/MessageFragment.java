@@ -14,8 +14,8 @@ import androidx.fragment.app.FragmentTransaction;
 import com.officego.R;
 import com.officego.commonlib.base.BaseFragment;
 import com.officego.commonlib.common.SpUtils;
-import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.analytics.SensorsTrack;
+import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.ui.chatlist.MessageListActivity_;
@@ -35,16 +35,9 @@ import io.rong.imlib.model.Conversation;
  * Data 2020/5/11.
  * Descriptions:
  **/
-@SuppressLint("NewApi")
+@SuppressLint({"NewApi", "NonConstantResourceId"})
 @EFragment(R.layout.conversationlist)
 public class MessageFragment extends BaseFragment {
-    private static final int REQUEST_CODE = 1001;
-    @ViewById(R.id.ll_root_message)
-    LinearLayout llRootMessage;
-    @ViewById(R.id.rl_input_text)
-    RelativeLayout rlInputText;
-    @ViewById(R.id.rl_ibtn_search)
-    RelativeLayout rlIbtnSearch;
     @ViewById(R.id.rl_title)
     RelativeLayout rlTitle;
     @ViewById(R.id.ctl_no_login)
