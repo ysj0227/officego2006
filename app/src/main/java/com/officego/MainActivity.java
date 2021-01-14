@@ -121,6 +121,7 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
                 }
                 break;
             case R.id.tab_message:
+                StatusBarUtils.setStatusBarFullTransparent(this);
                 TABLE_BAR_POSITION = 1;
                 if (fg2 == null) {
                     fg2 = new MessageFragment_();
