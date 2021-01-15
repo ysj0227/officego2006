@@ -125,8 +125,8 @@
                         android:textStyle="bold" />
 
                     <TextView
-                        android:drawablePadding="@dimen/dp_2"
-                        android:drawableEnd="@mipmap/ic_right_arrow_small_normal"
+                        android:drawablePadding="@dimen/dp_1"
+                        android:drawableEnd="@mipmap/ic_right_arrow_small"
                         android:id="@+id/tv_all_house"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
@@ -135,7 +135,7 @@
                         android:layout_marginEnd="@dimen/dp_16"
                         android:text="@string/str_all_house"
                         android:textColor="@color/text_66"
-                        android:textSize="@dimen/sp_12" />
+                        android:textSize="@dimen/sp_13" />
 
                     <androidx.recyclerview.widget.RecyclerView
                         android:id="@+id/rv_hots"

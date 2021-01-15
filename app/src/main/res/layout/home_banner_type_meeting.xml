@@ -23,8 +23,8 @@
         android:id="@+id/tv_meeting_flag"
         android:layout_width="@dimen/sp_24"
         android:layout_height="@dimen/dp_12"
-        android:background="@mipmap/ic_home_rent"
         android:layout_marginStart="@dimen/dp_3"
+        android:background="@mipmap/ic_home_rent"
         app:layout_constraintBottom_toBottomOf="@id/tv_meeting_title"
         app:layout_constraintLeft_toRightOf="@id/tv_meeting_title"
         app:layout_constraintTop_toTopOf="@id/tv_meeting_title" />
@@ -33,9 +33,10 @@
         android:id="@+id/tv_meeting_more"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
+        android:drawableEnd="@mipmap/ic_right_arrow_small"
         android:text="查看更多"
         android:textColor="@color/text_66"
-        android:textSize="@dimen/sp_12"
+        android:textSize="@dimen/sp_13"
         app:layout_constraintBottom_toBottomOf="@id/tv_meeting_title"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="@id/tv_meeting_title" />

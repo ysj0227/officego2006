@@ -86,8 +86,6 @@ public class HomeHotBean {
             private String mainPic;
             @SerializedName("id")
             private Integer id;
-            @SerializedName("seatMonthPrice")
-            private Integer seatMonthPrice;
             @SerializedName("address")
             private String address;
             @SerializedName("userId")
@@ -169,14 +167,6 @@ public class HomeHotBean {
 
             public void setId(Integer id) {
                 this.id = id;
-            }
-
-            public Integer getSeatMonthPrice() {
-                return seatMonthPrice;
-            }
-
-            public void setSeatMonthPrice(Integer seatMonthPrice) {
-                this.seatMonthPrice = seatMonthPrice;
             }
 
             public String getVr() {
