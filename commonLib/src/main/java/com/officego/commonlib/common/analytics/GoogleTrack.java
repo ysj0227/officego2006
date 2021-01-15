@@ -49,11 +49,7 @@ public class GoogleTrack {
      */
     public static void login(Context context) {
         FirebaseAnalytics firebaseAnalytics = FirebaseAnalytics.getInstance(context);
-        Bundle bundle = new Bundle();
-        bundle.putString("phone", TextUtils.isEmpty(SpUtils.getPhoneNum()) ? "" : SpUtils.getPhoneNum());
-        bundle.putString("role", (TextUtils.isEmpty(SpUtils.getRole()) || TextUtils.equals("0", SpUtils.getRole())) ? "租户" : "房东");
-        bundle.putString("channel", "android");
-        firebaseAnalytics.logEvent("login", bundle);
+        firebaseAnalytics.logEvent("nlogin", bundle());
     }
 
     /**
