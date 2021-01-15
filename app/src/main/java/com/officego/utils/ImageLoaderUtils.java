@@ -4,6 +4,9 @@ import android.content.Context;
 import android.widget.ImageView;
 
 import com.bumptech.glide.Glide;
+import com.bumptech.glide.request.RequestOptions;
+import com.officego.R;
+import com.officego.commonlib.utils.GlideUtils;
 import com.youth.banner.loader.ImageLoader;
 
 /**
@@ -13,11 +16,14 @@ import com.youth.banner.loader.ImageLoader;
  **/
 public class ImageLoaderUtils extends ImageLoader {
     private final Context mContext;
-    public ImageLoaderUtils(Context context){
-        this.mContext=context;
+
+    public ImageLoaderUtils(Context context) {
+        this.mContext = context;
     }
+
     @Override
     public void displayImage(Context context, Object path, ImageView imageView) {
-        Glide.with(mContext).load((String) path).into(imageView);
+        Glide.with(mContext).applyDefaultRequestOptions(new RequestOptions()
+                .error(R.mipmap.ic_def_banner)).load((String) path).into(imageView);
     }
 }

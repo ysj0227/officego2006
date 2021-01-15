@@ -44,11 +44,10 @@ import java.util.List;
  * Data 2020/5/11.
  * Descriptions:
  **/
-@SuppressLint("NewApi")
+@SuppressLint({"NewApi", "NonConstantResourceId"})
 @EFragment(R.layout.collect_fragment)
 public class CollectFragment extends BaseMvpFragment<CollectedPresenter>
         implements CollectedContract.View, SwipeRefreshLayout.OnRefreshListener {
-    private static final int REQUEST_CODE = 1002;
     @ViewById(R.id.ctl_root)
     ConstraintLayout ctlRoot;
     @ViewById(R.id.ctl_no_login)
