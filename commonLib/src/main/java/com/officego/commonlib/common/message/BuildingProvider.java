@@ -1,11 +1,5 @@
 package com.officego.commonlib.common.message;
 
-/**
- * Created by YangShiJie
- * Data 2020/5/25.
- * Descriptions:
- **/
-
 import android.content.Context;
 import android.text.Spannable;
 import android.text.SpannableString;
@@ -48,9 +42,7 @@ public class BuildingProvider extends IContainerItemProvider.MessageProvider<Bui
         holder.tvRouteMap = view.findViewById(R.id.tv_bus);
         holder.tvPrice = view.findViewById(R.id.tv_price);
         holder.tvStartConversationTime = view.findViewById(R.id.tv_start_conversation_time);
-        holder.tvCollect = view.findViewById(R.id.tv_collect);
         holder.lvLabel = view.findViewById(R.id.lv_label);
-        holder.tvCollect.setVisibility(View.GONE);
         view.setTag(holder);
         return view;
     }
@@ -98,14 +90,13 @@ public class BuildingProvider extends IContainerItemProvider.MessageProvider<Bui
         gotoDetailsActivity(context, info);
     }
 
-    class BuildingHolder {
+    static class BuildingHolder {
         RoundImageView ivHouse;
         TextView tvHouseName;
         TextView tvLocation;
         TextView tvRouteMap;
         TextView tvPrice;
         TextView tvStartConversationTime;
-        TextView tvCollect;
         LabelsView lvLabel;
     }
 }

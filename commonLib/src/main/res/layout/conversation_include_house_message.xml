@@ -122,19 +122,6 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/v_line" />
 
-    <TextView
-        android:id="@+id/tv_collect"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_12"
-        android:drawableStart="@mipmap/ic_collect_gray1"
-        android:drawablePadding="@dimen/dp_6"
-        android:textColor="@color/text_66"
-        android:textSize="@dimen/sp_11"
-        app:layout_constraintBottom_toBottomOf="@id/tv_start_conversation_time"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/v_line" />
-
     <View
         android:layout_width="wrap_content"
         android:layout_height="@dimen/dp_1"
