@@ -38,7 +38,6 @@ import com.officego.commonlib.R;
 import com.officego.commonlib.utils.log.LogCat;
 
 import java.io.File;
-import java.lang.reflect.Field;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
 import java.net.Inet4Address;
@@ -503,28 +502,6 @@ public class CommonHelper {
         float num = (float) a / b;
         DecimalFormat df = new DecimalFormat("0.0");
         return Float.parseFloat(df.format(num));
-    }
-
-    /**
-     * 判断对象中属性值是否全为空
-     *
-     * @param object
-     */
-    public static boolean checkObjAllFieldsIsNull(Object object) {
-        if (null == object) {
-            return true;
-        }
-        try {
-            for (Field f : object.getClass().getDeclaredFields()) {
-                f.setAccessible(true);
-                if (f.get(object) != null && TextUtils.isEmpty(f.get(object).toString())) {
-                    return false;
-                }
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return true;
     }
 
     //object 转小数
