@@ -578,18 +578,8 @@ public class HomeHotBean {
                      * dictCname : 标签
                      */
 
-                    @SerializedName("dictValue")
-                    private Integer dictValue;
                     @SerializedName("dictCname")
                     private String dictCname;
-
-                    public Integer getDictValue() {
-                        return dictValue;
-                    }
-
-                    public void setDictValue(Integer dictValue) {
-                        this.dictValue = dictValue;
-                    }
 
                     public String getDictCname() {
                         return dictCname;
@@ -607,18 +597,8 @@ public class HomeHotBean {
                  * dictCname : 充电桩
                  */
 
-                @SerializedName("dictValue")
-                private Integer dictValue;
                 @SerializedName("dictCname")
                 private String dictCname;
-
-                public Integer getDictValue() {
-                    return dictValue;
-                }
-
-                public void setDictValue(Integer dictValue) {
-                    this.dictValue = dictValue;
-                }
 
                 public String getDictCname() {
                     return dictCname;
