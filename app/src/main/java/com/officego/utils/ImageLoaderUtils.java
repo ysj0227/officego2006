@@ -6,7 +6,6 @@ import android.widget.ImageView;
 import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.RequestOptions;
 import com.officego.R;
-import com.officego.commonlib.utils.GlideUtils;
 import com.youth.banner.loader.ImageLoader;
 
 /**
