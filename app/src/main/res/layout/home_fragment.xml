@@ -22,7 +22,6 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent">
 
-
                 <com.youth.banner.Banner
                     android:id="@+id/banner"
                     android:layout_width="0dp"
@@ -126,6 +125,8 @@
                         android:textStyle="bold" />
 
                     <TextView
+                        android:drawablePadding="@dimen/dp_2"
+                        android:drawableEnd="@mipmap/ic_right_arrow_small_normal"
                         android:id="@+id/tv_all_house"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
