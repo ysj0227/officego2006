@@ -62,10 +62,11 @@ public class WeChatProvider extends IContainerItemProvider.MessageProvider<WeCha
     @Override
     public void bindView(View view, int i, WeChatInfo info, UIMessage uiMessage) {
         WeChatHolder holder = (WeChatHolder) view.getTag();
+        if (info == null) return;
         if (uiMessage.getMessageDirection() == Message.MessageDirection.RECEIVE) {//接收显示同意拒绝
             String otherWx = info.getNumber();//请求方手机号
             String mineWx = SpUtils.getWechat();//接收方自己的微信
-            holder.tvContent.setText(info.getContent());
+            holder.tvContent.setText(TextUtils.isEmpty(info.getContent()) ? "" : info.getContent());
             holder.ivIcon.setBackgroundResource(R.mipmap.ic_exchange_wechat);
             holder.rlContent.setVisibility(View.VISIBLE);
             holder.rlBtn.setVisibility(View.VISIBLE);
@@ -82,7 +83,7 @@ public class WeChatProvider extends IContainerItemProvider.MessageProvider<WeCha
                 BaseNotification.newInstance().postNotificationName(CommonNotifications.conversationWeChatReject, uiMessage.getUId());
             });
         } else {//消息方向，自己发送的
-            holder.tvSend.setText(info.getContent());
+            holder.tvSend.setText(TextUtils.isEmpty(info.getContent()) ? "" : info.getContent());
             holder.tvSend.setVisibility(View.VISIBLE);
             holder.rlBtn.setVisibility(View.GONE);
             holder.ivIcon.setVisibility(View.GONE);
@@ -90,6 +91,7 @@ public class WeChatProvider extends IContainerItemProvider.MessageProvider<WeCha
             holder.rlContent.setVisibility(View.GONE);
         }
     }
+
     //同意交换微信
     private void sendConversationWeChatAgree(String otherWx, String mineWx, String messageUid) {
         BaseNotification.newInstance().postNotificationName(CommonNotifications.conversationWeChatAgree, otherWx, mineWx, messageUid);
