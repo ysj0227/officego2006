@@ -25,7 +25,7 @@ android {
         }
         ndk {
             //设置支持的SO库架构（开发者可以根据需要，选择一个或多个平台的so）
-            abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "x86","x86_64"
+            abiFilters "armeabi", "armeabi-v7a", "arm64-v8a", "x86", "x86_64"
         }
     }
 
@@ -162,7 +162,6 @@ dependencies {
     api 'com.huawei.android.hms:push:2.6.1.301'
 
     //vivo push libs
-
     //oppo push libs
 
     // 神策Sensors Analytics SDK 依赖
@@ -179,9 +178,9 @@ dependencies {
     api 'com.amap.api:location:3.3.0'
     api 'com.amap.api:search:5.0.0'
 
-    //    implementation 'com.tencent.mm.opensdk:wechat-sdk-android-with-mta:+'
     api 'com.tencent.mm.opensdk:wechat-sdk-android-without-mta:+'
 
+    //google分析
     api 'com.google.firebase:firebase-analytics:17.4.1'
     api 'com.google.firebase:firebase-core:17.4.0'
 

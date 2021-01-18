@@ -28,6 +28,7 @@ import com.officego.commonlib.utils.NotificationUtil;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.RegexUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.h5.WebViewActivity_;
 import com.officego.ui.login.contract.LoginContract;
@@ -45,6 +46,8 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.Locale;
 import java.util.Objects;
+
+import cn.jpush.android.api.JPushInterface;
 
 /**
  * Created by YangShiJie
@@ -89,6 +92,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         mPresenter.attachView(this);
         initViews();
         SpUtils.saveImei(context);
+        LogCat.e("TAG","ID 11111="+ JPushInterface.getRegistrationID(context));
     }
 
     private void initViews() {
