@@ -131,7 +131,7 @@ public class WebViewActivity extends BaseActivity {
         webSetting.setLoadWithOverviewMode(true);
         webSetting.setBlockNetworkImage(false);//解决图片不显示
         //webview在5.0后默认关闭混合加载http不能加载https资源
-        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             webSetting.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
         webView.addJavascriptInterface(new JsInterface(this), "android");
@@ -234,8 +234,23 @@ public class WebViewActivity extends BaseActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        webView.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        webView.onPause();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (webView != null) {
+            webView.destroy();
+        }
         clearCache();
     }
 

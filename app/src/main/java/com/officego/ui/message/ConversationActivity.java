@@ -3,6 +3,7 @@ package com.officego.ui.message;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -13,6 +14,7 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentManager;
 
+import com.officego.MainOwnerActivity_;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.GotoActivityUtils;
@@ -23,6 +25,7 @@ import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.dialog.ConfirmDialog;
 import com.officego.commonlib.common.dialog.InputContactsDialog;
 import com.officego.commonlib.common.message.PhoneEncryptedInfo;
+import com.officego.commonlib.common.message.TimeTipInfo;
 import com.officego.commonlib.common.model.ChatHouseBean;
 import com.officego.commonlib.common.model.FirstChatBean;
 import com.officego.commonlib.common.model.IdentitychattedMsgBean;
@@ -35,6 +38,7 @@ import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.ToastUtils;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.ui.message.contract.ConversationContract;
 import com.officego.ui.message.presenter.ConversationPresenter;
@@ -127,6 +131,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
                 mPresenter.firstChatApp(targetId, buildingId, houseId, getHouseChatId);
             }
         }
+       // SendMessageManager.getInstance().sendEcPhoneWarnsMessage(targetId);
     }
 
     @Click(R.id.rl_back)
@@ -199,6 +204,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
                 TextUtils.equals(Constants.TYPE_OWNER, targetId.substring(targetId.length() - 1))) &&
                 TextUtils.equals(Constants.TYPE_TENANT, SpUtils.getRole()) && !isMeetingEnter) {
             SendMessageManager.getInstance().sendTextMessage(targetId, "我对你发布的房源有兴趣，能聊聊吗？");
+            new Handler().postDelayed(() -> SendMessageManager.getInstance().insertTimeTipMessage( targetId),500);
         }
     }
 
@@ -392,7 +398,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
                 CommonNotifications.conversationBindPhone,
                 CommonNotifications.conversationIdApplyAgree,
                 CommonNotifications.conversationIdApplyReject,
-                CommonNotifications.conversationPhoneEncrypted
+                CommonNotifications.conversationPhoneEncrypted,
         };
     }
 
@@ -440,6 +446,11 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         } else if (id == CommonNotifications.conversationBindPhone) {
             //开始发送交换手机信息   本人发出要约，发出自己手机号    mData加入神策数据使用
             SendMessageManager.getInstance().sendPhoneMessage(mData, targetId, "我想和您交换手机号", SpUtils.getPhoneNum(), "");
+
+            //发送交换手机警告提示 业主发起交换手机，租户提醒
+            if (TextUtils.equals(Constants.TYPE_OWNER, SpUtils.getRole())) {
+                new Handler().postDelayed(() -> SendMessageManager.getInstance().sendEcPhoneWarnsMessage(targetId),500);
+            }
         } else if (id == CommonNotifications.conversationIdApplyAgree) {
             //同意认证申请
             SendMessageManager.getInstance().sendIdApplyStatusMessage(true, targetId, "我已同意你加入公司，欢迎", "");

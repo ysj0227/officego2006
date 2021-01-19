@@ -1,24 +1,30 @@
 package com.officego.commonlib.common.rongcloud;
 
+import android.annotation.SuppressLint;
 import android.text.TextUtils;
 
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.common.message.BuildingInfo;
 import com.officego.commonlib.common.message.EcPhoneStatusInfo;
+import com.officego.commonlib.common.message.EcPhoneWarnInfo;
 import com.officego.commonlib.common.message.EcWeChatStatusInfo;
 import com.officego.commonlib.common.message.IdentityApplyInfo;
 import com.officego.commonlib.common.message.IdentityApplyStatusInfo;
 import com.officego.commonlib.common.message.PhoneEncryptedInfo;
 import com.officego.commonlib.common.message.PhoneInfo;
+import com.officego.commonlib.common.message.TimeTipInfo;
 import com.officego.commonlib.common.message.ViewingDateInfo;
 import com.officego.commonlib.common.message.ViewingDateStatusInfo;
 import com.officego.commonlib.common.message.WeChatInfo;
 import com.officego.commonlib.common.model.ChatHouseBean;
-import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.commonlib.utils.log.LogCat;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
 import java.util.Date;
 
 import io.rong.imkit.RongIM;
@@ -203,6 +209,18 @@ public class SendMessageManager {
     }
 
     /**
+     * 发送自定义消息 租户交换手机提示： 为避免电话被频繁骚扰，请谨慎交换电话
+     */
+    public void sendEcPhoneWarnsMessage(String targetId) {
+        String content = "为避免电话被频繁骚扰，请谨慎交换电话";
+        EcPhoneWarnInfo info = new EcPhoneWarnInfo();
+        info.setContent(content);
+        //targetId是接收消息方的id   Conversation.ConversationType 是消息会话的类型在这里表示的是私聊
+        Message message = Message.obtain(targetId, Conversation.ConversationType.PRIVATE, info);
+        RongIM.getInstance().sendMessage(message, content, content, callback);
+    }
+
+    /**
      * 插入手机号加密
      */
     public void insertPhoneEncryptedMessage(PhoneEncryptedInfo info, String targetId) {
@@ -215,6 +233,55 @@ public class SendMessageManager {
                     info,
                     resultCallback);
         }
+    }
+
+    /**
+     * 非工作时间段提示
+     */
+    @SuppressLint("SimpleDateFormat")
+    public void insertTimeTipMessage(String targetId) {
+        String format = "HH:mm:ss";
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat(format);
+            Date nowTime = sdf.parse(sdf.format(new Date()));
+            Date startTime = sdf.parse("09:00:00");
+            Date endTime = sdf.parse("18:00:00");
+            if (!isEffectiveDate(nowTime, startTime, endTime)) {
+                RongIM.getInstance().insertIncomingMessage(
+                        Conversation.ConversationType.PRIVATE,
+                        targetId,
+                        SpUtils.getRongChatId(),
+                        new Message.ReceivedStatus(1), //1 send  2 receive
+                        TimeTipInfo.setData(""),
+                        resultCallback);
+
+            }
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 判断当前时间是否在[startTime, endTime]区间，注意时间格式要一致
+     *
+     * @param nowTime   当前时间
+     * @param startTime 开始时间
+     * @param endTime   结束时间
+     */
+    public boolean isEffectiveDate(Date nowTime, Date startTime, Date endTime) {
+        if (nowTime.getTime() == startTime.getTime()
+                || nowTime.getTime() == endTime.getTime()) {
+            return true;
+        }
+        Calendar date = Calendar.getInstance();
+        date.setTime(nowTime);
+
+        Calendar begin = Calendar.getInstance();
+        begin.setTime(startTime);
+
+        Calendar end = Calendar.getInstance();
+        end.setTime(endTime);
+        return date.after(begin) && date.before(end);
     }
 
     /**

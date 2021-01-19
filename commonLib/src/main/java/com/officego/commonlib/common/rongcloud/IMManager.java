@@ -10,6 +10,8 @@ import com.officego.commonlib.common.message.BuildingInfo;
 import com.officego.commonlib.common.message.BuildingProvider;
 import com.officego.commonlib.common.message.EcPhoneStatusInfo;
 import com.officego.commonlib.common.message.EcPhoneStatusProvider;
+import com.officego.commonlib.common.message.EcPhoneWarnInfo;
+import com.officego.commonlib.common.message.EcPhoneWarnProvider;
 import com.officego.commonlib.common.message.EcWeChatStatusInfo;
 import com.officego.commonlib.common.message.EcWeChatStatusProvider;
 import com.officego.commonlib.common.message.IdentityApplyInfo;
@@ -20,6 +22,8 @@ import com.officego.commonlib.common.message.PhoneEncryptedInfo;
 import com.officego.commonlib.common.message.PhoneEncryptedProvider;
 import com.officego.commonlib.common.message.PhoneInfo;
 import com.officego.commonlib.common.message.PhoneProvider;
+import com.officego.commonlib.common.message.TimeTipInfo;
+import com.officego.commonlib.common.message.TimeTipProvider;
 import com.officego.commonlib.common.message.ViewingDateInfo;
 import com.officego.commonlib.common.message.ViewingDateProvider;
 import com.officego.commonlib.common.message.ViewingDateStatusInfo;
@@ -96,7 +100,7 @@ public class IMManager {
     private void initRongPush() {
         PushConfig config = new PushConfig.Builder()
                 .enableMiPush(AppConfig.MI_APP_ID, AppConfig.MI_APP_KEY)
-                .enableOppoPush(AppConfig.OPPO_APP_KEY,AppConfig.OPPO_APP_SECRET)
+                .enableOppoPush(AppConfig.OPPO_APP_KEY, AppConfig.OPPO_APP_SECRET)
                 .enableHWPush(true)
                 .enableVivoPush(true)
                 .build();
@@ -142,6 +146,12 @@ public class IMManager {
         //聊天手机发送-加密提示
         RongIM.registerMessageType(PhoneEncryptedInfo.class);
         RongIM.registerMessageTemplate(new PhoneEncryptedProvider());
+        //聊天非工作时间段提示
+        RongIM.registerMessageType(TimeTipInfo.class);
+        RongIM.registerMessageTemplate(new TimeTipProvider());
+        //租户交换手机提示
+        RongIM.registerMessageType(EcPhoneWarnInfo.class);
+        RongIM.registerMessageTemplate(new EcPhoneWarnProvider());
     }
 
     /**
@@ -192,7 +202,7 @@ public class IMManager {
      * 初始化已读回执类型
      */
     private void initReadReceiptConversation() {
-        Conversation.ConversationType[] types = new Conversation.ConversationType[] {
+        Conversation.ConversationType[] types = new Conversation.ConversationType[]{
                 Conversation.ConversationType.PRIVATE
         };
         RongIM.getInstance().setReadReceiptConversationTypeList(types);
