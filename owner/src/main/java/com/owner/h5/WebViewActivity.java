@@ -234,8 +234,23 @@ public class WebViewActivity extends BaseActivity {
     }
 
     @Override
+    protected void onResume() {
+        super.onResume();
+        webView.onResume();
+    }
+
+    @Override
+    protected void onPause() {
+        super.onPause();
+        webView.onPause();
+    }
+
+    @Override
     protected void onDestroy() {
         super.onDestroy();
+        if (webView != null) {
+            webView.destroy();
+        }
         clearCache();
     }
 
