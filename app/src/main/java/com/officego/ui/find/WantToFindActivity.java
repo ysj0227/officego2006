@@ -110,8 +110,7 @@ public class WantToFindActivity extends BaseMvpActivity<WantFindPresenter>
     @Click(R.id.btn_save)
     void saveClick() {
         if (TextUtils.isEmpty(mPerson) ||
-                TextUtils.isEmpty(mRent) ||
-                TextUtils.isEmpty(mFactor)) {
+                TextUtils.isEmpty(mRent)) {
             shortTip("还有资料没填哦～");
             return;
         }

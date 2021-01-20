@@ -31,7 +31,7 @@ import org.androidannotations.annotations.ViewById;
  * Data 2020/5/20.
  * Descriptions: setting
  **/
-@SuppressLint("Registered")
+@SuppressLint({"Registered", "NonConstantResourceId"})
 @EActivity(R.layout.mine_activity_setting)
 public class MineSettingActivity extends BaseActivity {
     @ViewById(R.id.tv_version)

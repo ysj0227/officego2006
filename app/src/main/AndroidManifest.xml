@@ -541,6 +541,21 @@
                 <category android:name="${applicationId}" />
             </intent-filter>
         </activity>
+        <!--打招呼列表-->
+        <activity
+            android:name=".ui.mine.SayHiListActivity_"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <!--打招呼管理-->
+        <activity
+            android:name=".ui.mine.SayHiManagerActivity_"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <!--打招呼编辑-->
+        <activity
+            android:name=".ui.mine.SayHiEditActivity_"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
 
         <meta-data
             android:name="JPUSH_APPKEY"
@@ -549,11 +564,11 @@
             android:name="JPUSH_CHANNEL"
             android:value="${JPUSH_CHANNEL}" />
         <!-- 极光配置结束-->
-<!--        <receiver android:name="cn.jpush.android.service.PluginVivoMessageReceiver">-->
-<!--            <intent-filter>-->
-<!--                <action android:name="com.vivo.pushclient.action.RECEIVE" />-->
-<!--            </intent-filter>-->
-<!--        </receiver>-->
+        <!--        <receiver android:name="cn.jpush.android.service.PluginVivoMessageReceiver">-->
+        <!--            <intent-filter>-->
+        <!--                <action android:name="com.vivo.pushclient.action.RECEIVE" />-->
+        <!--            </intent-filter>-->
+        <!--        </receiver>-->
 
     </application>
 </manifest>

@@ -86,10 +86,10 @@
                 android:id="@+id/rl_want"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_12"
                 app:dividerLine="visible"
                 app:imageBackground="@mipmap/ic_want_to_find"
                 app:imageHeight="@dimen/dp_19"
+                android:layout_marginTop="@dimen/dp_12"
                 app:imageWidth="@dimen/dp_16"
                 app:textTitle="我想找" />
 
