@@ -27,7 +27,6 @@ import javax.net.ssl.TrustManager;
 import javax.net.ssl.X509TrustManager;
 
 import cn.jiguang.verifysdk.api.JVerificationInterface;
-import cn.jpush.android.api.JPushInterface;
 
 /**
  * Created by YangShiJie
@@ -43,8 +42,6 @@ public class RootLoader {
     public void init() {
         String env = Utils.getMetaValue(context, "ENV_DATA", AppConfig.ENV_TEST);
         new AppConfig().init(context, env);
-        //JPhsh推送
-        JPushInit(env);
         //JPush一键登录
         quickLogin();
         //create file
@@ -97,12 +94,6 @@ public class RootLoader {
         JVerificationInterface.init(context, (code, result) ->
                 LogCat.d("RootLoader", "[JPush init] code = " + code + " result = " +
                         result + " consists = " + (System.currentTimeMillis() - start)));
-    }
-
-    //极光推送初始化
-    private void JPushInit(String env) {
-        JPushInterface.setDebugMode(!TextUtils.equals(env, AppConfig.ENV_RELEASE));
-        JPushInterface.init(context);
     }
 
     //Glide加载https部分失败，设置信任证书
