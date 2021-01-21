@@ -10,7 +10,7 @@ import com.officego.R;
 import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.SpUtils;
-import com.officego.commonlib.common.VersionBean;
+import com.officego.commonlib.common.model.VersionBean;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.notification.BaseNotification;

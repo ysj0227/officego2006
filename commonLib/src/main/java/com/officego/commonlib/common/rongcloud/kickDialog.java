@@ -33,7 +33,7 @@ public class kickDialog {
                     })
                     .setConfirmButton(R.string.str_login, (dialog12, which) -> {
                         //重连
-                        new ConnectRongCloudUtils();
+                        new RCloudConnectUtils();
                         dialog12.dismiss();
                     }).create();
             dialog.showWithOutTouchable(false);

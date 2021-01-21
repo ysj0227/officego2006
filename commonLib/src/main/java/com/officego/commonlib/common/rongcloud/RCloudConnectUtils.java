@@ -9,10 +9,10 @@ import com.officego.commonlib.utils.log.LogCat;
  * Descriptions:
  * 连接融云 設置用戶信息
  **/
-public class ConnectRongCloudUtils {
+public class RCloudConnectUtils {
     private final String TAG = this.getClass().getSimpleName();
 
-    public ConnectRongCloudUtils() {
+    public RCloudConnectUtils() {
         initRCIM();
     }
 
@@ -24,7 +24,7 @@ public class ConnectRongCloudUtils {
             @Override
             public void onSuccess(String s) {
                 LogCat.e(TAG, "ConnectionStatus onSuccess userRongChatId=" + s);
-                RongCloudSetUserInfoUtils.setCurrentInfo(s);
+                RCloudSetUserInfoUtils.setCurrentInfo(s);
             }
 
             @Override

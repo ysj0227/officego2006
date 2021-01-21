@@ -2,7 +2,6 @@ package com.officego.ui.login;
 
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
-import android.net.Uri;
 import android.os.Build;
 import android.os.CountDownTimer;
 import android.text.Html;
@@ -20,24 +19,17 @@ import com.officego.MainOwnerActivity_;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.LoginBean;
-import com.officego.commonlib.common.RCloudPushBean;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.analytics.GoogleTrack;
 import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.common.config.CommonNotifications;
-import com.officego.commonlib.common.rongcloud.IMManager;
-import com.officego.commonlib.common.rongcloud.ResultCallback;
-import com.officego.commonlib.common.rongcloud.RongCloudSetUserInfoUtils;
 import com.officego.commonlib.constant.Constants;
-import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.NotificationUtil;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.RegexUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.h5.WebViewActivity_;
-import com.officego.rpc.OfficegoApi;
 import com.officego.ui.login.contract.LoginContract;
 import com.officego.ui.login.presenter.LoginPresenter;
 import com.officego.utils.JPushAuthLoginRequest;
@@ -53,9 +45,6 @@ import org.androidannotations.annotations.ViewById;
 
 import java.util.Locale;
 import java.util.Objects;
-
-import io.rong.imkit.RongIM;
-import io.rong.imlib.model.UserInfo;
 
 /**
  * Created by YangShiJie
@@ -100,36 +89,6 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         mPresenter.attachView(this);
         initViews();
         SpUtils.saveImei(context);
-        initRCIM();
-    }
-
-    private void initRCIM() {
-        OfficegoApi.getInstance().RCloudPush(new RetrofitCallback<RCloudPushBean>() {
-            @Override
-            public void onSuccess(int code, String msg, RCloudPushBean data) {
-                IMManager.getInstance().connectIM(data.getRongyuntoken(), new ResultCallback<String>() {
-                    @Override
-                    public void onSuccess(String s) {
-                        LogCat.e(TAG, "1 ConnectionStatus onSuccess userRongChatId=" + s);
-                        UserInfo userInfo = new UserInfo(s, data.getNickName(), Uri.parse(data.getAvatar()));
-                        RongIM.getInstance().setCurrentUserInfo(userInfo);
-                        RongIM.getInstance().setMessageAttachedUserInfo(true);
-                        RongIM.getInstance().enableNewComingMessageIcon(true);
-                        RongIM.getInstance().enableUnreadMessageIcon(true);
-                    }
-
-                    @Override
-                    public void onFail(int errorCode) {
-                        LogCat.e(TAG, "1 ConnectionStatus onFail errorCode=" + errorCode);
-                    }
-                });
-            }
-
-            @Override
-            public void onFail(int code, String msg, RCloudPushBean data) {
-            }
-        });
-
     }
 
     private void initViews() {

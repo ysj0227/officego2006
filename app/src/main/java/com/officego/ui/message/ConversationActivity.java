@@ -14,7 +14,6 @@ import android.widget.TextView;
 import androidx.constraintlayout.widget.ConstraintLayout;
 import androidx.fragment.app.FragmentManager;
 
-import com.officego.MainOwnerActivity_;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.GotoActivityUtils;
@@ -25,12 +24,11 @@ import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.dialog.ConfirmDialog;
 import com.officego.commonlib.common.dialog.InputContactsDialog;
 import com.officego.commonlib.common.message.PhoneEncryptedInfo;
-import com.officego.commonlib.common.message.TimeTipInfo;
 import com.officego.commonlib.common.model.ChatHouseBean;
 import com.officego.commonlib.common.model.FirstChatBean;
 import com.officego.commonlib.common.model.IdentitychattedMsgBean;
 import com.officego.commonlib.common.model.RongUserInfoBean;
-import com.officego.commonlib.common.rongcloud.RongCloudSetUserInfoUtils;
+import com.officego.commonlib.common.rongcloud.RCloudSetUserInfoUtils;
 import com.officego.commonlib.common.rongcloud.SendMessageManager;
 import com.officego.commonlib.common.rongcloud.kickDialog;
 import com.officego.commonlib.constant.Constants;
@@ -38,7 +36,6 @@ import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.ToastUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.ui.message.contract.ConversationContract;
 import com.officego.ui.message.presenter.ConversationPresenter;
@@ -224,12 +221,12 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             }
             tvBuilding.setText(data.getBuilding().getBuildingName());
             if (!TextUtils.isEmpty(targetId)) {
-                RongCloudSetUserInfoUtils.refreshUserInfoCache(targetId,
+                RCloudSetUserInfoUtils.refreshUserInfoCache(targetId,
                         TextUtils.isEmpty(data.getChatted().getNickname()) ? "" : data.getChatted().getNickname(),
                         TextUtils.isEmpty(data.getChatted().getAvatar()) ? "" : data.getChatted().getAvatar());
             }
             if (!TextUtils.isEmpty(SpUtils.getRongChatId())) {
-                RongCloudSetUserInfoUtils.refreshUserInfoCache(SpUtils.getRongChatId(),
+                RCloudSetUserInfoUtils.refreshUserInfoCache(SpUtils.getRongChatId(),
                         TextUtils.isEmpty(SpUtils.getNickName()) ? "" : SpUtils.getNickName(),
                         TextUtils.isEmpty(SpUtils.getHeaderImg()) ? "" : SpUtils.getHeaderImg());
             }
@@ -278,8 +275,8 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
     @Override
     public void identityChattedMsgSuccess(IdentitychattedMsgBean data) {
         mNikeName = data.getNickname();
-        RongCloudSetUserInfoUtils.refreshUserInfoCache(targetId, data.getNickname(), data.getAvatar());
-        RongCloudSetUserInfoUtils.refreshUserInfoCache(SpUtils.getRongChatId(), SpUtils.getNickName(), SpUtils.getHeaderImg());
+        RCloudSetUserInfoUtils.refreshUserInfoCache(targetId, data.getNickname(), data.getAvatar());
+        RCloudSetUserInfoUtils.refreshUserInfoCache(SpUtils.getRongChatId(), SpUtils.getNickName(), SpUtils.getHeaderImg());
         tvTitleName.setText(data.getNickname());
         tvJob.setText(data.getJob());
     }

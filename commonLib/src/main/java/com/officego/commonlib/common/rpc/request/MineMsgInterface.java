@@ -1,7 +1,7 @@
 package com.officego.commonlib.common.rpc.request;
 
 import com.officego.commonlib.common.LoginBean;
-import com.officego.commonlib.common.VersionBean;
+import com.officego.commonlib.common.model.VersionBean;
 import com.officego.commonlib.common.model.UserMessageBean;
 import com.officego.commonlib.retrofit.BaseResponse;
 

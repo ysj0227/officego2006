@@ -23,8 +23,8 @@ import com.officego.commonlib.common.analytics.GoogleTrack;
 import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.model.UserMessageBean;
-import com.officego.commonlib.common.rongcloud.ConnectRongCloudUtils;
-import com.officego.commonlib.common.rongcloud.RongCloudSetUserInfoUtils;
+import com.officego.commonlib.common.rongcloud.RCloudConnectUtils;
+import com.officego.commonlib.common.rongcloud.RCloudSetUserInfoUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.update.VersionDialog;
@@ -208,7 +208,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
                 hideLoadingDialog();
                 SpUtils.saveLoginInfo(data, SpUtils.getPhoneNum());
                 SpUtils.saveRole(String.valueOf(data.getRid()));
-                new ConnectRongCloudUtils();//连接融云
+                new RCloudConnectUtils();//连接融云
                 if (TextUtils.equals(Constants.TYPE_TENANT, String.valueOf(data.getRid()))) {
                     GotoActivityUtils.mainActivity(mActivity); //跳转租户首页
                 } else if (TextUtils.equals(Constants.TYPE_OWNER, String.valueOf(data.getRid()))) {
@@ -233,7 +233,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
     public void userInfoSuccess(UserMessageBean data) {
         if (data != null) {
             //刷新融云头像用户信息
-            RongCloudSetUserInfoUtils.refreshUserInfoCache(SpUtils.getRongChatId(), data.getNickname(), data.getAvatar());
+            RCloudSetUserInfoUtils.refreshUserInfoCache(SpUtils.getRongChatId(), data.getNickname(), data.getAvatar());
             mUserInfo = data;
             tvName.setText(data.getNickname());
             Glide.with(mActivity).applyDefaultRequestOptions(GlideUtils.avaOoptions()).load(data.getAvatar()).into(civAvatar);

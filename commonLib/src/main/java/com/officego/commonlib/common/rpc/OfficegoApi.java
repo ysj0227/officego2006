@@ -2,8 +2,9 @@ package com.officego.commonlib.common.rpc;
 
 import android.text.TextUtils;
 
+import com.officego.commonlib.common.model.RCloudPushBean;
 import com.officego.commonlib.common.SpUtils;
-import com.officego.commonlib.common.VersionBean;
+import com.officego.commonlib.common.model.VersionBean;
 import com.officego.commonlib.common.model.ChatHouseBean;
 import com.officego.commonlib.common.model.ChatListBean;
 import com.officego.commonlib.common.model.CouponDetailsBean;
@@ -30,6 +31,7 @@ import com.officego.commonlib.common.rpc.request.CouponInterface;
 import com.officego.commonlib.common.rpc.request.DirectoryInterface;
 import com.officego.commonlib.common.rpc.request.JPushOneKeyLoginInterface;
 import com.officego.commonlib.common.rpc.request.LicenceInterface;
+import com.officego.commonlib.common.rpc.request.LoginInterface;
 import com.officego.commonlib.common.rpc.request.MineMsgInterface;
 import com.officego.commonlib.common.rpc.request.ScheduleInterface;
 import com.officego.commonlib.common.rpc.request.SearchInterface;
@@ -84,6 +86,16 @@ public class OfficegoApi {
         map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
                 .updateVersion(map)
+                .enqueue(callback);
+    }
+    /**
+     * 服务端返回融云token 为push
+     */
+    public void RCloudPush(RetrofitCallback<RCloudPushBean> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.putAll(map());
+        OfficegoRetrofitClient.getInstance().create(LoginInterface.class)
+                .getRCloudPush(map)
                 .enqueue(callback);
     }
 

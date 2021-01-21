@@ -4,7 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 
 import com.officego.commonlib.R;
-import com.officego.commonlib.common.VersionBean;
+import com.officego.commonlib.common.model.VersionBean;
 import com.officego.commonlib.common.rpc.OfficegoApi;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.CommonHelper;

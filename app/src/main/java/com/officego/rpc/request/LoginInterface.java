@@ -1,8 +1,7 @@
 package com.officego.rpc.request;
 
-import com.officego.commonlib.common.RCloudPushBean;
-import com.officego.commonlib.retrofit.BaseResponse;
 import com.officego.commonlib.common.LoginBean;
+import com.officego.commonlib.retrofit.BaseResponse;
 
 import java.util.Map;
 
@@ -48,13 +47,5 @@ public interface LoginInterface {
     @Multipart
     @POST(path + "login/loginByPhone")
     Call<BaseResponse<LoginBean>> loginOnlyPhone(@PartMap Map<String, RequestBody> params);
-
-
-    /**
-     * 手机免密登录
-     */
-    @Multipart
-    @POST(path + "login/guest")
-    Call<BaseResponse<RCloudPushBean>> getRCloudPush(@PartMap Map<String, RequestBody> params);
 
 }

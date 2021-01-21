@@ -13,7 +13,7 @@ import io.rong.imlib.model.UserInfo;
  * Data 2020/6/20.
  * Descriptions:
  **/
-public class RongCloudSetUserInfoUtils {
+public class RCloudSetUserInfoUtils {
 
     /**
      * 融云连接成功
@@ -35,6 +35,7 @@ public class RongCloudSetUserInfoUtils {
         }
     }
 
+
     /**
      * 刷新融云用户信息
      *
@@ -52,6 +53,22 @@ public class RongCloudSetUserInfoUtils {
                 RongIM.getInstance().enableNewComingMessageIcon(true);
                 RongIM.getInstance().enableUnreadMessageIcon(true);
             }
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 融云连接成功
+     */
+    public static void setCurrentInfoPush(String id, String name, String imgUrl) {
+        try {
+            UserInfo userInfo = new UserInfo(id, name, Uri.parse(imgUrl));
+            RongIM.getInstance().setCurrentUserInfo(userInfo);
+            //是否携带用户信息，true 携带，false 不携带。
+            RongIM.getInstance().setMessageAttachedUserInfo(true);
+            RongIM.getInstance().enableNewComingMessageIcon(true);
+            RongIM.getInstance().enableUnreadMessageIcon(true);
         } catch (Exception e) {
             e.printStackTrace();
         }

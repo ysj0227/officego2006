@@ -8,7 +8,7 @@ import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.model.JPushLoginBean;
-import com.officego.commonlib.common.rongcloud.ConnectRongCloudUtils;
+import com.officego.commonlib.common.rongcloud.RCloudConnectUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.retrofit.RetrofitCallback;
@@ -56,7 +56,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
                     BaseNotification.newInstance().postNotificationName(
                             CommonNotifications.loginIn, "loginIn");
                     SpUtils.saveLoginInfo(data, mobile);
-                    new ConnectRongCloudUtils();
+                    new RCloudConnectUtils();
                     mView.hideLoadingDialog();
                     mView.loginSuccess(data);
                 }
@@ -89,7 +89,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
                     BaseNotification.newInstance().postNotificationName(
                             CommonNotifications.loginIn, "loginIn");
                     SpUtils.saveLoginInfo(data, mobile);
-                    new ConnectRongCloudUtils();
+                    new RCloudConnectUtils();
                     mView.loginSuccess(data);
                 }
             }

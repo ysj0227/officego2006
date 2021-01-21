@@ -1,10 +1,8 @@
 package com.officego.rpc;
 
-import android.content.Context;
 import android.text.TextUtils;
 
 import com.officego.commonlib.common.LoginBean;
-import com.officego.commonlib.common.RCloudPushBean;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.commonlib.common.model.QueryHistoryKeywordsBean;
@@ -124,17 +122,6 @@ public class OfficegoApi {
         map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(LoginInterface.class)
                 .loginOnlyPhone(map)
-                .enqueue(callback);
-    }
-
-    /**
-     * 服务端返回融云token 为push
-     */
-    public void RCloudPush(RetrofitCallback<RCloudPushBean> callback) {
-        Map<String, RequestBody> map = new HashMap<>();
-        map.putAll(map());
-        OfficegoRetrofitClient.getInstance().create(LoginInterface.class)
-                .getRCloudPush(map)
                 .enqueue(callback);
     }
 

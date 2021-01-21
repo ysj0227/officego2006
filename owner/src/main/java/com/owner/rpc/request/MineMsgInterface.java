@@ -1,16 +1,12 @@
 package com.owner.rpc.request;
 
 import com.officego.commonlib.common.LoginBean;
-import com.officego.commonlib.common.VersionBean;
 import com.officego.commonlib.retrofit.BaseResponse;
-import com.owner.mine.model.AvatarBean;
-import com.officego.commonlib.common.model.UserMessageBean;
 
 import java.util.Map;
 
 import okhttp3.RequestBody;
 import retrofit2.Call;
-import retrofit2.http.Body;
 import retrofit2.http.Multipart;
 import retrofit2.http.POST;
 import retrofit2.http.PartMap;

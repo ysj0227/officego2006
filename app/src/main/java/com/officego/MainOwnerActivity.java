@@ -19,7 +19,8 @@ import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
-import com.officego.commonlib.common.rongcloud.ConnectRongCloudUtils;
+import com.officego.commonlib.common.rongcloud.RCloudConnectUtils;
+import com.officego.commonlib.common.rongcloud.RCloudPushUtils;
 import com.officego.commonlib.common.rongcloud.kickDialog;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
@@ -93,7 +94,7 @@ public class MainOwnerActivity extends BaseActivity implements RadioGroup.OnChec
         }
         initBottomImage();
         if (!TextUtils.isEmpty(SpUtils.getSignToken()) && !Constants.isRCIMConnectSuccess) {
-            new ConnectRongCloudUtils();
+            new RCloudConnectUtils();
         }
         addUnReadMessageCountChangedObserver();
         //设置未读消息位置
@@ -101,8 +102,9 @@ public class MainOwnerActivity extends BaseActivity implements RadioGroup.OnChec
         params.width = CommonHelper.getScreenWidth(context) / 4;
         params.leftMargin = CommonHelper.getScreenWidth(context) / 4;
         unreadMessage.setLayoutParams(params);
+        //融云推送未登录
+        new RCloudPushUtils();
     }
-
 
     @Override
     public void onCheckedChanged(RadioGroup group, int checkedId) {
@@ -200,25 +202,27 @@ public class MainOwnerActivity extends BaseActivity implements RadioGroup.OnChec
     private int unreadNum = 0;
 
     private void showMessageCount(int i) {
-        unreadMessage.showCirclePointBadge();
-        unreadMessage.getBadgeViewHelper().setBadgeTextSizeSp(10);
-        unreadMessage.getBadgeViewHelper().setBadgeTextColorInt(Color.WHITE);
-        unreadMessage.getBadgeViewHelper().setBadgeBgColorInt(Color.RED);
-        unreadMessage.getBadgeViewHelper().setDraggable(true);
-        unreadMessage.getBadgeViewHelper().setBadgePaddingDp(5);
-        unreadMessage.getBadgeViewHelper().setBadgeBorderWidthDp(1);
-        unreadMessage.getBadgeViewHelper().setBadgeBorderColorInt(Color.WHITE);
-        if (i < 1) {
-            unreadMessage.hiddenBadge();
-            unreadNum = 0;
-        } else if (i < 100) {
-            unreadMessage.showTextBadge(String.valueOf(i));
-            unreadNum = i;
-        } else {
-            unreadMessage.showTextBadge("99+");
-            unreadNum = 99;
+        if (!TextUtils.isEmpty(SpUtils.getSignToken())) {
+            unreadMessage.showCirclePointBadge();
+            unreadMessage.getBadgeViewHelper().setBadgeTextSizeSp(10);
+            unreadMessage.getBadgeViewHelper().setBadgeTextColorInt(Color.WHITE);
+            unreadMessage.getBadgeViewHelper().setBadgeBgColorInt(Color.RED);
+            unreadMessage.getBadgeViewHelper().setDraggable(true);
+            unreadMessage.getBadgeViewHelper().setBadgePaddingDp(5);
+            unreadMessage.getBadgeViewHelper().setBadgeBorderWidthDp(1);
+            unreadMessage.getBadgeViewHelper().setBadgeBorderColorInt(Color.WHITE);
+            if (i < 1) {
+                unreadMessage.hiddenBadge();
+                unreadNum = 0;
+            } else if (i < 100) {
+                unreadMessage.showTextBadge(String.valueOf(i));
+                unreadNum = i;
+            } else {
+                unreadMessage.showTextBadge("99+");
+                unreadNum = 99;
+            }
+            DesktopCornerUtil.setBadgeNumber(unreadNum);
         }
-        DesktopCornerUtil.setBadgeNumber(unreadNum);
     }
 
     /**

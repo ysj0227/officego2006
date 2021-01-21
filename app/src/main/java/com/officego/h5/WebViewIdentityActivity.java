@@ -23,7 +23,7 @@ import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.LoginBean;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.analytics.SensorsTrack;
-import com.officego.commonlib.common.rongcloud.ConnectRongCloudUtils;
+import com.officego.commonlib.common.rongcloud.RCloudConnectUtils;
 import com.officego.commonlib.constant.AppConfig;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
@@ -258,7 +258,7 @@ public class WebViewIdentityActivity extends BaseActivity implements
                 hideLoadingDialog();
                 SpUtils.saveLoginInfo(data, SpUtils.getPhoneNum());
                 SpUtils.saveRole(String.valueOf(data.getRid()));
-                new ConnectRongCloudUtils();//连接融云
+                new RCloudConnectUtils();//连接融云
                 if (TextUtils.equals(Constants.TYPE_TENANT, String.valueOf(data.getRid()))) {
                     GotoActivityUtils.mainActivity(context); //跳转租户首页
                 } else if (TextUtils.equals(Constants.TYPE_OWNER, String.valueOf(data.getRid()))) {

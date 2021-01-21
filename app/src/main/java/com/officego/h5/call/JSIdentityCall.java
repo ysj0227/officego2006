@@ -1,18 +1,7 @@
 package com.officego.h5.call;
 
 import android.app.Activity;
-import android.text.TextUtils;
 import android.webkit.JavascriptInterface;
-
-import com.officego.MainOwnerActivity_;
-import com.officego.commonlib.common.GotoActivityUtils;
-import com.officego.commonlib.common.LoginBean;
-import com.officego.commonlib.common.SpUtils;
-import com.officego.commonlib.common.rongcloud.ConnectRongCloudUtils;
-import com.officego.commonlib.constant.Constants;
-import com.officego.commonlib.retrofit.RetrofitCallback;
-import com.officego.commonlib.utils.ToastUtils;
-import com.officego.rpc.OfficegoApi;
 
 /**
  * Created by shijie
