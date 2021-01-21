@@ -4,13 +4,12 @@ import android.content.Context;
 import android.text.TextUtils;
 
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.StatusUtils;
 import com.officego.commonlib.common.rongcloud.IMManager;
 import com.officego.commonlib.common.rongcloud.RCloudSetUserInfoUtils;
 import com.officego.commonlib.common.rongcloud.ResultCallback;
-import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.common.rongcloud.remoteclick.RCloudRemoteClick;
 import com.officego.commonlib.utils.log.LogCat;
-
-import org.json.JSONObject;
 
 import io.rong.push.PushType;
 import io.rong.push.notification.PushMessageReceiver;
@@ -21,8 +20,8 @@ import static com.officego.commonlib.common.GotoActivityUtils.gotoSystemPushConv
 /**
  * 融云推送消息
  */
-public class OfficeGoPushMessageReceiver extends PushMessageReceiver {
-    private static final String TAG = "OfficeGoPushMessageReceiver";
+public class CustomPushMessageReceiver extends PushMessageReceiver {
+    private static final String TAG = "CustomPushMessageReceiver";
     private boolean isGotoConversion;
 
     public void onThirdPartyPushState(PushType pushType, String action, long resultCode) {
@@ -34,8 +33,9 @@ public class OfficeGoPushMessageReceiver extends PushMessageReceiver {
      */
     @Override
     public boolean onNotificationMessageArrived(Context context, PushType pushType, PushNotificationMessage notificationMessage) {
-        LogCat.e(TAG, "onNotificationMessageArrived pushType=" + pushType.getName() + "  getTargetId=" + notificationMessage.getTargetId()+
-                "pushData="+notificationMessage.getPushData()+"pushContent="+notificationMessage.getPushContent());
+        LogCat.e(TAG, "onNotificationMessageArrived pushType=" + pushType.getName() + "  getTargetId=" + notificationMessage.getTargetId() +
+                "  pushData=" + notificationMessage.getPushData() + "  pushContent=" + notificationMessage.getPushContent() +
+                "  extra=" + notificationMessage.getExtra() + "  objectName=" + notificationMessage.getObjectName());
         return false;
     }
 
@@ -47,32 +47,35 @@ public class OfficeGoPushMessageReceiver extends PushMessageReceiver {
      */
     @Override
     public boolean onNotificationMessageClicked(Context context, PushType pushType, PushNotificationMessage message) {
-        LogCat.e(TAG, "onNotificationMessageClicked pushType=" + pushType.getName() + "  getTargetId=" + message.getTargetId()+
-                "pushData="+message.getPushData()+"pushContent="+message.getPushContent());
+        LogCat.e(TAG, "onNotificationMessageClicked pushType=" + pushType.getName() + "  getTargetId=" + message.getTargetId() +
+                "  pushData=" + message.getPushData() + "  pushContent=" + message.getPushContent());
         // true. 代表不触发 SDK 默认实现，您自定义处理通知点击跳转事件。  false 融云内置跳转
         String targetId = message.getTargetId();
         isGotoConversion = false;
         if (pushType == PushType.RONG) {
             //跳转系统消息
-            if ((targetId.length() == 1 && TextUtils.equals(Constants.TYPE_SYSTEM, targetId)) ||
-                    (targetId.length() > 1 && TextUtils.equals(Constants.TYPE_SYSTEM, targetId.substring(targetId.length() - 1)))) {
+            if (StatusUtils.isSystemMsg(targetId)) {
                 gotoSystemPushConversationActivity(context, targetId);
                 return true;
             }
             return false;
         } else if (pushType == PushType.XIAOMI || pushType == PushType.VIVO || pushType == PushType.OPPO) {
-            //跳转系统消息
-            pushMIClick(context, targetId);
-            return isGotoConversion;
+            if (message.getPushData() != null && !TextUtils.isEmpty(message.getPushData())) {
+                //小米和vivo的远程推送
+                String pushData = message.getPushData();
+                RCloudRemoteClick.getInstance().MI_VIVO_PushClick(context,pushData);
+                return true;
+            } else {
+                //跳转系统消息
+                pushMIClick(context, targetId);
+                return isGotoConversion;
+            }
         }
         return false;
     }
 
     /**
      * 连接融云
-     *
-     * @param context  context
-     * @param targetId targetId
      */
     private void pushMIClick(Context context, String targetId) {
         if (!TextUtils.isEmpty(SpUtils.getSignToken())) {
@@ -81,8 +84,7 @@ public class OfficeGoPushMessageReceiver extends PushMessageReceiver {
                 public void onSuccess(String s) {
                     RCloudSetUserInfoUtils.setCurrentInfo(s);
                     if (!TextUtils.isEmpty(targetId)) {
-                        if ((targetId.length() == 1 && TextUtils.equals(Constants.TYPE_SYSTEM, targetId)) ||
-                                (targetId.length() > 1 && TextUtils.equals(Constants.TYPE_SYSTEM, targetId.substring(targetId.length() - 1)))) {
+                        if (StatusUtils.isSystemMsg(targetId)) {
                             gotoSystemPushConversationActivity(context, targetId);
                             isGotoConversion = true;
                         }
@@ -93,9 +95,6 @@ public class OfficeGoPushMessageReceiver extends PushMessageReceiver {
                 public void onFail(int errorCode) {
                 }
             });
-        } else {
-//            GotoActivityUtils.gotoLoginActivity(context);
-//            isGotoConversion = true;
         }
     }
 }

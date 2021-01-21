@@ -10,6 +10,7 @@ import androidx.annotation.Nullable;
 import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.analytics.SensorsTrack;
+import com.officego.commonlib.common.rongcloud.remoteclick.RCloudRemoteClick;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
@@ -42,6 +43,8 @@ public class LaunchActivity extends BaseActivity
         }
         //神策
         SensorsTrack.sensorsLogin(SpUtils.getUserId());
+        //OPPO远程推送点击
+        RCloudRemoteClick.getInstance().OPPOPushClick(this);
     }
 
     private void gotoMainActivity() {
