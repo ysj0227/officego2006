@@ -314,7 +314,7 @@ public class IMManager {
                     new RetrofitCallback<RongUserInfoBean>() {
                         @Override
                         public void onSuccess(int code, String msg, RongUserInfoBean data) {
-                            RongCloudSetUserInfoUtils.refreshUserInfoCache(targetId,
+                            RCloudSetUserInfoUtils.refreshUserInfoCache(targetId,
                                     data.getName(), data.getAvatar());
                         }
 

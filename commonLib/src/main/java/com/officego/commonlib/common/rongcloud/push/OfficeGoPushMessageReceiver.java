@@ -5,10 +5,12 @@ import android.text.TextUtils;
 
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.rongcloud.IMManager;
+import com.officego.commonlib.common.rongcloud.RCloudSetUserInfoUtils;
 import com.officego.commonlib.common.rongcloud.ResultCallback;
-import com.officego.commonlib.common.rongcloud.RongCloudSetUserInfoUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.log.LogCat;
+
+import org.json.JSONObject;
 
 import io.rong.push.PushType;
 import io.rong.push.notification.PushMessageReceiver;
@@ -32,7 +34,8 @@ public class OfficeGoPushMessageReceiver extends PushMessageReceiver {
      */
     @Override
     public boolean onNotificationMessageArrived(Context context, PushType pushType, PushNotificationMessage notificationMessage) {
-        LogCat.e(TAG, "pushType=" + pushType.getName() + "  getTargetId=" + notificationMessage.getTargetId());
+        LogCat.e(TAG, "onNotificationMessageArrived pushType=" + pushType.getName() + "  getTargetId=" + notificationMessage.getTargetId()+
+                "pushData="+notificationMessage.getPushData()+"pushContent="+notificationMessage.getPushContent());
         return false;
     }
 
@@ -44,9 +47,10 @@ public class OfficeGoPushMessageReceiver extends PushMessageReceiver {
      */
     @Override
     public boolean onNotificationMessageClicked(Context context, PushType pushType, PushNotificationMessage message) {
+        LogCat.e(TAG, "onNotificationMessageClicked pushType=" + pushType.getName() + "  getTargetId=" + message.getTargetId()+
+                "pushData="+message.getPushData()+"pushContent="+message.getPushContent());
         // true. 代表不触发 SDK 默认实现，您自定义处理通知点击跳转事件。  false 融云内置跳转
         String targetId = message.getTargetId();
-        // LogCat.e(TAG, "pushType=" + pushType.getName() + "  getTargetId=" + targetId);
         isGotoConversion = false;
         if (pushType == PushType.RONG) {
             //跳转系统消息
@@ -75,7 +79,7 @@ public class OfficeGoPushMessageReceiver extends PushMessageReceiver {
             IMManager.getInstance().connectIM(SpUtils.getRongToken(), new ResultCallback<String>() {
                 @Override
                 public void onSuccess(String s) {
-                    RongCloudSetUserInfoUtils.setCurrentInfo(s);
+                    RCloudSetUserInfoUtils.setCurrentInfo(s);
                     if (!TextUtils.isEmpty(targetId)) {
                         if ((targetId.length() == 1 && TextUtils.equals(Constants.TYPE_SYSTEM, targetId)) ||
                                 (targetId.length() > 1 && TextUtils.equals(Constants.TYPE_SYSTEM, targetId.substring(targetId.length() - 1)))) {

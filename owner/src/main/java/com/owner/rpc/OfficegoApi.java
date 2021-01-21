@@ -2,7 +2,7 @@ package com.owner.rpc;
 
 import android.text.TextUtils;
 
-import com.officego.commonlib.common.LoginBean;
+import com.officego.commonlib.common.model.LoginBean;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.model.IdentityRejectBean;
 import com.officego.commonlib.common.model.owner.UploadImageBean;

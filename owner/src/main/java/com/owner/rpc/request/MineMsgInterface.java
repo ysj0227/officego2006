@@ -1,6 +1,6 @@
 package com.owner.rpc.request;
 
-import com.officego.commonlib.common.LoginBean;
+import com.officego.commonlib.common.model.LoginBean;
 import com.officego.commonlib.retrofit.BaseResponse;
 
 import java.util.Map;

@@ -20,7 +20,7 @@ import com.officego.MainOwnerActivity_;
 import com.officego.R;
 import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.GotoActivityUtils;
-import com.officego.commonlib.common.LoginBean;
+import com.officego.commonlib.common.model.LoginBean;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.common.rongcloud.RCloudConnectUtils;

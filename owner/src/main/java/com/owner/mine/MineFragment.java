@@ -17,7 +17,7 @@ import androidx.annotation.NonNull;
 import com.bumptech.glide.Glide;
 import com.officego.commonlib.base.BaseMvpFragment;
 import com.officego.commonlib.common.GotoActivityUtils;
-import com.officego.commonlib.common.LoginBean;
+import com.officego.commonlib.common.model.LoginBean;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.analytics.GoogleTrack;
 import com.officego.commonlib.common.analytics.SensorsTrack;

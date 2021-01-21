@@ -1,7 +1,7 @@
 package com.officego.ui.login.contract;
 
 import com.officego.commonlib.base.BaseView;
-import com.officego.commonlib.common.LoginBean;
+import com.officego.commonlib.common.model.LoginBean;
 
 /**
  * Created by YangShiJie
