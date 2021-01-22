@@ -496,20 +496,20 @@
             android:name="JPUSH_CHANNEL"
             android:value="${JPUSH_CHANNEL}" />
 
-        <!--融云远程推送跳转页面-->
-        <activity
-            android:name=".PushRemoteDetailActivity_"
-            android:exported="true"
-            android:launchMode="singleTask"
-            android:screenOrientation="portrait">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-                <category android:name="android.intent.category.DEFAULT" />
-                <data
-                    android:host="${applicationId}"
-                    android:pathPrefix="/push_message"
-                    android:scheme="rong" />
-            </intent-filter>
-        </activity>
+<!--        &lt;!&ndash;融云针对华为远程推送跳转页面&ndash;&gt;-->
+<!--        <activity-->
+<!--            android:name=".PushRemoteDetailActivity_"-->
+<!--            android:exported="true"-->
+<!--            android:launchMode="singleTask"-->
+<!--            android:screenOrientation="portrait">-->
+<!--            <intent-filter>-->
+<!--                <action android:name="android.intent.action.VIEW" />-->
+<!--                <category android:name="android.intent.category.DEFAULT" />-->
+<!--                <data-->
+<!--                    android:host="${applicationId}"-->
+<!--                    android:pathPrefix="/push_message"-->
+<!--                    android:scheme="rong" />-->
+<!--            </intent-filter>-->
+<!--        </activity>-->
     </application>
 </manifest>

@@ -292,5 +292,4 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
             com.officego.commonlib.common.GotoActivityUtils.loginClearActivity(context, TextUtils.equals(Constants.TYPE_OWNER, SpUtils.getRole()));
         }
     }
-
 }

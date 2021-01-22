@@ -61,9 +61,8 @@ public class CustomPushMessageReceiver extends PushMessageReceiver {
             return false;
         } else if (pushType == PushType.XIAOMI || pushType == PushType.VIVO || pushType == PushType.OPPO) {
             if (message.getPushData() != null && !TextUtils.isEmpty(message.getPushData())) {
-                //小米和vivo的远程推送
-                String pushData = message.getPushData();
-                RCloudRemoteClick.getInstance().MI_VIVO_PushClick(context,pushData);
+                //小米和vivo的远程推送 ：return true自定义跳转
+                RCloudRemoteClick.getInstance().MI_VIVO_PushClick(context,message.getPushData());
                 return true;
             } else {
                 //跳转系统消息
