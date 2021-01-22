@@ -11,12 +11,12 @@ import androidx.annotation.Nullable;
 import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.analytics.SensorsTrack;
-import com.officego.commonlib.common.rongcloud.remoteclick.RCloudRemoteClick;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.log.LogCat;
 import com.officego.location.LocationUtils;
+import com.officego.remoteclick.RCloudRemoteClick;
 import com.officego.ui.dialog.ProtocolDialog;
 import com.officego.ui.find.WantToFindActivity_;
 import com.officego.ui.login.LoginActivity_;
@@ -87,4 +87,5 @@ public class LaunchActivity extends BaseActivity
         super.onDestroy();
         LocationUtils.getInstance().destroyLocation();
     }
+
 }

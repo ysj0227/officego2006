@@ -1,12 +1,13 @@
-package com.officego.commonlib.common.rongcloud.remoteclick;
+package com.officego.remoteclick;
 
 import android.app.Activity;
-import android.content.Context;
-import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.text.TextUtils;
 
+import com.officego.commonlib.common.GotoActivityUtils;
+import com.officego.commonlib.common.config.CommonNotifications;
+import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.utils.log.LogCat;
 
 import org.json.JSONException;
@@ -32,7 +33,6 @@ public class RCloudRemoteClick {
         private static final RCloudRemoteClick INSTANCE = new RCloudRemoteClick();
     }
 
-
     /**
      * OPPO远程推送时在启动页判断bundle 然后进行跳转
      */
@@ -41,14 +41,14 @@ public class RCloudRemoteClick {
             Bundle extras = context.getIntent().getExtras();
             if (extras != null && !TextUtils.isEmpty(extras.getString("rc"))) {
                 String strRC = extras.getString("rc");
-                String appData = extras.getString("appData");
+                String pushData = extras.getString("appData");
                 JSONObject rc = new JSONObject(strRC);
                 Conversation.ConversationType conversationType =
                         Conversation.ConversationType.setValue(rc.getInt("conversationType"));
                 String targetId = rc.getString("fromUserId");
                 LogCat.e(TAG, " oppo strRC=" + strRC);
-                LogCat.e(TAG, " oppo pushData=" + appData);
-                //TODO
+                LogCat.e(TAG, " oppo pushData=" + pushData + "  context=" + context);
+                GotoActivityUtils.MI_VIVO_PushClick(context, pushData);
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -70,6 +70,7 @@ public class RCloudRemoteClick {
                         if (jsonObject.has("appData")) {   // appData 对应的是客户端 sendMessage() 时的参数 pushData
                             String pushData = jsonObject.getString("appData");
                             LogCat.e(TAG, "HW pushData=" + pushData);
+                            BaseNotification.newInstance().postNotificationName(CommonNotifications.RCloudPushData, pushData);
                         }
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -78,14 +79,4 @@ public class RCloudRemoteClick {
             }
         }
     }
-
-    /**
-     * 小米 vivo远程推送时在启动页判断bundle 然后进行跳转
-     */
-    public void MI_VIVO_PushClick(Context context, String pushData) {
-        LogCat.e(TAG, "小米 vivo远程 pushData=" + pushData);
-        Intent intent = new Intent(Intent.ACTION_VIEW, Uri.parse("url://officego/app?pushData=" + pushData));
-        context.startActivity(intent);
-    }
-
 }

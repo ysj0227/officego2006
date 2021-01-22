@@ -154,7 +154,7 @@ public class OfficegoApi {
     public void scanWebLogin(String content, RetrofitCallback<Object> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("uid", requestBody(SpUtils.getUserId()));
-        map.put("token", requestBody(content));
+        map.put("webToken", requestBody(content));
         map.putAll(map());
         OfficegoRetrofitClientWeb.getInstance().create(LoginInterface.class)
                 .scanLogin(map)

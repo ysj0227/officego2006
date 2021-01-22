@@ -1009,7 +1009,7 @@ public class DateTimeUtils {
     public static String stampMinuteToDate(long stampTime, String patten) {
         if (stampTime != 0) {
             Calendar calendar = Calendar.getInstance();
-            calendar.setTimeInMillis(stampTime*1000);
+            calendar.setTimeInMillis(stampTime * 1000);
             Date date = calendar.getTime();
             SimpleDateFormat format = new SimpleDateFormat(patten, Locale.getDefault());
             return format.format(date);
@@ -1021,6 +1021,19 @@ public class DateTimeUtils {
         String currentTime = "";
         try {
             SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss",
+                    Locale.getDefault());
+            Calendar currentDate = Calendar.getInstance();
+            currentTime = format.format(currentDate.getTime());
+        } catch (Exception e) {
+            return null;
+        }
+        return currentTime;
+    }
+
+    public static String getCurrentDate() {
+        String currentTime;
+        try {
+            SimpleDateFormat format = new SimpleDateFormat("yyyy-MM-dd",
                     Locale.getDefault());
             Calendar currentDate = Calendar.getInstance();
             currentTime = format.format(currentDate.getTime());

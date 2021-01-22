@@ -8,6 +8,7 @@ import com.officego.commonlib.base.BaseApplication;
 import com.officego.commonlib.common.model.LoginBean;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
+import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.commonlib.utils.SharedManager;
 
 import io.rong.imkit.RongIM;
@@ -48,6 +49,8 @@ public class SpUtils {
     private static final String WANT_FIND_FACTOR = PACKAGE_NAME + "WANT_FIND_FACTOR";
     //登录成功是否自动保存了我想找
     private static final String LOGIN_WANT_FIND_SAVE = PACKAGE_NAME + "LOGIN_WANT_FIND_SAVE";
+    //当前日期
+    private static final String CURRENT_DATE = PACKAGE_NAME + "CURRENT_DATE";
 
     private static SharedPreferences getSharedPreference() {
         return SharedManager.getSharedPreference(BaseApplication.getContext());
@@ -268,6 +271,16 @@ public class SpUtils {
     //获取自动保存我想找 当手机IMEI为空时
     public static String getLoginWantFind() {
         return SharedManager.getValue(BaseApplication.getContext(), LOGIN_WANT_FIND_SAVE);
+    }
+
+    //保存当前日期
+    public static void saveCurrentDate(String targetId) {
+        SharedManager.putValue(BaseApplication.getContext(), CURRENT_DATE + targetId, DateTimeUtils.getCurrentDate());
+    }
+
+    //获取当前日期
+    public static String getCurrentDate(String targetId) {
+        return SharedManager.getValue(BaseApplication.getContext(), CURRENT_DATE + targetId);
     }
 
 }

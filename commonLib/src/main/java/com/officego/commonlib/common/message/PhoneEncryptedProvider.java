@@ -30,7 +30,8 @@ public class PhoneEncryptedProvider extends IContainerItemProvider.MessageProvid
 
     @Override
     public View newView(Context context, ViewGroup viewGroup) {
-        View view = LayoutInflater.from(context).inflate(R.layout.conversation_item_phone_enterypted_message, viewGroup, false);
+//        View view = LayoutInflater.from(context).inflate(R.layout.conversation_item_phone_enterypted_message, viewGroup, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.conversation_item_time_tip_message, viewGroup, false);
         PhoneEncryptedHolder holder = new PhoneEncryptedHolder();
         holder.tvContent = view.findViewById(R.id.tv_content);
         view.setTag(holder);

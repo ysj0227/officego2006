@@ -1,14 +1,16 @@
 package com.officego.commonlib.common.rongcloud.push;
 
 import android.content.Context;
+import android.content.Intent;
+import android.net.Uri;
 import android.text.TextUtils;
 
+import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.StatusUtils;
 import com.officego.commonlib.common.rongcloud.IMManager;
 import com.officego.commonlib.common.rongcloud.RCloudSetUserInfoUtils;
 import com.officego.commonlib.common.rongcloud.ResultCallback;
-import com.officego.commonlib.common.rongcloud.remoteclick.RCloudRemoteClick;
 import com.officego.commonlib.utils.log.LogCat;
 
 import io.rong.push.PushType;
@@ -62,7 +64,7 @@ public class CustomPushMessageReceiver extends PushMessageReceiver {
         } else if (pushType == PushType.XIAOMI || pushType == PushType.VIVO || pushType == PushType.OPPO) {
             if (message.getPushData() != null && !TextUtils.isEmpty(message.getPushData())) {
                 //小米和vivo的远程推送 ：return true自定义跳转
-                RCloudRemoteClick.getInstance().MI_VIVO_PushClick(context,message.getPushData());
+                GotoActivityUtils.MI_VIVO_PushClick(context, message.getPushData());
                 return true;
             } else {
                 //跳转系统消息

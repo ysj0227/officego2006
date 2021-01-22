@@ -128,7 +128,12 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
                 mPresenter.firstChatApp(targetId, buildingId, houseId, getHouseChatId);
             }
         }
-       // SendMessageManager.getInstance().sendEcPhoneWarnsMessage(targetId);
+        timeTip();
+    }
+
+    //自定义消息插入时间提示
+    private void timeTip() {
+        new Handler().postDelayed(() -> SendMessageManager.getInstance().insertTimeTipMessage(targetId), 2000);
     }
 
     @Click(R.id.rl_back)
@@ -201,7 +206,6 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
                 TextUtils.equals(Constants.TYPE_OWNER, targetId.substring(targetId.length() - 1))) &&
                 TextUtils.equals(Constants.TYPE_TENANT, SpUtils.getRole()) && !isMeetingEnter) {
             SendMessageManager.getInstance().sendTextMessage(targetId, "我对你发布的房源有兴趣，能聊聊吗？");
-            new Handler().postDelayed(() -> SendMessageManager.getInstance().insertTimeTipMessage( targetId),500);
         }
     }
 
@@ -446,7 +450,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
 
             //发送交换手机警告提示 业主发起交换手机，租户提醒
             if (TextUtils.equals(Constants.TYPE_OWNER, SpUtils.getRole())) {
-                new Handler().postDelayed(() -> SendMessageManager.getInstance().sendEcPhoneWarnsMessage(targetId),500);
+                new Handler().postDelayed(() -> SendMessageManager.getInstance().sendEcPhoneWarnsMessage(targetId), 500);
             }
         } else if (id == CommonNotifications.conversationIdApplyAgree) {
             //同意认证申请

@@ -43,6 +43,6 @@ public class CommonNotifications {
     public static final int JPushSendPhone = totalEvents++;
     //搜索发送keywords
     public static final int sendKeyWords = totalEvents++;
-    //华为推送pushData
-    public static final int HUAWEIPushData = totalEvents++;
+    //推送pushData
+    public static final int RCloudPushData = totalEvents++;
 }

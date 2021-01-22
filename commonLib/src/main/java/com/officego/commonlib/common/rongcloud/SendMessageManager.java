@@ -240,24 +240,27 @@ public class SendMessageManager {
      */
     @SuppressLint("SimpleDateFormat")
     public void insertTimeTipMessage(String targetId) {
-        String format = "HH:mm:ss";
-        try {
-            SimpleDateFormat sdf = new SimpleDateFormat(format);
-            Date nowTime = sdf.parse(sdf.format(new Date()));
-            Date startTime = sdf.parse("09:00:00");
-            Date endTime = sdf.parse("18:00:00");
-            if (!isEffectiveDate(nowTime, startTime, endTime)) {
-                RongIM.getInstance().insertIncomingMessage(
-                        Conversation.ConversationType.PRIVATE,
-                        targetId,
-                        SpUtils.getRongChatId(),
-                        new Message.ReceivedStatus(1), //1 send  2 receive
-                        TimeTipInfo.setData(""),
-                        resultCallback);
-
+        String currentData = DateTimeUtils.getCurrentDate();
+        if (!TextUtils.equals(SpUtils.getCurrentDate(targetId), currentData)) {
+            String format = "HH:mm:ss";
+            try {
+                SimpleDateFormat sdf = new SimpleDateFormat(format);
+                Date nowTime = sdf.parse(sdf.format(new Date()));
+                Date startTime = sdf.parse("09:00:00");
+                Date endTime = sdf.parse("18:00:00");
+                if (!isEffectiveDate(nowTime, startTime, endTime)) {
+                    SpUtils.saveCurrentDate(targetId);//当天日期
+                    RongIM.getInstance().insertIncomingMessage(
+                            Conversation.ConversationType.PRIVATE,
+                            targetId,
+                            SpUtils.getRongChatId(),
+                            new Message.ReceivedStatus(1), //1 send  2 receive
+                            TimeTipInfo.setData(""),
+                            resultCallback);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
             }
-        } catch (ParseException e) {
-            e.printStackTrace();
         }
     }
 

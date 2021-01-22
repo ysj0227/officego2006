@@ -4,6 +4,9 @@ import android.app.Activity;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
+
+import com.officego.commonlib.utils.log.LogCat;
 
 /**
  * Created by YangShiJie
@@ -108,6 +111,20 @@ public class GotoActivityUtils {
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
         intent.setComponent(comp);
         intent.setAction("android.intent.action.VIEW");
+        context.startActivity(intent);
+    }
+
+    /**
+     * 小米 vivo远程推送时在启动页判断bundle 然后进行跳转
+     * schema: PushRemoteDetailActivity
+     */
+    public static void MI_VIVO_PushClick(Context context, String pushData) {
+        LogCat.e("MI_VIVO_PushClick", "小米 vivo远程 pushData=" + pushData);
+        String uri = "rong://com.officego/push_message?";
+        Intent intent = new Intent();
+        intent.putExtra("pushData", pushData);
+        intent.setData(Uri.parse(uri));
+        intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//必加
         context.startActivity(intent);
     }
 }
