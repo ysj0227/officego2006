@@ -35,6 +35,18 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:ignore="ContentDescription" />
 
+    <TextView
+        android:id="@+id/tv_title"
+        style="@style/marginLeftRight18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_20"
+        android:text="短信登录"
+        android:textSize="@dimen/sp_20"
+        android:textStyle="bold"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_logo" />
+
     <RelativeLayout
         android:id="@+id/rl_phone"
         style="@style/marginLeftRight18"
@@ -191,6 +203,20 @@
             android:textColor="@color/common_blue_main"
             android:textSize="@dimen/sp_12" />
     </LinearLayout>
+
+    <TextView
+        android:id="@+id/tv_wx_login"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="@dimen/dp_20"
+        android:drawableTop="@mipmap/ic_wx"
+        android:drawablePadding="@dimen/dp_5"
+        android:text="@string/str_wx_login"
+        android:textColor="@color/text_33"
+        android:textSize="@dimen/sp_13"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent" />
 
     <Button
         android:id="@+id/btn_test"

@@ -34,6 +34,7 @@ import com.officego.ui.login.contract.LoginContract;
 import com.officego.ui.login.presenter.LoginPresenter;
 import com.officego.utils.JPushAuthLoginRequest;
 import com.officego.utils.MonitorEditTextUtils;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -193,6 +194,17 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
             return;
         }
         WebViewActivity_.intent(context).flags(Constants.H5_PROTOCOL).start();
+    }
+
+    @Click(R.id.tv_wx_login)
+    void wxLoginClick() {
+        //微信授权
+        if (Constants.WXapi != null) {
+            SendAuth.Req req = new SendAuth.Req();
+            req.scope = "snsapi_userinfo";
+            req.state = "wechat_sdk_demo_test";
+            Constants.WXapi.sendReq(req);
+        }
     }
 
     @Click(R.id.btn_test)

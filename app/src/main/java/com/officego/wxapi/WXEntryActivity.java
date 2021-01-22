@@ -19,6 +19,7 @@ import com.officego.R;
 import com.officego.commonlib.common.model.ShareBean;
 import com.officego.commonlib.constant.AppConfig;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.utils.Util;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
@@ -35,7 +36,6 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
      */
     private final String TAG = this.getClass().getSimpleName();
     private boolean isFirstOpen;
-    private boolean isGoBaseResp;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -82,8 +82,8 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     // 第三方应用发送到微信的请求处理后的响应结果，会回调到该方法
     @Override
     public void onResp(BaseResp resp) {
+        LogCat.e(TAG,"BaseResp="+resp.errCode+" openId="+resp.openId+"  ");
         int result = 0;
-        isGoBaseResp = true;
         switch (resp.errCode) {
             case BaseResp.ErrCode.ERR_OK:
             case BaseResp.ErrCode.ERR_USER_CANCEL:
