@@ -24,10 +24,12 @@ import com.officego.commonlib.common.analytics.GoogleTrack;
 import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NotificationUtil;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.RegexUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.utils.ToastUtils;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.h5.WebViewActivity_;
 import com.officego.ui.login.contract.LoginContract;
@@ -198,9 +200,16 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         WebViewActivity_.intent(context).flags(Constants.H5_PROTOCOL).start();
     }
 
+    //微信授权
     @Click(R.id.tv_wx_login)
     void wxLoginClick() {
-        //微信授权
+        if (!CommonHelper.isInstallWechat(context)) {
+            shortTip(R.string.str_need_install_wx);
+            return;
+        }
+        if (isFastClick(1200)) {
+            return;
+        }
         if (Constants.WXapi != null) {
             SendAuth.Req req = new SendAuth.Req();
             req.scope = "snsapi_userinfo";

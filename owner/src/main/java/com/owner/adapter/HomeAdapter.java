@@ -31,7 +31,6 @@ import java.util.List;
  **/
 public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
     private Context context;
-    private List<HouseBean.ListBean> list;
 
     public HomeItemListener getListener() {
         return listener;
@@ -55,7 +54,6 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
      */
     public HomeAdapter(Context context, List<HouseBean.ListBean> list) {
         super(context, R.layout.item_building_manager, list);
-        this.list = list;
         this.context = context;
     }
 

@@ -4,8 +4,6 @@ import android.app.Dialog;
 import android.content.ComponentName;
 import android.content.Context;
 import android.content.Intent;
-import android.content.pm.PackageInfo;
-import android.content.pm.PackageManager;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -16,9 +14,8 @@ import android.view.WindowManager;
 import com.officego.commonlib.R;
 import com.officego.commonlib.common.model.ShareBean;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.ToastUtils;
-
-import java.util.List;
 
 
 /**
@@ -40,7 +37,7 @@ public class WeChatShareDialog {
 
     //分享
     private void gotoWxActivity(Context context, int type, ShareBean bean) {
-        if (!isInstallWechat(context)) {
+        if (!CommonHelper.isInstallWechat(context)) {
             ToastUtils.toastForShort(context, R.string.str_need_install_wx);
             return;
         }
@@ -58,22 +55,6 @@ public class WeChatShareDialog {
         }
     }
 
-    /**
-     * 是否安装微信
-     */
-    private boolean isInstallWechat(Context context) {
-        final PackageManager packageManager = context.getPackageManager();// 获取packagemanager
-        List<PackageInfo> pinfo = packageManager.getInstalledPackages(0);// 获取所
-        if (pinfo != null) {
-            for (int i = 0; i < pinfo.size(); i++) {
-                String pn = pinfo.get(i).packageName;
-                if (pn.equals("com.tencent.mm")) {
-                    return true;
-                }
-            }
-        }
-        return false;
-    }
 
     private void shareDialog(Context context, ShareBean bean) {
         Dialog dialog = new Dialog(context, R.style.BottomDialog);

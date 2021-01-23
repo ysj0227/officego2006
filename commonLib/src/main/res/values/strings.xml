@@ -178,7 +178,7 @@
     <string name="wx_not_install">您还未安装微信客户端</string>
     <string name="wx_str_no_support_pay">当前微信版本不支持支付，请升级到新版本</string>
     <string name="wx_version_no_support_timeline">当前微信版本不支持分享到朋友圈，请升级到新版本</string>
-    <string name="str_need_install_wx">请安装微信app</string>
+    <string name="str_need_install_wx">您还没有安装微信</string>
     <string name="str_china_telecom">电信</string>
     <string name="str_china_unicom">联通</string>
     <string name="str_china_mobile">移动</string>

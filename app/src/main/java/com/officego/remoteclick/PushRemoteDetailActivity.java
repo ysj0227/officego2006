@@ -1,4 +1,4 @@
-package com.officego;
+package com.officego.remoteclick;
 
 import android.annotation.SuppressLint;
 import android.content.Intent;
@@ -7,12 +7,16 @@ import android.text.TextUtils;
 
 import androidx.annotation.Nullable;
 
+import com.officego.LaunchActivity;
+import com.officego.R;
 import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.log.LogCat;
-import com.officego.remoteclick.RCloudRemoteClick;
 import com.officego.ui.home.BannerToActivity;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  * Created by shijie
@@ -44,24 +48,44 @@ public class PushRemoteDetailActivity extends BaseActivity {
      * 通过参数跳转到指定详情页面
      */
     private void toDetailsActivity(String json) {
-        BannerToActivity.toPushActivity(context, REQUEST_CODE, 1, 5, 0, "");
+        if (TextUtils.isEmpty(json)) {
+            launchActivity();
+            return;
+        }
+        try {
+            JSONObject object = new JSONObject(json);
+            if (object.has("type") && object.has("pageType")) {
+                int type = object.getInt("type");
+                int pageType = object.getInt("pageType");
+                int pageId = object.getInt("pageId");
+                String wUrl = object.getString("wurl");
+                BannerToActivity.toPushActivity(context, REQUEST_CODE, type, pageType, pageId, wUrl);
+            } else {
+                launchActivity();
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    private void launchActivity() {
+        Intent intent = new Intent(context, LaunchActivity.class);
+        startActivity(intent);
+        finish();
     }
 
     @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (REQUEST_CODE == requestCode) {
-            Intent intent = new Intent(context, LaunchActivity.class);
-            startActivity(intent);
-            finish();
+            launchActivity();
         }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        Intent intent = new Intent(context, LaunchActivity.class);
-        startActivity(intent);
+        launchActivity();
     }
 
     @Override
