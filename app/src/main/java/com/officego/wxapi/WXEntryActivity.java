@@ -16,13 +16,17 @@ import com.bumptech.glide.Glide;
 import com.bumptech.glide.request.target.SimpleTarget;
 import com.bumptech.glide.request.transition.Transition;
 import com.officego.R;
+import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.model.ShareBean;
 import com.officego.commonlib.constant.AppConfig;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.utils.log.LogCat;
 import com.officego.utils.Util;
+import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
 import com.tencent.mm.opensdk.modelbase.BaseResp;
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.tencent.mm.opensdk.modelmsg.SendMessageToWX;
 import com.tencent.mm.opensdk.modelmsg.WXMediaMessage;
 import com.tencent.mm.opensdk.modelmsg.WXWebpageObject;
@@ -82,11 +86,22 @@ public class WXEntryActivity extends Activity implements IWXAPIEventHandler {
     // 第三方应用发送到微信的请求处理后的响应结果，会回调到该方法
     @Override
     public void onResp(BaseResp resp) {
-        LogCat.e(TAG,"BaseResp="+resp.errCode+" openId="+resp.openId+"  ");
+        LogCat.e(TAG, "BaseResp=" + resp.errCode + " openId=" + resp.openId + "  ");
         int result = 0;
         switch (resp.errCode) {
             case BaseResp.ErrCode.ERR_OK:
+                if (resp.getType() == ConstantsAPI.COMMAND_SENDAUTH) {
+                    if (resp instanceof SendAuth.Resp) {
+                        SendAuth.Resp newResp = (SendAuth.Resp) resp;
+                        String code = newResp.code;
+                        BaseNotification.newInstance().postNotificationName(
+                                CommonNotifications.weCheatSendAuth, code);
+                    }
+                }
+                this.finish();
+                break;
             case BaseResp.ErrCode.ERR_USER_CANCEL:
+            case BaseResp.ErrCode.ERR_AUTH_DENIED:
                 this.finish();
                 break;
             case BaseResp.ErrCode.ERR_UNSUPPORT:

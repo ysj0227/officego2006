@@ -45,4 +45,6 @@ public class CommonNotifications {
     public static final int sendKeyWords = totalEvents++;
     //推送pushData
     public static final int RCloudPushData = totalEvents++;
+    //微信授权登录成功
+    public static final int weCheatSendAuth = totalEvents++;
 }

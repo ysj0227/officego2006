@@ -91,4 +91,6 @@
     <string name="str_all_house">全部房源</string>
     <string name="str_query_all_house">查看全部房源</string>
     <string name="str_wx_login">微信登录</string>
+    <string name="str_sms_login">短信登录</string>
+    <string name="str_bind_phone">绑定手机号</string>
 </resources>

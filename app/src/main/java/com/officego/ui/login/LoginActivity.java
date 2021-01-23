@@ -63,6 +63,8 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
     ClearableEditText etMobile;
     @ViewById(R.id.et_code)
     ClearableEditText etCode;
+    @ViewById(R.id.tv_title)
+    TextView tvTitle;
     @ViewById(R.id.tv_get_code)
     TextView tvGetCode;
     @ViewById(R.id.tv_protocol)
@@ -202,7 +204,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         if (Constants.WXapi != null) {
             SendAuth.Req req = new SendAuth.Req();
             req.scope = "snsapi_userinfo";
-            req.state = "wechat_sdk_demo_test";
+            req.state = "wechat_officego";
             Constants.WXapi.sendReq(req);
         }
     }
@@ -251,7 +253,8 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
 
     @Override
     public int[] getStickNotificationId() {
-        return new int[]{CommonNotifications.JPushSendPhone};
+        return new int[]{CommonNotifications.JPushSendPhone,
+                CommonNotifications.weCheatSendAuth};
     }
 
     @Override
@@ -259,7 +262,16 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         super.didReceivedNotification(id, args);
         if (id == CommonNotifications.JPushSendPhone) {
             mPresenter.getJPushPhone((String) args[0]);
+        } else if (id == CommonNotifications.weCheatSendAuth) {
+            String str = (String) args[0];
+            setTitle();
+            shortTip(str);
         }
+    }
+
+    @UiThread
+    void setTitle() {
+        tvTitle.setText(R.string.str_bind_phone);
     }
 
     @Override

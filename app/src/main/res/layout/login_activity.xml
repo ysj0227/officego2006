@@ -40,8 +40,8 @@
         style="@style/marginLeftRight18"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_20"
-        android:text="短信登录"
+        android:layout_marginTop="@dimen/dp_30"
+        android:text="@string/str_sms_login"
         android:textSize="@dimen/sp_20"
         android:textStyle="bold"
         app:layout_constraintStart_toStartOf="parent"
@@ -52,10 +52,10 @@
         style="@style/marginLeftRight18"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_54"
-        android:layout_marginTop="@dimen/dp_46"
+        android:layout_marginTop="@dimen/dp_5"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/iv_logo">
+        app:layout_constraintTop_toBottomOf="@id/tv_title">
 
         <TextView
             android:id="@+id/tv_region"

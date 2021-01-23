@@ -94,7 +94,7 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
     private void onClick(ViewHolder holder, HouseBean.ListBean bean) {
         ImageView ivFlagOff = holder.getView(R.id.iv_flag_off);
         TextView tvPublishStatus = holder.getView(R.id.tv_publish_status);
-        TextView tvShare = holder.getView(R.id.tv_share);
+        TextView tvShare = holder.getView(R.id.tv_owner_share);
         TextView tvEdit = holder.getView(R.id.tv_edit);
         ImageView tvMore = holder.getView(R.id.tv_more);
         //分享
@@ -122,7 +122,7 @@ public class HomeAdapter extends CommonListAdapter<HouseBean.ListBean> {
 
         View.OnClickListener clickListener = view -> {
             int id = view.getId();
-            if (id == R.id.tv_share) {
+            if (id == R.id.tv_owner_share) {
                 if (bean.getHouseStatus() == 2) {
                     ToastUtils.toastForShort(context, "房源已下架，请先上架后再分享");
                 } else if (bean.getHouseStatus() == 0 || bean.getHouseStatus() == 3) {
