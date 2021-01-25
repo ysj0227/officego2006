@@ -275,12 +275,14 @@ public class SpUtils {
 
     //保存当前日期
     public static void saveCurrentDate(String targetId) {
-        SharedManager.putValue(BaseApplication.getContext(), CURRENT_DATE + targetId, DateTimeUtils.getCurrentDate());
+        String key = CURRENT_DATE + targetId + (TextUtils.isEmpty(SpUtils.getRongChatId()) ? "" : SpUtils.getRongChatId());
+        SharedManager.putValue(BaseApplication.getContext(), key, DateTimeUtils.getCurrentDate());
     }
 
     //获取当前日期
     public static String getCurrentDate(String targetId) {
-        return SharedManager.getValue(BaseApplication.getContext(), CURRENT_DATE + targetId);
+        String key = CURRENT_DATE + targetId + (TextUtils.isEmpty(SpUtils.getRongChatId()) ? "" : SpUtils.getRongChatId());
+        return SharedManager.getValue(BaseApplication.getContext(), key);
     }
 
 }

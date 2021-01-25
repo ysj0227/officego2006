@@ -26,10 +26,13 @@ import io.rong.imlib.model.Message;
  */
 @ProviderTag(messageContent = EcPhoneWarnInfo.class, showPortrait = false, centerInHorizontal = true)
 public class EcPhoneWarnProvider extends IContainerItemProvider.MessageProvider<EcPhoneWarnInfo> {
-   // private final String str = "为避免电话被频繁骚扰，请谨慎交换电话";
+    // private final String str = "为避免电话被频繁骚扰，请谨慎交换电话";
+
+    private Context context;
 
     @Override
     public View newView(Context context, ViewGroup viewGroup) {
+        this.context = context;
         View view = LayoutInflater.from(context).inflate(R.layout.conversation_item_time_tip_message, viewGroup, false);
         EcPhoneWarnHolder holder = new EcPhoneWarnHolder();
         holder.tvContent = view.findViewById(R.id.tv_content);
@@ -42,6 +45,9 @@ public class EcPhoneWarnProvider extends IContainerItemProvider.MessageProvider<
         EcPhoneWarnHolder holder = (EcPhoneWarnHolder) view.getTag();
         if (uiMessage.getMessageDirection() == Message.MessageDirection.RECEIVE) {
             holder.tvContent.setVisibility(View.VISIBLE);
+            holder.tvContent.setBackgroundResource(R.drawable.bg_shape_red);
+            holder.tvContent.setTextColor(context.getResources().getColor(R.color.common_red));
+            holder.tvContent.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_phone_warn, 0, 0, 0);
             holder.tvContent.setText("为避免电话被频繁骚扰，请谨慎交换电话");
         } else {
             holder.tvContent.setVisibility(View.GONE);

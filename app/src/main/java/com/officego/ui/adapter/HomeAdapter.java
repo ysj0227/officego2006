@@ -296,13 +296,13 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
         ((DiscountHolder) holder).tvName.setText(bean.getBannerMap().getName());
         ((DiscountHolder) holder).tvLocation.setText(String.format("%s%s", distance, business));
         ((DiscountHolder) holder).tvLines.setText(line);
-        ((DiscountHolder) holder).tvRmbMoney.setText(price);
+        ((DiscountHolder) holder).tvRmbMoney.setText(salePrice);
         if (bean.getBannerMap().getBtype() == Constants.TYPE_BUILDING) {
             ((DiscountHolder) holder).tvUnit.setText(DAY_UNIT);
         } else {
             ((DiscountHolder) holder).tvUnit.setText(MONTH_UNIT);
         }
-        ((DiscountHolder) holder).tvDiscount.setText(String.format(" ¥%s", salePrice));
+        ((DiscountHolder) holder).tvDiscount.setText(String.format(" ¥%s", price));
         gotoBannerDetails(holder, bean);
     }
 

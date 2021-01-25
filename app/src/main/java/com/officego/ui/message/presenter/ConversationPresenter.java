@@ -2,13 +2,20 @@ package com.officego.ui.message.presenter;
 
 import android.text.TextUtils;
 
+import com.alibaba.fastjson.JSON;
 import com.officego.commonlib.base.BasePresenter;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.message.BuildingInfo;
+import com.officego.commonlib.common.message.EcPhoneStatusInfo;
+import com.officego.commonlib.common.message.EcPhoneWarnInfo;
+import com.officego.commonlib.common.message.EcWeChatStatusInfo;
+import com.officego.commonlib.common.message.PhoneInfo;
+import com.officego.commonlib.common.message.ViewingDateInfo;
+import com.officego.commonlib.common.message.ViewingDateStatusInfo;
+import com.officego.commonlib.common.message.WeChatInfo;
 import com.officego.commonlib.common.model.ChatHouseBean;
 import com.officego.commonlib.common.model.ExchangeContactsBean;
 import com.officego.commonlib.common.model.FirstChatBean;
-import com.officego.commonlib.common.model.IdentitychattedMsgBean;
 import com.officego.commonlib.common.model.RongUserInfoBean;
 import com.officego.commonlib.common.rongcloud.SendMessageManager;
 import com.officego.commonlib.common.rpc.OfficegoApi;
@@ -16,9 +23,20 @@ import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.DateTimeUtils;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.db.LitepalUtils;
 import com.officego.ui.message.HouseTags;
 import com.officego.ui.message.contract.ConversationContract;
+
+import java.util.HashMap;
+import java.util.Map;
+
+import io.rong.imlib.model.Message;
+import io.rong.imlib.model.MessageContent;
+import io.rong.message.ImageMessage;
+import io.rong.message.RichContentMessage;
+import io.rong.message.TextMessage;
+import io.rong.message.VoiceMessage;
 
 /**
  * Created by YangShiJie
@@ -118,23 +136,6 @@ public class ConversationPresenter extends BasePresenter<ConversationContract.Vi
     }
 
     @Override
-    public void identityChattedMsg(String targetId) {
-        OfficegoApi.getInstance().identityChattedMsg(targetId,
-                new RetrofitCallback<IdentitychattedMsgBean>() {
-                    @Override
-                    public void onSuccess(int code, String msg, IdentitychattedMsgBean data) {
-                        if (isViewAttached()) {
-                            mView.identityChattedMsgSuccess(data);
-                        }
-                    }
-
-                    @Override
-                    public void onFail(int code, String msg, IdentitychattedMsgBean data) {
-                    }
-                });
-    }
-
-    @Override
     public void getRongTargetInfo(String targetId) {
         if (!TextUtils.isEmpty(targetId)) {
             OfficegoApi.getInstance().getRongUserInfo(targetId,
@@ -151,6 +152,82 @@ public class ConversationPresenter extends BasePresenter<ConversationContract.Vi
                         }
                     });
         }
+    }
+
+    /**
+     * 记录发送消息
+     */
+    @Override
+    public void recordChatTime(String targetId, int houseId, int buildingId, Message message) {
+        OfficegoApi.getInstance().recordChatTime(targetId, houseId, buildingId, chatMessage(message),
+                new RetrofitCallback<Object>() {
+                    @Override
+                    public void onSuccess(int code, String msg, Object data) {
+                    }
+
+                    @Override
+                    public void onFail(int code, String msg, Object data) {
+                    }
+                });
+    }
+
+    //不同类型聊天消息内容
+    private String chatMessage(Message message) {
+        String objectName = message.getObjectName();//消息类型
+        String content;
+        MessageContent messageContent = message.getContent();
+        if (messageContent instanceof TextMessage) {//文本消息
+            TextMessage textMessage = (TextMessage) messageContent;
+            content = textMessage.getContent();
+            LogCat.e(TAG, "onSent-TextMessage:" + textMessage.getContent());
+        } else if (messageContent instanceof ImageMessage) {//图片消息
+            ImageMessage imageMessage = (ImageMessage) messageContent;
+            content = imageMessage.getRemoteUri().toString();
+            LogCat.e(TAG, "onSent-ImageMessage:" + imageMessage.getRemoteUri());
+        } else if (messageContent instanceof VoiceMessage) {//语音消息
+            VoiceMessage voiceMessage = (VoiceMessage) messageContent;
+            content = voiceMessage.getUri().toString();
+            LogCat.e(TAG, "onSent-voiceMessage:" + voiceMessage.getUri().toString());
+        } else if (messageContent instanceof RichContentMessage) {//图文消息
+            RichContentMessage richContentMessage = (RichContentMessage) messageContent;
+            content = richContentMessage.getContent();
+            LogCat.e(TAG, "onSent-RichContentMessage:" + richContentMessage.getContent());
+        } else if (messageContent instanceof EcPhoneStatusInfo) {
+            EcPhoneStatusInfo customMessage = (EcPhoneStatusInfo) messageContent;
+            content = customMessage.getContent();
+            LogCat.e(TAG, "onSent-EcPhoneStatusInfo:" + customMessage.getContent());
+        } else if (messageContent instanceof EcPhoneWarnInfo) {
+            EcPhoneWarnInfo customMessage = (EcPhoneWarnInfo) messageContent;
+            content = customMessage.getContent();
+            LogCat.e(TAG, "onSent-EcPhoneWarnInfo:" + customMessage.getContent());
+        } else if (messageContent instanceof EcWeChatStatusInfo) {
+            EcWeChatStatusInfo customMessage = (EcWeChatStatusInfo) messageContent;
+            content = customMessage.getContent();
+            LogCat.e(TAG, "onSent-EcWeChatStatusInfo:" + customMessage.getContent());
+        } else if (messageContent instanceof PhoneInfo) {
+            PhoneInfo customMessage = (PhoneInfo) messageContent;
+            content = customMessage.getContent();
+            LogCat.e(TAG, "onSent-PhoneInfo:" + customMessage.getContent());
+        } else if (messageContent instanceof ViewingDateInfo) {
+            ViewingDateInfo customMessage = (ViewingDateInfo) messageContent;
+            content = customMessage.getContent();
+            LogCat.e(TAG, "onSent-ViewingDateInfo:" + customMessage.getContent());
+        } else if (messageContent instanceof ViewingDateStatusInfo) {
+            ViewingDateStatusInfo customMessage = (ViewingDateStatusInfo) messageContent;
+            content = customMessage.getContent();
+            LogCat.e(TAG, "onSent-ViewingDateStatusInfo: " + customMessage.getContent());
+        } else if (messageContent instanceof WeChatInfo) {
+            WeChatInfo customMessage = (WeChatInfo) messageContent;
+            content = customMessage.getContent();
+            LogCat.e(TAG, "onSent-WeChatInfo: " + customMessage.getContent());
+        } else {
+            content = "";
+            LogCat.e(TAG, "onSent-其他消息，自己来判断处理");
+        }
+        Map<String, String> map = new HashMap<>();
+        map.put("content", content);
+        map.put("objectName", objectName);
+        return JSON.toJSONString(map);
     }
 
     //聊天是否插入消息

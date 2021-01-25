@@ -2,9 +2,7 @@ package com.officego.commonlib.common.rpc;
 
 import android.text.TextUtils;
 
-import com.officego.commonlib.common.model.RCloudPushBean;
 import com.officego.commonlib.common.SpUtils;
-import com.officego.commonlib.common.model.VersionBean;
 import com.officego.commonlib.common.model.ChatHouseBean;
 import com.officego.commonlib.common.model.ChatListBean;
 import com.officego.commonlib.common.model.CouponDetailsBean;
@@ -16,9 +14,11 @@ import com.officego.commonlib.common.model.ExchangeContactsBean;
 import com.officego.commonlib.common.model.FirstChatBean;
 import com.officego.commonlib.common.model.IdentitychattedMsgBean;
 import com.officego.commonlib.common.model.JPushLoginBean;
+import com.officego.commonlib.common.model.RCloudPushBean;
 import com.officego.commonlib.common.model.RongUserInfoBean;
 import com.officego.commonlib.common.model.SearchListBean;
 import com.officego.commonlib.common.model.UserMessageBean;
+import com.officego.commonlib.common.model.VersionBean;
 import com.officego.commonlib.common.model.owner.AddHouseSuccessBean;
 import com.officego.commonlib.common.model.owner.BuildingEditBean;
 import com.officego.commonlib.common.model.owner.BuildingJointWorkBean;
@@ -88,6 +88,7 @@ public class OfficegoApi {
                 .updateVersion(map)
                 .enqueue(callback);
     }
+
     /**
      * 服务端返回融云token 为push
      */
@@ -991,6 +992,25 @@ public class OfficegoApi {
         map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(JPushOneKeyLoginInterface.class)
                 .getJPushPhone(map)
+                .enqueue(callback);
+    }
+
+    /**
+     * 记录聊天时间
+     */
+    public void recordChatTime(String targetId, int houseId, int buildingId, String msg, RetrofitCallback<Object> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        if (buildingId != 0) {
+            map.put("buildingId", requestBody(buildingId + ""));
+        }
+        if (houseId != 0) {
+            map.put("houseId", requestBody(houseId + ""));
+        }
+        map.put("chattedId", requestBody(targetId));
+        map.put("msg", requestBody(msg));
+        map.putAll(map());
+        OfficegoRetrofitClient.getInstance().create(ChatInterface.class)
+                .recordChatTime(map)
                 .enqueue(callback);
     }
 }

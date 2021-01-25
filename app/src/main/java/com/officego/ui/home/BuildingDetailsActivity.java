@@ -1218,7 +1218,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     private void playBanner(List<BuildingDetailsBean.ImgUrlBean> list) {
         //视频设置第一张图为默认背景
         if (context != null && list.size() > 0) {
-            Glide.with(context).load(list.get(0).getImgUrl()).error(R.mipmap.ic_loading_def_bg)
+            Glide.with(context).load(list.get(0).getImgUrl()).error(R.mipmap.ic_loading_def_bg_error)
                     .into(ivVideoBg);
         }
         for (int i = 0; i < list.size(); i++) {

@@ -15,7 +15,7 @@
         android:layout_width="@dimen/dp_116"
         android:layout_height="@dimen/dp_88"
         android:layout_marginTop="@dimen/dp_18"
-        android:background="@mipmap/ic_loading_def_bg"
+        android:background="@mipmap/ic_loading_def_bg_error"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 

@@ -76,4 +76,11 @@ public interface ChatInterface {
     @POST(path + "chat/chatListApp")
     Call<BaseResponse<ChatListBean>> getChatList(@PartMap Map<String, RequestBody> params);
 
+    /**
+     * 聊天时间记录
+     */
+    @Multipart
+    @POST(path + "chat/chatMsg")
+    Call<BaseResponse<Object>> recordChatTime(@PartMap Map<String, RequestBody> params);
+
 }

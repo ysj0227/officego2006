@@ -11,7 +11,7 @@
         android:layout_width="@dimen/dp_104"
         android:layout_height="@dimen/dp_104"
         android:layout_centerHorizontal="true"
-        android:background="@mipmap/ic_loading_def_bg"
+        android:background="@mipmap/ic_loading_def_bg_error"
         android:scaleType="centerCrop" />
 
     <View

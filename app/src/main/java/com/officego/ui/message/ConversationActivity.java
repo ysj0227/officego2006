@@ -26,7 +26,6 @@ import com.officego.commonlib.common.dialog.InputContactsDialog;
 import com.officego.commonlib.common.message.PhoneEncryptedInfo;
 import com.officego.commonlib.common.model.ChatHouseBean;
 import com.officego.commonlib.common.model.FirstChatBean;
-import com.officego.commonlib.common.model.IdentitychattedMsgBean;
 import com.officego.commonlib.common.model.RongUserInfoBean;
 import com.officego.commonlib.common.rongcloud.RCloudSetUserInfoUtils;
 import com.officego.commonlib.common.rongcloud.SendMessageManager;
@@ -275,16 +274,6 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         isFirstChat = data.getIsChat() == 0;
     }
 
-    //认证申请显示个人信息
-    @Override
-    public void identityChattedMsgSuccess(IdentitychattedMsgBean data) {
-        mNikeName = data.getNickname();
-        RCloudSetUserInfoUtils.refreshUserInfoCache(targetId, data.getNickname(), data.getAvatar());
-        RCloudSetUserInfoUtils.refreshUserInfoCache(SpUtils.getRongChatId(), SpUtils.getNickName(), SpUtils.getHeaderImg());
-        tvTitleName.setText(data.getNickname());
-        tvJob.setText(data.getJob());
-    }
-
     //推送点击获取Target用户信息
     @Override
     public void rongTargetInfoSuccess(RongUserInfoBean data) {
@@ -502,6 +491,8 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         if (isFirstChat) {
             mPresenter.isFirstChat(buildingId, houseId, getHouseChatId);
         }
+        //聊天内容记录
+        mPresenter.recordChatTime(targetId, houseId, buildingId, message);
         return false;
     }
 }

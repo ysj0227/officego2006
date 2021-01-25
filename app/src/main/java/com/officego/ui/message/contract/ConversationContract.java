@@ -3,9 +3,9 @@ package com.officego.ui.message.contract;
 import com.officego.commonlib.base.BaseView;
 import com.officego.commonlib.common.model.ChatHouseBean;
 import com.officego.commonlib.common.model.FirstChatBean;
-import com.officego.commonlib.common.model.IdentitychattedMsgBean;
 import com.officego.commonlib.common.model.RongUserInfoBean;
-import com.officego.commonlib.common.model.ExchangeContactsBean;
+
+import io.rong.imlib.model.Message;
 
 /**
  * Created by YangShiJie
@@ -23,8 +23,6 @@ public interface ConversationContract {
 
         void firstChatSuccess(FirstChatBean data);
 
-        void identityChattedMsgSuccess(IdentitychattedMsgBean data);
-
         void rongTargetInfoSuccess(RongUserInfoBean data);
     }
 
@@ -35,8 +33,8 @@ public interface ConversationContract {
 
         void isFirstChat(int buildingId, int houseId, String targetId);
 
-        void identityChattedMsg(String targetId);
-
         void getRongTargetInfo(String targetId);
+
+        void recordChatTime(String targetId, int houseId, int buildingId, Message msg);
     }
 }

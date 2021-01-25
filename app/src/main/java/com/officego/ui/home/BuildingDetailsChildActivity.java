@@ -1049,7 +1049,7 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         if (list != null && list.size() > 0) {
             //视频设置第一张图为默认背景
             if (context != null) {
-                Glide.with(context).load(list.get(0).getImgUrl()).error(R.mipmap.ic_loading_def_bg)
+                Glide.with(context).load(list.get(0).getImgUrl()).error(R.mipmap.ic_loading_def_bg_error)
                         .into(ivVideoBg);
             }
             for (int i = 0; i < list.size(); i++) {
