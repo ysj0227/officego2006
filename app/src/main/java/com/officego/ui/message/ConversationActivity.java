@@ -128,7 +128,9 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             }
         }
         //插入时间提示
-        timeTip();
+        if (!StatusUtils.isSystemMsg(targetId)) {
+            timeTip();
+        }
     }
 
     //自定义消息插入时间提示
