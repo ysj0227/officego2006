@@ -14,10 +14,6 @@ import com.officego.commonlib.common.message.EcPhoneWarnInfo;
 import com.officego.commonlib.common.message.EcPhoneWarnProvider;
 import com.officego.commonlib.common.message.EcWeChatStatusInfo;
 import com.officego.commonlib.common.message.EcWeChatStatusProvider;
-import com.officego.commonlib.common.message.IdentityApplyInfo;
-import com.officego.commonlib.common.message.IdentityApplyProvider;
-import com.officego.commonlib.common.message.IdentityApplyStatusInfo;
-import com.officego.commonlib.common.message.IdentityApplyStatusProvider;
 import com.officego.commonlib.common.message.PhoneEncryptedInfo;
 import com.officego.commonlib.common.message.PhoneEncryptedProvider;
 import com.officego.commonlib.common.message.PhoneInfo;
@@ -137,12 +133,6 @@ public class IMManager {
         //插入自定义消息房子的item
         RongIM.registerMessageType(BuildingInfo.class);
         RongIM.registerMessageTemplate(new BuildingProvider());
-        //认证发送申请
-        RongIM.registerMessageType(IdentityApplyInfo.class);
-        RongIM.registerMessageTemplate(new IdentityApplyProvider());
-        //认证发送申请  同意拒绝
-        RongIM.registerMessageType(IdentityApplyStatusInfo.class);
-        RongIM.registerMessageTemplate(new IdentityApplyStatusProvider());
         //聊天手机发送-加密提示
         RongIM.registerMessageType(PhoneEncryptedInfo.class);
         RongIM.registerMessageTemplate(new PhoneEncryptedProvider());

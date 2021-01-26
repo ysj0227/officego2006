@@ -8,11 +8,9 @@ import android.text.TextUtils;
 import androidx.annotation.Nullable;
 
 import com.officego.LaunchActivity;
-import com.officego.R;
 import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.ui.home.BannerToActivity;
 
 import org.json.JSONException;
@@ -29,15 +27,12 @@ public class PushRemoteDetailActivity extends BaseActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.push_activity_details);
+        //setContentView(R.layout.push_activity_details);
         StatusBarUtils.setStatusBarColor(this);
         Intent intent = getIntent();
         if (intent != null && intent.hasExtra("pushData")) {
             String pushData = intent.getStringExtra("pushData");
-            LogCat.e(TAG, "pushData=" + pushData);
-            if (!TextUtils.isEmpty(pushData)) {
-                toDetailsActivity(pushData);
-            }
+            toDetailsActivity(pushData);
         } else {
             //华为
             RCloudRemoteClick.getInstance().HWPushClick(this);
@@ -64,7 +59,7 @@ public class PushRemoteDetailActivity extends BaseActivity {
                 launchActivity();
             }
         } catch (JSONException e) {
-            e.printStackTrace();
+            launchActivity();
         }
     }
 

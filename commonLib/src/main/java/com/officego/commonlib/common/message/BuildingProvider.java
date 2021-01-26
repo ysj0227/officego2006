@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.officego.commonlib.R;
+import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.view.LabelsView;
 import com.officego.commonlib.view.RoundImageView;
 
@@ -50,7 +51,7 @@ public class BuildingProvider extends IContainerItemProvider.MessageProvider<Bui
     @Override
     public void bindView(View view, int i, BuildingInfo info, UIMessage uiMessage) {
         BuildingHolder holder = (BuildingHolder) view.getTag();
-        Glide.with(view).load(info.getImgUrl()).into(holder.ivHouse);
+        Glide.with(view).applyDefaultRequestOptions(GlideUtils.options()).load(info.getImgUrl()).into(holder.ivHouse);
         holder.tvHouseName.setText(info.getbuildingName());
         holder.tvStartConversationTime.setText(info.getCreateTime());
         holder.tvPrice.setText(info.getMinSinglePrice());

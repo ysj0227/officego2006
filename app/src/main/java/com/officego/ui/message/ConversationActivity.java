@@ -18,6 +18,7 @@ import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.StatusUtils;
 import com.officego.commonlib.common.analytics.GoogleTrack;
 import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.common.config.CommonNotifications;
@@ -110,8 +111,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             initIM();
         } else {
             initIMInfo();
-            if (!TextUtils.isEmpty(targetId) && (TextUtils.equals(Constants.TYPE_SYSTEM, targetId) ||
-                    (targetId.length() > 1 && TextUtils.equals(Constants.TYPE_SYSTEM, targetId.substring(targetId.length() - 1))))) {
+            if (StatusUtils.isSystemMsg(targetId)) {
                 //系统消息聊天列表进入
                 ctlChat.setVisibility(View.GONE);
                 tvTitleName.setText(getString(R.string.str_system_message));
@@ -127,6 +127,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
                 mPresenter.firstChatApp(targetId, buildingId, houseId, getHouseChatId);
             }
         }
+        //插入时间提示
         timeTip();
     }
 
@@ -436,19 +437,10 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         } else if (id == CommonNotifications.conversationBindPhone) {
             //开始发送交换手机信息   本人发出要约，发出自己手机号    mData加入神策数据使用
             SendMessageManager.getInstance().sendPhoneMessage(mData, targetId, "我想和您交换手机号", SpUtils.getPhoneNum(), "");
-
             //发送交换手机警告提示 业主发起交换手机，租户提醒
             if (TextUtils.equals(Constants.TYPE_OWNER, SpUtils.getRole())) {
                 new Handler().postDelayed(() -> SendMessageManager.getInstance().sendEcPhoneWarnsMessage(targetId), 500);
             }
-        } else if (id == CommonNotifications.conversationIdApplyAgree) {
-            //同意认证申请
-            SendMessageManager.getInstance().sendIdApplyStatusMessage(true, targetId, "我已同意你加入公司，欢迎", "");
-            SendMessageManager.getInstance().sendTextMessage(targetId, "我已同意你加入公司，欢迎");
-        } else if (id == CommonNotifications.conversationIdApplyReject) {
-            //拒绝认证申请
-            SendMessageManager.getInstance().sendIdApplyStatusMessage(false, targetId, "我已拒绝你加入公司", "");
-            SendMessageManager.getInstance().sendTextMessage(targetId, "我已拒绝你加入公司");
         } else if (id == CommonNotifications.conversationPhoneEncrypted) {
             //手机号加密
             SendMessageManager.getInstance().insertPhoneEncryptedMessage(PhoneEncryptedInfo.setData(""), targetId);

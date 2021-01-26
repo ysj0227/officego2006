@@ -26,14 +26,11 @@ import io.rong.imlib.model.Message;
  */
 @ProviderTag(messageContent = EcPhoneWarnInfo.class, showPortrait = false, centerInHorizontal = true)
 public class EcPhoneWarnProvider extends IContainerItemProvider.MessageProvider<EcPhoneWarnInfo> {
-    // private final String str = "为避免电话被频繁骚扰，请谨慎交换电话";
-
-    private Context context;
+    private final String con="为避免电话被频繁骚扰，请谨慎交换电话";
 
     @Override
     public View newView(Context context, ViewGroup viewGroup) {
-        this.context = context;
-        View view = LayoutInflater.from(context).inflate(R.layout.conversation_item_time_tip_message, viewGroup, false);
+        View view = LayoutInflater.from(context).inflate(R.layout.conversation_item_phone_warn_message, viewGroup, false);
         EcPhoneWarnHolder holder = new EcPhoneWarnHolder();
         holder.tvContent = view.findViewById(R.id.tv_content);
         view.setTag(holder);
@@ -45,10 +42,7 @@ public class EcPhoneWarnProvider extends IContainerItemProvider.MessageProvider<
         EcPhoneWarnHolder holder = (EcPhoneWarnHolder) view.getTag();
         if (uiMessage.getMessageDirection() == Message.MessageDirection.RECEIVE) {
             holder.tvContent.setVisibility(View.VISIBLE);
-            holder.tvContent.setBackgroundResource(R.drawable.bg_shape_red);
-            holder.tvContent.setTextColor(context.getResources().getColor(R.color.common_red));
-            holder.tvContent.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_phone_warn, 0, 0, 0);
-            holder.tvContent.setText("为避免电话被频繁骚扰，请谨慎交换电话");
+            holder.tvContent.setText(con);
         } else {
             holder.tvContent.setVisibility(View.GONE);
         }
@@ -56,7 +50,7 @@ public class EcPhoneWarnProvider extends IContainerItemProvider.MessageProvider<
 
     @Override //这里意思是你的这个自定义消息显示的内容
     public Spannable getContentSummary(EcPhoneWarnInfo info) {
-        return new SpannableString("为避免电话被频繁骚扰，请谨慎交换电话");
+        return new SpannableString(con);
     }
 
     @Override  //点击你的自定义消息执行的操作

@@ -171,7 +171,12 @@ public class ConversationPresenter extends BasePresenter<ConversationContract.Vi
                 });
     }
 
-    //不同类型聊天消息内容
+    /**
+     * 不同类型聊天消息内容
+     *
+     * @param message message
+     * @return false
+     */
     private String chatMessage(Message message) {
         String objectName = message.getObjectName();//消息类型
         String content;
@@ -183,7 +188,7 @@ public class ConversationPresenter extends BasePresenter<ConversationContract.Vi
         } else if (messageContent instanceof ImageMessage) {//图片消息
             ImageMessage imageMessage = (ImageMessage) messageContent;
             content = imageMessage.getRemoteUri().toString();
-            LogCat.e(TAG, "onSent-ImageMessage:" + imageMessage.getRemoteUri());
+            LogCat.e(TAG, "onSent-ImageMessage:" + imageMessage.getRemoteUri().toString());
         } else if (messageContent instanceof VoiceMessage) {//语音消息
             VoiceMessage voiceMessage = (VoiceMessage) messageContent;
             content = voiceMessage.getUri().toString();
