@@ -100,7 +100,6 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
     //list 是否有更多
     private boolean hasMore;
     //所有的筛选条件
-//    private int btype;
     private HashSet<Integer> hashSet;//地铁商圈的传值
     private SparseBooleanArray checkStates; //记录选中的位置
     private String district = "", business = "", line = "", nearbySubway = "",

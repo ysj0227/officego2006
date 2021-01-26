@@ -1047,7 +1047,7 @@ public class OfficegoApi {
      * 记录聊天时间
      * TODO
      */
-    public void recordChatTime(String targetId, int houseId, int buildingId, String msg, RetrofitCallback<Object> callback) {
+    public void recordChatTime(String targetId, int houseId, int buildingId, String msg, String objectName, RetrofitCallback<Object> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         if (buildingId != 0) {
@@ -1056,8 +1056,9 @@ public class OfficegoApi {
         if (houseId != 0) {
             map.put("houseId", requestBody(houseId + ""));
         }
-        map.put("uid", requestBody(targetId));
+        map.put("chattedId", requestBody(targetId));
         map.put("msg", requestBody(msg));
+        map.put("type", requestBody(objectName));
         map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(ChatInterface.class)
                 .recordChatTime(map)

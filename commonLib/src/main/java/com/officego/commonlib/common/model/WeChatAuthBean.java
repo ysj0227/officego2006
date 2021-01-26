@@ -7,8 +7,6 @@ import com.google.gson.annotations.SerializedName;
  * Date 2021/1/26
  **/
 public class WeChatAuthBean {
-
-
     /**
      * access_token : 41_0wirq7Yjcefr5WcqxGEgkiKtBET9lmf0W22IR0iZ3wk-WFMzc7Zm2612eYy3pVRQl5qW8hXS_BNJl80pvFy30SYn-zc
      * country : 中国

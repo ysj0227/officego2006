@@ -518,6 +518,20 @@ public class CommonHelper {
         return bd.toString();
     }
 
+    //object int
+    public static int bigDecimal(Object Obj) {
+        if (Obj == null) {
+            return 0;
+        }
+//        Object Obj =“10423232.1024”;
+        //构造以字符串内容为值的BigDecimal类型的变量bd
+        BigDecimal bd = new BigDecimal(Obj.toString());
+        //设置小数位数，第一个变量是小数位数，第二个变量是取舍方法(四舍五入)
+        bd = bd.setScale(0, BigDecimal.ROUND_HALF_UP);
+        //转化为字符串输出
+        return Integer.parseInt(bd.toString());
+    }
+
     /**
      * 文本自适应大小
      */

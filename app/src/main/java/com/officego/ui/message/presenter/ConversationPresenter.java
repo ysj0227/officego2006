@@ -159,7 +159,8 @@ public class ConversationPresenter extends BasePresenter<ConversationContract.Vi
      */
     @Override
     public void recordChatTime(String targetId, int houseId, int buildingId, Message message) {
-        OfficegoApi.getInstance().recordChatTime(targetId, houseId, buildingId, chatMessage(message),
+        String objectName = message.getObjectName();//消息类型
+        OfficegoApi.getInstance().recordChatTime(targetId, houseId, buildingId, chatMessage(message), objectName,
                 new RetrofitCallback<Object>() {
                     @Override
                     public void onSuccess(int code, String msg, Object data) {
@@ -178,7 +179,6 @@ public class ConversationPresenter extends BasePresenter<ConversationContract.Vi
      * @return false
      */
     private String chatMessage(Message message) {
-        String objectName = message.getObjectName();//消息类型
         String content;
         MessageContent messageContent = message.getContent();
         if (messageContent instanceof TextMessage) {//文本消息
@@ -229,10 +229,7 @@ public class ConversationPresenter extends BasePresenter<ConversationContract.Vi
             content = "";
             LogCat.e(TAG, "onSent-其他消息，自己来判断处理");
         }
-        Map<String, String> map = new HashMap<>();
-        map.put("content", content);
-        map.put("objectName", objectName);
-        return JSON.toJSONString(map);
+        return content;
     }
 
     //聊天是否插入消息

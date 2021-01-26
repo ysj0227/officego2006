@@ -483,8 +483,25 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
         if (isFirstChat) {
             mPresenter.isFirstChat(buildingId, houseId, getHouseChatId);
         }
-        //聊天内容记录
-        mPresenter.recordChatTime(targetId, houseId, buildingId, message);
+        recordChatTime(message);
         return false;
+    }
+
+    /**
+     * 聊天内容记录
+     */
+    private void recordChatTime(Message message) {
+        int mHouseId, mBuildingId;
+        if (buildingId == 0) {
+            mBuildingId = mData == null ? 0 : mData.getBuilding().getBuildingId();
+        } else {
+            mBuildingId = buildingId;
+        }
+        if (houseId == 0) {
+            mHouseId = mData == null ? 0 : CommonHelper.bigDecimal(mData.getBuilding().getHouseId());
+        } else {
+            mHouseId = houseId;
+        }
+        mPresenter.recordChatTime(targetId, mHouseId, mBuildingId, message);
     }
 }
