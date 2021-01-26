@@ -27,6 +27,8 @@ public class LoginBean {
     private String token;
     @SerializedName("uid")
     private String uid;
+    @SerializedName("phone")
+    private String phone;
 
     public String getRongyuntoken() {
         return rongyuntoken;
@@ -74,5 +76,13 @@ public class LoginBean {
 
     public void setAvatar(String avatar) {
         this.avatar = avatar;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
     }
 }

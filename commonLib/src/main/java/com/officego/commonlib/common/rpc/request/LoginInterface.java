@@ -2,6 +2,7 @@ package com.officego.commonlib.common.rpc.request;
 
 import com.officego.commonlib.common.model.LoginBean;
 import com.officego.commonlib.common.model.RCloudPushBean;
+import com.officego.commonlib.common.model.WeChatAuthBean;
 import com.officego.commonlib.retrofit.BaseResponse;
 
 import java.util.Map;
@@ -22,8 +23,7 @@ public interface LoginInterface {
     String path = "api/";
 
     /**
-     * @param params
-     * @return 登录
+     * 登录
      */
     @Multipart
     @POST(path + "login/loginCode")
@@ -35,4 +35,20 @@ public interface LoginInterface {
     @Multipart
     @POST(path + "login/guest")
     Call<BaseResponse<RCloudPushBean>> getRCloudPush(@PartMap Map<String, RequestBody> params);
+
+    /**
+     * 微信授权获取信息
+     */
+    @Multipart
+    @POST(path + "login/getWXAccessTokenForOpen")
+    Call<BaseResponse<WeChatAuthBean>> getWeChatAuthInfo(@PartMap Map<String, RequestBody> params);
+
+    /**
+     * 微信授权登录校验是否绑定了手机号码
+     */
+    @Multipart
+    @POST(path + "login/loginThird")
+    Call<BaseResponse<LoginBean>> weChatLoginCheck(@PartMap Map<String, RequestBody> params);
+
+
 }

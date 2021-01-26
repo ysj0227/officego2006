@@ -18,18 +18,18 @@ import com.officego.MainActivity_;
 import com.officego.MainOwnerActivity_;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
-import com.officego.commonlib.common.model.LoginBean;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.analytics.GoogleTrack;
 import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.common.config.CommonNotifications;
+import com.officego.commonlib.common.model.LoginBean;
+import com.officego.commonlib.common.model.WeChatAuthBean;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NotificationUtil;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.RegexUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.ToastUtils;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.h5.WebViewActivity_;
 import com.officego.ui.login.contract.LoginContract;
@@ -85,12 +85,16 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
     //倒计时对象,总共的时间,每隔多少秒更新一次时间
     final MyCountDownTimer mTimer = new MyCountDownTimer(Constants.SMS_TIME, 1000);
 
+    //微信授权绑定手机
+    private boolean isWeChatBindPhone;
+    private WeChatAuthBean weChatAuthBean;
+
     @AfterViews
     void init() {
         PermissionUtils.checkPermissionActivity(this);
         channelTrack();
         StatusBarUtils.setStatusBarColor(this);
-        mPresenter = new LoginPresenter(context);
+        mPresenter = new LoginPresenter();
         mPresenter.attachView(this);
         initViews();
         SpUtils.saveImei(context);
@@ -135,7 +139,11 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
                 shortTip(R.string.str_please_input_sms_code);
                 return;
             }
-            mPresenter.login(mobile, code); //登录
+            if (isWeChatBindPhone) {
+                mPresenter.weChatBindPhoneCheck(weChatAuthBean, mobile, code);//微信绑定手机登录
+            } else {
+                mPresenter.login(mobile, code); //手机直接登录
+            }
         } else {
             SensorsTrack.smsCode(); //神策
             if (!RegexUtils.isChinaPhone(mobile)) {
@@ -239,6 +247,13 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
     }
 
     @Override
+    public void weChatBindPhone(WeChatAuthBean data) {
+        isWeChatBindPhone = true;
+        weChatAuthBean = data;
+        setTitle();
+    }
+
+    @Override
     public void loginSuccess(LoginBean data) {
         //google用户id
         GoogleTrack.setUserId(context);
@@ -272,20 +287,14 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         if (id == CommonNotifications.JPushSendPhone) {
             mPresenter.getJPushPhone((String) args[0]);
         } else if (id == CommonNotifications.weCheatSendAuth) {
-            String str = (String) args[0];
-            setTitle();
-            shortTip(str);
+            String wxCode = (String) args[0];
+            mPresenter.weChatAuthInfo(wxCode);
         }
     }
 
     @UiThread
     void setTitle() {
         tvTitle.setText(R.string.str_bind_phone);
-    }
-
-    @Override
-    public void loginFail(int code, String msg) {
-        shortTip(msg);
     }
 
     private void startDownTimer(String mobile) {

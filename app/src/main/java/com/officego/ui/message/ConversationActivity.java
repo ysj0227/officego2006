@@ -185,7 +185,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
                 fragment.setUri(uri);
             }
         } catch (Exception e) {
-            e.printStackTrace();
+            //e.printStackTrace();
         }
     }
 

@@ -197,31 +197,31 @@ public class ConversationPresenter extends BasePresenter<ConversationContract.Vi
             RichContentMessage richContentMessage = (RichContentMessage) messageContent;
             content = richContentMessage.getContent();
             LogCat.e(TAG, "onSent-RichContentMessage:" + richContentMessage.getContent());
-        } else if (messageContent instanceof EcPhoneStatusInfo) {
+        } else if (messageContent instanceof EcPhoneStatusInfo) {//交换手机状态
             EcPhoneStatusInfo customMessage = (EcPhoneStatusInfo) messageContent;
             content = customMessage.getContent();
             LogCat.e(TAG, "onSent-EcPhoneStatusInfo:" + customMessage.getContent());
-        } else if (messageContent instanceof EcPhoneWarnInfo) {
+        } else if (messageContent instanceof EcPhoneWarnInfo) {//手机号码警告
             EcPhoneWarnInfo customMessage = (EcPhoneWarnInfo) messageContent;
             content = customMessage.getContent();
             LogCat.e(TAG, "onSent-EcPhoneWarnInfo:" + customMessage.getContent());
-        } else if (messageContent instanceof EcWeChatStatusInfo) {
+        } else if (messageContent instanceof EcWeChatStatusInfo) {//交换微信状态
             EcWeChatStatusInfo customMessage = (EcWeChatStatusInfo) messageContent;
             content = customMessage.getContent();
             LogCat.e(TAG, "onSent-EcWeChatStatusInfo:" + customMessage.getContent());
-        } else if (messageContent instanceof PhoneInfo) {
+        } else if (messageContent instanceof PhoneInfo) {//交换手机
             PhoneInfo customMessage = (PhoneInfo) messageContent;
             content = customMessage.getContent();
             LogCat.e(TAG, "onSent-PhoneInfo:" + customMessage.getContent());
-        } else if (messageContent instanceof ViewingDateInfo) {
+        } else if (messageContent instanceof ViewingDateInfo) {//预约看房
             ViewingDateInfo customMessage = (ViewingDateInfo) messageContent;
             content = customMessage.getContent();
             LogCat.e(TAG, "onSent-ViewingDateInfo:" + customMessage.getContent());
-        } else if (messageContent instanceof ViewingDateStatusInfo) {
+        } else if (messageContent instanceof ViewingDateStatusInfo) {//预约状态
             ViewingDateStatusInfo customMessage = (ViewingDateStatusInfo) messageContent;
             content = customMessage.getContent();
             LogCat.e(TAG, "onSent-ViewingDateStatusInfo: " + customMessage.getContent());
-        } else if (messageContent instanceof WeChatInfo) {
+        } else if (messageContent instanceof WeChatInfo) {//交换微信
             WeChatInfo customMessage = (WeChatInfo) messageContent;
             content = customMessage.getContent();
             LogCat.e(TAG, "onSent-WeChatInfo: " + customMessage.getContent());

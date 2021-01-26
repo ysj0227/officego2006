@@ -2,6 +2,7 @@ package com.officego.ui.login.contract;
 
 import com.officego.commonlib.base.BaseView;
 import com.officego.commonlib.common.model.LoginBean;
+import com.officego.commonlib.common.model.WeChatAuthBean;
 
 /**
  * Created by YangShiJie
@@ -14,7 +15,7 @@ public interface LoginContract {
 
         void loginSuccess(LoginBean data);
 
-        void loginFail(int code, String msg);
+        void weChatBindPhone(WeChatAuthBean data);
     }
 
     interface Presenter {
@@ -26,5 +27,9 @@ public interface LoginContract {
         void loginOnlyPhone(String mobile);
 
         void getJPushPhone(String loginToken);//一键登录极光登录token
+
+        void weChatAuthInfo(String code);//获取微信信息
+
+        void weChatBindPhoneCheck(WeChatAuthBean data, String phone, String smsCode);//微信绑定手机
     }
 }

@@ -14,11 +14,13 @@ import com.officego.commonlib.common.model.ExchangeContactsBean;
 import com.officego.commonlib.common.model.FirstChatBean;
 import com.officego.commonlib.common.model.IdentitychattedMsgBean;
 import com.officego.commonlib.common.model.JPushLoginBean;
+import com.officego.commonlib.common.model.LoginBean;
 import com.officego.commonlib.common.model.RCloudPushBean;
 import com.officego.commonlib.common.model.RongUserInfoBean;
 import com.officego.commonlib.common.model.SearchListBean;
 import com.officego.commonlib.common.model.UserMessageBean;
 import com.officego.commonlib.common.model.VersionBean;
+import com.officego.commonlib.common.model.WeChatAuthBean;
 import com.officego.commonlib.common.model.owner.AddHouseSuccessBean;
 import com.officego.commonlib.common.model.owner.BuildingEditBean;
 import com.officego.commonlib.common.model.owner.BuildingJointWorkBean;
@@ -996,17 +998,65 @@ public class OfficegoApi {
     }
 
     /**
+     * 微信授权获取信息
+     */
+    public void weChatAuthInfo(String code, RetrofitCallback<WeChatAuthBean> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("code", requestBody(code));
+        map.putAll(map());
+        OfficegoRetrofitClient.getInstance().create(LoginInterface.class)
+                .getWeChatAuthInfo(map)
+                .enqueue(callback);
+    }
+
+    /**
+     * 微信授权是否绑定手机校验
+     * openid 	是 	string 	用户openid
+     * unionId 	是 	string 	用户unionId
+     * accesstoken 	是 	string 	授权接口返回的accesstoken
+     * channel 	是 	string 	渠道 1苹果 2安卓 3:H5
+     * source 	是 	string 	第三方来源，1微信，2手机号,3QQ
+     * imei 	否 	string 	用户手机唯一码 app端必传
+     * nickName 	是 	string 	用户微信名称
+     * headImage 	是 	string 	用户头像
+     * sex 	是 	int 	用户性别 1男性 0女性
+     * phone 	否 	string 	手机号
+     * code 	否 	string 	手机验证码
+     */
+    public void weChatBindPhoneCheck(String openid, String unionId, String accesstoken,
+                                     String nickName, String headImage, int sex, String phone,
+                                     String code, RetrofitCallback<LoginBean> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("openid", requestBody(openid));
+        map.put("unionId", requestBody(unionId));
+        map.put("accesstoken", requestBody(accesstoken));
+        map.put("source", requestBody("1"));
+        map.put("nickName", requestBody(nickName));
+        map.put("headImage", requestBody(headImage));
+        map.put("sex", requestBody(sex + ""));
+        map.put("phone", requestBody(phone));
+        map.put("code", requestBody(code));
+        map.putAll(map());
+        OfficegoRetrofitClient.getInstance().create(LoginInterface.class)
+                .weChatLoginCheck(map)
+                .enqueue(callback);
+    }
+
+
+    /**
      * 记录聊天时间
+     * TODO
      */
     public void recordChatTime(String targetId, int houseId, int buildingId, String msg, RetrofitCallback<Object> callback) {
         Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
         if (buildingId != 0) {
             map.put("buildingId", requestBody(buildingId + ""));
         }
         if (houseId != 0) {
             map.put("houseId", requestBody(houseId + ""));
         }
-        map.put("chattedId", requestBody(targetId));
+        map.put("uid", requestBody(targetId));
         map.put("msg", requestBody(msg));
         map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(ChatInterface.class)

@@ -19,6 +19,7 @@ public class Constants {
     public static final int ERROR_CODE_5007 = 5007;//操作失败
     public static final int ERROR_CODE_5008 = 5008;//操作成功返回的data为null
     public static final int ERROR_CODE_5009 = 5009;//当前身份发生变化,请重新登录
+    public static final int ERROR_CODE_5011 = 5011;//当前微信没有绑定手机号
     public static final int ERROR_CODE_666 = 666;//需要统一抛出提示的状态码
     public static final int ERROR_CODE_7012 = 7012;//楼盘已经下架
     public static final int ERROR_CODE_7013 = 7013;//楼盘下的房源已经售完
