@@ -91,7 +91,7 @@ public class BuildingProvider extends IContainerItemProvider.MessageProvider<Bui
         gotoDetailsActivity(context, info);
     }
 
-    static class BuildingHolder {
+    class BuildingHolder {
         RoundImageView ivHouse;
         TextView tvHouseName;
         TextView tvLocation;
