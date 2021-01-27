@@ -156,8 +156,8 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     }
 
     private void initBottomImage() {
-        int paddingTop = 25;
-        int paddingBottom = 6;
+        int paddingTop = 20;
+        int paddingBottom = 5;
         //定义底部标签图片大小和位置
         Drawable drawable_home = getResources().getDrawable(R.drawable.ic_tab_home);
         //当这个图片被绘制时，给他绑定一个矩形 ltrb规定这个矩形

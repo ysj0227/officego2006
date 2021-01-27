@@ -105,8 +105,9 @@ public class CircleImage extends AppCompatImageView {
     }
 
     private void setCustomAttributes(AttributeSet attrs) {
-        TypedArray a = mContext.obtainStyledAttributes(attrs, R.styleable.CircleImage);
-        radius = a.getDimension(R.styleable.CircleImage_radius, -1);
-        a.recycle();
+        TypedArray typedArray = mContext.obtainStyledAttributes(attrs, R.styleable.CircleImage);
+//        radius = typedArray.getDimension(R.styleable.CircleImage_radius, -1);
+        radius = typedArray.getLayoutDimension(R.styleable.CircleImage_radius, -1);
+        typedArray.recycle();
     }
 }  
