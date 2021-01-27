@@ -150,6 +150,11 @@
             <enum name="visible" value="0" />
             <enum name="gone" value="1" />
         </attr>
+        <!-- 右侧图片是否显示 -->
+        <attr name="leftTitleImageShow" format="enum">
+            <enum name="visible" value="0" />
+            <enum name="gone" value="1" />
+        </attr>
     </declare-styleable>
 
     <declare-styleable name="VerifyCodeInputView">

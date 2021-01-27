@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/text_f2">
@@ -17,141 +16,43 @@
         app:titleText="@string/str_setting"
         app:titleTextColor="@color/text_33" />
 
-    <RelativeLayout
-        android:id="@+id/rl_mobile"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/dp_56"
+    <com.officego.commonlib.view.widget.SettingItemLayout
+        android:id="@+id/sil_mobile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_below="@id/title_bar"
-        android:background="@color/white"
-        android:paddingLeft="@dimen/dp_18"
-        android:paddingRight="@dimen/dp_18">
+        app:leftMarkShow="invisible"
+        app:leftText="@string/str_modify_mobile"
+        app:leftTextSize="@dimen/sp_15"
+        app:leftToArrowTextColor="@color/text_33"
+        app:rightArrowShow="visible"
+        app:rightOtherImageViewShow="gone"
 
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="@string/str_modify_mobile"
-            android:textColor="@color/text_33"
-            android:textSize="@dimen/sp_15" />
+        app:showCenterText="gone"
+        app:showDividerBottom="visible"
+        app:showEditText="gone" />
 
-        <TextView
-            android:id="@+id/tv_mobile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="@dimen/dp_28"
-            android:textColor="@color/text_33"
-            android:textSize="@dimen/sp_15" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/ic_right_arrow_small"
-            tools:ignore="ContentDescription" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_1"
-            android:layout_alignParentBottom="true"
-            android:background="@color/common_divider" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/rl_wx"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/dp_56"
-        android:layout_below="@id/rl_mobile"
-        android:background="@color/white"
-        android:paddingLeft="@dimen/dp_18"
-        android:paddingRight="@dimen/dp_18"
-        android:visibility="gone">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="绑定微信"
-            android:textColor="@color/text_33"
-            android:textSize="@dimen/sp_15" />
-
-        <TextView
-            android:id="@+id/tv_bind_wx"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="@dimen/dp_28"
-            android:textColor="@color/text_33"
-            android:textSize="@dimen/sp_15" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/ic_right_arrow_small"
-            tools:ignore="ContentDescription" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_1"
-            android:layout_alignParentBottom="true"
-            android:background="@color/common_divider" />
-    </RelativeLayout>
-
-    <RelativeLayout
-        android:id="@+id/rl_version_update"
-        android:layout_width="wrap_content"
-        android:layout_height="@dimen/dp_56"
-        android:layout_below="@id/rl_wx"
-        android:background="@color/white"
-        android:paddingLeft="@dimen/dp_18"
-        android:paddingRight="@dimen/dp_18">
-
-        <TextView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
-            android:text="@string/str_version_update"
-            android:textColor="@color/text_33"
-            android:textSize="@dimen/sp_15"
-            tools:ignore="RelativeOverlap" />
-
-        <TextView
-            android:id="@+id/tv_version"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:layout_marginEnd="@dimen/dp_28"
-            android:textColor="@color/text_33"
-            android:textSize="@dimen/sp_15" />
-
-        <ImageView
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_alignParentEnd="true"
-            android:layout_centerVertical="true"
-            android:background="@drawable/ic_right_arrow_small"
-            tools:ignore="ContentDescription" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_1"
-            android:layout_alignParentBottom="true"
-            android:background="@color/common_divider" />
-    </RelativeLayout>
-
+    <com.officego.commonlib.view.widget.SettingItemLayout
+        android:id="@+id/sil_version_update"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sil_mobile"
+        app:leftMarkShow="invisible"
+        app:leftText="@string/str_version_update"
+        app:leftTextSize="@dimen/sp_15"
+        app:leftToArrowTextColor="@color/text_33"
+        app:rightArrowShow="visible"
+        app:rightOtherImageViewShow="gone"
+        app:showCenterText="gone"
+        app:showDividerBottom="visible"
+        app:showEditText="gone" />
 
     <Button
         android:id="@+id/btn_logout"
         style="?android:attr/borderlessButtonStyle"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_50"
-        android:layout_below="@id/rl_version_update"
+        android:layout_below="@id/sil_version_update"
         android:layout_marginStart="@dimen/dp_18"
         android:layout_marginTop="@dimen/dp_45"
         android:layout_marginEnd="@dimen/dp_18"

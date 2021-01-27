@@ -3,11 +3,11 @@ package com.officego.ui.login;
 import android.annotation.SuppressLint;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.os.CountDownTimer;
 import android.text.Html;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -58,7 +58,7 @@ import java.util.Objects;
 @SuppressLint({"Registered", "NonConstantResourceId"})
 @EActivity(R.layout.login_activity)
 public class LoginActivity extends BaseMvpActivity<LoginPresenter>
-        implements LoginContract.View {
+        implements LoginContract.View, MyCountDownTimer.TimerListener {
     @ViewById(R.id.btn_login)
     Button btnLogin;
     @ViewById(R.id.et_mobile)
@@ -73,8 +73,8 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
     TextView tvProtocol;
     @ViewById(R.id.rl_code)
     RelativeLayout rlCode;
-    @ViewById(R.id.rl_back)
-    RelativeLayout rlBack;
+    @ViewById(R.id.iv_back)
+    ImageView ivBack;
     @ViewById(R.id.btn_login_no_password)
     Button btnLoginNoPassword;
     @ViewById(R.id.btn_test)
@@ -83,8 +83,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
     boolean isFinishCurrentView; //关闭当前租户页面
     private String mobile;
     //倒计时对象,总共的时间,每隔多少秒更新一次时间
-    final MyCountDownTimer mTimer = new MyCountDownTimer(Constants.SMS_TIME, 1000);
-
+    private MyCountDownTimer mTimer;
     //微信授权绑定手机
     private boolean isWeChatBindPhone;
     private WeChatAuthBean weChatAuthBean;
@@ -96,16 +95,18 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         StatusBarUtils.setStatusBarColor(this);
         mPresenter = new LoginPresenter();
         mPresenter.attachView(this);
+        mTimer = new MyCountDownTimer(Constants.SMS_TIME, 1000);
+        mTimer.setListener(this);
         initViews();
-        SpUtils.saveImei(context);
     }
 
     private void initViews() {
+        SpUtils.saveImei(context);
         new MonitorEditTextUtils(btnLogin, etMobile);
         tvProtocol.setText(Html.fromHtml(getString(R.string.str_click_login_agree_service)));
         if (getIntent().getExtras() != null) { //房东model修改密码重新登录
             boolean isOwnerLogin = getIntent().getExtras().getBoolean("isOwnerLogin");
-            rlBack.setVisibility(isOwnerLogin ? View.GONE : View.VISIBLE);
+            ivBack.setVisibility(isOwnerLogin ? View.GONE : View.VISIBLE);
         }
         if (!TextUtils.isEmpty(SpUtils.getSignToken())) {
             if (TextUtils.equals(Constants.TYPE_OWNER, String.valueOf(SpUtils.getRole()))) {
@@ -183,11 +184,8 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         startDownTimer(mobile);
     }
 
-    @Click(R.id.rl_back)
+    @Click(R.id.iv_back)
     void backClick() {
-        if (isFastClick(1200)) {
-            return;
-        }
         finish();
     }
 
@@ -299,44 +297,40 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
 
     private void startDownTimer(String mobile) {
         mPresenter.sendSmsCode(mobile);
-        mTimer.start();
+        if (mTimer != null) {
+            mTimer.start();
+        }
     }
 
     @UiThread
     void stopDownTimer() {
-        mTimer.cancel();
+        if (mTimer != null) {
+            mTimer.cancel();
+        }
         tvGetCode.setText(getResources().getString(R.string.str_resend));
         tvGetCode.setClickable(true);
-    }
-
-    private class MyCountDownTimer extends CountDownTimer {
-        MyCountDownTimer(long millisInFuture, long countDownInterval) {
-            super(millisInFuture, countDownInterval);
-        }
-
-        //计时过程
-        @Override
-        public void onTick(long l) {
-            //防止计时过程中重复点击
-            tvGetCode.setClickable(false);
-            tvGetCode.setTextColor(getResources().getColor(R.color.text_normal));
-            tvGetCode.setText(String.format(Locale.getDefault(), "%ds", l / 1000));
-        }
-
-        //计时完毕的方法
-        @Override
-        public void onFinish() {
-            stopDownTimer();
-            tvGetCode.setTextColor(getResources().getColor(R.color.common_blue_main));
-            tvGetCode.setText(getResources().getString(R.string.str_resend));
-            tvGetCode.setClickable(true);
-        }
     }
 
     @Override
     protected void onDestroy() {
         super.onDestroy();
         stopDownTimer();
+    }
+
+    @Override
+    public void onTick(long l) {
+        //防止计时过程中重复点击
+        tvGetCode.setClickable(false);
+        tvGetCode.setTextColor(getResources().getColor(R.color.text_normal));
+        tvGetCode.setText(String.format(Locale.getDefault(), "%ds", l / 1000));
+    }
+
+    @Override
+    public void timerFinish() {
+        stopDownTimer();
+        tvGetCode.setClickable(true);
+        tvGetCode.setTextColor(getResources().getColor(R.color.common_blue_main));
+        tvGetCode.setText(getResources().getString(R.string.str_resend));
     }
 
     //渠道追踪
@@ -350,5 +344,4 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
             SensorsTrack.trackInstallation(context);
         }
     }
-
 }

@@ -3,7 +3,6 @@ package com.owner.mine;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.text.TextUtils;
-import android.widget.TextView;
 
 import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.GotoActivityUtils;
@@ -15,6 +14,7 @@ import com.officego.commonlib.update.AppUpdate;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.dialog.CommonDialog;
+import com.officego.commonlib.view.widget.SettingItemLayout;
 import com.owner.R;
 
 import org.androidannotations.annotations.AfterViews;
@@ -30,30 +30,30 @@ import org.androidannotations.annotations.ViewById;
 @SuppressLint("Registered")
 @EActivity(resName = "mine_owner_activity_setting")
 public class MineSettingActivity extends BaseActivity {
-    @ViewById(resName = "tv_mobile")
-    TextView tvMobile;
-    @ViewById(resName = "tv_version")
-    TextView tvVersion;
 
+    @ViewById(resName = "sil_mobile")
+    SettingItemLayout silMobile;
+    @ViewById(resName = "sil_version_update")
+    SettingItemLayout silVersionUpdate;
 
     @SuppressLint("SetTextI18n")
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarColor(this);
-        tvVersion.setText("v" + CommonHelper.getAppVersionName(context));
+        silVersionUpdate.setLeftToArrowText("v" + CommonHelper.getAppVersionName(context));
         String mobile = SpUtils.getPhoneNum();
         if (!TextUtils.isEmpty(mobile) && mobile.length() == 11) {
             String phoneNumber = mobile.substring(0, 3) + "****" + mobile.substring(7);
-            tvMobile.setText(phoneNumber);
+            silMobile.setLeftToArrowText(phoneNumber);
         }
     }
 
-    @Click(resName = "rl_mobile")
+    @Click(resName = "sil_mobile")
     void modifyMobileClick() {
         ModifyMobileActivity_.intent(context).start();
     }
 
-    @Click(resName = "rl_version_update")
+    @Click(resName = "sil_version_update")
     void versionUpdateClick() {
         updateVersion(CommonHelper.getAppVersionName(context));
     }
