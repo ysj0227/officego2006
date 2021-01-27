@@ -1,8 +1,6 @@
 package com.officego.ui.mine;
 
 import android.annotation.SuppressLint;
-import android.content.Intent;
-import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
@@ -80,9 +78,9 @@ public class ViewingDateDetailActivity extends BaseMvpActivity<ViewingDateDetail
     @Click(R.id.iv_mobile)
     void mobileClick() {
         if (!TextUtils.isEmpty(mobile)) {
-            CommonHelper.callPhone(context,mobile);
+            CommonHelper.callPhone(context, mobile);
         } else {
-            shortTip("手机号码错误");
+            shortTip("暂时无法获取对方手机号");
         }
     }
 
