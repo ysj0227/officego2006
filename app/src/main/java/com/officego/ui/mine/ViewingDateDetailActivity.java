@@ -12,6 +12,7 @@ import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.CircleImage;
@@ -32,7 +33,7 @@ import java.util.List;
  * Data 2020/5/20.
  * Descriptions:
  **/
-@SuppressLint("Registered")
+@SuppressLint({"Registered", "NonConstantResourceId"})
 @EActivity(R.layout.mine_activity_viewing_date_details)
 public class ViewingDateDetailActivity extends BaseMvpActivity<ViewingDateDetailsPresenter>
         implements ViewingDateDetailsContract.View {
@@ -79,22 +80,10 @@ public class ViewingDateDetailActivity extends BaseMvpActivity<ViewingDateDetail
     @Click(R.id.iv_mobile)
     void mobileClick() {
         if (!TextUtils.isEmpty(mobile)) {
-            callPhone(mobile);
+            CommonHelper.callPhone(context,mobile);
         } else {
             shortTip("手机号码错误");
         }
-    }
-
-    /**
-     * 拨打电话（跳转到拨号界面，用户手动点击拨打）
-     *
-     * @param phoneNum 电话号码
-     */
-    public void callPhone(String phoneNum) {
-        Intent intent = new Intent(Intent.ACTION_DIAL);
-        Uri data = Uri.parse("tel:" + phoneNum);
-        intent.setData(data);
-        startActivity(intent);
     }
 
     @SuppressLint("SetTextI18n")
@@ -145,8 +134,4 @@ public class ViewingDateDetailActivity extends BaseMvpActivity<ViewingDateDetail
         tvBus.setText(linePlan);
     }
 
-    @Override
-    public void dateFail(int code, String msg) {
-
-    }
 }

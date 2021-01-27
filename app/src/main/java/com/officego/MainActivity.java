@@ -156,35 +156,37 @@ public class MainActivity extends BaseActivity implements RadioGroup.OnCheckedCh
     }
 
     private void initBottomImage() {
+        int paddingTop = 25;
+        int paddingBottom = 6;
         //定义底部标签图片大小和位置
-        Drawable drawable_news = getResources().getDrawable(R.drawable.ic_tab_home);
+        Drawable drawable_home = getResources().getDrawable(R.drawable.ic_tab_home);
         //当这个图片被绘制时，给他绑定一个矩形 ltrb规定这个矩形
-        drawable_news.setBounds(0, 0, 50, 50);
+        drawable_home.setBounds(0, 0, 50, 50);
         //设置图片在文字的哪个方向
-        rb_1.setPadding(0, 18, 0, 5);
-        rb_1.setCompoundDrawables(null, drawable_news, null, null);
+        rb_1.setPadding(0, paddingTop, 0, paddingBottom);
+        rb_1.setCompoundDrawables(null, drawable_home, null, null);
 
         //定义底部标签图片大小和位置
-        Drawable drawable_live = getResources().getDrawable(R.drawable.ic_tab_message);
+        Drawable drawable_msg = getResources().getDrawable(R.drawable.ic_tab_message);
         //当这个图片被绘制时，给他绑定一个矩形 ltrb规定这个矩形
-        drawable_live.setBounds(0, 0, 50, 50);
+        drawable_msg.setBounds(0, 0, 50, 50);
         //设置图片在文字的哪个方向
-        rb_2.setPadding(0, 18, 0, 5);
-        rb_2.setCompoundDrawables(null, drawable_live, null, null);
+        rb_2.setPadding(0, paddingTop, 0, paddingBottom);
+        rb_2.setCompoundDrawables(null, drawable_msg, null, null);
 
         //定义底部标签图片大小和位置
-        Drawable drawable_tuijian = getResources().getDrawable(R.drawable.ic_tab_collect);
+        Drawable drawable_collect = getResources().getDrawable(R.drawable.ic_tab_collect);
         //当这个图片被绘制时，给他绑定一个矩形 ltrb规定这个矩形
-        drawable_tuijian.setBounds(0, 0, 50, 50);
+        drawable_collect.setBounds(0, 0, 50, 50);
         //设置图片在文字的哪个方向
-        rb_3.setPadding(0, 18, 0, 5);
-        rb_3.setCompoundDrawables(null, drawable_tuijian, null, null);
+        rb_3.setPadding(0, paddingTop, 0, paddingBottom);
+        rb_3.setCompoundDrawables(null, drawable_collect, null, null);
         //定义底部标签图片大小和位置
         Drawable drawable_mine = getResources().getDrawable(R.drawable.ic_tab_mine);
         //当这个图片被绘制时，给他绑定一个矩形 ltrb规定这个矩形
         drawable_mine.setBounds(0, 0, 50, 50);
         //设置图片在文字的哪个方向
-        rb_4.setPadding(0, 18, 0, 5);
+        rb_4.setPadding(0, paddingTop, 0, paddingBottom);
         rb_4.setCompoundDrawables(null, drawable_mine, null, null);
     }
 

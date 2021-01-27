@@ -16,7 +16,6 @@ public interface ViewingDateDetailsContract {
 
         void dateSuccess(ViewingDateDetailsBean data);
 
-        void dateFail(int code, String msg);
     }
 
     interface Presenter {

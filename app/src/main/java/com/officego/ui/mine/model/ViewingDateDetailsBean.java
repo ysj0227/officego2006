@@ -356,33 +356,23 @@ public class ViewingDateDetailsBean {
          */
 
         @SerializedName("area")
-        private int area;
+        private Object area;
         @SerializedName("houseId")
         private int houseId;
-        @SerializedName("monthPrice")
-        private int monthPrice;
         @SerializedName("dayPrice")
-        private int dayPrice;
+        private Object dayPrice;
         @SerializedName("mainPic")
         private String mainPic;
-        @SerializedName("simple")
-        private int simple;
-        @SerializedName("floor")
-        private String floor;
         @SerializedName("decoration")
         private String decoration;
         @SerializedName("seats")
         private int seats;
-        @SerializedName("scheduleId")
-        private int scheduleId;
-        @SerializedName("officeType")
-        private int officeType;
 
-        public int getArea() {
+        public Object getArea() {
             return area;
         }
 
-        public void setArea(int area) {
+        public void setArea(Object area) {
             this.area = area;
         }
 
@@ -394,19 +384,11 @@ public class ViewingDateDetailsBean {
             this.houseId = houseId;
         }
 
-        public int getMonthPrice() {
-            return monthPrice;
-        }
-
-        public void setMonthPrice(int monthPrice) {
-            this.monthPrice = monthPrice;
-        }
-
-        public int getDayPrice() {
+        public Object getDayPrice() {
             return dayPrice;
         }
 
-        public void setDayPrice(int dayPrice) {
+        public void setDayPrice(Object dayPrice) {
             this.dayPrice = dayPrice;
         }
 
@@ -416,22 +398,6 @@ public class ViewingDateDetailsBean {
 
         public void setMainPic(String mainPic) {
             this.mainPic = mainPic;
-        }
-
-        public int getSimple() {
-            return simple;
-        }
-
-        public void setSimple(int simple) {
-            this.simple = simple;
-        }
-
-        public String getFloor() {
-            return floor;
-        }
-
-        public void setFloor(String floor) {
-            this.floor = floor;
         }
 
         public String getDecoration() {
@@ -448,22 +414,6 @@ public class ViewingDateDetailsBean {
 
         public void setSeats(int seats) {
             this.seats = seats;
-        }
-
-        public int getScheduleId() {
-            return scheduleId;
-        }
-
-        public void setScheduleId(int scheduleId) {
-            this.scheduleId = scheduleId;
-        }
-
-        public int getOfficeType() {
-            return officeType;
-        }
-
-        public void setOfficeType(int officeType) {
-            this.officeType = officeType;
         }
     }
 }
