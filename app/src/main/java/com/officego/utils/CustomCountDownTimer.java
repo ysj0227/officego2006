@@ -23,7 +23,7 @@ public class CustomCountDownTimer extends CountDownTimer {
         void timerFinish();
     }
 
-    CustomCountDownTimer(long millisInFuture, long countDownInterval) {
+    public CustomCountDownTimer(long millisInFuture, long countDownInterval) {
         super(millisInFuture, countDownInterval);
     }
 
