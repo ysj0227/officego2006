@@ -1,4 +1,4 @@
-package com.officego.ui.login;
+package com.officego.utils;
 
 import android.os.CountDownTimer;
 
@@ -6,7 +6,7 @@ import android.os.CountDownTimer;
  * Created by shijie
  * Date 2021/1/27
  **/
-public class MyCountDownTimer extends CountDownTimer {
+public class CustomCountDownTimer extends CountDownTimer {
     public TimerListener getListener() {
         return listener;
     }
@@ -23,7 +23,7 @@ public class MyCountDownTimer extends CountDownTimer {
         void timerFinish();
     }
 
-    MyCountDownTimer(long millisInFuture, long countDownInterval) {
+    CustomCountDownTimer(long millisInFuture, long countDownInterval) {
         super(millisInFuture, countDownInterval);
     }
 

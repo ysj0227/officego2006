@@ -34,6 +34,7 @@ import com.officego.commonlib.view.ClearableEditText;
 import com.officego.h5.WebViewActivity_;
 import com.officego.ui.login.contract.LoginContract;
 import com.officego.ui.login.presenter.LoginPresenter;
+import com.officego.utils.CustomCountDownTimer;
 import com.officego.utils.JPushAuthLoginRequest;
 import com.officego.utils.MonitorEditTextUtils;
 import com.tencent.mm.opensdk.modelmsg.SendAuth;
@@ -58,7 +59,7 @@ import java.util.Objects;
 @SuppressLint({"Registered", "NonConstantResourceId"})
 @EActivity(R.layout.login_activity)
 public class LoginActivity extends BaseMvpActivity<LoginPresenter>
-        implements LoginContract.View, MyCountDownTimer.TimerListener {
+        implements LoginContract.View, CustomCountDownTimer.TimerListener {
     @ViewById(R.id.btn_login)
     Button btnLogin;
     @ViewById(R.id.et_mobile)
@@ -83,7 +84,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
     boolean isFinishCurrentView; //关闭当前租户页面
     private String mobile;
     //倒计时对象,总共的时间,每隔多少秒更新一次时间
-    private MyCountDownTimer mTimer;
+    private CustomCountDownTimer mTimer;
     //微信授权绑定手机
     private boolean isWeChatBindPhone;
     private WeChatAuthBean weChatAuthBean;
@@ -95,7 +96,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         StatusBarUtils.setStatusBarColor(this);
         mPresenter = new LoginPresenter();
         mPresenter.attachView(this);
-        mTimer = new MyCountDownTimer(Constants.SMS_TIME, 1000);
+        mTimer = new CustomCountDownTimer(Constants.SMS_TIME, 1000);
         mTimer.setListener(this);
         initViews();
     }
