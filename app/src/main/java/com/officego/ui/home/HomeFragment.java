@@ -113,7 +113,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         nsvView.setOnScrollChangeListener(this);
         initViews();
         initRefresh();
-        new VersionDialog(mActivity);
+        new VersionDialog(mActivity,false);
         getData();
         showAnimation();
     }

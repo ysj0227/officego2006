@@ -15,6 +15,7 @@ import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.update.AppUpdate;
+import com.officego.commonlib.update.VersionDialog;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.dialog.CommonDialog;
@@ -73,9 +74,8 @@ public class MineSettingActivity extends BaseActivity {
 
     @Click(R.id.sil_version_update)
     void versionUpdateClick() {
-        updateVersion(CommonHelper.getAppVersionName(context));
+        new VersionDialog(context, true);
     }
-
 
     @Click(R.id.btn_logout)
     void logoutClick() {
@@ -91,34 +91,5 @@ public class MineSettingActivity extends BaseActivity {
                 })
                 .setCancelButton(R.string.sm_cancel, (dialog1, which) -> dialog1.dismiss()).create();
         dialog.showWithOutTouchable(false);
-    }
-
-    private void updateDialog(Activity context, String dec, String url) {
-        CommonDialog dialog = new CommonDialog.Builder(context)
-                .setTitle("发现新版本")
-                .setMessage(dec)
-                .setConfirmButton(R.string.str_update, (dialog12, which) -> AppUpdate.versionUpdate(context, url))
-                .setCancelButton(R.string.sm_cancel, (dialog1, which) -> dialog1.dismiss()).create();
-        dialog.showWithOutTouchable(false);
-        dialog.setCancelable(false);
-    }
-
-    private void updateVersion(String versionName) {
-        showLoadingDialog();
-        com.officego.commonlib.common.rpc.OfficegoApi.getInstance().updateVersion(versionName, new RetrofitCallback<VersionBean>() {
-            @Override
-            public void onSuccess(int code, String msg, VersionBean data) {
-                hideLoadingDialog();
-                updateDialog((Activity) context, data.getDesc(), data.getUploadUrl());
-            }
-
-            @Override
-            public void onFail(int code, String msg, VersionBean data) {
-                hideLoadingDialog();
-                if (code == Constants.ERROR_CODE_5008) {
-                    shortTip(R.string.tip_current_newest_version);
-                }
-            }
-        });
     }
 }

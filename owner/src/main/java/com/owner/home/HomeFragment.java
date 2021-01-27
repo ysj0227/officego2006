@@ -122,7 +122,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         initViews();
         initRefresh();
         if (NetworkUtils.isNetworkAvailable(mActivity)) {
-            new VersionDialog(mActivity);
+            new VersionDialog(mActivity,false);
             mPresenter.getUserInfo();
         } else {
             netException();

@@ -6,8 +6,10 @@ import android.content.Context;
 import com.officego.commonlib.R;
 import com.officego.commonlib.common.model.VersionBean;
 import com.officego.commonlib.common.rpc.OfficegoApi;
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.CommonHelper;
+import com.officego.commonlib.utils.ToastUtils;
 import com.officego.commonlib.view.dialog.CommonDialog;
 
 /**
@@ -16,8 +18,10 @@ import com.officego.commonlib.view.dialog.CommonDialog;
  * Descriptions:
  **/
 public class VersionDialog {
+    private boolean isShowToast;
 
-    public VersionDialog(Context context) {
+    public VersionDialog(Context context, boolean isShowToast) {
+        this.isShowToast = isShowToast;
         serviceDialog(context);
     }
 
@@ -55,6 +59,9 @@ public class VersionDialog {
 
                     @Override
                     public void onFail(int code, String msg, VersionBean data) {
+                        if (isShowToast && code == Constants.ERROR_CODE_5008) {
+                            ToastUtils.toastForShort(context, R.string.tip_current_newest_version);
+                        }
                     }
                 });
     }

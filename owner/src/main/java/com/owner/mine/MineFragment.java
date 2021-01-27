@@ -17,11 +17,11 @@ import androidx.annotation.NonNull;
 import com.bumptech.glide.Glide;
 import com.officego.commonlib.base.BaseMvpFragment;
 import com.officego.commonlib.common.GotoActivityUtils;
-import com.officego.commonlib.common.model.LoginBean;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.analytics.GoogleTrack;
 import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.common.config.CommonNotifications;
+import com.officego.commonlib.common.model.LoginBean;
 import com.officego.commonlib.common.model.UserMessageBean;
 import com.officego.commonlib.common.rongcloud.RCloudConnectUtils;
 import com.officego.commonlib.common.rongcloud.RCloudSetUserInfoUtils;
@@ -80,7 +80,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
             return;
         }
         //版本更新
-        new VersionDialog(mActivity);
+        new VersionDialog(mActivity,false);
         mPresenter.getUserInfo();
     }
 

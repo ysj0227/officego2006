@@ -73,7 +73,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
         mPresenter = new UserPresenter();
         mPresenter.attachView(this);
         //版本更新
-        new VersionDialog(mActivity);
+        new VersionDialog(mActivity,false);
         //当前未登录状态
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
             noLoginView();
