@@ -12,14 +12,27 @@
         android:layout_height="@dimen/dp_70"
         android:background="@drawable/bg_corner_top_left_right_white"
         android:gravity="center"
+        android:paddingTop="@dimen/dp_10"
         android:textColor="@color/text_33"
         android:textSize="@dimen/sp_16" />
+
+    <TextView
+        android:id="@+id/tv_warn"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_content"
+        android:background="@color/white"
+        android:gravity="center"
+        android:paddingBottom="@dimen/dp_20"
+        android:textColor="@color/common_red"
+        android:textSize="@dimen/sp_12"
+        android:visibility="gone" />
 
     <LinearLayout
         android:id="@+id/rl_btn"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_44"
-        android:layout_below="@+id/tv_content"
+        android:layout_below="@+id/tv_warn"
         android:visibility="visible">
 
         <Button

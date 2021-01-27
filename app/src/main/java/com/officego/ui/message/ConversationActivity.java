@@ -289,7 +289,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
      */
     @Click(R.id.rl_mobile)
     void mobileClick() {
-        if (isFastClick(3000)) {
+        if (isFastClick(2000)) {
             return;
         }
         GoogleTrack.exchangePhone(context, isCanExchange);
@@ -311,7 +311,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
      */
     @Click(R.id.rl_wx)
     void wxClick() {
-        if (isFastClick(3000)) {
+        if (isFastClick(2000)) {
             return;
         }
         GoogleTrack.exchangeWechat(context, isCanExchange);
