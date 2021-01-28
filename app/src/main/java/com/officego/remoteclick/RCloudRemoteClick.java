@@ -46,8 +46,8 @@ public class RCloudRemoteClick {
 //                Conversation.ConversationType conversationType =
 //                        Conversation.ConversationType.setValue(rc.getInt("conversationType"));
 //                String targetId = rc.getString("fromUserId");
-//                LogCat.e(TAG, " oppo strRC=" + strRC);
-//                LogCat.e(TAG, " oppo pushData=" + pushData + "  context=" + context);
+                LogCat.e(TAG, " oppo strRC=" + strRC);
+                LogCat.e(TAG, " oppo pushData=" + pushData + "  context=" + context);
                 GotoActivityUtils.MI_VIVO_PushClick(context, pushData);
             }
         } catch (Exception e) {
@@ -64,19 +64,19 @@ public class RCloudRemoteClick {
             if (TextUtils.equals("rong", uri.getScheme()) && uri.getQueryParameter("isFromPush") != null) {
                 if (Objects.requireNonNull(uri.getQueryParameter("isFromPush")).equals("true")) {
                     String options = context.getIntent().getStringExtra("options"); // 获取 intent 里携带的附加数据
-                    //LogCat.e(TAG, "HW options:" + options);
+                    LogCat.e(TAG, "HW options:" + options);
                     try {
                         String pushData;
                         JSONObject jsonObject = new JSONObject(options);
                         if (jsonObject.has("appData")) {   // appData 对应的是客户端 sendMessage() 时的参数 pushData
                             pushData = jsonObject.getString("appData");
-                            //LogCat.e(TAG, "HW pushData=" + pushData);
+                            LogCat.e(TAG, "HW pushData=" + pushData);
                         } else {
                             pushData = "";
                         }
                         BaseNotification.newInstance().postNotificationName(CommonNotifications.RCloudPushData, pushData);
                     } catch (JSONException e) {
-                        //LogCat.e(TAG, "HW pushData JSONException");
+                        LogCat.e(TAG, "HW pushData JSONException");
                     }
                 }
             }

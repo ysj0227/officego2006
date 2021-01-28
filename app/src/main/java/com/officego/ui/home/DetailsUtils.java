@@ -2,11 +2,15 @@ package com.officego.ui.home;
 
 import android.content.Context;
 
+import com.officego.ui.home.model.BuildingConditionItem;
+import com.officego.ui.home.model.BuildingDetailsBean;
+import com.officego.ui.home.model.BuildingJointWorkBean;
 import com.officego.utils.ImageLoaderUtils;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -30,6 +34,66 @@ public class DetailsUtils {
         bannerImage.isAutoPlay(false);
         //bannerImage.setOnBannerListener(this);
         bannerImage.start();
+    }
+
+    /**
+     * 楼盘详情左右滑动列表
+     */
+    public static List<BuildingConditionItem> buildingList(BuildingDetailsBean data) {
+        List<BuildingConditionItem> conditionList = new ArrayList<>();
+        conditionList.add(new BuildingConditionItem("全部", "", data.getFactorMap().getBuildingItem0() + "套"));
+        if (data.getFactorMap().getBuildingItem1() > 0) {
+            conditionList.add(new BuildingConditionItem("0-100㎡", "0,100", data.getFactorMap().getBuildingItem1() + "套"));
+        }
+        if (data.getFactorMap().getBuildingItem2() > 0) {
+            conditionList.add(new BuildingConditionItem("100-200㎡", "100,200", data.getFactorMap().getBuildingItem2() + "套"));
+        }
+        if (data.getFactorMap().getBuildingItem3() > 0) {
+            conditionList.add(new BuildingConditionItem("200-300㎡", "200,300", data.getFactorMap().getBuildingItem3() + "套"));
+        }
+        if (data.getFactorMap().getBuildingItem4() > 0) {
+            conditionList.add(new BuildingConditionItem("300-400㎡", "300,400", data.getFactorMap().getBuildingItem4() + "套"));
+        }
+        if (data.getFactorMap().getBuildingItem5() > 0) {
+            conditionList.add(new BuildingConditionItem("400-500㎡", "400,500", data.getFactorMap().getBuildingItem5() + "套"));
+        }
+        if (data.getFactorMap().getBuildingItem6() > 0) {
+            conditionList.add(new BuildingConditionItem("500-1000㎡", "500,1000", data.getFactorMap().getBuildingItem6() + "套"));
+        }
+        if (data.getFactorMap().getBuildingItem7() > 0) {
+            conditionList.add(new BuildingConditionItem("1000㎡以上", "1000,999999999", data.getFactorMap().getBuildingItem7() + "套"));
+        }
+        return conditionList;
+    }
+
+    /**
+     * 网点详情左右滑动列表
+     */
+    public static List<BuildingConditionItem> jointWorkList(BuildingJointWorkBean data) {
+        List<BuildingConditionItem> conditionList = new ArrayList<>();
+        conditionList.add(new BuildingConditionItem("全部", "", data.getFactorMap().getJointworkItem0() + "套"));
+        if (data.getFactorMap().getJointworkItem1() > 0) {
+            conditionList.add(new BuildingConditionItem("1人", "0,1", data.getFactorMap().getJointworkItem1() + "套"));
+        }
+        if (data.getFactorMap().getJointworkItem2() > 0) {
+            conditionList.add(new BuildingConditionItem("2～3人", "2,3", data.getFactorMap().getJointworkItem2() + "套"));
+        }
+        if (data.getFactorMap().getJointworkItem3() > 0) {
+            conditionList.add(new BuildingConditionItem("4～6人", "4,6", data.getFactorMap().getJointworkItem3() + "套"));
+        }
+        if (data.getFactorMap().getJointworkItem4() > 0) {
+            conditionList.add(new BuildingConditionItem("7～10人", "7,10", data.getFactorMap().getJointworkItem4() + "套"));
+        }
+        if (data.getFactorMap().getJointworkItem5() > 0) {
+            conditionList.add(new BuildingConditionItem("11～15人", "11,15", data.getFactorMap().getJointworkItem5() + "套"));
+        }
+        if (data.getFactorMap().getJointworkItem6() > 0) {
+            conditionList.add(new BuildingConditionItem("16～20人", "16,20", data.getFactorMap().getJointworkItem6() + "套"));
+        }
+        if (data.getFactorMap().getJointworkItem7() > 0) {
+            conditionList.add(new BuildingConditionItem("20人以上", "20,999999999", data.getFactorMap().getJointworkItem7() + "套"));
+        }
+        return conditionList;
     }
 
     /**

@@ -59,7 +59,6 @@ import com.officego.ui.adapter.ServiceCreateLogoAdapter;
 import com.officego.ui.dialog.PreImageDialog;
 import com.officego.ui.dialog.ServiceLogoDialog;
 import com.officego.ui.home.contract.BuildingDetailsJointWorkContract;
-import com.officego.ui.home.model.BuildingConditionItem;
 import com.officego.ui.home.model.BuildingDetailsBean;
 import com.officego.ui.home.model.BuildingDetailsChildBean;
 import com.officego.ui.home.model.BuildingInfoBean;
@@ -1134,6 +1133,17 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         isFavorite = data.isIsFavorite();
         isFavoriteView(data.isIsFavorite());
         //大楼信息
+        getBuildingInfo(data);
+        //独立办公室 左右滑动列表
+        if (data.getFactorMap() != null) {
+            rvHorizontalAll.setAdapter(new HouseItemAllAdapter(context, DetailsUtils.jointWorkList(data)));
+        }
+        //独立办公室子列表
+        getChildBuildingList();
+    }
+
+    //大楼信息
+    private void getBuildingInfo(BuildingJointWorkBean data) {
         if (data.getBuilding() != null) {
             if (data.getBuilding().isOpenStationFlag() && data.getBuilding().getOpenStationMap() != null) {
                 ctlOpenWork.setVisibility(View.VISIBLE);
@@ -1141,7 +1151,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
                 tvOpenWorkModelText.setText("开放工位");
                 tvOpenWorkModelNum.setText(Html.fromHtml("<font color='#46C3C2'>" + data.getBuilding().getOpenStationMap().getSeats() + "</font>" + "<font color='#CC666666'>工位</font>"));
                 tvOpenWorkModelNum.setTextSize(TypedValue.COMPLEX_UNIT_PX, CommonHelper.sp2px(context, 16));
-                tvMinMonth.setText(data.getBuilding().getOpenStationMap().getMinimumLease() + "个月起租");
+                tvMinMonth.setText(String.format("%s个月起租", data.getBuilding().getOpenStationMap().getMinimumLease()));
                 tvOpenWorkModelPrice.setText(Html.fromHtml("<font color='#46C3C2'>¥" +
                         CommonHelper.bigDecimal(data.getBuilding().getOpenStationMap().getDayPrice(), false) + "</font>/位/月"));
                 Glide.with(context).load(data.getBuilding().getOpenStationMap().getMainPic()).into(ivOpenWorkImg);
@@ -1152,10 +1162,6 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
                 rlOpenWorkModel.setVisibility(View.GONE);
             }
         }
-        //独立办公室
-        independentBuildingList(data);
-        //独立办公室子列表
-        getChildBuildingList();
     }
 
     private void showVrVideoImg(BuildingJointWorkBean data) {
@@ -1260,40 +1266,6 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
             } else {
                 ctlShareService.setVisibility(View.GONE);
             }
-        }
-    }
-
-    /**
-     * 独立办公室，写字楼
-     * all list横屏滑动
-     * child list
-     */
-    private void independentBuildingList(BuildingJointWorkBean data) {
-        if (data.getFactorMap() != null) {
-            List<BuildingConditionItem> conditionList = new ArrayList<>();
-            conditionList.add(new BuildingConditionItem("全部", "", data.getFactorMap().getJointworkItem0() + "套"));
-            if (data.getFactorMap().getJointworkItem1() > 0) {
-                conditionList.add(new BuildingConditionItem("1人", "0,1", data.getFactorMap().getJointworkItem1() + "套"));
-            }
-            if (data.getFactorMap().getJointworkItem2() > 0) {
-                conditionList.add(new BuildingConditionItem("2～3人", "2,3", data.getFactorMap().getJointworkItem2() + "套"));
-            }
-            if (data.getFactorMap().getJointworkItem3() > 0) {
-                conditionList.add(new BuildingConditionItem("4～6人", "4,6", data.getFactorMap().getJointworkItem3() + "套"));
-            }
-            if (data.getFactorMap().getJointworkItem4() > 0) {
-                conditionList.add(new BuildingConditionItem("7～10人", "7,10", data.getFactorMap().getJointworkItem4() + "套"));
-            }
-            if (data.getFactorMap().getJointworkItem5() > 0) {
-                conditionList.add(new BuildingConditionItem("11～15人", "11,15", data.getFactorMap().getJointworkItem5() + "套"));
-            }
-            if (data.getFactorMap().getJointworkItem6() > 0) {
-                conditionList.add(new BuildingConditionItem("16～20人", "16,20", data.getFactorMap().getJointworkItem6() + "套"));
-            }
-            if (data.getFactorMap().getJointworkItem7() > 0) {
-                conditionList.add(new BuildingConditionItem("20人以上", "20,999999999", data.getFactorMap().getJointworkItem7() + "套"));
-            }
-            rvHorizontalAll.setAdapter(new HouseItemAllAdapter(context, conditionList));
         }
     }
 
