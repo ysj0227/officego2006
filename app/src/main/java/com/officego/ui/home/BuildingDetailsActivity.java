@@ -42,6 +42,7 @@ import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.IVideoPlayer;
 import com.officego.commonlib.view.LabelsView;
 import com.officego.commonlib.view.dialog.CommonDialog;
@@ -98,7 +99,8 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         IMediaPlayer.OnPreparedListener,
         IMediaPlayer.OnErrorListener,
         IMediaPlayer.OnSeekCompleteListener,
-        IMediaPlayer.OnVideoSizeChangedListener {
+        IMediaPlayer.OnVideoSizeChangedListener,
+        IMediaPlayer.OnInfoListener {
     //title
     @ViewById(R.id.nsv_view)
     NestedScrollView nsvView;
@@ -631,6 +633,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         iVideoPlayer.setOnErrorListener(this);
         iVideoPlayer.setOnSeekCompleteListener(this);
         iVideoPlayer.setOnVideoSizeChangedListener(this);
+        iVideoPlayer.setOnInfoListener(this);
     }
 
     //播放异常重试
@@ -705,9 +708,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         iVideoPlayer.setVisibility(View.GONE);
         llPlayFail.setVisibility(View.VISIBLE);
         llPlayLoading.setVisibility(View.GONE);
-        tvFailTip.setText(TextUtils.isEmpty(videoUrl) ?
-                getString(R.string.tip_video_play_exception) :
-                getString(R.string.toast_network_error));
+        tvFailTip.setText(getString(R.string.tip_video_play_exception));
         radioGroupIsShow(false);
     }
 
@@ -730,6 +731,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     // 视频尺寸
     @Override
     public void onVideoSizeChanged(IMediaPlayer iMediaPlayer, int width, int height, int i2, int i3) {
+        LogCat.e(TAG,"111111111  onVideoSizeChanged width="+width+"  height="+height);
         if (!isSetVideoRate) {
             isSetVideoRate = true;
             ViewGroup.LayoutParams params = iVideoPlayer.getLayoutParams();
@@ -748,6 +750,18 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             params.height = videoHeight;
             iVideoPlayer.setLayoutParams(params);
         }
+    }
+
+    @Override
+    public boolean onInfo(IMediaPlayer iMediaPlayer, int what, int extra) {
+        if (what == IMediaPlayer.MEDIA_INFO_VIDEO_ROTATION_CHANGED) {
+            // 视频旋转了extra度，需要恢复
+            LogCat.e(TAG,"111111111 onInfo 视频旋转="+extra);
+//            if (mTextureView != null) {
+//                mTextureView.setRotation(extra);
+//            }
+        }
+        return false;
     }
 
     //缓存状态
@@ -1246,5 +1260,4 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         }
         new PreImageDialog(context, (ArrayList<String>) mBannerList, position);
     }
-
 }

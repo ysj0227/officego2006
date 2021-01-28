@@ -115,7 +115,7 @@
             android:layout_height="wrap_content"
             android:drawableTop="@mipmap/ic_video_play_error"
             android:drawablePadding="@dimen/dp_24"
-            android:text="@string/toast_network_error"
+            android:text="@string/str_video_player_exception"
             android:textColor="@color/white_60a"
             android:textSize="@dimen/sp_12" />
 
