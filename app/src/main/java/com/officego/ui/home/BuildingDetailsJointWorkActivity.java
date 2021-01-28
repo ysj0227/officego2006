@@ -68,12 +68,10 @@ import com.officego.ui.home.model.ChatsBean;
 import com.officego.ui.home.model.ConditionBean;
 import com.officego.ui.home.presenter.BuildingDetailsJointWorkPresenter;
 import com.officego.ui.message.ConversationActivity_;
-import com.officego.utils.ImageLoaderUtils;
 import com.officego.utils.video.BannerUtils;
+import com.officego.utils.video.IjkVideoConfig;
 import com.officego.utils.video.IjkVideoUtils;
 import com.youth.banner.Banner;
-import com.youth.banner.BannerConfig;
-import com.youth.banner.Transformer;
 import com.youth.banner.listener.OnBannerListener;
 
 import org.androidannotations.annotations.AfterViews;
@@ -264,43 +262,40 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     RelativeLayout rlBottomView;
     //神策是否已读
     private boolean isRead;
-    //同步进度
-    private static final int MESSAGE_SHOW_PROGRESS = 1;
-    //缓冲进度界限值
-    private static final int BUFFERING_PROGRESS = 95;
-    //延迟毫秒数
-    private static final int DELAY_MILLIS = 10;
     //是否在拖动进度条中，默认为停止拖动，true为在拖动中，false为停止拖动
     private boolean isDragging;
     //是否暂停，是否静音，是否初始化了截屏
     private boolean isPaused;
     //音量
     private int bufferingUpdate;
+    //视频源是否旋转了
     private boolean isSetVideoRate;
+    //跳转防止黑屏重新播放视频
+    private boolean isRePlayVideo;
     private String videoUrl;
     //String videoUrl = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
     //video 消息处理
     private final Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
-            if (msg.what == MESSAGE_SHOW_PROGRESS) {
+            if (msg.what == IjkVideoConfig.VIDEO_MSG_PROGRESS) {
                 if (!isDragging) {
-                    msg = obtainMessage(MESSAGE_SHOW_PROGRESS, iVideoPlayer.getCurrentPosition());
-                    sendMessageDelayed(msg, DELAY_MILLIS);
+                    msg = obtainMessage(IjkVideoConfig.VIDEO_MSG_PROGRESS, iVideoPlayer.getCurrentPosition());
+                    sendMessageDelayed(msg, IjkVideoConfig.VIDEO_DELAY_MILLIS);
                     syncProgress(msg.obj);
                 }
             }
         }
     };
-    //************************************************
-    //服务
-    private final List<DirectoryBean.DataBean> serviceList = new ArrayList<>();
-    private List<BuildingJointWorkBean.BuildingBean.CorporateServicesBean> corporateServicesList = new ArrayList<>();
-    private List<BuildingJointWorkBean.BuildingBean.BasicServicesBean> basicServicesList = new ArrayList<>();
+    //***************************
     @Extra
     BuildingIdBundleBean mBuildingBean;
     @Extra
     ConditionBean mConditionBean;
+    //服务
+    private final List<DirectoryBean.DataBean> serviceList = new ArrayList<>();
+    private List<BuildingJointWorkBean.BuildingBean.CorporateServicesBean> corporateServicesList = new ArrayList<>();
+    private List<BuildingJointWorkBean.BuildingBean.BasicServicesBean> basicServicesList = new ArrayList<>();
     //是否已经收藏
     private boolean isFavorite;
     //显示child子项列表
@@ -317,8 +312,6 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     private boolean isPlayedVideo;
     //是否关闭了筛选条件
     private boolean isClosedCondition;
-    //跳转防止黑屏重新播放视频
-    private boolean isRePlayVideo;
 
     @AfterViews
     void init() {
@@ -794,7 +787,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
                     radioGroupIsShow(false);
                 }
                 isDragging = false;
-                mHandler.sendEmptyMessageDelayed(MESSAGE_SHOW_PROGRESS, DELAY_MILLIS);
+                mHandler.sendEmptyMessageDelayed(IjkVideoConfig.VIDEO_MSG_PROGRESS, IjkVideoConfig.VIDEO_DELAY_MILLIS);
             } else {
                 iVideoPlayer.startVideo();
                 radioGroupIsShow(false);
@@ -811,7 +804,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
                 return;
             }
             long generateTime;
-            if (progress + DELAY_MILLIS >= iVideoPlayer.getDuration()) {
+            if (progress + IjkVideoConfig.VIDEO_DELAY_MILLIS >= iVideoPlayer.getDuration()) {
                 progress = sbBar.getMax();
                 generateTime = sbBar.getMax();//毫秒
             } else {
@@ -873,7 +866,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         if (iVideoPlayer != null) {
             bufferingUpdate = i;
             int onBufferingProgress;
-            if (i >= BUFFERING_PROGRESS) {
+            if (i >= IjkVideoConfig.VIDEO_BUFFERING_PROGRESS) {
                 onBufferingProgress = (int) iVideoPlayer.getDuration();
             } else {
                 onBufferingProgress = (int) (iVideoPlayer.getDuration() / 100 * i);
@@ -890,7 +883,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
             ibPlay.setBackgroundResource(R.mipmap.play_normal);
         }
         if (mHandler != null) {
-            mHandler.removeMessages(MESSAGE_SHOW_PROGRESS);
+            mHandler.removeMessages(IjkVideoConfig.VIDEO_MSG_PROGRESS);
         }
         if (bufferingUpdate == 0) {
             errorView();
@@ -926,7 +919,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
             //视频总时长
             tvCountPlayTime.setText(Objects.requireNonNull(iVideoPlayer).generateTime(duration));
             //发送当前播放时间点通知
-            mHandler.sendEmptyMessageDelayed(MESSAGE_SHOW_PROGRESS, DELAY_MILLIS);
+            mHandler.sendEmptyMessageDelayed(IjkVideoConfig.VIDEO_MSG_PROGRESS, IjkVideoConfig.VIDEO_DELAY_MILLIS);
         }
     }
 
@@ -948,7 +941,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
         isDragging = true;
-        mHandler.removeMessages(MESSAGE_SHOW_PROGRESS);
+        mHandler.removeMessages(IjkVideoConfig.VIDEO_MSG_PROGRESS);
     }
 
     //停止拖动
@@ -962,7 +955,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
                 ibPlay.setBackgroundResource(R.mipmap.pause_normal);
             }
             isDragging = false;
-            mHandler.sendEmptyMessageDelayed(MESSAGE_SHOW_PROGRESS, DELAY_MILLIS);
+            mHandler.sendEmptyMessageDelayed(IjkVideoConfig.VIDEO_MSG_PROGRESS, IjkVideoConfig.VIDEO_DELAY_MILLIS);
         }
     }
 

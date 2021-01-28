@@ -65,6 +65,7 @@ import com.officego.ui.home.model.ConditionBean;
 import com.officego.ui.home.presenter.BuildingDetailsPresenter;
 import com.officego.ui.message.ConversationActivity_;
 import com.officego.utils.video.BannerUtils;
+import com.officego.utils.video.IjkVideoConfig;
 import com.officego.utils.video.IjkVideoUtils;
 import com.youth.banner.Banner;
 import com.youth.banner.listener.OnBannerListener;
@@ -90,8 +91,7 @@ import tv.danmaku.ijk.media.player.IMediaPlayer;
 @SuppressLint({"Registered", "NonConstantResourceId"})
 @EActivity(R.layout.home_activity_house_details)
 public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPresenter> implements
-        OnBannerListener,
-        BuildingDetailsContract.View, NestedScrollView.OnScrollChangeListener,
+        OnBannerListener, BuildingDetailsContract.View, NestedScrollView.OnScrollChangeListener,
         SeekBar.OnSeekBarChangeListener,
         IMediaPlayer.OnBufferingUpdateListener,
         IMediaPlayer.OnCompletionListener,
@@ -245,14 +245,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     TextView tvFavorite;
     @ViewById(R.id.rl_bottom_view)
     RelativeLayout rlBottomView;
-    //神策是否已读
-    private boolean isRead;
-    //同步进度
-    private static final int MESSAGE_SHOW_PROGRESS = 1;
-    //缓冲进度界限值
-    private static final int BUFFERING_PROGRESS = 95;
-    //延迟毫秒数
-    private static final int DELAY_MILLIS = 10;
+
     //是否在拖动进度条中，默认为停止拖动，true为在拖动中，false为停止拖动
     private boolean isDragging;
     //是否暂停，是否静音，是否初始化了截屏
@@ -261,15 +254,18 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     private int bufferingUpdate;
     private String videoUrl;
     // String videoUrl = "http://clips.vorwaerts-gmbh.de/big_buck_bunny.mp4";
+    //视频源是否旋转了
     private boolean isSetVideoRate;
+    //跳转防止黑屏重新播放视频
+    private boolean isRePlayVideo;
     //Video 消息处理
     private final Handler mHandler = new Handler(Looper.getMainLooper()) {
         @Override
         public void handleMessage(Message msg) {
-            if (msg.what == MESSAGE_SHOW_PROGRESS) {
+            if (msg.what == IjkVideoConfig.VIDEO_MSG_PROGRESS) {
                 if (!isDragging) {
-                    msg = obtainMessage(MESSAGE_SHOW_PROGRESS, iVideoPlayer.getCurrentPosition());
-                    sendMessageDelayed(msg, DELAY_MILLIS);
+                    msg = obtainMessage(IjkVideoConfig.VIDEO_MSG_PROGRESS, iVideoPlayer.getCurrentPosition());
+                    sendMessageDelayed(msg, IjkVideoConfig.VIDEO_DELAY_MILLIS);
                     syncProgress(msg.obj);
                 }
             }
@@ -296,8 +292,8 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     private boolean isPlayedVideo;
     //是否关闭了筛选条件
     private boolean isClosedCondition;
-    //跳转防止黑屏重新播放视频
-    private boolean isRePlayVideo;
+    //神策是否已读
+    private boolean isRead;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @AfterViews
@@ -535,7 +531,8 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     @Override
     public void chatSuccess(ChatsBean data) {
         if (data.getMultiOwner() == 0) {
-            ConversationActivity_.intent(context).buildingId(mData.getBuilding().getBuildingId()).targetId(data.getTargetId()).start();
+            ConversationActivity_.intent(context).buildingId(mData.getBuilding().getBuildingId())
+                    .targetId(data.getTargetId()).start();
         } else {
             CommonDialog dialog = new CommonDialog.Builder(context)
                     .setTitle(R.string.str_selected_owner_to_chat)
@@ -673,7 +670,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
                     radioGroupIsShow(false);
                 }
                 isDragging = false;
-                mHandler.sendEmptyMessageDelayed(MESSAGE_SHOW_PROGRESS, DELAY_MILLIS);
+                mHandler.sendEmptyMessageDelayed(IjkVideoConfig.VIDEO_MSG_PROGRESS, IjkVideoConfig.VIDEO_DELAY_MILLIS);
             } else {
                 iVideoPlayer.startVideo();
                 radioGroupIsShow(false);
@@ -690,7 +687,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
                 return;
             }
             long generateTime;
-            if (progress + DELAY_MILLIS >= iVideoPlayer.getDuration()) {
+            if (progress + IjkVideoConfig.VIDEO_DELAY_MILLIS >= iVideoPlayer.getDuration()) {
                 progress = sbBar.getMax();
                 generateTime = sbBar.getMax();//毫秒
             } else {
@@ -752,7 +749,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         if (iVideoPlayer != null) {
             bufferingUpdate = i;
             int onBufferingProgress;
-            if (i >= BUFFERING_PROGRESS) {
+            if (i >= IjkVideoConfig.VIDEO_BUFFERING_PROGRESS) {
                 onBufferingProgress = (int) iVideoPlayer.getDuration();
             } else {
                 onBufferingProgress = (int) (iVideoPlayer.getDuration() / 100 * i);
@@ -769,7 +766,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             ibPlay.setBackgroundResource(R.mipmap.play_normal);
         }
         if (mHandler != null) {
-            mHandler.removeMessages(MESSAGE_SHOW_PROGRESS);
+            mHandler.removeMessages(IjkVideoConfig.VIDEO_MSG_PROGRESS);
         }
         if (bufferingUpdate == 0) {
             errorView();
@@ -803,7 +800,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             //视频总时长
             tvCountPlayTime.setText(Objects.requireNonNull(iVideoPlayer).generateTime(duration));
             //发送当前播放时间点通知
-            mHandler.sendEmptyMessageDelayed(MESSAGE_SHOW_PROGRESS, DELAY_MILLIS);
+            mHandler.sendEmptyMessageDelayed(IjkVideoConfig.VIDEO_MSG_PROGRESS, IjkVideoConfig.VIDEO_DELAY_MILLIS);
         }
     }
 
@@ -825,7 +822,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
         isDragging = true;
-        mHandler.removeMessages(MESSAGE_SHOW_PROGRESS);
+        mHandler.removeMessages(IjkVideoConfig.VIDEO_MSG_PROGRESS);
     }
 
     // 停止拖动
@@ -839,7 +836,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
                 ibPlay.setBackgroundResource(R.mipmap.pause_normal);
             }
             isDragging = false;
-            mHandler.sendEmptyMessageDelayed(MESSAGE_SHOW_PROGRESS, DELAY_MILLIS);
+            mHandler.sendEmptyMessageDelayed(IjkVideoConfig.VIDEO_MSG_PROGRESS, IjkVideoConfig.VIDEO_DELAY_MILLIS);
         }
     }
 
