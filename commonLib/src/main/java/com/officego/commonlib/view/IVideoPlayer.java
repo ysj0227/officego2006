@@ -1,5 +1,6 @@
 package com.officego.commonlib.view;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
 import android.graphics.PixelFormat;
 import android.media.AudioManager;
@@ -23,7 +24,7 @@ import tv.danmaku.ijk.media.player.IjkMediaPlayer;
 
 /**
  * Description: 封装ijkPlayer的videoView
- * Created by bruce on 2019/6/19.
+ * Created by shiJie on 2019/6/19.
  */
 public class IVideoPlayer extends RelativeLayout {
 
@@ -80,9 +81,6 @@ public class IVideoPlayer extends RelativeLayout {
         mContext = context;
         createSurfaceView();
         createCacheSurfaceView();
-//        mAudioManager = (AudioManager) mContext.getApplicationContext()
-//                .getSystemService(Context.AUDIO_SERVICE);
-//        audioFocusHelper = new AudioFocusHelper();
     }
 
     //设置播放地址
@@ -231,9 +229,6 @@ public class IVideoPlayer extends RelativeLayout {
         if (mediaPlayer != null) {
             currentMediaPlayer = mediaPlayer;
             mediaPlayer.start();
-//            audioFocusHelper.requestFocus();
-//            LayoutParams lp1 = new LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-//            surfaceView.setLayoutParams(lp1);
             surfaceView.setVisibility(VISIBLE);
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -250,9 +245,6 @@ public class IVideoPlayer extends RelativeLayout {
         if (cacheMediaPlayer != null) {
             currentMediaPlayer = cacheMediaPlayer;
             cacheMediaPlayer.start();
-//            audioFocusHelper.requestFocus();
-//            LayoutParams lp1 = new LayoutParams(LayoutParams.MATCH_PARENT,LayoutParams.MATCH_PARENT);
-//            cacheSurfaceView.setLayoutParams(lp1);
             cacheSurfaceView.setVisibility(VISIBLE);
             new Handler().postDelayed(new Runnable() {
                 @Override
@@ -314,7 +306,6 @@ public class IVideoPlayer extends RelativeLayout {
         try {
             if (currentMediaPlayer != null) {
                 currentMediaPlayer.pause();
-//            audioFocusHelper.abandonFocus();
             }
         } catch (Exception e) {
             e.printStackTrace();
@@ -340,7 +331,6 @@ public class IVideoPlayer extends RelativeLayout {
         if (cacheMediaPlayer != null) {
             cacheMediaPlayer.stop();
         }
-//            audioFocusHelper.abandonFocus();
     }
 
     public void reset() {
@@ -350,7 +340,6 @@ public class IVideoPlayer extends RelativeLayout {
         if (cacheMediaPlayer != null) {
             cacheMediaPlayer.reset();
         }
-//            audioFocusHelper.abandonFocus();
     }
 
     public void release() {
@@ -364,7 +353,6 @@ public class IVideoPlayer extends RelativeLayout {
             cacheMediaPlayer.release();
             cacheMediaPlayer = null;
         }
-//            audioFocusHelper.abandonFocus();
     }
 
     public boolean isPlaying() {
@@ -471,38 +459,10 @@ public class IVideoPlayer extends RelativeLayout {
         }
     }
 
-    //截图
-    public void snapshotPicture() {
-        if (surfaceView != null && surfaceView.isShown()) {
-        }
-        //        mediaPlayer.
-//        switch (render) {
-//            case 0:
-//                .setRenderView((IRenderView) null);
-//                break;
-//            case 1:
-//                SurfaceRenderView renderView1 = new SurfaceRenderView(this.getContext());
-//                this.setRenderView(renderView1);
-//                break;
-//            case 2:
-//                TextureRenderView renderView = new TextureRenderView(this.getContext());
-//                if (this.mMediaPlayer != null) {
-//                    renderView.getSurfaceHolder().bindToMediaPlayer(this.mMediaPlayer);
-//                    renderView.setVideoSize(this.mMediaPlayer.getVideoWidth(), this.mMediaPlayer.getVideoHeight());
-//                    renderView.setVideoSampleAspectRatio(this.mMediaPlayer.getVideoSarNum(), this.mMediaPlayer.getVideoSarDen());
-//                    renderView.setAspectRatio(this.mCurrentAspectRatio);
-//                }
-//
-//                this.setRenderView(renderView);
-//                break;
-//            default:
-//                Log.e(this.TAG, String.format(Locale.getDefault(), "invalid render %d\n", render));
-//        }
-    }
-
     /**
      * 时长格式化显示
      */
+    @SuppressLint("DefaultLocale")
     public String generateTime(long time) {
         int totalSeconds = (int) (time / 1000);
         int seconds = totalSeconds % 60;

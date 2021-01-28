@@ -30,30 +30,30 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.bumptech.glide.Glide;
-import com.officego.commonlib.common.analytics.GoogleTrack;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.analytics.GoogleTrack;
+import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.dialog.MapDialog;
+import com.officego.commonlib.common.dialog.WeChatShareDialog;
 import com.officego.commonlib.common.model.BuildingIdBundleBean;
+import com.officego.commonlib.common.model.ShareBean;
 import com.officego.commonlib.common.model.utils.BundleUtils;
-import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.utils.CommonHelper;
+import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.IVideoPlayer;
 import com.officego.commonlib.view.LabelsView;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.config.ConditionConfig;
 import com.officego.h5.WebViewVRActivity_;
-import com.officego.commonlib.common.model.ShareBean;
 import com.officego.ui.adapter.BuildingInfoAdapter;
 import com.officego.ui.adapter.HouseItemAllAdapter;
 import com.officego.ui.adapter.IndependentAllChildAdapter;
 import com.officego.ui.dialog.PreImageDialog;
-import com.officego.commonlib.common.dialog.WeChatShareDialog;
 import com.officego.ui.home.contract.BuildingDetailsContract;
 import com.officego.ui.home.model.BuildingConditionItem;
 import com.officego.ui.home.model.BuildingDetailsBean;
@@ -64,10 +64,9 @@ import com.officego.ui.home.model.ChatsBean;
 import com.officego.ui.home.model.ConditionBean;
 import com.officego.ui.home.presenter.BuildingDetailsPresenter;
 import com.officego.ui.message.ConversationActivity_;
-import com.officego.utils.ImageLoaderUtils;
+import com.officego.utils.video.BannerUtils;
+import com.officego.utils.video.IjkVideoUtils;
 import com.youth.banner.Banner;
-import com.youth.banner.BannerConfig;
-import com.youth.banner.Transformer;
 import com.youth.banner.listener.OnBannerListener;
 
 import org.androidannotations.annotations.AfterViews;
@@ -727,28 +726,11 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         rlDefaultHousePic.setVisibility(View.GONE);
     }
 
-
     // 视频尺寸
     @Override
     public void onVideoSizeChanged(IMediaPlayer iMediaPlayer, int width, int height, int i2, int i3) {
-        LogCat.e(TAG,"111111111  onVideoSizeChanged width="+width+"  height="+height);
-        if (!isSetVideoRate) {
-            isSetVideoRate = true;
-            ViewGroup.LayoutParams params = iVideoPlayer.getLayoutParams();
-            int screenWidth = CommonHelper.getScreenWidth(context);
-            int videoWidth, videoHeight;
-            if (width - height > 10) {
-                videoWidth = screenWidth;
-                videoHeight = (int) (screenWidth / CommonHelper.digits(width, height));
-            } else if (height - width > 10) {
-                videoWidth = (int) (screenWidth / CommonHelper.digits(height, width));
-                videoHeight = screenWidth;
-            } else {
-                videoWidth = videoHeight = screenWidth;
-            }
-            params.width = videoWidth;
-            params.height = videoHeight;
-            iVideoPlayer.setLayoutParams(params);
+        if (isSetVideoRate) {//视频旋转后设置宽高
+            IjkVideoUtils.setVideoLayout(context, iVideoPlayer, width, height);
         }
     }
 
@@ -756,15 +738,15 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     public boolean onInfo(IMediaPlayer iMediaPlayer, int what, int extra) {
         if (what == IMediaPlayer.MEDIA_INFO_VIDEO_ROTATION_CHANGED) {
             // 视频旋转了extra度，需要恢复
-            LogCat.e(TAG,"111111111 onInfo 视频旋转="+extra);
-//            if (mTextureView != null) {
-//                mTextureView.setRotation(extra);
-//            }
+            isSetVideoRate = true;
+            if (iVideoPlayer != null) {
+                iVideoPlayer.setRotation(extra);
+            }
         }
-        return false;
+        return true;
     }
 
-    //缓存状态
+    // 缓存状态
     @Override
     public void onBufferingUpdate(IMediaPlayer iMediaPlayer, int i) {
         if (iVideoPlayer != null) {
@@ -798,14 +780,14 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         radioGroupIsShow(true);
     }
 
-    ///播放异常
+    // 播放异常
     @Override
     public boolean onError(IMediaPlayer iMediaPlayer, int i, int i1) {
         errorView();
         return false;
     }
 
-    //开始播放
+    // 开始播放
     @Override
     public void onPrepared(IMediaPlayer iMediaPlayer) {
         if (iVideoPlayer != null) {
@@ -825,12 +807,12 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         }
     }
 
-    //Seek拖动完毕
+    // Seek拖动完毕
     @Override
     public void onSeekComplete(IMediaPlayer iMediaPlayer) {
     }
 
-    //进度条滑动监听
+    // 进度条滑动监听
     @Override
     public void onProgressChanged(SeekBar seekBar, int progress, boolean fromUser) {
         if (fromUser) {
@@ -839,16 +821,14 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         }
     }
 
-    /**
-     * 开始拖动
-     */
+    // 开始拖动
     @Override
     public void onStartTrackingTouch(SeekBar seekBar) {
         isDragging = true;
         mHandler.removeMessages(MESSAGE_SHOW_PROGRESS);
     }
 
-    //停止拖动
+    // 停止拖动
     @Override
     public void onStopTrackingTouch(SeekBar seekBar) {
         if (iVideoPlayer != null) {
@@ -1230,27 +1210,22 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     private final List<String> mBannerList = new ArrayList<>();
 
     private void playBanner(List<BuildingDetailsBean.ImgUrlBean> list) {
-        //视频设置第一张图为默认背景
-        if (context != null && list.size() > 0) {
-            Glide.with(context).load(list.get(0).getImgUrl()).error(R.mipmap.ic_loading_def_bg_error)
+        mBannerList.clear();
+        if (context != null && list != null && list.size() > 0) {
+            //视频设置第一张图为默认背景
+            Glide.with(context).applyDefaultRequestOptions(GlideUtils.bannerOptions())
+                    .load(list.get(0).getImgUrl())
                     .into(ivVideoBg);
-        }
-        for (int i = 0; i < list.size(); i++) {
-            if (!TextUtils.isEmpty(list.get(i).getImgUrl())) {
-                mBannerList.add(list.get(i).getImgUrl());
+
+            for (int i = 0; i < list.size(); i++) {
+                if (!TextUtils.isEmpty(list.get(i).getImgUrl())) {
+                    mBannerList.add(list.get(i).getImgUrl());
+                }
             }
+            //banner set
+            bannerImage.setOnBannerListener(this);
+            BannerUtils.set(context, bannerImage, mBannerList);
         }
-        bannerImage.setBannerStyle(BannerConfig.NUM_INDICATOR);
-        //设置图片加载器，图片加载器在下方
-        bannerImage.setImageLoader(new ImageLoaderUtils(context));
-        //设置图片网址或地址的集合
-        bannerImage.setImages(mBannerList);
-        //设置轮播的动画效果，内含多种特效，可点入方法内查找后内逐一体验
-        bannerImage.setBannerAnimation(Transformer.Default);
-        //设置是否为自动轮播，默认是“是”。
-        bannerImage.isAutoPlay(false);
-        bannerImage.setOnBannerListener(this);
-        bannerImage.start();
     }
 
     @Override

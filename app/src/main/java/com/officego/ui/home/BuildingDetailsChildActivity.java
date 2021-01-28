@@ -54,6 +54,8 @@ import com.officego.ui.home.model.HouseOfficeDetailsBean;
 import com.officego.ui.home.presenter.BuildingDetailsChildPresenter;
 import com.officego.ui.message.ConversationActivity_;
 import com.officego.utils.ImageLoaderUtils;
+import com.officego.utils.video.BannerUtils;
+import com.officego.utils.video.IjkVideoUtils;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -77,7 +79,7 @@ import tv.danmaku.ijk.media.player.IMediaPlayer;
  * Data 2020/5/14.
  * Descriptions:
  **/
-@SuppressLint("Registered")
+@SuppressLint({"Registered", "NonConstantResourceId"})
 @EActivity(R.layout.home_activity_house_details_child)
 public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetailsChildPresenter>
         implements OnBannerListener, BuildingDetailsChildContract.View,
@@ -88,7 +90,8 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         IMediaPlayer.OnPreparedListener,
         IMediaPlayer.OnErrorListener,
         IMediaPlayer.OnSeekCompleteListener,
-        IMediaPlayer.OnVideoSizeChangedListener {
+        IMediaPlayer.OnVideoSizeChangedListener,
+        IMediaPlayer.OnInfoListener {
     //title
     @ViewById(R.id.nsv_view)
     NestedScrollView nsvView;
@@ -769,6 +772,7 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         iVideoPlayer.setOnErrorListener(this);
         iVideoPlayer.setOnSeekCompleteListener(this);
         iVideoPlayer.setOnVideoSizeChangedListener(this);
+        iVideoPlayer.setOnInfoListener(this);
     }
 
     @Click(R.id.tv_retry)
@@ -822,7 +826,7 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
     private void syncProgress(Object obj) {
         if (obj != null) {
             String strProgress = String.valueOf(obj);
-            int progress = Integer.valueOf(strProgress);
+            int progress = Integer.parseInt(strProgress);
             if ((progress == 0)) {
                 return;
             }
@@ -844,9 +848,7 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         iVideoPlayer.setVisibility(View.GONE);
         llPlayFail.setVisibility(View.VISIBLE);
         llPlayLoading.setVisibility(View.GONE);
-        tvFailTip.setText(TextUtils.isEmpty(videoUrl) ?
-                getString(R.string.tip_video_play_exception) :
-                getString(R.string.toast_network_error));
+        tvFailTip.setText(getString(R.string.tip_video_play_exception));
         radioGroupIsShow(false);
     }
 
@@ -865,33 +867,24 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
         rlDefaultHousePic.setVisibility(View.GONE);
     }
 
-    /**
-     * 视频尺寸
-     */
+    //视频尺寸
     @Override
     public void onVideoSizeChanged(IMediaPlayer iMediaPlayer, int width, int height, int i2, int i3) {
-        setVideoPlayerScreenRate(width, height);
+        if (isSetVideoRate) {//视频旋转后设置宽高
+            IjkVideoUtils.setVideoLayout(context, iVideoPlayer, width, height);
+        }
     }
 
-    private void setVideoPlayerScreenRate(int width, int height) {
-        if (!isSetVideoRate) {
+    @Override
+    public boolean onInfo(IMediaPlayer iMediaPlayer, int what, int extra) {
+        if (what == IMediaPlayer.MEDIA_INFO_VIDEO_ROTATION_CHANGED) {
+            // 视频旋转了extra度，需要恢复
             isSetVideoRate = true;
-            ViewGroup.LayoutParams params = iVideoPlayer.getLayoutParams();
-            int screenWidth = CommonHelper.getScreenWidth(context);
-            int videoWidth, videoHeight;
-            if (width - height > 10) {
-                videoWidth = screenWidth;
-                videoHeight = (int) (screenWidth / CommonHelper.digits(width, height));
-            } else if (height - width > 10) {
-                videoWidth = (int) (screenWidth / CommonHelper.digits(height, width));
-                videoHeight = screenWidth;
-            } else {
-                videoWidth = videoHeight = screenWidth;
+            if (iVideoPlayer != null) {
+                iVideoPlayer.setRotation(extra);
             }
-            params.width = videoWidth;
-            params.height = videoHeight;
-            iVideoPlayer.setLayoutParams(params);
         }
+        return true;
     }
 
     /**
@@ -1046,28 +1039,20 @@ public class BuildingDetailsChildActivity extends BaseMvpActivity<BuildingDetail
     private final List<String> mBannerList = new ArrayList<>();
 
     private void playBanner(List<HouseOfficeDetailsBean.ImgUrlBean> list) {
-        if (list != null && list.size() > 0) {
+        mBannerList.clear();
+        if (context != null && list != null && list.size() > 0) {
             //视频设置第一张图为默认背景
-            if (context != null) {
-                Glide.with(context).load(list.get(0).getImgUrl()).error(R.mipmap.ic_loading_def_bg_error)
-                        .into(ivVideoBg);
-            }
+            Glide.with(context).applyDefaultRequestOptions(GlideUtils.bannerOptions())
+                    .load(list.get(0).getImgUrl())
+                    .into(ivVideoBg);
             for (int i = 0; i < list.size(); i++) {
                 if (!TextUtils.isEmpty(list.get(i).getImgUrl())) {
                     mBannerList.add(list.get(i).getImgUrl());
                 }
             }
-            bannerImage.setBannerStyle(BannerConfig.NUM_INDICATOR);
-            //设置图片加载器，图片加载器在下方
-            bannerImage.setImageLoader(new ImageLoaderUtils(context));
-            //设置图片网址或地址的集合
-            bannerImage.setImages(mBannerList);
-            //设置轮播的动画效果，内含多种特效，可点入方法内查找后内逐一体验
-            bannerImage.setBannerAnimation(Transformer.Default);
-            //设置是否为自动轮播，默认是“是”。
-            bannerImage.isAutoPlay(false);
+            //banner set
             bannerImage.setOnBannerListener(this);
-            bannerImage.start();
+            BannerUtils.set(context, bannerImage, mBannerList);
         }
     }
 
