@@ -64,7 +64,6 @@ import com.officego.ui.home.model.ChatsBean;
 import com.officego.ui.home.model.ConditionBean;
 import com.officego.ui.home.presenter.BuildingDetailsPresenter;
 import com.officego.ui.message.ConversationActivity_;
-import com.officego.utils.video.BannerUtils;
 import com.officego.utils.video.IjkVideoConfig;
 import com.officego.utils.video.IjkVideoUtils;
 import com.youth.banner.Banner;
@@ -1062,21 +1061,9 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             List<String> stationLine = data.getBuilding().getStationline();
             List<String> stationName = data.getBuilding().getStationNames();
             List<String> workTime = data.getBuilding().getNearbySubwayTime();
-            StringBuffer linePlan = new StringBuffer();
-            if (isExpand) {
-                for (int i = 0; i < stationLine.size(); i++) {
-                    if (stationLine.size() == 1 || i == stationLine.size() - 1) {
-                        linePlan.append("步行").append(workTime.get(i)).append("分钟到 | ").append(stationLine.get(i)).append("号线 ·").append(stationName.get(i));
-                    } else {
-                        linePlan.append("步行").append(workTime.get(i)).append("分钟到 | ").append(stationLine.get(i)).append("号线 ·").append(stationName.get(i)).append("\n");
-                    }
-                }
-            } else {
-                linePlan.append("步行").append(workTime.get(0)).append("分钟到 | ").append(stationLine.get(0)).append("号线 ·").append(stationName.get(0));
-            }
             ctlBusLine.setVisibility(View.VISIBLE);
             tvQueryTrains.setVisibility(data.getBuilding().getStationline().size() > 1 ? View.VISIBLE : View.GONE);
-            tvBusLine.setText(linePlan);
+            tvBusLine.setText(DetailsUtils.routeLine(isExpand, stationLine, workTime, stationName));
         } else {
             ctlBusLine.setVisibility(View.GONE);
             tvQueryTrains.setVisibility(View.GONE);
@@ -1221,7 +1208,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             }
             //banner set
             bannerImage.setOnBannerListener(this);
-            BannerUtils.set(context, bannerImage, mBannerList);
+            DetailsUtils.bannerSet(context, bannerImage, mBannerList);
         }
     }
 
