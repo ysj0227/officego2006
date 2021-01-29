@@ -8,8 +8,8 @@
 
     <ImageView
         android:id="@+id/iv_no_login"
-        android:layout_width="@dimen/dp_103"
-        android:layout_height="@dimen/dp_108"
+        android:layout_width="@dimen/dp_90"
+        android:layout_height="@dimen/dp_90"
         android:layout_marginTop="@dimen/dp_160"
         android:background="@mipmap/ic_no_login"
         app:layout_constraintEnd_toEndOf="parent"
