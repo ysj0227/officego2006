@@ -123,7 +123,7 @@ public class NotificationUtil {
             SpUtils.savePushSetting(isTenant);
             CommonDialog dialog = new CommonDialog.Builder(mContext)
                     .setTitle("请打开消息通知")
-                    .setMessage(isTenant ? "不要错过房东回复" : "不要错误客户留言")
+                    .setMessage(isTenant ? "不要错过房东回复" : "不要错过客户留言")
                     .setCancelButton(R.string.str_push_close)
                     .setConfirmButton(R.string.str_push_open, (dialog12, which) -> {
                         gotoSet(mContext);
