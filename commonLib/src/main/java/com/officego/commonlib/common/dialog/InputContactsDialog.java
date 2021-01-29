@@ -45,7 +45,7 @@ public class InputContactsDialog {
         //获得窗体的属性
         WindowManager.LayoutParams lp = dialogWindow.getAttributes();
         lp.width = CommonHelper.dp2px(context, 255);
-        lp.height = CommonHelper.dp2px(context, 152);
+        //lp.height = CommonHelper.dp2px(context, 152);
         dialogWindow.setAttributes(lp);
 
         ClearableEditText etWx = viewLayout.findViewById(R.id.et_wechat);

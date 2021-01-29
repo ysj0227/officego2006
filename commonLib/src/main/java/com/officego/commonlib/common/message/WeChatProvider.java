@@ -97,13 +97,6 @@ public class WeChatProvider extends IContainerItemProvider.MessageProvider<WeCha
         BaseNotification.newInstance().postNotificationName(CommonNotifications.conversationWeChatAgree, otherWx, mineWx, messageUid);
     }
 
-    private void setClickableFalse(WeChatHolder holder) {
-        holder.btnReject.setEnabled(false);
-        holder.btnReject.setClickable(false);
-        holder.btnAgree.setEnabled(false);
-        holder.btnAgree.setClickable(false);
-    }
-
     public void weChatInputDialog(Context context, String otherWx, String messageUid) {
         Dialog dialog = new Dialog(context, R.style.BottomDialog);
         View viewLayout = LayoutInflater.from(context).inflate(R.layout.conversation_dialog_cantacts_input, null);
@@ -119,7 +112,7 @@ public class WeChatProvider extends IContainerItemProvider.MessageProvider<WeCha
         //获得窗体的属性
         WindowManager.LayoutParams lp = dialogWindow.getAttributes();
         lp.width = CommonHelper.dp2px(context, 255);
-        lp.height = CommonHelper.dp2px(context, 152);
+//        lp.height = CommonHelper.dp2px(context, 152);
         dialogWindow.setAttributes(lp);
 
         ClearableEditText etWx = viewLayout.findViewById(R.id.et_wechat);

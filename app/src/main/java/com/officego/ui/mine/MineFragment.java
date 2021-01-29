@@ -251,11 +251,8 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
     public void userInfoSuccess(UserMessageBean data) {
         hasLoginView();
         if (data != null) {
-            //刷新融云头像用户信息
-            RCloudSetUserInfoUtils.refreshUserInfoCache(SpUtils.getRongChatId(), data.getNickname(), data.getAvatar());
             mUserInfo = data;
             tvName.setText(data.getNickname());
-            SpUtils.saveWechat(mUserInfo.getWxId() == null || TextUtils.isEmpty(mUserInfo.getWxId()) ? "" : mUserInfo.getWxId());
             Glide.with(mActivity).applyDefaultRequestOptions(GlideUtils.avaOoptions()).load(data.getAvatar()).into(civAvatar);
             if (!TextUtils.isEmpty(data.getJob())) {
                 tvAccount.setText(data.getJob());

@@ -232,8 +232,6 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
     @Override
     public void userInfoSuccess(UserMessageBean data) {
         if (data != null) {
-            //刷新融云头像用户信息
-            RCloudSetUserInfoUtils.refreshUserInfoCache(SpUtils.getRongChatId(), data.getNickname(), data.getAvatar());
             mUserInfo = data;
             tvName.setText(data.getNickname());
             Glide.with(mActivity).applyDefaultRequestOptions(GlideUtils.avaOoptions()).load(data.getAvatar()).into(civAvatar);

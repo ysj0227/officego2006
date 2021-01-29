@@ -45,7 +45,7 @@ import java.io.File;
  * Data 2020/5/18.
  * Descriptions:
  **/
-@SuppressLint("Registered")
+@SuppressLint({"Registered", "NonConstantResourceId"})
 @EActivity(R.layout.mine_activity_base_message)
 public class MineMessageActivity extends BaseMvpActivity<UpdateUserPresenter>
         implements UpdateUserContract.View, View.OnClickListener {
@@ -92,8 +92,8 @@ public class MineMessageActivity extends BaseMvpActivity<UpdateUserPresenter>
             if (mUserInfo.getSex() != null) {
                 etSexContent.setText(TextUtils.equals("1", mUserInfo.getSex()) ? "男" : "女");
             }
-            SpUtils.saveWechat(mUserInfo.getWxId() == null || TextUtils.isEmpty(mUserInfo.getWxId()) ? "" : mUserInfo.getWxId());
-            etWxContent.setText(mUserInfo.getWxId() == null || TextUtils.isEmpty(mUserInfo.getWxId()) ? "" : mUserInfo.getWxId());
+            String wx = mUserInfo.getWxId() == null || TextUtils.isEmpty(mUserInfo.getWxId()) ? "" : mUserInfo.getWxId();
+            etWxContent.setText(wx);
         }
     }
 
