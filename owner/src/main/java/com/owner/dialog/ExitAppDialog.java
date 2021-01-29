@@ -14,7 +14,7 @@ public class ExitAppDialog {
     }
     private void exitDialog(){
         CommonDialog dialog = new CommonDialog.Builder(context)
-                .setMessage("账号已退出，请重新登录")
+                .setMessage("账号未登录，请登录")
                 .setConfirmButton(com.officego.commonlib.R.string.str_login, (dialog12, which) -> {
                     GotoActivityUtils.gotoLoginActivity(context);
                     dialog12.dismiss();
