@@ -17,6 +17,7 @@ import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.utils.CommonHelper;
+import com.officego.commonlib.utils.NotificationUtil;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.ui.chatlist.MessageListActivity_;
 import com.officego.ui.login.LoginActivity_;
@@ -61,6 +62,7 @@ public class MessageFragment extends BaseFragment {
             loginIn();
         }
         initIm();
+        NotificationUtil.showSettingDialog(mActivity,true);
     }
 
     @Override

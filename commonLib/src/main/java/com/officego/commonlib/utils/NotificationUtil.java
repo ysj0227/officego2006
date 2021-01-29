@@ -6,11 +6,13 @@ import android.content.Intent;
 import android.content.pm.ApplicationInfo;
 import android.net.Uri;
 import android.os.Build;
+import android.text.TextUtils;
 
 import androidx.annotation.RequiresApi;
 import androidx.core.app.NotificationManagerCompat;
 
 import com.officego.commonlib.R;
+import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.view.dialog.CommonDialog;
 
 import java.lang.reflect.Field;
@@ -115,16 +117,31 @@ public class NotificationUtil {
     }
 
 
-    public static void showSettingDialog(final Context mContext) {
-        if (!isNotificationEnabled(mContext)) {
+    public static void showSettingDialog(final Context mContext, boolean isTenant) {
+        String currentData = DateTimeUtils.getCurrentDate();//当天日期，一天只弹出一次
+        if (!TextUtils.equals(SpUtils.getPushSetting(isTenant), currentData) && !isNotificationEnabled(mContext)) {
+            SpUtils.savePushSetting(isTenant);
             CommonDialog dialog = new CommonDialog.Builder(mContext)
-                    .setTitle("检测到您没有打开通知权限，是否去打开")
-                    .setCancelButton(R.string.sm_cancel)
-                    .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
+                    .setTitle("请打开消息通知")
+                    .setMessage(isTenant ? "不要错过房东回复" : "不要错误客户留言")
+                    .setCancelButton(R.string.str_push_close)
+                    .setConfirmButton(R.string.str_push_open, (dialog12, which) -> {
                         gotoSet(mContext);
                     }).create();
             dialog.showWithOutTouchable(false);
             dialog.setCancelable(false);
         }
+    }
+
+    public static void showSettingDialog(final Context mContext) {
+        CommonDialog dialog = new CommonDialog.Builder(mContext)
+                .setTitle("请打开消息通知")
+                .setMessage("不要错过回复信息哦")
+                .setCancelButton(R.string.str_push_close)
+                .setConfirmButton(R.string.str_push_open, (dialog12, which) -> {
+                    gotoSet(mContext);
+                }).create();
+        dialog.showWithOutTouchable(false);
+        dialog.setCancelable(false);
     }
 }

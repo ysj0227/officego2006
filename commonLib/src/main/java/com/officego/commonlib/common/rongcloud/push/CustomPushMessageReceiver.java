@@ -27,7 +27,7 @@ public class CustomPushMessageReceiver extends PushMessageReceiver {
     private boolean isGotoConversion;
 
     public void onThirdPartyPushState(PushType pushType, String action, long resultCode) {
-        LogCat.e(TAG, "onThirdPartyPushState pushType: " + pushType.getName() + " action: " + action + " resultCode: " + resultCode);
+        //LogCat.e(TAG, "onThirdPartyPushState pushType: " + pushType.getName() + " action: " + action + " resultCode: " + resultCode);
     }
 
     /**
@@ -35,7 +35,7 @@ public class CustomPushMessageReceiver extends PushMessageReceiver {
      */
     @Override
     public boolean onNotificationMessageArrived(Context context, PushType pushType, PushNotificationMessage notificationMessage) {
-        LogCat.e(TAG, "onNotificationMessageArrived pushType=" + pushType.getName() + "  getTargetId=" + notificationMessage.getTargetId() +
+        LogCat.d(TAG, "onNotificationMessageArrived pushType=" + pushType.getName() + "  getTargetId=" + notificationMessage.getTargetId() +
                 "  pushData=" + notificationMessage.getPushData() + "  pushContent=" + notificationMessage.getPushContent() +
                 "  extra=" + notificationMessage.getExtra() + "  objectName=" + notificationMessage.getObjectName());
         return false;
@@ -49,7 +49,7 @@ public class CustomPushMessageReceiver extends PushMessageReceiver {
      */
     @Override
     public boolean onNotificationMessageClicked(Context context, PushType pushType, PushNotificationMessage message) {
-        LogCat.e(TAG, "onNotificationMessageClicked pushType=" + pushType.getName() + "  getTargetId=" + message.getTargetId() +
+        LogCat.d(TAG, "onNotificationMessageClicked pushType=" + pushType.getName() + "  getTargetId=" + message.getTargetId() +
                 "  pushData=" + message.getPushData() + "  pushContent=" + message.getPushContent());
         // true. 代表不触发 SDK 默认实现，您自定义处理通知点击跳转事件。  false 融云内置跳转
         String targetId = message.getTargetId();

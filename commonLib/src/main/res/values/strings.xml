@@ -12,6 +12,7 @@
     <string name="str_close">Disable</string>
     <string name="str_setting">Settings</string>
     <string name="str_login">Login</string>
+    <string name="str_to_setting">To Setting</string>
     <string name="str_click_consent">By clicking the button of "Start Configuration", you agree</string>
     <string name="str_privacy">《Privacy Policy》</string>
     <string name="str_and"> and </string>
@@ -187,4 +188,6 @@
     <string name="str_input_job">请输入职位</string>
     <string name="str_button_test">测试</string>
     <string name="str_rmb_unit">¥</string>
+    <string name="str_push_close">暂不开启</string>
+    <string name="str_push_open">去开启</string>
 </resources>

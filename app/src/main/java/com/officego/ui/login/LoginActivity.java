@@ -26,7 +26,6 @@ import com.officego.commonlib.common.model.LoginBean;
 import com.officego.commonlib.common.model.WeChatAuthBean;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
-import com.officego.commonlib.utils.NotificationUtil;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.RegexUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
@@ -115,8 +114,6 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
             } else {
                 MainActivity_.intent(context).start();
             }
-        } else {
-            NotificationUtil.showSettingDialog(context);
         }
     }
 

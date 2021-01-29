@@ -12,6 +12,7 @@
     <string name="str_close">关闭</string>
     <string name="str_setting">设置</string>
     <string name="str_login">登录</string>
+    <string name="str_to_setting">去设置</string>
     <string name="str_click_consent">点击“开始配置”代表你同意</string>
     <string name="str_privacy">《隐私政策》</string>
     <string name="str_and">&#160;和&#160;</string>
@@ -190,4 +191,6 @@
     <string name="str_input_job">请输入职位</string>
     <string name="str_button_test">测试</string>
     <string name="str_rmb_unit">¥</string>
+    <string name="str_push_close">暂不开启</string>
+    <string name="str_push_open">去开启</string>
 </resources>

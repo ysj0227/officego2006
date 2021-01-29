@@ -51,6 +51,8 @@ public class SpUtils {
     private static final String LOGIN_WANT_FIND_SAVE = PACKAGE_NAME + "LOGIN_WANT_FIND_SAVE";
     //当前日期
     private static final String CURRENT_DATE = PACKAGE_NAME + "CURRENT_DATE";
+    //当天是否打开了推送通知
+    private static final String CURRENT_OPEN_PUSH_SETTING = PACKAGE_NAME + "CURRENT_OPEN_PUSH_SETTING";
 
     private static SharedPreferences getSharedPreference() {
         return SharedManager.getSharedPreference(BaseApplication.getContext());
@@ -282,6 +284,18 @@ public class SpUtils {
     //获取当前日期
     public static String getCurrentDate(String targetId) {
         String key = CURRENT_DATE + targetId + (TextUtils.isEmpty(SpUtils.getRongChatId()) ? "" : SpUtils.getRongChatId());
+        return SharedManager.getValue(BaseApplication.getContext(), key);
+    }
+
+    //保存当前push权限设置
+    public static void savePushSetting(boolean isTenant) {
+        String key = CURRENT_OPEN_PUSH_SETTING + isTenant;
+        SharedManager.putValue(BaseApplication.getContext(), key, DateTimeUtils.getCurrentDate());
+    }
+
+    //获取当前push权限设置
+    public static String getPushSetting(boolean isTenant) {
+        String key = CURRENT_OPEN_PUSH_SETTING + isTenant;
         return SharedManager.getValue(BaseApplication.getContext(), key);
     }
 

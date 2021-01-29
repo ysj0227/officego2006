@@ -14,8 +14,8 @@ import com.officego.commonlib.base.BaseFragment;
 import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.utils.CommonHelper;
+import com.officego.commonlib.utils.NotificationUtil;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
 import com.owner.dialog.ExitAppDialog;
 
@@ -57,6 +57,7 @@ public class MessageFragment extends BaseFragment {
         params.height = CommonHelper.statusHeight(mActivity) + CommonHelper.dp2px(mActivity, 60);
         rlTitle.setLayoutParams(params);
         initIm();
+        NotificationUtil.showSettingDialog(mActivity, false);
     }
 
     //初始化聊天列表
