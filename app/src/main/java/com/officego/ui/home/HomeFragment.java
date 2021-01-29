@@ -364,7 +364,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
                     Integer.parseInt(CommonHelper.bigDecimal(mBannerClickList.get(position).getPageId(), true));
             String wUrl = mBannerClickList.get(position).getWurl();
             //跳转
-            BannerToActivity.toActivity(mActivity, type, pageType, pageId, wUrl);
+            CommonBannerToActivity.toActivity(mActivity, type, pageType, pageId, wUrl);
         }
     }
 

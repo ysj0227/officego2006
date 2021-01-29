@@ -17,7 +17,7 @@ import java.util.List;
  * Created by shijie
  * Date 2021/1/28
  **/
-public class DetailsUtils {
+public class CommonDetails {
     /**
      * 详情轮播图
      */

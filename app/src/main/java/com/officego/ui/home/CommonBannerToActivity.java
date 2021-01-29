@@ -11,7 +11,7 @@ import com.officego.h5.WebViewMeetingActivity_;
  * Created by shijie
  * Date 2021/1/4
  **/
-public class BannerToActivity {
+public class CommonBannerToActivity {
 
     /**
      *

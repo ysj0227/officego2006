@@ -55,7 +55,6 @@ import com.officego.ui.adapter.HouseItemAllAdapter;
 import com.officego.ui.adapter.IndependentAllChildAdapter;
 import com.officego.ui.dialog.PreImageDialog;
 import com.officego.ui.home.contract.BuildingDetailsContract;
-import com.officego.ui.home.model.BuildingConditionItem;
 import com.officego.ui.home.model.BuildingDetailsBean;
 import com.officego.ui.home.model.BuildingDetailsChildBean;
 import com.officego.ui.home.model.BuildingInfoBean;
@@ -63,6 +62,7 @@ import com.officego.ui.home.model.BuildingJointWorkBean;
 import com.officego.ui.home.model.ChatsBean;
 import com.officego.ui.home.model.ConditionBean;
 import com.officego.ui.home.presenter.BuildingDetailsPresenter;
+import com.officego.ui.login.CommonLoginTenant;
 import com.officego.ui.message.ConversationActivity_;
 import com.officego.utils.video.IjkVideoConfig;
 import com.officego.utils.video.IjkVideoUtils;
@@ -514,7 +514,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         }
         //未登录
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
-            new LoginTenantUtils(context);
+            new CommonLoginTenant(context);
             return;
         }
         if (mBuildingBean != null) {
@@ -552,7 +552,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         GoogleTrack.buildingDetailChat(context);
         //未登录
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
-            new LoginTenantUtils(context);
+            new CommonLoginTenant(context);
             return;
         }
         //判断是否单房东
@@ -937,7 +937,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         //特色
         showTags(data);
         //独立办公室
-        rvHorizontalAll.setAdapter(new HouseItemAllAdapter(context, DetailsUtils.buildingList(data)));
+        rvHorizontalAll.setAdapter(new HouseItemAllAdapter(context, CommonDetails.buildingList(data)));
         //独立办公室子列表
         getChildBuildingList();
     }
@@ -1063,7 +1063,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             List<String> workTime = data.getBuilding().getNearbySubwayTime();
             ctlBusLine.setVisibility(View.VISIBLE);
             tvQueryTrains.setVisibility(data.getBuilding().getStationline().size() > 1 ? View.VISIBLE : View.GONE);
-            tvBusLine.setText(DetailsUtils.routeLine(isExpand, stationLine, workTime, stationName));
+            tvBusLine.setText(CommonDetails.routeLine(isExpand, stationLine, workTime, stationName));
         } else {
             ctlBusLine.setVisibility(View.GONE);
             tvQueryTrains.setVisibility(View.GONE);
@@ -1176,7 +1176,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             }
             //banner set
             bannerImage.setOnBannerListener(this);
-            DetailsUtils.bannerSet(context, bannerImage, mBannerList);
+            CommonDetails.bannerSet(context, bannerImage, mBannerList);
         }
     }
 

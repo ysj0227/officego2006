@@ -6,7 +6,6 @@ import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.RelativeLayout;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.LinearLayoutManager;
@@ -26,7 +25,7 @@ import com.officego.ui.holder.House1Holder;
 import com.officego.ui.holder.House2Holder;
 import com.officego.ui.holder.MeetingHolder;
 import com.officego.ui.holder.TipsHolder;
-import com.officego.ui.home.BannerToActivity;
+import com.officego.ui.home.CommonBannerToActivity;
 import com.officego.ui.home.BuildingDetailsActivity_;
 import com.officego.ui.home.BuildingDetailsJointWorkActivity_;
 import com.officego.ui.home.model.HomeHotBean;
@@ -352,7 +351,7 @@ public class HomeAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
             int pageId = bean.getBannerMap().getPageId() == null ? 0 :
                     Integer.parseInt(CommonHelper.bigDecimal(bean.getBannerMap().getPageId(), true));
             String wUrl = bean.getBannerMap().getWurl();
-            BannerToActivity.toActivity(context, type, pageType, pageId, wUrl);
+            CommonBannerToActivity.toActivity(context, type, pageType, pageId, wUrl);
         });
     }
 }

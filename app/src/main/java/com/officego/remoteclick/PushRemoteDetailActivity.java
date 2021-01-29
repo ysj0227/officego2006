@@ -11,7 +11,7 @@ import com.officego.LaunchActivity;
 import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.ui.home.BannerToActivity;
+import com.officego.ui.home.CommonBannerToActivity;
 
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -54,7 +54,7 @@ public class PushRemoteDetailActivity extends BaseActivity {
                 int pageType = object.getInt("pageType");
                 int pageId = object.getInt("pageId");
                 String wUrl = object.getString("wurl");
-                BannerToActivity.toPushActivity(context, REQUEST_CODE, type, pageType, pageId, wUrl);
+                CommonBannerToActivity.toPushActivity(context, REQUEST_CODE, type, pageType, pageId, wUrl);
             } else {
                 launchActivity();
             }

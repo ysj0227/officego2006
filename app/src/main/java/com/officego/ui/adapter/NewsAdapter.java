@@ -1,7 +1,6 @@
 package com.officego.ui.adapter;
 
 import android.content.Context;
-import android.view.View;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -11,8 +10,7 @@ import com.officego.commonlib.ViewHolder;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.view.RoundImageView;
-import com.officego.h5.WebViewBannerActivity_;
-import com.officego.ui.home.BannerToActivity;
+import com.officego.ui.home.CommonBannerToActivity;
 import com.officego.ui.home.model.TodayReadBean;
 
 import java.util.List;
@@ -44,7 +42,7 @@ public class NewsAdapter extends CommonListAdapter<TodayReadBean.DataBean> {
             int pageType = bean.getPageType() == null ? 0 : Integer.parseInt(CommonHelper.bigDecimal(bean.getPageType(), true));
             int pageId = bean.getPageId() == null ? 0 : Integer.parseInt(CommonHelper.bigDecimal(bean.getPageId(), true));
             String wUrl = bean.getWurl();
-            BannerToActivity.toActivity(context, type, pageType, pageId, wUrl);
+            CommonBannerToActivity.toActivity(context, type, pageType, pageId, wUrl);
         });
     }
 }

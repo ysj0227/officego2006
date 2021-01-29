@@ -66,6 +66,7 @@ import com.officego.ui.home.model.BuildingJointWorkBean;
 import com.officego.ui.home.model.ChatsBean;
 import com.officego.ui.home.model.ConditionBean;
 import com.officego.ui.home.presenter.BuildingDetailsJointWorkPresenter;
+import com.officego.ui.login.CommonLoginTenant;
 import com.officego.ui.message.ConversationActivity_;
 import com.officego.utils.video.IjkVideoConfig;
 import com.officego.utils.video.IjkVideoUtils;
@@ -566,7 +567,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         }
         //未登录
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
-            new LoginTenantUtils(context);
+            new CommonLoginTenant(context);
             return;
         }
         if (mBuildingBean != null) {
@@ -603,7 +604,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         GoogleTrack.jointWorkDetailChat(context);
         //未登录
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
-            new LoginTenantUtils(context);
+            new CommonLoginTenant(context);
             return;
         }
         //判断是否单房东
@@ -1054,7 +1055,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
             List<String> workTime = mData.getBuilding().getNearbySubwayTime();
             ctlBusLine.setVisibility(View.VISIBLE);
             tvQueryTrains.setVisibility(mData.getBuilding().getStationline().size() > 1 ? View.VISIBLE : View.GONE);
-            tvBusLine.setText(DetailsUtils.routeLine(isExpand, stationLine, workTime, stationName));
+            tvBusLine.setText(CommonDetails.routeLine(isExpand, stationLine, workTime, stationName));
         } else {
             ctlBusLine.setVisibility(View.GONE);
             tvQueryTrains.setVisibility(View.GONE);
@@ -1136,7 +1137,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         getBuildingInfo(data);
         //独立办公室 左右滑动列表
         if (data.getFactorMap() != null) {
-            rvHorizontalAll.setAdapter(new HouseItemAllAdapter(context, DetailsUtils.jointWorkList(data)));
+            rvHorizontalAll.setAdapter(new HouseItemAllAdapter(context, CommonDetails.jointWorkList(data)));
         }
         //独立办公室子列表
         getChildBuildingList();
@@ -1307,7 +1308,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
             }
             //banner set
             bannerImage.setOnBannerListener(this);
-            DetailsUtils.bannerSet(context, bannerImage, mBannerList);
+            CommonDetails.bannerSet(context, bannerImage, mBannerList);
         }
     }
 

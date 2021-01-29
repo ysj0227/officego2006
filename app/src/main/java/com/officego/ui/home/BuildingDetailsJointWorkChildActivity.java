@@ -50,6 +50,7 @@ import com.officego.ui.home.model.BuildingInfoBean;
 import com.officego.ui.home.model.ChatsBean;
 import com.officego.ui.home.model.HouseOfficeDetailsJointWorkBean;
 import com.officego.ui.home.presenter.BuildingDetailsChildJointWorkPresenter;
+import com.officego.ui.login.CommonLoginTenant;
 import com.officego.ui.message.ConversationActivity_;
 import com.officego.utils.video.IjkVideoConfig;
 import com.officego.utils.video.IjkVideoUtils;
@@ -396,7 +397,7 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
             List<String> workTime = mData.getHouse().getNearbySubwayTime();
             ctlBusLine.setVisibility(View.VISIBLE);
             tvQueryTrains.setVisibility(mData.getHouse().getStationline().size() > 1 ? View.VISIBLE : View.GONE);
-            tvBusLine.setText(DetailsUtils.routeLine(isExpand, stationLine, workTime, stationName));
+            tvBusLine.setText(CommonDetails.routeLine(isExpand, stationLine, workTime, stationName));
         } else {
             ctlBusLine.setVisibility(View.GONE);
             tvQueryTrains.setVisibility(View.GONE);
@@ -456,7 +457,7 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         }
         //未登录
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
-            new LoginTenantUtils(context);
+            new CommonLoginTenant(context);
             return;
         }
         GoogleTrack.jointWorkHouseCollect(context);
@@ -480,7 +481,7 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
         GoogleTrack.jointWorkHouseDetailChat(context);
         //未登录
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
-            new LoginTenantUtils(context);
+            new CommonLoginTenant(context);
             return;
         }
         if (!NetworkUtils.isNetworkAvailable(context)) {
@@ -968,7 +969,7 @@ public class BuildingDetailsJointWorkChildActivity extends BaseMvpActivity<Build
             }
             //banner set
             bannerImage.setOnBannerListener(this);
-            DetailsUtils.bannerSet(context, bannerImage, mBannerList);
+            CommonDetails.bannerSet(context, bannerImage, mBannerList);
         }
     }
 
