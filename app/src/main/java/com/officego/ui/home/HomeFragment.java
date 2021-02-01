@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -98,6 +99,10 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     RelativeLayout rlIdentity;
     @ViewById(R.id.iv_scroll_top)
     ImageView ivScrollTop;
+    @ViewById(R.id.tv_exception)
+    TextView tvException;
+    @ViewById(R.id.btn_query_more)
+    Button btnQueryMore;
 
     //设置左右移动
     private TranslateAnimation animationMove;
@@ -113,7 +118,11 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         nsvView.setOnScrollChangeListener(this);
         initViews();
         initRefresh();
-        new VersionDialog(mActivity,false);
+        new VersionDialog(mActivity, false);
+        if (!NetworkUtils.isNetworkAvailable(mActivity)) {
+            btnQueryMore.setVisibility(View.GONE);
+            tvException.setVisibility(View.VISIBLE);
+        }
         getData();
         showAnimation();
     }
@@ -331,6 +340,8 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     //1:楼盘重点版,2:楼盘文案版,3:网点版（三张图片）,4:房源特价
     @Override
     public void hotListSuccess(HomeMeetingBean.DataBean meetData, HomeHotBean.DataBean data) {
+        tvException.setVisibility(View.GONE);
+        btnQueryMore.setVisibility(View.VISIBLE);
         List<HomeHotBean.DataBean.ListBean> list = data.getList();
         if (meetData != null && !TextUtils.isEmpty(meetData.getMeetingRoomLocation())) {
             list.add(Integer.parseInt(meetData.getMeetingRoomLocation()), null);
@@ -342,7 +353,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     @Override
     public void onRefresh() {
         if (!NetworkUtils.isNetworkAvailable(mActivity)) {
-            shortTip(R.string.network_error_tip);
+            shortTip(R.string.str_loading_fail_to_try);
         }
         getData();
     }

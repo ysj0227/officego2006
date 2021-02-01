@@ -108,6 +108,10 @@ public class ModifyMobileActivity extends BaseMvpActivity<ModifyMobilePresenter>
             shortTip(R.string.tip_input_correct_phone);
             return true;
         }
+        if (TextUtils.equals(mobile, SpUtils.getPhoneNum())) {
+            shortTip("此手机号已注册");
+            return true;
+        }
         return false;
     }
 
