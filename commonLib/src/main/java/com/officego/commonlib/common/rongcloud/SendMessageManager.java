@@ -9,6 +9,7 @@ import com.officego.commonlib.common.message.BuildingInfo;
 import com.officego.commonlib.common.message.EcPhoneStatusInfo;
 import com.officego.commonlib.common.message.EcPhoneWarnInfo;
 import com.officego.commonlib.common.message.EcWeChatStatusInfo;
+import com.officego.commonlib.common.message.InsertLocalInfo;
 import com.officego.commonlib.common.message.PhoneEncryptedInfo;
 import com.officego.commonlib.common.message.PhoneInfo;
 import com.officego.commonlib.common.message.TimeTipInfo;
@@ -203,6 +204,21 @@ public class SendMessageManager {
                     info,
                     resultCallback);
         }
+    }
+
+    /**
+     * 弥补下拉刷新无法获取历史记录消息
+     */
+    public void localRefreshHistoryMessage(String targetId) {
+        InsertLocalInfo info = new InsertLocalInfo();
+        info.setContent("");
+        RongIM.getInstance().insertIncomingMessage(
+                Conversation.ConversationType.PRIVATE,
+                targetId,
+                SpUtils.getRongChatId(),
+                new Message.ReceivedStatus(1), //1 send  2 receive
+                info,
+                resultCallback);
     }
 
     /**

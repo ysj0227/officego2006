@@ -26,7 +26,7 @@ import io.rong.imlib.model.Message;
  */
 @ProviderTag(messageContent = EcPhoneWarnInfo.class, showPortrait = false, centerInHorizontal = true)
 public class EcPhoneWarnProvider extends IContainerItemProvider.MessageProvider<EcPhoneWarnInfo> {
-    private final String con="为避免电话被频繁骚扰，请谨慎交换电话";
+    private  String con="为避免电话被频繁骚扰，请谨慎交换电话";
 
     @Override
     public View newView(Context context, ViewGroup viewGroup) {

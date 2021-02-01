@@ -14,6 +14,8 @@ import com.officego.commonlib.common.message.EcPhoneWarnInfo;
 import com.officego.commonlib.common.message.EcPhoneWarnProvider;
 import com.officego.commonlib.common.message.EcWeChatStatusInfo;
 import com.officego.commonlib.common.message.EcWeChatStatusProvider;
+import com.officego.commonlib.common.message.InsertLocalInfo;
+import com.officego.commonlib.common.message.InsertLocalProvider;
 import com.officego.commonlib.common.message.PhoneEncryptedInfo;
 import com.officego.commonlib.common.message.PhoneEncryptedProvider;
 import com.officego.commonlib.common.message.PhoneInfo;
@@ -142,6 +144,9 @@ public class IMManager {
         //租户交换手机提示
         RongIM.registerMessageType(EcPhoneWarnInfo.class);
         RongIM.registerMessageTemplate(new EcPhoneWarnProvider());
+        //弥补下拉刷新无法获取历史记录消息
+        RongIM.registerMessageType(InsertLocalInfo.class);
+        RongIM.registerMessageTemplate(new InsertLocalProvider());
     }
 
     /**
