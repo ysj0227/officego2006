@@ -41,7 +41,7 @@ public class JPushAuthLoginRequest {
         boolean verifyEnable = JVerificationInterface.checkVerifyEnable(mContext);
         if (!verifyEnable) {
             CommonDialog dialog = new CommonDialog.Builder(mContext)
-                    .setTitle("当前网络环境不支持一键登录\n请开启手机移动数据")
+                    .setTitle("获取本机号码失败\n请开启手机移动数据")
                     .setConfirmButton(R.string.str_confirm).create();
             dialog.showWithOutTouchable(true);
             return;

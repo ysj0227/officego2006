@@ -162,7 +162,7 @@
     <string name="tip_no_more_data">没有更多数据了</string>
     <string name="str_query_more_data">查看更多</string>
     <string name="text_net_exception">没有检测到网络 \n 请检查您的手机是否成功连接上网络</string>
-    <string name="text_current_no_data">暂无数据 \n 数据被外星人带走了，看看其他的吧</string>
+    <string name="text_current_no_data">暂无数据</string>
     <string name="text_day_square">/㎡/天</string>
     <string name="button_edit">编辑</string>
     <string name="button_clear">清除</string>

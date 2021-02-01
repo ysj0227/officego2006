@@ -291,6 +291,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
     @UiThread
     void setTitle() {
         tvTitle.setText(R.string.str_bind_phone);
+        btnLoginNoPassword.setVisibility(View.GONE);
     }
 
     private void startDownTimer(String mobile) {
