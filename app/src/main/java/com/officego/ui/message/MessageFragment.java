@@ -9,6 +9,7 @@ import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import androidx.constraintlayout.widget.ConstraintLayout;
+import androidx.fragment.app.FragmentManager;
 import androidx.fragment.app.FragmentTransaction;
 
 import com.officego.R;
@@ -37,7 +38,7 @@ import io.rong.imlib.model.Conversation;
  * Descriptions:
  **/
 @SuppressLint({"NewApi", "NonConstantResourceId"})
-@EFragment(R.layout.conversationlist)
+@EFragment(R.layout.conversationlist1)
 public class MessageFragment extends BaseFragment {
     @ViewById(R.id.rl_title)
     RelativeLayout rlTitle;
@@ -62,7 +63,7 @@ public class MessageFragment extends BaseFragment {
             loginIn();
         }
         initIm();
-        NotificationUtil.showSettingDialog(mActivity,true);
+        NotificationUtil.showSettingDialog(mActivity, true);
     }
 
     @Override
@@ -93,19 +94,32 @@ public class MessageFragment extends BaseFragment {
     private ConversationListFragment fragment;
 
     private void initIm() {
-        if (fragment == null) {
-            fragment = new ConversationListFragment();
-            Uri uri = Uri.parse("rong://" + mActivity.getApplicationInfo().packageName).buildUpon()
-                    .appendPath("conversationlist")
-                    .appendQueryParameter(Conversation.ConversationType.PRIVATE.getName(), "false") //设置私聊会话，该会话聚合显示
-                    .appendQueryParameter(Conversation.ConversationType.SYSTEM.getName(), "false")//设置群组会话，该会话非聚合显示
-                    .build();
-            fragment.setUri(uri);
+//        if (fragment == null) {
+//            fragment = new ConversationListFragment();
+//            Uri uri = Uri.parse("rong://" + mActivity.getApplicationInfo().packageName).buildUpon()
+//                    .appendPath("conversationlist")
+//                    .appendQueryParameter(Conversation.ConversationType.PRIVATE.getName(), "false") //设置私聊会话，该会话聚合显示
+//                    .appendQueryParameter(Conversation.ConversationType.SYSTEM.getName(), "false")//设置群组会话，该会话非聚合显示
+//                    .build();
+//            fragment.setUri(uri);
+//
+//            FragmentTransaction transaction = mActivity.getSupportFragmentManager().beginTransaction();
+//            transaction.add(R.id.conversationlist, fragment);
+//            transaction.commit();
+//        }
 
-            FragmentTransaction transaction = mActivity.getSupportFragmentManager().beginTransaction();
-            transaction.add(R.id.conversationlist, fragment);
-            transaction.commit();
-        }
+        ConversationListFragment conversationListFragment = new ConversationListFragment();
+        Uri uri = Uri.parse("rong://" + getActivity().getApplicationInfo().packageName).buildUpon()
+                .appendPath("conversationlist")
+                .appendQueryParameter(Conversation.ConversationType.PRIVATE.getName(), "false") //设置私聊会话是否聚合显示
+                .appendQueryParameter(Conversation.ConversationType.SYSTEM.getName(), "false")//系统
+                .build();
+
+        conversationListFragment.setUri(uri);
+        FragmentManager manager = mActivity.getSupportFragmentManager();
+        FragmentTransaction transaction = manager.beginTransaction();
+        transaction.replace(R.id.conversationlist, conversationListFragment);
+        transaction.commit();
     }
 
     @Override

@@ -49,14 +49,6 @@ import io.rong.push.pushconfig.PushConfig;
 public class IMManager {
     protected final String TAG = this.getClass().getSimpleName();
     private static volatile IMManager instance;
-    /**
-     * 接收戳一下消息
-     */
-    private volatile Boolean isReceivePokeMessage = null;
-
-//    private IMInfoProvider imInfoProvider;
-//    private ConversationRecord lastConversationRecord;
-
 
     private IMManager() {
     }
@@ -89,7 +81,6 @@ public class IMManager {
         initSendReceiveMessageListener();
         //初始化接收消息监听
         initReceiveMessageWrapperListener();
-
     }
 
     //融云推送
@@ -146,45 +137,52 @@ public class IMManager {
 
     /**
      * 连接 IM 服务
-     *
-     * @param token    token
-     * @param callback callback
+     * TODO
      */
     public void connectIM(String token, ResultCallback<String> callback) {
         RongIM.connect(token, new RongIMClient.ConnectCallback() {
-            /**
-             * Token 错误。可以从下面两点检查 1.  Token 是否过期，如果过期您需要向 App Server 重新请求一个新的 Token
-             *                  2.  token 对应的 appKey 和工程里设置的 appKey 是否一致
-             */
-            @Override
-            public void onTokenIncorrect() {
-                //融云token错误,从服务端重新获取
-                rongCloudTokenError();
-            }
 
             @Override
             public void onSuccess(String s) {
                 Constants.isRCIMConnectSuccess = true;
-                callback.onSuccess(s);
+                //callback.onSuccess(s);
             }
 
             @Override
-            public void onError(RongIMClient.ErrorCode errorCode) {
+            public void onError(RongIMClient.ConnectionErrorCode connectionErrorCode) {
                 Constants.isRCIMConnectSuccess = false;
-                if (errorCode == RongIMClient.ErrorCode.RC_MSG_RESP_TIMEOUT ||
-                        errorCode == RongIMClient.ErrorCode.RC_SOCKET_NOT_CREATED ||
-                        errorCode == RongIMClient.ErrorCode.RC_SOCKET_DISCONNECTED ||
-                        errorCode == RongIMClient.ErrorCode.RC_CONN_REDIRECTED) {
-                    connectIM(token, callback);
-                } else {
-                    if (callback != null) {
-                        callback.onFail(errorCode.getValue());
-                    } else {
-                        //do something
-                        //connectIM(token, callback);
-                    }
-                }
             }
+
+            @Override
+            public void onDatabaseOpened(RongIMClient.DatabaseOpenStatus databaseOpenStatus) {
+
+            }
+//            /**
+//             * Token 错误。可以从下面两点检查 1.  Token 是否过期，如果过期您需要向 App Server 重新请求一个新的 Token
+//             *                  2.  token 对应的 appKey 和工程里设置的 appKey 是否一致
+//             */
+//            @Override
+//            public void onTokenIncorrect() {
+//                //融云token错误,从服务端重新获取
+//                rongCloudTokenError();
+//            }
+//            @Override
+//            public void onError(RongIMClient.ErrorCode errorCode) {
+//                Constants.isRCIMConnectSuccess = false;
+//                if (errorCode == RongIMClient.ErrorCode.RC_MSG_RESP_TIMEOUT ||
+//                        errorCode == RongIMClient.ErrorCode.RC_SOCKET_NOT_CREATED ||
+//                        errorCode == RongIMClient.ErrorCode.RC_SOCKET_DISCONNECTED ||
+//                        errorCode == RongIMClient.ErrorCode.RC_CONN_REDIRECTED) {
+//                    connectIM(token, callback);
+//                } else {
+//                    if (callback != null) {
+//                        callback.onFail(errorCode.getValue());
+//                    } else {
+//                        //do something
+//                        //connectIM(token, callback);
+//                    }
+//                }
+//            }
         });
     }
 
