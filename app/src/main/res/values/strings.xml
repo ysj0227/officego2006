@@ -1,6 +1,9 @@
-<resources>
+<resources xmlns:tools="http://schemas.android.com/tools">
     <string name="app_name">OfficeGo</string>
-<!--    <string name="app_name">Officego伙办连平台</string>-->
+    <string name="app_name_debug" tools:ignore="ExtraTranslation">OfficeGo开发版</string>
+    <string name="app_name_test" tools:ignore="ExtraTranslation">OfficeGo测试版</string>
+    <string name="app_name_pre" tools:ignore="ExtraTranslation">OfficeGo预发版</string>
+    <!--    <string name="app_name">Officego伙办连平台</string>-->
     <string name="str_tab_home">首页</string>
     <string name="str_tab_message">消息</string>
     <string name="str_tab_collect">收藏</string>
@@ -88,7 +91,7 @@
     <string name="str_house_garden">园区</string>
     <string name="str_today_read">今日看点</string>
     <string name="str_brand_joint">品牌入驻</string>
-    <string name="str_hot_recommend">热门推荐</string>
+    <string name="str_hots_recommend">热门推荐</string>
     <string name="str_all_house">全部房源</string>
     <string name="str_query_all_house">查看全部房源</string>
     <string name="str_wx_login">微信登录</string>

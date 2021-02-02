@@ -1,5 +1,4 @@
 <resources>
-<!--    <string name="app_name">OfficeGo</string>-->
     <string name="str_tab_home">首页</string>
     <string name="str_tab_message">消息</string>
     <string name="str_tab_schedule">行程</string>
@@ -85,7 +84,6 @@
     <string name="str_def_time_start_conversation">一 一由你发起沟通</string>
     <string name="str_time_start_conversation">%s由你发起沟通</string>
     <string name="str_text_unknown">未知</string>
-    <!--    webView-->
     <string name="webview_cannot_find_page">找不到网页</string>
     <string name="webview_cannot_open_page">网页无法打开</string>
     <string name="str_title_help">帮助与反馈</string>
@@ -99,7 +97,6 @@
     <string name="str_login_success">登录成功</string>
     <string name="button_agree">同意</string>
     <string name="button_reject">拒绝</string>
-    <!--    dialog-->
     <string name="dialog_title_exchange_phone_contacts">是否确认与对方交换手机号？</string>
     <string name="dialog_title_exchange_wechat_contacts">是否确认与对方交换微信？</string>
     <string name="str_copy_phone">复制号码</string>
@@ -151,5 +148,4 @@
     <string name="str_to_perfect_building">当前楼盘待完善，完善楼盘信息即可发布房源</string>
     <string name="str_to_perfect_jointwork">当前网点待完善，完善网点信息即可发布房源</string>
     <string name="str_tip_add_house">快去添加房源吧</string>
-
 </resources>

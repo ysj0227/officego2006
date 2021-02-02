@@ -20,6 +20,7 @@ import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.utils.ToastUtils;
 import com.officego.commonlib.view.CircleImage;
 import com.officego.commonlib.view.RoundImageView;
 import com.officego.rpc.OfficegoApi;
@@ -37,7 +38,7 @@ import java.util.Date;
  * Data 2020/5/25.
  * Descriptions: 发起预约看房
  **/
-@SuppressLint("Registered")
+@SuppressLint({"Registered", "NonConstantResourceId"})
 @EActivity(R.layout.conversation_activity_viewing_date)
 public class ConversationViewingDateActivity extends BaseMvpActivity<ConversationViewDatePresenter>
         implements ConversationViewDateContract.View, ViewingDateDialog.SureClickListener {
@@ -118,12 +119,18 @@ public class ConversationViewingDateActivity extends BaseMvpActivity<Conversatio
         if (TextUtils.isEmpty(tvSelectTime.getText())) {
             return;
         }
-        String time = tvSelectTime.getText().toString().trim();
-        if (mData != null) {
-            addRenter(mData.getBuilding().getBuildingId(), DateTimeUtils.dateToSecondStamp(time), targetId);
-        } else {
+        if (mData == null) {
             shortTip("预约失败");
+            return;
         }
+        String time = tvSelectTime.getText().toString().trim();
+        long currentStamp = DateTimeUtils.currentTimeSecond();
+        long selectStamp = DateTimeUtils.dateToSecondStampLong(time);
+        if (selectStamp <= currentStamp) {
+            shortTip("预约时间不能小于当前时间");
+            return;
+        }
+        addRenter(mData.getBuilding().getBuildingId(), DateTimeUtils.dateToSecondStamp(time), targetId);
         //神策
         SensorsTrack.submitBookingSeeHouse(mData == null ? 0 : mData.getIsBuildOrHouse(),
                 mData == null ? 0 : mData.getBuilding().getBtype(),

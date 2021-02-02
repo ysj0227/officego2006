@@ -119,7 +119,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_marginStart="@dimen/dp_16"
-                        android:text="@string/str_hot_recommend"
+                        android:text="@string/str_hots_recommend"
                         android:textColor="@color/text_33"
                         android:textSize="@dimen/sp_16"
                         android:textStyle="bold" />

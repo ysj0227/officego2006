@@ -43,6 +43,13 @@ android {
             ]
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        devTest {
+            manifestPlaceholders = [
+                    RONGCLOUD_APPKEY   : "kj7swf8oknm02",
+                    RONGCLOUD_APPSECRET: "OF78PpILjjRk4"
+            ]
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+        }
         preRelease {
             manifestPlaceholders = [
                     RONGCLOUD_APPKEY   : "kj7swf8oknm02",

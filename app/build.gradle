@@ -42,9 +42,9 @@ android {
     }
     buildTypes {
         debug {
-//            applicationIdSuffix ".test"
+            applicationIdSuffix ".debug"
             manifestPlaceholders = [ENV_VALUE     : "ENV_TEST",
-                                    APP_NAME      : "@string/app_name",
+                                    APP_NAME      : "@string/app_name_debug",
                                     WX_APP_ID     : "wx70ee9e90c1d62d83",
                                     SENSORS_SCHEME: "sacc267397",
                                     JPUSH_APPKEY  : "032e4f10975ceb69f6f19ca3",
@@ -53,9 +53,23 @@ android {
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
+        devTest {
+            applicationIdSuffix ".debug"
+            manifestPlaceholders = [ENV_VALUE     : "ENV_PRE_RELEASE",
+                                    APP_NAME      : "@string/app_name_test",
+                                    WX_APP_ID     : "wx70ee9e90c1d62d83",
+                                    SENSORS_SCHEME: "saa39f5229",
+                                    JPUSH_APPKEY  : "032e4f10975ceb69f6f19ca3",
+                                    JPUSH_CHANNEL : "default_developer",]
+            minifyEnabled false
+            zipAlignEnabled true
+            proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
+            signingConfig signingConfigs.sign
+            multiDexEnabled = true
+        }
         preRelease {
             manifestPlaceholders = [ENV_VALUE     : "ENV_PRE_RELEASE",
-                                    APP_NAME      : "@string/app_name",
+                                    APP_NAME      : "@string/app_name_pre",
                                     WX_APP_ID     : "wx70ee9e90c1d62d83",
                                     SENSORS_SCHEME: "saa39f5229",
                                     JPUSH_APPKEY  : "032e4f10975ceb69f6f19ca3",
