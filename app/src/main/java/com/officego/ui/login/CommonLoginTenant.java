@@ -4,6 +4,7 @@ import android.content.Context;
 
 /**
  * 租户当前未登录
+ * 未登录点击楼盘网点详情收藏和聊天
  * 此时去登陆后，直接消失当前页面，不重新打开应用
  */
 public class CommonLoginTenant {

@@ -1,25 +1,20 @@
 package com.officego.ui.mine;
 
 import android.annotation.SuppressLint;
-import android.app.Activity;
 import android.content.Intent;
 import android.text.TextUtils;
 
 import com.officego.R;
 import com.officego.commonlib.base.BaseActivity;
-import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
-import com.officego.commonlib.common.model.VersionBean;
-import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.notification.BaseNotification;
-import com.officego.commonlib.retrofit.RetrofitCallback;
-import com.officego.commonlib.update.AppUpdate;
 import com.officego.commonlib.update.VersionDialog;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.commonlib.view.widget.SettingItemLayout;
+import com.owner.dialog.ExitAppDialog;
 import com.owner.mine.ModifyMobileActivity_;
 
 import org.androidannotations.annotations.AfterViews;
@@ -56,14 +51,7 @@ public class MineSettingActivity extends BaseActivity {
     public void onResume() {
         super.onResume();
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
-            CommonDialog dialog = new CommonDialog.Builder(context)
-                    .setMessage("账号已退出，请重新登录")
-                    .setConfirmButton(com.officego.commonlib.R.string.str_login, (dialog12, which) -> {
-                        GotoActivityUtils.gotoLoginActivity(context);
-                        dialog12.dismiss();
-                    }).create();
-            dialog.showWithOutTouchable(false);
-            dialog.setCancelable(false);
+            new ExitAppDialog(this);
         }
     }
 

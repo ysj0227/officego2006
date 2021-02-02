@@ -16,7 +16,6 @@ import androidx.fragment.app.FragmentManager;
 
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
-import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.StatusUtils;
 import com.officego.commonlib.common.analytics.GoogleTrack;
@@ -36,9 +35,9 @@ import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.ToastUtils;
-import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.ui.message.contract.ConversationContract;
 import com.officego.ui.message.presenter.ConversationPresenter;
+import com.owner.dialog.ExitAppDialog;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -367,14 +366,7 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
     protected void onResume() {
         super.onResume();
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
-            CommonDialog dialog = new CommonDialog.Builder(context)
-                    .setMessage("账号已退出，请重新登录")
-                    .setConfirmButton(com.officego.commonlib.R.string.str_login, (dialog12, which) -> {
-                        GotoActivityUtils.gotoLoginActivity(context);
-                        dialog12.dismiss();
-                    }).create();
-            dialog.showWithOutTouchable(false);
-            dialog.setCancelable(false);
+            new ExitAppDialog(this);
         }
     }
 
