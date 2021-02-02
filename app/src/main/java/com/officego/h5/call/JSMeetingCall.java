@@ -16,6 +16,7 @@ import com.officego.commonlib.utils.ToastUtils;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.rpc.OfficegoApi;
 import com.officego.ui.home.model.ChatsBean;
+import com.officego.ui.login.CommonLoginTenant;
 import com.officego.ui.login.LoginActivity_;
 import com.officego.ui.message.ConversationActivity_;
 
@@ -72,7 +73,7 @@ public class JSMeetingCall {
         JSONObject object = new JSONObject(json);
         int buildingId = object.getInt("buildingId");
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
-            LoginActivity_.intent(context).isFinishCurrentView(true).start();
+            new CommonLoginTenant(context);
             return;
         }
         gotoChat(buildingId);

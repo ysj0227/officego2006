@@ -1,18 +1,23 @@
 package com.officego.h5.call;
 
 import android.app.Activity;
+import android.text.TextUtils;
 import android.webkit.JavascriptInterface;
 
+import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.ToastUtils;
 import com.officego.rpc.OfficegoApi;
+import com.officego.ui.coupon.CouponActivity_;
 import com.officego.ui.home.BuildingDetailsActivity_;
 import com.officego.ui.home.BuildingDetailsChildActivity_;
 import com.officego.ui.home.BuildingDetailsJointWorkActivity_;
 import com.officego.ui.home.BuildingDetailsJointWorkChildActivity_;
 import com.officego.ui.home.model.ChatsBean;
+import com.officego.ui.login.CommonLoginTenant;
+import com.officego.ui.login.LoginActivity_;
 import com.officego.ui.message.ConversationActivity_;
 
 import org.json.JSONException;
@@ -71,12 +76,23 @@ public class JSBannerCall {
                 .mChildHouseBean(BundleUtils.houseMessage(Constants.TYPE_JOINTWORK, id)).start();
     }
 
+    //聊天
     @JavascriptInterface
     public void commonChatClick(String json) throws JSONException {
         JSONObject object = new JSONObject(json);
         boolean isBuilding = object.getBoolean("isBuilding");
         int id = object.getInt("id");
         gotoChat(isBuilding, id);
+    }
+
+    //打开卡券列表
+    @JavascriptInterface
+    public void openCouponList() {
+        if (TextUtils.isEmpty(SpUtils.getSignToken())) {
+            new CommonLoginTenant(context);
+            return;
+        }
+        CouponActivity_.intent(context).start();
     }
 
     /**
