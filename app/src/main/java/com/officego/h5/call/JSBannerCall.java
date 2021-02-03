@@ -9,6 +9,7 @@ import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.ToastUtils;
+import com.officego.h5.WebViewMeetingActivity_;
 import com.officego.rpc.OfficegoApi;
 import com.officego.ui.coupon.CouponActivity_;
 import com.officego.ui.home.BuildingDetailsActivity_;
@@ -83,6 +84,12 @@ public class JSBannerCall {
         boolean isBuilding = object.getBoolean("isBuilding");
         int id = object.getInt("id");
         gotoChat(isBuilding, id);
+    }
+
+    //会议室列表
+    @JavascriptInterface
+    public void openMeetingRoom() {
+        WebViewMeetingActivity_.intent(context).start();
     }
 
     //打开卡券列表
