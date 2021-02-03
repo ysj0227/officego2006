@@ -31,7 +31,7 @@ public class Constants {
 
     //微信
     public static final String APP_ID = "wx70ee9e90c1d62d83";//线上
-    public static final String APP_SECRET = "acfe3227435a5698455f81294a7b078e";
+    public static final String APP_ID_TEST = "wx0bc18fc3a299bd92";//测试
     //微信传值
     public static final String WX_TYPE = "WX_TYPE";
     public static final String WX_DATA = "WX_DATA";

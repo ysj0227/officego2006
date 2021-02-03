@@ -3,6 +3,7 @@ package com.officego.application;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.text.TextUtils;
 
 import com.officego.MainActivity;
 import com.officego.commonlib.base.BaseApplication;
@@ -24,6 +25,7 @@ public class MyApplication extends BaseApplication {
     private String lastVisibleActivityName;
     private Intent nextOnForegroundIntent;
     private boolean isMainActivityIsCreated;
+    private final String mPackageName = "com.officego";
 
     @Override
     public void onCreate() {
@@ -33,13 +35,15 @@ public class MyApplication extends BaseApplication {
         createWXAPI();
         observeAppInBackground();
         //App图标未读数量
-        DesktopCornerUtil.init(this.getPackageName(), "com.officego.LaunchActivity", this);
+        DesktopCornerUtil.init(this.getPackageName(), mPackageName + ".LaunchActivity", this);
     }
 
     //初始化微信分享
     private void createWXAPI() {
-        WXapi = WXAPIFactory.createWXAPI(this, Constants.APP_ID, false);
-        WXapi.registerApp(Constants.APP_ID);
+        String packageName = getApplicationInfo().packageName;
+        String wxAppId = TextUtils.equals(mPackageName, packageName) ? Constants.APP_ID : Constants.APP_ID_TEST;
+        WXapi = WXAPIFactory.createWXAPI(this, wxAppId, false);
+        WXapi.registerApp(wxAppId);
     }
 
     /**
