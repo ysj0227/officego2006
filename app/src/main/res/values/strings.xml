@@ -1,8 +1,8 @@
-<resources xmlns:tools="http://schemas.android.com/tools">
+<resources>
     <string name="app_name">OfficeGo</string>
-    <string name="app_name_debug" tools:ignore="ExtraTranslation">OfficeGo开发版</string>
-    <string name="app_name_test" tools:ignore="ExtraTranslation">OfficeGo测试版</string>
-    <string name="app_name_pre" tools:ignore="ExtraTranslation">OfficeGo预发版</string>
+    <string name="app_name_debug">OfficeGo开发版</string>
+    <string name="app_name_test">OfficeGo测试版</string>
+    <string name="app_name_pre">OfficeGo预发版</string>
     <!--    <string name="app_name">Officego伙办连平台</string>-->
     <string name="str_tab_home">首页</string>
     <string name="str_tab_message">消息</string>
