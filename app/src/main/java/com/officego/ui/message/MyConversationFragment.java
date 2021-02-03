@@ -3,9 +3,7 @@ package com.officego.ui.message;
 import android.text.TextUtils;
 import android.view.View;
 
-import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
-import com.officego.commonlib.common.rongcloud.SendMessageManager;
 import com.officego.commonlib.notification.BaseNotification;
 
 import io.rong.imkit.fragment.ConversationFragment;
@@ -15,7 +13,6 @@ import io.rong.imkit.fragment.ConversationFragment;
  * Date 2020/11/20
  **/
 public class MyConversationFragment extends ConversationFragment {
-
     /**
      * 发送按钮监听
      *
