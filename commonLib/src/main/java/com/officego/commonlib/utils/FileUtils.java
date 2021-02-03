@@ -14,8 +14,6 @@ import android.util.Log;
 import com.officego.commonlib.base.BaseApplication;
 import com.officego.commonlib.utils.log.LogCat;
 
-import org.apache.http.util.EncodingUtils;
-
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
 import java.io.ByteArrayInputStream;
@@ -36,8 +34,6 @@ import java.security.NoSuchAlgorithmException;
 import java.text.DecimalFormat;
 import java.util.ArrayList;
 import java.util.List;
-
-import static javax.xml.transform.OutputKeys.ENCODING;
 
 /**
  * 文件工具类
@@ -397,24 +393,6 @@ public class FileUtils {
         return "";
     }
 
-    //从assets 文件夹中获取文件并读取数据
-    public static String getStringFromAssets(Context context, String fileName) {
-        String result = "";
-        try {
-            InputStream in = context.getResources().getAssets().open(fileName);
-            //获取文件的字节数
-            int length = in.available();
-            //创建byte数组
-            byte[] buffer = new byte[length];
-            //将文件中的数据读到byte数组中
-            in.read(buffer);
-            result = EncodingUtils.getString(buffer, ENCODING);
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        return result;
-    }
-
     /**
      * 判断SD卡是否存在
      *
@@ -703,37 +681,6 @@ public class FileUtils {
     }
 
     /**
-     * 读取手机存储空间中的文件
-     *
-     * @param context  上下文
-     * @param fileName 文件全路径
-     * @return 返回读取到的内容
-     */
-    public static String readFile(Context context, String fileName) {
-        String result = "";
-        FileInputStream mFileInputStream = null;
-        try {
-            mFileInputStream = context.openFileInput(fileName);
-            int lenght = mFileInputStream.available();
-            byte[] buffer = new byte[lenght];
-            mFileInputStream.read(buffer);
-            result = EncodingUtils.getString(buffer, "UTF-8");
-        } catch (Exception e) {
-            LogCat.e(CommonHelper.getCName(new Exception()), e.getMessage(), e);
-        } finally {
-            if (mFileInputStream != null) {
-                try {
-                    mFileInputStream.close();
-                } catch (IOException e) {
-                    LogCat.e(CommonHelper.getCName(new Exception()), e.getMessage(), e);
-                }
-            }
-        }
-
-        return result;
-    }
-
-    /**
      * 删除手机存储空间中文件
      *
      * @param context  上下文
@@ -872,41 +819,6 @@ public class FileUtils {
                 Log.e("LogHelper-->writeFileToSD-->", "Exception:" + e.getMessage());
             }
         }
-    }
-
-    /**
-     * 读取SD卡上的txt文件
-     *
-     * @param fileFullName 包含文件路径的文件名称
-     * @return 返回文件内容
-     */
-    public static String readSDTxt(String fileFullName, String textEncoding) {
-        String result = "";
-        InputStream inputStream = null;
-        try {
-            if (Environment.getExternalStorageState().equals(Environment.MEDIA_MOUNTED)) {
-                inputStream = new FileInputStream(new File(FileUtils.getSDPath() + File.separator + fileFullName));
-                if (inputStream != null) {
-                    int length = inputStream.available();
-                    byte[] buffer = new byte[length];
-                    inputStream.read(buffer);
-
-                    result = EncodingUtils.getString(buffer, textEncoding);
-                    inputStream.close();
-                }
-            }
-        } catch (Exception e) {
-            LogCat.e(CommonHelper.getCName(new Exception()), e.getMessage(), e);
-        } finally {
-            if (inputStream != null) {
-                try {
-                    inputStream.close();
-                } catch (IOException e) {
-                    LogCat.e(CommonHelper.getCName(new Exception()), e.getMessage(), e);
-                }
-            }
-        }
-        return result;
     }
 
     /**
