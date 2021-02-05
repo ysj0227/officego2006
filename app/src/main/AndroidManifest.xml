@@ -141,6 +141,12 @@
             android:name=".ui.mine.MineFragment_"
             android:screenOrientation="portrait"
             tools:ignore="Instantiatable" />
+<!--        <activity-->
+<!--            android:name=".ui.home.BuildingDetailsActivity_"-->
+<!--            android:hardwareAccelerated="true"-->
+<!--            android:launchMode="singleTop"-->
+<!--            android:configChanges="keyboardHidden|orientation|screenSize"-->
+<!--            android:screenOrientation="sensor"/>-->
         <activity
             android:name=".ui.home.BuildingDetailsActivity_"
             android:hardwareAccelerated="true"

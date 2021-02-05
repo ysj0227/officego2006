@@ -93,6 +93,29 @@
             android:text="@string/video_play_time_00_00"
             android:textColor="@color/c_white"
             android:textSize="@dimen/sp_12" />
+
+<!--        <TextView-->
+<!--            android:id="@+id/tv_count_play_time"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_alignParentEnd="true"-->
+<!--            android:layout_centerVertical="true"-->
+<!--            android:layout_marginStart="@dimen/dp_4"-->
+<!--            android:layout_marginEnd="@dimen/dp_40"-->
+<!--            android:paddingRight="@dimen/dp_20"-->
+<!--            android:text="@string/video_play_time_00_00"-->
+<!--            android:textColor="@color/c_white"-->
+<!--            android:textSize="@dimen/sp_12" />-->
+
+<!--        <ImageButton-->
+<!--            android:id="@+id/ib_big_screen"-->
+<!--            android:layout_width="@dimen/dp_24"-->
+<!--            android:layout_height="@dimen/dp_24"-->
+<!--            android:layout_alignParentEnd="true"-->
+<!--            android:layout_centerVertical="true"-->
+<!--            android:layout_marginEnd="@dimen/dp_18"-->
+<!--            android:background="@mipmap/ic_screen_big"-->
+<!--            tools:ignore="ContentDescription" />-->
     </RelativeLayout>
 
     <!--播放错误-->

@@ -2,6 +2,7 @@ package com.officego.ui.home;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.pm.ActivityInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
 import android.os.Handler;
@@ -386,6 +387,16 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         }
         finish();
     }
+
+//    //横竖屏切换
+//    @Click(R.id.ib_big_screen)
+//    void orientationClick() {
+//        if (getRequestedOrientation() == ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE) {
+//            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_PORTRAIT);
+//        } else {
+//            setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_LANDSCAPE);
+//        }
+//    }
 
     //vr显示
     @Click(R.id.rb_vr)

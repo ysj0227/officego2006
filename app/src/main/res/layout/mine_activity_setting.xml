@@ -17,10 +17,27 @@
         app:titleTextColor="@color/text_33" />
 
     <com.officego.commonlib.view.widget.SettingItemLayout
-        android:id="@+id/sil_mobile"
+        android:visibility="gone"
+        android:id="@+id/sil_si_hi"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/title_bar"
+        app:leftMarkShow="invisible"
+        app:leftText="聊天打招呼语"
+        app:leftToArrowText="设置"
+        app:leftTextSize="@dimen/sp_15"
+        app:leftToArrowTextColor="@color/text_33"
+        app:rightArrowShow="visible"
+        app:rightOtherImageViewShow="gone"
+        app:showCenterText="gone"
+        app:showDividerBottom="visible"
+        app:showEditText="gone" />
+
+    <com.officego.commonlib.view.widget.SettingItemLayout
+        android:id="@+id/sil_mobile"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/sil_si_hi"
         app:leftMarkShow="invisible"
         app:leftText="@string/str_modify_mobile"
         app:leftTextSize="@dimen/sp_15"

@@ -30,6 +30,8 @@ import org.androidannotations.annotations.ViewById;
 @SuppressLint({"Registered", "NonConstantResourceId"})
 @EActivity(R.layout.mine_activity_setting)
 public class MineSettingActivity extends BaseActivity {
+    @ViewById(R.id.sil_si_hi)
+    SettingItemLayout silSiHi;
     @ViewById(R.id.sil_mobile)
     SettingItemLayout silMobile;
     @ViewById(R.id.sil_version_update)
@@ -53,6 +55,11 @@ public class MineSettingActivity extends BaseActivity {
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
             new ExitAppDialog(this);
         }
+    }
+
+    @Click(R.id.sil_si_hi)
+    void sayHiClick() {
+        SayHiListActivity_.intent(context).start();
     }
 
     @Click(R.id.sil_mobile)
