@@ -151,7 +151,7 @@
             android:name=".ui.home.BuildingDetailsActivity_"
             android:hardwareAccelerated="true"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".ui.home.BuildingDetailsChildActivity_"
             android:hardwareAccelerated="true"
