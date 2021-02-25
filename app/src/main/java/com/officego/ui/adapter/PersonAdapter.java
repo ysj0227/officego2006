@@ -2,6 +2,7 @@ package com.officego.ui.adapter;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 
 import com.officego.R;
@@ -19,6 +20,8 @@ import java.util.Map;
  * Descriptions:
  **/
 public class PersonAdapter extends CommonListAdapter<WantFindBean> {
+    private Context context;
+    private boolean isSetWidth;
     private final Map<Integer, String> map = new HashMap<>();
     private boolean onBind;
 
@@ -33,11 +36,13 @@ public class PersonAdapter extends CommonListAdapter<WantFindBean> {
     private PersonListener listener;
 
     public interface PersonListener {
-        void personResult(String value);
+        void personResult(String key,String value);
     }
 
-    public PersonAdapter(Context context,  String value, List<WantFindBean> list) {
+    public PersonAdapter(Context context, String value, List<WantFindBean> list, boolean isSetWidth) {
         super(context, R.layout.item_find2, list);
+        this.context = context;
+        this.isSetWidth = isSetWidth;
         for (int i = 0; i < list.size(); i++) {
             if (TextUtils.equals(value, list.get(i).getValue())) {
                 map.put(i, list.get(i).getKey());
@@ -49,13 +54,18 @@ public class PersonAdapter extends CommonListAdapter<WantFindBean> {
     public void convert(ViewHolder holder, WantFindBean bean) {
         int position = holder.getAdapterPosition();
         CheckBox tvName = holder.getView(R.id.tv_name);
+        if (context != null && isSetWidth) {
+            ViewGroup.LayoutParams lp = tvName.getLayoutParams();
+            lp.width = (int) context.getResources().getDimension(R.dimen.dp_80);
+            tvName.setLayoutParams(lp);
+        }
         tvName.setText(bean.getKey());
         tvName.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 map.clear();
                 map.put(position, bean.getKey());
                 if (listener != null) {
-                    listener.personResult(bean.getValue());
+                    listener.personResult(bean.getKey(),bean.getValue());
                 }
             } else {
                 map.remove(position);

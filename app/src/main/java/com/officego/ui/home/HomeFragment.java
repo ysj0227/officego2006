@@ -1,8 +1,12 @@
 package com.officego.ui.home;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.text.TextUtils;
+import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.Window;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
@@ -125,6 +129,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         }
         getData();
         showAnimation();
+        customisedHouse();
     }
 
     private void initViews() {
@@ -395,5 +400,25 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         banner.setIndicatorGravity(BannerConfig.CENTER)
                 .setOnBannerListener(this)
                 .start();
+    }
+
+    //定制找房
+    private void customisedHouse() {
+        Dialog dialog = new Dialog(mActivity, R.style.BottomDialog);
+        View viewLayout = LayoutInflater.from(mActivity).inflate(R.layout.dialog_customized_house, null);
+        dialog.setContentView(viewLayout);
+        //获取当前Activity所在的窗体
+        Window dialogWindow = dialog.getWindow();
+        if (dialogWindow == null) {
+            return;
+        }
+        //设置Dialog从窗体底部弹出
+        dialogWindow.setGravity(Gravity.CENTER);
+        viewLayout.findViewById(R.id.btn_know_more).setOnClickListener(v -> {
+            dialog.dismiss();
+            CustomisedHouseActivity_.intent(mActivity).start();
+        });
+        viewLayout.findViewById(R.id.rl_exit).setOnClickListener(v -> dialog.dismiss());
+        dialog.show();
     }
 }

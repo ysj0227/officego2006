@@ -141,17 +141,17 @@
             android:name=".ui.mine.MineFragment_"
             android:screenOrientation="portrait"
             tools:ignore="Instantiatable" />
-<!--        <activity-->
-<!--            android:name=".ui.home.BuildingDetailsActivity_"-->
-<!--            android:hardwareAccelerated="true"-->
-<!--            android:launchMode="singleTop"-->
-<!--            android:configChanges="keyboardHidden|orientation|screenSize"-->
-<!--            android:screenOrientation="sensor"/>-->
+        <!--        <activity-->
+        <!--            android:name=".ui.home.BuildingDetailsActivity_"-->
+        <!--            android:hardwareAccelerated="true"-->
+        <!--            android:launchMode="singleTop"-->
+        <!--            android:configChanges="keyboardHidden|orientation|screenSize"-->
+        <!--            android:screenOrientation="sensor"/>-->
         <activity
             android:name=".ui.home.BuildingDetailsActivity_"
             android:hardwareAccelerated="true"
             android:launchMode="singleTop"
-            android:screenOrientation="portrait"/>
+            android:screenOrientation="portrait" />
         <activity
             android:name=".ui.home.BuildingDetailsChildActivity_"
             android:hardwareAccelerated="true"
@@ -517,5 +517,9 @@
                     android:scheme="rong" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.home.CustomisedHouseActivity_"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
     </application>
 </manifest>

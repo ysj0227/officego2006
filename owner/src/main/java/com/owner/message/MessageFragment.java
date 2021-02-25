@@ -13,9 +13,14 @@ import androidx.fragment.app.FragmentTransaction;
 import com.officego.commonlib.base.BaseFragment;
 import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.model.UserMessageBean;
+import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NotificationUtil;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.utils.log.LogCat;
+import com.officego.commonlib.view.dialog.CommonDialog1;
 import com.owner.R;
 import com.owner.dialog.ExitAppDialog;
 
@@ -58,6 +63,7 @@ public class MessageFragment extends BaseFragment {
         rlTitle.setLayoutParams(params);
         initIm();
         NotificationUtil.showSettingDialog(mActivity, false);
+        getUserInfo();
     }
 
     //初始化聊天列表
@@ -90,4 +96,32 @@ public class MessageFragment extends BaseFragment {
             new ExitAppDialog(mActivity);
         }
     }
+
+    public void getUserInfo() {
+        com.officego.commonlib.common.rpc.OfficegoApi.getInstance()
+                .getUserMsg(new RetrofitCallback<UserMessageBean>() {
+            @Override
+            public void onSuccess(int code, String msg, UserMessageBean data) {
+                userExpire(data);
+            }
+
+            @Override
+            public void onFail(int code, String msg, UserMessageBean data) {
+            }
+        });
+    }
+    //账号试用到期 1:在试用期 0:账号已过试用期
+    private void userExpire(UserMessageBean data) {
+        if (CommonHelper.bigDecimal(data.getMsgStatus()) == 0) {
+            CommonDialog1 dialog = new CommonDialog1.Builder(mActivity)
+                    .setTitle("账号试用到期")
+                    .setMessage("您的账号试用期已过，请联系客服重新激活。")
+                    .setConfirmButton("联系客服", (dialog12, which) -> {
+                        CommonHelper.callPhone(mActivity, Constants.SERVICE_SUPPORT);
+                    }).create();
+            dialog.showWithOutTouchable(false);
+            dialog.setCancelable(false);
+        }
+    }
+
 }

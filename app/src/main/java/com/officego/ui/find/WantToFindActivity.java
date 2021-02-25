@@ -88,10 +88,10 @@ public class WantToFindActivity extends BaseMvpActivity<WantFindPresenter>
         } else {
             mFactor = "";
         }
-        PersonAdapter personAdapter = new PersonAdapter(context, mPerson, CommonList.peopleNumList());
+        PersonAdapter personAdapter = new PersonAdapter(context, mPerson, CommonList.peopleNumList(),false);
         personAdapter.setListener(this);
         rvPerson.setAdapter(personAdapter);
-        RentAdapter rentAdapter = new RentAdapter(context, mRent, CommonList.rentTimeList());
+        RentAdapter rentAdapter = new RentAdapter(context, mRent, CommonList.rentTimeList(),false);
         rentAdapter.setListener(this);
         rvRent.setAdapter(rentAdapter);
     }
@@ -142,18 +142,18 @@ public class WantToFindActivity extends BaseMvpActivity<WantFindPresenter>
     }
 
     @Override
-    public void personResult(String value) {
+    public void personResult(String key,String value) {
         mPerson = value;
     }
 
     @Override
-    public void rentResult(String value) {
+    public void rentResult(String key,String value) {
         mRent = value;
     }
 
     @Override
     public void factorSuccess(List<DirectoryBean.DataBean> list) {
-        FactorAdapter factorAdapter = new FactorAdapter(context, factorMap, list);
+        FactorAdapter factorAdapter = new FactorAdapter(context, factorMap, list,false);
         factorAdapter.setListener(this);
         rvFactor.setAdapter(factorAdapter);
     }

@@ -244,19 +244,6 @@ public class CommonHelper {
     }
 
     /**
-     * 拨打电话
-     *
-     * @param activity 当前Activity
-     * @param phoneNO  电话号码
-     */
-    public static void tel(Activity activity, String phoneNO) {
-        Intent intent = new Intent();
-        intent.setAction(Intent.ACTION_DIAL);
-        intent.setData(Uri.parse("tel:" + phoneNO));
-        activity.startActivity(intent);
-    }
-
-    /**
      * 发送短信
      *
      * @param activity 当前Activity

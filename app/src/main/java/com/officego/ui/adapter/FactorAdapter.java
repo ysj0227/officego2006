@@ -1,6 +1,7 @@
 package com.officego.ui.adapter;
 
 import android.content.Context;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 
 import androidx.annotation.NonNull;
@@ -21,6 +22,7 @@ import java.util.Map;
  * Descriptions:
  **/
 public class FactorAdapter extends CommonListAdapter<DirectoryBean.DataBean> {
+    private boolean isSetWidth;
     private final Context context;
     private Map<Integer, String> map;
 
@@ -38,9 +40,10 @@ public class FactorAdapter extends CommonListAdapter<DirectoryBean.DataBean> {
         void factorResult(Map<Integer, String> map);
     }
 
-    public FactorAdapter(Context context,Map<Integer, String> map, List<DirectoryBean.DataBean> list) {
+    public FactorAdapter(Context context,Map<Integer, String> map, List<DirectoryBean.DataBean> list, boolean isSetWidth) {
         super(context, R.layout.item_find, list);
         this.context = context;
+        this.isSetWidth = isSetWidth;
         this.map = map;
         if (this.map == null) {
             this.map = new HashMap<>();
@@ -50,6 +53,11 @@ public class FactorAdapter extends CommonListAdapter<DirectoryBean.DataBean> {
     @Override
     public void convert(ViewHolder holder, @NonNull final DirectoryBean.DataBean bean) {
         CheckBox tvName = holder.getView(R.id.tv_name);
+        if (context != null && isSetWidth) {
+            ViewGroup.LayoutParams lp = tvName.getLayoutParams();
+            lp.width = (int) context.getResources().getDimension(R.dimen.dp_120);
+            tvName.setLayoutParams(lp);
+        }
         tvName.setText(bean.getDictCname());
         if (map != null) {
             tvName.setChecked(map.containsKey(bean.getDictValue()));

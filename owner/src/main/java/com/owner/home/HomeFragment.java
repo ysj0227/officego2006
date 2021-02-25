@@ -26,6 +26,7 @@ import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.OnLoadMoreListener;
 import com.officego.commonlib.view.dialog.CommonDialog;
+import com.officego.commonlib.view.dialog.CommonDialog1;
 import com.owner.R;
 import com.owner.adapter.HomeAdapter;
 import com.owner.adapter.IdentityStatusAdapter;
@@ -122,7 +123,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         initViews();
         initRefresh();
         if (NetworkUtils.isNetworkAvailable(mActivity)) {
-            new VersionDialog(mActivity,false);
+            new VersionDialog(mActivity, false);
             mPresenter.getUserInfo();
         } else {
             netException();
@@ -457,6 +458,22 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         } else {
             mPresenter.getBuildingList();//楼盘网点列表
         }
+        //账号试用到期
+        userExpire(data);
+    }
+
+    //账号试用到期 1:在试用期 0:账号已过试用期
+    private void userExpire(UserMessageBean data) {
+        if (CommonHelper.bigDecimal(data.getMsgStatus()) == 0) {
+            CommonDialog1 dialog = new CommonDialog1.Builder(mActivity)
+                    .setTitle("账号试用到期")
+                    .setMessage("您的账号试用期已过，请联系客服重新激活。")
+                    .setConfirmButton("联系客服", (dialog12, which) -> {
+                        CommonHelper.callPhone(mActivity, Constants.SERVICE_SUPPORT);
+                    }).create();
+            dialog.showWithOutTouchable(false);
+            dialog.setCancelable(false);
+        }
     }
 
     //加载更多
@@ -510,7 +527,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
             } else if (id == CommonNotifications.checkedIdentitySuccess) {
                 //认证提交
                 mPresenter.getUserInfo();
-            }else if (id == CommonNotifications.refreshHouseSuccess) {
+            } else if (id == CommonNotifications.refreshHouseSuccess) {
                 //首页编辑楼盘网点成功
                 mPresenter.getUserInfo();
             }

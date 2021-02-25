@@ -2,6 +2,7 @@ package com.officego.ui.adapter;
 
 import android.content.Context;
 import android.text.TextUtils;
+import android.view.ViewGroup;
 import android.widget.CheckBox;
 
 import com.officego.R;
@@ -19,6 +20,8 @@ import java.util.Map;
  * Descriptions:
  **/
 public class RentAdapter extends CommonListAdapter<WantFindBean> {
+    private Context context;
+    private boolean isSetWidth;
     private final Map<Integer, String> map = new HashMap<>();
     private boolean onBind;
 
@@ -33,11 +36,13 @@ public class RentAdapter extends CommonListAdapter<WantFindBean> {
     private RentListener listener;
 
     public interface RentListener {
-        void rentResult(String value);
+        void rentResult(String key,String value);
     }
 
-    public RentAdapter(Context context, String value, List<WantFindBean> list) {
+    public RentAdapter(Context context, String value, List<WantFindBean> list,boolean isSetWidth) {
         super(context, R.layout.item_find, list);
+        this.context=context;
+        this.isSetWidth = isSetWidth;
         for (int i = 0; i < list.size(); i++) {
             if (TextUtils.equals(value, list.get(i).getValue())) {
                 map.put(i, list.get(i).getKey());
@@ -49,13 +54,18 @@ public class RentAdapter extends CommonListAdapter<WantFindBean> {
     public void convert(ViewHolder holder, final WantFindBean bean) {
         int position = holder.getAdapterPosition();
         CheckBox tvName = holder.getView(R.id.tv_name);
+        if (context != null && isSetWidth) {
+            ViewGroup.LayoutParams lp = tvName.getLayoutParams();
+            lp.width = (int) context.getResources().getDimension(R.dimen.dp_120);
+            tvName.setLayoutParams(lp);
+        }
         tvName.setText(bean.getKey());
         tvName.setOnCheckedChangeListener((buttonView, isChecked) -> {
             if (isChecked) {
                 map.clear();
                 map.put(position, bean.getKey());
                 if (listener != null) {
-                    listener.rentResult(bean.getValue());
+                    listener.rentResult(bean.getKey(),bean.getValue());
                 }
             } else {
                 map.remove(position);

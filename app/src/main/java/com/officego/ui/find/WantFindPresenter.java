@@ -32,9 +32,6 @@ public class WantFindPresenter extends BasePresenter<WantFindContract.View> impl
             public void onFail(int code, String msg, List<DirectoryBean.DataBean> data) {
                 if (isViewAttached()) {
                     mView.hideLoadingDialog();
-                    if (code == Constants.DEFAULT_ERROR_CODE) {
-                        mView.shortTip(msg);
-                    }
                 }
             }
         });

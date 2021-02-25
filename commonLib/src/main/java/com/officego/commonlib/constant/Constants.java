@@ -67,6 +67,7 @@ public class Constants {
     //客服
     public static final String SERVICE_HOT_MOBILE = "17321221162";
     public static final String SERVICE_TECHNICAL_SUPPORT = "13052007068";
+    public static final String SERVICE_SUPPORT = "18016320482";
     //    租户端邮箱:service@officego.com
 //    业主端邮箱:business@officego.com
     public static final String SERVICE_EMAIL_TENANT = "service@officego.com";
