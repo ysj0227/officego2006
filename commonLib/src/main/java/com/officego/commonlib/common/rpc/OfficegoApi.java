@@ -1064,4 +1064,34 @@ public class OfficegoApi {
                 .recordChatTime(map)
                 .enqueue(callback);
     }
+
+    /**
+     * 切换身份
+     * 用户身份标：0租户，1户主
+     */
+    public void switchId(String roleType,
+                         RetrofitCallback<LoginBean> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("roleType", requestBody(roleType));
+        map.putAll(map());
+        OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
+                .switchId(map)
+                .enqueue(callback);
+    }
+
+    /**
+     * 修改手机号
+     */
+    public void modifyMobile(String mobile, String code, RetrofitCallback<Object> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("newPhone", requestBody(mobile));
+        map.put("code", requestBody(code));
+        map.putAll(map());
+        OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
+                .modifyMobile(map)
+                .enqueue(callback);
+    }
+
 }

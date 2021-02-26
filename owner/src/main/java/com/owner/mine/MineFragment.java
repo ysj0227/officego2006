@@ -24,7 +24,6 @@ import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.model.LoginBean;
 import com.officego.commonlib.common.model.UserMessageBean;
 import com.officego.commonlib.common.rongcloud.RCloudConnectUtils;
-import com.officego.commonlib.common.rongcloud.RCloudSetUserInfoUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.update.VersionDialog;
@@ -38,7 +37,6 @@ import com.owner.h5.WebViewActivity_;
 import com.owner.mine.contract.UserContract;
 import com.owner.mine.coupon.WriteOffRecordActivity_;
 import com.owner.mine.presenter.UserPresenter;
-import com.owner.rpc.OfficegoApi;
 import com.owner.zxing.QRScanActivity;
 
 import org.androidannotations.annotations.AfterViews;
@@ -202,7 +200,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
     //房东端--- 用户身份标：0租户，1户主
     private void switchId(String role) {
         showLoadingDialog();
-        OfficegoApi.getInstance().switchId(role, new RetrofitCallback<LoginBean>() {
+        com.officego.commonlib.common.rpc.OfficegoApi.getInstance().switchId(role, new RetrofitCallback<LoginBean>() {
             @Override
             public void onSuccess(int code, String msg, LoginBean data) {
                 hideLoadingDialog();

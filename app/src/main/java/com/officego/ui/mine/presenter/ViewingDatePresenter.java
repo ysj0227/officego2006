@@ -47,31 +47,4 @@ public class ViewingDatePresenter extends BasePresenter<ViewingDateContract.View
             }
         });
     }
-
-    @Override
-    public void getOldViewingDate(long startTime, long endTime) {
-        mView.showLoadingDialog();
-        OfficegoApi.getInstance().getOldScheduleList(startTime, endTime, new RetrofitCallback<List<ViewingDateBean.DataBean>>() {
-            @Override
-            public void onSuccess(int code, String msg, List<ViewingDateBean.DataBean> data) {
-                if (isViewAttached()) {
-                    mView.hideLoadingDialog();
-                    if (data != null) {
-                        mView.viewingDateSuccess(data);
-                    }else {
-                        mView.shortTip(R.string.tip_current_no_data);
-                    }
-                }
-            }
-
-            @Override
-            public void onFail(int code, String msg, List<ViewingDateBean.DataBean> data) {
-                LogCat.e(TAG, "getViewingDate onFail code=" + code + "  msg=" + msg);
-                if (isViewAttached()) {
-                    mView.hideLoadingDialog();
-                    mView.viewingDateFail(code, msg);
-                }
-            }
-        });
-    }
 }

@@ -38,28 +38,29 @@ public class ModifyMobilePresenter extends BasePresenter<ModifyMobileContract.Vi
     @Override
     public void modifyMobile(String mobile, String code) {
         mView.showLoadingDialog();
-        OfficegoApi.getInstance().modifyMobile(mobile, code, new RetrofitCallback<Object>() {
-            @Override
-            public void onSuccess(int code, String msg, Object data) {
-                if (isViewAttached()) {
-                    SpUtils.clearLoginInfo();
-                    mView.hideLoadingDialog();
-                    mView.modifyMobileSuccess();
-                    mView.shortTip("修改成功");
-                }
-            }
-
-            @Override
-            public void onFail(int code, String msg, Object data) {
-                if (isViewAttached()) {
-                    mView.hideLoadingDialog();
-                    if (code == Constants.DEFAULT_ERROR_CODE) {
-                        mView.shortTip(msg);
-                    } else {
-                        mView.shortTip("修改失败，请重新提交");
+        com.officego.commonlib.common.rpc.OfficegoApi.getInstance()
+                .modifyMobile(mobile, code, new RetrofitCallback<Object>() {
+                    @Override
+                    public void onSuccess(int code, String msg, Object data) {
+                        if (isViewAttached()) {
+                            SpUtils.clearLoginInfo();
+                            mView.hideLoadingDialog();
+                            mView.modifyMobileSuccess();
+                            mView.shortTip("修改成功");
+                        }
                     }
-                }
-            }
-        });
+
+                    @Override
+                    public void onFail(int code, String msg, Object data) {
+                        if (isViewAttached()) {
+                            mView.hideLoadingDialog();
+                            if (code == Constants.DEFAULT_ERROR_CODE) {
+                                mView.shortTip(msg);
+                            } else {
+                                mView.shortTip("修改失败，请重新提交");
+                            }
+                        }
+                    }
+                });
     }
 }

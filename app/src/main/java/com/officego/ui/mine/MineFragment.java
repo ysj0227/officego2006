@@ -14,14 +14,13 @@ import com.officego.MainOwnerActivity_;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpFragment;
 import com.officego.commonlib.common.GotoActivityUtils;
-import com.officego.commonlib.common.model.LoginBean;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.analytics.GoogleTrack;
 import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.common.config.CommonNotifications;
+import com.officego.commonlib.common.model.LoginBean;
 import com.officego.commonlib.common.model.UserMessageBean;
 import com.officego.commonlib.common.rongcloud.RCloudConnectUtils;
-import com.officego.commonlib.common.rongcloud.RCloudSetUserInfoUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.update.VersionDialog;
@@ -30,7 +29,6 @@ import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.CircleImage;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.h5.WebViewActivity_;
-import com.officego.rpc.OfficegoApi;
 import com.officego.ui.coupon.CouponActivity_;
 import com.officego.ui.find.WantToFindActivity_;
 import com.officego.ui.login.LoginActivity_;
@@ -220,7 +218,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
     //租户端---用户身份标：0租户，1户主
     private void switchId(String role) {
         showLoadingDialog();
-        OfficegoApi.getInstance().switchId(role, new RetrofitCallback<LoginBean>() {
+        com.officego.commonlib.common.rpc.OfficegoApi.getInstance().switchId(role, new RetrofitCallback<LoginBean>() {
             @Override
             public void onSuccess(int code, String msg, LoginBean data) {
                 hideLoadingDialog();

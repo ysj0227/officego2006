@@ -253,7 +253,7 @@ public class WebViewIdentityActivity extends BaseActivity implements
     //租户端---用户身份标：0租户，1户主
     private void switchId() {
         showLoadingDialog();
-        OfficegoApi.getInstance().switchId(Constants.TYPE_OWNER, new RetrofitCallback<LoginBean>() {
+        com.officego.commonlib.common.rpc.OfficegoApi.getInstance().switchId(Constants.TYPE_OWNER, new RetrofitCallback<LoginBean>() {
             @Override
             public void onSuccess(int code, String msg, LoginBean data) {
                 hideLoadingDialog();

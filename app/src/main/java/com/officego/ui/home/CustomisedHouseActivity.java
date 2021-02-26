@@ -138,7 +138,7 @@ public class CustomisedHouseActivity extends BaseMvpActivity<WantFindPresenter>
             shortTip("还有资料没填哦～");
             return;
         }
-        mPresenter.save(mPerson, mRent, mFactor);
+        mPresenter.customisedHouseSave(mPerson, mRent, mFactor);
     }
 
     @Override

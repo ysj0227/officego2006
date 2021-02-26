@@ -23,5 +23,7 @@ public interface WantFindContract {
         void getFactorList();
 
         void save(String person, String rent, String factor);
+
+        void customisedHouseSave(String person, String rent, String factor);
     }
 }

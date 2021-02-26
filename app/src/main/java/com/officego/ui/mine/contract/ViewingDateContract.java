@@ -23,6 +23,5 @@ public interface ViewingDateContract {
 
         void getViewingDate(long startTime,long endTime);
 
-        void getOldViewingDate(long startTime,long endTime);
     }
 }

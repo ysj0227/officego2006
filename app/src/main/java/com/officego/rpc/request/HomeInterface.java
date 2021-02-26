@@ -135,6 +135,13 @@ public interface HomeInterface {
     Call<BaseResponse<Object>> wantToFind(@PartMap Map<String, RequestBody> params);
 
     /**
+     * 定制找房
+     */
+    @Multipart
+    @POST(path + "user/addBuildingCustomize")
+    Call<BaseResponse<Object>> customisedHouse(@PartMap Map<String, RequestBody> params);
+
+    /**
      * 今日看点
      */
     @Multipart

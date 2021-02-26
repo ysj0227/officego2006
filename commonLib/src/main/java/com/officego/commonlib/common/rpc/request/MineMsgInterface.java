@@ -1,8 +1,8 @@
 package com.officego.commonlib.common.rpc.request;
 
 import com.officego.commonlib.common.model.LoginBean;
-import com.officego.commonlib.common.model.VersionBean;
 import com.officego.commonlib.common.model.UserMessageBean;
+import com.officego.commonlib.common.model.VersionBean;
 import com.officego.commonlib.retrofit.BaseResponse;
 
 import java.util.Map;
@@ -42,9 +42,6 @@ public interface MineMsgInterface {
 
     /**
      * 版本更新
-     *
-     * @param params
-     * @return
      */
     @Multipart
     @POST(path + "version/android")
@@ -64,5 +61,11 @@ public interface MineMsgInterface {
     @POST(path + "user/eidtUserApp")
     Call<BaseResponse<Object>> updateUserInfo(@PartMap Map<String, RequestBody> params);
 
+    /**
+     * 修改手机号
+     */
+    @Multipart
+    @POST(path + "user/changePhone")
+    Call<BaseResponse<Object>> modifyMobile(@PartMap Map<String, RequestBody> params);
 
 }

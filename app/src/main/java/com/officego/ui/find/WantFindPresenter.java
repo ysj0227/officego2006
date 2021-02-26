@@ -58,4 +58,26 @@ public class WantFindPresenter extends BasePresenter<WantFindContract.View> impl
             }
         });
     }
+
+    @Override
+    public void customisedHouseSave(String person, String rent, String factor) {
+        mView.showLoadingDialog();
+        OfficegoApi.getInstance().customisedHouse(person, rent, factor, new RetrofitCallback<Object>() {
+            @Override
+            public void onSuccess(int code, String msg, Object data) {
+                if (isViewAttached()) {
+                    mView.hideLoadingDialog();
+                    mView.saveSuccess();
+                }
+            }
+
+            @Override
+            public void onFail(int code, String msg, Object data) {
+                mView.hideLoadingDialog();
+                if (code == Constants.DEFAULT_ERROR_CODE) {
+                    mView.shortTip(msg);
+                }
+            }
+        });
+    }
 }

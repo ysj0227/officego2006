@@ -2,9 +2,9 @@ package com.officego.rpc;
 
 import android.text.TextUtils;
 
-import com.officego.commonlib.common.model.LoginBean;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.model.DirectoryBean;
+import com.officego.commonlib.common.model.LoginBean;
 import com.officego.commonlib.common.model.QueryHistoryKeywordsBean;
 import com.officego.commonlib.common.model.RenterBean;
 import com.officego.commonlib.common.model.SearchListBean;
@@ -12,14 +12,12 @@ import com.officego.commonlib.common.rpc.request.SearchInterface;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.DateTimeUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.rpc.request.BannerInterface;
 import com.officego.rpc.request.ChatInterface;
 import com.officego.rpc.request.FavoriteInterface;
 import com.officego.rpc.request.FindInterface;
 import com.officego.rpc.request.HomeInterface;
 import com.officego.rpc.request.LoginInterface;
-import com.officego.rpc.request.MineMsgInterface;
 import com.officego.rpc.request.ScheduleInterface;
 import com.officego.rpc.request.SearchAreaInterface;
 import com.officego.ui.collect.model.CollectBuildingBean;
@@ -740,22 +738,6 @@ public class OfficegoApi {
     }
 
     /**
-     * 切换身份
-     * 用户身份标：0租户，1户主
-     */
-    public void switchId(String roleType,
-                         RetrofitCallback<LoginBean> callback) {
-        Map<String, RequestBody> map = new HashMap<>();
-        map.put("token", requestBody(SpUtils.getSignToken()));
-        map.put("roleType", requestBody(roleType));
-        map.putAll(map());
-        LogCat.e(TAG, "1111  chat/regTokenApp  token=" + SpUtils.getSignToken() + " roleType=" + roleType);
-        OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
-                .switchId(map)
-                .enqueue(callback);
-    }
-
-    /**
      * 我想找
      * seats=1&minimumLease=1个月&tag=1
      */
@@ -770,6 +752,23 @@ public class OfficegoApi {
                 .wantToFind(map)
                 .enqueue(callback);
     }
+
+    /**
+     * 定制找房
+     * seats=1&minimumLease=1个月&tag=1
+     */
+    public void customisedHouse(String seats, String minimumLease, String tag, RetrofitCallback<Object> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(TextUtils.isEmpty(SpUtils.getSignToken()) ? "" : SpUtils.getSignToken()));
+        map.put("seats", requestBody(seats));
+        map.put("minimumLease", requestBody(minimumLease));
+        map.put("tag", requestBody(tag));
+        map.putAll(map());
+        OfficegoRetrofitClient.getInstance().create(HomeInterface.class)
+                .customisedHouse(map)
+                .enqueue(callback);
+    }
+
 
     /**
      * 今日看点

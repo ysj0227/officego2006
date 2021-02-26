@@ -2,7 +2,6 @@ package com.owner.rpc;
 
 import android.text.TextUtils;
 
-import com.officego.commonlib.common.model.LoginBean;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.model.IdentityRejectBean;
 import com.officego.commonlib.common.model.owner.UploadImageBean;
@@ -13,7 +12,6 @@ import com.owner.identity.model.BusinessCircleBean;
 import com.owner.identity.model.ImageBean;
 import com.owner.rpc.request.IdentitySearchInterface;
 import com.owner.rpc.request.LoginInterface;
-import com.owner.rpc.request.MineMsgInterface;
 import com.owner.rpc.request.ScheduleInterface;
 import com.owner.schedule.model.ViewingDateBean;
 
@@ -71,21 +69,6 @@ public class OfficegoApi {
     }
 
     /**
-     * 修改手机号
-     */
-    public void modifyMobile(String mobile, String code, RetrofitCallback<Object> callback) {
-        Map<String, RequestBody> map = new HashMap<>();
-        map.put("token", requestBody(SpUtils.getSignToken()));
-        map.put("newPhone", requestBody(mobile));
-        map.put("code", requestBody(code));
-        map.putAll(map());
-        OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
-                .modifyMobile(map)
-                .enqueue(callback);
-    }
-
-
-    /**
      * 预约看房行程
      * startTime 	是 	int 	开始时间
      * endTime 	是 	int
@@ -100,39 +83,6 @@ public class OfficegoApi {
                 .getScheduleList(map)
                 .enqueue(callback);
     }
-
-    /**
-     * 看房记录
-     * startTime 	是 	int 	开始时间
-     * endTime 	是 	int
-     */
-    public void getOldScheduleList(long startTime, long endTime, RetrofitCallback<List<ViewingDateBean.DataBean>> callback) {
-        Map<String, RequestBody> map = new HashMap<>();
-        map.put("token", requestBody(SpUtils.getSignToken()));
-        map.put("startTime", requestBody(startTime + ""));
-        map.put("endTime", requestBody(endTime + ""));
-        map.putAll(map());
-        OfficegoRetrofitClient.getInstance().create(ScheduleInterface.class)
-                .getOldScheduleList(map)
-                .enqueue(callback);
-    }
-
-
-    /**
-     * 切换身份
-     * 用户身份标：0租户，1户主
-     */
-    public void switchId(String roleType,
-                         RetrofitCallback<LoginBean> callback) {
-        Map<String, RequestBody> map = new HashMap<>();
-        map.put("token", requestBody(SpUtils.getSignToken()));
-        map.put("roleType", requestBody(roleType));
-        map.putAll(map());
-        OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
-                .switchId(map)
-                .enqueue(callback);
-    }
-
 
     /**
      * 商圈

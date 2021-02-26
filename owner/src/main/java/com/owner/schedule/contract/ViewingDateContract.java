@@ -21,7 +21,5 @@ public interface ViewingDateContract {
     interface Presenter {
 
         void getViewingDate(long startTime, long endTime);
-
-        void getOldViewingDate(long startTime, long endTime);
     }
 }
