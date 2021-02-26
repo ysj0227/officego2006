@@ -53,6 +53,8 @@ public class SpUtils {
     private static final String CURRENT_DATE = PACKAGE_NAME + "CURRENT_DATE";
     //当天是否打开了推送通知
     private static final String CURRENT_OPEN_PUSH_SETTING = PACKAGE_NAME + "CURRENT_OPEN_PUSH_SETTING";
+    //定制找房
+    private static final String CUSTOMISED_HOUSE_SAVE = PACKAGE_NAME + "CUSTOMISED_HOUSE_SAVE";
 
     private static SharedPreferences getSharedPreference() {
         return SharedManager.getSharedPreference(BaseApplication.getContext());
@@ -297,6 +299,16 @@ public class SpUtils {
     public static String getPushSetting(boolean isTenant) {
         String key = CURRENT_OPEN_PUSH_SETTING + isTenant;
         return SharedManager.getValue(BaseApplication.getContext(), key);
+    }
+
+    //保存定制找房
+    public static void saveCustomisedHouse() {
+        SharedManager.putValue(BaseApplication.getContext(), CUSTOMISED_HOUSE_SAVE, "Y");
+    }
+
+    //获取定制找房
+    public static String getCustomisedHouse() {
+        return SharedManager.getValue(BaseApplication.getContext(), CUSTOMISED_HOUSE_SAVE);
     }
 
 }

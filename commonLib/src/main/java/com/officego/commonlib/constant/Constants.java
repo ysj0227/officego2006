@@ -104,4 +104,6 @@ public class Constants {
     public final static int IDENTITY_FIRST = 1;
     public final static int IDENTITY_NO_FIRST = 2;
     public final static int IDENTITY_REJECT = 3;
+    //定制找房dialog
+    public static boolean IS_CUSTOMISED_HOUSE;
 }

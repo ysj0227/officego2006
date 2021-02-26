@@ -25,7 +25,7 @@ import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.h5.call.JSMeetingCall;
+import com.officego.h5.call.JSBannerCall;
 import com.officego.view.webview.SMWebViewClient;
 
 import org.androidannotations.annotations.AfterViews;
@@ -132,7 +132,7 @@ public class WebViewMeetingActivity extends BaseActivity {
         String dir = this.getApplicationContext().getDir("database", Context.MODE_PRIVATE).getPath();
         webSetting.setGeolocationEnabled(true);
         webSetting.setGeolocationDatabasePath(dir);
-        webView.addJavascriptInterface(new JSMeetingCall(this), "android");
+        webView.addJavascriptInterface(new JSBannerCall(this), "android");
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
         webView.loadUrl(url);
         webView.setWebViewClient(new SMWebViewClient(this) {

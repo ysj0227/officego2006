@@ -2,11 +2,13 @@ package com.officego.ui.home;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
+import android.view.WindowManager;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.Animation;
 import android.view.animation.TranslateAnimation;
@@ -25,6 +27,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpFragment;
+import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.update.VersionDialog;
@@ -164,6 +167,11 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         }
         SensorsTrack.searchButtonIndex();
         SearchRecommendActivity_.intent(mActivity).start();
+    }
+
+    @Click(R.id.iv_customised_house)
+    void customisedHouseClick() {
+        CustomisedHouseActivity_.intent(mActivity).start();
     }
 
     @Click(R.id.rl_joint_work)
@@ -404,21 +412,30 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
 
     //定制找房
     private void customisedHouse() {
-        Dialog dialog = new Dialog(mActivity, R.style.BottomDialog);
-        View viewLayout = LayoutInflater.from(mActivity).inflate(R.layout.dialog_customized_house, null);
-        dialog.setContentView(viewLayout);
-        //获取当前Activity所在的窗体
-        Window dialogWindow = dialog.getWindow();
-        if (dialogWindow == null) {
-            return;
+        if (!Constants.IS_CUSTOMISED_HOUSE && TextUtils.isEmpty(SpUtils.getCustomisedHouse())) {
+            new Handler().postDelayed(() -> {
+                Constants.IS_CUSTOMISED_HOUSE = true;
+                Dialog dialog = new Dialog(mActivity, R.style.BottomDialog);
+                View viewLayout = LayoutInflater.from(mActivity).inflate(R.layout.dialog_customized_house, null);
+                dialog.setContentView(viewLayout);
+                //获取当前Activity所在的窗体
+                Window dialogWindow = dialog.getWindow();
+                if (dialogWindow == null) {
+                    return;
+                }
+                //设置Dialog从窗体底部弹出
+                WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+                lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+                lp.horizontalMargin = mActivity.getResources().getDimensionPixelSize(R.dimen.dp_38);
+                dialogWindow.setAttributes(lp);
+                dialogWindow.setGravity(Gravity.CENTER);
+                viewLayout.findViewById(R.id.btn_know_more).setOnClickListener(v -> {
+                    dialog.dismiss();
+                    CustomisedHouseActivity_.intent(mActivity).start();
+                });
+                viewLayout.findViewById(R.id.rl_exit).setOnClickListener(v -> dialog.dismiss());
+                dialog.show();
+            }, 8000);
         }
-        //设置Dialog从窗体底部弹出
-        dialogWindow.setGravity(Gravity.CENTER);
-        viewLayout.findViewById(R.id.btn_know_more).setOnClickListener(v -> {
-            dialog.dismiss();
-            CustomisedHouseActivity_.intent(mActivity).start();
-        });
-        viewLayout.findViewById(R.id.rl_exit).setOnClickListener(v -> dialog.dismiss());
-        dialog.show();
     }
 }

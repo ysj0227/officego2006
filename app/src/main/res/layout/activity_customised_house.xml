@@ -3,7 +3,8 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/common_divider">
 
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nsv_view"
@@ -23,8 +24,8 @@
             <View
                 android:id="@+id/v_top"
                 android:layout_width="0dp"
-                android:layout_height="@dimen/dp_172"
-                android:background="@mipmap/ic_want_find"
+                android:layout_height="@dimen/dp_350"
+                android:background="@mipmap/ic_customised_house_details"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
@@ -44,20 +45,20 @@
             <RelativeLayout
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="@dimen/dp_30"
+                android:layout_marginTop="@dimen/dp_330"
                 android:background="@drawable/bg_solid_grey_corner_top"
                 android:paddingStart="@dimen/dp_10"
                 android:paddingEnd="@dimen/dp_10"
                 android:paddingBottom="@dimen/dp_30"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/v_top">
+                app:layout_constraintTop_toTopOf="parent">
 
                 <RelativeLayout
                     android:id="@+id/rl_left1"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_62"
-                    android:layout_marginTop="@dimen/dp_10">
+                    android:layout_marginTop="@dimen/dp_28">
 
                     <ImageView
                         android:id="@+id/iv_left1"
@@ -185,13 +186,14 @@
                         android:textColor="@color/white"
                         android:textSize="@dimen/sp_13" />
 
-                    <ImageView
+                    <com.officego.commonlib.view.CircleImage
                         android:id="@+id/iv_right1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="@dimen/dp_30"
+                        android:layout_height="@dimen/dp_30"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentBottom="true"
-                        android:background="@mipmap/default_avatar" />
+                        android:background="@mipmap/default_avatar"
+                        app:radius="@dimen/dp_20" />
 
                 </RelativeLayout>
                 <!--                免租期-->
@@ -303,13 +305,14 @@
                         android:textColor="@color/white"
                         android:textSize="@dimen/sp_13" />
 
-                    <ImageView
+                    <com.officego.commonlib.view.CircleImage
                         android:id="@+id/iv_right2"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="@dimen/dp_30"
+                        android:layout_height="@dimen/dp_30"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentBottom="true"
-                        android:background="@mipmap/default_avatar" />
+                        android:background="@mipmap/default_avatar"
+                        app:radius="@dimen/dp_20" />
 
                 </RelativeLayout>
                 <!--                因素-->
@@ -418,13 +421,14 @@
                         android:textColor="@color/white"
                         android:textSize="@dimen/sp_13" />
 
-                    <ImageView
+                    <com.officego.commonlib.view.CircleImage
                         android:id="@+id/iv_right3"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
+                        android:layout_width="@dimen/dp_30"
+                        android:layout_height="@dimen/dp_30"
                         android:layout_alignParentEnd="true"
                         android:layout_alignParentBottom="true"
-                        android:background="@mipmap/default_avatar" />
+                        android:background="@mipmap/default_avatar"
+                        app:radius="@dimen/dp_20" />
 
                 </RelativeLayout>
 

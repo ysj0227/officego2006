@@ -47,6 +47,35 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toTopOf="parent" />
+                <!--找房-->
+                <RelativeLayout
+                    android:id="@+id/rl_customised_house"
+                    style="@style/marginLeftRight16"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="@dimen/dp_20"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/ctl_building_type">
+
+                    <TextView
+                        android:id="@+id/tv_customised_house"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="帮你找房"
+                        android:textColor="@color/text_33"
+                        android:textSize="@dimen/sp_16"
+                        android:textStyle="bold" />
+
+                    <ImageView
+                        android:id="@+id/iv_customised_house"
+                        android:layout_width="match_parent"
+                        android:layout_height="@dimen/dp_100"
+                        android:layout_below="@+id/tv_customised_house"
+                        android:layout_marginTop="@dimen/dp_15"
+                        android:background="@mipmap/ic_help_find_house" />
+
+                </RelativeLayout>
                 <!--今日看点-->
                 <RelativeLayout
                     android:id="@+id/rl_news"
@@ -56,7 +85,7 @@
                     android:layout_marginTop="@dimen/dp_20"
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
-                    app:layout_constraintTop_toBottomOf="@+id/ctl_building_type">
+                    app:layout_constraintTop_toBottomOf="@+id/rl_customised_house">
 
                     <TextView
                         android:id="@+id/tv_news"

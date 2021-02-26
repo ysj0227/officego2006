@@ -7,7 +7,6 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
-import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -21,6 +20,7 @@ import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.GlideUtils;
+import com.officego.commonlib.view.CircleImage;
 import com.officego.ui.adapter.FactorAdapter;
 import com.officego.ui.adapter.PersonAdapter;
 import com.officego.ui.adapter.RentAdapter;
@@ -34,6 +34,9 @@ import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.ViewById;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -75,11 +78,11 @@ public class CustomisedHouseActivity extends BaseMvpActivity<WantFindPresenter>
     @ViewById(R.id.rl_right3)
     RelativeLayout rlRight3;
     @ViewById(R.id.iv_right1)
-    ImageView ivRight1;
+    CircleImage ivRight1;
     @ViewById(R.id.iv_right2)
-    ImageView ivRight2;
+    CircleImage ivRight2;
     @ViewById(R.id.iv_right3)
-    ImageView ivRight3;
+    CircleImage ivRight3;
 
     private String mPerson = "", mRent = "", mFactor = "";
     private Map<Integer, String> factorMap = new HashMap<>();
@@ -173,6 +176,7 @@ public class CustomisedHouseActivity extends BaseMvpActivity<WantFindPresenter>
 
     @Override
     public void saveSuccess() {
+        SpUtils.saveCustomisedHouse();
         dialogSubmit();
     }
 
@@ -188,7 +192,27 @@ public class CustomisedHouseActivity extends BaseMvpActivity<WantFindPresenter>
                 dialog.dismiss();
                 finish();
             });
+            TextView tvContent = viewLayout.findViewById(R.id.tv_content);
+            tvContent.setText(tip());
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.setCancelable(false);
             dialog.show();
         }
     }
+
+    private String tip() {
+        try {
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat sdf = new SimpleDateFormat("HH:mm:ss");
+            Date nowTime = sdf.parse(sdf.format(new Date()));
+            Date startTime = sdf.parse("09:00:00");
+            Date endTime = sdf.parse("18:00:00");
+            return CommonHelper.isEffectiveDate(nowTime, startTime, endTime) ?
+                    "1小时内会有专业咨询师联系您 请注意接听电话" :
+                    "稍后会有专业咨询师联系您 请注意接听电";
+        } catch (ParseException e) {
+            e.printStackTrace();
+        }
+        return "稍后会有专业咨询师联系您 请注意接听电";
+    }
+
 }
