@@ -16,6 +16,7 @@
     <color name="common_73">#737676</color>
     <color name="common_ad">#ADADAD</color>
     <color name="common_yellow_light">#E4E69F</color>
+    <color name="common_red_light">#EA6952</color>
 
     <!--文字颜色-->
     <color name="text_main">#303540</color>          <!--主要-->

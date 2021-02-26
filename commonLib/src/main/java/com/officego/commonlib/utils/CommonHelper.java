@@ -559,6 +559,23 @@ public class CommonHelper {
         }
         return key.toString();
     }
+    public static String readValue(Map<Integer, String> map) {
+        if (map == null) {
+            return "";
+        }
+        StringBuilder buffer = new StringBuilder();
+        for (Map.Entry<Integer, String> vo : map.entrySet()) {
+            if (map.size() == 1) {
+                buffer.append(vo.getValue());
+            } else {
+                buffer.append(vo.getValue()).append("、");
+            }
+        }
+        if (map.size() > 1) {
+            buffer = buffer.replace(buffer.length() - 1, buffer.length(), "");
+        }
+        return buffer.toString();
+    }
 
     public static Map<Integer, String> stringToMap(String str) {
         if (TextUtils.isEmpty(str)) {

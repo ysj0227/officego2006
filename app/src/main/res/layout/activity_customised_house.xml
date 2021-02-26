@@ -46,16 +46,387 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="@dimen/dp_30"
                 android:background="@drawable/bg_solid_grey_corner_top"
+                android:paddingStart="@dimen/dp_10"
+                android:paddingEnd="@dimen/dp_10"
+                android:paddingBottom="@dimen/dp_30"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/v_top">
 
-                <androidx.recyclerview.widget.RecyclerView
-                    android:id="@+id/rv_customised_house"
-                    style="@style/marginLeftRight16"
-                    android:layout_width="wrap_content"
+                <RelativeLayout
+                    android:id="@+id/rl_left1"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_62"
+                    android:layout_marginTop="@dimen/dp_10">
+
+                    <ImageView
+                        android:id="@+id/iv_left1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:background="@mipmap/ic_ou" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginEnd="@dimen/dp_60"
+                        android:layout_toEndOf="@id/iv_left1"
+                        android:background="@mipmap/ic_chat_bg_white"
+                        android:gravity="center_vertical"
+                        android:paddingStart="@dimen/dp_20"
+                        android:paddingTop="@dimen/dp_10"
+                        android:paddingEnd="@dimen/dp_10"
+                        android:paddingBottom="@dimen/dp_10"
+                        android:text="您好！我是OfficeGo的找房助手小欧,请给我们一个了解您的机会吧~"
+                        android:textSize="@dimen/sp_13" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_left2"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_62"
+                    android:layout_below="@id/rl_left1">
+
+                    <ImageView
+                        android:id="@+id/iv_left2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:background="@mipmap/ic_ou" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginEnd="@dimen/dp_60"
+                        android:layout_toEndOf="@id/iv_left2"
+                        android:background="@mipmap/ic_chat_bg_white"
+                        android:gravity="center_vertical"
+                        android:paddingStart="@dimen/dp_20"
+                        android:paddingTop="@dimen/dp_10"
+                        android:paddingEnd="@dimen/dp_10"
+                        android:paddingBottom="@dimen/dp_10"
+                        android:text="请问您的团队规模是?"
+                        android:textSize="@dimen/sp_13" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_item1"
+                    style="@style/marginLeftRight20"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="@dimen/dp_10" />
+                    android:layout_below="@id/rl_left2"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:background="@drawable/bg_shape_white12">
+
+                    <TextView
+                        android:id="@+id/tv_type1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_14"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:text="单选"
+                        android:textColor="@color/text_33"
+                        android:textSize="@dimen/sp_13"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="@dimen/dp_14"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:layout_marginEnd="@dimen/dp_14"
+                        android:text="1/3"
+                        android:textColor="@color/text_66_p50"
+                        android:textSize="@dimen/sp_13"
+                        android:textStyle="bold" />
+
+                    <View
+                        style="@style/marginLeftRight14"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.3dp"
+                        android:layout_below="@id/tv_type1"
+                        android:layout_marginTop="@dimen/dp_4"
+                        android:background="@color/common_divider" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_person"
+                        style="@style/marginLeftRight14"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_type1"
+                        android:layout_marginTop="@dimen/dp_14" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_right1"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_52"
+                    android:layout_below="@id/rl_item1"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/tv_content_right1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="@dimen/dp_60"
+                        android:layout_toStartOf="@id/iv_right1"
+                        android:background="@mipmap/ic_chat_bg_blue"
+                        android:gravity="right|center_vertical"
+                        android:paddingStart="@dimen/dp_10"
+                        android:paddingTop="@dimen/dp_10"
+                        android:paddingEnd="@dimen/dp_20"
+                        android:paddingBottom="@dimen/dp_10"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/sp_13" />
+
+                    <ImageView
+                        android:id="@+id/iv_right1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:background="@mipmap/default_avatar" />
+
+                </RelativeLayout>
+                <!--                免租期-->
+
+                <RelativeLayout
+                    android:id="@+id/rl_left3"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_62"
+                    android:layout_below="@id/rl_right1"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/iv_left3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:background="@mipmap/ic_ou" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginEnd="@dimen/dp_60"
+                        android:layout_toEndOf="@id/iv_left3"
+                        android:background="@mipmap/ic_chat_bg_white"
+                        android:gravity="center_vertical"
+                        android:paddingStart="@dimen/dp_20"
+                        android:paddingTop="@dimen/dp_10"
+                        android:paddingEnd="@dimen/dp_10"
+                        android:paddingBottom="@dimen/dp_10"
+                        android:text="请问您想租多久?"
+                        android:textSize="@dimen/sp_13" />
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/rl_item2"
+                    style="@style/marginLeftRight20"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/rl_left3"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:background="@drawable/bg_shape_white12"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/tv_type2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_14"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:text="单选"
+                        android:textColor="@color/text_33"
+                        android:textSize="@dimen/sp_13"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="@dimen/dp_14"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:layout_marginEnd="@dimen/dp_14"
+                        android:text="2/3"
+                        android:textColor="@color/text_66_p50"
+                        android:textSize="@dimen/sp_13"
+                        android:textStyle="bold" />
+
+                    <View
+                        style="@style/marginLeftRight14"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.3dp"
+                        android:layout_below="@id/tv_type2"
+                        android:layout_marginTop="@dimen/dp_4"
+                        android:background="@color/common_divider" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_rent"
+                        style="@style/marginLeftRight14"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_type2"
+                        android:layout_marginTop="@dimen/dp_14" />
+
+                </RelativeLayout>
+
+
+                <RelativeLayout
+                    android:id="@+id/rl_right2"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_52"
+                    android:layout_below="@id/rl_item2"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/tv_content_right2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="@dimen/dp_60"
+                        android:layout_toStartOf="@id/iv_right2"
+                        android:background="@mipmap/ic_chat_bg_blue"
+                        android:gravity="right|center_vertical"
+                        android:paddingStart="@dimen/dp_10"
+                        android:paddingTop="@dimen/dp_10"
+                        android:paddingEnd="@dimen/dp_20"
+                        android:paddingBottom="@dimen/dp_10"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/sp_13" />
+
+                    <ImageView
+                        android:id="@+id/iv_right2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:background="@mipmap/default_avatar" />
+
+                </RelativeLayout>
+                <!--                因素-->
+                <RelativeLayout
+                    android:id="@+id/rl_left4"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_62"
+                    android:layout_below="@id/rl_right2"
+                    android:visibility="gone">
+
+                    <ImageView
+                        android:id="@+id/iv_left4"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:background="@mipmap/ic_ou" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginEnd="@dimen/dp_60"
+                        android:layout_toEndOf="@id/iv_left4"
+                        android:background="@mipmap/ic_chat_bg_white"
+                        android:gravity="center_vertical"
+                        android:paddingStart="@dimen/dp_20"
+                        android:paddingTop="@dimen/dp_10"
+                        android:paddingEnd="@dimen/dp_10"
+                        android:paddingBottom="@dimen/dp_10"
+                        android:text="请问您优先考虑哪方面因素?"
+                        android:textSize="@dimen/sp_13" />
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_item3"
+                    style="@style/marginLeftRight20"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@id/rl_left4"
+                    android:layout_marginTop="@dimen/dp_20"
+                    android:background="@drawable/bg_shape_white12"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/tv_type3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginStart="@dimen/dp_14"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:text="多选"
+                        android:textColor="@color/text_33"
+                        android:textSize="@dimen/sp_13"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_marginStart="@dimen/dp_14"
+                        android:layout_marginTop="@dimen/dp_10"
+                        android:layout_marginEnd="@dimen/dp_14"
+                        android:text="3/3"
+                        android:textColor="@color/text_66_p50"
+                        android:textSize="@dimen/sp_13"
+                        android:textStyle="bold" />
+
+                    <View
+                        style="@style/marginLeftRight14"
+                        android:layout_width="match_parent"
+                        android:layout_height="0.3dp"
+                        android:layout_below="@id/tv_type3"
+                        android:layout_marginTop="@dimen/dp_4"
+                        android:background="@color/common_divider" />
+
+                    <androidx.recyclerview.widget.RecyclerView
+                        android:id="@+id/rv_factor"
+                        style="@style/marginLeftRight14"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@id/tv_type3"
+                        android:layout_marginTop="@dimen/dp_14" />
+
+                </RelativeLayout>
+
+                <RelativeLayout
+                    android:id="@+id/rl_right3"
+                    android:layout_width="match_parent"
+                    android:layout_height="@dimen/dp_52"
+                    android:layout_below="@id/rl_item3"
+                    android:layout_marginTop="@dimen/dp_10"
+                    android:visibility="gone">
+
+                    <TextView
+                        android:id="@+id/tv_content_right3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentBottom="true"
+                        android:layout_marginStart="@dimen/dp_60"
+                        android:layout_toStartOf="@id/iv_right3"
+                        android:background="@mipmap/ic_chat_bg_blue"
+                        android:gravity="right|center_vertical"
+                        android:paddingStart="@dimen/dp_10"
+                        android:paddingTop="@dimen/dp_10"
+                        android:paddingEnd="@dimen/dp_20"
+                        android:paddingBottom="@dimen/dp_10"
+                        android:textColor="@color/white"
+                        android:textSize="@dimen/sp_13" />
+
+                    <ImageView
+                        android:id="@+id/iv_right3"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:layout_alignParentBottom="true"
+                        android:background="@mipmap/default_avatar" />
+
+                </RelativeLayout>
 
             </RelativeLayout>
 
@@ -67,8 +438,8 @@
         android:id="@+id/rl_bottom_view"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:background="@color/white"
         android:layout_marginBottom="@dimen/dp_14"
+        android:background="@color/white"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
