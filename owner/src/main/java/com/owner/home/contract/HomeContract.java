@@ -27,6 +27,8 @@ public interface HomeContract {
         void houseDeleteSuccess();
 
         void publishOrOffHouseSuccess(int currentStatus);
+
+        void supportMobileSuccess(String mobile);
     }
 
     interface Presenter {
@@ -39,8 +41,10 @@ public interface HomeContract {
 
         void getBuildingList();//第几个楼盘网点
 
-        void isPublishHouse(int houseId, int isRelease,int isTemp);//上下架发布
+        void isPublishHouse(int houseId, int isRelease, int isTemp);//上下架发布
 
         void houseDelete(int houseId, int isTemp);//删除房源
+
+        void getSupportMobile();
     }
 }

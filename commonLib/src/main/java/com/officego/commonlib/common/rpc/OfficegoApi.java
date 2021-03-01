@@ -18,6 +18,7 @@ import com.officego.commonlib.common.model.LoginBean;
 import com.officego.commonlib.common.model.RCloudPushBean;
 import com.officego.commonlib.common.model.RongUserInfoBean;
 import com.officego.commonlib.common.model.SearchListBean;
+import com.officego.commonlib.common.model.ServiceBean;
 import com.officego.commonlib.common.model.UserMessageBean;
 import com.officego.commonlib.common.model.VersionBean;
 import com.officego.commonlib.common.model.WeChatAuthBean;
@@ -37,6 +38,7 @@ import com.officego.commonlib.common.rpc.request.LoginInterface;
 import com.officego.commonlib.common.rpc.request.MineMsgInterface;
 import com.officego.commonlib.common.rpc.request.ScheduleInterface;
 import com.officego.commonlib.common.rpc.request.SearchInterface;
+import com.officego.commonlib.common.rpc.request.ServiceInterface;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 
 import java.io.File;
@@ -1091,6 +1093,15 @@ public class OfficegoApi {
         map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
                 .modifyMobile(map)
+                .enqueue(callback);
+    }
+
+    /**
+     * 服务热线
+     */
+    public void serviceMobile(RetrofitCallback<ServiceBean> callback) {
+        OfficegoRetrofitClient.getInstance().create(ServiceInterface.class)
+                .service(map())
                 .enqueue(callback);
     }
 

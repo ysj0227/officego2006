@@ -469,11 +469,16 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
                     .setTitle("账号试用到期")
                     .setMessage("您的账号试用期已过，请联系客服重新激活。")
                     .setConfirmButton("联系客服", (dialog12, which) -> {
-                        CommonHelper.callPhone(mActivity, Constants.SERVICE_SUPPORT);
+                        mPresenter.getSupportMobile();
                     }).create();
             dialog.showWithOutTouchable(false);
             dialog.setCancelable(false);
         }
+    }
+
+    @Override
+    public void supportMobileSuccess(String mobile) {
+        CommonHelper.callPhone(mActivity, mobile);
     }
 
     //加载更多

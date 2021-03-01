@@ -1,6 +1,7 @@
 package com.owner.home.presenter;
 
 import com.officego.commonlib.base.BasePresenter;
+import com.officego.commonlib.common.model.ServiceBean;
 import com.officego.commonlib.common.model.UserMessageBean;
 import com.officego.commonlib.common.model.owner.BuildingJointWorkBean;
 import com.officego.commonlib.common.model.owner.HouseBean;
@@ -47,7 +48,7 @@ public class HomePresenter extends BasePresenter<HomeContract.View>
     public void getHouseList(int buildingId, int isTemp, int pageNo) {
         mView.showLoadingDialog();
         com.officego.commonlib.common.rpc.OfficegoApi.getInstance().getHouseList(
-                buildingId, isTemp, pageNo,  new RetrofitCallback<HouseBean>() {
+                buildingId, isTemp, pageNo, new RetrofitCallback<HouseBean>() {
                     @Override
                     public void onSuccess(int code, String msg, HouseBean data) {
                         if (isViewAttached()) {
@@ -162,7 +163,6 @@ public class HomePresenter extends BasePresenter<HomeContract.View>
 
                     @Override
                     public void onFail(int code, String msg, Object data) {
-                        LogCat.e(TAG, "getUserInfo onFail code=" + code + "  msg=" + msg);
                         if (isViewAttached()) {
                             mView.hideLoadingDialog();
                             if (code == Constants.DEFAULT_ERROR_CODE) {
@@ -171,5 +171,27 @@ public class HomePresenter extends BasePresenter<HomeContract.View>
                         }
                     }
                 });
+    }
+
+    @Override
+    public void getSupportMobile() {
+        mView.showLoadingDialog();
+        com.officego.commonlib.common.rpc.OfficegoApi.getInstance().serviceMobile(new RetrofitCallback<ServiceBean>() {
+            @Override
+            public void onSuccess(int code, String msg, ServiceBean data) {
+                if (isViewAttached()) {
+                    mView.hideLoadingDialog();
+                    mView.supportMobileSuccess(data.getOwnerConsultation());
+                }
+            }
+
+            @Override
+            public void onFail(int code, String msg, ServiceBean data) {
+                if (isViewAttached()) {
+                    mView.hideLoadingDialog();
+                    mView.supportMobileSuccess(Constants.SERVICE_SUPPORT);
+                }
+            }
+        });
     }
 }
