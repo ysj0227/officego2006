@@ -65,7 +65,7 @@ public class Constants {
     public final static int H5_ROLE = 4;
     public final static int H5_VR_RECORD = 5;
     //客服
-    public static final String SERVICE_HOT_MOBILE = "17321221162";
+    public static final String SERVICE_HOT_MOBILE = "18116002460";
     public static final String SERVICE_TECHNICAL_SUPPORT = "13052007068";
     public static final String SERVICE_SUPPORT = "18016320482";
     //    租户端邮箱:service@officego.com

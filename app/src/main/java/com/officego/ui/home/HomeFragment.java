@@ -434,6 +434,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
                     CustomisedHouseActivity_.intent(mActivity).start();
                 });
                 viewLayout.findViewById(R.id.rl_exit).setOnClickListener(v -> dialog.dismiss());
+                dialog.setCanceledOnTouchOutside(false);
                 dialog.show();
             }, 8000);
         }

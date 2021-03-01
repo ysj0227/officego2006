@@ -6,6 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/common_divider">
 
+
     <androidx.core.widget.NestedScrollView
         android:id="@+id/nsv_view"
         android:layout_width="0dp"
@@ -29,18 +30,6 @@
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toTopOf="parent" />
-
-            <ImageView
-                android:id="@+id/iv_close"
-                android:layout_width="@dimen/dp_25"
-                android:layout_height="@dimen/dp_26"
-                android:layout_marginStart="@dimen/dp_12"
-                android:layout_marginTop="@dimen/dp_40"
-                android:background="@mipmap/ic_back_white_pressed"
-                android:padding="@dimen/dp_3"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toTopOf="parent"
-                tools:ignore="ContentDescription" />
 
             <RelativeLayout
                 android:layout_width="0dp"
@@ -437,6 +426,22 @@
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <RelativeLayout
+        android:id="@+id/rl_close"
+        android:layout_width="@dimen/dp_60"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_42"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <ImageView
+            android:layout_width="@dimen/dp_25"
+            android:layout_height="@dimen/dp_26"
+            android:layout_marginStart="@dimen/dp_18"
+            android:background="@mipmap/ic_back_white_pressed"
+            tools:ignore="ContentDescription" />
+    </RelativeLayout>
 
     <RelativeLayout
         android:id="@+id/rl_bottom_view"

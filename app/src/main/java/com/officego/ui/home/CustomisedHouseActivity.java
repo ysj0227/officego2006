@@ -123,7 +123,7 @@ public class CustomisedHouseActivity extends BaseMvpActivity<WantFindPresenter>
         rvRent.setAdapter(rentAdapter);
     }
 
-    @Click(R.id.iv_close)
+    @Click(R.id.rl_close)
     void closeClick() {
         finish();
     }
@@ -131,10 +131,11 @@ public class CustomisedHouseActivity extends BaseMvpActivity<WantFindPresenter>
     @Click(R.id.btn_save)
     void saveClick() {
         if (TextUtils.isEmpty(SpUtils.getSignToken())) {
+            shortTip("请先登录再提交");
             new CommonLoginTenant(context);
             return;
         }
-        if (TextUtils.isEmpty(mPerson) || TextUtils.isEmpty(mRent)) {
+        if (TextUtils.isEmpty(mPerson) || TextUtils.isEmpty(mRent) || TextUtils.isEmpty(mFactor)) {
             shortTip("还有资料没填哦～");
             return;
         }
@@ -164,7 +165,7 @@ public class CustomisedHouseActivity extends BaseMvpActivity<WantFindPresenter>
         factorMap = map;
         mFactor = CommonHelper.getKey(map);
         tvContentRight3.setText(CommonHelper.readValue(map));
-        rlRight3.setVisibility(View.VISIBLE);
+        rlRight3.setVisibility(map != null && map.size() > 0 ? View.VISIBLE : View.GONE);
     }
 
     @Override
