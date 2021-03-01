@@ -1,11 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ll_root_message"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/white"
-    android:orientation="vertical">
+    android:background="@color/white">
 
     <RelativeLayout
         android:id="@+id/rl_title"
@@ -41,61 +39,60 @@
                 android:textColor="@color/white"
                 android:textSize="@dimen/sp_14" />
 
-            <RelativeLayout
-                android:id="@+id/rl_input_text"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_centerVertical="true"
-                android:layout_marginStart="@dimen/dp_12"
-                android:layout_marginEnd="@dimen/dp_46"
-                android:layout_toEndOf="@id/tv_message_title"
-                android:background="@drawable/button_corners16_solid_white"
-                android:focusable="true"
-                android:focusableInTouchMode="true"
-                android:visibility="gone">
-
-                <ImageView
-                    android:id="@+id/iv_search"
-                    android:layout_width="@dimen/dp_14"
-                    android:layout_height="@dimen/dp_14"
-                    android:layout_centerVertical="true"
-                    android:layout_marginStart="@dimen/dp_12"
-                    android:background="@mipmap/ic_search_grey"
-                    tools:ignore="ContentDescription" />
-
-                <com.officego.commonlib.view.ClearableEditText
-                    android:id="@+id/et_search"
-                    android:layout_width="match_parent"
-                    android:layout_height="@dimen/dp_30"
-                    android:layout_centerVertical="true"
-                    android:layout_toEndOf="@id/iv_search"
-                    android:background="@null"
-                    android:hint="@string/rc_search"
-                    android:imeOptions="actionSearch"
-                    android:lines="1"
-                    android:paddingStart="@dimen/dp_10"
-                    android:singleLine="true"
-                    android:textColor="@color/text_disable"
-                    android:textSize="@dimen/sp_14"
-                    tools:ignore="RtlSymmetry" />
-            </RelativeLayout>
-
-            <RelativeLayout
-                android:id="@+id/rl_ibtn_search"
-                android:layout_width="@dimen/dp_46"
-                android:layout_height="match_parent"
-                android:layout_alignParentEnd="true"
-                android:visibility="gone">
-
-                <ImageView
-                    android:layout_width="@dimen/dp_14"
-                    android:layout_height="@dimen/dp_14"
-                    android:layout_centerHorizontal="true"
-                    android:layout_centerVertical="true"
-                    android:background="@mipmap/ic_search_white"
-                    tools:ignore="ContentDescription" />
-            </RelativeLayout>
         </RelativeLayout>
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/rl_message_user_expire"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@color/trans_common_35"
+        android:visibility="gone">
+
+        <RelativeLayout
+            android:layout_width="@dimen/dp_268"
+            android:layout_height="@dimen/dp_180"
+            android:layout_centerInParent="true"
+            android:background="@drawable/bg_shape_white12">
+
+            <TextView
+                android:id="@+id/tv_mes_success"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/dp_30"
+                android:text="账号试用到期"
+                android:textColor="@color/text_33"
+                android:textSize="@dimen/sp_18"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_mes_success"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="@dimen/dp_38"
+                android:layout_marginTop="@dimen/dp_10"
+                android:layout_marginEnd="@dimen/dp_38"
+                android:gravity="center_horizontal"
+                android:text="您的账号试用期已过，请联系客服重新激活。"
+                android:textColor="@color/text_33"
+                android:textSize="@dimen/sp_14" />
+
+            <Button
+                android:id="@+id/btn_support_service"
+                android:layout_width="@dimen/dp_120"
+                android:layout_height="@dimen/dp_36"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_marginBottom="@dimen/dp_20"
+                android:background="@drawable/button_corners25_solid_main"
+                android:text="联系客服"
+                android:textColor="@color/white"
+                android:textSize="@dimen/sp_14"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
     </RelativeLayout>
 
     <fragment
@@ -103,6 +100,7 @@
         android:name="io.rong.imkit.fragment.ConversationListFragment"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:layout_below="@id/rl_title"
         tools:ignore="FragmentTagUsage" />
 
-</LinearLayout>
+</RelativeLayout>

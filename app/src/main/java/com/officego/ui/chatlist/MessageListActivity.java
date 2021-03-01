@@ -37,7 +37,7 @@ public class MessageListActivity extends BaseMvpActivity<ChatListPresenter>
 
     @AfterViews
     void init() {
-        StatusBarUtils.setStatusBarFullTransparent(this);
+        StatusBarUtils.setStatusBarColor(this);
         mPresenter = new ChatListPresenter();
         mPresenter.attachView(this);
         mPresenter.getChatList();

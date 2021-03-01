@@ -26,7 +26,6 @@ import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.OnLoadMoreListener;
 import com.officego.commonlib.view.dialog.CommonDialog;
-import com.officego.commonlib.view.dialog.CommonDialog1;
 import com.owner.R;
 import com.owner.adapter.HomeAdapter;
 import com.owner.adapter.IdentityStatusAdapter;
@@ -100,6 +99,9 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     TextView tvNoData;
     @ViewById(resName = "rl_exception")
     RelativeLayout rlException;
+    //账户到期
+    @ViewById(resName = "rl_user_expire")
+    RelativeLayout rlUserExpire;
     //用户信息
     private UserMessageBean mUserData;
     //楼盘网点列表pop
@@ -225,6 +227,12 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
                 EditBuildingActivity_.intent(mActivity).buildingManagerBean(bean).isRefreshHouseList(true).start();
             }
         }
+    }
+
+    //账户过期客服
+    @Click(resName = "btn_service")
+    void serviceClick() {
+        mPresenter.getSupportMobile();
     }
 
     //当切换tab 是否刷新首页数据
@@ -464,21 +472,8 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
 
     //账号试用到期 1:在试用期 0:账号已过试用期
     private void userExpire(UserMessageBean data) {
-        if (CommonHelper.bigDecimal(data.getMsgStatus()) == 0) {
-            CommonDialog1 dialog = new CommonDialog1.Builder(mActivity)
-                    .setTitle("账号试用到期")
-                    .setMessage("您的账号试用期已过，请联系客服重新激活。")
-                    .setConfirmButton("联系客服", (dialog12, which) -> {
-                        mPresenter.getSupportMobile();
-                    }).create();
-            dialog.showWithOutTouchable(false);
-            dialog.setCancelable(false);
-        }
-    }
-
-    @Override
-    public void supportMobileSuccess(String mobile) {
-        CommonHelper.callPhone(mActivity, mobile);
+        rlUserExpire.setVisibility(CommonHelper.bigDecimal(data.getMsgStatus()) == 0
+                ? View.VISIBLE : View.GONE);
     }
 
     //加载更多
@@ -502,6 +497,12 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     @Override
     public void endRefresh() {
         mSwipeRefreshLayout.setRefreshing(false);
+    }
+
+    //客服
+    @Override
+    public void supportMobileSuccess(String mobile) {
+        CommonHelper.callPhone(mActivity, mobile);
     }
 
     @Override

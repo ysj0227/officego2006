@@ -10,17 +10,13 @@ import android.widget.TextView;
 
 import androidx.fragment.app.FragmentTransaction;
 
-import com.officego.commonlib.base.BaseFragment;
+import com.officego.commonlib.base.BaseMvpFragment;
 import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.model.UserMessageBean;
-import com.officego.commonlib.constant.Constants;
-import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NotificationUtil;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
-import com.officego.commonlib.view.dialog.CommonDialog1;
 import com.owner.R;
 import com.owner.dialog.ExitAppDialog;
 
@@ -39,31 +35,31 @@ import io.rong.imlib.model.Conversation;
  **/
 @SuppressLint("NewApi")
 @EFragment(resName = "conversationlist")
-public class MessageFragment extends BaseFragment {
-    @ViewById(resName = "ll_root_message")
-    LinearLayout llRootMessage;
-    @ViewById(resName = "rl_input_text")
-    RelativeLayout rlInputText;
-    @ViewById(resName = "rl_ibtn_search")
-    RelativeLayout rlIbtnSearch;
+public class MessageFragment extends BaseMvpFragment<MessagePresenter>
+        implements MessageContract.View {
     @ViewById(resName = "rl_title")
     RelativeLayout rlTitle;
     @ViewById(resName = "conversationlist")
     View conversationList;
     @ViewById(resName = "tv_message_history")
     TextView tvMessageHistory;
+    @ViewById(resName = "rl_message_user_expire")
+    RelativeLayout rlMessageUserExpire;
+
     private ConversationListFragment fragment;
 
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarFullTransparent(mActivity);
+        mPresenter = new MessagePresenter();
+        mPresenter.attachView(this);
         LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) rlTitle.getLayoutParams();
         params.width = LinearLayout.LayoutParams.MATCH_PARENT;
         params.height = CommonHelper.statusHeight(mActivity) + CommonHelper.dp2px(mActivity, 60);
         rlTitle.setLayoutParams(params);
         initIm();
         NotificationUtil.showSettingDialog(mActivity, false);
-        getUserInfo();
+        mPresenter.getUserInfo();
     }
 
     //初始化聊天列表
@@ -89,6 +85,12 @@ public class MessageFragment extends BaseFragment {
         GotoActivityUtils.gotoMessageHistoryListActivity(mActivity);
     }
 
+    //账户过期客服
+    @Click(resName = "btn_support_service")
+    void serviceClick() {
+        mPresenter.getSupportMobile();
+    }
+
     @Override
     public void onResume() {
         super.onResume();
@@ -97,31 +99,15 @@ public class MessageFragment extends BaseFragment {
         }
     }
 
-    public void getUserInfo() {
-        com.officego.commonlib.common.rpc.OfficegoApi.getInstance()
-                .getUserMsg(new RetrofitCallback<UserMessageBean>() {
-            @Override
-            public void onSuccess(int code, String msg, UserMessageBean data) {
-                userExpire(data);
-            }
-
-            @Override
-            public void onFail(int code, String msg, UserMessageBean data) {
-            }
-        });
-    }
     //账号试用到期 1:在试用期 0:账号已过试用期
-    private void userExpire(UserMessageBean data) {
-        if (CommonHelper.bigDecimal(data.getMsgStatus()) == 0) {
-            CommonDialog1 dialog = new CommonDialog1.Builder(mActivity)
-                    .setTitle("账号试用到期")
-                    .setMessage("您的账号试用期已过，请联系客服重新激活。")
-                    .setConfirmButton("联系客服", (dialog12, which) -> {
-                        CommonHelper.callPhone(mActivity, Constants.SERVICE_SUPPORT);
-                    }).create();
-            dialog.showWithOutTouchable(false);
-            dialog.setCancelable(false);
-        }
+    @Override
+    public void userInfoSuccess(UserMessageBean data) {
+        rlMessageUserExpire.setVisibility(CommonHelper.bigDecimal(data.getMsgStatus()) == 1
+                ? View.VISIBLE : View.GONE);
     }
 
+    @Override
+    public void supportMobileSuccess(String mobile) {
+        CommonHelper.callPhone(mActivity, mobile);
+    }
 }
