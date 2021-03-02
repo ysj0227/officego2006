@@ -4,7 +4,6 @@ import android.annotation.SuppressLint;
 import android.net.Uri;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -34,7 +33,7 @@ import io.rong.imlib.model.Conversation;
  * Descriptions:
  **/
 @SuppressLint("NewApi")
-@EFragment(resName = "conversationlist")
+@EFragment(resName = "conversationlist_owner")
 public class MessageFragment extends BaseMvpFragment<MessagePresenter>
         implements MessageContract.View {
     @ViewById(resName = "rl_title")
@@ -43,9 +42,8 @@ public class MessageFragment extends BaseMvpFragment<MessagePresenter>
     View conversationList;
     @ViewById(resName = "tv_message_history")
     TextView tvMessageHistory;
-    @ViewById(resName = "rl_message_user_expire")
-    RelativeLayout rlMessageUserExpire;
-
+    @ViewById(resName = "rl_user_expire")
+    RelativeLayout rlUserExpire;
     private ConversationListFragment fragment;
 
     @AfterViews
@@ -53,10 +51,7 @@ public class MessageFragment extends BaseMvpFragment<MessagePresenter>
         StatusBarUtils.setStatusBarFullTransparent(mActivity);
         mPresenter = new MessagePresenter();
         mPresenter.attachView(this);
-        LinearLayout.LayoutParams params = (LinearLayout.LayoutParams) rlTitle.getLayoutParams();
-        params.width = LinearLayout.LayoutParams.MATCH_PARENT;
-        params.height = CommonHelper.statusHeight(mActivity) + CommonHelper.dp2px(mActivity, 60);
-        rlTitle.setLayoutParams(params);
+        CommonHelper.setViewGroupLayoutParams(mActivity, rlTitle);
         initIm();
         NotificationUtil.showSettingDialog(mActivity, false);
         mPresenter.getUserInfo();
@@ -86,8 +81,8 @@ public class MessageFragment extends BaseMvpFragment<MessagePresenter>
     }
 
     //账户过期客服
-    @Click(resName = "btn_support_service")
-    void serviceClick() {
+    @Click(resName = "btn_service")
+    void serviceMobileClick() {
         mPresenter.getSupportMobile();
     }
 
@@ -102,7 +97,9 @@ public class MessageFragment extends BaseMvpFragment<MessagePresenter>
     //账号试用到期 1:在试用期 0:账号已过试用期
     @Override
     public void userInfoSuccess(UserMessageBean data) {
-        rlMessageUserExpire.setVisibility(CommonHelper.bigDecimal(data.getMsgStatus()) == 1
+        rlUserExpire.setEnabled(true);
+        rlUserExpire.setClickable(true);
+        rlUserExpire.setVisibility(CommonHelper.bigDecimal(data.getMsgStatus()) == 1
                 ? View.VISIBLE : View.GONE);
     }
 

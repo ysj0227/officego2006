@@ -472,7 +472,9 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
 
     //账号试用到期 1:在试用期 0:账号已过试用期
     private void userExpire(UserMessageBean data) {
-        rlUserExpire.setVisibility(CommonHelper.bigDecimal(data.getMsgStatus()) == 0
+        rlUserExpire.setEnabled(true);
+        rlUserExpire.setClickable(true);
+        rlUserExpire.setVisibility(CommonHelper.bigDecimal(data.getMsgStatus()) == 1
                 ? View.VISIBLE : View.GONE);
     }
 
