@@ -474,7 +474,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     private void userExpire(UserMessageBean data) {
         rlUserExpire.setEnabled(true);
         rlUserExpire.setClickable(true);
-        rlUserExpire.setVisibility(CommonHelper.bigDecimal(data.getMsgStatus()) == 1
+        rlUserExpire.setVisibility(CommonHelper.bigDecimal(data.getMsgStatus()) == 0
                 ? View.VISIBLE : View.GONE);
     }
 
