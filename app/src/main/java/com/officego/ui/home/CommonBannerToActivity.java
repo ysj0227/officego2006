@@ -14,18 +14,19 @@ import com.officego.h5.WebViewMeetingActivity_;
 public class CommonBannerToActivity {
 
     /**
-     *
-     * @param context
-     * @param type 1内 3外连接
-     * @param pageType  pageType内链类型1：楼盘详情，2:网点详情 3:楼盘房源详情,4:网点房源详情 5会议室
-     * @param pageId pageId
-     * @param wUrl  wUrl
+     * @param context context
+     * @param type     1内 3外连接
+     * @param pageType pageType内链类型1：楼盘详情，2:网点详情 3:楼盘房源详情,4:网点房源详情 5会议室 6定制找房
+     * @param pageId   pageId
+     * @param wUrl     wUrl
      */
     public static void toActivity(Context context, int type, int pageType, int pageId, String wUrl) {
         if (context == null) return;
         if (type == 1) {
             if (pageType == 5) {//会议室
                 WebViewMeetingActivity_.intent(context).start();
+            } else if (pageType == 6) {//定制找房
+                CustomisedHouseActivity_.intent(context).start();
             }
             if (pageId != 0) {
                 if (pageType == 1) {
@@ -47,12 +48,15 @@ public class CommonBannerToActivity {
             WebViewBannerActivity_.intent(context).url(wUrl).start();
         }
     }
-    //pageType内链类型1：楼盘详情，2:网点详情 3:楼盘房源详情,4:网点房源详情 5会议室
-    public static void toPushActivity(Context context, int requestCode,int type, int pageType, int pageId, String wUrl) {
+
+    //pageType内链类型1：楼盘详情，2:网点详情 3:楼盘房源详情,4:网点房源详情 5会议室 6定制找房
+    public static void toPushActivity(Context context, int requestCode, int type, int pageType, int pageId, String wUrl) {
         if (context == null) return;
         if (type == 1) {
             if (pageType == 5) {//会议室
                 WebViewMeetingActivity_.intent(context).startForResult(requestCode);
+            }else if (pageType == 6) {//定制找房
+                CustomisedHouseActivity_.intent(context).startForResult(requestCode);
             }
             if (pageId != 0) {
                 if (pageType == 1) {
