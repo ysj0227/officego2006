@@ -1,5 +1,6 @@
 package com.officego.commonlib.utils;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.Color;
 import android.os.Build;
@@ -16,25 +17,6 @@ import java.lang.reflect.Method;
 
 public class StatusBarUtils {
 
-    public static final int TYPE_TRANSPARENT = 0;//透明
-    public static final int TYPE_DARK = 1;//字体dark
-
-
-    /**
-     * 状态栏显示
-     *
-     * @param type
-     */
-    public static void setStatusBarColor(Activity activity, int type) {
-//        if (type == TYPE_TRANSPARENT) {
-//            setStatusBarFullTransparent(activity);
-//        } else {
-//            StatusBarLightMode(activity);
-//        }
-
-        setStatusBarColor(activity);
-    }
-
     /**
      * 白底灰字
      */
@@ -48,9 +30,8 @@ public class StatusBarUtils {
     /**
      * 全透状态栏
      */
+    @SuppressLint("ObsoleteSdkInt")
     public static void setStatusBarFullTransparent(Activity activity) {
-        // 21->5.0  22->5.1  23->6.0  24->7.0
-
         if (Build.VERSION.SDK_INT > 22) {//21表示5.0  Build.VERSION_CODES.LOLLIPOP
             Window window = activity.getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -65,9 +46,8 @@ public class StatusBarUtils {
     /**
      * 全透状态栏
      */
-    public static void setStatusBarMainColor(Activity activity,int color) {
-        // 21->5.0  22->5.1  23->6.0  24->7.0
-
+    @SuppressLint("ObsoleteSdkInt")
+    public static void setStatusBarMainColor(Activity activity, int color) {
         if (Build.VERSION.SDK_INT > 22) {//21表示5.0  Build.VERSION_CODES.LOLLIPOP
             Window window = activity.getWindow();
             window.clearFlags(WindowManager.LayoutParams.FLAG_TRANSLUCENT_STATUS);
@@ -164,5 +144,4 @@ public class StatusBarUtils {
         }
         return result;
     }
-
 }
