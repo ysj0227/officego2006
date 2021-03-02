@@ -22,6 +22,8 @@ public interface HomeContract {
 
         void userInfoSuccess(UserMessageBean data);
 
+        void userExpireSuccess(UserMessageBean data);
+
         void initHouseList(BuildingJointWorkBean data);
 
         void houseDeleteSuccess();
@@ -38,6 +40,8 @@ public interface HomeContract {
         void getHouseList(int buildingId, int isTemp, int pageNo);
 
         void getUserInfo();
+
+        void getUserExpireInfo();
 
         void getBuildingList();//第几个楼盘网点
 

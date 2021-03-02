@@ -16,21 +16,16 @@ public class MessagePresenter extends BasePresenter<MessageContract.View>
 
     @Override
     public void getUserInfo() {
-        mView.showLoadingDialog();
         com.officego.commonlib.common.rpc.OfficegoApi.getInstance().getUserMsg(new RetrofitCallback<UserMessageBean>() {
             @Override
             public void onSuccess(int code, String msg, UserMessageBean data) {
                 if (isViewAttached()) {
-                    mView.hideLoadingDialog();
                     mView.userInfoSuccess(data);
                 }
             }
 
             @Override
             public void onFail(int code, String msg, UserMessageBean data) {
-                if (isViewAttached()) {
-                    mView.hideLoadingDialog();
-                }
             }
         });
     }

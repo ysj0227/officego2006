@@ -97,6 +97,23 @@ public class HomePresenter extends BasePresenter<HomeContract.View>
         });
     }
 
+    //用户账户是否过期
+    @Override
+    public void getUserExpireInfo() {
+        com.officego.commonlib.common.rpc.OfficegoApi.getInstance().getUserMsg(new RetrofitCallback<UserMessageBean>() {
+            @Override
+            public void onSuccess(int code, String msg, UserMessageBean data) {
+                if (isViewAttached()) {
+                    mView.userExpireSuccess(data);
+                }
+            }
+
+            @Override
+            public void onFail(int code, String msg, UserMessageBean data) {
+            }
+        });
+    }
+
     //获取房源下的列表
     @Override
     public void getBuildingList() {

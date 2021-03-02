@@ -130,6 +130,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         } else {
             netException();
         }
+        mPresenter.getUserExpireInfo();
     }
 
     private void initViews() {
@@ -138,6 +139,14 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         rvView.setLayoutManager(layoutManager);
         LinearLayoutManager layoutManager1 = new LinearLayoutManager(getContext());
         rvIdentityStep.setLayoutManager(layoutManager1);
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden){
+            mPresenter.getUserExpireInfo();
+        }
     }
 
     //认证流程
@@ -466,12 +475,11 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
         } else {
             mPresenter.getBuildingList();//楼盘网点列表
         }
-        //账号试用到期
-        userExpire(data);
     }
 
     //账号试用到期 1:在试用期 0:账号已过试用期
-    private void userExpire(UserMessageBean data) {
+    @Override
+    public void userExpireSuccess(UserMessageBean data) {
         rlUserExpire.setEnabled(true);
         rlUserExpire.setClickable(true);
         rlUserExpire.setVisibility(CommonHelper.bigDecimal(data.getMsgStatus()) == 0

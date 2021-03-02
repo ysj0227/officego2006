@@ -57,6 +57,14 @@ public class MessageFragment extends BaseMvpFragment<MessagePresenter>
         mPresenter.getUserInfo();
     }
 
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+        if (!hidden) {
+            mPresenter.getUserInfo();
+        }
+    }
+
     //初始化聊天列表
     private void initIm() {
         conversationList.setVisibility(View.VISIBLE);
