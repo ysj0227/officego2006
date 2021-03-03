@@ -2,6 +2,7 @@ package com.officego.ui.home;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.content.Intent;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -36,6 +37,7 @@ import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.h5.WebViewIdentityActivity_;
 import com.officego.h5.WebViewMeetingActivity_;
+import com.officego.location.ClusterActivity;
 import com.officego.ui.adapter.BrandAdapter;
 import com.officego.ui.adapter.HomeAdapter;
 import com.officego.ui.adapter.NewsAdapter;
@@ -171,7 +173,8 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
 
     @Click(R.id.iv_customised_house)
     void customisedHouseClick() {
-        CustomisedHouseActivity_.intent(mActivity).start();
+//        CustomisedHouseActivity_.intent(mActivity).start();
+        startActivity(new Intent(mActivity, ClusterActivity.class));
     }
 
     @Click(R.id.rl_joint_work)

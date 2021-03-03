@@ -521,5 +521,6 @@
             android:name=".ui.home.CustomisedHouseActivity_"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+        <activity android:name=".location.ClusterActivity" />
     </application>
 </manifest>
