@@ -9,18 +9,25 @@ import com.amap.api.maps.model.LatLng;
 public class RegionItem implements ClusterItem {
     private LatLng mLatLng;
     private String mTitle;
-    public RegionItem(LatLng latLng, String title) {
-        mLatLng=latLng;
-        mTitle=title;
+    private String mStreet;//自定义
+
+    public RegionItem(LatLng latLng, String title, String street) {
+        mLatLng = latLng;
+        mTitle = title;
+        mStreet = street;
     }
 
     @Override
     public LatLng getPosition() {
-        // TODO Auto-generated method stub
         return mLatLng;
     }
-    public String getTitle(){
+
+    public String getTitle() {
         return mTitle;
+    }
+
+    public String getStreet() {
+        return mStreet;
     }
 
 }

@@ -1,5 +1,6 @@
 package com.officego.location;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -18,7 +19,9 @@ import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
-import android.widget.Toast;
+
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
@@ -27,7 +30,8 @@ import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.Marker;
 import com.officego.R;
-import com.officego.commonlib.utils.log.LogCat;
+import com.officego.commonlib.CommonListAdapter;
+import com.officego.commonlib.ViewHolder;
 import com.officego.location.marker.ClusterClickListener;
 import com.officego.location.marker.ClusterItem;
 import com.officego.location.marker.ClusterOverlay;
@@ -58,27 +62,17 @@ public class ClusterActivity extends Activity implements ClusterRender,
         rlQuit = findViewById(R.id.rl_quit);
         mMapView.onCreate(savedInstanceState);
         init();
-        rlQuit.setOnClickListener(view -> finish());
     }
 
     private void init() {
+        rlQuit.setOnClickListener(view -> finish());
         if (mAMap == null) {
             // 初始化地图
             mAMap = mMapView.getMap();
             mAMap.setOnMapLoadedListener(this);
-            //点击可以动态添加点
-            mAMap.setOnMapClickListener(new AMap.OnMapClickListener() {
-                @Override
-                public void onMapClick(LatLng latLng) {
-//                    double lat = Math.random() + 39.474923;
-//                    double lon = Math.random() + 116.027116;
-//
-//                    LatLng latLng1 = new LatLng(lat, lon, false);
-//                    RegionItem regionItem = new RegionItem(latLng1, "test");
-//                    mClusterOverlay.addClusterItem(regionItem);
-//                    LogCat.e("TAG", "1111 OnMapClick");
-                }
-            });
+
+            //将地图移动到定位点
+            // mAMap.moveCamera(CameraUpdateFactory.changeLatLng(new LatLng(, ));
         }
     }
 
@@ -101,7 +95,6 @@ public class ClusterActivity extends Activity implements ClusterRender,
 
     @Override
     public void onMapLoaded() {
-        //添加测试数据
         new Thread() {
             public void run() {
                 List<ClusterItem> items = new ArrayList<ClusterItem>();
@@ -111,7 +104,7 @@ public class ClusterActivity extends Activity implements ClusterRender,
                     double lon = Math.random() + 116.027116;
 
                     LatLng latLng = new LatLng(lat, lon, false);
-                    RegionItem regionItem = new RegionItem(latLng, "大楼" + i);
+                    RegionItem regionItem = new RegionItem(latLng, "大楼" + i, "长寿路" + 1);
                     items.add(regionItem);
                 }
                 mClusterOverlay = new ClusterOverlay(mAMap, items,
@@ -125,19 +118,21 @@ public class ClusterActivity extends Activity implements ClusterRender,
 
     @Override
     public void onClick(Marker marker, List<ClusterItem> clusterItems) {
-        if (clusterItems != null && clusterItems.size() == 1) {
-//            Toast.makeText(this, "一套房源", Toast.LENGTH_SHORT).show();
-            detailsDialog(this);
-            return;
+        if (clusterItems != null) {
+            if (clusterItems.size() == 1) {
+                detailsDialog(this);
+                return;
+            } else if (clusterItems.size() > 1 && clusterItems.size() <= 10) {
+                houseListDialog(this,clusterItems);
+            }
         }
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
         for (ClusterItem clusterItem : clusterItems) {
             builder.include(clusterItem.getPosition());
         }
+
         LatLngBounds latLngBounds = builder.build();
         mAMap.animateCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, 0));
-
-        LogCat.e("TAG", "1111 animateCamera  clusterItems=" + clusterItems.size());
     }
 
     //根据聚合数量显示drawCircle的背景颜色
@@ -148,7 +143,7 @@ public class ClusterActivity extends Activity implements ClusterRender,
             Drawable bitmapDrawable = mBackDrawAbles.get(1);
             if (bitmapDrawable == null) {
                 bitmapDrawable = getApplication().getResources().getDrawable(
-                        R.drawable.ic_amap_marker_bg);
+                        R.mipmap.ic_amap_marker_bg);
                 mBackDrawAbles.put(1, bitmapDrawable);
             }
 
@@ -158,7 +153,8 @@ public class ClusterActivity extends Activity implements ClusterRender,
             Drawable bitmapDrawable = mBackDrawAbles.get(2);
             if (bitmapDrawable == null) {
                 bitmapDrawable = new BitmapDrawable(null, drawCircle(radius,
-                        Color.argb(159, 210, 154, 6)));
+//                        Color.argb(159, 210, 154, 6)));
+                        Color.argb(199, 217, 114, 0)));
                 mBackDrawAbles.put(2, bitmapDrawable);
             }
 
@@ -204,7 +200,6 @@ public class ClusterActivity extends Activity implements ClusterRender,
         return (int) (dpValue * scale + 0.5f);
     }
 
-
     private void detailsDialog(Context context) {
         Dialog dialog = new Dialog(context, com.owner.R.style.BottomDialog);
         View viewLayout = LayoutInflater.from(context).inflate(R.layout.dialog_map_house_details, null);
@@ -225,4 +220,39 @@ public class ClusterActivity extends Activity implements ClusterRender,
         dialog.show();
     }
 
+    private void houseListDialog(Context context, List<ClusterItem> clusterItems) {
+        Dialog dialog = new Dialog(context, com.owner.R.style.BottomDialog);
+        View viewLayout = LayoutInflater.from(context).inflate(R.layout.dialog_map_list, null);
+        dialog.setContentView(viewLayout);
+        Window dialogWindow = dialog.getWindow();
+        if (dialogWindow == null) {
+            return;
+        }
+        dialogWindow.setGravity(Gravity.BOTTOM);
+        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
+        DisplayMetrics dm = new DisplayMetrics();
+        wm.getDefaultDisplay().getMetrics(dm);
+        int width = dm.widthPixels;
+        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+        lp.width = width;
+        dialogWindow.setAttributes(lp);
+        RecyclerView recyclerView = viewLayout.findViewById(R.id.rv_list);
+        LinearLayoutManager layoutManager = new LinearLayoutManager(context);
+        recyclerView.setLayoutManager(layoutManager);
+        recyclerView.setAdapter(new MapHouseAdapter(context,clusterItems));
+        viewLayout.findViewById(R.id.btn_cancel).setOnClickListener(view -> dialog.dismiss());
+        dialog.show();
+    }
+
+    class MapHouseAdapter extends CommonListAdapter<ClusterItem> {
+
+        public MapHouseAdapter(Context context, List<ClusterItem> list) {
+            super(context, R.layout.dialog_map_list_item, list);
+        }
+
+        @SuppressLint({"SetTextI18n", "DefaultLocale"})
+        @Override
+        public void convert(ViewHolder holder, final ClusterItem bean) {
+        }
+    }
 }

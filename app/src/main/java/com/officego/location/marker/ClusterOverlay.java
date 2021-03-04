@@ -8,6 +8,7 @@ import android.os.Handler;
 import android.os.HandlerThread;
 import android.os.Looper;
 import android.os.Message;
+import android.text.TextUtils;
 import android.util.Log;
 import android.util.LruCache;
 import android.util.TypedValue;
@@ -25,8 +26,12 @@ import com.amap.api.maps.model.Marker;
 import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.animation.AlphaAnimation;
 import com.amap.api.maps.model.animation.Animation;
+import com.amap.api.services.core.LatLonPoint;
+import com.amap.api.services.geocoder.GeocodeResult;
+import com.amap.api.services.geocoder.GeocodeSearch;
+import com.amap.api.services.geocoder.RegeocodeQuery;
+import com.amap.api.services.geocoder.RegeocodeResult;
 import com.officego.R;
-import com.officego.commonlib.utils.log.LogCat;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +43,7 @@ import java.util.List;
  */
 public class ClusterOverlay implements AMap.OnCameraChangeListener,
         AMap.OnMarkerClickListener {
+    private final String TAG = "ClusterOverlay";
     private AMap mAMap;
     private Context mContext;
     private List<ClusterItem> mClusterItems;
@@ -176,8 +182,6 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
 
     @Override
     public void onCameraChange(CameraPosition arg0) {
-
-
     }
 
     @Override
@@ -370,18 +374,21 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
     /**
      * 获取每个聚合点的绘制样式
      */
+    BitmapDescriptor bitmapDescriptor;
+
     private BitmapDescriptor getBitmapDes(Cluster mCluster) {
-        BitmapDescriptor bitmapDescriptor;
-        if(mCluster.getClusterCount() > 1){//当数量》1设置个数
+//        BitmapDescriptor bitmapDescriptor;
+        if (mCluster.getClusterCount() > 1) {//当数量》1设置个数
             bitmapDescriptor = mLruCache.get(mCluster.getClusterCount());
             if (bitmapDescriptor == null) {
                 TextView textView = new TextView(mContext);
                 String tile = String.valueOf(mCluster.getClusterCount());
-//                textView.setText("附近有\n"+tile+"个"+"\n坐标");
-                textView.setText("附近"+tile);
+                textView.setText("附近\n" + tile + "套");
+//                RegionItem mRegionItem = (RegionItem) mCluster.getClusterItems().get(0);
+//                textView.setText(mRegionItem.getStreet()+"\n" + tile + "套");
                 textView.setGravity(Gravity.CENTER);
                 textView.setTextColor(Color.WHITE);
-                textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 14);
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
                 if (mClusterRender != null && mClusterRender.getDrawAble(mCluster.getClusterCount()) != null) {
                     textView.setBackgroundDrawable(mClusterRender.getDrawAble(mCluster.getClusterCount()));
                 } else {
@@ -390,15 +397,15 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
                 bitmapDescriptor = BitmapDescriptorFactory.fromView(textView);
                 mLruCache.put(mCluster.getClusterCount(), bitmapDescriptor);
             }
-        }else{//否则，设置名称
-            RegionItem mRegionItem= (RegionItem) mCluster.getClusterItems().get(0);
+        } else {//否则，设置名称
+            RegionItem mRegionItem = (RegionItem) mCluster.getClusterItems().get(0);
             bitmapDescriptor = mLruCacheName.get(mRegionItem.getTitle());
             if (bitmapDescriptor == null) {
                 TextView textView = new TextView(mContext);
                 textView.setText(mRegionItem.getTitle());
                 textView.setGravity(Gravity.CENTER);
                 textView.setTextColor(Color.WHITE);
-                textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 15);
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
                 if (mClusterRender != null && mClusterRender.getDrawAble(mCluster.getClusterCount()) != null) {
                     textView.setBackgroundDrawable(mClusterRender.getDrawAble(mCluster.getClusterCount()));
                 } else {
@@ -411,6 +418,56 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
         return bitmapDescriptor;
     }
 
+//    //逆地理编码
+//    private void setTextViewAddress(Cluster mCluster, TextView textView) {
+//        float zoom = mAMap.getCameraPosition().zoom;
+//        String counts = String.valueOf(mCluster.getClusterCount());
+//
+//        GeocodeSearch search = new GeocodeSearch(mContext);
+//        search.setOnGeocodeSearchListener(new GeocodeSearch.OnGeocodeSearchListener() {
+//            @Override
+//            public void onGeocodeSearched(GeocodeResult result, int rCode) {
+//            }
+//
+//            @Override
+//            public void onRegeocodeSearched(RegeocodeResult result, int rCode) {
+//                String formatAddress = result.getRegeocodeAddress().getFormatAddress() +
+//                        "  getBuilding=" + result.getRegeocodeAddress().getBuilding() +
+//                        "  getDistrict=" + result.getRegeocodeAddress().getDistrict() +
+//                        "  getNeighborhood=" + result.getRegeocodeAddress().getNeighborhood() +
+//                        "  getStreet=" + result.getRegeocodeAddress().getStreetNumber().getStreet() +
+//                        "  getRoads=" + result.getRegeocodeAddress().getRoads().get(0).getName();
+////                Log.e(TAG, "formatAddress:" + formatAddress);
+//                String district = result.getRegeocodeAddress().getDistrict();
+//                String neighborhood = result.getRegeocodeAddress().getNeighborhood();
+//                String street = result.getRegeocodeAddress().getStreetNumber().getStreet();
+//                String roads = result.getRegeocodeAddress().getRoads().get(0).getName();
+//                String title;
+//                if (zoom < 10) {
+//                    title = district + "\n" + counts + "套";
+//                } else {
+//                    if (!TextUtils.isEmpty(neighborhood)) {
+//                        title = neighborhood + "\n" + counts + "套";
+//                    } else {
+//                        if (!TextUtils.isEmpty(street)) {
+//                            title = street + "\n" + counts + "套";
+//                        } else {
+//                            if (!TextUtils.isEmpty(roads)) {
+//                                title = roads + "\n" + counts + "套";
+//                            } else {
+//                                title = "附近" + "\n" + counts + "套";
+//                            }
+//                        }
+//                    }
+//                }
+//                textView.setText(title);
+//            }
+//        });
+//        LatLonPoint lp = new LatLonPoint(mCluster.getCenterLatLng().latitude, mCluster.getCenterLatLng().longitude);
+//        RegeocodeQuery query = new RegeocodeQuery(lp, 200, GeocodeSearch.AMAP);
+//        search.getFromLocationAsyn(query);
+//    }
+//
 
     /**
      * 更新已加入地图聚合点的样式
