@@ -11,9 +11,22 @@
         android:layout_marginStart="@dimen/dp_16"
         android:layout_marginTop="@dimen/dp_20"
         android:scaleType="centerCrop"
-        android:background="@mipmap/ic_launch_app"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_type"
+        android:text="共享办公"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/text_label_blue_no_stroke"
+        android:paddingLeft="@dimen/dp_2"
+        android:paddingRight="@dimen/dp_2"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_10"
+        android:visibility="gone"
+        app:layout_constraintStart_toStartOf="@id/iv_house"
+        app:layout_constraintTop_toTopOf="@id/iv_house" />
 
     <TextView
         android:id="@+id/tv_house_name"
@@ -24,26 +37,27 @@
         android:layout_marginEnd="@dimen/dp_12"
         android:ellipsize="end"
         android:singleLine="true"
+        android:text="上海大厦"
         android:textColor="@color/text_main"
         android:textSize="@dimen/sp_12"
         android:textStyle="bold"
-        android:text="上海大厦"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toEndOf="@id/iv_house"
         app:layout_constraintTop_toTopOf="parent" />
 
     <TextView
         android:id="@+id/tv_location"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/dp_12"
         android:layout_marginTop="@dimen/dp_7"
+        android:drawableStart="@mipmap/ic_location_small_blue"
         android:ellipsize="end"
         android:singleLine="true"
         android:textColor="@color/text_66"
         android:textSize="@dimen/sp_12"
-        android:text="详细地址详细地址"
-        app:layout_constraintLeft_toRightOf="@id/iv_house"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_house"
         app:layout_constraintTop_toBottomOf="@id/tv_house_name" />
 
     <TextView
@@ -54,11 +68,11 @@
         android:layout_marginTop="@dimen/dp_7"
         android:ellipsize="end"
         android:singleLine="true"
-        android:textColor="@color/text_66"
-        android:textSize="@dimen/sp_12"
-        android:text="价格价格价格价格价格"
+        android:textColor="@color/common_blue_main"
+        android:textSize="@dimen/sp_14"
         app:layout_constraintLeft_toRightOf="@id/iv_house"
         app:layout_constraintTop_toBottomOf="@id/tv_location" />
+
     <View
         style="@style/marginLeftRight16"
         android:layout_width="@dimen/dp_0"

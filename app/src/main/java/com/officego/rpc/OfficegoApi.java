@@ -22,6 +22,7 @@ import com.officego.rpc.request.ScheduleInterface;
 import com.officego.rpc.request.SearchAreaInterface;
 import com.officego.ui.collect.model.CollectBuildingBean;
 import com.officego.ui.collect.model.CollectHouseBean;
+import com.officego.ui.home.model.AllBuildingBean;
 import com.officego.ui.home.model.BannerBean;
 import com.officego.ui.home.model.BrandRecommendBean;
 import com.officego.ui.home.model.BuildingBean;
@@ -277,6 +278,19 @@ public class OfficegoApi {
         map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(HomeInterface.class)
                 .getBuildingList(map)
+                .enqueue(callback);
+    }
+
+    /**
+     * 地图找房
+     *
+     */
+    public void getBuildingList(RetrofitCallback<List<AllBuildingBean.DataBean>> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(TextUtils.isEmpty(SpUtils.getSignToken()) ? "" : SpUtils.getSignToken()));
+        map.putAll(map());
+        OfficegoRetrofitClient.getInstance().create(HomeInterface.class)
+                .getBuildingMap(map)
                 .enqueue(callback);
     }
 

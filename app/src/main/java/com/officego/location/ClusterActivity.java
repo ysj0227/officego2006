@@ -12,13 +12,14 @@ import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
-import android.util.DisplayMetrics;
+import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -29,14 +30,24 @@ import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.Marker;
+import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
+import com.officego.commonlib.common.model.utils.BundleUtils;
+import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.utils.CommonHelper;
+import com.officego.commonlib.utils.GlideUtils;
+import com.officego.commonlib.view.RoundImageView;
 import com.officego.location.marker.ClusterClickListener;
 import com.officego.location.marker.ClusterItem;
 import com.officego.location.marker.ClusterOverlay;
 import com.officego.location.marker.ClusterRender;
 import com.officego.location.marker.RegionItem;
+import com.officego.ui.home.BuildingDetailsActivity_;
+import com.officego.ui.home.BuildingDetailsJointWorkActivity_;
+import com.officego.ui.home.HomeFragment;
+import com.officego.ui.home.model.AllBuildingBean;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -53,11 +64,13 @@ public class ClusterActivity extends Activity implements ClusterRender,
     private int clusterRadius = 100;
     private Map<Integer, Drawable> mBackDrawAbles = new HashMap<>();
     private ClusterOverlay mClusterOverlay;
+    private Context context;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_cluster);
+        context = this;
         mMapView = findViewById(R.id.map);
         rlQuit = findViewById(R.id.rl_quit);
         mMapView.onCreate(savedInstanceState);
@@ -70,9 +83,8 @@ public class ClusterActivity extends Activity implements ClusterRender,
             // 初始化地图
             mAMap = mMapView.getMap();
             mAMap.setOnMapLoadedListener(this);
-
-            //将地图移动到定位点
-            // mAMap.moveCamera(CameraUpdateFactory.changeLatLng(new LatLng(, ));
+            //将地图移动到定位点 上海市
+            mAMap.moveCamera(CameraUpdateFactory.changeLatLng(new LatLng(31.22, 121.48)));
         }
     }
 
@@ -88,7 +100,6 @@ public class ClusterActivity extends Activity implements ClusterRender,
 
     protected void onDestroy() {
         super.onDestroy();
-        //销毁资源
         mClusterOverlay.onDestroy();
         mMapView.onDestroy();
     }
@@ -98,18 +109,26 @@ public class ClusterActivity extends Activity implements ClusterRender,
         new Thread() {
             public void run() {
                 List<ClusterItem> items = new ArrayList<ClusterItem>();
-                //随机10000个点
-                for (int i = 0; i < 2000; i++) {
-                    double lat = Math.random() + 39.474923;
-                    double lon = Math.random() + 116.027116;
-
+                for (int i = 0; i < HomeFragment.beanList.size(); i++) {
+                    AllBuildingBean.DataBean bean = HomeFragment.beanList.get(i);
+                    double lat = Double.parseDouble(bean.getLatitude());
+                    double lon = Double.parseDouble(bean.getLongitude());
+                    int btype = bean.getBtype();
+                    String title = (btype == Constants.TYPE_BUILDING) ? bean.getBuildingName()
+                            : bean.getBranchesName();
+                    String mainPic = bean.getMainPic();
+                    String districts = bean.getDistricts();
+                    String business = TextUtils.equals("其他", bean.getAreas()) ? "附近" : bean.getAreas();
+                    String address = bean.getAddress();
+                    String price = bean.getMinDayPrice();
+                    int buildingId = bean.getId();
                     LatLng latLng = new LatLng(lat, lon, false);
-                    RegionItem regionItem = new RegionItem(latLng, "大楼" + i, "长寿路" + 1);
+                    RegionItem regionItem = new RegionItem(latLng, btype, buildingId, title,
+                            mainPic, districts, business, address, price);
                     items.add(regionItem);
                 }
                 mClusterOverlay = new ClusterOverlay(mAMap, items,
-                        dp2px(getApplicationContext(), clusterRadius),
-                        getApplicationContext());
+                        CommonHelper.dp2px(context, clusterRadius), context);
                 mClusterOverlay.setClusterRenderer(ClusterActivity.this);
                 mClusterOverlay.setOnClusterClickListener(ClusterActivity.this);
             }
@@ -120,10 +139,10 @@ public class ClusterActivity extends Activity implements ClusterRender,
     public void onClick(Marker marker, List<ClusterItem> clusterItems) {
         if (clusterItems != null) {
             if (clusterItems.size() == 1) {
-                detailsDialog(this);
+                houseListDialog(this, clusterItems);
                 return;
             } else if (clusterItems.size() > 1 && clusterItems.size() <= 10) {
-                houseListDialog(this,clusterItems);
+                houseListDialog(this, clusterItems);
             }
         }
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
@@ -138,7 +157,7 @@ public class ClusterActivity extends Activity implements ClusterRender,
     //根据聚合数量显示drawCircle的背景颜色
     @Override
     public Drawable getDrawAble(int clusterNum) {
-        int radius = dp2px(getApplicationContext(), 80);
+        int radius = CommonHelper.dp2px(context, 80);
         if (clusterNum == 1) {
             Drawable bitmapDrawable = mBackDrawAbles.get(1);
             if (bitmapDrawable == null) {
@@ -149,15 +168,12 @@ public class ClusterActivity extends Activity implements ClusterRender,
 
             return bitmapDrawable;
         } else if (clusterNum < 5) {
-
             Drawable bitmapDrawable = mBackDrawAbles.get(2);
             if (bitmapDrawable == null) {
                 bitmapDrawable = new BitmapDrawable(null, drawCircle(radius,
-//                        Color.argb(159, 210, 154, 6)));
                         Color.argb(199, 217, 114, 0)));
                 mBackDrawAbles.put(2, bitmapDrawable);
             }
-
             return bitmapDrawable;
         } else if (clusterNum < 10) {
             Drawable bitmapDrawable = mBackDrawAbles.get(3);
@@ -166,7 +182,6 @@ public class ClusterActivity extends Activity implements ClusterRender,
                         Color.argb(199, 217, 114, 0)));
                 mBackDrawAbles.put(3, bitmapDrawable);
             }
-
             return bitmapDrawable;
         } else {
             Drawable bitmapDrawable = mBackDrawAbles.get(4);
@@ -175,13 +190,11 @@ public class ClusterActivity extends Activity implements ClusterRender,
                         Color.argb(235, 215, 66, 2)));
                 mBackDrawAbles.put(4, bitmapDrawable);
             }
-
             return bitmapDrawable;
         }
     }
 
     private Bitmap drawCircle(int radius, int color) {
-
         Bitmap bitmap = Bitmap.createBitmap(radius * 2, radius * 2,
                 Bitmap.Config.ARGB_8888);
         Canvas canvas = new Canvas(bitmap);
@@ -192,56 +205,28 @@ public class ClusterActivity extends Activity implements ClusterRender,
         return bitmap;
     }
 
-    /**
-     * 根据手机的分辨率从 dp 的单位 转成为 px(像素)
-     */
-    public int dp2px(Context context, float dpValue) {
-        final float scale = context.getResources().getDisplayMetrics().density;
-        return (int) (dpValue * scale + 0.5f);
-    }
-
-    private void detailsDialog(Context context) {
-        Dialog dialog = new Dialog(context, com.owner.R.style.BottomDialog);
-        View viewLayout = LayoutInflater.from(context).inflate(R.layout.dialog_map_house_details, null);
-        dialog.setContentView(viewLayout);
-        Window dialogWindow = dialog.getWindow();
-        if (dialogWindow == null) {
-            return;
-        }
-        dialogWindow.setGravity(Gravity.BOTTOM);
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics dm = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(dm);
-        int width = dm.widthPixels;
-        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-        lp.width = width;
-        dialogWindow.setAttributes(lp);
-        viewLayout.findViewById(R.id.btn_cancel).setOnClickListener(view -> dialog.dismiss());
-        dialog.show();
-    }
-
     private void houseListDialog(Context context, List<ClusterItem> clusterItems) {
-        Dialog dialog = new Dialog(context, com.owner.R.style.BottomDialog);
+        Dialog dialog = new Dialog(context, R.style.BottomDialog);
         View viewLayout = LayoutInflater.from(context).inflate(R.layout.dialog_map_list, null);
-        dialog.setContentView(viewLayout);
-        Window dialogWindow = dialog.getWindow();
-        if (dialogWindow == null) {
-            return;
-        }
-        dialogWindow.setGravity(Gravity.BOTTOM);
-        WindowManager wm = (WindowManager) context.getSystemService(Context.WINDOW_SERVICE);
-        DisplayMetrics dm = new DisplayMetrics();
-        wm.getDefaultDisplay().getMetrics(dm);
-        int width = dm.widthPixels;
-        WindowManager.LayoutParams lp = dialogWindow.getAttributes();
-        lp.width = width;
-        dialogWindow.setAttributes(lp);
         RecyclerView recyclerView = viewLayout.findViewById(R.id.rv_list);
         LinearLayoutManager layoutManager = new LinearLayoutManager(context);
         recyclerView.setLayoutManager(layoutManager);
-        recyclerView.setAdapter(new MapHouseAdapter(context,clusterItems));
+        recyclerView.setAdapter(new MapHouseAdapter(context, clusterItems));
         viewLayout.findViewById(R.id.btn_cancel).setOnClickListener(view -> dialog.dismiss());
-        dialog.show();
+        if (clusterItems.size() > 5) {
+            int height = getResources().getDimensionPixelSize(R.dimen.dp_108) * 5;
+            CommonHelper.setLinearLayoutParams(recyclerView, height);
+        }
+        dialog.setContentView(viewLayout);
+        Window dialogWindow = dialog.getWindow();
+        if (dialogWindow != null) {
+            dialogWindow.setGravity(Gravity.BOTTOM);
+            WindowManager.LayoutParams lp = dialogWindow.getAttributes();
+            lp.width = WindowManager.LayoutParams.MATCH_PARENT;
+            lp.height = WindowManager.LayoutParams.WRAP_CONTENT;
+            dialogWindow.setAttributes(lp);
+            dialog.show();
+        }
     }
 
     class MapHouseAdapter extends CommonListAdapter<ClusterItem> {
@@ -253,6 +238,35 @@ public class ClusterActivity extends Activity implements ClusterRender,
         @SuppressLint({"SetTextI18n", "DefaultLocale"})
         @Override
         public void convert(ViewHolder holder, final ClusterItem bean) {
+            RoundImageView ivHouse = holder.getView(R.id.iv_house);
+            TextView name = holder.getView(R.id.tv_house_name);
+            TextView location = holder.getView(R.id.tv_location);
+            TextView tvPrice = holder.getView(R.id.tv_price);
+            RegionItem mRegionItem = (RegionItem) bean;
+            Glide.with(ClusterActivity.this).applyDefaultRequestOptions(GlideUtils.options())
+                    .load(mRegionItem.getMainPic()).into(ivHouse);
+            name.setText(mRegionItem.getTitle());
+            location.setText(mRegionItem.getDistricts()+mRegionItem.getAddress());
+            int btype = mRegionItem.getBtype();
+            int buildingId = mRegionItem.getBuildingId();
+            TextView tvType = holder.getView(R.id.tv_type);
+            tvType.setVisibility(btype == Constants.TYPE_BUILDING ? View.GONE : View.VISIBLE);
+
+            String price = mRegionItem.getPrice() == null ? "0" : mRegionItem.getPrice();
+            if (btype == 1) {
+                tvPrice.setText("¥" + price + "/m²/天起");
+            } else if (btype == 2) {
+                tvPrice.setText("¥" + price + "/位/月起");
+            }
+            holder.itemView.setOnClickListener(view -> {
+                if (btype == Constants.TYPE_BUILDING) {
+                    BuildingDetailsActivity_.intent(context)
+                            .mBuildingBean(BundleUtils.BuildingMessage(Constants.TYPE_BUILDING, buildingId)).start();
+                } else {
+                    BuildingDetailsJointWorkActivity_.intent(context)
+                            .mBuildingBean(BundleUtils.BuildingMessage(Constants.TYPE_JOINTWORK, buildingId)).start();
+                }
+            });
         }
     }
 }

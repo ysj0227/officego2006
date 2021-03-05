@@ -169,6 +169,23 @@ public abstract class BaseActivity extends FragmentActivity
             }
         });
     }
+ /**
+     * 显示加载框,content为null是不可点击消失
+     */
+    public void showLoadingDialog(final String text, final int textColor,final int bgColor) {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                if (loadingDialog == null || loadingDialog.isShowing()) {
+                    return;
+                }
+                loadingDialog.setCancelable(false);
+                if (!TextUtils.isEmpty(text))
+                    loadingDialog.setTipBackground(text, textColor,bgColor);
+                loadingDialog.show();
+            }
+        });
+    }
 
     /**
      * 关闭加载框

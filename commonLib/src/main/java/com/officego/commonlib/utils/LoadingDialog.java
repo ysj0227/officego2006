@@ -5,6 +5,7 @@ import android.content.Context;
 import android.os.Bundle;
 import android.text.TextUtils;
 import android.view.View;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.officego.commonlib.R;
@@ -16,6 +17,7 @@ import com.officego.commonlib.R;
 public class LoadingDialog extends Dialog {
 
     private TextView tvLoading;
+    private LinearLayout loadingBackground;
     private int layoutId;
 
     public LoadingDialog(Context context) {
@@ -30,6 +32,7 @@ public class LoadingDialog extends Dialog {
         } else {
             setContentView(R.layout.dialog_loading);
             tvLoading = this.findViewById(R.id.tv_loading);
+            loadingBackground = this.findViewById(R.id.ll_loading_background);
         }
     }
 
@@ -43,6 +46,9 @@ public class LoadingDialog extends Dialog {
             tvLoading.setVisibility(View.VISIBLE);
             tvLoading.setText(content);
         } else {
+            if (loadingBackground != null){
+                loadingBackground.setBackgroundResource(R.color.transparent);
+            }
             tvLoading.setVisibility(View.GONE);
         }
     }
@@ -59,6 +65,30 @@ public class LoadingDialog extends Dialog {
             tvLoading.setText(content);
         } else {
             tvLoading.setVisibility(View.GONE);
+            if (loadingBackground != null){
+                loadingBackground.setBackgroundResource(R.color.transparent);
+            }
+        }
+    }
+
+    public void setTipBackground(String content, int colorRes, int bgColor) {
+        if (tvLoading == null) {
+            this.show();
+            this.dismiss();
+            return;
+        }
+        if (!TextUtils.isEmpty(content)) {
+            tvLoading.setVisibility(View.VISIBLE);
+            tvLoading.setTextColor(colorRes);
+            tvLoading.setText(content);
+            if (loadingBackground != null){
+                loadingBackground.setBackgroundResource(bgColor);
+            }
+        } else {
+            tvLoading.setVisibility(View.GONE);
+            if (loadingBackground != null){
+                loadingBackground.setBackgroundResource(R.color.transparent);
+            }
         }
     }
 

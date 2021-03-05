@@ -9,12 +9,24 @@ import com.amap.api.maps.model.LatLng;
 public class RegionItem implements ClusterItem {
     private LatLng mLatLng;
     private String mTitle;
-    private String mStreet;//自定义
+    private String districts;//自定义
+    private String business;
+    private String mainPic;
+    private String address;
+    private String price;
+    private int btype;
+    private int buildingId;
 
-    public RegionItem(LatLng latLng, String title, String street) {
-        mLatLng = latLng;
-        mTitle = title;
-        mStreet = street;
+    public RegionItem(LatLng latLng, int btype, int buildingId, String title, String mainPic, String districts, String business,String address,String price) {
+        this.mLatLng = latLng;
+        this.btype = btype;
+        this.buildingId = buildingId;
+        this.mTitle = title;
+        this.mainPic = mainPic;
+        this.districts = districts;
+        this.business = business;
+        this.address = address;
+        this.price = price;
     }
 
     @Override
@@ -26,8 +38,31 @@ public class RegionItem implements ClusterItem {
         return mTitle;
     }
 
-    public String getStreet() {
-        return mStreet;
+    public String getDistricts() {
+        return districts;
     }
 
+    public String getBusiness() {
+        return business;
+    }
+
+    public String getMainPic() {
+        return mainPic;
+    }
+
+    public int getBtype() {
+        return btype;
+    }
+
+    public int getBuildingId() {
+        return buildingId;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public String getPrice() {
+        return price;
+    }
 }

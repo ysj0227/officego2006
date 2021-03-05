@@ -1,6 +1,7 @@
 package com.officego.rpc.request;
 
 import com.officego.commonlib.retrofit.BaseResponse;
+import com.officego.ui.home.model.AllBuildingBean;
 import com.officego.ui.home.model.BrandRecommendBean;
 import com.officego.ui.home.model.BuildingBean;
 import com.officego.ui.home.model.BuildingDetailsBean;
@@ -39,6 +40,17 @@ public interface HomeInterface {
     @Multipart
     @POST(path + "building/selectBuildingApp")
     Call<BaseResponse<BuildingBean>> getBuildingList(@PartMap Map<String, RequestBody> params);
+
+    /**
+     * 所有楼盘网点数据 地图找房
+     *
+     * @param params
+     * @return
+     */
+    @Multipart
+    @POST(path + "building/getBuildingByMap")
+    Call<BaseResponse<List<AllBuildingBean.DataBean>>> getBuildingMap(@PartMap Map<String, RequestBody> params);
+
 
     /**
      * 楼盘网点详情

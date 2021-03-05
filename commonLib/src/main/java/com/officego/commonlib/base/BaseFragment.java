@@ -107,6 +107,15 @@ public class BaseFragment extends Fragment implements BaseNotification.Notificat
     }
 
     /**
+     * 显示加载框,content为null是不可点击消失
+     */
+    public void showLoadingDialog(final String text, final int textColor, final int bgColor) {
+        if (mActivity != null) {
+            mActivity.showLoadingDialog(text, textColor, bgColor);
+        }
+    }
+
+    /**
      * 关闭加载框
      */
     public void hideLoadingDialog() {
