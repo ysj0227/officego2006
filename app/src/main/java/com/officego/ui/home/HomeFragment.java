@@ -174,10 +174,14 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         SearchRecommendActivity_.intent(mActivity).start();
     }
 
+    @Click(R.id.btn_map_house)
+    void mapHouseClick() {
+        getBuildingList();
+    }
+
     @Click(R.id.iv_customised_house)
     void customisedHouseClick() {
-//        CustomisedHouseActivity_.intent(mActivity).start();
-        getBuildingList();
+        CustomisedHouseActivity_.intent(mActivity).start();
     }
 
     //楼盘列表数据
@@ -191,7 +195,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
             startActivity(intent);
             return;
         }
-        showLoadingDialog("正在加载地图房源...", getResources().getColor(R.color.common_blue_main),
+        showLoadingDialog("加载地图房源中...", getResources().getColor(R.color.common_blue_main),
                 R.drawable.bg_solid_gray_e5_corner12);
         OfficegoApi.getInstance().getBuildingList(new RetrofitCallback<List<AllBuildingBean.DataBean>>() {
             @Override

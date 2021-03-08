@@ -260,4 +260,16 @@
             tools:ignore="ContentDescription" />
     </RelativeLayout>
 
+
+    <Button
+        android:id="@+id/btn_map_house"
+        android:layout_width="@dimen/dp_30"
+        android:layout_height="@dimen/dp_30"
+        android:layout_margin="@dimen/dp_20"
+        android:background="@mipmap/ic_map_find_house"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintBottom_toBottomOf="parent"/>
+
+
+
 </androidx.constraintlayout.widget.ConstraintLayout>

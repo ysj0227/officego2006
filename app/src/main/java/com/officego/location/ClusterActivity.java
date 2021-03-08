@@ -18,6 +18,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
@@ -59,6 +60,7 @@ public class ClusterActivity extends Activity implements ClusterRender,
 
     private MapView mMapView;
     private RelativeLayout rlQuit;
+    private ImageView ivLocation;
     private AMap mAMap;
 
     private int clusterRadius = 100;
@@ -73,12 +75,21 @@ public class ClusterActivity extends Activity implements ClusterRender,
         context = this;
         mMapView = findViewById(R.id.map);
         rlQuit = findViewById(R.id.rl_quit);
+        ivLocation = findViewById(R.id.iv_location);
         mMapView.onCreate(savedInstanceState);
         init();
     }
 
     private void init() {
         rlQuit.setOnClickListener(view -> finish());
+        ivLocation.setOnClickListener(view -> {
+            if (!TextUtils.isEmpty(Constants.LATITUDE)) {
+                mAMap.moveCamera(CameraUpdateFactory.zoomTo(17));
+                mAMap.moveCamera(CameraUpdateFactory.changeLatLng(new
+                        LatLng(Double.parseDouble(Constants.LATITUDE),
+                        Double.parseDouble(Constants.LONGITUDE))));
+            }
+        });
         if (mAMap == null) {
             // 初始化地图
             mAMap = mMapView.getMap();
@@ -162,7 +173,7 @@ public class ClusterActivity extends Activity implements ClusterRender,
             Drawable bitmapDrawable = mBackDrawAbles.get(1);
             if (bitmapDrawable == null) {
                 bitmapDrawable = getApplication().getResources().getDrawable(
-                        R.mipmap.ic_amap_marker_bg);
+                        R.mipmap.ic_amap_marker_bg2);
                 mBackDrawAbles.put(1, bitmapDrawable);
             }
 
@@ -246,7 +257,7 @@ public class ClusterActivity extends Activity implements ClusterRender,
             Glide.with(ClusterActivity.this).applyDefaultRequestOptions(GlideUtils.options())
                     .load(mRegionItem.getMainPic()).into(ivHouse);
             name.setText(mRegionItem.getTitle());
-            location.setText(mRegionItem.getDistricts()+mRegionItem.getAddress());
+            location.setText(mRegionItem.getDistricts() + mRegionItem.getAddress());
             int btype = mRegionItem.getBtype();
             int buildingId = mRegionItem.getBuildingId();
             TextView tvType = holder.getView(R.id.tv_type);

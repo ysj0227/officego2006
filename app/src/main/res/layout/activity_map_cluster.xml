@@ -9,6 +9,16 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <ImageView
+        android:id="@+id/iv_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_alignParentBottom="true"
+        android:layout_marginEnd="@dimen/dp_10"
+        android:layout_marginBottom="@dimen/dp_110"
+        android:background="@mipmap/ic_map_mine_location" />
+
     <RelativeLayout
         android:id="@+id/rl_quit"
         android:layout_width="@dimen/dp_60"
