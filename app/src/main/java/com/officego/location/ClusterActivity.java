@@ -1,6 +1,5 @@
 package com.officego.location;
 
-import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
@@ -16,15 +15,12 @@ import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
 import android.view.Gravity;
-import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
-import android.view.inputmethod.EditorInfo;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
-import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -35,27 +31,20 @@ import com.amap.api.maps.MapView;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.Marker;
-import com.bumptech.glide.Glide;
+import com.amap.api.services.core.PoiItem;
+import com.amap.api.services.poisearch.PoiResult;
+import com.amap.api.services.poisearch.PoiSearch;
 import com.officego.R;
-import com.officego.commonlib.CommonListAdapter;
-import com.officego.commonlib.ViewHolder;
-import com.officego.commonlib.common.model.SearchListBean;
-import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.constant.Constants;
-import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.CommonHelper;
-import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.view.ClearableEditText;
-import com.officego.commonlib.view.RoundImageView;
 import com.officego.location.marker.ClusterClickListener;
 import com.officego.location.marker.ClusterItem;
 import com.officego.location.marker.ClusterOverlay;
 import com.officego.location.marker.ClusterRender;
 import com.officego.location.marker.RegionItem;
-import com.officego.rpc.OfficegoApi;
-import com.officego.ui.adapter.KeywordsAdapter;
-import com.officego.ui.home.BuildingDetailsActivity_;
-import com.officego.ui.home.BuildingDetailsJointWorkActivity_;
+import com.officego.ui.adapter.MapHouseAdapter;
+import com.officego.ui.adapter.PoiAdapter;
 import com.officego.ui.home.HomeFragment;
 import com.officego.ui.home.model.AllBuildingBean;
 
@@ -63,11 +52,10 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-import java.util.Objects;
 
 public class ClusterActivity extends Activity implements ClusterRender,
-        AMap.OnMapLoadedListener, ClusterClickListener, TextView.OnEditorActionListener,
-        TextWatcher, KeywordsAdapter.SearchKeywordsListener {
+        AMap.OnMapLoadedListener, ClusterClickListener,
+        TextWatcher, PoiSearch.OnPoiSearchListener,PoiAdapter.PoiListener {
 
     private MapView mMapView;
     private RelativeLayout rlQuit;
@@ -97,7 +85,6 @@ public class ClusterActivity extends Activity implements ClusterRender,
     }
 
     private void init() {
-        etSearch.setOnEditorActionListener(this);
         etSearch.addTextChangedListener(this);
         rlQuit.setOnClickListener(view -> finish());
         ivLocation.setOnClickListener(view -> {
@@ -115,6 +102,17 @@ public class ClusterActivity extends Activity implements ClusterRender,
             //将地图移动到定位点 上海市
             mAMap.moveCamera(CameraUpdateFactory.changeLatLng(new LatLng(31.22, 121.48)));
         }
+    }
+
+    private PoiSearch poiSearch;
+
+    private void poiSearch(String keyWord) {
+        PoiSearch.Query query = new PoiSearch.Query(keyWord, "", "021");
+        query.setPageSize(20);// 设置每页最多返回poiitem
+        query.setPageNum(1);//设置查询页码
+        poiSearch = new PoiSearch(this, query);
+        poiSearch.setOnPoiSearchListener(this);
+        poiSearch.searchPOIAsyn();
     }
 
     protected void onResume() {
@@ -151,6 +149,7 @@ public class ClusterActivity extends Activity implements ClusterRender,
                     String business = TextUtils.equals("其他", bean.getAreas()) ? "附近" : bean.getAreas();
                     String address = bean.getAddress();
                     String price = bean.getMinDayPrice();
+                    String houseCount = bean.getHouseCount();
                     String stationName = bean.getBuildingMap() == null ||
                             bean.getBuildingMap().getStationNames() == null ||
                             bean.getBuildingMap().getStationNames().size() == 0 ||
@@ -158,7 +157,7 @@ public class ClusterActivity extends Activity implements ClusterRender,
                             : bean.getBuildingMap().getStationNames().get(0);
                     LatLng latLng = new LatLng(lat, lon, false);
                     RegionItem regionItem = new RegionItem(latLng, btype, buildingId, title,
-                            mainPic, districts, business, stationName, address, price);
+                            mainPic, districts, business, stationName, address, price, houseCount);
                     items.add(regionItem);
                 }
                 mClusterOverlay = new ClusterOverlay(mAMap, items,
@@ -239,7 +238,6 @@ public class ClusterActivity extends Activity implements ClusterRender,
         return bitmap;
     }
 
-
     private void houseListDialog(Context context, List<ClusterItem> clusterItems) {
         Dialog dialog = new Dialog(context, R.style.BottomDialog);
         View viewLayout = LayoutInflater.from(context).inflate(R.layout.dialog_map_list, null);
@@ -275,7 +273,7 @@ public class ClusterActivity extends Activity implements ClusterRender,
             rvSearchList.setVisibility(View.GONE);
         } else {
             rvSearchList.setVisibility(View.VISIBLE);
-            searchList(charSequence.toString());
+            poiSearch(charSequence.toString());
         }
     }
 
@@ -284,86 +282,35 @@ public class ClusterActivity extends Activity implements ClusterRender,
 
     }
 
-    @Override
-    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
-        if (actionId == EditorInfo.IME_ACTION_SEARCH ||
-                (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
-            String input = Objects.requireNonNull(etSearch.getText()).toString().trim();
-            if (!TextUtils.isEmpty(input)) {
-                searchList(input);
-            }
-            return true;
-        }
-        return false;
-    }
+    private PoiAdapter adapter;
+    private final List<PoiItem> keyList = new ArrayList<>();
 
     @Override
-    public void searchListItemOnClick(SearchListBean.DataBean data) {
+    public void onPoiSearched(PoiResult poiResult, int i) {
+        List<PoiItem> list = poiResult.getPois();
+        keyList.clear();
+        keyList.addAll(list);
+        if (adapter == null) {
+            adapter = new PoiAdapter(context, list);
+            adapter.setListener(ClusterActivity.this);
+            rvSearchList.setAdapter(adapter);
+            return;
+        }
+        adapter.setData(list);
+        adapter.notifyDataSetChanged();
     }
 
-    private KeywordsAdapter keywordsAdapter;
-    private final List<SearchListBean.DataBean> keyList = new ArrayList<>();
+    @Override
+    public void onPoiItemSearched(PoiItem poiItem, int i) {
 
-    public void searchList(String keywords) {
-        OfficegoApi.getInstance().searchList(keywords, new RetrofitCallback<List<SearchListBean.DataBean>>() {
-            @Override
-            public void onSuccess(int code, String msg, List<SearchListBean.DataBean> list) {
-                keyList.clear();
-                keyList.addAll(list);
-                if (keywordsAdapter == null) {
-                    keywordsAdapter = new KeywordsAdapter(context, list);
-                    keywordsAdapter.setListener(ClusterActivity.this);
-                    rvSearchList.setAdapter(keywordsAdapter);
-                    return;
-                }
-                keywordsAdapter.setData(list);
-                keywordsAdapter.notifyDataSetChanged();
-            }
-
-            @Override
-            public void onFail(int code, String msg, List<SearchListBean.DataBean> data) {
-            }
-        });
     }
 
-    class MapHouseAdapter extends CommonListAdapter<ClusterItem> {
-
-        public MapHouseAdapter(Context context, List<ClusterItem> list) {
-            super(context, R.layout.dialog_map_list_item, list);
-        }
-
-        @SuppressLint({"SetTextI18n", "DefaultLocale"})
-        @Override
-        public void convert(ViewHolder holder, final ClusterItem bean) {
-            RoundImageView ivHouse = holder.getView(R.id.iv_house);
-            TextView name = holder.getView(R.id.tv_house_name);
-            TextView location = holder.getView(R.id.tv_location);
-            TextView tvPrice = holder.getView(R.id.tv_price);
-            RegionItem mRegionItem = (RegionItem) bean;
-            Glide.with(ClusterActivity.this).applyDefaultRequestOptions(GlideUtils.options())
-                    .load(mRegionItem.getMainPic()).into(ivHouse);
-            name.setText(mRegionItem.getTitle());
-            location.setText(mRegionItem.getDistricts() + mRegionItem.getAddress());
-            int btype = mRegionItem.getBtype();
-            int buildingId = mRegionItem.getBuildingId();
-            TextView tvType = holder.getView(R.id.tv_type);
-            tvType.setVisibility(btype == Constants.TYPE_BUILDING ? View.GONE : View.VISIBLE);
-
-            String price = mRegionItem.getPrice() == null ? "0" : mRegionItem.getPrice();
-            if (btype == 1) {
-                tvPrice.setText("¥" + price + "/m²/天起");
-            } else if (btype == 2) {
-                tvPrice.setText("¥" + price + "/位/月起");
-            }
-            holder.itemView.setOnClickListener(view -> {
-                if (btype == Constants.TYPE_BUILDING) {
-                    BuildingDetailsActivity_.intent(context)
-                            .mBuildingBean(BundleUtils.BuildingMessage(Constants.TYPE_BUILDING, buildingId)).start();
-                } else {
-                    BuildingDetailsJointWorkActivity_.intent(context)
-                            .mBuildingBean(BundleUtils.BuildingMessage(Constants.TYPE_JOINTWORK, buildingId)).start();
-                }
-            });
-        }
+    @Override
+    public void poiItemOnClick(PoiItem data) {
+        rvSearchList.setVisibility(View.GONE);
+        mAMap.moveCamera(CameraUpdateFactory.zoomTo(14));
+        mAMap.moveCamera(CameraUpdateFactory.changeLatLng(new
+                LatLng(data.getLatLonPoint().getLatitude(),
+                data.getLatLonPoint().getLongitude())));
     }
 }

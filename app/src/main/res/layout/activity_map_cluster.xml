@@ -10,7 +10,7 @@
         android:layout_height="wrap_content" />
 
     <com.officego.commonlib.view.ClearableEditText
-        android:visibility="gone"
+        android:visibility="visible"
         android:id="@+id/et_search"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_40"
@@ -61,7 +61,7 @@
         android:layout_marginTop="@dimen/dp_10"
         android:layout_marginStart="@dimen/dp_30"
         android:layout_marginEnd="@dimen/dp_30"
-        android:layout_marginBottom="@dimen/dp_50"
+        android:layout_marginBottom="@dimen/dp_100"
         android:background="@drawable/bg_shape"
         android:visibility="gone" />
 
