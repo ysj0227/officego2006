@@ -12,12 +12,16 @@ import android.graphics.RectF;
 import android.graphics.drawable.BitmapDrawable;
 import android.graphics.drawable.Drawable;
 import android.os.Bundle;
+import android.text.Editable;
 import android.text.TextUtils;
+import android.text.TextWatcher;
 import android.view.Gravity;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.Window;
 import android.view.WindowManager;
+import android.view.inputmethod.EditorInfo;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -35,16 +39,21 @@ import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
+import com.officego.commonlib.common.model.SearchListBean;
 import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.GlideUtils;
+import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.RoundImageView;
 import com.officego.location.marker.ClusterClickListener;
 import com.officego.location.marker.ClusterItem;
 import com.officego.location.marker.ClusterOverlay;
 import com.officego.location.marker.ClusterRender;
 import com.officego.location.marker.RegionItem;
+import com.officego.rpc.OfficegoApi;
+import com.officego.ui.adapter.KeywordsAdapter;
 import com.officego.ui.home.BuildingDetailsActivity_;
 import com.officego.ui.home.BuildingDetailsJointWorkActivity_;
 import com.officego.ui.home.HomeFragment;
@@ -54,13 +63,17 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Objects;
 
 public class ClusterActivity extends Activity implements ClusterRender,
-        AMap.OnMapLoadedListener, ClusterClickListener {
+        AMap.OnMapLoadedListener, ClusterClickListener, TextView.OnEditorActionListener,
+        TextWatcher, KeywordsAdapter.SearchKeywordsListener {
 
     private MapView mMapView;
     private RelativeLayout rlQuit;
     private ImageView ivLocation;
+    private ClearableEditText etSearch;
+    private RecyclerView rvSearchList;
     private AMap mAMap;
 
     private int clusterRadius = 100;
@@ -72,15 +85,20 @@ public class ClusterActivity extends Activity implements ClusterRender,
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_map_cluster);
-        context = this;
+        context = ClusterActivity.this;
         mMapView = findViewById(R.id.map);
         rlQuit = findViewById(R.id.rl_quit);
         ivLocation = findViewById(R.id.iv_location);
+        etSearch = findViewById(R.id.et_search);
+        rvSearchList = findViewById(R.id.rv_search_list);
         mMapView.onCreate(savedInstanceState);
+        rvSearchList.setLayoutManager(new LinearLayoutManager(context));
         init();
     }
 
     private void init() {
+        etSearch.setOnEditorActionListener(this);
+        etSearch.addTextChangedListener(this);
         rlQuit.setOnClickListener(view -> finish());
         ivLocation.setOnClickListener(view -> {
             if (!TextUtils.isEmpty(Constants.LATITUDE)) {
@@ -125,6 +143,7 @@ public class ClusterActivity extends Activity implements ClusterRender,
                     double lat = Double.parseDouble(bean.getLatitude());
                     double lon = Double.parseDouble(bean.getLongitude());
                     int btype = bean.getBtype();
+                    int buildingId = bean.getId();
                     String title = (btype == Constants.TYPE_BUILDING) ? bean.getBuildingName()
                             : bean.getBranchesName();
                     String mainPic = bean.getMainPic();
@@ -132,10 +151,14 @@ public class ClusterActivity extends Activity implements ClusterRender,
                     String business = TextUtils.equals("其他", bean.getAreas()) ? "附近" : bean.getAreas();
                     String address = bean.getAddress();
                     String price = bean.getMinDayPrice();
-                    int buildingId = bean.getId();
+                    String stationName = bean.getBuildingMap() == null ||
+                            bean.getBuildingMap().getStationNames() == null ||
+                            bean.getBuildingMap().getStationNames().size() == 0 ||
+                            TextUtils.isEmpty(bean.getBuildingMap().getStationNames().get(0)) ? business
+                            : bean.getBuildingMap().getStationNames().get(0);
                     LatLng latLng = new LatLng(lat, lon, false);
                     RegionItem regionItem = new RegionItem(latLng, btype, buildingId, title,
-                            mainPic, districts, business, address, price);
+                            mainPic, districts, business, stationName, address, price);
                     items.add(regionItem);
                 }
                 mClusterOverlay = new ClusterOverlay(mAMap, items,
@@ -216,6 +239,7 @@ public class ClusterActivity extends Activity implements ClusterRender,
         return bitmap;
     }
 
+
     private void houseListDialog(Context context, List<ClusterItem> clusterItems) {
         Dialog dialog = new Dialog(context, R.style.BottomDialog);
         View viewLayout = LayoutInflater.from(context).inflate(R.layout.dialog_map_list, null);
@@ -238,6 +262,68 @@ public class ClusterActivity extends Activity implements ClusterRender,
             dialogWindow.setAttributes(lp);
             dialog.show();
         }
+    }
+
+    @Override
+    public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+
+    }
+
+    @Override
+    public void onTextChanged(CharSequence charSequence, int i, int i1, int i2) {
+        if (TextUtils.isEmpty(charSequence.toString())) {
+            rvSearchList.setVisibility(View.GONE);
+        } else {
+            rvSearchList.setVisibility(View.VISIBLE);
+            searchList(charSequence.toString());
+        }
+    }
+
+    @Override
+    public void afterTextChanged(Editable editable) {
+
+    }
+
+    @Override
+    public boolean onEditorAction(TextView v, int actionId, KeyEvent event) {
+        if (actionId == EditorInfo.IME_ACTION_SEARCH ||
+                (event != null && event.getKeyCode() == KeyEvent.KEYCODE_ENTER)) {
+            String input = Objects.requireNonNull(etSearch.getText()).toString().trim();
+            if (!TextUtils.isEmpty(input)) {
+                searchList(input);
+            }
+            return true;
+        }
+        return false;
+    }
+
+    @Override
+    public void searchListItemOnClick(SearchListBean.DataBean data) {
+    }
+
+    private KeywordsAdapter keywordsAdapter;
+    private final List<SearchListBean.DataBean> keyList = new ArrayList<>();
+
+    public void searchList(String keywords) {
+        OfficegoApi.getInstance().searchList(keywords, new RetrofitCallback<List<SearchListBean.DataBean>>() {
+            @Override
+            public void onSuccess(int code, String msg, List<SearchListBean.DataBean> list) {
+                keyList.clear();
+                keyList.addAll(list);
+                if (keywordsAdapter == null) {
+                    keywordsAdapter = new KeywordsAdapter(context, list);
+                    keywordsAdapter.setListener(ClusterActivity.this);
+                    rvSearchList.setAdapter(keywordsAdapter);
+                    return;
+                }
+                keywordsAdapter.setData(list);
+                keywordsAdapter.notifyDataSetChanged();
+            }
+
+            @Override
+            public void onFail(int code, String msg, List<SearchListBean.DataBean> data) {
+            }
+        });
     }
 
     class MapHouseAdapter extends CommonListAdapter<ClusterItem> {

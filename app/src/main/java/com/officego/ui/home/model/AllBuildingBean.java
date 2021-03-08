@@ -64,6 +64,8 @@ public class AllBuildingBean {
         private int id;
         @SerializedName("longitude")
         private String longitude;
+        @SerializedName("buildingMap")
+        private BuildingMapBean buildingMap;
 
         public String getAddress() {
             return address;
@@ -167,6 +169,27 @@ public class AllBuildingBean {
 
         public void setLongitude(String longitude) {
             this.longitude = longitude;
+        }
+
+        public BuildingMapBean getBuildingMap() {
+            return buildingMap;
+        }
+
+        public void setBuildingMap(BuildingMapBean buildingMap) {
+            this.buildingMap = buildingMap;
+        }
+
+        public static class BuildingMapBean {
+            @SerializedName("stationNames")
+            private List<String> stationNames;
+
+            public List<String> getStationNames() {
+                return stationNames;
+            }
+
+            public void setStationNames(List<String> stationNames) {
+                this.stationNames = stationNames;
+            }
         }
     }
 }

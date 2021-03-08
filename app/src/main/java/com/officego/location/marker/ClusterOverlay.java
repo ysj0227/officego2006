@@ -26,7 +26,6 @@ import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.animation.AlphaAnimation;
 import com.amap.api.maps.model.animation.Animation;
 import com.officego.R;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.ui.home.HomeFragment;
 
 import java.util.ArrayList;
@@ -376,30 +375,18 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
         if (mCluster.getClusterCount() > 1) {//当数量》1设置个数
             bitmapDescriptor = mLruCache.get(mCluster.getClusterCount());
 //            if (bitmapDescriptor == null) {  实时刷新
-                TextView textView = new TextView(mContext);
-                String tile = String.valueOf(mCluster.getClusterCount());
-                //聚合一个点
-                if (HomeFragment.beanList != null && HomeFragment.beanList.size() < mCluster.getClusterCount() + 5) {
-                    textView.setText("上海市\n" + tile + "套");
-                } else {
-                    RegionItem mRegionItem = (RegionItem) mCluster.getClusterItems().get(0);
-                    if (mAMap.getCameraPosition().zoom < 10.5) {
-                        textView.setText(mRegionItem.getDistricts() + "\n" + tile + "套");
-                    } else {
-                        String title = mRegionItem.getBusiness().length() > 5 ? mRegionItem.getBusiness().substring(0, 5) + ".." : mRegionItem.getBusiness();
-                        textView.setText(title + "\n" + tile + "套");
-                    }
-                }
-                textView.setGravity(Gravity.CENTER);
-                textView.setTextColor(Color.WHITE);
-                textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
-                if (mClusterRender != null && mClusterRender.getDrawAble(mCluster.getClusterCount()) != null) {
-                    textView.setBackgroundDrawable(mClusterRender.getDrawAble(mCluster.getClusterCount()));
-                } else {
-                    textView.setBackgroundResource(R.drawable.ic_amap_defaultcluster);
-                }
-                bitmapDescriptor = BitmapDescriptorFactory.fromView(textView);
-                mLruCache.put(mCluster.getClusterCount(), bitmapDescriptor);
+            TextView textView = new TextView(mContext);
+            setTitle(textView, mCluster);
+            textView.setGravity(Gravity.CENTER);
+            textView.setTextColor(Color.WHITE);
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
+            if (mClusterRender != null && mClusterRender.getDrawAble(mCluster.getClusterCount()) != null) {
+                textView.setBackgroundDrawable(mClusterRender.getDrawAble(mCluster.getClusterCount()));
+            } else {
+                textView.setBackgroundResource(R.drawable.ic_amap_defaultcluster);
+            }
+            bitmapDescriptor = BitmapDescriptorFactory.fromView(textView);
+            mLruCache.put(mCluster.getClusterCount(), bitmapDescriptor);
 //            }
         } else {//否则，设置名称
             RegionItem mRegionItem = (RegionItem) mCluster.getClusterItems().get(0);
@@ -410,7 +397,7 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
                 textView.setText(title);
                 textView.setGravity(Gravity.CENTER);
                 textView.setTextColor(Color.WHITE);
-                textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 12);
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
                 if (mClusterRender != null && mClusterRender.getDrawAble(mCluster.getClusterCount()) != null) {
                     textView.setBackgroundDrawable(mClusterRender.getDrawAble(mCluster.getClusterCount()));
                 } else {
@@ -421,6 +408,33 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
             }
         }
         return bitmapDescriptor;
+    }
+
+    /**
+     * 设置聚合title
+     *
+     * @param textView textView
+     * @param mCluster mCluster
+     */
+    private void setTitle(TextView textView, Cluster mCluster) {
+        String tile = String.valueOf(mCluster.getClusterCount());
+        //聚合一个点
+        if (HomeFragment.beanList != null && HomeFragment.beanList.size() < mCluster.getClusterCount() + 5) {
+            textView.setText(String.format("上海市\n%s套", tile));
+        } else {
+            RegionItem mRegionItem = (RegionItem) mCluster.getClusterItems().get(0);
+            if (mAMap.getCameraPosition().zoom < 10.5) {
+                textView.setText(String.format("%s\n%s套", mRegionItem.getDistricts(), tile));
+            } else {
+                String title;
+                if (mCluster.getClusterCount() <= 10) {
+                    title = mRegionItem.getStationName().length() > 5 ? mRegionItem.getStationName().substring(0, 5) + ".." : mRegionItem.getStationName();
+                } else {
+                    title = mRegionItem.getBusiness().length() > 5 ? mRegionItem.getBusiness().substring(0, 5) + ".." : mRegionItem.getBusiness();
+                }
+                textView.setText(String.format("%s\n%s套", title, tile));
+            }
+        }
     }
 
     /**

@@ -16,8 +16,11 @@ public class RegionItem implements ClusterItem {
     private String price;
     private int btype;
     private int buildingId;
+    private String stationName;
 
-    public RegionItem(LatLng latLng, int btype, int buildingId, String title, String mainPic, String districts, String business,String address,String price) {
+    public RegionItem(LatLng latLng, int btype, int buildingId, String title,
+                      String mainPic, String districts, String business,
+                      String stationName,String address,String price) {
         this.mLatLng = latLng;
         this.btype = btype;
         this.buildingId = buildingId;
@@ -27,6 +30,7 @@ public class RegionItem implements ClusterItem {
         this.business = business;
         this.address = address;
         this.price = price;
+        this.stationName = stationName;
     }
 
     @Override
@@ -64,5 +68,9 @@ public class RegionItem implements ClusterItem {
 
     public String getPrice() {
         return price;
+    }
+
+    public String getStationName() {
+        return stationName;
     }
 }

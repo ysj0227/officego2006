@@ -9,6 +9,40 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <com.officego.commonlib.view.ClearableEditText
+        android:visibility="gone"
+        android:id="@+id/et_search"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/dp_40"
+        android:layout_marginStart="@dimen/dp_30"
+        android:layout_marginTop="@dimen/dp_40"
+        android:layout_marginEnd="@dimen/dp_60"
+        android:background="@drawable/bg_shape"
+        android:drawableStart="@mipmap/ic_search_grey"
+        android:drawablePadding="@dimen/dp_3"
+        android:ellipsize="end"
+        android:gravity="center_vertical"
+        android:hint="@string/str_search_hint"
+        android:paddingLeft="@dimen/dp_10"
+        android:singleLine="true"
+        android:textColor="@color/text_66"
+        android:textSize="@dimen/sp_12" />
+
+    <RelativeLayout
+        android:id="@+id/rl_quit"
+        android:layout_width="@dimen/dp_60"
+        android:layout_height="@dimen/dp_60"
+        android:layout_alignTop="@id/et_search"
+        android:layout_alignBottom="@id/et_search"
+        android:layout_alignParentEnd="true">
+
+        <ImageView
+            android:layout_width="@dimen/dp_28"
+            android:layout_height="@dimen/dp_28"
+            android:layout_centerInParent="true"
+            android:background="@mipmap/ic_pro_quit" />
+    </RelativeLayout>
+
     <ImageView
         android:id="@+id/iv_location"
         android:layout_width="wrap_content"
@@ -19,18 +53,16 @@
         android:layout_marginBottom="@dimen/dp_110"
         android:background="@mipmap/ic_map_mine_location" />
 
-    <RelativeLayout
-        android:id="@+id/rl_quit"
-        android:layout_width="@dimen/dp_60"
-        android:layout_height="@dimen/dp_60"
-        android:layout_alignParentEnd="true"
-        android:layout_marginTop="@dimen/dp_10">
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_search_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/et_search"
+        android:layout_marginTop="@dimen/dp_10"
+        android:layout_marginStart="@dimen/dp_30"
+        android:layout_marginEnd="@dimen/dp_30"
+        android:layout_marginBottom="@dimen/dp_50"
+        android:background="@drawable/bg_shape"
+        android:visibility="gone" />
 
-        <ImageView
-            android:layout_width="@dimen/dp_28"
-            android:layout_height="@dimen/dp_28"
-            android:layout_centerInParent="true"
-            android:background="@mipmap/ic_pro_quit" />
-
-    </RelativeLayout>
 </RelativeLayout>
