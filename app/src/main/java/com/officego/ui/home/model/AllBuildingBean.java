@@ -182,6 +182,10 @@ public class AllBuildingBean {
         public static class BuildingMapBean {
             @SerializedName("stationNames")
             private List<String> stationNames;
+            @SerializedName("stationline")
+            private List<String> stationline;
+            @SerializedName("nearbySubwayTime")
+            private List<String> nearbySubwayTime;
 
             public List<String> getStationNames() {
                 return stationNames;
@@ -189,6 +193,22 @@ public class AllBuildingBean {
 
             public void setStationNames(List<String> stationNames) {
                 this.stationNames = stationNames;
+            }
+
+            public List<String> getStationline() {
+                return stationline;
+            }
+
+            public void setStationline(List<String> stationline) {
+                this.stationline = stationline;
+            }
+
+            public List<String> getNearbySubwayTime() {
+                return nearbySubwayTime;
+            }
+
+            public void setNearbySubwayTime(List<String> nearbySubwayTime) {
+                this.nearbySubwayTime = nearbySubwayTime;
             }
         }
     }

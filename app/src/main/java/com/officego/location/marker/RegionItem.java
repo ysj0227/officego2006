@@ -1,6 +1,7 @@
 package com.officego.location.marker;
 
 import com.amap.api.maps.model.LatLng;
+import com.officego.ui.home.model.AllBuildingBean;
 
 /**
  * Created by yiyi.qi on 16/10/10.
@@ -18,10 +19,12 @@ public class RegionItem implements ClusterItem {
     private int buildingId;
     private String stationName;
     private String houseCount;
+    private AllBuildingBean.DataBean.BuildingMapBean mapBean;
 
     public RegionItem(LatLng latLng, int btype, int buildingId, String title,
                       String mainPic, String districts, String business,
-                      String stationName,String address,String price,String houseCount) {
+                      String stationName,String address,String price,String houseCount,
+                      AllBuildingBean.DataBean.BuildingMapBean mapBean) {
         this.mLatLng = latLng;
         this.btype = btype;
         this.buildingId = buildingId;
@@ -33,6 +36,7 @@ public class RegionItem implements ClusterItem {
         this.price = price;
         this.stationName = stationName;
         this.houseCount = houseCount;
+        this.mapBean = mapBean;
     }
 
     @Override
@@ -78,5 +82,9 @@ public class RegionItem implements ClusterItem {
 
     public String getHouseCount() {
         return houseCount;
+    }
+
+    public AllBuildingBean.DataBean.BuildingMapBean getMapBean() {
+        return mapBean;
     }
 }

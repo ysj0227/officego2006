@@ -379,7 +379,7 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
             setTitle(textView, mCluster);
             textView.setGravity(Gravity.CENTER);
             textView.setTextColor(Color.WHITE);
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10);
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10F);
             if (mClusterRender != null && mClusterRender.getDrawAble(mCluster.getClusterCount()) != null) {
                 textView.setBackgroundDrawable(mClusterRender.getDrawAble(mCluster.getClusterCount()));
             } else {
@@ -399,7 +399,7 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
                 textView.setText(String.format("\n %s \n%s个房源\n", title, houseCount));
                 textView.setGravity(Gravity.CENTER);
                 textView.setTextColor(Color.WHITE);
-                textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11);
+                textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11F);
                 if (mClusterRender != null && mClusterRender.getDrawAble(mCluster.getClusterCount()) != null) {
                     textView.setBackgroundDrawable(mClusterRender.getDrawAble(mCluster.getClusterCount()));
                 } else {
@@ -425,7 +425,7 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
             textView.setText(String.format("上海市\n%s套", tile));
         } else {
             RegionItem mRegionItem = (RegionItem) mCluster.getClusterItems().get(0);
-            if (mAMap.getCameraPosition().zoom < 10.5) {
+            if (mAMap.getCameraPosition().zoom <= 10.5) {
                 textView.setText(String.format("%s\n%s套", mRegionItem.getDistricts(), tile));
             } else {
                 String title;

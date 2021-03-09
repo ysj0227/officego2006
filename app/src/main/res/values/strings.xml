@@ -98,4 +98,10 @@
     <string name="str_sms_login">短信登录</string>
     <string name="str_bind_phone">绑定手机号</string>
     <string name="str_video_player_exception">视频播放异常</string>
+
+    <string name="pay_success">支付成功</string>
+    <string name="pay_fail">支付失败</string>
+    <string name="pay_cancel">取消支付</string>
+    <string name="pay_error">支付错误</string>
+    <string name="pay_exception">支付异常</string>
 </resources>

@@ -97,6 +97,7 @@ public class ClusterActivity extends Activity implements ClusterRender,
             mAMap = mMapView.getMap();
             mAMap.setOnMapLoadedListener(this);
             //将地图移动到定位点 上海市
+           // mAMap.moveCamera(CameraUpdateFactory.zoomTo(10.3F));
             mAMap.moveCamera(CameraUpdateFactory.changeLatLng(new LatLng(31.22, 121.48)));
             //点击地图
             mAMap.setOnMapClickListener(latLng -> {
@@ -173,7 +174,7 @@ public class ClusterActivity extends Activity implements ClusterRender,
                             : bean.getBuildingMap().getStationNames().get(0);
                     LatLng latLng = new LatLng(lat, lon, false);
                     RegionItem regionItem = new RegionItem(latLng, btype, buildingId, title,
-                            mainPic, districts, business, stationName, address, price, houseCount);
+                            mainPic, districts, business, stationName, address, price, houseCount,bean.getBuildingMap());
                     items.add(regionItem);
                 }
                 mClusterOverlay = new ClusterOverlay(mAMap, items,
@@ -263,7 +264,7 @@ public class ClusterActivity extends Activity implements ClusterRender,
         recyclerView.setAdapter(new MapHouseAdapter(context, clusterItems));
         viewLayout.findViewById(R.id.btn_cancel).setOnClickListener(view -> dialog.dismiss());
         if (clusterItems.size() > 5) {
-            int height = getResources().getDimensionPixelSize(R.dimen.dp_108) * 5;
+            int height = getResources().getDimensionPixelSize(R.dimen.dp_108) * 4;
             CommonHelper.setLinearLayoutParams(recyclerView, height);
         }
         dialog.setContentView(viewLayout);

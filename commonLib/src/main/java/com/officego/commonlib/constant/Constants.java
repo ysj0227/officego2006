@@ -35,6 +35,7 @@ public class Constants {
     //微信传值
     public static final String WX_TYPE = "WX_TYPE";
     public static final String WX_DATA = "WX_DATA";
+    public static final String WX_PAY = "WX_PAY";
     //倒计时
     public final static int SMS_TIME = 6_1000;
 

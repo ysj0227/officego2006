@@ -27,9 +27,10 @@ import java.util.List;
 public class MapHouseAdapter extends CommonListAdapter<ClusterItem> {
 
     private Context context;
+
     public MapHouseAdapter(Context context, List<ClusterItem> list) {
         super(context, R.layout.dialog_map_list_item, list);
-        this.context=context;
+        this.context = context;
     }
 
     @SuppressLint({"SetTextI18n", "DefaultLocale"})
@@ -38,6 +39,7 @@ public class MapHouseAdapter extends CommonListAdapter<ClusterItem> {
         RoundImageView ivHouse = holder.getView(R.id.iv_house);
         TextView name = holder.getView(R.id.tv_house_name);
         TextView location = holder.getView(R.id.tv_location);
+        TextView tvLines = holder.getView(R.id.tv_lines);
         TextView tvPrice = holder.getView(R.id.tv_price);
         RegionItem mRegionItem = (RegionItem) bean;
         Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options())
@@ -55,6 +57,18 @@ public class MapHouseAdapter extends CommonListAdapter<ClusterItem> {
         } else if (btype == 2) {
             tvPrice.setText("¥" + price + "/位/月起");
         }
+        String line;
+        if (mRegionItem.getMapBean() != null && mRegionItem.getMapBean().getStationline().size() > 0) {
+            String workTime = mRegionItem.getMapBean().getNearbySubwayTime().get(0);
+            String stationLine = mRegionItem.getMapBean().getStationline().get(0);
+            String stationName = mRegionItem.getMapBean().getStationNames().get(0);
+            line = lines(workTime, stationLine, stationName);
+            tvLines.setVisibility(View.VISIBLE);
+        } else {
+            line = "";
+            tvLines.setVisibility(View.GONE);
+        }
+        tvLines.setText(line);
         holder.itemView.setOnClickListener(view -> {
             if (btype == Constants.TYPE_BUILDING) {
                 BuildingDetailsActivity_.intent(context)
@@ -64,5 +78,9 @@ public class MapHouseAdapter extends CommonListAdapter<ClusterItem> {
                         .mBuildingBean(BundleUtils.BuildingMessage(Constants.TYPE_JOINTWORK, buildingId)).start();
             }
         });
+    }
+
+    private String lines(String workTime, String stationLine, String stationName) {
+        return "步行" + workTime + "分钟到「" + stationLine + "号线 · " + stationName + "」";
     }
 }
