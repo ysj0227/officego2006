@@ -37,7 +37,9 @@ public class PoiAdapter extends CommonListAdapter<PoiItem> {
     @Override
     public void convert(ViewHolder holder, final PoiItem bean) {
         TextView tvName = holder.getView(R.id.tv_name);
+        TextView tvAddress = holder.getView(R.id.tv_address);
         tvName.setText(bean.getTitle());
+        tvAddress.setText(String.format("%s%s", bean.getAdName(), bean.getSnippet()));
         holder.itemView.setOnClickListener(view -> {
             if (listener != null) {
                 listener.poiItemOnClick(bean);

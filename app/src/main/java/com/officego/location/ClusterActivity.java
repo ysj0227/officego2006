@@ -28,9 +28,11 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.amap.api.maps.AMap;
 import com.amap.api.maps.CameraUpdateFactory;
 import com.amap.api.maps.MapView;
+import com.amap.api.maps.model.BitmapDescriptorFactory;
 import com.amap.api.maps.model.LatLng;
 import com.amap.api.maps.model.LatLngBounds;
 import com.amap.api.maps.model.Marker;
+import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.services.core.PoiItem;
 import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
@@ -55,14 +57,18 @@ import java.util.Map;
 
 public class ClusterActivity extends Activity implements ClusterRender,
         AMap.OnMapLoadedListener, ClusterClickListener,
-        TextWatcher, PoiSearch.OnPoiSearchListener,PoiAdapter.PoiListener {
+        TextWatcher, PoiSearch.OnPoiSearchListener, PoiAdapter.PoiListener {
 
     private MapView mMapView;
     private RelativeLayout rlQuit;
     private ImageView ivLocation;
     private ClearableEditText etSearch;
     private RecyclerView rvSearchList;
+
     private AMap mAMap;
+    private PoiSearch poiSearch;
+    private Marker marker;
+    private Marker locationMarker;
 
     private int clusterRadius = 100;
     private Map<Integer, Drawable> mBackDrawAbles = new HashMap<>();
@@ -82,33 +88,43 @@ public class ClusterActivity extends Activity implements ClusterRender,
         mMapView.onCreate(savedInstanceState);
         rvSearchList.setLayoutManager(new LinearLayoutManager(context));
         init();
+        initClick();
     }
 
     private void init() {
-        etSearch.addTextChangedListener(this);
-        rlQuit.setOnClickListener(view -> finish());
-        ivLocation.setOnClickListener(view -> {
-            if (!TextUtils.isEmpty(Constants.LATITUDE)) {
-                mAMap.moveCamera(CameraUpdateFactory.zoomTo(17));
-                mAMap.moveCamera(CameraUpdateFactory.changeLatLng(new
-                        LatLng(Double.parseDouble(Constants.LATITUDE),
-                        Double.parseDouble(Constants.LONGITUDE))));
-            }
-        });
         if (mAMap == null) {
             // 初始化地图
             mAMap = mMapView.getMap();
             mAMap.setOnMapLoadedListener(this);
             //将地图移动到定位点 上海市
             mAMap.moveCamera(CameraUpdateFactory.changeLatLng(new LatLng(31.22, 121.48)));
+            //点击地图
+            mAMap.setOnMapClickListener(latLng -> {
+                if (rvSearchList.getVisibility() == View.VISIBLE) {
+                    rvSearchList.setVisibility(View.GONE);
+                }
+            });
         }
     }
 
-    private PoiSearch poiSearch;
+    private void initClick() {
+        etSearch.addTextChangedListener(this);
+        rlQuit.setOnClickListener(view -> finish());
+        //定位
+        ivLocation.setOnClickListener(view -> {
+            if (!TextUtils.isEmpty(Constants.LATITUDE) && mAMap != null) {
+                LatLng latLng = new LatLng(Double.parseDouble(Constants.LATITUDE),
+                        Double.parseDouble(Constants.LONGITUDE));
+                mAMap.moveCamera(CameraUpdateFactory.zoomTo(17));
+                mAMap.moveCamera(CameraUpdateFactory.changeLatLng(latLng));
+                addMarker(latLng);
+            }
+        });
+    }
 
     private void poiSearch(String keyWord) {
         PoiSearch.Query query = new PoiSearch.Query(keyWord, "", "021");
-        query.setPageSize(20);// 设置每页最多返回poiitem
+        query.setPageSize(25);// 设置每页最多返回poiitem
         query.setPageNum(1);//设置查询页码
         poiSearch = new PoiSearch(this, query);
         poiSearch.setOnPoiSearchListener(this);
@@ -283,13 +299,10 @@ public class ClusterActivity extends Activity implements ClusterRender,
     }
 
     private PoiAdapter adapter;
-    private final List<PoiItem> keyList = new ArrayList<>();
 
     @Override
     public void onPoiSearched(PoiResult poiResult, int i) {
         List<PoiItem> list = poiResult.getPois();
-        keyList.clear();
-        keyList.addAll(list);
         if (adapter == null) {
             adapter = new PoiAdapter(context, list);
             adapter.setListener(ClusterActivity.this);
@@ -308,9 +321,32 @@ public class ClusterActivity extends Activity implements ClusterRender,
     @Override
     public void poiItemOnClick(PoiItem data) {
         rvSearchList.setVisibility(View.GONE);
-        mAMap.moveCamera(CameraUpdateFactory.zoomTo(14));
-        mAMap.moveCamera(CameraUpdateFactory.changeLatLng(new
-                LatLng(data.getLatLonPoint().getLatitude(),
-                data.getLatLonPoint().getLongitude())));
+        if (mAMap != null) {
+            LatLng latLng = new LatLng(data.getLatLonPoint().getLatitude(),
+                    data.getLatLonPoint().getLongitude());
+            mAMap.moveCamera(CameraUpdateFactory.zoomTo(15.5F));
+            mAMap.moveCamera(CameraUpdateFactory.changeLatLng(latLng));
+            addSearchMarker(latLng);
+        }
+    }
+
+    private void addMarker(LatLng latLng) {
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(latLng);
+        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_set_location));//大头针图标
+        if (marker != null) {
+            marker.remove();
+        }
+        marker = mAMap.addMarker(markerOptions);
+    }
+
+    private void addSearchMarker(LatLng latLng) {
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(latLng);
+        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_amap_mark));//大头针图标
+        if (locationMarker != null) {
+            locationMarker.remove();
+        }
+        locationMarker = mAMap.addMarker(markerOptions);
     }
 }

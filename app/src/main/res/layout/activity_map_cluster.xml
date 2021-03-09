@@ -25,8 +25,8 @@
         android:hint="@string/str_search_hint"
         android:paddingLeft="@dimen/dp_10"
         android:singleLine="true"
-        android:textColor="@color/text_66"
-        android:textSize="@dimen/sp_12" />
+        android:textColor="@color/text_33"
+        android:textSize="@dimen/sp_13" />
 
     <RelativeLayout
         android:id="@+id/rl_quit"
