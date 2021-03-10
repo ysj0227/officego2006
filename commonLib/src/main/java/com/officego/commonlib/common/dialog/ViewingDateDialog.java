@@ -1,7 +1,9 @@
 package com.officego.commonlib.common.dialog;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Context;
+import android.text.TextUtils;
 import android.util.DisplayMetrics;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -16,6 +18,8 @@ import com.officego.commonlib.utils.ListUtils;
 import com.officego.commonlib.utils.ToastUtils;
 import com.officego.commonlib.view.loopview.LoopView;
 
+import java.text.ParsePosition;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 
@@ -78,6 +82,7 @@ public class ViewingDateDialog {
         LoopView lvWheelMinute = viewLayout.findViewById(R.id.lv_wheel_minute);
         TextView cancel = viewLayout.findViewById(R.id.tv_cancel);
         TextView sure = viewLayout.findViewById(R.id.tv_sure);
+        TextView tvWeek = viewLayout.findViewById(R.id.tv_week);
         //不循环
         lvWheelYear.setNotLoop();
         lvWheelMonth.setNotLoop();
@@ -87,13 +92,16 @@ public class ViewingDateDialog {
         //滚动监听
         lvWheelYear.setListener(index -> {
             year = ListUtils.yearList().get(index);
+            setWeek(tvWeek);
         });
         lvWheelMonth.setListener(index -> {
             month = ListUtils.monthList().get(index);
             lvWheelDay.setItems(ListUtils.dayList(year, month));
+            setWeek(tvWeek);
         });
         lvWheelDay.setListener(index -> {
             days = ListUtils.dayList(year, month).get(index);
+            setWeek(tvWeek);
         });
         lvWheelHour.setListener(index -> {
             hour = ListUtils.hoursList().get(index);
@@ -114,6 +122,7 @@ public class ViewingDateDialog {
         month = ListUtils.monthList().get(DateTimeUtils.getMonth(mDate) - 1);
         lvWheelDay.setInitPosition(DateTimeUtils.getDay(mDate) - 1);
         days = ListUtils.dayList(year, month).get(DateTimeUtils.getDay(mDate) - 1);
+        setWeek(tvWeek);
         int currentHour = DateTimeUtils.getHour(mDate);
         if (currentHour > 0 && currentHour < 23) {
             lvWheelHour.setInitPosition(currentHour + 1);
@@ -138,5 +147,25 @@ public class ViewingDateDialog {
             dialog.dismiss();
             this.sureListener.selectedDate(strDate);
         });
+    }
+
+    //根据日期取得星期几
+    private SimpleDateFormat formatter, formatterWeek;
+
+    @SuppressLint("SimpleDateFormat")
+    private void setWeek(TextView textView) {
+        if (!TextUtils.isEmpty(year) && !TextUtils.isEmpty(month) && !TextUtils.isEmpty(days)) {
+            String str = year + "-" + month + "-" + days;
+            if (formatter == null) {
+                formatter = new SimpleDateFormat("yyyy-MM-dd");
+            }
+            if (formatterWeek == null) {
+                formatterWeek = new SimpleDateFormat("EEEE");
+            }
+            ParsePosition pos = new ParsePosition(0);
+            Date date = formatter.parse(str, pos);
+            String week = formatterWeek.format(date);
+            textView.setText(week);
+        }
     }
 }

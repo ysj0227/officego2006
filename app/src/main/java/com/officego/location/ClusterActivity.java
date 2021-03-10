@@ -125,7 +125,7 @@ public class ClusterActivity extends Activity implements ClusterRender,
 
     private void poiSearch(String keyWord) {
         PoiSearch.Query query = new PoiSearch.Query(keyWord, "", "021");
-        query.setPageSize(25);// 设置每页最多返回poiitem
+        query.setPageSize(30);// 设置每页最多返回poiitem
         query.setPageNum(1);//设置查询页码
         poiSearch = new PoiSearch(this, query);
         poiSearch.setOnPoiSearchListener(this);

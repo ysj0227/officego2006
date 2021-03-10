@@ -22,12 +22,13 @@
             android:textSize="@dimen/sp_16" />
 
         <TextView
+            android:id="@+id/tv_week"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
+            android:layout_marginStart="@dimen/dp_3"
             android:layout_centerHorizontal="true"
             android:layout_centerVertical="true"
-            android:text="@string/str_viewing_house"
-            android:textColor="@color/text_normal"
+            android:textColor="@color/common_blue_main"
             android:textSize="@dimen/sp_16" />
 
         <TextView
@@ -44,12 +45,12 @@
     </RelativeLayout>
 
     <LinearLayout
-        android:layout_marginBottom="@dimen/dp_40"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/rl_title"
         android:layout_marginLeft="@dimen/dp_10"
-        android:layout_marginRight="@dimen/dp_10">
+        android:layout_marginRight="@dimen/dp_10"
+        android:layout_marginBottom="@dimen/dp_40">
 
         <com.officego.commonlib.view.loopview.LoopView
             android:id="@+id/lv_wheel_year"
