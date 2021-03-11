@@ -2,6 +2,7 @@ package com.officego.ui.home;
 
 import android.content.Context;
 
+import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.h5.WebViewBannerActivity_;
@@ -26,7 +27,8 @@ public class CommonBannerToActivity {
             if (pageType == 5) {//会议室
                 WebViewMeetingActivity_.intent(context).start();
             } else if (pageType == 6) {//定制找房
-                CustomisedHouseActivity_.intent(context).start();
+                SensorsTrack.customisedHouse(2);
+                CustomisedHouseActivity_.intent(context).enter(2).start();
             }
             if (pageId != 0) {
                 if (pageType == 1) {
@@ -56,7 +58,8 @@ public class CommonBannerToActivity {
             if (pageType == 5) {//会议室
                 WebViewMeetingActivity_.intent(context).startForResult(requestCode);
             }else if (pageType == 6) {//定制找房
-                CustomisedHouseActivity_.intent(context).startForResult(requestCode);
+                SensorsTrack.customisedHouse(2);
+                CustomisedHouseActivity_.intent(context).enter(2).startForResult(requestCode);
             }
             if (pageId != 0) {
                 if (pageType == 1) {

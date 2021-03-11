@@ -688,4 +688,49 @@ public class SensorsTrack {
             e.printStackTrace();
         }
     }
+
+    /**
+     * 点击定制找房入口
+     */
+    public static void customisedHouse(int enter) {
+        try {
+            String str;
+            if (enter == 0) {
+                str = "横幅";
+            } else if (enter == 1) {
+                str = "弹窗";
+            } else {
+                str = "轮播";
+            }
+            JSONObject properties = new JSONObject();
+            properties.put("uid", TextUtils.isEmpty(SpUtils.getUserId()) ? "" : SpUtils.getUserId());
+            properties.put("imei", TextUtils.isEmpty(SpUtils.getImei()) ? "" : SpUtils.getImei());
+            properties.put("clickLocal", "");
+            SensorsDataAPI.sharedInstance().track("click_find_room_button", properties);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+    /**
+     * 点击定制找房提交
+     */
+    public static void customisedHouseSubmit(int enter) {
+        try {
+            String str;
+            if (enter == 0) {
+                str = "横幅";
+            } else if (enter == 1) {
+                str = "弹窗";
+            } else {
+                str = "轮播";
+            }
+            JSONObject properties = new JSONObject();
+            properties.put("uid", TextUtils.isEmpty(SpUtils.getUserId()) ? "" : SpUtils.getUserId());
+            properties.put("clickLocal", str);
+            SensorsDataAPI.sharedInstance().track("save_find_room_button", properties);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
 }

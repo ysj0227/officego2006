@@ -27,6 +27,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.officego.R;
+import com.officego.alipay.PayDemoActivity;
 import com.officego.commonlib.base.BaseMvpFragment;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.analytics.SensorsTrack;
@@ -54,6 +55,7 @@ import com.officego.ui.home.model.TodayReadBean;
 import com.officego.ui.home.presenter.HomePresenter;
 import com.officego.utils.ImageLoaderUtils;
 import com.officego.utils.SuperSwipeRefreshLayout;
+import com.officego.wxapi.WXPayEntryActivity;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -179,9 +181,39 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         getBuildingList();
     }
 
+    @Click(R.id.btn_wx)
+    void wxClick() {
+        gotoWxPayActivity("");
+    }
+    //跳转微信支付
+    private void gotoWxPayActivity(String data) {
+        if (!CommonHelper.isInstallWechat(mActivity)) {
+            shortTip(R.string.str_need_install_wx);
+            return;
+        }
+        //是否支持微信支付
+        boolean isPaySupported = Constants.WXapi.getWXAppSupportAPI() >=
+                com.tencent.mm.opensdk.constants.Build.PAY_SUPPORTED_SDK_INT;
+        if (isPaySupported) {
+            Intent intent = new Intent(mActivity, WXPayEntryActivity.class);
+            intent.putExtra(Constants.WX_PAY, data);
+            startActivity(intent);
+        } else {
+            shortTip(R.string.wx_str_no_support_pay);
+        }
+    }
+
+    @Click(R.id.btn_alipay)
+    void alipayClick() {
+        Intent intent = new Intent(mActivity, PayDemoActivity.class);
+        startActivity(intent);
+    }
+
     @Click(R.id.iv_customised_house)
     void customisedHouseClick() {
-        CustomisedHouseActivity_.intent(mActivity).start();
+        SensorsTrack.customisedHouse(0);
+        CustomisedHouseActivity_.intent(mActivity)
+                .enter(0).start();
     }
 
     //楼盘列表数据
@@ -474,12 +506,13 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
                 dialogWindow.setGravity(Gravity.CENTER);
                 viewLayout.findViewById(R.id.btn_know_more).setOnClickListener(v -> {
                     dialog.dismiss();
-                    CustomisedHouseActivity_.intent(mActivity).start();
+                    SensorsTrack.customisedHouse(1);
+                    CustomisedHouseActivity_.intent(mActivity).enter(1).start();
                 });
                 viewLayout.findViewById(R.id.rl_exit).setOnClickListener(v -> dialog.dismiss());
                 dialog.setCanceledOnTouchOutside(false);
                 dialog.show();
-            }, 8000);
+            }, 12000);
         }
     }
 }

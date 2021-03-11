@@ -260,16 +260,33 @@
             tools:ignore="ContentDescription" />
     </RelativeLayout>
 
-
-    <Button
-        android:id="@+id/btn_map_house"
-        android:layout_width="@dimen/dp_30"
-        android:layout_height="@dimen/dp_30"
+    <RadioGroup
+        android:background="@drawable/bg_shape"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_margin="@dimen/dp_20"
-        android:background="@mipmap/ic_map_find_house"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintBottom_toBottomOf="parent"/>
+        android:orientation="vertical"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintStart_toStartOf="parent">
 
+        <RadioButton
+            android:id="@+id/btn_map_house"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="地图" />
+
+        <RadioButton
+            android:id="@+id/btn_wx"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="微信" />
+
+        <RadioButton
+            android:id="@+id/btn_alipay"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="支付宝" />
+    </RadioGroup>
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>

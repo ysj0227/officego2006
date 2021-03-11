@@ -525,5 +525,18 @@
             android:name=".location.ClusterActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+        <!-- 微信支付-->
+        <activity
+            android:name=".wxapi.WXPayEntryActivity"
+            android:exported="true"
+            android:launchMode="singleTop"
+            android:theme="@android:style/Theme.Translucent">
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <data android:scheme="${WX_APP_ID}" />
+            </intent-filter>
+        </activity>
+        <activity android:name=".alipay.PayDemoActivity" />
     </application>
 </manifest>

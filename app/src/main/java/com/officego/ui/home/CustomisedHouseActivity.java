@@ -17,6 +17,7 @@ import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.GlideUtils;
@@ -32,6 +33,7 @@ import com.officego.utils.CommonList;
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 import java.text.ParseException;
@@ -83,6 +85,8 @@ public class CustomisedHouseActivity extends BaseMvpActivity<WantFindPresenter>
     CircleImage ivRight2;
     @ViewById(R.id.iv_right3)
     CircleImage ivRight3;
+    @Extra
+    int enter;
 
     private String mPerson = "", mRent = "", mFactor = "";
     private Map<Integer, String> factorMap = new HashMap<>();
@@ -139,6 +143,7 @@ public class CustomisedHouseActivity extends BaseMvpActivity<WantFindPresenter>
             shortTip("还有资料没填哦～");
             return;
         }
+        SensorsTrack.customisedHouseSubmit(enter);
         mPresenter.customisedHouseSave(mPerson, mRent, mFactor);
     }
 
