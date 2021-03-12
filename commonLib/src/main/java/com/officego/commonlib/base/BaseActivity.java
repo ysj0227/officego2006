@@ -1,9 +1,7 @@
 package com.officego.commonlib.base;
 
-import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
 import android.content.pm.ActivityInfo;
 import android.content.res.Resources;
 import android.os.Bundle;
@@ -41,8 +39,8 @@ public abstract class BaseActivity extends FragmentActivity
         }
         initDialog();
         initView();
+        initView(savedInstanceState);
         BaseApplication.getInstance().addActivity(this);
-//        registerBroadCast();
     }
 
     protected int activityLayoutId() {
@@ -50,6 +48,10 @@ public abstract class BaseActivity extends FragmentActivity
     }
 
     protected void initView() {
+
+    }
+
+    protected void initView(Bundle savedInstanceState) {
 
     }
 
@@ -66,7 +68,6 @@ public abstract class BaseActivity extends FragmentActivity
         hideLoadingDialog();    //防止窗口泄漏
         loadingDialog = null;
         removeObserver();
-//        unregisterBroadCast();
     }
 
     @Override
@@ -169,10 +170,11 @@ public abstract class BaseActivity extends FragmentActivity
             }
         });
     }
- /**
+
+    /**
      * 显示加载框,content为null是不可点击消失
      */
-    public void showLoadingDialog(final String text, final int textColor,final int bgColor) {
+    public void showLoadingDialog(final String text, final int textColor, final int bgColor) {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -181,7 +183,7 @@ public abstract class BaseActivity extends FragmentActivity
                 }
                 loadingDialog.setCancelable(false);
                 if (!TextUtils.isEmpty(text))
-                    loadingDialog.setTipBackground(text, textColor,bgColor);
+                    loadingDialog.setTipBackground(text, textColor, bgColor);
                 loadingDialog.show();
             }
         });
@@ -346,26 +348,4 @@ public abstract class BaseActivity extends FragmentActivity
     }
 
     // ============================= 通知相关 end=============================
-
-    private BroadcastReceiver mBroadcastReceiver;
-
-    /**
-     * 注册广播
-     */
-    protected void registerBroadCast() {
-        if (mBroadcastReceiver == null) {
-            mBroadcastReceiver = new MyBroadcastReceiver(this);
-        }
-        IntentFilter intentFilter = new IntentFilter();
-        intentFilter.addAction("com.officego");
-        intentFilter.addAction("android.intent.action.DOWNLOAD_COMPLETED");
-        registerReceiver(mBroadcastReceiver, intentFilter);
-    }
-
-    //注销广播
-    protected void unregisterBroadCast() {
-        if (mBroadcastReceiver != null) {
-            unregisterReceiver(mBroadcastReceiver);
-        }
-    }
 }

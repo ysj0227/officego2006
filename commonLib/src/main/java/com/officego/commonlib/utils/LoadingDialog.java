@@ -9,6 +9,7 @@ import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.officego.commonlib.R;
+import com.officego.commonlib.utils.log.LogCat;
 
 
 /**

@@ -26,6 +26,7 @@ import com.amap.api.maps.model.MarkerOptions;
 import com.amap.api.maps.model.animation.AlphaAnimation;
 import com.amap.api.maps.model.animation.Animation;
 import com.officego.R;
+import com.officego.config.DataConfig;
 import com.officego.ui.home.HomeFragment;
 
 import java.util.ArrayList;
@@ -421,7 +422,7 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
     private void setTitle(TextView textView, Cluster mCluster) {
         String tile = String.valueOf(mCluster.getClusterCount());
         //聚合一个点
-        if (HomeFragment.beanList != null && HomeFragment.beanList.size() < mCluster.getClusterCount() + 5) {
+        if (DataConfig.mapList != null && DataConfig.mapList.size() < mCluster.getClusterCount() + 5) {
             textView.setText(String.format("上海市\n%s套", tile));
         } else {
             RegionItem mRegionItem = (RegionItem) mCluster.getClusterItems().get(0);

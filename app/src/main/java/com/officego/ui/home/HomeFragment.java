@@ -32,7 +32,6 @@ import com.officego.commonlib.base.BaseMvpFragment;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.constant.Constants;
-import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.update.VersionDialog;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.NetworkUtils;
@@ -40,13 +39,11 @@ import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.h5.WebViewIdentityActivity_;
 import com.officego.h5.WebViewMeetingActivity_;
 import com.officego.location.ClusterActivity;
-import com.officego.rpc.OfficegoApi;
 import com.officego.ui.adapter.BrandAdapter;
 import com.officego.ui.adapter.HomeAdapter;
 import com.officego.ui.adapter.NewsAdapter;
 import com.officego.ui.home.animation.CustomRotateAnim;
 import com.officego.ui.home.contract.HomeContract;
-import com.officego.ui.home.model.AllBuildingBean;
 import com.officego.ui.home.model.BannerBean;
 import com.officego.ui.home.model.BrandRecommendBean;
 import com.officego.ui.home.model.HomeHotBean;
@@ -178,13 +175,17 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
 
     @Click(R.id.btn_map_house)
     void mapHouseClick() {
-        getBuildingList();
+        if (isFastClick(1200)) {
+            return;
+        }
+        openActivity(mActivity, ClusterActivity.class);
     }
 
     @Click(R.id.btn_wx)
     void wxClick() {
         gotoWxPayActivity("");
     }
+
     //跳转微信支付
     private void gotoWxPayActivity(String data) {
         if (!CommonHelper.isInstallWechat(mActivity)) {
@@ -194,19 +195,18 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         //是否支持微信支付
         boolean isPaySupported = Constants.WXapi.getWXAppSupportAPI() >=
                 com.tencent.mm.opensdk.constants.Build.PAY_SUPPORTED_SDK_INT;
-        if (isPaySupported) {
-            Intent intent = new Intent(mActivity, WXPayEntryActivity.class);
-            intent.putExtra(Constants.WX_PAY, data);
-            startActivity(intent);
-        } else {
+        if (!isPaySupported) {
             shortTip(R.string.wx_str_no_support_pay);
+            return;
         }
+        Intent intent = new Intent(mActivity, WXPayEntryActivity.class);
+        intent.putExtra(Constants.WX_PAY, data);
+        startActivity(intent);
     }
 
     @Click(R.id.btn_alipay)
     void alipayClick() {
-        Intent intent = new Intent(mActivity, PayDemoActivity.class);
-        startActivity(intent);
+        openActivity(mActivity, PayDemoActivity.class);
     }
 
     @Click(R.id.iv_customised_house)
@@ -214,39 +214,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         SensorsTrack.customisedHouse(0);
         CustomisedHouseActivity_.intent(mActivity)
                 .enter(0).start();
-    }
-
-    //楼盘列表数据
-    public static List<AllBuildingBean.DataBean> beanList;
-
-    public void getBuildingList() {
-        if (beanList != null) {
-            hideLoadingDialog();
-            Intent intent = new Intent();
-            intent.setClass(mActivity, ClusterActivity.class);
-            startActivity(intent);
-            return;
-        }
-        showLoadingDialog("加载地图房源中...", getResources().getColor(R.color.common_blue_main),
-                R.drawable.bg_solid_gray_e5_corner12);
-        OfficegoApi.getInstance().getBuildingList(new RetrofitCallback<List<AllBuildingBean.DataBean>>() {
-            @Override
-            public void onSuccess(int code, String msg, List<AllBuildingBean.DataBean> data) {
-                if (beanList != null) {
-                    beanList.clear();
-                }
-                beanList = data;
-                hideLoadingDialog();
-                Intent intent = new Intent();
-                intent.setClass(mActivity, ClusterActivity.class);
-                startActivity(intent);
-            }
-
-            @Override
-            public void onFail(int code, String msg, List<AllBuildingBean.DataBean> data) {
-                hideLoadingDialog();
-            }
-        });
     }
 
     @Click(R.id.rl_joint_work)

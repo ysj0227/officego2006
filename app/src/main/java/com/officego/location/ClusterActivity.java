@@ -1,6 +1,5 @@
 package com.officego.location;
 
-import android.app.Activity;
 import android.app.Dialog;
 import android.content.Context;
 import android.graphics.Bitmap;
@@ -37,17 +36,20 @@ import com.amap.api.services.core.PoiItem;
 import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
 import com.officego.R;
+import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.view.ClearableEditText;
+import com.officego.config.DataConfig;
 import com.officego.location.marker.ClusterClickListener;
 import com.officego.location.marker.ClusterItem;
 import com.officego.location.marker.ClusterOverlay;
 import com.officego.location.marker.ClusterRender;
 import com.officego.location.marker.RegionItem;
+import com.officego.rpc.OfficegoApi;
 import com.officego.ui.adapter.MapHouseAdapter;
 import com.officego.ui.adapter.PoiAdapter;
-import com.officego.ui.home.HomeFragment;
 import com.officego.ui.home.model.AllBuildingBean;
 
 import java.util.ArrayList;
@@ -55,7 +57,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class ClusterActivity extends Activity implements ClusterRender,
+public class ClusterActivity extends BaseActivity implements ClusterRender,
         AMap.OnMapLoadedListener, ClusterClickListener,
         TextWatcher, PoiSearch.OnPoiSearchListener, PoiAdapter.PoiListener {
 
@@ -76,9 +78,13 @@ public class ClusterActivity extends Activity implements ClusterRender,
     private Context context;
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_map_cluster);
+    protected int activityLayoutId() {
+        return R.layout.activity_map_cluster;
+    }
+
+    @Override
+    protected void initView(Bundle savedInstanceState) {
+        super.initView(savedInstanceState);
         context = ClusterActivity.this;
         mMapView = findViewById(R.id.map);
         rlQuit = findViewById(R.id.rl_quit);
@@ -97,7 +103,7 @@ public class ClusterActivity extends Activity implements ClusterRender,
             mAMap = mMapView.getMap();
             mAMap.setOnMapLoadedListener(this);
             //将地图移动到定位点 上海市
-           // mAMap.moveCamera(CameraUpdateFactory.zoomTo(10.3F));
+            // mAMap.moveCamera(CameraUpdateFactory.zoomTo(10.3F));
             mAMap.moveCamera(CameraUpdateFactory.changeLatLng(new LatLng(31.22, 121.48)));
             //点击地图
             mAMap.setOnMapClickListener(latLng -> {
@@ -121,6 +127,15 @@ public class ClusterActivity extends Activity implements ClusterRender,
                 addMarker(latLng);
             }
         });
+    }
+
+    @Override
+    public void onMapLoaded() {
+        new Thread() {
+            public void run() {
+                getMapList();
+            }
+        }.start();
     }
 
     private void poiSearch(String keyWord) {
@@ -149,49 +164,12 @@ public class ClusterActivity extends Activity implements ClusterRender,
     }
 
     @Override
-    public void onMapLoaded() {
-        new Thread() {
-            public void run() {
-                List<ClusterItem> items = new ArrayList<ClusterItem>();
-                for (int i = 0; i < HomeFragment.beanList.size(); i++) {
-                    AllBuildingBean.DataBean bean = HomeFragment.beanList.get(i);
-                    double lat = Double.parseDouble(bean.getLatitude());
-                    double lon = Double.parseDouble(bean.getLongitude());
-                    int btype = bean.getBtype();
-                    int buildingId = bean.getId();
-                    String title = (btype == Constants.TYPE_BUILDING) ? bean.getBuildingName()
-                            : bean.getBranchesName();
-                    String mainPic = bean.getMainPic();
-                    String districts = bean.getDistricts();
-                    String business = TextUtils.equals("其他", bean.getAreas()) ? "附近" : bean.getAreas();
-                    String address = bean.getAddress();
-                    String price = bean.getMinDayPrice();
-                    String houseCount = bean.getHouseCount();
-                    String stationName = bean.getBuildingMap() == null ||
-                            bean.getBuildingMap().getStationNames() == null ||
-                            bean.getBuildingMap().getStationNames().size() == 0 ||
-                            TextUtils.isEmpty(bean.getBuildingMap().getStationNames().get(0)) ? business
-                            : bean.getBuildingMap().getStationNames().get(0);
-                    LatLng latLng = new LatLng(lat, lon, false);
-                    RegionItem regionItem = new RegionItem(latLng, btype, buildingId, title,
-                            mainPic, districts, business, stationName, address, price, houseCount,bean.getBuildingMap());
-                    items.add(regionItem);
-                }
-                mClusterOverlay = new ClusterOverlay(mAMap, items,
-                        CommonHelper.dp2px(context, clusterRadius), context);
-                mClusterOverlay.setClusterRenderer(ClusterActivity.this);
-                mClusterOverlay.setOnClusterClickListener(ClusterActivity.this);
-            }
-        }.start();
-    }
-
-    @Override
     public void onClick(Marker marker, List<ClusterItem> clusterItems) {
         if (clusterItems != null) {
             if (clusterItems.size() == 1) {
                 houseListDialog(this, clusterItems);
                 return;
-            } else if (clusterItems.size() > 1 && clusterItems.size() <= 10) {
+            } else if (clusterItems.size() > 1 && clusterItems.size() <= 6) {
                 houseListDialog(this, clusterItems);
             }
         }
@@ -349,5 +327,62 @@ public class ClusterActivity extends Activity implements ClusterRender,
             locationMarker.remove();
         }
         locationMarker = mAMap.addMarker(markerOptions);
+    }
+
+    public void getMapList() {
+        if (DataConfig.mapList == null) {
+            showLoadingDialog("加载地图房源中...", getResources().getColor(R.color.common_blue_main),
+                    R.drawable.bg_solid_gray_e5_corner12);
+            OfficegoApi.getInstance().getBuildingList(new RetrofitCallback<List<AllBuildingBean.DataBean>>() {
+                @Override
+                public void onSuccess(int code, String msg, List<AllBuildingBean.DataBean> data) {
+                    if (DataConfig.mapList != null) {
+                        DataConfig.mapList.clear();
+                    }
+                    DataConfig.mapList = data;
+                    setMapData();
+                    hideLoadingDialog();
+                }
+
+                @Override
+                public void onFail(int code, String msg, List<AllBuildingBean.DataBean> data) {
+                    hideLoadingDialog();
+                }
+            });
+        } else {
+            setMapData();
+        }
+    }
+
+    private void setMapData() {
+        List<ClusterItem> items = new ArrayList<>();
+        for (int i = 0; i < DataConfig.mapList.size(); i++) {
+            AllBuildingBean.DataBean bean = DataConfig.mapList.get(i);
+            double lat = Double.parseDouble(bean.getLatitude());
+            double lon = Double.parseDouble(bean.getLongitude());
+            int btype = bean.getBtype();
+            int buildingId = bean.getId();
+            String title = (btype == Constants.TYPE_BUILDING) ? bean.getBuildingName()
+                    : bean.getBranchesName();
+            String mainPic = bean.getMainPic();
+            String districts = bean.getDistricts();
+            String business = TextUtils.equals("其他", bean.getAreas()) ? "附近" : bean.getAreas();
+            String address = bean.getAddress();
+            String price = bean.getMinDayPrice();
+            String houseCount = bean.getHouseCount();
+            String stationName = bean.getBuildingMap() == null ||
+                    bean.getBuildingMap().getStationNames() == null ||
+                    bean.getBuildingMap().getStationNames().size() == 0 ||
+                    TextUtils.isEmpty(bean.getBuildingMap().getStationNames().get(0)) ? business
+                    : bean.getBuildingMap().getStationNames().get(0);
+            LatLng latLng = new LatLng(lat, lon, false);
+            RegionItem regionItem = new RegionItem(latLng, btype, buildingId, title,
+                    mainPic, districts, business, stationName, address, price, houseCount, bean.getBuildingMap());
+            items.add(regionItem);
+        }
+        mClusterOverlay = new ClusterOverlay(mAMap, items,
+                CommonHelper.dp2px(context, clusterRadius), context);
+        mClusterOverlay.setClusterRenderer(ClusterActivity.this);
+        mClusterOverlay.setOnClusterClickListener(ClusterActivity.this);
     }
 }
