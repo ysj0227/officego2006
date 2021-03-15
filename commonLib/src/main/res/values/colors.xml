@@ -45,6 +45,7 @@
     <color name="c_black">#000000</color>            <!--黑色-->
     <color name="trans_bg">#44000000</color>
     <color name="trans_common_35">#4D353B3B</color>   <!--透明度50%-->
+    <color name="trans_common_60">#99353B3B</color>   <!--透明度80%-->
     <color name="common_777E8C">#A3777E8C</color>
     <!--其他通用-->
     <color name="common_bg">#FAFAFA</color>          <!--背景-->

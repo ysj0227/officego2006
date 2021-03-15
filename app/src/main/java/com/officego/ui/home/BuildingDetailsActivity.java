@@ -2,9 +2,9 @@ package com.officego.ui.home;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
-import android.content.pm.ActivityInfo;
 import android.graphics.drawable.Drawable;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -30,6 +30,17 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.amap.api.maps.AMap;
+import com.amap.api.maps.CameraUpdateFactory;
+import com.amap.api.maps.MapView;
+import com.amap.api.maps.model.BitmapDescriptorFactory;
+import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.Marker;
+import com.amap.api.maps.model.MarkerOptions;
+import com.amap.api.services.core.LatLonPoint;
+import com.amap.api.services.core.PoiItem;
+import com.amap.api.services.poisearch.PoiResult;
+import com.amap.api.services.poisearch.PoiSearch;
 import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
@@ -51,9 +62,12 @@ import com.officego.commonlib.view.LabelsView;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.config.ConditionConfig;
 import com.officego.h5.WebViewVRActivity_;
+import com.officego.location.ClusterActivity;
 import com.officego.ui.adapter.BuildingInfoAdapter;
 import com.officego.ui.adapter.HouseItemAllAdapter;
 import com.officego.ui.adapter.IndependentAllChildAdapter;
+import com.officego.ui.adapter.PoiAdapter;
+import com.officego.ui.adapter.PoiSearchAdapter;
 import com.officego.ui.dialog.PreImageDialog;
 import com.officego.ui.home.contract.BuildingDetailsContract;
 import com.officego.ui.home.model.BuildingDetailsBean;
@@ -99,7 +113,8 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         IMediaPlayer.OnErrorListener,
         IMediaPlayer.OnSeekCompleteListener,
         IMediaPlayer.OnVideoSizeChangedListener,
-        IMediaPlayer.OnInfoListener {
+        IMediaPlayer.OnInfoListener,
+        PoiSearch.OnPoiSearchListener {
     //title
     @ViewById(R.id.nsv_view)
     NestedScrollView nsvView;
@@ -322,6 +337,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         centerPlayIsShow(true);
         initVideo();
         getBuildingDetails();
+        initMap();
     }
 
     private void initIndependentBuildingRecView() {
@@ -951,6 +967,8 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         rvHorizontalAll.setAdapter(new HouseItemAllAdapter(context, CommonDetails.buildingList(data)));
         //独立办公室子列表
         getChildBuildingList();
+        //初始化地图
+        showMap(data);
     }
 
     @Override
@@ -1197,5 +1215,82 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             return;
         }
         new PreImageDialog(context, (ArrayList<String>) mBannerList, position);
+    }
+
+    /**
+     * 周边配套
+     * --------------------------------------------------------------------
+     * --------------------------------------------------------------------
+     */
+    @ViewById(R.id.mv_map)
+    MapView mapView;
+    @ViewById(R.id.rv_poi)
+    RecyclerView rvPoi;
+
+    private AMap mAMap;
+    private PoiSearch poiSearch;
+    private Marker locationMarker;
+    private PoiSearchAdapter adapter;
+
+    private void initMap() {
+        mapView.onCreate(new Bundle());
+        rvPoi.setLayoutManager(new LinearLayoutManager(context));
+        if (mAMap == null) {
+            //初始化地图
+            mAMap = mapView.getMap();
+            mAMap.moveCamera(CameraUpdateFactory.zoomTo(15F));
+        }
+    }
+
+    private void addSearchMarker(LatLng latLng) {
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(latLng);
+        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_amap_mark));//大头针图标
+        if (locationMarker != null) {
+            locationMarker.remove();
+        }
+        locationMarker = mAMap.addMarker(markerOptions);
+    }
+
+    //定位当前楼盘
+    private void showMap(BuildingDetailsBean data) {
+        if (mAMap != null) {
+            LatLng latLng = new LatLng(data.getBuilding().getLatitude(),
+                    data.getBuilding().getLongitude());
+            mAMap.moveCamera(CameraUpdateFactory.changeLatLng(latLng));
+            addSearchMarker(latLng);
+            poiSearch("酒店");
+        }
+    }
+
+    private void poiSearch(String keyWord) {
+        if (mData != null) {
+            PoiSearch.Query query = new PoiSearch.Query(keyWord, "", "021");
+            query.setPageSize(10);// 设置每页最多返回poiitem
+            query.setPageNum(1);//设置查询页码
+            poiSearch = new PoiSearch(this, query);
+            poiSearch.setBound(new PoiSearch.SearchBound(new LatLonPoint(
+                    mData.getBuilding().getLatitude(),
+                    mData.getBuilding().getLongitude()), 3000));//设置周边搜索的中心点以及半径
+            poiSearch.setOnPoiSearchListener(this);
+            poiSearch.searchPOIAsyn();
+        }
+    }
+
+    @Override
+    public void onPoiSearched(PoiResult poiResult, int i) {
+        List<PoiItem> list = poiResult.getPois();
+        if (adapter == null) {
+            adapter = new PoiSearchAdapter(context, list);
+            rvPoi.setAdapter(adapter);
+            return;
+        }
+        adapter.setData(list);
+        adapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onPoiItemSearched(PoiItem poiItem, int i) {
+
     }
 }
