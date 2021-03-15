@@ -15,6 +15,7 @@ import com.officego.commonlib.common.model.FirstChatBean;
 import com.officego.commonlib.common.model.IdentitychattedMsgBean;
 import com.officego.commonlib.common.model.JPushLoginBean;
 import com.officego.commonlib.common.model.LoginBean;
+import com.officego.commonlib.common.model.PayData;
 import com.officego.commonlib.common.model.RCloudPushBean;
 import com.officego.commonlib.common.model.RongUserInfoBean;
 import com.officego.commonlib.common.model.SearchListBean;
@@ -36,6 +37,7 @@ import com.officego.commonlib.common.rpc.request.JPushOneKeyLoginInterface;
 import com.officego.commonlib.common.rpc.request.LicenceInterface;
 import com.officego.commonlib.common.rpc.request.LoginInterface;
 import com.officego.commonlib.common.rpc.request.MineMsgInterface;
+import com.officego.commonlib.common.rpc.request.PayInterface;
 import com.officego.commonlib.common.rpc.request.ScheduleInterface;
 import com.officego.commonlib.common.rpc.request.SearchInterface;
 import com.officego.commonlib.common.rpc.request.ServiceInterface;
@@ -1102,6 +1104,20 @@ public class OfficegoApi {
     public void serviceMobile(RetrofitCallback<ServiceBean> callback) {
         OfficegoRetrofitClient.getInstance().create(ServiceInterface.class)
                 .service(map())
+                .enqueue(callback);
+    }
+
+    /**
+     * 微信支付
+     */
+    public void wxPay(String amount, RetrofitCallback<PayData> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("amount", requestBody(amount));
+        map.put("details", requestBody("会员套餐"));
+        map.putAll(map());
+        OfficegoRetrofitClient.getInstance().create(PayInterface.class)
+                .wxPay(map)
                 .enqueue(callback);
     }
 

@@ -1,23 +1,24 @@
-package com.officego.model;
+package com.officego.commonlib.common.model;
 
 import com.google.gson.annotations.SerializedName;
+
+import java.io.Serializable;
 
 /**
  * @author yangShiJie
  * @date 2019-11-12
  */
-public class PayData {
+public class PayData implements Serializable {
 
     /**
-     * appid : wxb4ba3c02aa476ea1
-     * partnerid : 1900006771
+     * appid :
+     * partnerid :
      * package : Sign=WXPay
      * noncestr : 838decf3a4bd273ef7bb4026ee5d0646
      * timestamp : 1573107351
      * prepayid : wx0714155172462235a90cda451996623232
      * sign : A4D7DC206F0AC2788FDFD22F37F9397F
      */
-
     @SerializedName("appid")
     private String appid;
     @SerializedName("partnerid")
@@ -30,12 +31,8 @@ public class PayData {
     private int timestamp;
     @SerializedName("prepayid")
     private String prepayid;
-    @SerializedName("sign")
+    @SerializedName("paySign")
     private String sign;
-    @SerializedName("outtradeno")
-    private String outtradeno;
-    @SerializedName("url")
-    private String url;
 
     public String getAppid() {
         return appid;
@@ -93,20 +90,5 @@ public class PayData {
         this.sign = sign;
     }
 
-    public String getOuttradeno() {
-        return outtradeno;
-    }
-
-    public void setOuttradeno(String outtradeno) {
-        this.outtradeno = outtradeno;
-    }
-
-    public String getUrl() {
-        return url;
-    }
-
-    public void setUrl(String url) {
-        this.url = url;
-    }
 }
 

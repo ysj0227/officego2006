@@ -2,6 +2,7 @@ package com.officego.ui.home;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
+import android.os.Handler;
 import android.text.TextUtils;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -10,6 +11,7 @@ import android.view.Window;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -18,6 +20,7 @@ import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.analytics.SensorsTrack;
+import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.GlideUtils;
@@ -53,6 +56,8 @@ import java.util.Map;
 public class CustomisedHouseActivity extends BaseMvpActivity<WantFindPresenter>
         implements WantFindContract.View, PersonAdapter.PersonListener,
         RentAdapter.RentListener, FactorAdapter.FactorListener {
+    @ViewById(R.id.nsv_view)
+    NestedScrollView nsvView;
     @ViewById(R.id.rv_rent)
     RecyclerView rvRent;
     @ViewById(R.id.rv_person)
@@ -139,6 +144,10 @@ public class CustomisedHouseActivity extends BaseMvpActivity<WantFindPresenter>
             new CommonLoginTenant(context);
             return;
         }
+        submit();
+    }
+
+    private void submit() {
         if (TextUtils.isEmpty(mPerson) || TextUtils.isEmpty(mRent) || TextUtils.isEmpty(mFactor)) {
             shortTip("还有资料没填哦～");
             return;
@@ -148,12 +157,28 @@ public class CustomisedHouseActivity extends BaseMvpActivity<WantFindPresenter>
     }
 
     @Override
+    public int[] getStickNotificationId() {
+        return new int[]{CommonNotifications.customisedHouse};
+    }
+
+    @Override
+    public void didReceivedNotification(int id, Object... args) {
+        super.didReceivedNotification(id, args);
+        if (id == CommonNotifications.customisedHouse) {
+            submit();
+        }
+    }
+
+    @Override
     public void personResult(String key, String value) {
         mPerson = value;
         tvContentRight1.setText(key);
         rlRight1.setVisibility(View.VISIBLE);
         rlLeft3.setVisibility(View.VISIBLE);
         rlItem2.setVisibility(View.VISIBLE);
+        if (nsvView != null) {
+            new Handler().postDelayed(() -> nsvView.fullScroll(NestedScrollView.FOCUS_DOWN),200);
+        }
     }
 
     @Override
@@ -163,6 +188,9 @@ public class CustomisedHouseActivity extends BaseMvpActivity<WantFindPresenter>
         rlRight2.setVisibility(View.VISIBLE);
         rlLeft4.setVisibility(View.VISIBLE);
         rlItem3.setVisibility(View.VISIBLE);
+        if (nsvView != null) {
+            new Handler().postDelayed(() -> nsvView.fullScroll(NestedScrollView.FOCUS_DOWN),200);
+        }
     }
 
     @Override
@@ -171,6 +199,9 @@ public class CustomisedHouseActivity extends BaseMvpActivity<WantFindPresenter>
         mFactor = CommonHelper.getKey(map);
         tvContentRight3.setText(CommonHelper.readValue(map));
         rlRight3.setVisibility(map != null && map.size() > 0 ? View.VISIBLE : View.GONE);
+        if (nsvView != null) {
+            new Handler().postDelayed(() -> nsvView.fullScroll(NestedScrollView.FOCUS_DOWN),200);
+        }
     }
 
     @Override
@@ -220,5 +251,4 @@ public class CustomisedHouseActivity extends BaseMvpActivity<WantFindPresenter>
         }
         return "稍后会有专业咨询师联系您 请注意接听电";
     }
-
 }

@@ -274,18 +274,6 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="地图" />
-
-        <RadioButton
-            android:id="@+id/btn_wx"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="微信" />
-
-        <RadioButton
-            android:id="@+id/btn_alipay"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="支付宝" />
     </RadioGroup>
 
 

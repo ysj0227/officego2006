@@ -30,7 +30,9 @@ public class Constants {
     public static IWXAPI WXapi;
 
     //微信
+    public static final String MCH_ID = "1604187395";//商户号
     public static final String APP_ID = "wx70ee9e90c1d62d83";//线上
+    public static final String API_KEY = "1qazxsw23edcvfr45tgbnhy67fghji89";//支付的key
     public static final String APP_ID_TEST = "wx0bc18fc3a299bd92";//测试
     //微信传值
     public static final String WX_TYPE = "WX_TYPE";

@@ -1,4 +1,4 @@
-package com.officego.alipay;
+package com.officego.commonlib.common.alipay;
 
 import android.annotation.SuppressLint;
 import android.app.AlertDialog;
@@ -16,8 +16,7 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.alipay.sdk.app.AuthTask;
 import com.alipay.sdk.app.PayTask;
-import com.officego.R;
-import com.officego.commonlib.utils.FileUtils;
+import com.officego.commonlib.R;
 
 import java.util.Map;
 
@@ -119,7 +118,7 @@ public class PayDemoActivity extends AppCompatActivity {
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
-		setContentView(R.layout.alipay_external);
+//		setContentView(R.layout.alipay_external);
 	}
 
 	/**

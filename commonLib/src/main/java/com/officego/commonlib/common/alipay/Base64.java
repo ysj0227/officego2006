@@ -1,4 +1,4 @@
-package com.officego.alipay;
+package com.officego.commonlib.common.alipay;
 
 public final class Base64 {
 

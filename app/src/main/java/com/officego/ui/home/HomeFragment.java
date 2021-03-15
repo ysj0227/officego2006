@@ -2,7 +2,6 @@ package com.officego.ui.home;
 
 import android.annotation.SuppressLint;
 import android.app.Dialog;
-import android.content.Intent;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.Gravity;
@@ -27,7 +26,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.officego.R;
-import com.officego.alipay.PayDemoActivity;
 import com.officego.commonlib.base.BaseMvpFragment;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.analytics.SensorsTrack;
@@ -52,7 +50,6 @@ import com.officego.ui.home.model.TodayReadBean;
 import com.officego.ui.home.presenter.HomePresenter;
 import com.officego.utils.ImageLoaderUtils;
 import com.officego.utils.SuperSwipeRefreshLayout;
-import com.officego.wxapi.WXPayEntryActivity;
 import com.youth.banner.Banner;
 import com.youth.banner.BannerConfig;
 import com.youth.banner.Transformer;
@@ -179,34 +176,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
             return;
         }
         openActivity(mActivity, ClusterActivity.class);
-    }
-
-    @Click(R.id.btn_wx)
-    void wxClick() {
-        gotoWxPayActivity("");
-    }
-
-    //跳转微信支付
-    private void gotoWxPayActivity(String data) {
-        if (!CommonHelper.isInstallWechat(mActivity)) {
-            shortTip(R.string.str_need_install_wx);
-            return;
-        }
-        //是否支持微信支付
-        boolean isPaySupported = Constants.WXapi.getWXAppSupportAPI() >=
-                com.tencent.mm.opensdk.constants.Build.PAY_SUPPORTED_SDK_INT;
-        if (!isPaySupported) {
-            shortTip(R.string.wx_str_no_support_pay);
-            return;
-        }
-        Intent intent = new Intent(mActivity, WXPayEntryActivity.class);
-        intent.putExtra(Constants.WX_PAY, data);
-        startActivity(intent);
-    }
-
-    @Click(R.id.btn_alipay)
-    void alipayClick() {
-        openActivity(mActivity, PayDemoActivity.class);
     }
 
     @Click(R.id.iv_customised_house)

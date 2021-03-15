@@ -537,6 +537,5 @@
                 <data android:scheme="${WX_APP_ID}" />
             </intent-filter>
         </activity>
-        <activity android:name=".alipay.PayDemoActivity" />
     </application>
 </manifest>

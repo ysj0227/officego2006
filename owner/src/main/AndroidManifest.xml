@@ -103,6 +103,10 @@
             android:name=".mine.coupon.WriteOffRecordActivity_"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
+        <activity
+            android:name=".home.PayActivity_"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

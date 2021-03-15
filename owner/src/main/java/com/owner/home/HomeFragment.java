@@ -144,7 +144,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     @Override
     public void onHiddenChanged(boolean hidden) {
         super.onHiddenChanged(hidden);
-        if (!hidden){
+        if (!hidden) {
             mPresenter.getUserExpireInfo();
         }
     }
@@ -242,6 +242,12 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     @Click(resName = "btn_service")
     void serviceClick() {
         mPresenter.getSupportMobile();
+    }
+
+    //支付
+    @Click(resName = "btn_pay")
+    void payClick() {
+        PayActivity_.intent(mActivity).start();
     }
 
     //当切换tab 是否刷新首页数据

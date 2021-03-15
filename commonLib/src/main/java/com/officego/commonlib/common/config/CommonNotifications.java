@@ -47,4 +47,6 @@ public class CommonNotifications {
     public static final int RCloudPushData = totalEvents++;
     //微信授权登录成功
     public static final int weCheatSendAuth = totalEvents++;
+    //定制找房-未登录
+    public static final int customisedHouse = totalEvents++;
 }

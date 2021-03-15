@@ -25,6 +25,7 @@ import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.model.LoginBean;
 import com.officego.commonlib.common.model.WeChatAuthBean;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.PermissionUtils;
 import com.officego.commonlib.utils.RegexUtils;
@@ -260,6 +261,7 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
         //初始化未登录时，当前身份身份有变化
         if (isFinishCurrentView && TextUtils.equals(SpUtils.getRole(), rid)) {
             SpUtils.saveRole(rid);
+            sendNotify();
         } else {
             SpUtils.saveRole(rid);
             if (TextUtils.equals(Constants.TYPE_OWNER, String.valueOf(data.getRid()))) {
@@ -269,6 +271,16 @@ public class LoginActivity extends BaseMvpActivity<LoginPresenter>
             }
         }
         finish();
+    }
+
+    /**
+     * 未登录，先去登录成功后的通知
+     */
+    private void sendNotify() {
+        //定制找房
+        BaseNotification.newInstance().postNotificationName(
+                CommonNotifications.customisedHouse, "customisedHouse");
+
     }
 
     @Override

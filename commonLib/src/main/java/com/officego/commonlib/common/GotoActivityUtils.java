@@ -6,7 +6,11 @@ import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 
+import com.officego.commonlib.common.model.PayData;
+import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.log.LogCat;
+
+import java.io.Serializable;
 
 /**
  * Created by YangShiJie
@@ -125,6 +129,19 @@ public class GotoActivityUtils {
         intent.putExtra("pushData", pushData);
         intent.setData(Uri.parse(uri));
         intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);//必加
+        context.startActivity(intent);
+    }
+
+    /**
+     * 微信支付
+     * @param context
+     */
+    public static void gotoWeChatPayActivity(Context context, PayData bean) {
+        ComponentName comp = new ComponentName(context, "com.officego.wxapi.WXPayEntryActivity");
+        Intent intent = new Intent();
+        intent.putExtra(Constants.WX_PAY, (Serializable) bean);
+        intent.setComponent(comp);
+        intent.setAction("android.intent.action.VIEW");
         context.startActivity(intent);
     }
 }
