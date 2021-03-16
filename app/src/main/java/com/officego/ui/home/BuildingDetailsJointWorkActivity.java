@@ -1424,7 +1424,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
             PoiSearch poiSearch = new PoiSearch(this, query);
             poiSearch.setBound(new PoiSearch.SearchBound(new LatLonPoint(
                     mData.getBuilding().getLatitude(),
-                    mData.getBuilding().getLongitude()), 2000));//设置周边搜索的中心点以及半径
+                    mData.getBuilding().getLongitude()), 1500));//设置周边搜索的中心点以及半径
             poiSearch.setOnPoiSearchListener(this);
             poiSearch.searchPOIAsyn();
         }
