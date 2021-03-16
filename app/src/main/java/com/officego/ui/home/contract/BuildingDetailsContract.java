@@ -30,7 +30,7 @@ public interface BuildingDetailsContract {
 
         void chatSuccess(ChatsBean data);
 
-        void nearbyBuildingSuccess(NearbyBuildingBean data);
+        void nearbyBuildingSuccess(List<NearbyBuildingBean.DataBean> data);
 
     }
 

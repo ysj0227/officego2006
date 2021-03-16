@@ -1111,7 +1111,7 @@ public class OfficegoApi {
     /**
      * 附近楼盘-网点列表
      */
-    public void nearbyBuildingList(int id, RetrofitCallback<NearbyBuildingBean> callback) {
+    public void nearbyBuildingList(int id, RetrofitCallback<List<NearbyBuildingBean.DataBean>> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("id", requestBody(id+""));

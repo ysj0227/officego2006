@@ -15,6 +15,8 @@ import com.officego.ui.home.model.BuildingDetailsChildBean;
 import com.officego.ui.home.model.BuildingJointWorkBean;
 import com.officego.ui.home.model.ChatsBean;
 
+import java.util.List;
+
 /**
  * Created by YangShiJie
  * Data 2020/5/7.
@@ -158,16 +160,16 @@ public class BuildingDetailsJointWorkPresenter extends BasePresenter<BuildingDet
     @Override
     public void getNearbyBuildingList(int buildingId) {
         com.officego.commonlib.common.rpc.OfficegoApi.getInstance().nearbyBuildingList(
-                buildingId, new RetrofitCallback<NearbyBuildingBean>() {
+                buildingId, new RetrofitCallback<List<NearbyBuildingBean.DataBean>>() {
                     @Override
-                    public void onSuccess(int code, String msg, NearbyBuildingBean data) {
+                    public void onSuccess(int code, String msg, List<NearbyBuildingBean.DataBean> data) {
                         if (isViewAttached()) {
                             mView.nearbyBuildingSuccess(data);
                         }
                     }
 
                     @Override
-                    public void onFail(int code, String msg, NearbyBuildingBean data) {
+                    public void onFail(int code, String msg, List<NearbyBuildingBean.DataBean> data) {
                     }
                 });
     }

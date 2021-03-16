@@ -10,6 +10,7 @@ import com.officego.commonlib.common.model.owner.HouseEditBean;
 import com.officego.commonlib.common.model.owner.UploadImageBean;
 import com.officego.commonlib.retrofit.BaseResponse;
 
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.RequestBody;
@@ -32,7 +33,7 @@ public interface BuildingJointWorkInterface {
      */
     @Multipart
     @POST(path + "building/getNearbyBuildingListApp")
-    Call<BaseResponse<NearbyBuildingBean>> getNearbyBuildingList(@PartMap Map<String, RequestBody> params);
+    Call<BaseResponse<List<NearbyBuildingBean.DataBean>>> getNearbyBuildingList(@PartMap Map<String, RequestBody> params);
 
 
     /**

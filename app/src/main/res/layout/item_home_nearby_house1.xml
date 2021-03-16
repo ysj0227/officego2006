@@ -1,0 +1,184 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <com.officego.commonlib.view.RoundImageView
+        android:id="@+id/iv_house"
+        android:layout_width="@dimen/dp_115"
+        android:layout_height="@dimen/dp_88"
+        android:layout_marginTop="@dimen/dp_20"
+        android:scaleType="centerCrop"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <ImageView
+        android:id="@+id/iv_vr_flag"
+        android:layout_width="@dimen/dp_25"
+        android:layout_height="@dimen/dp_25"
+        android:background="@mipmap/ic_vr_gray"
+        android:visibility="gone"
+        app:layout_constraintBottom_toBottomOf="@id/iv_house"
+        app:layout_constraintEnd_toEndOf="@id/iv_house"
+        app:layout_constraintStart_toStartOf="@id/iv_house"
+        app:layout_constraintTop_toTopOf="@id/iv_house"
+        tools:ignore="ContentDescription" />
+
+    <TextView
+        android:id="@+id/tv_type"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:background="@drawable/text_label_blue_no_stroke"
+        android:paddingLeft="@dimen/dp_3"
+        android:paddingRight="@dimen/dp_3"
+        android:text="@string/str_house_tenant"
+        android:textColor="@color/white"
+        android:textSize="@dimen/sp_10"
+        android:visibility="visible"
+        app:layout_constraintStart_toStartOf="@id/iv_house"
+        app:layout_constraintTop_toTopOf="@id/iv_house" />
+
+    <TextView
+        android:id="@+id/tv_house_name"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_12"
+        android:layout_marginTop="@dimen/dp_18"
+        android:layout_marginEnd="@dimen/dp_12"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/text_main"
+        android:textSize="@dimen/sp_15"
+        android:textStyle="bold"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_house"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/tv_location"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_12"
+        android:layout_marginTop="@dimen/dp_7"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/text_66"
+        android:textSize="@dimen/sp_12"
+        app:layout_constraintLeft_toRightOf="@id/iv_house"
+        app:layout_constraintTop_toBottomOf="@id/tv_house_name" />
+
+    <TextView
+        android:id="@+id/tv_lines"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_12"
+        android:layout_marginTop="@dimen/dp_7"
+        android:layout_marginEnd="@dimen/dp_12"
+        android:ellipsize="end"
+        android:singleLine="true"
+        android:textColor="@color/text_66"
+        android:textSize="@dimen/sp_12"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@id/iv_house"
+        app:layout_constraintTop_toBottomOf="@id/tv_location" />
+
+    <TextView
+        android:id="@+id/tv_office_independent"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_12"
+        android:layout_marginTop="@dimen/dp_6"
+        android:layout_marginEnd="@dimen/dp_18"
+        android:background="@drawable/text_label_gray"
+        android:paddingStart="@dimen/dp_6"
+        android:paddingTop="@dimen/dp_2"
+        android:paddingEnd="@dimen/dp_6"
+        android:paddingBottom="@dimen/dp_2"
+        android:textColor="@color/text_66_p50"
+        android:textSize="@dimen/sp_11"
+        app:layout_constraintLeft_toRightOf="@id/iv_house"
+        app:layout_constraintTop_toBottomOf="@id/tv_lines" />
+
+    <TextView
+        android:id="@+id/tv_open_seats"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_6"
+        android:layout_marginTop="@dimen/dp_6"
+        android:layout_marginEnd="@dimen/dp_18"
+        android:background="@drawable/text_label_gray"
+        android:paddingStart="@dimen/dp_6"
+        android:paddingTop="@dimen/dp_2"
+        android:paddingEnd="@dimen/dp_6"
+        android:paddingBottom="@dimen/dp_2"
+        android:textColor="@color/text_66_p50"
+        android:textSize="@dimen/sp_11"
+        app:layout_constraintLeft_toRightOf="@id/tv_office_independent"
+        app:layout_constraintTop_toBottomOf="@id/tv_lines" />
+
+    <TextView
+        android:id="@+id/tv_rmb"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/dp_12"
+        android:layout_marginTop="@dimen/dp_7"
+        android:text="@string/str_rmb_unit"
+        android:textColor="@color/common_blue_main"
+        android:textSize="@dimen/sp_12"
+        app:layout_constraintBaseline_toBaselineOf="@id/tv_chat_time"
+        app:layout_constraintLeft_toRightOf="@id/iv_house"
+        app:layout_constraintTop_toBottomOf="@id/iv_house" />
+
+    <TextView
+        android:id="@+id/tv_rmb_money"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_7"
+        android:layout_marginEnd="@dimen/dp_18"
+        android:textColor="@color/common_blue_main"
+        android:textSize="@dimen/sp_20"
+        android:textStyle="bold"
+        app:layout_constraintBaseline_toBaselineOf="@id/tv_rmb"
+        app:layout_constraintLeft_toRightOf="@id/tv_rmb"
+        app:layout_constraintTop_toBottomOf="@id/iv_house" />
+
+    <TextView
+        android:id="@+id/tv_unit"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_7"
+        android:layout_marginEnd="@dimen/dp_18"
+        android:textColor="@color/common_blue_main"
+        android:textSize="@dimen/sp_12"
+        app:layout_constraintBaseline_toBaselineOf="@id/tv_rmb_money"
+        app:layout_constraintLeft_toRightOf="@id/tv_rmb_money"
+        app:layout_constraintTop_toBottomOf="@id/iv_house" />
+
+    <TextView
+        android:id="@+id/tv_chat_time"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/dp_18"
+        android:background="@drawable/text_label_yellow_light"
+        android:paddingStart="@dimen/dp_18"
+        android:paddingTop="@dimen/dp_3"
+        android:paddingEnd="@dimen/dp_10"
+        android:paddingBottom="@dimen/dp_3"
+        android:textColor="@color/common_yellow"
+        android:textSize="@dimen/sp_11"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/iv_house" />
+
+    <View
+        style="@style/marginLeftRight16"
+        android:layout_width="@dimen/dp_0"
+        android:layout_height="@dimen/dp_1"
+        android:layout_marginTop="@dimen/dp_18"
+        android:background="@color/common_divider"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/tv_chat_time" />
+
+</androidx.constraintlayout.widget.ConstraintLayout>

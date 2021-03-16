@@ -628,8 +628,8 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
 
     //附近楼盘
     @Override
-    public void nearbyBuildingSuccess(NearbyBuildingBean data) {
-        rvNearbyBuilding.setAdapter(new NearbyHouseAdapter(context, data.getData()));
+    public void nearbyBuildingSuccess(List<NearbyBuildingBean.DataBean> data) {
+        rvNearbyBuilding.setAdapter(new NearbyHouseAdapter(context, data));
     }
 
     //聊天

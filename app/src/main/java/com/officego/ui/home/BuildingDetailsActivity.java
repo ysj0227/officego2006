@@ -59,6 +59,7 @@ import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.IVideoPlayer;
 import com.officego.commonlib.view.LabelsView;
 import com.officego.commonlib.view.dialog.CommonDialog;
@@ -584,8 +585,8 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
 
     //附近楼盘
     @Override
-    public void nearbyBuildingSuccess(NearbyBuildingBean data) {
-        rvNearbyBuilding.setAdapter(new NearbyHouseAdapter(context, data.getData()));
+    public void nearbyBuildingSuccess(List<NearbyBuildingBean.DataBean> data) {
+        rvNearbyBuilding.setAdapter(new NearbyHouseAdapter(context, data));
     }
 
     //聊天
