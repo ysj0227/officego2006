@@ -1244,7 +1244,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             mAMap = mapView.getMap();
             mAMap.getUiSettings().setZoomControlsEnabled(false);
             mAMap.getUiSettings().setScrollGesturesEnabled(false);
-            mAMap.moveCamera(CameraUpdateFactory.zoomTo(14.2F));
+            mAMap.moveCamera(CameraUpdateFactory.zoomTo(14.3F));
         }
         tabLayout.addOnTabSelectedListener(new CustomiseTabListener() {
             @Override
