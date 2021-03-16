@@ -42,6 +42,7 @@ import com.amap.api.services.core.PoiItem;
 import com.amap.api.services.poisearch.PoiResult;
 import com.amap.api.services.poisearch.PoiSearch;
 import com.bumptech.glide.Glide;
+import com.google.android.material.tabs.TabLayout;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
@@ -62,12 +63,9 @@ import com.officego.commonlib.view.LabelsView;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.config.ConditionConfig;
 import com.officego.h5.WebViewVRActivity_;
-import com.officego.location.ClusterActivity;
 import com.officego.ui.adapter.BuildingInfoAdapter;
 import com.officego.ui.adapter.HouseItemAllAdapter;
 import com.officego.ui.adapter.IndependentAllChildAdapter;
-import com.officego.ui.adapter.PoiAdapter;
-import com.officego.ui.adapter.PoiSearchAdapter;
 import com.officego.ui.dialog.PreImageDialog;
 import com.officego.ui.home.contract.BuildingDetailsContract;
 import com.officego.ui.home.model.BuildingDetailsBean;
@@ -79,6 +77,7 @@ import com.officego.ui.home.model.ConditionBean;
 import com.officego.ui.home.presenter.BuildingDetailsPresenter;
 import com.officego.ui.login.CommonLoginTenant;
 import com.officego.ui.message.ConversationActivity_;
+import com.officego.utils.CustomiseTabListener;
 import com.officego.utils.video.IjkVideoConfig;
 import com.officego.utils.video.IjkVideoUtils;
 import com.youth.banner.Banner;
@@ -1224,42 +1223,73 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
      */
     @ViewById(R.id.mv_map)
     MapView mapView;
-    @ViewById(R.id.rv_poi)
-    RecyclerView rvPoi;
+    @ViewById(R.id.tab_layout)
+    TabLayout tabLayout;
 
     private AMap mAMap;
-    private PoiSearch poiSearch;
     private Marker locationMarker;
-    private PoiSearchAdapter adapter;
 
     private void initMap() {
         mapView.onCreate(new Bundle());
-        rvPoi.setLayoutManager(new LinearLayoutManager(context));
         if (mAMap == null) {
             //初始化地图
             mAMap = mapView.getMap();
-            mAMap.moveCamera(CameraUpdateFactory.zoomTo(15F));
+            mAMap.getUiSettings().setZoomControlsEnabled(false);
+            mAMap.getUiSettings().setScrollGesturesEnabled(false);
+            mAMap.moveCamera(CameraUpdateFactory.zoomTo(14.2F));
         }
+        tabLayout.addOnTabSelectedListener(new CustomiseTabListener() {
+            @Override
+            protected void onTabSelected(int position) {
+                switch (position) {
+                    case 0:
+                        poiSearch("公交");
+                        break;
+                    case 1:
+                        poiSearch("地铁");
+                        break;
+                    case 2:
+                        poiSearch("餐饮");
+                        break;
+                    case 3:
+                        poiSearch("银行");
+                        break;
+                    case 4:
+                        poiSearch("酒店");
+                        break;
+                    case 5:
+                        poiSearch("商场");
+                        break;
+                }
+            }
+        });
     }
 
     private void addSearchMarker(LatLng latLng) {
         MarkerOptions markerOptions = new MarkerOptions();
         markerOptions.position(latLng);
         markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_amap_mark));//大头针图标
-        if (locationMarker != null) {
-            locationMarker.remove();
-        }
         locationMarker = mAMap.addMarker(markerOptions);
+    }
+
+    private void addBuildingMarker() {
+        if (mData != null) {
+            LatLng latLng = new LatLng(mData.getBuilding().getLatitude(),
+                    mData.getBuilding().getLongitude());
+            mAMap.moveCamera(CameraUpdateFactory.changeLatLng(latLng));
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(latLng);
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_amap_defaultcluster));//大头针图标
+            Marker marker = mAMap.addMarker(markerOptions);
+            marker.setTitle(mData.getBuilding().getName());
+        }
     }
 
     //定位当前楼盘
     private void showMap(BuildingDetailsBean data) {
         if (mAMap != null) {
-            LatLng latLng = new LatLng(data.getBuilding().getLatitude(),
-                    data.getBuilding().getLongitude());
-            mAMap.moveCamera(CameraUpdateFactory.changeLatLng(latLng));
-            addSearchMarker(latLng);
-            poiSearch("酒店");
+            addBuildingMarker();
+            poiSearch("公交");
         }
     }
 
@@ -1268,10 +1298,10 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             PoiSearch.Query query = new PoiSearch.Query(keyWord, "", "021");
             query.setPageSize(10);// 设置每页最多返回poiitem
             query.setPageNum(1);//设置查询页码
-            poiSearch = new PoiSearch(this, query);
+            PoiSearch poiSearch = new PoiSearch(this, query);
             poiSearch.setBound(new PoiSearch.SearchBound(new LatLonPoint(
                     mData.getBuilding().getLatitude(),
-                    mData.getBuilding().getLongitude()), 3000));//设置周边搜索的中心点以及半径
+                    mData.getBuilding().getLongitude()), 2000));//设置周边搜索的中心点以及半径
             poiSearch.setOnPoiSearchListener(this);
             poiSearch.searchPOIAsyn();
         }
@@ -1279,14 +1309,19 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
 
     @Override
     public void onPoiSearched(PoiResult poiResult, int i) {
-        List<PoiItem> list = poiResult.getPois();
-        if (adapter == null) {
-            adapter = new PoiSearchAdapter(context, list);
-            rvPoi.setAdapter(adapter);
-            return;
+        //添加标注
+        if (mAMap != null) {
+            mAMap.clear(true);
         }
-        adapter.setData(list);
-        adapter.notifyDataSetChanged();
+        addBuildingMarker();
+        List<PoiItem> list = poiResult.getPois();
+        LatLng latLng;
+        for (int j = 0; j < list.size(); j++) {
+            latLng = new LatLng(list.get(j).getLatLonPoint().getLatitude(),
+                    list.get(j).getLatLonPoint().getLongitude());
+            addSearchMarker(latLng);
+            locationMarker.setTitle(list.get(j).getTitle());
+        }
     }
 
     @Override

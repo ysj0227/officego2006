@@ -3,6 +3,7 @@ package com.officego.ui.home;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.graphics.drawable.Drawable;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.Looper;
 import android.os.Message;
@@ -28,7 +29,19 @@ import androidx.recyclerview.widget.GridLayoutManager;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.amap.api.maps.AMap;
+import com.amap.api.maps.CameraUpdateFactory;
+import com.amap.api.maps.MapView;
+import com.amap.api.maps.model.BitmapDescriptorFactory;
+import com.amap.api.maps.model.LatLng;
+import com.amap.api.maps.model.Marker;
+import com.amap.api.maps.model.MarkerOptions;
+import com.amap.api.services.core.LatLonPoint;
+import com.amap.api.services.core.PoiItem;
+import com.amap.api.services.poisearch.PoiResult;
+import com.amap.api.services.poisearch.PoiSearch;
 import com.bumptech.glide.Glide;
+import com.google.android.material.tabs.TabLayout;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.SpUtils;
@@ -68,6 +81,7 @@ import com.officego.ui.home.model.ConditionBean;
 import com.officego.ui.home.presenter.BuildingDetailsJointWorkPresenter;
 import com.officego.ui.login.CommonLoginTenant;
 import com.officego.ui.message.ConversationActivity_;
+import com.officego.utils.CustomiseTabListener;
 import com.officego.utils.video.IjkVideoConfig;
 import com.officego.utils.video.IjkVideoUtils;
 import com.youth.banner.Banner;
@@ -94,8 +108,8 @@ import tv.danmaku.ijk.media.player.IMediaPlayer;
 @SuppressLint({"Registered", "NonConstantResourceId"})
 @EActivity(R.layout.home_activity_house_details)
 public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDetailsJointWorkPresenter>
-        implements OnBannerListener,
-        BuildingDetailsJointWorkContract.View, NestedScrollView.OnScrollChangeListener,
+        implements OnBannerListener,BuildingDetailsJointWorkContract.View,
+        NestedScrollView.OnScrollChangeListener,
         SeekBar.OnSeekBarChangeListener,
         IMediaPlayer.OnBufferingUpdateListener,
         IMediaPlayer.OnCompletionListener,
@@ -103,7 +117,8 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         IMediaPlayer.OnErrorListener,
         IMediaPlayer.OnSeekCompleteListener,
         IMediaPlayer.OnVideoSizeChangedListener,
-        IMediaPlayer.OnInfoListener {
+        IMediaPlayer.OnInfoListener ,
+        PoiSearch.OnPoiSearchListener{
     //title
     @ViewById(R.id.nsv_view)
     NestedScrollView nsvView;
@@ -336,6 +351,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
             }
         }
         initIndependentBuildingRecView();
+        initMap();
         buildingIntroduceInfo();
         centerPlayIsShow(true);
         initVideo();
@@ -1006,6 +1022,8 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         showTags(data);
         //楼盘信息
         buildingInfo(data);
+        //定位
+        showMap(data);
     }
 
     @Override
@@ -1319,5 +1337,118 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
             return;
         }
         new PreImageDialog(context, (ArrayList<String>) mBannerList, position);
+    }
+
+    /**
+     * 周边配套
+     * --------------------------------------------------------------------
+     * --------------------------------------------------------------------
+     */
+    @ViewById(R.id.mv_map)
+    MapView mapView;
+    @ViewById(R.id.tab_layout)
+    TabLayout tabLayout;
+
+    private AMap mAMap;
+    private Marker locationMarker;
+
+    private void initMap() {
+        mapView.onCreate(new Bundle());
+        if (mAMap == null) {
+            //初始化地图
+            mAMap = mapView.getMap();
+            mAMap.getUiSettings().setZoomControlsEnabled(false);
+            mAMap.getUiSettings().setScrollGesturesEnabled(false);
+            mAMap.moveCamera(CameraUpdateFactory.zoomTo(14.2F));
+        }
+        tabLayout.addOnTabSelectedListener(new CustomiseTabListener() {
+            @Override
+            protected void onTabSelected(int position) {
+                switch (position) {
+                    case 0:
+                        poiSearch("公交");
+                        break;
+                    case 1:
+                        poiSearch("地铁");
+                        break;
+                    case 2:
+                        poiSearch("餐饮");
+                        break;
+                    case 3:
+                        poiSearch("银行");
+                        break;
+                    case 4:
+                        poiSearch("酒店");
+                        break;
+                    case 5:
+                        poiSearch("商场");
+                        break;
+                }
+            }
+        });
+    }
+
+    private void addSearchMarker(LatLng latLng) {
+        MarkerOptions markerOptions = new MarkerOptions();
+        markerOptions.position(latLng);
+        markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_amap_mark));//大头针图标
+        locationMarker = mAMap.addMarker(markerOptions);
+    }
+
+    private void addBuildingMarker() {
+        if (mData != null) {
+            LatLng latLng = new LatLng(mData.getBuilding().getLatitude(),
+                    mData.getBuilding().getLongitude());
+            mAMap.moveCamera(CameraUpdateFactory.changeLatLng(latLng));
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(latLng);
+            markerOptions.icon(BitmapDescriptorFactory.fromResource(R.drawable.ic_amap_defaultcluster));//大头针图标
+            Marker marker = mAMap.addMarker(markerOptions);
+            marker.setTitle(mData.getBuilding().getName());
+        }
+    }
+
+    //定位当前楼盘
+    private void showMap(BuildingJointWorkBean data) {
+        if (mAMap != null) {
+            addBuildingMarker();
+            poiSearch("公交");
+        }
+    }
+
+    private void poiSearch(String keyWord) {
+        if (mData != null) {
+            PoiSearch.Query query = new PoiSearch.Query(keyWord, "", "021");
+            query.setPageSize(10);// 设置每页最多返回poiitem
+            query.setPageNum(1);//设置查询页码
+            PoiSearch poiSearch = new PoiSearch(this, query);
+            poiSearch.setBound(new PoiSearch.SearchBound(new LatLonPoint(
+                    mData.getBuilding().getLatitude(),
+                    mData.getBuilding().getLongitude()), 2000));//设置周边搜索的中心点以及半径
+            poiSearch.setOnPoiSearchListener(this);
+            poiSearch.searchPOIAsyn();
+        }
+    }
+
+    @Override
+    public void onPoiSearched(PoiResult poiResult, int i) {
+        //添加标注
+        if (mAMap != null) {
+            mAMap.clear(true);
+        }
+        addBuildingMarker();
+        List<PoiItem> list = poiResult.getPois();
+        LatLng latLng;
+        for (int j = 0; j < list.size(); j++) {
+            latLng = new LatLng(list.get(j).getLatLonPoint().getLatitude(),
+                    list.get(j).getLatLonPoint().getLongitude());
+            addSearchMarker(latLng);
+            locationMarker.setTitle(list.get(j).getTitle());
+        }
+    }
+
+    @Override
+    public void onPoiItemSearched(PoiItem poiItem, int i) {
+
     }
 }

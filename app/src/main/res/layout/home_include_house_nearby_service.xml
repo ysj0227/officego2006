@@ -9,28 +9,65 @@
         android:id="@+id/tv_nearby_service_text"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_20"
+        android:layout_marginTop="@dimen/dp_15"
         android:text="周边配套"
         android:textColor="@color/text_33"
         android:textSize="@dimen/sp_16"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <com.amap.api.maps.MapView
-        android:id="@+id/mv_map"
-        android:layout_width="0dp"
-        android:layout_height="@dimen/dp_240"
+    <com.google.android.material.tabs.TabLayout
+        android:id="@+id/tab_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_10"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_nearby_service_text" />
+        app:layout_constraintTop_toBottomOf="@id/tv_nearby_service_text"
+        app:tabIndicatorColor="@color/common_blue_main"
+        app:tabMode="fixed"
+        app:tabRippleColor="@null"
+        app:tabSelectedTextColor="@color/common_blue_main"
+        app:tabTextColor="@color/text_66">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:background="@color/trans_common_60"
-        android:id="@+id/rv_poi"
-        android:layout_width="@dimen/dp_100"
-        android:layout_height="@dimen/dp_180"
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="公交" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="地铁" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="餐饮" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="银行" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="酒店" />
+
+        <com.google.android.material.tabs.TabItem
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="商场" />
+    </com.google.android.material.tabs.TabLayout>
+
+    <com.amap.api.maps.MapView
+        android:id="@+id/mv_map"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_230"
         android:layout_marginTop="@dimen/dp_10"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_nearby_service_text" />
+        app:layout_constraintTop_toBottomOf="@id/tab_layout" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
