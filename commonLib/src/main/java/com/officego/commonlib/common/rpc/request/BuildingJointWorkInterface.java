@@ -1,6 +1,7 @@
 package com.officego.commonlib.common.rpc.request;
 
 import com.officego.commonlib.common.model.IdentityRejectBean;
+import com.officego.commonlib.common.model.NearbyBuildingBean;
 import com.officego.commonlib.common.model.owner.AddHouseSuccessBean;
 import com.officego.commonlib.common.model.owner.BuildingEditBean;
 import com.officego.commonlib.common.model.owner.BuildingJointWorkBean;
@@ -26,6 +27,13 @@ import retrofit2.http.PartMap;
 public interface BuildingJointWorkInterface {
 
     String path = "api/";
+    /**
+     * 附近楼盘或网点列表
+     */
+    @Multipart
+    @POST(path + "building/getNearbyBuildingListApp")
+    Call<BaseResponse<NearbyBuildingBean>> getNearbyBuildingList(@PartMap Map<String, RequestBody> params);
+
 
     /**
      * 楼盘或网点列表

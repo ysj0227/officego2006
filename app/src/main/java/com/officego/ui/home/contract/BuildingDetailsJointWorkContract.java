@@ -1,6 +1,7 @@
 package com.officego.ui.home.contract;
 
 import com.officego.commonlib.base.BaseView;
+import com.officego.commonlib.common.model.NearbyBuildingBean;
 import com.officego.ui.home.model.BuildingDetailsBean;
 import com.officego.ui.home.model.BuildingDetailsChildBean;
 import com.officego.ui.home.model.BuildingJointWorkBean;
@@ -17,8 +18,6 @@ public interface BuildingDetailsJointWorkContract {
 
     interface View extends BaseView {
 
-        void BuildingDetailsSuccess(BuildingDetailsBean data);
-
         void BuildingJointWorkDetailsSuccess(BuildingJointWorkBean data);
 
         void BuildingTakeOff(String msg);//下架
@@ -30,6 +29,8 @@ public interface BuildingDetailsJointWorkContract {
         void buildingSelectListSuccess(int total, List<BuildingDetailsChildBean.ListBean> list);
 
         void chatSuccess(ChatsBean data);
+
+        void nearbyBuildingSuccess(NearbyBuildingBean data);
     }
 
     interface Presenter {
@@ -43,7 +44,8 @@ public interface BuildingDetailsJointWorkContract {
 
         void getBuildingSelectList(int pageNo, String btype, String buildingId, String area, String dayPrice,
                                    String decoration, String houseTags, String seats);
-        //找房东去聊天
         void gotoChat(String buildingId);
+
+        void getNearbyBuildingList(int buildingId);
     }
 }

@@ -148,10 +148,18 @@
                 layout="@layout/home_include_house_nearby_service"
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
-                android:visibility="visible"
                 app:layout_constraintEnd_toEndOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/ctl_building_details" />
+            <!--          周边楼盘-->
+            <include
+                style="@style/marginLeftRight18"
+                layout="@layout/home_include_house_nearby_building"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                app:layout_constraintEnd_toEndOf="parent"
+                app:layout_constraintStart_toStartOf="parent"
+                app:layout_constraintTop_toBottomOf="@id/ctl_nearby_service" />
 
         </androidx.constraintlayout.widget.ConstraintLayout>
 

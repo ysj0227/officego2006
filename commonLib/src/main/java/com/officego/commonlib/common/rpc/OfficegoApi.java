@@ -15,6 +15,7 @@ import com.officego.commonlib.common.model.FirstChatBean;
 import com.officego.commonlib.common.model.IdentitychattedMsgBean;
 import com.officego.commonlib.common.model.JPushLoginBean;
 import com.officego.commonlib.common.model.LoginBean;
+import com.officego.commonlib.common.model.NearbyBuildingBean;
 import com.officego.commonlib.common.model.PayData;
 import com.officego.commonlib.common.model.RCloudPushBean;
 import com.officego.commonlib.common.model.RongUserInfoBean;
@@ -1108,6 +1109,19 @@ public class OfficegoApi {
     }
 
     /**
+     * 附近楼盘-网点列表
+     */
+    public void nearbyBuildingList(int id, RetrofitCallback<NearbyBuildingBean> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("id", requestBody(id+""));
+        map.putAll(map());
+        OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
+                .getNearbyBuildingList(map)
+                .enqueue(callback);
+    }
+
+    /**
      * 微信支付
      */
     public void wxPay(String amount, RetrofitCallback<PayData> callback) {
@@ -1120,5 +1134,4 @@ public class OfficegoApi {
                 .wxPay(map)
                 .enqueue(callback);
     }
-
 }

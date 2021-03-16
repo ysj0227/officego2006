@@ -52,6 +52,7 @@ import com.officego.commonlib.common.dialog.MapDialog;
 import com.officego.commonlib.common.dialog.WeChatShareDialog;
 import com.officego.commonlib.common.model.BuildingIdBundleBean;
 import com.officego.commonlib.common.model.DirectoryBean;
+import com.officego.commonlib.common.model.NearbyBuildingBean;
 import com.officego.commonlib.common.model.ShareBean;
 import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.utils.CommonHelper;
@@ -67,12 +68,12 @@ import com.officego.h5.WebViewVRActivity_;
 import com.officego.ui.adapter.BuildingInfoAdapter;
 import com.officego.ui.adapter.HouseItemAllAdapter;
 import com.officego.ui.adapter.JointWorkAllChildAdapter;
+import com.officego.ui.adapter.NearbyHouseAdapter;
 import com.officego.ui.adapter.ServiceBaseLogoAdapter;
 import com.officego.ui.adapter.ServiceCreateLogoAdapter;
 import com.officego.ui.dialog.PreImageDialog;
 import com.officego.ui.dialog.ServiceLogoDialog;
 import com.officego.ui.home.contract.BuildingDetailsJointWorkContract;
-import com.officego.ui.home.model.BuildingDetailsBean;
 import com.officego.ui.home.model.BuildingDetailsChildBean;
 import com.officego.ui.home.model.BuildingInfoBean;
 import com.officego.ui.home.model.BuildingJointWorkBean;
@@ -108,7 +109,7 @@ import tv.danmaku.ijk.media.player.IMediaPlayer;
 @SuppressLint({"Registered", "NonConstantResourceId"})
 @EActivity(R.layout.home_activity_house_details)
 public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDetailsJointWorkPresenter>
-        implements OnBannerListener,BuildingDetailsJointWorkContract.View,
+        implements OnBannerListener, BuildingDetailsJointWorkContract.View,
         NestedScrollView.OnScrollChangeListener,
         SeekBar.OnSeekBarChangeListener,
         IMediaPlayer.OnBufferingUpdateListener,
@@ -117,8 +118,8 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         IMediaPlayer.OnErrorListener,
         IMediaPlayer.OnSeekCompleteListener,
         IMediaPlayer.OnVideoSizeChangedListener,
-        IMediaPlayer.OnInfoListener ,
-        PoiSearch.OnPoiSearchListener{
+        IMediaPlayer.OnInfoListener,
+        PoiSearch.OnPoiSearchListener {
     //title
     @ViewById(R.id.nsv_view)
     NestedScrollView nsvView;
@@ -274,6 +275,17 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     TextView tvFavorite;
     @ViewById(R.id.rl_bottom_view)
     RelativeLayout rlBottomView;
+    @ViewById(R.id.rv_nearby_building)
+    RecyclerView rvNearbyBuilding;
+    //地图周边配套
+    @ViewById(R.id.mv_map)
+    MapView mapView;
+    @ViewById(R.id.tab_layout)
+    TabLayout tabLayout;
+
+    private AMap mAMap;
+    private Marker locationMarker;
+
     //神策是否已读
     private boolean isRead;
     //是否在拖动进度条中，默认为停止拖动，true为在拖动中，false为停止拖动
@@ -364,6 +376,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         lmHorizontal.setOrientation(LinearLayoutManager.HORIZONTAL);
         rvHorizontalAll.setLayoutManager(lmHorizontal);
         rvIndependentOfficeChild.setLayoutManager(new LinearLayoutManager(this));
+        rvNearbyBuilding.setLayoutManager(new LinearLayoutManager(this));
     }
 
     //网点信息
@@ -386,6 +399,8 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
                     mConditionBean == null || TextUtils.isEmpty(mConditionBean.getHouseTags()) ? "" : mConditionBean.getHouseTags(),
                     mConditionBean == null || TextUtils.isEmpty(mConditionBean.getSeatsValue()) ? "" : mConditionBean.getSeatsValue());
         }
+        //附近楼盘列表
+        mPresenter.getNearbyBuildingList(mBuildingBean.getBuildingId());
     }
 
     //初始化中间播放按钮显示
@@ -609,6 +624,12 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
                     }).create();
             dialog.showWithOutTouchable(false);
         }
+    }
+
+    //附近楼盘
+    @Override
+    public void nearbyBuildingSuccess(NearbyBuildingBean data) {
+        rvNearbyBuilding.setAdapter(new NearbyHouseAdapter(context, data.getData()));
     }
 
     //聊天
@@ -985,12 +1006,6 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         }
     }
 
-    @Override
-    public void BuildingDetailsSuccess(BuildingDetailsBean data) {
-
-    }
-
-
     @SuppressLint("SetTextI18n")
     @Override
     public void BuildingJointWorkDetailsSuccess(BuildingJointWorkBean data) {
@@ -1023,7 +1038,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         //楼盘信息
         buildingInfo(data);
         //定位
-        showMap(data);
+        showMap();
     }
 
     @Override
@@ -1344,13 +1359,6 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
      * --------------------------------------------------------------------
      * --------------------------------------------------------------------
      */
-    @ViewById(R.id.mv_map)
-    MapView mapView;
-    @ViewById(R.id.tab_layout)
-    TabLayout tabLayout;
-
-    private AMap mAMap;
-    private Marker locationMarker;
 
     private void initMap() {
         mapView.onCreate(new Bundle());
@@ -1409,7 +1417,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     }
 
     //定位当前楼盘
-    private void showMap(BuildingJointWorkBean data) {
+    private void showMap() {
         if (mAMap != null) {
             addBuildingMarker();
             poiSearch("公交");
@@ -1451,4 +1459,12 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     public void onPoiItemSearched(PoiItem poiItem, int i) {
 
     }
+
+    /**
+     * 附近楼盘
+     * --------------------------------------------------------------------
+     * --------------------------------------------------------------------
+     */
+
+
 }

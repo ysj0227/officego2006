@@ -1,6 +1,7 @@
 package com.officego.ui.home.contract;
 
 import com.officego.commonlib.base.BaseView;
+import com.officego.commonlib.common.model.NearbyBuildingBean;
 import com.officego.ui.home.model.BuildingDetailsBean;
 import com.officego.ui.home.model.BuildingDetailsChildBean;
 import com.officego.ui.home.model.BuildingJointWorkBean;
@@ -21,15 +22,15 @@ public interface BuildingDetailsContract {
 
         void BuildingTakeOff(String msg);//下架
 
-        void BuildingJointWorkDetailsSuccess(BuildingJointWorkBean data);
-
         void favoriteSuccess();
 
         void favoriteFail();
 
-        void buildingSelectListSuccess(int totals,List<BuildingDetailsChildBean.ListBean> list);
+        void buildingSelectListSuccess(int totals, List<BuildingDetailsChildBean.ListBean> list);
 
         void chatSuccess(ChatsBean data);
+
+        void nearbyBuildingSuccess(NearbyBuildingBean data);
 
     }
 
@@ -38,14 +39,15 @@ public interface BuildingDetailsContract {
         void getBuildingDetails(String btype, String buildingId, String area, String dayPrice,
                                 String decoration, String houseTags, String seats);
 
-        void getBuildingDetailsOwner(String btype, String buildingId,int isTemp);
+        void getBuildingDetailsOwner(String btype, String buildingId, int isTemp);
 
         void favorite(String buildingId, int flag);
 
         void getBuildingSelectList(int pageNo, String btype, String buildingId, String area, String dayPrice,
                                    String decoration, String houseTags, String seats);
 
-        //找房东去聊天
         void gotoChat(String buildingId);
+
+        void getNearbyBuildingList(int buildingId);
     }
 }

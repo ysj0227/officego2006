@@ -4,6 +4,7 @@ import android.content.Context;
 
 import com.officego.R;
 import com.officego.commonlib.base.BasePresenter;
+import com.officego.commonlib.common.model.NearbyBuildingBean;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.retrofit.RpcErrorCode;
@@ -152,6 +153,23 @@ public class BuildingDetailsJointWorkPresenter extends BasePresenter<BuildingDet
                 }
             }
         });
+    }
+
+    @Override
+    public void getNearbyBuildingList(int buildingId) {
+        com.officego.commonlib.common.rpc.OfficegoApi.getInstance().nearbyBuildingList(
+                buildingId, new RetrofitCallback<NearbyBuildingBean>() {
+                    @Override
+                    public void onSuccess(int code, String msg, NearbyBuildingBean data) {
+                        if (isViewAttached()) {
+                            mView.nearbyBuildingSuccess(data);
+                        }
+                    }
+
+                    @Override
+                    public void onFail(int code, String msg, NearbyBuildingBean data) {
+                    }
+                });
     }
 
 }

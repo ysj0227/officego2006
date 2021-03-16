@@ -52,6 +52,7 @@ import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.dialog.MapDialog;
 import com.officego.commonlib.common.dialog.WeChatShareDialog;
 import com.officego.commonlib.common.model.BuildingIdBundleBean;
+import com.officego.commonlib.common.model.NearbyBuildingBean;
 import com.officego.commonlib.common.model.ShareBean;
 import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.utils.CommonHelper;
@@ -66,12 +67,12 @@ import com.officego.h5.WebViewVRActivity_;
 import com.officego.ui.adapter.BuildingInfoAdapter;
 import com.officego.ui.adapter.HouseItemAllAdapter;
 import com.officego.ui.adapter.IndependentAllChildAdapter;
+import com.officego.ui.adapter.NearbyHouseAdapter;
 import com.officego.ui.dialog.PreImageDialog;
 import com.officego.ui.home.contract.BuildingDetailsContract;
 import com.officego.ui.home.model.BuildingDetailsBean;
 import com.officego.ui.home.model.BuildingDetailsChildBean;
 import com.officego.ui.home.model.BuildingInfoBean;
-import com.officego.ui.home.model.BuildingJointWorkBean;
 import com.officego.ui.home.model.ChatsBean;
 import com.officego.ui.home.model.ConditionBean;
 import com.officego.ui.home.presenter.BuildingDetailsPresenter;
@@ -259,6 +260,16 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     TextView tvFavorite;
     @ViewById(R.id.rl_bottom_view)
     RelativeLayout rlBottomView;
+    @ViewById(R.id.rv_nearby_building)
+    RecyclerView rvNearbyBuilding;
+    //周边配套
+    @ViewById(R.id.mv_map)
+    MapView mapView;
+    @ViewById(R.id.tab_layout)
+    TabLayout tabLayout;
+
+    private AMap mAMap;
+    private Marker locationMarker;
 
     //是否在拖动进度条中，默认为停止拖动，true为在拖动中，false为停止拖动
     private boolean isDragging;
@@ -345,6 +356,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         lmHorizontal.setOrientation(LinearLayoutManager.HORIZONTAL);
         rvHorizontalAll.setLayoutManager(lmHorizontal);
         rvIndependentOfficeChild.setLayoutManager(new LinearLayoutManager(this));
+        rvNearbyBuilding.setLayoutManager(new LinearLayoutManager(this));
     }
 
     private void buildingIntroduceInfo() {
@@ -366,6 +378,8 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
                     mConditionBean == null || TextUtils.isEmpty(mConditionBean.getHouseTags()) ? "" : mConditionBean.getHouseTags(),
                     mConditionBean == null || TextUtils.isEmpty(mConditionBean.getSeatsValue()) ? "" : mConditionBean.getSeatsValue());
         }
+        //附近楼盘列表
+        mPresenter.getNearbyBuildingList(mBuildingBean.getBuildingId());
     }
 
     //初始化中间播放按钮显示
@@ -504,8 +518,10 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     @Click({R.id.tv_location, R.id.tv_bus_line})
     void mapClick() {
         if (mData != null) {
-            new MapDialog(context, mData.getBuilding().getLatitude(),
-                    mData.getBuilding().getLongitude(), mData.getBuilding().getAddress());
+            new MapDialog(context,
+                    mData.getBuilding().getLatitude(),
+                    mData.getBuilding().getLongitude(),
+                    mData.getBuilding().getAddress());
         }
     }
 
@@ -532,10 +548,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     //收藏 0收藏 1取消
     @Click(R.id.tv_favorite)
     void favoriteClick() {
-        if (isFastClick(1200)) {
-            return;
-        }
-        if (mData == null) {
+        if (isFastClick(1200) || mData == null) {
             return;
         }
         //未登录
@@ -567,6 +580,12 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
                     }).create();
             dialog.showWithOutTouchable(false);
         }
+    }
+
+    //附近楼盘
+    @Override
+    public void nearbyBuildingSuccess(NearbyBuildingBean data) {
+        rvNearbyBuilding.setAdapter(new NearbyHouseAdapter(context, data.getData()));
     }
 
     //聊天
@@ -707,7 +726,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     private void syncProgress(Object obj) {
         if (obj != null) {
             String strProgress = String.valueOf(obj);
-            int progress = Integer.valueOf(strProgress);
+            int progress = Integer.parseInt(strProgress);
             if ((progress == 0)) {
                 return;
             }
@@ -967,7 +986,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         //独立办公室子列表
         getChildBuildingList();
         //初始化地图
-        showMap(data);
+        showMap();
     }
 
     @Override
@@ -1124,11 +1143,6 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     }
 
     @Override
-    public void BuildingJointWorkDetailsSuccess(BuildingJointWorkBean data) {
-
-    }
-
-    @Override
     public void favoriteSuccess() {
         isFavorite = !isFavorite;
         isFavoriteView(isFavorite);
@@ -1221,13 +1235,6 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
      * --------------------------------------------------------------------
      * --------------------------------------------------------------------
      */
-    @ViewById(R.id.mv_map)
-    MapView mapView;
-    @ViewById(R.id.tab_layout)
-    TabLayout tabLayout;
-
-    private AMap mAMap;
-    private Marker locationMarker;
 
     private void initMap() {
         mapView.onCreate(new Bundle());
@@ -1286,7 +1293,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     }
 
     //定位当前楼盘
-    private void showMap(BuildingDetailsBean data) {
+    private void showMap() {
         if (mAMap != null) {
             addBuildingMarker();
             poiSearch("公交");
