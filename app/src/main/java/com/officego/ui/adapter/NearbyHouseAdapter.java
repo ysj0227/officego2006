@@ -19,6 +19,7 @@ import com.officego.commonlib.common.model.NearbyBuildingBean;
 import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.GlideUtils;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.RoundImageView;
 import com.officego.ui.holder.HotsHolder;
 import com.officego.ui.home.BuildingDetailsActivity_;

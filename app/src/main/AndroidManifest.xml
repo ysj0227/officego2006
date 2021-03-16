@@ -150,7 +150,6 @@
         <activity
             android:name=".ui.home.BuildingDetailsActivity_"
             android:hardwareAccelerated="true"
-            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.home.BuildingDetailsChildActivity_"
@@ -159,7 +158,6 @@
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.home.BuildingDetailsJointWorkActivity_"
-            android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
             android:name=".ui.home.BuildingDetailsJointWorkChildActivity_"
