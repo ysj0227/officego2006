@@ -275,6 +275,9 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     TextView tvFavorite;
     @ViewById(R.id.rl_bottom_view)
     RelativeLayout rlBottomView;
+    //附近楼盘
+    @ViewById(R.id.ctl_nearby_building)
+    ConstraintLayout ctlNearbyBuilding;
     @ViewById(R.id.rv_nearby_building)
     RecyclerView rvNearbyBuilding;
     //地图周边配套
@@ -629,7 +632,10 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     //附近楼盘
     @Override
     public void nearbyBuildingSuccess(List<NearbyBuildingBean.DataBean> data) {
-        rvNearbyBuilding.setAdapter(new NearbyHouseAdapter(context, data));
+        if (data != null && data.size() > 0) {
+            ctlNearbyBuilding.setVisibility(View.VISIBLE);
+            rvNearbyBuilding.setAdapter(new NearbyHouseAdapter(context, data));
+        }
     }
 
     //聊天
