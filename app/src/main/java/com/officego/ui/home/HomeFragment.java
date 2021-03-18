@@ -170,7 +170,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         SearchRecommendActivity_.intent(mActivity).start();
     }
 
-    @Click(R.id.btn_map_house)
+    @Click(R.id.riv_map_find_house)
     void mapHouseClick() {
         if (isFastClick(1200)) {
             return;

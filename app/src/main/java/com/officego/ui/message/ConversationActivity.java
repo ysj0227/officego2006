@@ -27,14 +27,18 @@ import com.officego.commonlib.common.message.PhoneEncryptedInfo;
 import com.officego.commonlib.common.model.ChatHouseBean;
 import com.officego.commonlib.common.model.FirstChatBean;
 import com.officego.commonlib.common.model.RongUserInfoBean;
+import com.officego.commonlib.common.model.ServiceBean;
 import com.officego.commonlib.common.rongcloud.RCloudSetUserInfoUtils;
 import com.officego.commonlib.common.rongcloud.SendMessageManager;
 import com.officego.commonlib.common.rongcloud.kickDialog;
+import com.officego.commonlib.common.rpc.OfficegoApi;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.ToastUtils;
+import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.ui.message.contract.ConversationContract;
 import com.officego.ui.message.presenter.ConversationPresenter;
 import com.owner.dialog.ExitAppDialog;
@@ -359,7 +363,27 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
      */
     @Click(R.id.rl_report)
     void reportClick() {
-        ToastUtils.toastForShort(context, "暂未开放");
+        showLoadingDialog();
+        OfficegoApi.getInstance().serviceMobile(new RetrofitCallback<ServiceBean>() {
+            @Override
+            public void onSuccess(int code, String msg, ServiceBean bean) {
+                hideLoadingDialog();
+                String mobile = bean.getTechnicalSupport();
+                new CommonDialog.Builder(context)
+                        .setTitle("举报电话")
+                        .setMessage(mobile)
+                        .setCancelButton(R.string.sm_cancel)
+                        .setConfirmButton("拨打", (dialog12, which) -> {
+                            dialog12.dismiss();
+                            CommonHelper.callPhone(context, mobile);
+                        }).create().show();
+            }
+
+            @Override
+            public void onFail(int code, String msg, ServiceBean data) {
+                hideLoadingDialog();
+            }
+        });
     }
 
     @Override
