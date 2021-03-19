@@ -80,6 +80,7 @@ import com.officego.ui.home.presenter.BuildingDetailsPresenter;
 import com.officego.ui.login.CommonLoginTenant;
 import com.officego.ui.message.ConversationActivity_;
 import com.officego.utils.CustomiseTabListener;
+import com.officego.utils.MapContainer;
 import com.officego.utils.video.IjkVideoConfig;
 import com.officego.utils.video.IjkVideoUtils;
 import com.youth.banner.Banner;
@@ -272,6 +273,8 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     //周边配套
     @ViewById(R.id.mv_map)
     MapView mapView;
+    @ViewById(R.id.map_container)
+    MapContainer mapContainer;
     @ViewById(R.id.tab_layout)
     TabLayout tabLayout;
 
@@ -1249,11 +1252,12 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     private void initMap() {
         mapView.onCreate(new Bundle());
         rvNearbyService.setLayoutManager(new LinearLayoutManager(context));
+        mapContainer.setScrollView(nsvView);
         if (mAMap == null) {
             //初始化地图
             mAMap = mapView.getMap();
             mAMap.getUiSettings().setZoomControlsEnabled(false);
-            mAMap.getUiSettings().setScrollGesturesEnabled(false);
+//            mAMap.getUiSettings().setScrollGesturesEnabled(false);
             mAMap.moveCamera(CameraUpdateFactory.zoomTo(14.3F));
         }
         tabLayout.addOnTabSelectedListener(new CustomiseTabListener() {
