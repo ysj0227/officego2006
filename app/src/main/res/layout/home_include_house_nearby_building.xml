@@ -12,6 +12,7 @@
         android:layout_marginTop="@dimen/dp_15"
         android:text="附近楼盘"
         android:textColor="@color/text_33"
+        
         android:textSize="@dimen/sp_16"
 
         app:layout_constraintStart_toStartOf="parent"
@@ -21,7 +22,6 @@
         android:id="@+id/rv_nearby_building"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_10"
         android:paddingBottom="@dimen/dp_20"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

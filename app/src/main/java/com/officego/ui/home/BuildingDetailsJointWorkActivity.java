@@ -69,6 +69,7 @@ import com.officego.ui.adapter.BuildingInfoAdapter;
 import com.officego.ui.adapter.HouseItemAllAdapter;
 import com.officego.ui.adapter.JointWorkAllChildAdapter;
 import com.officego.ui.adapter.NearbyHouseAdapter;
+import com.officego.ui.adapter.PoiNearbyAdapter;
 import com.officego.ui.adapter.ServiceBaseLogoAdapter;
 import com.officego.ui.adapter.ServiceCreateLogoAdapter;
 import com.officego.ui.dialog.PreImageDialog;
@@ -280,6 +281,8 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
     ConstraintLayout ctlNearbyBuilding;
     @ViewById(R.id.rv_nearby_building)
     RecyclerView rvNearbyBuilding;
+    @ViewById(R.id.rv_nearby_service)
+    RecyclerView rvNearbyService;
     //地图周边配套
     @ViewById(R.id.mv_map)
     MapView mapView;
@@ -1368,6 +1371,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
 
     private void initMap() {
         mapView.onCreate(new Bundle());
+        rvNearbyService.setLayoutManager(new LinearLayoutManager(context));
         if (mAMap == null) {
             //初始化地图
             mAMap = mapView.getMap();
@@ -1459,6 +1463,8 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
             addSearchMarker(latLng);
             locationMarker.setTitle(list.get(j).getTitle());
         }
+        //显示搜索列表
+        rvNearbyService.setAdapter(new PoiNearbyAdapter(context,list));
     }
 
     @Override

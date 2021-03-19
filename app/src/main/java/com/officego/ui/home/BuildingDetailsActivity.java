@@ -59,7 +59,6 @@ import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.IVideoPlayer;
 import com.officego.commonlib.view.LabelsView;
 import com.officego.commonlib.view.dialog.CommonDialog;
@@ -69,6 +68,7 @@ import com.officego.ui.adapter.BuildingInfoAdapter;
 import com.officego.ui.adapter.HouseItemAllAdapter;
 import com.officego.ui.adapter.IndependentAllChildAdapter;
 import com.officego.ui.adapter.NearbyHouseAdapter;
+import com.officego.ui.adapter.PoiNearbyAdapter;
 import com.officego.ui.dialog.PreImageDialog;
 import com.officego.ui.home.contract.BuildingDetailsContract;
 import com.officego.ui.home.model.BuildingDetailsBean;
@@ -96,6 +96,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Objects;
 
+import io.rong.imageloader.utils.L;
 import tv.danmaku.ijk.media.player.IMediaPlayer;
 
 /**
@@ -266,6 +267,8 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     ConstraintLayout ctlNearbyBuilding;
     @ViewById(R.id.rv_nearby_building)
     RecyclerView rvNearbyBuilding;
+    @ViewById(R.id.rv_nearby_service)
+    RecyclerView rvNearbyService;
     //周边配套
     @ViewById(R.id.mv_map)
     MapView mapView;
@@ -1245,6 +1248,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
 
     private void initMap() {
         mapView.onCreate(new Bundle());
+        rvNearbyService.setLayoutManager(new LinearLayoutManager(context));
         if (mAMap == null) {
             //初始化地图
             mAMap = mapView.getMap();
@@ -1336,6 +1340,8 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
             addSearchMarker(latLng);
             locationMarker.setTitle(list.get(j).getTitle());
         }
+        //显示搜索列表
+        rvNearbyService.setAdapter(new PoiNearbyAdapter(context,list));
     }
 
     @Override
