@@ -40,6 +40,7 @@ import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.CommonHelper;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.config.DataConfig;
 import com.officego.location.marker.ClusterClickListener;
@@ -171,52 +172,48 @@ public class ClusterActivity extends BaseActivity implements ClusterRender,
                 return;
             } else if (clusterItems.size() > 1 && clusterItems.size() <= 6) {
                 houseListDialog(this, clusterItems);
+                //如果聚合点经纬度相同
+                RegionItem item1 = (RegionItem) clusterItems.get(0);
+                RegionItem item2 = (RegionItem) clusterItems.get(clusterItems.size() - 1);
+                if (item1.getPosition().latitude == item2.getPosition().latitude &&
+                        item1.getPosition().longitude == item2.getPosition().longitude) {
+                    return;
+                }
             }
+            LatLngBounds.Builder builder = new LatLngBounds.Builder();
+            for (ClusterItem clusterItem : clusterItems) {
+                builder.include(clusterItem.getPosition());
+            }
+            LatLngBounds latLngBounds = builder.build();
+            mAMap.animateCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, 0));
         }
-        LatLngBounds.Builder builder = new LatLngBounds.Builder();
-        for (ClusterItem clusterItem : clusterItems) {
-            builder.include(clusterItem.getPosition());
-        }
-
-        LatLngBounds latLngBounds = builder.build();
-        mAMap.animateCamera(CameraUpdateFactory.newLatLngBounds(latLngBounds, 0));
     }
 
     //根据聚合数量显示drawCircle的背景颜色
     @Override
     public Drawable getDrawAble(int clusterNum) {
-        int radius = CommonHelper.dp2px(context, 80);
+        int radius = CommonHelper.dp2px(context, 100);
+        int color = Color.argb(255, 70, 195, 194);
         if (clusterNum == 1) {
             Drawable bitmapDrawable = mBackDrawAbles.get(1);
             if (bitmapDrawable == null) {
                 bitmapDrawable = getApplication().getResources().getDrawable(
-                        R.mipmap.ic_amap_marker_bg2);
+                        R.mipmap.ic_amap_marker_bg);
                 mBackDrawAbles.put(1, bitmapDrawable);
             }
-
             return bitmapDrawable;
-        } else if (clusterNum < 5) {
+        } else if (clusterNum < 6) {
             Drawable bitmapDrawable = mBackDrawAbles.get(2);
             if (bitmapDrawable == null) {
-                bitmapDrawable = new BitmapDrawable(null, drawCircle(radius,
-                        Color.argb(199, 217, 114, 0)));
+                bitmapDrawable = new BitmapDrawable(null, drawCircle(radius, color));
                 mBackDrawAbles.put(2, bitmapDrawable);
             }
             return bitmapDrawable;
-        } else if (clusterNum < 10) {
+        } else {
             Drawable bitmapDrawable = mBackDrawAbles.get(3);
             if (bitmapDrawable == null) {
-                bitmapDrawable = new BitmapDrawable(null, drawCircle(radius,
-                        Color.argb(199, 217, 114, 0)));
+                bitmapDrawable = new BitmapDrawable(null, drawCircle(radius, color));
                 mBackDrawAbles.put(3, bitmapDrawable);
-            }
-            return bitmapDrawable;
-        } else {
-            Drawable bitmapDrawable = mBackDrawAbles.get(4);
-            if (bitmapDrawable == null) {
-                bitmapDrawable = new BitmapDrawable(null, drawCircle(radius,
-                        Color.argb(235, 215, 66, 2)));
-                mBackDrawAbles.put(4, bitmapDrawable);
             }
             return bitmapDrawable;
         }
@@ -229,6 +226,8 @@ public class ClusterActivity extends BaseActivity implements ClusterRender,
         Paint paint = new Paint();
         RectF rectF = new RectF(0, 0, radius * 2, radius * 2);
         paint.setColor(color);
+        paint.setAntiAlias(true);
+        paint.setFilterBitmap(true);
         canvas.drawArc(rectF, 0, 360, true, paint);
         return bitmap;
     }

@@ -3,6 +3,7 @@ package com.officego.location.marker;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Color;
+import android.graphics.Typeface;
 import android.os.Build;
 import android.os.Handler;
 import android.os.HandlerThread;
@@ -380,7 +381,8 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
             setTitle(textView, mCluster);
             textView.setGravity(Gravity.CENTER);
             textView.setTextColor(Color.WHITE);
-            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 10F);
+            textView.setTypeface(Typeface.DEFAULT_BOLD);
+            textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11F);
             if (mClusterRender != null && mClusterRender.getDrawAble(mCluster.getClusterCount()) != null) {
                 textView.setBackgroundDrawable(mClusterRender.getDrawAble(mCluster.getClusterCount()));
             } else {
@@ -394,7 +396,6 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
             bitmapDescriptor = mLruCacheName.get(mRegionItem.getTitle());
             if (bitmapDescriptor == null) {
                 TextView textView = new TextView(mContext);
-//                String title = mRegionItem.getTitle().length() > 6 ? mRegionItem.getTitle().substring(0, 6) + ".." : mRegionItem.getTitle();
                 String title = mRegionItem.getTitle();
                 String houseCount = mRegionItem.getHouseCount();
                 textView.setText(String.format("\n %s \n%s个房源\n", title, houseCount));

@@ -567,6 +567,18 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
         new ServiceLogoDialog(context, getString(R.string.str_title_base_sservice), serviceList);
     }
 
+    //开放工位图片
+    @Click(R.id.iv_open_work_img)
+    void openSeatsClick() {
+        if (mData != null && mData.getBuilding() != null) {
+            String path = mData.getBuilding().getOpenStationMap().getMainPic();
+            ArrayList<String> list = new ArrayList<>();
+            list.add(path);
+            new PreImageDialog(context, list, 0);
+
+        }
+    }
+
     //导航
     @Click({R.id.tv_location, R.id.tv_bus_line})
     void mapClick() {
@@ -735,9 +747,6 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
                 mConditionBean == null || TextUtils.isEmpty(mConditionBean.getHouseTags()) ? "" : mConditionBean.getHouseTags(),
                 currentSeatsValue);
     }
-//    private void getBuildingSelectList(){
-//
-//    }
 
     private void showSetAreaView() {
         rvHorizontalAll.setVisibility(View.GONE);
@@ -1380,7 +1389,6 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
             //初始化地图
             mAMap = mapView.getMap();
             mAMap.getUiSettings().setZoomControlsEnabled(false);
-//            mAMap.getUiSettings().setScrollGesturesEnabled(false);
             mAMap.moveCamera(CameraUpdateFactory.zoomTo(14.3F));
         }
         tabLayout.addOnTabSelectedListener(new CustomiseTabListener() {
@@ -1468,7 +1476,7 @@ public class BuildingDetailsJointWorkActivity extends BaseMvpActivity<BuildingDe
             locationMarker.setTitle(list.get(j).getTitle());
         }
         //显示搜索列表
-        rvNearbyService.setAdapter(new PoiNearbyAdapter(context,list));
+        rvNearbyService.setAdapter(new PoiNearbyAdapter(context, list));
     }
 
     @Override

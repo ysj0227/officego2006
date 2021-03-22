@@ -17,13 +17,9 @@ public interface MessageContract {
 
         void userInfoSuccess(UserMessageBean data);
 
-        void supportMobileSuccess(String mobile);
     }
 
     interface Presenter {
-
         void getUserInfo();
-
-        void getSupportMobile();
     }
 }

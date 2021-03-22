@@ -50,10 +50,4 @@
         android:layout_below="@id/rl_title"
         tools:ignore="FragmentTagUsage" />
 
-    <include
-        layout="@layout/include_user_expire"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:visibility="gone" />
-
 </RelativeLayout>

@@ -1,12 +1,15 @@
 package com.owner.home;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
 import androidx.core.widget.NestedScrollView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -99,9 +102,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     TextView tvNoData;
     @ViewById(resName = "rl_exception")
     RelativeLayout rlException;
-    //账户到期
-    @ViewById(resName = "rl_user_expire")
-    RelativeLayout rlUserExpire;
     //用户信息
     private UserMessageBean mUserData;
     //楼盘网点列表pop
@@ -236,18 +236,6 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
                 EditBuildingActivity_.intent(mActivity).buildingManagerBean(bean).isRefreshHouseList(true).start();
             }
         }
-    }
-
-    //账户过期客服
-    @Click(resName = "btn_service")
-    void serviceClick() {
-        mPresenter.getSupportMobile();
-    }
-
-    //支付
-    @Click(resName = "btn_pay")
-    void payClick() {
-        PayActivity_.intent(mActivity).start();
     }
 
     //当切换tab 是否刷新首页数据
@@ -486,10 +474,21 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     //账号试用到期 1:在试用期 0:账号已过试用期
     @Override
     public void userExpireSuccess(UserMessageBean data) {
-        rlUserExpire.setEnabled(true);
-        rlUserExpire.setClickable(true);
-        rlUserExpire.setVisibility(CommonHelper.bigDecimal(data.getMsgStatus()) == 0
-                ? View.VISIBLE : View.GONE);
+        int status = CommonHelper.bigDecimal(data.getMsgStatus());
+        if (status == 0) {
+            int color = ContextCompat.getColor(mActivity, R.color.common_blue_main);
+            AlertDialog dialog = new AlertDialog.Builder(mActivity)
+                    .setTitle("账号试用到期")
+                    .setMessage("您的账号试用期已过，请联系客服重新激活。")
+                    .setNegativeButton("取消", null)
+                    .setPositiveButton("联系客服", (dialogInterface, i) -> {
+                        mPresenter.getSupportMobile();
+                        dialogInterface.dismiss();
+                    }).create();
+            dialog.show();
+            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(color);
+            dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(color);
+        }
     }
 
     //加载更多

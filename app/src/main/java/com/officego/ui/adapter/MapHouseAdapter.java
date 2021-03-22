@@ -12,6 +12,7 @@ import com.officego.commonlib.ViewHolder;
 import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.GlideUtils;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.RoundImageView;
 import com.officego.location.marker.ClusterItem;
 import com.officego.location.marker.RegionItem;
@@ -50,7 +51,6 @@ public class MapHouseAdapter extends CommonListAdapter<ClusterItem> {
         int buildingId = mRegionItem.getBuildingId();
         TextView tvType = holder.getView(R.id.tv_type);
         tvType.setVisibility(btype == Constants.TYPE_BUILDING ? View.GONE : View.VISIBLE);
-
         String price = mRegionItem.getPrice() == null ? "0" : mRegionItem.getPrice();
         if (btype == 1) {
             tvPrice.setText("¥" + price + "/m²/天起");

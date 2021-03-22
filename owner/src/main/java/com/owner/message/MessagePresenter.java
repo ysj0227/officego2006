@@ -1,9 +1,7 @@
 package com.owner.message;
 
 import com.officego.commonlib.base.BasePresenter;
-import com.officego.commonlib.common.model.ServiceBean;
 import com.officego.commonlib.common.model.UserMessageBean;
-import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 
 /**
@@ -26,28 +24,6 @@ public class MessagePresenter extends BasePresenter<MessageContract.View>
 
             @Override
             public void onFail(int code, String msg, UserMessageBean data) {
-            }
-        });
-    }
-
-    @Override
-    public void getSupportMobile() {
-        mView.showLoadingDialog();
-        com.officego.commonlib.common.rpc.OfficegoApi.getInstance().serviceMobile(new RetrofitCallback<ServiceBean>() {
-            @Override
-            public void onSuccess(int code, String msg, ServiceBean data) {
-                if (isViewAttached()) {
-                    mView.hideLoadingDialog();
-                    mView.supportMobileSuccess(data.getOwnerConsultation());
-                }
-            }
-
-            @Override
-            public void onFail(int code, String msg, ServiceBean data) {
-                if (isViewAttached()) {
-                    mView.hideLoadingDialog();
-                    mView.supportMobileSuccess(Constants.SERVICE_SUPPORT);
-                }
             }
         });
     }
