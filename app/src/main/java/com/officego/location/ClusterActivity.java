@@ -1,6 +1,7 @@
 package com.officego.location;
 
 import android.app.Dialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.Canvas;
@@ -20,6 +21,7 @@ import android.view.Window;
 import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
@@ -40,7 +42,6 @@ import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.CommonHelper;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.config.DataConfig;
 import com.officego.location.marker.ClusterClickListener;
@@ -51,6 +52,7 @@ import com.officego.location.marker.RegionItem;
 import com.officego.rpc.OfficegoApi;
 import com.officego.ui.adapter.MapHouseAdapter;
 import com.officego.ui.adapter.PoiAdapter;
+import com.officego.ui.home.SearchHouseListActivity_;
 import com.officego.ui.home.model.AllBuildingBean;
 
 import java.util.ArrayList;
@@ -67,6 +69,7 @@ public class ClusterActivity extends BaseActivity implements ClusterRender,
     private ImageView ivLocation;
     private ClearableEditText etSearch;
     private RecyclerView rvSearchList;
+    private TextView tvMapFind;
 
     private AMap mAMap;
     private PoiSearch poiSearch;
@@ -89,6 +92,7 @@ public class ClusterActivity extends BaseActivity implements ClusterRender,
         context = ClusterActivity.this;
         mMapView = findViewById(R.id.map);
         rlQuit = findViewById(R.id.rl_quit);
+        tvMapFind = findViewById(R.id.tv_map_find);
         ivLocation = findViewById(R.id.iv_location);
         etSearch = findViewById(R.id.et_search);
         rvSearchList = findViewById(R.id.rv_search_list);
@@ -128,15 +132,13 @@ public class ClusterActivity extends BaseActivity implements ClusterRender,
                 addMarker(latLng);
             }
         });
+        tvMapFind.setOnClickListener(view ->
+                SearchHouseListActivity_.intent(context).start());
     }
 
     @Override
     public void onMapLoaded() {
-        new Thread() {
-            public void run() {
-                getMapList();
-            }
-        }.start();
+        getMapList();
     }
 
     private void poiSearch(String keyWord) {
@@ -330,24 +332,28 @@ public class ClusterActivity extends BaseActivity implements ClusterRender,
 
     public void getMapList() {
         if (DataConfig.mapList == null) {
-            showLoadingDialog("加载地图房源中...", getResources().getColor(R.color.common_blue_main),
-                    R.drawable.bg_solid_gray_e5_corner12);
-            OfficegoApi.getInstance().getBuildingList(new RetrofitCallback<List<AllBuildingBean.DataBean>>() {
-                @Override
-                public void onSuccess(int code, String msg, List<AllBuildingBean.DataBean> data) {
-                    if (DataConfig.mapList != null) {
-                        DataConfig.mapList.clear();
-                    }
-                    DataConfig.mapList = data;
-                    setMapData();
-                    hideLoadingDialog();
-                }
+            ProgressDialog pd = new ProgressDialog(context);
+            pd.setMessage("洪荒之力正在加载房源...");
+            pd.setCancelable(true);
+            pd.setCanceledOnTouchOutside(false);
+            pd.show();
+            new Thread(() -> OfficegoApi.getInstance().getBuildingList(
+                    new RetrofitCallback<List<AllBuildingBean.DataBean>>() {
+                        @Override
+                        public void onSuccess(int code, String msg, List<AllBuildingBean.DataBean> data) {
+                            if (DataConfig.mapList != null) {
+                                DataConfig.mapList.clear();
+                            }
+                            DataConfig.mapList = data;
+                            setMapData();
+                            pd.dismiss();
+                        }
 
-                @Override
-                public void onFail(int code, String msg, List<AllBuildingBean.DataBean> data) {
-                    hideLoadingDialog();
-                }
-            });
+                        @Override
+                        public void onFail(int code, String msg, List<AllBuildingBean.DataBean> data) {
+                            pd.dismiss();
+                        }
+                    })).start();
         } else {
             setMapData();
         }

@@ -26,6 +26,7 @@ import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.ClearableEditText;
 import com.officego.commonlib.view.OnLoadMoreListener;
 import com.officego.config.ConditionConfig;
+import com.officego.location.ClusterActivity;
 import com.officego.ui.adapter.HouseAdapter;
 import com.officego.ui.home.contract.SearchListContract;
 import com.officego.ui.home.model.BuildingBean;
@@ -63,6 +64,8 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
     ClearableEditText etSearch;
     @ViewById(R.id.btn_cancel)
     Button btnCancel;
+    @ViewById(R.id.tv_map_find)
+    TextView tvMapFind;
     @ViewById(R.id.bga_refresh)
     SwipeRefreshLayout mSwipeRefreshLayout;
     @ViewById(R.id.rv_house)
@@ -128,6 +131,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
 
     private void initViews() {
         btnBack.setVisibility(View.VISIBLE);
+        tvMapFind.setVisibility(View.VISIBLE);
         btnCancel.setVisibility(View.GONE);
         etSearch.setText(searchKeywords);
         etSearch.setFocusable(false);
@@ -181,6 +185,14 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
     public void onBackPressed() {
         super.onBackPressed();
         ConditionConfig.getConditionBean = null;
+    }
+
+    @Click(R.id.tv_map_find)
+    void mapHouseClick() {
+        if (isFastClick(1200)) {
+            return;
+        }
+        openActivity(context, ClusterActivity.class, false);
     }
 
     @Click(R.id.et_search)
@@ -340,7 +352,7 @@ public class SearchHouseListActivity extends BaseMvpActivity<SearchListPresenter
         this.brandId = bean.getBrand();
         ConditionConfig.showText(tvSearchOffice, filterType);
         ConditionConfig.getConditionBean = ConditionConfig.setConditionBean(filterType,
-                 area, dayPrice, seats, decoration, houseTags);
+                area, dayPrice, seats, decoration, houseTags);
         //查询列表
         getList();
     }

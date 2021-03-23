@@ -398,7 +398,7 @@ public class ClusterOverlay implements AMap.OnCameraChangeListener,
                 TextView textView = new TextView(mContext);
                 String title = mRegionItem.getTitle();
                 String houseCount = mRegionItem.getHouseCount();
-                textView.setText(String.format("\n %s \n%s个房源\n", title, houseCount));
+                textView.setText(String.format("\n %s \n", title));
                 textView.setGravity(Gravity.CENTER);
                 textView.setTextColor(Color.WHITE);
                 textView.setTextSize(TypedValue.COMPLEX_UNIT_SP, 11F);

@@ -67,13 +67,6 @@
                         android:textSize="@dimen/sp_16"
                         android:textStyle="bold" />
 
-                    <com.officego.commonlib.view.RoundImageView
-                        android:id="@+id/riv_map_find_house"
-                        android:layout_width="@dimen/dp_60"
-                        android:layout_height="@dimen/dp_32"
-                        android:layout_alignParentEnd="true"
-                        android:src="@mipmap/ic_to_find_map_house" />
-
                     <ImageView
                         android:id="@+id/iv_customised_house"
                         android:layout_width="match_parent"

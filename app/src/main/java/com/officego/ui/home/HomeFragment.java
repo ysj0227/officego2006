@@ -79,12 +79,12 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
     NestedScrollView nsvView;
     @ViewById(R.id.ctl_search)
     ConstraintLayout ctlSearch;
-    @ViewById(R.id.iv_location)
-    ImageView ivLocation;
     @ViewById(R.id.tv_location)
     TextView tvLocation;
     @ViewById(R.id.tv_search)
     TextView tvSearch;
+    @ViewById(R.id.tv_map_find)
+    TextView tvMapFind;
     @ViewById(R.id.v_line_bottom)
     View vLineBottom;
     @ViewById(R.id.banner)
@@ -170,7 +170,7 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         SearchRecommendActivity_.intent(mActivity).start();
     }
 
-    @Click(R.id.riv_map_find_house)
+    @Click(R.id.tv_map_find)
     void mapHouseClick() {
         if (isFastClick(1200)) {
             return;
@@ -313,19 +313,23 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
             if (scrollY > getResources().getDimensionPixelSize(R.dimen.dp_200)) {
                 StatusBarUtils.setStatusBarColor(mActivity);
                 ctlSearch.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.white));
-                tvLocation.setTextColor(ContextCompat.getColor(mActivity, R.color.text_33));
                 tvSearch.setBackground(ContextCompat.getDrawable(mActivity, R.drawable.button_corners16_solid_gray));
-                ivLocation.setBackgroundResource(R.mipmap.ic_location_black);
                 vLineBottom.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.text_f7));
+                tvLocation.setTextColor(ContextCompat.getColor(mActivity, R.color.text_33));
+                tvLocation.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_location_black,0,0,0);
+                tvMapFind.setTextColor(ContextCompat.getColor(mActivity, R.color.text_33));
+                tvMapFind.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_home_map_location_black,0,0,0);
             }
         } else if (scrollY < oldScrollY || scrollY == 0) {//向上滚动 scrollY == 0 滚动到顶
             if (scrollY < getResources().getDimensionPixelSize(R.dimen.dp_200)) {
                 StatusBarUtils.setStatusBarFullTransparent(mActivity);
                 ctlSearch.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.transparent));
-                tvLocation.setTextColor(ContextCompat.getColor(mActivity, R.color.white));
                 tvSearch.setBackground(ContextCompat.getDrawable(mActivity, R.drawable.button_corners16_solid_white));
-                ivLocation.setBackgroundResource(R.mipmap.ic_location);
                 vLineBottom.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.transparent));
+                tvLocation.setTextColor(ContextCompat.getColor(mActivity, R.color.white));
+                tvLocation.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_location,0,0,0);
+                tvMapFind.setTextColor(ContextCompat.getColor(mActivity, R.color.white));
+                tvMapFind.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_home_map_location,0,0,0);
             }
         }
     }

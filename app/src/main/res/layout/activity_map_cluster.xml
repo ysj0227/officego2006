@@ -9,14 +9,28 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content" />
 
+    <RelativeLayout
+        android:id="@+id/rl_quit"
+        android:layout_width="@dimen/dp_50"
+        android:layout_height="@dimen/dp_60"
+        android:layout_alignTop="@id/et_search"
+        android:layout_alignBottom="@id/et_search">
+
+        <ImageView
+            android:layout_width="@dimen/dp_28"
+            android:layout_height="@dimen/dp_28"
+            android:layout_centerInParent="true"
+            android:background="@mipmap/ic_back_dark" />
+    </RelativeLayout>
+
     <com.officego.commonlib.view.ClearableEditText
-        android:visibility="visible"
         android:id="@+id/et_search"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_40"
-        android:layout_marginStart="@dimen/dp_30"
+        android:layout_centerHorizontal="true"
         android:layout_marginTop="@dimen/dp_40"
-        android:layout_marginEnd="@dimen/dp_60"
+        android:layout_marginEnd="@dimen/dp_80"
+        android:layout_toEndOf="@id/rl_quit"
         android:background="@drawable/bg_shape"
         android:drawableStart="@mipmap/ic_search_grey"
         android:drawablePadding="@dimen/dp_3"
@@ -26,22 +40,23 @@
         android:paddingLeft="@dimen/dp_10"
         android:singleLine="true"
         android:textColor="@color/text_33"
-        android:textSize="@dimen/sp_13" />
+        android:textSize="@dimen/sp_13"
+        android:visibility="visible" />
 
-    <RelativeLayout
-        android:id="@+id/rl_quit"
-        android:layout_width="@dimen/dp_60"
-        android:layout_height="@dimen/dp_60"
+    <TextView
+        android:id="@+id/tv_map_find"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:layout_alignTop="@id/et_search"
         android:layout_alignBottom="@id/et_search"
-        android:layout_alignParentEnd="true">
-
-        <ImageView
-            android:layout_width="@dimen/dp_28"
-            android:layout_height="@dimen/dp_28"
-            android:layout_centerInParent="true"
-            android:background="@mipmap/ic_pro_quit" />
-    </RelativeLayout>
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/dp_18"
+        android:drawableStart="@mipmap/ic_map_list_more"
+        android:drawablePadding="@dimen/dp_3"
+        android:gravity="center"
+        android:text="列表"
+        android:textColor="@color/text_33"
+        android:textSize="@dimen/sp_14" />
 
     <ImageView
         android:id="@+id/iv_location"
@@ -58,8 +73,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@id/et_search"
-        android:layout_marginTop="@dimen/dp_10"
         android:layout_marginStart="@dimen/dp_30"
+        android:layout_marginTop="@dimen/dp_10"
         android:layout_marginEnd="@dimen/dp_30"
         android:layout_marginBottom="@dimen/dp_100"
         android:background="@drawable/bg_shape"
