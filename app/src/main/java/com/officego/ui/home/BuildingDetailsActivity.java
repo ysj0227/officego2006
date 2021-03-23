@@ -1318,7 +1318,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     private void poiSearch(String keyWord) {
         if (mData != null) {
             PoiSearch.Query query = new PoiSearch.Query(keyWord, "", "021");
-            query.setPageSize(10);// 设置每页最多返回poiitem
+            query.setPageSize(8);// 设置每页最多返回poiitem
             query.setPageNum(1);//设置查询页码
             PoiSearch poiSearch = new PoiSearch(this, query);
             poiSearch.setBound(new PoiSearch.SearchBound(new LatLonPoint(
