@@ -117,7 +117,8 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
         IMediaPlayer.OnSeekCompleteListener,
         IMediaPlayer.OnVideoSizeChangedListener,
         IMediaPlayer.OnInfoListener,
-        PoiSearch.OnPoiSearchListener {
+        PoiSearch.OnPoiSearchListener,
+        PoiNearbyAdapter.PoiListener {
     //title
     @ViewById(R.id.nsv_view)
     NestedScrollView nsvView;
@@ -1248,18 +1249,20 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
      * --------------------------------------------------------------------
      * --------------------------------------------------------------------
      */
-
+    private boolean isMapExpand;
+    private List<PoiItem> list = new ArrayList<>();
+    private List<PoiItem> listAll = new ArrayList<>();
     private void initMap() {
         mapView.onCreate(new Bundle());
         rvNearbyService.setLayoutManager(new LinearLayoutManager(context));
         mapContainer.setScrollView(nsvView);
+        //初始化地图
         if (mAMap == null) {
-            //初始化地图
             mAMap = mapView.getMap();
             mAMap.getUiSettings().setZoomControlsEnabled(false);
-//            mAMap.getUiSettings().setScrollGesturesEnabled(false);
             mAMap.moveCamera(CameraUpdateFactory.zoomTo(14.3F));
         }
+        //点击tab
         tabLayout.addOnTabSelectedListener(new CustomiseTabListener() {
             @Override
             protected void onTabSelected(int position) {
@@ -1331,25 +1334,40 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
 
     @Override
     public void onPoiSearched(PoiResult poiResult, int i) {
-        //添加标注
         if (mAMap != null) {
             mAMap.clear(true);
         }
+        //添加标注
         addBuildingMarker();
-        List<PoiItem> list = poiResult.getPois();
+        list.clear();
+        listAll.clear();
+        listAll = poiResult.getPois();
         LatLng latLng;
-        for (int j = 0; j < list.size(); j++) {
-            latLng = new LatLng(list.get(j).getLatLonPoint().getLatitude(),
-                    list.get(j).getLatLonPoint().getLongitude());
+        for (int j = 0; j < listAll.size(); j++) {
+            latLng = new LatLng(listAll.get(j).getLatLonPoint().getLatitude(),
+                    listAll.get(j).getLatLonPoint().getLongitude());
             addSearchMarker(latLng);
-            locationMarker.setTitle(list.get(j).getTitle());
+            locationMarker.setTitle(listAll.get(j).getTitle());
+            if (j < 3) {
+                list.add(listAll.get(j));
+            }
         }
         //显示搜索列表
-        rvNearbyService.setAdapter(new PoiNearbyAdapter(context,list));
+        PoiNearbyAdapter adapter = new PoiNearbyAdapter(context, list);
+        adapter.setListener(this);
+        rvNearbyService.setAdapter(adapter);
     }
 
     @Override
     public void onPoiItemSearched(PoiItem poiItem, int i) {
 
+    }
+    //搜索是否展开
+    @Override
+    public void poiItemOnClick(PoiItem data) {
+        isMapExpand = !isMapExpand;
+        PoiNearbyAdapter adapter = new PoiNearbyAdapter(context, isMapExpand ? listAll : list);
+        adapter.setListener(this);
+        rvNearbyService.setAdapter(adapter);
     }
 }
