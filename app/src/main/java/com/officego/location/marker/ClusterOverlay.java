@@ -28,7 +28,6 @@ import com.amap.api.maps.model.animation.AlphaAnimation;
 import com.amap.api.maps.model.animation.Animation;
 import com.officego.R;
 import com.officego.config.DataConfig;
-import com.officego.ui.home.HomeFragment;
 
 import java.util.ArrayList;
 import java.util.List;
