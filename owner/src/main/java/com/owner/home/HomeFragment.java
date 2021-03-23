@@ -16,6 +16,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.officego.commonlib.base.BaseMvpFragment;
+import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.model.BuildingManagerBean;
@@ -476,18 +477,14 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     public void userExpireSuccess(UserMessageBean data) {
         int status = CommonHelper.bigDecimal(data.getMsgStatus());
         if (status == 0) {
-            int color = ContextCompat.getColor(mActivity, R.color.common_blue_main);
-            AlertDialog dialog = new AlertDialog.Builder(mActivity)
+            new CommonDialog.Builder(mActivity)
                     .setTitle("账号试用到期")
-                    .setMessage("您的账号试用期已过，请联系客服重新激活。")
-                    .setNegativeButton("取消", null)
-                    .setPositiveButton("联系客服", (dialogInterface, i) -> {
+                    .setMessage("  您的账号试用期已过，请联系客服重新激活  ")
+                    .setCancelButton(R.string.sm_cancel)
+                    .setConfirmButton("联系客服", (dialog12, which) -> {
                         mPresenter.getSupportMobile();
-                        dialogInterface.dismiss();
-                    }).create();
-            dialog.show();
-            dialog.getButton(AlertDialog.BUTTON_POSITIVE).setTextColor(color);
-            dialog.getButton(DialogInterface.BUTTON_NEGATIVE).setTextColor(color);
+                        dialog12.dismiss();
+                    }).create().show();
         }
     }
 
