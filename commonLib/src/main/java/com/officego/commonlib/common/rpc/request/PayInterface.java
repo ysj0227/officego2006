@@ -1,5 +1,6 @@
 package com.officego.commonlib.common.rpc.request;
 
+import com.officego.commonlib.common.model.AlipayBean;
 import com.officego.commonlib.common.model.PayData;
 import com.officego.commonlib.retrofit.BaseResponse;
 
@@ -25,5 +26,12 @@ public interface PayInterface {
     @Multipart
     @POST(path + "pay/wxpay")
     Call<BaseResponse<PayData>> wxPay(@PartMap Map<String, RequestBody> params);
+
+    /**
+     * 支付宝支付
+     */
+    @Multipart
+    @POST(path + "pay/alipayapp")
+    Call<BaseResponse<Object>> alipay(@PartMap Map<String, RequestBody> params);
 
 }

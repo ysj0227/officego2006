@@ -104,7 +104,11 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".home.PayActivity_"
+            android:name=".pay.PayActivity_"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".mine.OrderActivity_"
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
     </application>

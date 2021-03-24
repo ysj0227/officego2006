@@ -8,12 +8,12 @@ public class AlipayConfig {
     /**
      * 用于支付宝支付业务的入参 app_id。
      */
-    public static final String APPID = "2021001194600086";
+    public static final String APPID = "";
 
     /**
      * 用于支付宝账户登录授权业务的入参 pid。
      */
-    public static final String PID = "2088931498589495";
+    public static final String PID = "";
 
     /**
      * 用于支付宝账户登录授权业务的入参 target_id。

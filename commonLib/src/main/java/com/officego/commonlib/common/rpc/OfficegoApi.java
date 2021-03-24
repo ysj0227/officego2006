@@ -3,6 +3,7 @@ package com.officego.commonlib.common.rpc;
 import android.text.TextUtils;
 
 import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.model.AlipayBean;
 import com.officego.commonlib.common.model.ChatHouseBean;
 import com.officego.commonlib.common.model.ChatListBean;
 import com.officego.commonlib.common.model.CouponDetailsBean;
@@ -1114,7 +1115,7 @@ public class OfficegoApi {
     public void nearbyBuildingList(int id, RetrofitCallback<List<NearbyBuildingBean.DataBean>> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
-        map.put("id", requestBody(id+""));
+        map.put("id", requestBody(id + ""));
         map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(BuildingJointWorkInterface.class)
                 .getNearbyBuildingList(map)
@@ -1124,14 +1125,30 @@ public class OfficegoApi {
     /**
      * 微信支付
      */
-    public void wxPay(String amount, RetrofitCallback<PayData> callback) {
+    public void wxPay(String amount, int buildingId, RetrofitCallback<PayData> callback) {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("amount", requestBody(amount));
         map.put("details", requestBody("会员套餐"));
+        map.put("bid", requestBody(buildingId + ""));
         map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(PayInterface.class)
                 .wxPay(map)
+                .enqueue(callback);
+    }
+
+    /**
+     * 支付宝支付
+     */
+    public void alipay(String amount, int buildingId, RetrofitCallback<Object> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("amount", requestBody(amount));
+        map.put("details", requestBody("会员套餐"));
+        map.put("bid", requestBody(buildingId + ""));
+        map.putAll(map());
+        OfficegoRetrofitClient.getInstance().create(PayInterface.class)
+                .alipay(map)
                 .enqueue(callback);
     }
 }

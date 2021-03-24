@@ -78,7 +78,7 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
             return;
         }
         //版本更新
-        new VersionDialog(mActivity,false);
+        new VersionDialog(mActivity, false);
         mPresenter.getUserInfo();
     }
 
@@ -142,6 +142,11 @@ public class MineFragment extends BaseMvpFragment<UserPresenter>
     @Click(resName = "rl_record")
     void recordClick() {
         WriteOffRecordActivity_.intent(mActivity).start();
+    }
+
+    @Click(resName = "rl_order")
+    void orderClick() {
+        OrderActivity_.intent(mActivity).start();
     }
 
     @Click(resName = "rl_help")

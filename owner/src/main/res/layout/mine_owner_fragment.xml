@@ -107,6 +107,15 @@
                 app:imageHeight="@dimen/dp_19"
                 app:imageWidth="@dimen/dp_16"
                 app:textTitle="核销记录" />
+            <com.officego.commonlib.view.widget.ItemTextLayout
+                android:id="@+id/rl_order"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:dividerLine="visible"
+                app:imageBackground="@mipmap/ic_coupon_icon"
+                app:imageHeight="@dimen/dp_19"
+                app:imageWidth="@dimen/dp_16"
+                app:textTitle="支付记录" />
 
             <com.officego.commonlib.view.widget.ItemTextLayout
                 android:id="@+id/rl_help"

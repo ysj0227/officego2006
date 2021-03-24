@@ -85,8 +85,8 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
             } else if (errCode == -1) {
                 showAlert(this, getString(R.string.pay_fail));
             } else if (errCode == -2) {
-                tip = getString(R.string.pay_cancel);
-                result(tip);
+//                tip = getString(R.string.pay_cancel);
+//                result(tip);
             } else {
                 tip = getString(R.string.pay_error);
                 result(tip);
