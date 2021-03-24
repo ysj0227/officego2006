@@ -3,6 +3,7 @@ package com.officego.wxapi;
 
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -80,20 +81,9 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
             int errCode = resp.errCode;
             String tip;
             if (errCode == 0) {
-                CommonDialog dialog = new CommonDialog.Builder(this)
-                        .setTitle("支付结果")
-                        .setMessageDrawable(R.drawable.icon_image_select, 0, 0, 0)
-                        .setMessageDrawablePadding(R.dimen.dp_5)
-                        .setMessage("成功")
-                        .setConfirmButton(R.string.str_confirm, (dialog12, which) -> {
-                            dialog12.dismiss();
-                            finish();
-                        }).create();
-                dialog.showWithOutTouchable(false);
-                dialog.setCancelable(false);
+                showAlert(this, getString(R.string.pay_success));
             } else if (errCode == -1) {
-                tip = getString(R.string.pay_fail);
-                result(tip);
+                showAlert(this, getString(R.string.pay_fail));
             } else if (errCode == -2) {
                 tip = getString(R.string.pay_cancel);
                 result(tip);
@@ -102,6 +92,21 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
                 result(tip);
             }
         }
+    }
+
+    private void showAlert(Context ctx, String info) {
+        CommonDialog dialog = new CommonDialog.Builder(ctx)
+                .setTitle("支付结果")
+                .setTitleSize(20F)
+                .setMessage(info)
+                .setConfirmButton(R.string.str_confirm, (dialogInterface, i) -> {
+                    dialogInterface.dismiss();
+                    finish();
+                })
+                .setConfirmButtonSize(16F).create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.setCancelable(false);
+        dialog.show();
     }
 
     /**

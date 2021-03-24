@@ -1,9 +1,7 @@
 package com.owner.home;
 
 import android.annotation.SuppressLint;
-import android.app.AlertDialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
@@ -14,7 +12,6 @@ import com.alipay.sdk.app.PayTask;
 import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.GotoActivityUtils;
 import com.officego.commonlib.common.alipay.AlipayConfig;
-import com.officego.commonlib.common.alipay.AuthResult;
 import com.officego.commonlib.common.alipay.OrderInfoUtil2_0;
 import com.officego.commonlib.common.alipay.PayResult;
 import com.officego.commonlib.common.model.PayData;
@@ -23,6 +20,7 @@ import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
 
 import org.androidannotations.annotations.AfterViews;
@@ -55,7 +53,7 @@ public class PayActivity extends BaseActivity {
             gotoWxPayActivity();
         } else if (btnAlipay.isChecked()) {
             alipayV2();
-        }else {
+        } else {
             shortTip("请选择支付方式");
         }
     }
@@ -109,27 +107,10 @@ public class PayActivity extends BaseActivity {
                     // 判断resultStatus 为9000则代表支付成功
                     if (TextUtils.equals(resultStatus, "9000")) {
                         // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
-                        showAlert(PayActivity.this, getString(com.officego.commonlib.R.string.pay_success) + payResult);
+                        showAlert(PayActivity.this, "支付结果", getString(R.string.pay_success));
                     } else {
                         // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
-                        showAlert(PayActivity.this, getString(com.officego.commonlib.R.string.pay_failed) + payResult);
-                    }
-                    break;
-                }
-                case AlipayConfig.SDK_AUTH_FLAG: {
-                    @SuppressWarnings("unchecked")
-                    AuthResult authResult = new AuthResult((Map<String, String>) msg.obj, true);
-                    String resultStatus = authResult.getResultStatus();
-
-                    // 判断resultStatus 为“9000”且result_code
-                    // 为“200”则代表授权成功，具体状态码代表含义可参考授权接口文档
-                    if (TextUtils.equals(resultStatus, "9000") && TextUtils.equals(authResult.getResultCode(), "200")) {
-                        // 获取alipay_open_id，调支付时作为参数extern_token 的value
-                        // 传入，则支付账户为该授权账户
-                        showAlert(PayActivity.this, getString(com.officego.commonlib.R.string.auth_success) + authResult);
-                    } else {
-                        // 其他状态值则为授权失败
-                        showAlert(PayActivity.this, getString(com.officego.commonlib.R.string.auth_failed) + authResult);
+                        showAlert(PayActivity.this, "支付结果", getString(R.string.pay_fail));
                     }
                     break;
                 }
@@ -146,7 +127,7 @@ public class PayActivity extends BaseActivity {
      */
     public void alipayV2() {
         if (TextUtils.isEmpty(AlipayConfig.APPID) || (TextUtils.isEmpty(AlipayConfig.RSA2_PRIVATE) && TextUtils.isEmpty(AlipayConfig.RSA_PRIVATE))) {
-            showAlert(this, getString(com.officego.commonlib.R.string.error_missing_appid_rsa_private));
+            showAlert(this, "支付宝配置错误", "请校验支付宝配置参数");
             return;
         }
         /*
@@ -183,20 +164,18 @@ public class PayActivity extends BaseActivity {
         payThread.start();
     }
 
-    private static void showAlert(Context ctx, String info) {
-        showAlert(ctx, info, null);
-    }
-
-    private static void showAlert(Context ctx, String info, DialogInterface.OnDismissListener onDismiss) {
-        new AlertDialog.Builder(ctx)
+    private void showAlert(Context ctx, String title, String info) {
+        CommonDialog dialog = new CommonDialog.Builder(ctx)
+                .setTitle(title)
+                .setTitleSize(20F)
                 .setMessage(info)
-                .setPositiveButton(R.string.str_confirm, null)
-                .setOnDismissListener(onDismiss)
-                .show();
+                .setConfirmButton(R.string.str_confirm, (dialogInterface, i) -> {
+                    dialogInterface.dismiss();
+                    finish();
+                })
+                .setConfirmButtonSize(16F)
+                .create();
+        dialog.setCanceledOnTouchOutside(false);
+        dialog.show();
     }
-    /**
-     * 支付支付end
-     * ——————————————————————————————————————————————————————————————————
-     * ——————————————————————————————————————————————————————————————————
-     */
 }

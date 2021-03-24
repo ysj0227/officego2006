@@ -41,6 +41,9 @@ public class CommonDialog extends Dialog {
         private String backBtnText; // 对话框返回按钮文本
         private String confirmBtnText; // 对话框确定文本
         private int cancelBtnTextColor, confirmBtnTextColor; // 对话框确定文本颜色
+
+        private float titleSize, messageSize, confirmBtnTextSize;
+
         // 对话框按钮监听事件
         private OnClickListener cancelButtonClickListener, confirmButtonClickListener;
 
@@ -65,6 +68,14 @@ public class CommonDialog extends Dialog {
         }
 
         /**
+         * 设置title显示，字体大小
+         */
+        public Builder setTitleSize(float size) {
+            this.titleSize = size;
+            return this;
+        }
+
+        /**
          * 使用字符串设置对话框消息
          */
         public Builder setMessage(String message) {
@@ -77,6 +88,14 @@ public class CommonDialog extends Dialog {
          */
         public Builder setMessage(int message) {
             this.message = (String) context.getText(message);
+            return this;
+        }
+
+        /**
+         * 设置Message显示，字体大小
+         */
+        public Builder setMessageSize(float size) {
+            this.messageSize = size;
             return this;
         }
 
@@ -217,6 +236,15 @@ public class CommonDialog extends Dialog {
         }
 
         /**
+         * 设置按钮显示，字体大小
+         */
+        public Builder setConfirmButtonSize(float size) {
+            this.confirmBtnTextSize = size;
+            return this;
+        }
+
+
+        /**
          * 创建自定义的对话框
          */
         public CommonDialog create() {
@@ -235,11 +263,18 @@ public class CommonDialog extends Dialog {
             } else {
                 tvTitle.setText(title);
             }
+            //设置字体大小
+            if (titleSize > 0) {
+                tvTitle.setTextSize(titleSize);
+            }
 
             if (!TextUtils.isEmpty(message)) {
                 TextView tvMessage = layout.findViewById(R.id.tv_message);
                 tvMessage.setVisibility(View.VISIBLE);
                 tvMessage.setText(message);
+                if (messageSize > 0) {
+                    tvMessage.setTextSize(messageSize);
+                }
                 if (messageDrawable[0] != null || messageDrawable[1] != null
                         || messageDrawable[2] != null || messageDrawable[3] != null) {
                     tvMessage.setCompoundDrawablesRelativeWithIntrinsicBounds(messageDrawable[0],
@@ -290,6 +325,9 @@ public class CommonDialog extends Dialog {
                             confirmButtonClickListener.onClick(dialog, DialogInterface.BUTTON_POSITIVE);
                         }
                     });
+                }
+                if (confirmBtnTextSize > 0) {
+                    cfmButton.setTextSize(confirmBtnTextSize);
                 }
             } else {
                 layout.findViewById(R.id.btn_sure).setVisibility(View.GONE);

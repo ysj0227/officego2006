@@ -210,9 +210,9 @@
     <string name="auth_with_alipay">支付宝授权 Demo</string>
     <string name="web_to_native">网页支付转 native 支付 Demo</string>
     <string name="check_sdk_version">支付宝 SDK 版本</string>
-    <string name="pay_failed">支付失败:</string>
-    <string name="auth_success">授权成功:</string>
-    <string name="auth_failed">授权失败:</string>
+    <string name="pay_failed">支付失败</string>
+    <string name="auth_success">授权成功</string>
+    <string name="auth_failed">授权失败</string>
     <string name="error_missing_appid_rsa_private">错误: 需要配置 PayDemoActivity 中的 APPID 和 RSA_PRIVATE</string>
     <string name="error_missing_hk_partner_seller_rsa_private">错误：需要配置 OrderUtils1_0_HK 中的 PARTNER、SELLER 和 RSA_PRIVATE</string>
     <string name="pay_result">支付结果:</string>
