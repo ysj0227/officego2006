@@ -49,4 +49,6 @@ public class CommonNotifications {
     public static final int weCheatSendAuth = totalEvents++;
     //定制找房-未登录
     public static final int customisedHouse = totalEvents++;
+    //微信支付成功通知
+    public static final int weChatPaySuccess = totalEvents++;
 }

@@ -12,8 +12,10 @@ import android.view.Window;
 import android.widget.Toast;
 
 import com.officego.R;
+import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.model.PayData;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
@@ -100,6 +102,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
                 .setTitleSize(20F)
                 .setMessage(info)
                 .setConfirmButton(R.string.str_confirm, (dialogInterface, i) -> {
+                    BaseNotification.newInstance().postNotificationName(CommonNotifications.weChatPaySuccess);
                     dialogInterface.dismiss();
                     finish();
                 })

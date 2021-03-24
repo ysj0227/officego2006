@@ -5,13 +5,13 @@ import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
 import android.text.TextUtils;
-import android.util.Log;
 import android.widget.RadioButton;
 
 import com.alipay.sdk.app.PayTask;
 import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.alipay.AlipayConfig;
 import com.officego.commonlib.common.alipay.PayResult;
+import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
@@ -117,4 +117,16 @@ public class PayActivity extends BaseMvpActivity<PayPresenter>
         dialog.show();
     }
 
+    @Override
+    public int[] getStickNotificationId() {
+        return new int[]{CommonNotifications.weChatPaySuccess};
+    }
+
+    @Override
+    public void didReceivedNotification(int id, Object... args) {
+        super.didReceivedNotification(id, args);
+        if (id == CommonNotifications.weChatPaySuccess) {
+            finish();
+        }
+    }
 }
