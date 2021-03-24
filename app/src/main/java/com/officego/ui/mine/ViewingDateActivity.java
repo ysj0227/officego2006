@@ -1,9 +1,4 @@
 package com.officego.ui.mine;
-/**
- * Created by YangShiJie
- * Data 2020/5/18.
- * Descriptions:
- **/
 
 import android.annotation.SuppressLint;
 import android.content.Context;
@@ -43,10 +38,12 @@ import java.util.HashMap;
 import java.util.List;
 
 /**
- * Created by shiJie
+ * Created by YangShiJie
+ * Data 2020/5/18.
+ * Descriptions:
  */
 
-@SuppressLint({"SetTextI18n", "Registered"})
+@SuppressLint({"SetTextI18n", "Registered", "NonConstantResourceId"})
 @EActivity(R.layout.mine_activity_viewing_date)
 public class ViewingDateActivity extends BaseMvpActivity<ViewingDatePresenter>
         implements ViewingDateContract.View {
@@ -122,18 +119,20 @@ public class ViewingDateActivity extends BaseMvpActivity<ViewingDatePresenter>
                 DateTimeUtils.getLastDayOfMonth(mSelectedYear, mSelectedMonth));
     }
 
+    //上
     @Click(R.id.rl_last)
     void lastClick() {
         monthPager.setCurrentItem(monthPager.getCurrentPosition() - 1);
     }
 
+    //下
     @Click(R.id.rl_next)
     void nextClick() {
         monthPager.setCurrentItem(monthPager.getCurrentPosition() + 1);
     }
 
     /**
-     * onWindowFocusChanged回调时，将当前月的种子日期修改为今天
+     * onWindowFocusChanged回调时，将当前月的日期修改为今天
      */
     @Override
     public void onWindowFocusChanged(boolean hasFocus) {
