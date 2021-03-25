@@ -13,6 +13,7 @@ import com.officego.commonlib.common.alipay.AlipayConfig;
 import com.officego.commonlib.common.alipay.PayResult;
 import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.utils.ToastUtils;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
 
@@ -74,10 +75,11 @@ public class PayActivity extends BaseMvpActivity<PayPresenter>
                     // 判断resultStatus 为9000则代表支付成功
                     if (TextUtils.equals(resultStatus, "9000")) {
                         // 该笔订单是否真实支付成功，需要依赖服务端的异步通知。
-                        showAlert(PayActivity.this, "支付结果", getString(R.string.pay_success));
+                        showAlert(PayActivity.this, getString(R.string.pay_result), getString(R.string.pay_success), true);
+                    } else if (TextUtils.equals(resultStatus, "6001")) {
+                        ToastUtils.showCenterToast(PayActivity.this, getString(R.string.pay_cancel));
                     } else {
-                        // 该笔订单真实的支付结果，需要依赖服务端的异步通知。
-                        showAlert(PayActivity.this, "支付结果", getString(R.string.pay_fail));
+                        showAlert(PayActivity.this, getString(R.string.pay_result), getString(R.string.pay_fail), false);
                     }
                     break;
                 }
@@ -102,14 +104,16 @@ public class PayActivity extends BaseMvpActivity<PayPresenter>
         payThread.start();
     }
 
-    private void showAlert(Context ctx, String title, String info) {
+    private void showAlert(Context ctx, String title, String info, boolean isFinishActivity) {
         CommonDialog dialog = new CommonDialog.Builder(ctx)
                 .setTitle(title)
                 .setTitleSize(20F)
                 .setMessage(info)
                 .setConfirmButton(R.string.str_confirm, (dialogInterface, i) -> {
                     dialogInterface.dismiss();
-                    finish();
+                    if (isFinishActivity) {
+                        finish();
+                    }
                 })
                 .setConfirmButtonSize(16F)
                 .create();

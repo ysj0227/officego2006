@@ -16,6 +16,7 @@ import com.officego.commonlib.common.config.CommonNotifications;
 import com.officego.commonlib.common.model.PayData;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.notification.BaseNotification;
+import com.officego.commonlib.utils.ToastUtils;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.tencent.mm.opensdk.constants.ConstantsAPI;
 import com.tencent.mm.opensdk.modelbase.BaseReq;
@@ -87,8 +88,8 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
             } else if (errCode == -1) {
                 showAlert(this, getString(R.string.pay_fail));
             } else if (errCode == -2) {
-//                tip = getString(R.string.pay_cancel);
-//                result(tip);
+                tip = getString(R.string.pay_cancel);
+                result(tip);
             } else {
                 tip = getString(R.string.pay_error);
                 result(tip);
@@ -98,7 +99,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
 
     private void showAlert(Context ctx, String info) {
         CommonDialog dialog = new CommonDialog.Builder(ctx)
-                .setTitle("支付结果")
+                .setTitle(getString(R.string.pay_result))
                 .setTitleSize(20F)
                 .setMessage(info)
                 .setConfirmButton(R.string.str_confirm, (dialogInterface, i) -> {
@@ -118,7 +119,7 @@ public class WXPayEntryActivity extends Activity implements IWXAPIEventHandler {
     private void result(String tip) {
         Handler mainHandler = new Handler(Looper.getMainLooper());
         mainHandler.post(() -> {
-            Toast.makeText(this, tip, Toast.LENGTH_SHORT).show();
+            ToastUtils.showCenterToast(this,tip);
             finish();
         });
     }

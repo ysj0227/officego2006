@@ -1,14 +1,14 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="wrap_content"
-    android:layout_height="@dimen/dp_56">
+    android:layout_height="wrap_content">
 
     <TextView
         android:id="@+id/tv_title"
+        style="@style/marginLeftRight18"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_12"
-        android:layout_marginEnd="@dimen/dp_80"
         android:ellipsize="end"
         android:singleLine="true"
         android:text="会员购买"
@@ -16,25 +16,47 @@
         android:textSize="@dimen/sp_15" />
 
     <TextView
-        android:id="@+id/tv_address"
+        android:id="@+id/tv_time"
+        style="@style/marginLeftRight18"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@id/tv_title"
-        android:layout_alignStart="@id/tv_title"
-        android:layout_centerVertical="true"
-        android:layout_marginEnd="@dimen/dp_80"
-        android:ellipsize="end"
-        android:maxLength="28"
+        android:layout_marginTop="@dimen/dp_10"
         android:singleLine="true"
-        android:textColor="@color/text_66_p50"
-        android:textSize="@dimen/sp_12" />
+        android:text="2020-03-24"
+        android:textColor="@color/text_66"
+        android:textSize="@dimen/sp_14" />
 
+    <TextView
+        android:id="@+id/tv_des"
+        style="@style/marginLeftRight18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_time"
+        android:layout_marginTop="@dimen/dp_10"
+        android:singleLine="true"
+        android:text="购买套餐使用权益说明"
+        android:textColor="@color/text_66"
+        android:textSize="@dimen/sp_14" />
+
+    <TextView
+        android:id="@+id/tv_consult"
+        style="@style/marginLeftRight18"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/tv_des"
+        android:layout_marginTop="@dimen/dp_10"
+        android:singleLine="true"
+        android:text="对此订单有疑问？"
+        android:textColor="@color/common_blue_main"
+        android:textSize="@dimen/sp_14" />
 
     <View
+        android:layout_marginTop="@dimen/dp_12"
         android:id="@+id/v_line"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_0_5"
-        android:layout_alignParentBottom="true"
+        android:layout_below="@id/tv_consult"
         android:background="@color/common_divider" />
 </RelativeLayout>
 
