@@ -52,11 +52,11 @@
         android:textSize="@dimen/sp_14" />
 
     <View
-        android:layout_marginTop="@dimen/dp_12"
         android:id="@+id/v_line"
         android:layout_width="match_parent"
         android:layout_height="@dimen/dp_0_5"
         android:layout_below="@id/tv_consult"
+        android:layout_marginTop="@dimen/dp_12"
         android:background="@color/common_divider" />
 </RelativeLayout>
 
