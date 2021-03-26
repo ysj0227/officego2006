@@ -2,7 +2,8 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@color/white">
 
     <com.officego.commonlib.view.TitleBarView
         android:id="@+id/title_bar"
@@ -10,58 +11,103 @@
         android:layout_height="wrap_content"
         android:background="@color/common_blue_main"
         app:dividerShow="false"
-        app:leftDefaultClickEnable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:leftDefaultClickEnable="true"
         app:leftIcon="@drawable/ic_back_light"
-        app:titleText="购买套餐"
+        app:titleText="会员套餐详情"
         app:titleTextColor="@color/white" />
 
-    <TextView
-        android:id="@+id/tv_amount1"
-        style="@style/marginLeftRight20"
-        android:layout_width="wrap_content"
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ctl_mount"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_60"
-        android:background="@drawable/button_corners25_solid_main"
-        android:padding="@dimen/dp_8"
-        android:text="套餐一：199"
-        android:textColor="@color/white"
-        android:textSize="@dimen/sp_14"
-        android:textStyle="bold"
+        android:orientation="horizontal"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="spread"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/title_bar" />
+        app:layout_constraintTop_toBottomOf="@id/title_bar">
 
-    <TextView
-        android:id="@+id/tv_amount2"
-        style="@style/marginLeftRight20"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_20"
-        android:background="@drawable/button_corners25_solid_main"
-        android:padding="@dimen/dp_8"
-        android:text="套餐二：399"
-        android:textColor="@color/white"
-        android:textSize="@dimen/sp_14"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_amount1" />
+        <RelativeLayout
+            android:id="@+id/rl1"
+            android:layout_width="@dimen/dp_120"
+            android:layout_height="@dimen/dp_80"
+            android:background="@drawable/button_corner_edge_gray"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/rl2"
+            app:layout_constraintTop_toTopOf="parent">
 
-    <TextView
-        android:id="@+id/tv_amount3"
-        style="@style/marginLeftRight20"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_20"
-        android:background="@drawable/button_corners25_solid_main"
-        android:padding="@dimen/dp_8"
-        android:text="套餐三：500"
-        android:textColor="@color/white"
-        android:textSize="@dimen/sp_14"
-        android:textStyle="bold"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_amount2" />
+            <TextView
+                android:id="@+id/tv_amount1"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="¥699"
+                android:textColor="@color/common_red"
+                android:textSize="@dimen/sp_18"
+                android:textStyle="bold" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_amount1"
+                android:layout_centerHorizontal="true"
+                android:text="一个月"
+                android:textColor="@color/black"
+                android:textSize="@dimen/sp_10" />
+
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/rl2"
+            android:background="@drawable/button_corner_edge_gray"
+            android:paddingLeft="@dimen/dp_30"
+            android:paddingRight= "@dimen/dp_30"
+            android:paddingTop="@dimen/dp_20"
+            android:paddingBottom="@dimen/dp_20"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@+id/rl1"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_amount2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:text="¥1699"
+                android:textColor="@color/common_red"
+                android:textSize="@dimen/sp_18"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/tv_amount2"
+                android:layout_centerHorizontal="true">
+
+                <TextView
+                    android:id="@+id/tv_month"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="三个月"
+                    android:textColor="@color/black"
+                    android:textSize="@dimen/sp_10" />
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="  低至¥566/月"
+                    android:textColor="@color/common_blue_main"
+                    android:textSize="@dimen/sp_10" />
+            </LinearLayout>
+        </RelativeLayout>
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
 
     <RadioGroup
         android:id="@+id/rg"
@@ -70,7 +116,7 @@
         android:layout_height="wrap_content"
         android:layout_marginTop="@dimen/dp_20"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/tv_amount3">
+        app:layout_constraintTop_toBottomOf="@id/ctl_mount">
 
         <TextView
             android:layout_width="wrap_content"
