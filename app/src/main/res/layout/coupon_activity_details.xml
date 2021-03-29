@@ -213,6 +213,7 @@
                     android:background="@drawable/dash_line_grey" />
 
                 <RelativeLayout
+                    android:visibility="gone"
                     style="@style/marginLeftRight10"
                     android:layout_width="match_parent"
                     android:layout_height="@dimen/dp_50"

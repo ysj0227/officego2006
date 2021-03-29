@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <ImageView
+        android:id="@+id/iv_bg"
+        android:layout_width="match_parent"
+        android:layout_height="480dp"
+        android:layout_centerInParent="true"
+        android:background="@mipmap/ic_dialog_user_rights"
+        tools:ignore="ContentDescription" />
+
+    <Button
+        android:id="@+id/btn_activation"
+        android:layout_width="@dimen/dp_130"
+        android:layout_height="@dimen/dp_36"
+        android:layout_alignBottom="@id/iv_bg"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/dp_30"
+        android:layout_marginBottom="@dimen/dp_70"
+        android:background="@mipmap/ic_activation_button"
+        android:text="去激活"
+        android:textColor="@color/black"
+        android:textSize="@dimen/sp_16" />
+
+    <ImageView
+        android:id="@+id/iv_quit"
+        android:layout_width="@dimen/dp_30"
+        android:layout_height="@dimen/dp_30"
+        android:layout_alignBottom="@id/iv_bg"
+        android:layout_centerHorizontal="true"
+        android:background="@mipmap/ic_quit_gold"
+        tools:ignore="ContentDescription" />
+
+</RelativeLayout>

@@ -11,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.PopupWindow;
 import android.widget.RelativeLayout;
@@ -27,11 +28,12 @@ import com.officego.commonlib.common.model.owner.BuildingJointWorkBean;
 import com.officego.commonlib.common.model.utils.BundleUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.utils.CommonHelper;
+import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
 import com.owner.home.EditBuildingActivity_;
 import com.owner.home.EditJointWorkActivity_;
-import com.owner.pay.PayActivity_;
 import com.owner.identity.OwnerIdentityActivity_;
+import com.owner.pay.PayActivity_;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -162,8 +164,6 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
         //添加楼盘/网点
         viewLayout.findViewById(R.id.tv_add).setOnClickListener(view ->
                 OwnerIdentityActivity_.intent(mContext).flag(Constants.IDENTITY_NO_FIRST).start());
-        viewLayout.findViewById(R.id.tv_pay).setOnClickListener(view ->
-                PayActivity_.intent(mContext).start());
     }
 
     private void gotoEditActivity(int type, BuildingManagerBean managerBean) {
@@ -203,33 +203,53 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
             RelativeLayout rlEdit = holder.getView(R.id.rl_edit);
             ImageView ivPoint = holder.getView(R.id.iv_point);
             TextView tvTitle = holder.getView(R.id.tv_title);
+            Button btnActivate = holder.getView(R.id.btn_activate);
             ivEdit.setBackgroundResource(1 == bean.getIsEdit() ? R.mipmap.ic_edit_blue : R.mipmap.ic_edit_gray);
             String name = bean.getBuildingName();
+            //名称
             if (!TextUtils.isEmpty(name) && name.length() > 13) {
                 tvTitle.setText(name.substring(0, 13) + "...");
             } else {
                 tvTitle.setText(name);
             }
-            ivPoint.setVisibility(bean.isRed() ? View.VISIBLE : View.GONE);//小红点
-            if (2 == bean.getStatus()) {
-                rlPreview.setVisibility(View.VISIBLE);
-                rlEdit.setVisibility(View.VISIBLE);
-                ivStatus.setVisibility(View.VISIBLE);
-                ivStatus.setBackgroundResource(R.mipmap.ic_complete_more_mes);
-            } else if (7 == bean.getStatus()) {
+            //小红点
+            ivPoint.setVisibility(bean.isRed() ? View.VISIBLE : View.GONE);
+            //是否托管
+            if (bean.getMsgStatus() == 0) {
+                //托管中
                 rlPreview.setVisibility(View.GONE);
                 rlEdit.setVisibility(View.GONE);
                 ivStatus.setVisibility(View.VISIBLE);
-                ivStatus.setBackgroundResource(R.mipmap.ic_check_no);
-            } else if (6 == bean.getStatus()) {
-                rlPreview.setVisibility(View.VISIBLE);
-                rlEdit.setVisibility(View.VISIBLE);
-                ivStatus.setVisibility(View.VISIBLE);
-                ivStatus.setBackgroundResource(R.mipmap.ic_checking);
+                ivStatus.setBackgroundResource(R.mipmap.ic_deposit);
+                btnActivate.setVisibility(View.VISIBLE);
+                ivStatus.setOnClickListener(view -> new CommonDialog.Builder(context)
+                        .setTitle("托管说明")
+                        .setMessage("此楼盘/网点的接待权限已归平台托管,激活后可正常使用")
+                        .setConfirmButton(R.string.str_confirm)
+                        .create().showWithOutTouchable(true));
             } else {
-                rlPreview.setVisibility(View.VISIBLE);
-                rlEdit.setVisibility(View.VISIBLE);
-                ivStatus.setVisibility(View.GONE);
+                //未托管
+                btnActivate.setVisibility(View.GONE);
+                if (2 == bean.getStatus()) {
+                    rlPreview.setVisibility(View.VISIBLE);
+                    rlEdit.setVisibility(View.VISIBLE);
+                    ivStatus.setVisibility(View.VISIBLE);
+                    ivStatus.setBackgroundResource(R.mipmap.ic_complete_more_mes);
+                } else if (7 == bean.getStatus()) {
+                    rlPreview.setVisibility(View.GONE);
+                    rlEdit.setVisibility(View.GONE);
+                    ivStatus.setVisibility(View.VISIBLE);
+                    ivStatus.setBackgroundResource(R.mipmap.ic_check_no);
+                } else if (6 == bean.getStatus()) {
+                    rlPreview.setVisibility(View.VISIBLE);
+                    rlEdit.setVisibility(View.VISIBLE);
+                    ivStatus.setVisibility(View.VISIBLE);
+                    ivStatus.setBackgroundResource(R.mipmap.ic_checking);
+                } else {
+                    rlPreview.setVisibility(View.VISIBLE);
+                    rlEdit.setVisibility(View.VISIBLE);
+                    ivStatus.setVisibility(View.GONE);
+                }
             }
             //预览
             rlPreview.setOnClickListener(view -> {
@@ -248,6 +268,10 @@ public class BuildingJointWorkListPopupWindow extends PopupWindow implements
             holder.itemView.setOnClickListener(view -> {
                 dismiss();
                 listener.popupHouseList(bean);
+            });
+            //激活会员
+            btnActivate.setOnClickListener(view -> {
+                PayActivity_.intent(context).buildingId(bean.getBuildingId()).start();
             });
         }
     }

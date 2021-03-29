@@ -1,8 +1,11 @@
 package com.owner.home;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.text.TextUtils;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -38,6 +41,7 @@ import com.owner.h5.WebViewActivity_;
 import com.owner.home.contract.HomeContract;
 import com.owner.home.presenter.HomePresenter;
 import com.owner.identity.OwnerIdentityActivity_;
+import com.owner.pay.PayActivity_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -445,6 +449,8 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
             Constants.FLOOR_JOINT_WORK_COUNTS = bean.getTotalFloor();
         }
         ivAdd.setVisibility(bean.isAddHouse() ? View.VISIBLE : View.GONE);
+        tvHomeTitle.setCompoundDrawablesWithIntrinsicBounds(bean.getMsgStatus() == 0
+                ? R.mipmap.ic_deposit1 : 0, 0, 0, 0);
         tvHomeTitle.setText(bean.getBuildingName());
         mData = bean;
     }
@@ -473,14 +479,18 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
     public void userExpireSuccess(UserMessageBean data) {
         int status = CommonHelper.bigDecimal(data.getMsgStatus());
         if (status == 0) {
-            new CommonDialog.Builder(mActivity)
-                    .setTitle("账号试用到期")
-                    .setMessage("  您的账号试用期已过，请联系客服重新激活  ")
-                    .setCancelButton(R.string.sm_cancel)
-                    .setConfirmButton("联系客服", (dialog12, which) -> {
-                        mPresenter.getSupportMobile();
-                        dialog12.dismiss();
-                    }).create().show();
+            Dialog dialog = new Dialog(mActivity, R.style.BottomDialog);
+            View viewLayout = LayoutInflater.from(mActivity).inflate(R.layout.dialog_user_rights, null);
+            dialog.setContentView(viewLayout);
+            viewLayout.findViewById(R.id.btn_activation).setOnClickListener(view -> {
+                if (mData != null) {
+                    PayActivity_.intent(mActivity).buildingId(mData.getBuildingId()).start();
+                    dialog.dismiss();
+                }
+            });
+            viewLayout.findViewById(R.id.iv_quit).setOnClickListener(view -> dialog.dismiss());
+            dialog.setCanceledOnTouchOutside(false);
+            dialog.show();
         }
     }
 

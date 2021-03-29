@@ -4,9 +4,14 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Handler;
 import android.os.Message;
-import android.text.Html;
 import android.text.TextUtils;
 import android.widget.RadioButton;
+import android.widget.RelativeLayout;
+import android.widget.TextView;
+
+import androidx.core.content.ContextCompat;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.alipay.sdk.app.PayTask;
 import com.officego.commonlib.base.BaseMvpActivity;
@@ -17,10 +22,12 @@ import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.ToastUtils;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
+import com.owner.adapter.PayRightsAdapter;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
 import org.androidannotations.annotations.EActivity;
+import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.Map;
@@ -32,26 +39,101 @@ import java.util.Map;
 @EActivity(resName = "activity_pay")
 public class PayActivity extends BaseMvpActivity<PayPresenter>
         implements payContract.View {
-    @ViewById(resName = "btn_wx")
-    RadioButton btnWx;
-    @ViewById(resName = "btn_alipay")
-    RadioButton btnAlipay;
+
+    @ViewById(resName = "rl1")
+    RelativeLayout rl1;
+    @ViewById(resName = "tv_amount1")
+    TextView tvAmount1;
+    @ViewById(resName = "tv_one_month")
+    TextView tvOneMonth;
+    @ViewById(resName = "rl2")
+    RelativeLayout rl2;
+    @ViewById(resName = "tv_amount2")
+    TextView tvAmount2;
+    @ViewById(resName = "tv_three_month")
+    TextView tvThreeMonth;
+    @ViewById(resName = "tv_discount")
+    TextView tvDiscount;
+    @ViewById(resName = "rv_rights")
+    RecyclerView rvRights;
+    @ViewById(resName = "ibt_wx")
+    RadioButton ibtWx;
+    @ViewById(resName = "ibt_alipay")
+    RadioButton ibtAlipay;
+    @ViewById(resName = "tv_select_amount")
+    TextView tvSelectAmount;
+    @ViewById(resName = "tv_select_month")
+    TextView tvSelectMonth;
+    @Extra
+    int buildingId;
+
+    private int amounts = 1699;
 
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarFullTransparent(this);
         mPresenter = new PayPresenter(context);
         mPresenter.attachView(this);
+        rvRights.setLayoutManager(new LinearLayoutManager(context));
+        rvRights.setAdapter(new PayRightsAdapter(context, PayUtils.rightsList()));
     }
 
-    @Click(resName = "btn_pay")
+    @SuppressLint("SetTextI18n")
+    @Click(resName = "rl1")
+    void amount1Click() {
+        rl1.setBackgroundResource(R.mipmap.ic_month_pay_selected);
+        rl2.setBackgroundResource(R.mipmap.ic_month_pay_unselected);
+        tvAmount1.setTextColor(ContextCompat.getColor(context, R.color.white));
+        tvOneMonth.setTextColor(ContextCompat.getColor(context, R.color.white));
+        tvAmount2.setTextColor(ContextCompat.getColor(context, R.color.common_red));
+        tvThreeMonth.setTextColor(ContextCompat.getColor(context, R.color.text_33));
+        tvDiscount.setTextColor(ContextCompat.getColor(context, R.color.common_blue_main));
+        tvSelectAmount.setText("¥699");
+        tvSelectMonth.setText("(一个月)");
+        amounts = 699;
+    }
+
+    @SuppressLint("SetTextI18n")
+    @Click(resName = "rl2")
+    void amount2Click() {
+        rl1.setBackgroundResource(R.mipmap.ic_month_pay_unselected);
+        rl2.setBackgroundResource(R.mipmap.ic_month_pay_selected);
+        tvAmount1.setTextColor(ContextCompat.getColor(context, R.color.common_red));
+        tvOneMonth.setTextColor(ContextCompat.getColor(context, R.color.text_33));
+        tvAmount2.setTextColor(ContextCompat.getColor(context, R.color.white));
+        tvThreeMonth.setTextColor(ContextCompat.getColor(context, R.color.white));
+        tvDiscount.setTextColor(ContextCompat.getColor(context, R.color.white));
+        tvSelectAmount.setText("¥1699");
+        tvSelectMonth.setText("(三个月)");
+        amounts = 1699;
+    }
+
+    @Click(resName = "ibt_wx")
+    void payWXClick() {
+        ibtWx.setChecked(true);
+        ibtAlipay.setChecked(false);
+    }
+
+    @Click(resName = "ibt_alipay")
+    void payAlipayClick() {
+        ibtWx.setChecked(false);
+        ibtAlipay.setChecked(true);
+    }
+
+    @Click(resName = "tv_pay_protocol")
+    void payProtocolClick() {
+        shortTip("协议");
+    }
+
+    @Click(resName = "ctl_pay")
     void payClick() {
-        if (btnWx.isChecked()) {
-            mPresenter.weChatPay("1", 7762);
-        } else if (btnAlipay.isChecked()) {
-            mPresenter.alipay("0.01", 7762);
+        if (isFastClick(1200)) {
+            return;
+        }
+        if (ibtWx.isChecked()) {
+            mPresenter.weChatPay(String.valueOf(amounts * 100), buildingId);
         } else {
-            shortTip("请选择支付方式");
+            mPresenter.alipay(String.valueOf(amounts), buildingId);
         }
     }
 

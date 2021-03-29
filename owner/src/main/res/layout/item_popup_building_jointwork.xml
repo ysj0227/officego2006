@@ -85,15 +85,15 @@
     </RelativeLayout>
 
     <Button
-        android:id="@+id/btn_reject"
-        android:layout_width="@dimen/dp_68"
+        android:id="@+id/btn_activate"
+        android:layout_width="@dimen/dp_64"
         android:layout_height="@dimen/dp_25"
         android:layout_alignParentEnd="true"
         android:layout_centerVertical="true"
         android:layout_marginEnd="@dimen/dp_10"
-        android:background="@drawable/btn_common_bg_primary"
+        android:background="@drawable/text_label_red_yellow"
         android:gravity="center"
-        android:text="重新认证"
+        android:text="去激活"
         android:textColor="@color/white"
         android:textSize="@dimen/sp_11"
         android:visibility="gone"
