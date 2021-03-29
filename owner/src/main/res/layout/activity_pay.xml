@@ -21,8 +21,10 @@
         app:titleTextColor="@color/white" />
 
     <androidx.core.widget.NestedScrollView
+        android:id="@+id/nsv_view"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:layout_marginBottom="@dimen/dp_54"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -313,10 +315,12 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_marginStart="@dimen/dp_20"
-                android:layout_marginTop="@dimen/dp_25"
+                android:layout_marginTop="@dimen/dp_20"
                 android:text="付费即表示同意"
                 android:textColor="@color/black"
                 android:textSize="@dimen/sp_12"
+                android:layout_marginBottom="@dimen/dp_20"
+                app:layout_constraintBottom_toBottomOf="parent"
                 app:layout_constraintStart_toStartOf="parent"
                 app:layout_constraintTop_toBottomOf="@id/rl_alipay" />
 
@@ -330,70 +334,69 @@
                 app:layout_constraintBaseline_toBaselineOf="@id/tv_pay_protocol_agree"
                 app:layout_constraintLeft_toRightOf="@id/tv_pay_protocol_agree" />
 
-            <androidx.constraintlayout.widget.ConstraintLayout
-                android:id="@+id/ctl_pay"
-                android:layout_width="0dp"
-                android:layout_height="@dimen/dp_54"
-                android:layout_marginTop="@dimen/dp_14"
-                android:background="@mipmap/ic_pay_button"
-                app:layout_constraintBottom_toBottomOf="parent"
-                app:layout_constraintEnd_toEndOf="parent"
-                app:layout_constraintHorizontal_chainStyle="spread"
-                app:layout_constraintStart_toStartOf="parent"
-                app:layout_constraintTop_toBottomOf="@id/tv_pay_protocol_agree">
-
-                <RelativeLayout
-                    android:id="@+id/rl_text_left"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toLeftOf="parent"
-                    app:layout_constraintRight_toLeftOf="@id/tv_text_right"
-                    app:layout_constraintTop_toTopOf="parent">
-
-                    <TextView
-                        android:id="@+id/tv_select_amount"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_centerVertical="true"
-                        android:text="¥1699"
-                        android:textColor="@color/golden_light"
-                        android:textSize="@dimen/sp_20"
-                        android:textStyle="bold" />
-
-                    <TextView
-                        android:id="@+id/tv_select_month"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_alignBaseline="@id/tv_select_amount"
-                        android:layout_alignBottom="@id/tv_select_amount"
-                        android:layout_marginStart="@dimen/dp_3"
-                        android:layout_toEndOf="@id/tv_select_amount"
-                        android:paddingEnd="@dimen/dp_20"
-                        android:text="(三个月)"
-                        android:textColor="@color/golden_light"
-                        android:textSize="@dimen/sp_10"
-                        tools:ignore="RtlSymmetry" />
-
-                </RelativeLayout>
-
-                <TextView
-                    android:id="@+id/tv_text_right"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="激活会员"
-                    android:textColor="@color/black"
-                    android:textSize="@dimen/sp_16"
-                    android:textStyle="bold"
-                    app:layout_constraintBottom_toBottomOf="parent"
-                    app:layout_constraintLeft_toRightOf="@id/rl_text_left"
-                    app:layout_constraintRight_toRightOf="parent"
-                    app:layout_constraintTop_toTopOf="parent" />
-
-            </androidx.constraintlayout.widget.ConstraintLayout>
-
         </androidx.constraintlayout.widget.ConstraintLayout>
 
     </androidx.core.widget.NestedScrollView>
+
+    <androidx.constraintlayout.widget.ConstraintLayout
+        android:id="@+id/ctl_pay"
+        android:layout_width="0dp"
+        android:layout_height="@dimen/dp_54"
+        android:background="@mipmap/ic_pay_button"
+        app:layout_constraintBottom_toBottomOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_chainStyle="spread"
+        app:layout_constraintStart_toStartOf="parent">
+
+        <RelativeLayout
+            android:id="@+id/rl_text_left"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toLeftOf="parent"
+            app:layout_constraintRight_toLeftOf="@id/tv_text_right"
+            app:layout_constraintTop_toTopOf="parent">
+
+            <TextView
+                android:id="@+id/tv_select_amount"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:text="¥1699"
+                android:textColor="@color/golden_light"
+                android:textSize="@dimen/sp_20"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/tv_select_month"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignBaseline="@id/tv_select_amount"
+                android:layout_alignBottom="@id/tv_select_amount"
+                android:layout_marginStart="@dimen/dp_3"
+                android:layout_toEndOf="@id/tv_select_amount"
+                android:paddingEnd="@dimen/dp_20"
+                android:text="(三个月)"
+                android:textColor="@color/golden_light"
+                android:textSize="@dimen/sp_10"
+                tools:ignore="RtlSymmetry" />
+
+        </RelativeLayout>
+
+        <TextView
+            android:id="@+id/tv_text_right"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="激活会员"
+            android:textColor="@color/black"
+            android:textSize="@dimen/sp_16"
+            android:textStyle="bold"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintLeft_toRightOf="@id/rl_text_left"
+            app:layout_constraintRight_toRightOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
+
+    </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>
