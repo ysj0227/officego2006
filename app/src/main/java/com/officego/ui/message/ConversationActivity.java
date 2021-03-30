@@ -3,6 +3,7 @@ package com.officego.ui.message;
 import android.annotation.SuppressLint;
 import android.content.Intent;
 import android.net.Uri;
+import android.os.Bundle;
 import android.os.Handler;
 import android.text.TextUtils;
 import android.view.View;
@@ -37,7 +38,6 @@ import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.ToastUtils;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.officego.ui.message.contract.ConversationContract;
 import com.officego.ui.message.presenter.ConversationPresenter;
@@ -350,12 +350,23 @@ public class ConversationActivity extends BaseMvpActivity<ConversationPresenter>
             shortTip("暂无楼盘信息，无法预约");
             return;
         }
-        ConversationViewingDateActivity_.intent(this)
-                .buildingId(buildingId)
-                .houseId(houseId)
-                .targetId(targetId)
-                .sensorEventDate(sensorEventDate)
-                .start();
+        if (TextUtils.equals(Constants.TYPE_OWNER, SpUtils.getRole())) {
+            Intent intent=new Intent(context,ConversationViewingDateOwnerActivity.class);
+            Bundle bundle=new Bundle();
+            bundle.putInt("buildingId",buildingId);
+            bundle.putInt("houseId",houseId);
+            bundle.putString("targetId",targetId);
+            bundle.putString("sensorEventDate",sensorEventDate);
+            intent.putExtras(bundle);
+            startActivity(intent);
+        } else {
+            ConversationViewingDateActivity_.intent(this)
+                    .buildingId(buildingId)
+                    .houseId(houseId)
+                    .targetId(targetId)
+                    .sensorEventDate(sensorEventDate)
+                    .start();
+        }
     }
 
     /**

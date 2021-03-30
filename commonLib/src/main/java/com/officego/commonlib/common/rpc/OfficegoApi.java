@@ -3,7 +3,7 @@ package com.officego.commonlib.common.rpc;
 import android.text.TextUtils;
 
 import com.officego.commonlib.common.SpUtils;
-import com.officego.commonlib.common.model.AlipayBean;
+import com.officego.commonlib.common.model.BaseConfigbean;
 import com.officego.commonlib.common.model.ChatHouseBean;
 import com.officego.commonlib.common.model.ChatListBean;
 import com.officego.commonlib.common.model.CouponDetailsBean;
@@ -28,6 +28,7 @@ import com.officego.commonlib.common.model.WeChatAuthBean;
 import com.officego.commonlib.common.model.owner.AddHouseSuccessBean;
 import com.officego.commonlib.common.model.owner.BuildingEditBean;
 import com.officego.commonlib.common.model.owner.BuildingJointWorkBean;
+import com.officego.commonlib.common.model.owner.ChatBuildingBean;
 import com.officego.commonlib.common.model.owner.HouseBean;
 import com.officego.commonlib.common.model.owner.HouseEditBean;
 import com.officego.commonlib.common.model.owner.UploadImageBean;
@@ -38,6 +39,7 @@ import com.officego.commonlib.common.rpc.request.DirectoryInterface;
 import com.officego.commonlib.common.rpc.request.JPushOneKeyLoginInterface;
 import com.officego.commonlib.common.rpc.request.LicenceInterface;
 import com.officego.commonlib.common.rpc.request.LoginInterface;
+import com.officego.commonlib.common.rpc.request.MainInterface;
 import com.officego.commonlib.common.rpc.request.MineMsgInterface;
 import com.officego.commonlib.common.rpc.request.PayInterface;
 import com.officego.commonlib.common.rpc.request.ScheduleInterface;
@@ -183,6 +185,21 @@ public class OfficegoApi {
         map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(ChatInterface.class)
                 .isChat(map)
+                .enqueue(callback);
+    }
+
+    /**
+     * 租戶聊過的業主房源
+     * chatId	是	int	租户
+     * chatedId	是	int	业主
+     */
+    public void chatBuildingList(int chatId, RetrofitCallback<List<ChatBuildingBean.DataBean>> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("chatId", requestBody(chatId + ""));
+        map.putAll(map());
+        OfficegoRetrofitClient.getInstance().create(ChatInterface.class)
+                .chatBuildingList(map)
                 .enqueue(callback);
     }
 
@@ -1129,7 +1146,7 @@ public class OfficegoApi {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("amount", requestBody(amount));
-        map.put("details", requestBody("会员套餐"));
+        map.put("details", requestBody(TextUtils.equals("698", amount) ? "1" : "2"));
         map.put("bid", requestBody(buildingId + ""));
         map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(PayInterface.class)
@@ -1144,11 +1161,20 @@ public class OfficegoApi {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("amount", requestBody(amount));
-        map.put("details", requestBody("会员套餐"));
+        map.put("details", requestBody(TextUtils.equals("698", amount) ? "1" : "2"));
         map.put("bid", requestBody(buildingId + ""));
         map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(PayInterface.class)
                 .alipay(map)
+                .enqueue(callback);
+    }
+
+    /**
+     * 基础配置 扩品
+     */
+    public void baseConfig(RetrofitCallback<BaseConfigbean> callback) {
+        OfficegoRetrofitClient.getInstance().create(MainInterface.class)
+                .baseConfig(map())
                 .enqueue(callback);
     }
 }

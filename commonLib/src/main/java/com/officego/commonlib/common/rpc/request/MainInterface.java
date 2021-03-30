@@ -1,8 +1,10 @@
 package com.officego.commonlib.common.rpc.request;
 
+import com.officego.commonlib.common.model.BaseConfigbean;
 import com.officego.commonlib.common.model.PayData;
 import com.officego.commonlib.retrofit.BaseResponse;
 
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.RequestBody;
@@ -13,24 +15,13 @@ import retrofit2.http.PartMap;
 
 /**
  * Created by shijie
- * Date 2021/3/15
+ * Date 2021/3/30
  **/
-public interface PayInterface {
+public interface MainInterface {
 
     String path = "api/";
 
-    /**
-     * 微信支付
-     */
     @Multipart
-    @POST(path + "pay/wxpay")
-    Call<BaseResponse<PayData>> wxPay(@PartMap Map<String, RequestBody> params);
-
-    /**
-     * 支付宝支付
-     */
-    @Multipart
-    @POST(path + "pay/alipayapp")
-    Call<BaseResponse<Object>> alipay(@PartMap Map<String, RequestBody> params);
-
+    @POST(path + "main/baseConf")
+    Call<BaseResponse<BaseConfigbean>> baseConfig(@PartMap Map<String, RequestBody> params);
 }

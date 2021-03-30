@@ -1,15 +1,11 @@
-package com.owner.h5;
+package com.officego.h5;
 
 import android.annotation.SuppressLint;
-import android.content.Context;
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.os.Build;
 import android.text.TextUtils;
-import android.util.Log;
 import android.view.View;
 import android.webkit.CookieManager;
-import android.webkit.JavascriptInterface;
 import android.webkit.WebChromeClient;
 import android.webkit.WebResourceError;
 import android.webkit.WebResourceRequest;
@@ -18,23 +14,20 @@ import android.webkit.WebSettings;
 import android.webkit.WebView;
 import android.widget.Button;
 import android.widget.RelativeLayout;
+import android.widget.TextView;
 
-import androidx.annotation.NonNull;
-
+import com.officego.R;
 import com.officego.commonlib.base.BaseActivity;
-import com.officego.commonlib.common.SpUtils;
-import com.officego.commonlib.constant.AppConfig;
-import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.common.model.BaseConfigbean;
+import com.officego.commonlib.common.rpc.OfficegoApi;
+import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.view.TitleBarView;
-import com.officego.commonlib.view.webview.SMWebChromeClientPhoto;
-import com.officego.commonlib.view.webview.SMWebViewClient;
-import com.owner.R;
+import com.officego.view.webview.SMWebViewClient;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.EActivity;
-import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 /**
@@ -42,66 +35,34 @@ import org.androidannotations.annotations.ViewById;
  * Data 2020/5/26.
  * Descriptions:WebView
  **/
-@SuppressLint("Registered")
-@EActivity(resName = "activity_owner_webview")
-public class WebViewActivity extends BaseActivity {
-    @ViewById(resName = "wv_view")
+@SuppressLint({"Registered", "NonConstantResourceId"})
+@EActivity(R.layout.activity_webview_vr)
+public class WebViewServiceActivity extends BaseActivity {
+    @ViewById(R.id.wv_view)
     WebView webView;
-    @ViewById(resName = "title_bar")
+    @ViewById(R.id.title_bar)
     TitleBarView titleBar;
-    @ViewById(resName = "rl_exception")
+    @ViewById(R.id.rl_exception)
     RelativeLayout rlException;
-    @ViewById(resName = "btn_again")
+    @ViewById(R.id.btn_again)
     Button btnAgain;
-    @Extra
-    int flags;
-    private String webViewUrl;
-    private SMWebChromeClientPhoto webChrome;
+    private String url;
 
+    @SuppressLint("SetTextI18n")
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarColor(this);
         setWebChromeClient();
-        if (flags == Constants.H5_HELP) {
-            titleBar.getAppTitle().setText(getString(R.string.str_title_help));
-            loadWebView(AppConfig.H5_HELP_FEEDBACK_OWNER + chanelHelp());
-        } else if (flags == Constants.H5_PROTOCOL_SERVICE) {
-            titleBar.getAppTitle().setText(getString(R.string.str_protocol_service));
-            loadWebView(AppConfig.H5_REGISTER + chanel());
-        } else if (flags == Constants.H5_PROTOCOL) {
-            titleBar.getAppTitle().setText(getString(R.string.str_title_protocol));
-            loadWebView(AppConfig.H5_PRIVACY + chanel());
-        } else if (flags == Constants.H5_ABOUTS) {
-            titleBar.getAppTitle().setText(getString(R.string.str_title_about_us));
-            loadWebView(AppConfig.H5_ABOUT_US + chanel());
-        } else if (flags == Constants.H5_PAY) {
-            titleBar.getAppTitle().setText(getString(R.string.str_company_service));
-            loadWebView(AppConfig.H5_PAY + chanel());
-        } else if (flags == Constants.H5_VR_RECORD) {
-            titleBar.getAppTitle().setText(getString(R.string.str_title_vr_record));
-            loadWebView(AppConfig.H5_VR_RECORD + chanelHelp());
-        }
+        titleBar.getAppTitle().setText("企业服务");
+        baseConfig();
     }
 
-    private String chanel() {
-        return "?channel=2";
-    }
-
-    private String chanelHelp() {
-        return "?token=" + SpUtils.getSignToken() + "&channel=2&identity=1";
-    }
-
-    /**
-     * 设置setWebChromeClient对象
-     */
+    //设置setWebChromeClient对象
     private void setWebChromeClient() {
         webView.setWebChromeClient(new WebChromeClient() {
             @Override
             public void onReceivedTitle(WebView view, String title) {
                 super.onReceivedTitle(view, title);
-                if (!TextUtils.isEmpty(title) && !title.contains("http")) {
-                    titleBar.getAppTitle().setText(title);
-                }
                 exceptionPageReceivedTitle(view, title);
             }
         });
@@ -135,10 +96,7 @@ public class WebViewActivity extends BaseActivity {
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.LOLLIPOP) {
             webSetting.setMixedContentMode(WebSettings.MIXED_CONTENT_ALWAYS_ALLOW);
         }
-        webView.addJavascriptInterface(new JsInterface(this), "android");
         webView.setScrollBarStyle(View.SCROLLBARS_INSIDE_OVERLAY);
-        webChrome = new SMWebChromeClientPhoto(this);
-        webView.setWebChromeClient(webChrome);
         webView.loadUrl(url);
         webView.setWebViewClient(new SMWebViewClient(this) {
             @Override
@@ -150,7 +108,6 @@ public class WebViewActivity extends BaseActivity {
             @Override
             public void onPageStarted(WebView view, String url, Bitmap favicon) {
                 super.onPageStarted(view, url, favicon);
-                webViewUrl = url;
             }
 
             @Override
@@ -168,28 +125,12 @@ public class WebViewActivity extends BaseActivity {
             @Override
             public void onReceivedHttpError(WebView view, WebResourceRequest request, WebResourceResponse errorResponse) {
                 hideLoadingDialog();
+//                exceptionPageHttpError(view, errorResponse);
                 super.onReceivedHttpError(view, request, errorResponse);
             }
         });
     }
 
-    //上传图片
-    @Override
-    public void onActivityResult(int requestCode, int resultCode, Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (webChrome != null) {
-            webChrome.uploadImage(requestCode, resultCode, data);
-        }
-    }
-
-    @Override
-    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions,
-                                           @NonNull int[] grantResults) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        if (webChrome != null) {
-            webChrome.onPermissionResult(requestCode, grantResults);
-        }
-    }
 
     /**
      * 网络异常
@@ -208,21 +149,7 @@ public class WebViewActivity extends BaseActivity {
             rlException.setVisibility(View.GONE);
             view.clearCache(true);
             view.clearHistory();
-            if (TextUtils.isEmpty(webViewUrl)) {
-                if (flags == Constants.H5_HELP) {
-                    webView.loadUrl(AppConfig.H5_HELP_FEEDBACK_OWNER + chanelHelp());
-                } else if (flags == Constants.H5_PROTOCOL_SERVICE) {
-                    webView.loadUrl(AppConfig.H5_REGISTER + chanel());
-                } else if (flags == Constants.H5_PROTOCOL) {
-                    webView.loadUrl(AppConfig.H5_PRIVACY + chanel());
-                } else if (flags == Constants.H5_ABOUTS) {
-                    webView.loadUrl(AppConfig.H5_ABOUT_US + chanel());
-                } else if (flags == Constants.H5_VR_RECORD) {
-                    webView.loadUrl(AppConfig.H5_VR_RECORD + chanel());
-                }
-            } else {
-                webView.loadUrl(webViewUrl);
-            }
+            webView.loadUrl(url);
         });
     }
 
@@ -283,31 +210,23 @@ public class WebViewActivity extends BaseActivity {
         }
     }
 
-    /**
-     * Android 6.0以上处理方法
-     * onReceivedHttpError
-     */
-    private void exceptionPageHttpError(WebView view, WebResourceResponse errorResponse) {
-        int statusCode = errorResponse.getStatusCode();
-        if (404 == statusCode || 500 == statusCode) {
-            view.loadUrl("about:blank");// 避免出现默认的错误界面
-            view.removeAllViews();
-            receiverExceptionError(view);
-        }
+    public void baseConfig() {
+        showLoadingDialog();
+        OfficegoApi.getInstance().baseConfig(new RetrofitCallback<BaseConfigbean>() {
+            @Override
+            public void onSuccess(int code, String msg, BaseConfigbean data) {
+                hideLoadingDialog();
+                if (!TextUtils.isEmpty(data.getEnterpriseService().getJumpUrl())) {
+                    url = data.getEnterpriseService().getJumpUrl();
+                    loadWebView(url);
+                }
+            }
+
+            @Override
+            public void onFail(int code, String msg, BaseConfigbean data) {
+                hideLoadingDialog();
+            }
+        });
     }
 
-    //js传递给Android
-    private class JsInterface {
-        private Context mContext;
-
-        public JsInterface(Context context) {
-            this.mContext = context;
-        }
-
-        @JavascriptInterface
-        public void closeView() {
-            Log.d("TAG", "js to android closeView");
-            finish();
-        }
-    }
 }

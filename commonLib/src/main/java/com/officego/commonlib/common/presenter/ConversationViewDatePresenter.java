@@ -5,9 +5,11 @@ import android.text.TextUtils;
 import com.officego.commonlib.base.BasePresenter;
 import com.officego.commonlib.common.contract.ConversationViewDateContract;
 import com.officego.commonlib.common.model.ChatHouseBean;
+import com.officego.commonlib.common.model.owner.ChatBuildingBean;
 import com.officego.commonlib.common.rpc.OfficegoApi;
 import com.officego.commonlib.retrofit.RetrofitCallback;
-import com.officego.commonlib.utils.log.LogCat;
+
+import java.util.List;
 
 /**
  * Created by YangShiJie
@@ -29,7 +31,6 @@ public class ConversationViewDatePresenter extends BasePresenter<ConversationVie
                     new RetrofitCallback<ChatHouseBean>() {
                         @Override
                         public void onSuccess(int code, String msg, ChatHouseBean data) {
-                            LogCat.e(TAG, "getDetails onSuccess =" + data);
                             if (isViewAttached()) {
                                 mView.hideLoadingDialog();
                                 mView.houseSuccess(data);
@@ -38,7 +39,30 @@ public class ConversationViewDatePresenter extends BasePresenter<ConversationVie
 
                         @Override
                         public void onFail(int code, String msg, ChatHouseBean data) {
-                            LogCat.e(TAG, "getDetails onFail code=" + code + "  msg=" + msg);
+                            if (isViewAttached()) {
+                                mView.hideLoadingDialog();
+                            }
+                        }
+                    });
+        }
+    }
+
+    @Override
+    public void getOwnerHouseList(String targetId) {
+        if (!TextUtils.isEmpty(targetId)) {
+            mView.showLoadingDialog();
+            OfficegoApi.getInstance().chatBuildingList(Integer.parseInt(targetId),
+                    new RetrofitCallback<List<ChatBuildingBean.DataBean>>() {
+                        @Override
+                        public void onSuccess(int code, String msg, List<ChatBuildingBean.DataBean> data) {
+                            if (isViewAttached()) {
+                                mView.hideLoadingDialog();
+                                mView.buildingListSuccess(data);
+                            }
+                        }
+
+                        @Override
+                        public void onFail(int code, String msg, List<ChatBuildingBean.DataBean> data) {
                             if (isViewAttached()) {
                                 mView.hideLoadingDialog();
                             }

@@ -2,10 +2,10 @@
 <androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
-    android:id="@+id/ctl_root"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/text_f7">
+    android:background="@color/text_f7"
+    tools:ignore="MissingDefaultResource">
 
     <View
         android:id="@+id/v_blue"
@@ -48,52 +48,21 @@
             android:textSize="@dimen/sp_16" />
     </RelativeLayout>
 
-    <include
-        layout="@layout/conversation_viewing_date_house_message"
-        android:layout_width="match_parent"
-        android:layout_height="@dimen/dp_130"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rl_title" />
-
     <RelativeLayout
         android:id="@+id/rl_date"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginTop="@dimen/dp_8"
         android:background="@color/c_white"
         android:paddingLeft="@dimen/dp_18"
         android:paddingRight="@dimen/dp_18"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/ctl_building_details">
-
-        <TextView
-            android:id="@+id/tv_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_20"
-            android:text="姓名"
-            android:textColor="@color/text_66"
-            android:textSize="@dimen/sp_14"
-            android:visibility="gone" />
-
-        <TextView
-            android:id="@+id/tv_mobile"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/tv_name"
-            android:layout_marginTop="@dimen/dp_20"
-            android:text="联系方式"
-            android:textColor="@color/text_66"
-            android:textSize="@dimen/sp_14"
-            android:visibility="gone" />
+        app:layout_constraintTop_toBottomOf="@id/rl_title">
 
         <TextView
             android:id="@+id/tv_time"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_mobile"
             android:layout_marginTop="@dimen/dp_20"
             android:layout_marginBottom="@dimen/dp_30"
             android:text="看房时间"
@@ -104,7 +73,6 @@
             android:id="@+id/tv_select_time"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_below="@id/tv_mobile"
             android:layout_marginStart="@dimen/dp_10"
             android:layout_marginTop="@dimen/dp_20"
             android:layout_marginBottom="@dimen/dp_30"
@@ -123,73 +91,16 @@
             android:background="@mipmap/ic_right_arrow_small" />
     </RelativeLayout>
 
-    <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/rl_person"
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rv_building_list"
         android:layout_width="0dp"
-        android:layout_height="@dimen/dp_160"
-        android:layout_marginTop="@dimen/dp_8"
-        android:background="@color/white"
-        android:paddingLeft="@dimen/dp_18"
-        android:paddingRight="@dimen/dp_18"
-        android:visibility="gone"
+        android:layout_height="0dp"
+        android:layout_marginTop="@dimen/dp_5"
+        android:layout_marginBottom="@dimen/dp_70"
+        app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@id/rl_date">
-
-        <TextView
-            android:id="@+id/tv_owner"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="@dimen/dp_20"
-            android:text="带看房东"
-            android:textColor="@color/text_66"
-            android:textSize="@dimen/sp_14"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
-
-        <com.officego.commonlib.view.CircleImage
-            android:id="@+id/civ_avatar"
-            android:layout_width="@dimen/dp_26"
-            android:layout_height="@dimen/dp_26"
-            android:layout_marginTop="@dimen/dp_16"
-            android:src="@mipmap/default_avatar"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/tv_owner"
-            app:radius="@dimen/dp_40" />
-
-        <TextView
-            android:id="@+id/tv_owner_name"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_12"
-            android:layout_marginTop="@dimen/dp_20"
-            android:textColor="@color/text_66"
-            android:textSize="@dimen/sp_14"
-            android:textStyle="bold"
-            app:layout_constraintLeft_toRightOf="@id/civ_avatar"
-            app:layout_constraintTop_toBottomOf="@+id/tv_owner" />
-
-        <TextView
-            android:id="@+id/tv_position"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginStart="@dimen/dp_10"
-            android:textColor="@color/text_66"
-            android:textSize="@dimen/sp_12"
-            app:layout_constraintBaseline_toBaselineOf="@id/tv_owner_name"
-            app:layout_constraintLeft_toRightOf="@id/tv_owner_name"
-            app:layout_constraintTop_toBottomOf="@+id/tv_owner" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="@dimen/dp_1"
-            android:layout_marginTop="@dimen/dp_30"
-            android:background="@color/edit_bottom_line"
-            app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/civ_avatar" />
-
-    </androidx.constraintlayout.widget.ConstraintLayout>
+        app:layout_constraintTop_toBottomOf="@id/rl_date" />
 
     <RelativeLayout
         android:layout_width="0dp"

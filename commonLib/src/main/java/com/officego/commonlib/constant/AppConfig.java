@@ -19,6 +19,7 @@ public class AppConfig extends BaseConfig {
     public static String H5_REGISTER = "";//注册协议
     public static String H5_QA = "";//常见问题
     public static String H5_VR_RECORD = "";//VR录制
+    public static String H5_PAY= "";//支付协议
     //融云key
     public static String RC_APPKEY = "";
     public static String RC_APPSECRET = "";
@@ -61,6 +62,7 @@ public class AppConfig extends BaseConfig {
         H5_PRIVACY = APP_URL_MAIN + "lessee/privacy.html";
         H5_REGISTER = APP_URL_MAIN + "lessee/registerProtocol.html";
         H5_QA = APP_URL_MAIN + "lessee/issueList.html";
+        H5_PAY = APP_URL_MAIN + "lessee/issueList.html";
         //VR录制
         H5_VR_RECORD = APP_URL_MAIN + "owner/vr.html";
         //会议室
@@ -91,6 +93,7 @@ public class AppConfig extends BaseConfig {
         H5_PRIVACY = APP_URL_MAIN + "lessee/privacy.html";
         H5_REGISTER = APP_URL_MAIN + "lessee/registerProtocol.html";
         H5_QA = APP_URL_MAIN + "lessee/issueList.html";
+        H5_PAY = APP_URL_MAIN + "lessee/issueList.html";
         //VR录制
         H5_VR_RECORD = APP_URL_MAIN + "owner/vr.html";
         //会议室
@@ -120,6 +123,7 @@ public class AppConfig extends BaseConfig {
         H5_PRIVACY = APP_URL_MAIN + "lessee/privacy.html";
         H5_REGISTER = APP_URL_MAIN + "lessee/registerProtocol.html";
         H5_QA = APP_URL_MAIN + "lessee/issueList.html";
+        H5_PAY = APP_URL_MAIN + "lessee/issueList.html";
         //VR录制
         H5_VR_RECORD = APP_URL_MAIN + "owner/vr.html";
         //会议室

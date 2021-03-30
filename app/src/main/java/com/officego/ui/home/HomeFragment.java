@@ -36,6 +36,7 @@ import com.officego.commonlib.utils.NetworkUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.h5.WebViewIdentityActivity_;
 import com.officego.h5.WebViewMeetingActivity_;
+import com.officego.h5.WebViewServiceActivity_;
 import com.officego.location.ClusterActivity;
 import com.officego.ui.adapter.BrandAdapter;
 import com.officego.ui.adapter.HomeAdapter;
@@ -210,6 +211,11 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
         WebViewMeetingActivity_.intent(mActivity).start();
     }
 
+    @Click(R.id.rl_service)
+    void serviceClick() {
+        WebViewServiceActivity_.intent(mActivity).start();
+    }
+
     //搜索列表
     private void goSearchActivity(int filterType) {
         SearchHouseListActivity_.intent(mActivity).filterType(filterType).start();
@@ -316,9 +322,9 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
                 tvSearch.setBackground(ContextCompat.getDrawable(mActivity, R.drawable.button_corners16_solid_gray));
                 vLineBottom.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.text_f7));
                 tvLocation.setTextColor(ContextCompat.getColor(mActivity, R.color.text_33));
-                tvLocation.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_location_black,0,0,0);
+                tvLocation.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_location_black, 0, 0, 0);
                 tvMapFind.setTextColor(ContextCompat.getColor(mActivity, R.color.text_33));
-                tvMapFind.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_home_map_location_black,0,0,0);
+                tvMapFind.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_home_map_location_black, 0, 0, 0);
             }
         } else if (scrollY < oldScrollY || scrollY == 0) {//向上滚动 scrollY == 0 滚动到顶
             if (scrollY < getResources().getDimensionPixelSize(R.dimen.dp_200)) {
@@ -327,9 +333,9 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter> implements
                 tvSearch.setBackground(ContextCompat.getDrawable(mActivity, R.drawable.button_corners16_solid_white));
                 vLineBottom.setBackgroundColor(ContextCompat.getColor(mActivity, R.color.transparent));
                 tvLocation.setTextColor(ContextCompat.getColor(mActivity, R.color.white));
-                tvLocation.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_location,0,0,0);
+                tvLocation.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_location, 0, 0, 0);
                 tvMapFind.setTextColor(ContextCompat.getColor(mActivity, R.color.white));
-                tvMapFind.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_home_map_location,0,0,0);
+                tvMapFind.setCompoundDrawablesWithIntrinsicBounds(R.mipmap.ic_home_map_location, 0, 0, 0);
             }
         }
     }

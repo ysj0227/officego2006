@@ -535,5 +535,13 @@
                 <data android:scheme="${WX_APP_ID}" />
             </intent-filter>
         </activity>
+        <activity
+            android:name=".ui.message.ConversationViewingDateOwnerActivity"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".h5.WebViewServiceActivity_"
+            android:launchMode="singleTop"
+            android:screenOrientation="portrait" />
     </application>
 </manifest>

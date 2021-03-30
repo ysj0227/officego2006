@@ -9,19 +9,19 @@ import android.widget.TextView;
 import com.bumptech.glide.Glide;
 import com.officego.R;
 import com.officego.commonlib.base.BaseMvpActivity;
+import com.officego.commonlib.common.SpUtils;
+import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.common.contract.ConversationViewDateContract;
 import com.officego.commonlib.common.dialog.ViewingDateDialog;
 import com.officego.commonlib.common.model.ChatHouseBean;
 import com.officego.commonlib.common.model.RenterBean;
+import com.officego.commonlib.common.model.owner.ChatBuildingBean;
 import com.officego.commonlib.common.presenter.ConversationViewDatePresenter;
 import com.officego.commonlib.common.rongcloud.SendMessageManager;
-import com.officego.commonlib.common.analytics.SensorsTrack;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.commonlib.utils.StatusBarUtils;
-import com.officego.commonlib.utils.ToastUtils;
-import com.officego.commonlib.view.CircleImage;
 import com.officego.commonlib.view.RoundImageView;
 import com.officego.rpc.OfficegoApi;
 
@@ -32,6 +32,7 @@ import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
 import java.util.Date;
+import java.util.List;
 
 /**
  * Created by YangShiJie
@@ -56,18 +57,9 @@ public class ConversationViewingDateActivity extends BaseMvpActivity<Conversatio
     TextView tvKm;
     @ViewById(R.id.tv_price)
     TextView tvPrice;
-    @ViewById(R.id.tv_name)
-    TextView tvName;
-    @ViewById(R.id.tv_mobile)
-    TextView tvMobile;
-    @ViewById(R.id.civ_avatar)
-    CircleImage civAvatar;
-    @ViewById(R.id.tv_owner_name)
-    TextView tvOwnerName;
-    @ViewById(R.id.tv_position)
-    TextView tvPosition;
     @ViewById(R.id.btn_viewing_date)
     Button btnViewingDate;
+
     @Extra
     String targetId;
     @Extra
@@ -83,10 +75,15 @@ public class ConversationViewingDateActivity extends BaseMvpActivity<Conversatio
         StatusBarUtils.setStatusBarFullTransparent(this);
         mPresenter = new ConversationViewDatePresenter();
         mPresenter.attachView(this);
-        //去除 targetId  的最后一位 ,产品定义
+
         if (!TextUtils.isEmpty(targetId) && targetId.length() > 1) {
             String getHouseChatId = targetId.substring(0, targetId.length() - 1);
-            mPresenter.getHouseDetails(buildingId, houseId, getHouseChatId);
+            if (TextUtils.equals(Constants.TYPE_OWNER, SpUtils.getRole())) {
+                mPresenter.getOwnerHouseList(getHouseChatId);
+            } else {
+                //租户
+                mPresenter.getHouseDetails(buildingId, houseId, getHouseChatId);
+            }
         }
     }
 
@@ -188,6 +185,11 @@ public class ConversationViewingDateActivity extends BaseMvpActivity<Conversatio
                 tvPrice.setText("¥" + (data.getBuilding().getMinSinglePrice() == null ? "0.0" : data.getBuilding().getMinSinglePrice()) + "/位/月");
             }
         }
+    }
+
+    @Override
+    public void buildingListSuccess(List<ChatBuildingBean.DataBean> data) {
+
     }
 
     public void addRenter(int buildingId, String time, String targetId) {

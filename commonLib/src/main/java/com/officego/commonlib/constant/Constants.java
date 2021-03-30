@@ -67,6 +67,7 @@ public class Constants {
     public final static int H5_ABOUTS = 2;
     public final static int H5_ROLE = 4;
     public final static int H5_VR_RECORD = 5;
+    public final static int H5_PAY = 6;
     //客服
     public static final String SERVICE_HOT_MOBILE = "18116002460";
     public static final String SERVICE_TECHNICAL_SUPPORT = "13052007068";

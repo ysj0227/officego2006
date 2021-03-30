@@ -7,6 +7,7 @@ import com.officego.commonlib.common.model.FirstChatBean;
 import com.officego.commonlib.common.model.IdentitychattedMsgBean;
 import com.officego.commonlib.common.model.RongUserInfoBean;
 import com.officego.commonlib.common.model.ExchangeContactsBean;
+import com.officego.commonlib.common.model.owner.ChatBuildingBean;
 import com.officego.commonlib.retrofit.BaseResponse;
 
 import java.util.List;
@@ -82,5 +83,12 @@ public interface ChatInterface {
     @Multipart
     @POST(path + "chat/chatMsg")
     Call<BaseResponse<Object>> recordChatTime(@PartMap Map<String, RequestBody> params);
+
+    /**
+     * 租戶聊過的業主房源
+     */
+    @Multipart
+    @POST(path + "chat/getAppointmentBuildingApp")
+    Call<BaseResponse<List<ChatBuildingBean.DataBean>>> chatBuildingList(@PartMap Map<String, RequestBody> params);
 
 }

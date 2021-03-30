@@ -3,7 +3,6 @@
     <string name="app_name_debug">OfficeGo开发版</string>
     <string name="app_name_test">OfficeGo测试版</string>
     <string name="app_name_pre">OfficeGo预发版</string>
-    <!--    <string name="app_name">Officego伙办连平台</string>-->
     <string name="str_tab_home">首页</string>
     <string name="str_tab_message">消息</string>
     <string name="str_tab_collect">收藏</string>
