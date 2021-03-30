@@ -1146,7 +1146,7 @@ public class OfficegoApi {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("amount", requestBody(amount));
-        map.put("details", requestBody(TextUtils.equals("698", amount) ? "1" : "2"));
+        map.put("details", requestBody(TextUtils.equals("698", amount) ? "会员套餐一" : "会员套餐二"));
         map.put("bid", requestBody(buildingId + ""));
         map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(PayInterface.class)
@@ -1161,7 +1161,7 @@ public class OfficegoApi {
         Map<String, RequestBody> map = new HashMap<>();
         map.put("token", requestBody(SpUtils.getSignToken()));
         map.put("amount", requestBody(amount));
-        map.put("details", requestBody(TextUtils.equals("698", amount) ? "1" : "2"));
+        map.put("details", requestBody(TextUtils.equals("698", amount) ? "会员套餐一" : "会员套餐二"));
         map.put("bid", requestBody(buildingId + ""));
         map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(PayInterface.class)

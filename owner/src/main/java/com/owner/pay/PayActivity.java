@@ -135,9 +135,11 @@ public class PayActivity extends BaseMvpActivity<PayPresenter>
             return;
         }
         if (ibtWx.isChecked()) {
-            mPresenter.weChatPay(String.valueOf(amounts * 100), buildingId);
+//            mPresenter.weChatPay(String.valueOf(amounts), buildingId);
+            mPresenter.weChatPay("0.01", buildingId);
         } else {
-            mPresenter.alipay(String.valueOf(amounts), buildingId);
+//            mPresenter.alipay(String.valueOf(amounts), buildingId);
+            mPresenter.alipay("0.01", buildingId);
         }
     }
 
