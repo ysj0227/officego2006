@@ -62,7 +62,7 @@ public class AppConfig extends BaseConfig {
         H5_PRIVACY = APP_URL_MAIN + "lessee/privacy.html";
         H5_REGISTER = APP_URL_MAIN + "lessee/registerProtocol.html";
         H5_QA = APP_URL_MAIN + "lessee/issueList.html";
-        H5_PAY = APP_URL_MAIN + "lessee/issueList.html";
+        H5_PAY = APP_URL_MAIN + "owner/h5/pages/agreement/agreement";
         //VR录制
         H5_VR_RECORD = APP_URL_MAIN + "owner/vr.html";
         //会议室
@@ -93,7 +93,7 @@ public class AppConfig extends BaseConfig {
         H5_PRIVACY = APP_URL_MAIN + "lessee/privacy.html";
         H5_REGISTER = APP_URL_MAIN + "lessee/registerProtocol.html";
         H5_QA = APP_URL_MAIN + "lessee/issueList.html";
-        H5_PAY = APP_URL_MAIN + "lessee/issueList.html";
+        H5_PAY = APP_URL_MAIN + "owner/h5/pages/agreement/agreement";
         //VR录制
         H5_VR_RECORD = APP_URL_MAIN + "owner/vr.html";
         //会议室
@@ -123,7 +123,7 @@ public class AppConfig extends BaseConfig {
         H5_PRIVACY = APP_URL_MAIN + "lessee/privacy.html";
         H5_REGISTER = APP_URL_MAIN + "lessee/registerProtocol.html";
         H5_QA = APP_URL_MAIN + "lessee/issueList.html";
-        H5_PAY = APP_URL_MAIN + "lessee/issueList.html";
+        H5_PAY = APP_URL_MAIN + "owner/h5/pages/agreement/agreement";
         //VR录制
         H5_VR_RECORD = APP_URL_MAIN + "owner/vr.html";
         //会议室

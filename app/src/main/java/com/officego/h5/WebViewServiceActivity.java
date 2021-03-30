@@ -53,7 +53,7 @@ public class WebViewServiceActivity extends BaseActivity {
     void init() {
         StatusBarUtils.setStatusBarColor(this);
         setWebChromeClient();
-        titleBar.getAppTitle().setText("企业服务");
+        titleBar.getAppTitle().setText(R.string.str_company_service);
         baseConfig();
     }
 

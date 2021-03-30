@@ -484,8 +484,12 @@ public class HomeFragment extends BaseMvpFragment<HomePresenter>
             dialog.setContentView(viewLayout);
             viewLayout.findViewById(R.id.btn_activation).setOnClickListener(view -> {
                 if (mData != null) {
-                    PayActivity_.intent(mActivity).buildingId(mData.getBuildingId()).start();
                     dialog.dismiss();
+                    if (mUserData != null && mUserData.getAuditStatus() == -1) {//未认证
+                        shortTip("请先认证");
+                        return;
+                    }
+                    mPresenter.getBuildingJointWorkList();
                 }
             });
             viewLayout.findViewById(R.id.iv_quit).setOnClickListener(view -> dialog.dismiss());

@@ -75,7 +75,7 @@ public class WebViewActivity extends BaseActivity {
             titleBar.getAppTitle().setText(getString(R.string.str_title_about_us));
             loadWebView(AppConfig.H5_ABOUT_US + chanel());
         } else if (flags == Constants.H5_PAY) {
-            titleBar.getAppTitle().setText(getString(R.string.str_company_service));
+            titleBar.getAppTitle().setText(getString(R.string.str_pay_protocol));
             loadWebView(AppConfig.H5_PAY + chanel());
         } else if (flags == Constants.H5_VR_RECORD) {
             titleBar.getAppTitle().setText(getString(R.string.str_title_vr_record));

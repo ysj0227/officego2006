@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">OfficeGo</string>
+    <string name="app_name">OfficeGo办公室写字楼共享办公租赁</string>
     <string name="app_name_debug">OfficeGo开发版</string>
     <string name="app_name_test">OfficeGo测试版</string>
     <string name="app_name_pre">OfficeGo预发版</string>
