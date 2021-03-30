@@ -7,7 +7,6 @@ import android.widget.TextView;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
 import com.owner.R;
-import com.owner.mine.model.OrderBean;
 import com.owner.pay.RightsBean;
 
 import java.util.List;

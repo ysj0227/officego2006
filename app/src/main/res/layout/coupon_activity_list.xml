@@ -74,6 +74,6 @@
         android:text="暂无更多内容"
         android:textColor="@color/text_66_p50"
         android:textSize="@dimen/sp_14"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
 </RelativeLayout>

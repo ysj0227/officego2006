@@ -17,6 +17,7 @@ import com.officego.commonlib.common.model.IdentitychattedMsgBean;
 import com.officego.commonlib.common.model.JPushLoginBean;
 import com.officego.commonlib.common.model.LoginBean;
 import com.officego.commonlib.common.model.NearbyBuildingBean;
+import com.officego.commonlib.common.model.OrderBean;
 import com.officego.commonlib.common.model.PayData;
 import com.officego.commonlib.common.model.RCloudPushBean;
 import com.officego.commonlib.common.model.RongUserInfoBean;
@@ -1175,6 +1176,20 @@ public class OfficegoApi {
     public void baseConfig(RetrofitCallback<BaseConfigbean> callback) {
         OfficegoRetrofitClient.getInstance().create(MainInterface.class)
                 .baseConfig(map())
+                .enqueue(callback);
+    }
+
+    /**
+     * 基础配置 扩品
+     * type 1全部2使用中3已过期
+     */
+    public void orderList(int type, RetrofitCallback<List<OrderBean.DataBean>> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("token", requestBody(SpUtils.getSignToken()));
+        map.put("type", requestBody(type + ""));
+        map.putAll(map());
+        OfficegoRetrofitClient.getInstance().create(MineMsgInterface.class)
+                .orderList(map)
                 .enqueue(callback);
     }
 }

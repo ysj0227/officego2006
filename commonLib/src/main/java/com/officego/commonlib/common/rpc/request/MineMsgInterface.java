@@ -1,10 +1,12 @@
 package com.officego.commonlib.common.rpc.request;
 
 import com.officego.commonlib.common.model.LoginBean;
+import com.officego.commonlib.common.model.OrderBean;
 import com.officego.commonlib.common.model.UserMessageBean;
 import com.officego.commonlib.common.model.VersionBean;
 import com.officego.commonlib.retrofit.BaseResponse;
 
+import java.util.List;
 import java.util.Map;
 
 import okhttp3.RequestBody;
@@ -67,5 +69,12 @@ public interface MineMsgInterface {
     @Multipart
     @POST(path + "user/changePhone")
     Call<BaseResponse<Object>> modifyMobile(@PartMap Map<String, RequestBody> params);
+
+    /**
+     * 修改手机号
+     */
+    @Multipart
+    @POST(path + "user/getOrderList")
+    Call<BaseResponse<List<OrderBean.DataBean>>> orderList(@PartMap Map<String, RequestBody> params);
 
 }
