@@ -97,7 +97,7 @@ public class OrderActivity extends BaseActivity implements
                     @Override
                     public void onSuccess(int code, String msg, ServiceBean bean) {
                         hideLoadingDialog();
-                        String mobile = bean.getTechnicalSupport();
+                        String mobile = bean.getOwnerConsultation();
                         new CommonDialog.Builder(context)
                                 .setTitle("客服电话")
                                 .setMessage(mobile)
