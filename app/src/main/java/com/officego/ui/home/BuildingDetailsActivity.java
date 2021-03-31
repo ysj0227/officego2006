@@ -259,6 +259,8 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
     RelativeLayout rlJointCompany;
     @ViewById(R.id.tv_company_info)
     TextView tvCompanyInfo;
+    @ViewById(R.id.tv_nearby_building_text)
+    TextView tvNearbyBuildingText;
     //收藏取消
     @ViewById(R.id.tv_favorite)
     TextView tvFavorite;
@@ -363,6 +365,7 @@ public class BuildingDetailsActivity extends BaseMvpActivity<BuildingDetailsPres
 
     private void initIndependentBuildingRecView() {
         tvIndependentOfficeText.setText("在租写字楼");
+        tvNearbyBuildingText.setText("看了该楼盘的人还看了");
         LinearLayoutManager lmHorizontal = new LinearLayoutManager(this);
         lmHorizontal.setOrientation(LinearLayoutManager.HORIZONTAL);
         rvHorizontalAll.setLayoutManager(lmHorizontal);
