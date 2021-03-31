@@ -18,9 +18,12 @@ import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.alipay.AlipayConfig;
 import com.officego.commonlib.common.alipay.PayResult;
 import com.officego.commonlib.common.config.CommonNotifications;
+import com.officego.commonlib.constant.AppConfig;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.ToastUtils;
+import com.officego.commonlib.utils.Utils;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
 import com.owner.adapter.PayRightsAdapter;
@@ -135,12 +138,24 @@ public class PayActivity extends BaseMvpActivity<PayPresenter>
             return;
         }
         if (ibtWx.isChecked()) {
-//            mPresenter.weChatPay(String.valueOf(amounts), buildingId);
-            mPresenter.weChatPay("0.01", buildingId);
+            mPresenter.weChatPay(String.valueOf(amounts), buildingId);
         } else {
-//            mPresenter.alipay(String.valueOf(amounts), buildingId);
-            mPresenter.alipay("0.01", buildingId);
+            mPresenter.alipay(String.valueOf(amounts), buildingId);
         }
+//        String env = Utils.getMetaValue(context, "ENV_DATA", AppConfig.ENV_TEST);
+//        if (TextUtils.equals(env, AppConfig.ENV_RELEASE)) {
+//            if (ibtWx.isChecked()) {
+//                mPresenter.weChatPay(String.valueOf(amounts), buildingId);
+//            } else {
+//                mPresenter.alipay(String.valueOf(amounts), buildingId);
+//            }
+//        } else {
+//            if (ibtWx.isChecked()) {
+//                mPresenter.weChatPay("0.01", buildingId);
+//            } else {
+//                mPresenter.alipay("0.01", buildingId);
+//            }
+//        }
     }
 
     /**
@@ -202,6 +217,7 @@ public class PayActivity extends BaseMvpActivity<PayPresenter>
                     dialogInterface.dismiss();
                     if (isFinishActivity) {
                         finish();
+                        refreshBuildingList();
                     }
                 })
                 .setConfirmButtonSize(16F)
@@ -220,6 +236,13 @@ public class PayActivity extends BaseMvpActivity<PayPresenter>
         super.didReceivedNotification(id, args);
         if (id == CommonNotifications.weChatPaySuccess) {
             finish();
+            refreshBuildingList();
         }
+    }
+
+    //popup支付成功
+    private void refreshBuildingList() {
+        BaseNotification.newInstance().postNotificationName(
+                CommonNotifications.updateBuildingSuccess, "updateBuildingSuccess");
     }
 }

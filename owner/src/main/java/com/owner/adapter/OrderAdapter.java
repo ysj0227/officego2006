@@ -2,18 +2,15 @@ package com.owner.adapter;
 
 import android.annotation.SuppressLint;
 import android.content.Context;
-import android.view.View;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
 import com.officego.commonlib.CommonListAdapter;
 import com.officego.commonlib.ViewHolder;
 import com.officego.commonlib.common.model.OrderBean;
-import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.commonlib.utils.GlideUtils;
 import com.officego.commonlib.view.RoundImageView;
-import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
 
 import java.util.List;
@@ -57,12 +54,17 @@ public class OrderAdapter extends CommonListAdapter<OrderBean.DataBean> {
         TextView tvPayTime = holder.getView(R.id.tv_pay_time);
         TextView tvConsult = holder.getView(R.id.tv_consult);
 
+
         tvNo.setText("订单号：" + bean.getOrderNo());
         Glide.with(holder.itemView).applyDefaultRequestOptions(GlideUtils.options()).load(bean.getImg()).into(ivPic);
         tvStatus.setText(bean.getStatus() == 2 ? "支付成功" : "支付失败");
         tvTitle.setText(bean.getTitle());
         tvType.setText("套餐类型：" + bean.getType());
-        tvTime.setText("有效期："+DateTimeUtils.stampMinuteToDate(bean.getEndtime(), "yyyy年MM月dd日"));
+        if (bean.getEndtime() == 0) {
+            tvTime.setText("有效期：");
+        } else {
+            tvTime.setText("有效期：" + DateTimeUtils.stampMinuteToDate(bean.getEndtime(), "yyyy年MM月dd日") + "到期");
+        }
         tvPayTime.setText("下单时间：" + DateTimeUtils.stampMinuteToDate(bean.getCreatAt(), "yyyy-MM-dd HH:mm"));
         tvCount.setText("总计：¥" + bean.getAmount());
         tvConsult.setOnClickListener(view -> {

@@ -328,7 +328,7 @@
                 android:id="@+id/tv_pay_protocol"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:text="《OfficeGo会员账户协议》"
+                android:text="《OfficeGo激活楼盘账户协议》"
                 android:textColor="@color/common_blue_main"
                 android:textSize="@dimen/sp_12"
                 app:layout_constraintBaseline_toBaselineOf="@id/tv_pay_protocol_agree"

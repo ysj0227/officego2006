@@ -112,10 +112,10 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:dividerLine="visible"
-                app:imageBackground="@mipmap/ic_coupon_icon"
+                app:imageBackground="@mipmap/ic_order"
                 app:imageHeight="@dimen/dp_19"
                 app:imageWidth="@dimen/dp_16"
-                app:textTitle="支付记录" />
+                app:textTitle="订单中心" />
 
             <com.officego.commonlib.view.widget.ItemTextLayout
                 android:id="@+id/rl_help"

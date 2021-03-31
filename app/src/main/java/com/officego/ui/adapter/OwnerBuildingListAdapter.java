@@ -4,8 +4,8 @@ import android.annotation.SuppressLint;
 import android.content.Context;
 import android.text.TextUtils;
 import android.view.View;
-import android.widget.CheckBox;
 import android.widget.CompoundButton;
+import android.widget.RadioButton;
 import android.widget.TextView;
 
 import com.bumptech.glide.Glide;
@@ -59,7 +59,7 @@ public class OwnerBuildingListAdapter extends CommonListAdapter<ChatBuildingBean
         TextView tvLocation = holder.getView(R.id.tv_location);
         TextView tvRouteMap = holder.getView(R.id.tv_bus);
         TextView tvPrice = holder.getView(R.id.tv_price);
-        CheckBox cbBox = holder.getView(R.id.cb_box);
+        RadioButton cbBox = holder.getView(R.id.cb_box);
 
         Glide.with(context).load(data.getMainPic()).into(ivHouseImg);
         tvHouseName.setText(data.getBuildingName());
