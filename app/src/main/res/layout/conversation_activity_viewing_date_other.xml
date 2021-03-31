@@ -64,10 +64,11 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/dp_20"
-            android:layout_marginBottom="@dimen/dp_30"
+            android:layout_marginBottom="@dimen/dp_20"
             android:text="看房时间"
-            android:textColor="@color/text_66"
-            android:textSize="@dimen/sp_14" />
+            android:textStyle="bold"
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_15" />
 
         <TextView
             android:id="@+id/tv_select_time"
@@ -75,12 +76,13 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/dp_10"
             android:layout_marginTop="@dimen/dp_20"
-            android:layout_marginBottom="@dimen/dp_30"
+            android:layout_marginBottom="@dimen/dp_20"
             android:layout_toStartOf="@id/iv_arrow_right"
             android:layout_toEndOf="@id/tv_time"
+            android:textStyle="bold"
             android:text="请选择看房时间"
-            android:textColor="@color/text_66"
-            android:textSize="@dimen/sp_14" />
+            android:textColor="@color/text_33"
+            android:textSize="@dimen/sp_15" />
 
         <ImageView
             android:id="@+id/iv_arrow_right"

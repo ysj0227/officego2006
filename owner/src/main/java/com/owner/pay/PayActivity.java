@@ -18,12 +18,10 @@ import com.officego.commonlib.base.BaseMvpActivity;
 import com.officego.commonlib.common.alipay.AlipayConfig;
 import com.officego.commonlib.common.alipay.PayResult;
 import com.officego.commonlib.common.config.CommonNotifications;
-import com.officego.commonlib.constant.AppConfig;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.utils.StatusBarUtils;
 import com.officego.commonlib.utils.ToastUtils;
-import com.officego.commonlib.utils.Utils;
 import com.officego.commonlib.view.dialog.CommonDialog;
 import com.owner.R;
 import com.owner.adapter.PayRightsAdapter;
@@ -35,6 +33,8 @@ import org.androidannotations.annotations.EActivity;
 import org.androidannotations.annotations.Extra;
 import org.androidannotations.annotations.ViewById;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -75,19 +75,30 @@ public class PayActivity extends BaseMvpActivity<PayPresenter>
     private int amounts = 1598;
     private final int amount1 = 698;
     private final int amount2 = 1598;
+    private List<RightsBean> list = new ArrayList<>();
+    private RightsBean bean, bean1;
+    private PayRightsAdapter adapter;
 
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarFullTransparent(this);
         mPresenter = new PayPresenter(context);
         mPresenter.attachView(this);
+        list = PayUtils.rightsList();
+        bean = new RightsBean(R.mipmap.ic_rights_no_ads,
+                "5.免费广告", "OfficeGo APP首页列表广告位，免费赠送1天，价值1200元。");
+        bean1 = new RightsBean(R.mipmap.ic_rights_no_ads,
+                "5.免费广告", "OfficeGo APP首页列表广告位，免费赠送3天，价值3600元。");
         rvRights.setLayoutManager(new LinearLayoutManager(context));
-        rvRights.setAdapter(new PayRightsAdapter(context, PayUtils.rightsList()));
+        adapter = new PayRightsAdapter(context, list);
+        rvRights.setAdapter(adapter);
     }
 
     @SuppressLint("SetTextI18n")
     @Click(resName = "rl1")
     void amount1Click() {
+        list.set(4, bean);
+        adapter.notifyItemChanged(4);
         rl1.setBackgroundResource(R.mipmap.ic_month_pay_selected);
         rl2.setBackgroundResource(R.mipmap.ic_month_pay_unselected);
         tvAmount1.setTextColor(ContextCompat.getColor(context, R.color.white));
@@ -103,6 +114,8 @@ public class PayActivity extends BaseMvpActivity<PayPresenter>
     @SuppressLint("SetTextI18n")
     @Click(resName = "rl2")
     void amount2Click() {
+        list.set(4, bean1);
+        adapter.notifyItemChanged(4);
         rl1.setBackgroundResource(R.mipmap.ic_month_pay_unselected);
         rl2.setBackgroundResource(R.mipmap.ic_month_pay_selected);
         tvAmount1.setTextColor(ContextCompat.getColor(context, R.color.common_red));
