@@ -36,8 +36,6 @@ public class ChatBuildingBean {
     }
 
     public static class DataBean {
-        @SerializedName("houseId")
-        private int houseId;
         @SerializedName("btype")
         private int btype;
         @SerializedName("buildingId")
@@ -58,14 +56,6 @@ public class ChatBuildingBean {
         private List<String> stationline;
         @SerializedName("nearbySubwayTime")
         private List<String> nearbySubwayTime;
-
-        public int getHouseId() {
-            return houseId;
-        }
-
-        public void setHouseId(int houseId) {
-            this.houseId = houseId;
-        }
 
         public int getBtype() {
             return btype;

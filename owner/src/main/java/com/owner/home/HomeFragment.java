@@ -5,7 +5,6 @@ import android.app.Dialog;
 import android.text.TextUtils;
 import android.view.LayoutInflater;
 import android.view.View;
-import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -41,7 +40,6 @@ import com.owner.h5.WebViewActivity_;
 import com.owner.home.contract.HomeContract;
 import com.owner.home.presenter.HomePresenter;
 import com.owner.identity.OwnerIdentityActivity_;
-import com.owner.pay.PayActivity_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
