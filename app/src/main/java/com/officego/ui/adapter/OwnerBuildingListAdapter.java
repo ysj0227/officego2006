@@ -79,9 +79,9 @@ public class OwnerBuildingListAdapter extends CommonListAdapter<ChatBuildingBean
             tvRouteMap.setVisibility(View.GONE);
         }
         if (data.getBtype() == Constants.TYPE_BUILDING) {
-            tvPrice.setText("¥" + (data.getMinSinglePrice() == null ? "0.0" : data.getMinSinglePrice()) + "/㎡/天");
+            tvPrice.setText("¥" + (data.getMinSinglePrice() == null ? "0.0" : data.getMinSinglePrice()) + "/㎡/天起");
         } else {
-            tvPrice.setText("¥" + (data.getMinSinglePrice() == null ? "0.0" : data.getMinSinglePrice()) + "/位/月");
+            tvPrice.setText("¥" + (data.getMinSinglePrice() == null ? "0.0" : data.getMinSinglePrice()) + "/位/月起");
         }
 
         int position = holder.getAdapterPosition();

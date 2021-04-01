@@ -180,9 +180,9 @@ public class ConversationViewingDateActivity extends BaseMvpActivity<Conversatio
                 tvRouteMap.setVisibility(View.GONE);
             }
             if (data.getBuilding().getBtype() == Constants.TYPE_BUILDING) {
-                tvPrice.setText("¥" + (data.getBuilding().getMinSinglePrice() == null ? "0.0" : data.getBuilding().getMinSinglePrice()) + "/㎡/天");
+                tvPrice.setText("¥" + (data.getBuilding().getMinSinglePrice() == null ? "0.0" : data.getBuilding().getMinSinglePrice()) + "/㎡/天起");
             } else {
-                tvPrice.setText("¥" + (data.getBuilding().getMinSinglePrice() == null ? "0.0" : data.getBuilding().getMinSinglePrice()) + "/位/月");
+                tvPrice.setText("¥" + (data.getBuilding().getMinSinglePrice() == null ? "0.0" : data.getBuilding().getMinSinglePrice()) + "/位/月起");
             }
         }
     }
