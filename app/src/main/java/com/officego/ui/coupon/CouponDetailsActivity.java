@@ -5,6 +5,7 @@ import android.graphics.Bitmap;
 import android.text.TextUtils;
 import android.view.View;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.officego.R;
@@ -12,8 +13,9 @@ import com.officego.commonlib.base.BaseActivity;
 import com.officego.commonlib.common.model.CouponListBean;
 import com.officego.commonlib.utils.CommonHelper;
 import com.officego.commonlib.utils.StatusBarUtils;
+import com.officego.commonlib.view.CopyTextUtils;
 import com.officego.commonlib.view.widget.AutoFitTextView;
-import com.officego.h5.WebViewMeetingActivity_;
+import com.officego.h5.WebViewBannerActivity_;
 
 import org.androidannotations.annotations.AfterViews;
 import org.androidannotations.annotations.Click;
@@ -52,6 +54,9 @@ public class CouponDetailsActivity extends BaseActivity {
     TextView tvContent;
     @ViewById(R.id.tv_spread)
     TextView tvSpread;
+    @ViewById(R.id.rl_to_use_coupon)
+    RelativeLayout rlToUseCoupon;
+
     @Extra
     CouponListBean.ListBean couponBean;
 
@@ -63,6 +68,7 @@ public class CouponDetailsActivity extends BaseActivity {
     @AfterViews
     void init() {
         StatusBarUtils.setStatusBarColor(this);
+        rlToUseCoupon.setVisibility(couponBean != null && !TextUtils.isEmpty(couponBean.getWlurl()) ? View.VISIBLE : View.GONE);
         if (couponBean != null) {
             code = "officegoTC_" + couponBean.getBatchCode();
             createQR();
@@ -102,9 +108,18 @@ public class CouponDetailsActivity extends BaseActivity {
         tvContent.setVisibility(isSpread ? View.GONE : View.VISIBLE);
     }
 
-    @Click(R.id.tv_can_use_meeting_room)
-    void queryMeetingRoomOnClick() {
-        WebViewMeetingActivity_.intent(context).amountRange(couponBean.getAmountRange()).start();
+    @Click(R.id.rl_to_use_coupon)
+    void toUseOnClick() {
+        if (couponBean != null && !TextUtils.isEmpty(couponBean.getWlurl())) {
+            WebViewBannerActivity_.intent(context).url(couponBean.getWlurl()).start();
+        }
+    }
+
+    @Click(R.id.tv_copy_text)
+    void copyQRClick() {
+        if (couponBean != null) {
+            new CopyTextUtils(context, tvQR.getText().toString().trim());
+        }
     }
 
     private void createQR() {

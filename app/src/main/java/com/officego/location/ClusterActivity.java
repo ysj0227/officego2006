@@ -333,7 +333,7 @@ public class ClusterActivity extends BaseActivity implements ClusterRender,
     public void getMapList() {
         if (DataConfig.mapList == null) {
             ProgressDialog pd = new ProgressDialog(context);
-            pd.setMessage("洪荒之力正在加载房源...");
+            pd.setMessage("正在努力加载房源中...");
             pd.setCancelable(true);
             pd.setCanceledOnTouchOutside(false);
             pd.show();

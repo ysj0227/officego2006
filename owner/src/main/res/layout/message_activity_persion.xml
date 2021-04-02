@@ -98,7 +98,7 @@
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:hint="输入称呼"
-            android:maxLines="1"
+            android:singleLine="true"
             android:textColor="@color/text_33"
             android:textColorHint="@color/text_99"
             android:textSize="@dimen/sp_15" />
@@ -190,7 +190,7 @@
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:hint="输入职位"
-            android:maxLines="1"
+            android:singleLine="true"
             android:textColor="@color/text_33"
             android:textColorHint="@color/text_99"
             android:textSize="@dimen/sp_15" />
@@ -231,7 +231,7 @@
             android:ellipsize="end"
             android:gravity="center_vertical"
             android:hint="输入微信"
-            android:maxLines="1"
+            android:singleLine="true"
             android:textColor="@color/text_33"
             android:textColorHint="@color/text_99"
             android:textSize="@dimen/sp_15" />
