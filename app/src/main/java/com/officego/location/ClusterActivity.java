@@ -363,27 +363,29 @@ public class ClusterActivity extends BaseActivity implements ClusterRender,
         List<ClusterItem> items = new ArrayList<>();
         for (int i = 0; i < DataConfig.mapList.size(); i++) {
             AllBuildingBean.DataBean bean = DataConfig.mapList.get(i);
-            double lat = Double.parseDouble(bean.getLatitude());
-            double lon = Double.parseDouble(bean.getLongitude());
-            int btype = bean.getBtype();
-            int buildingId = bean.getId();
-            String title = (btype == Constants.TYPE_BUILDING) ? bean.getBuildingName()
-                    : bean.getBranchesName();
-            String mainPic = bean.getMainPic();
-            String districts = bean.getDistricts();
-            String business = TextUtils.equals("其他", bean.getAreas()) ? "附近" : bean.getAreas();
-            String address = bean.getAddress();
-            String price = bean.getMinDayPrice();
-            String houseCount = bean.getHouseCount();
-            String stationName = bean.getBuildingMap() == null ||
-                    bean.getBuildingMap().getStationNames() == null ||
-                    bean.getBuildingMap().getStationNames().size() == 0 ||
-                    TextUtils.isEmpty(bean.getBuildingMap().getStationNames().get(0)) ? business
-                    : bean.getBuildingMap().getStationNames().get(0);
-            LatLng latLng = new LatLng(lat, lon, false);
-            RegionItem regionItem = new RegionItem(latLng, btype, buildingId, title,
-                    mainPic, districts, business, stationName, address, price, houseCount, bean.getBuildingMap());
-            items.add(regionItem);
+            if (!TextUtils.isEmpty(bean.getLatitude()) && !TextUtils.isEmpty(bean.getLongitude())) {
+                double lat = Double.parseDouble(bean.getLatitude());
+                double lon = Double.parseDouble(bean.getLongitude());
+                int btype = bean.getBtype();
+                int buildingId = bean.getId();
+                String title = (btype == Constants.TYPE_BUILDING) ? bean.getBuildingName()
+                        : bean.getBranchesName();
+                String mainPic = bean.getMainPic();
+                String districts = bean.getDistricts();
+                String business = TextUtils.equals("其他", bean.getAreas()) ? "附近" : bean.getAreas();
+                String address = bean.getAddress();
+                String price = bean.getMinDayPrice();
+                String houseCount = bean.getHouseCount();
+                String stationName = bean.getBuildingMap() == null ||
+                        bean.getBuildingMap().getStationNames() == null ||
+                        bean.getBuildingMap().getStationNames().size() == 0 ||
+                        TextUtils.isEmpty(bean.getBuildingMap().getStationNames().get(0)) ? business
+                        : bean.getBuildingMap().getStationNames().get(0);
+                LatLng latLng = new LatLng(lat, lon, false);
+                RegionItem regionItem = new RegionItem(latLng, btype, buildingId, title,
+                        mainPic, districts, business, stationName, address, price, houseCount, bean.getBuildingMap());
+                items.add(regionItem);
+            }
         }
         mClusterOverlay = new ClusterOverlay(mAMap, items,
                 CommonHelper.dp2px(context, clusterRadius), context);
