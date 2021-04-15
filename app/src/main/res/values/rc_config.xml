@@ -3,4 +3,11 @@
     <string name="rc_enable_sync_read_status">true</string>
     <!-- 设置是否开启消息回执, true 为打开, false 为关闭-->
     <bool name="rc_read_receipt">true</bool>
+
+    <bool name="rc_enable_message_recall">true</bool>
+
+    <integer name="rc_message_recall_interval">120</integer>
+
+    <integer name="rc_message_recall_edit_interval">300</integer>
+
 </resources>
