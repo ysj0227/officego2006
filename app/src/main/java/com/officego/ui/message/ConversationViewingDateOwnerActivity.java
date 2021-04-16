@@ -81,7 +81,8 @@ public class ConversationViewingDateOwnerActivity extends BaseMvpActivity<Conver
     }
 
     private void viewDate() {
-        if (TextUtils.isEmpty(tvSelectTime.getText())) {
+        if (TextUtils.isEmpty(tvSelectTime.getText()==null?"":tvSelectTime.getText().toString().trim())) {
+            shortTip("请选择预约时间");
             return;
         }
         if (mData == null) {

@@ -113,7 +113,8 @@ public class ConversationViewingDateActivity extends BaseMvpActivity<Conversatio
 
     @Click(R.id.btn_viewing_date)
     void viewingDateClick() {
-        if (TextUtils.isEmpty(tvSelectTime.getText())) {
+        if (TextUtils.isEmpty(tvSelectTime.getText()==null?"":tvSelectTime.getText().toString().trim())) {
+            shortTip("请选择预约时间");
             return;
         }
         if (mData == null) {

@@ -13,6 +13,8 @@ import io.rong.imkit.fragment.ConversationFragment;
  * Date 2020/11/20
  **/
 public class MyConversationFragment extends ConversationFragment {
+
+
     @Override
     public boolean showMoreClickItem() {
         //是否在长按时显示更多选项
