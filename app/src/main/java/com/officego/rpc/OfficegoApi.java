@@ -11,6 +11,7 @@ import com.officego.commonlib.common.model.SearchListBean;
 import com.officego.commonlib.common.rpc.request.SearchInterface;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.retrofit.RetrofitCallback;
+import com.officego.commonlib.retrofit.RxJavaCallback;
 import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.rpc.request.BannerInterface;
 import com.officego.rpc.request.ChatInterface;
@@ -44,6 +45,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
 
@@ -106,6 +109,19 @@ public class OfficegoApi {
         OfficegoRetrofitClient.getInstance().create(LoginInterface.class)
                 .login(map)
                 .enqueue(callback);
+    }
+
+    public void rxLogin(String mobile, String code, RxJavaCallback<LoginBean> callback) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("phone", requestBody(mobile));
+        map.put("code", requestBody(code));
+        map.put("idType", requestBody(TextUtils.isEmpty(SpUtils.getRole()) ? Constants.TYPE_TENANT : SpUtils.getRole()));
+        map.putAll(map());
+        OfficegoRetrofitClient.getInstance().create(LoginInterface.class)
+                .rxLogin(map)
+                .subscribeOn(Schedulers.io())           //在IO线程进行网络请求
+                .observeOn(AndroidSchedulers.mainThread())//回到主线程处理请求结果
+                .subscribe(callback);
     }
 
     /**

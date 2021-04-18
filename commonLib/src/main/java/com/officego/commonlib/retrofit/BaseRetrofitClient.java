@@ -20,6 +20,7 @@ import okhttp3.ConnectionPool;
 import okhttp3.OkHttpClient;
 import okhttp3.internal.platform.Platform;
 import retrofit2.Retrofit;
+import retrofit2.adapter.rxjava2.RxJava2CallAdapterFactory;
 
 /**
  * Created by YangShiJie
@@ -80,7 +81,7 @@ public class BaseRetrofitClient {
         retrofit = new Retrofit.Builder()
                 .client(okHttpClient)
                 .addConverterFactory(ConvertFactory.create())
-//                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
+                .addCallAdapterFactory(RxJava2CallAdapterFactory.create())
                 .baseUrl(url)
                 .build();
     }

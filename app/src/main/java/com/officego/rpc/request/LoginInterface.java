@@ -5,6 +5,7 @@ import com.officego.commonlib.retrofit.BaseResponse;
 
 import java.util.Map;
 
+import io.reactivex.Observable;
 import okhttp3.RequestBody;
 import retrofit2.Call;
 import retrofit2.http.Multipart;
@@ -23,6 +24,7 @@ public interface LoginInterface {
     /**
      * 获取验证码
      * 表单形式
+     *
      * @return
      */
     @Multipart
@@ -36,6 +38,10 @@ public interface LoginInterface {
     @Multipart
     @POST(path + "login/loginCode")
     Call<BaseResponse<LoginBean>> login(@PartMap Map<String, RequestBody> params);
+
+    @Multipart
+    @POST(path + "login/loginCode")
+    Observable<BaseResponse<LoginBean>> rxLogin(@PartMap Map<String, RequestBody> params);
 
 
     /**

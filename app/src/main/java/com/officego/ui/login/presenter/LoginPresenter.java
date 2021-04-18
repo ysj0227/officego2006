@@ -12,8 +12,12 @@ import com.officego.commonlib.common.rongcloud.RCloudConnectUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.notification.BaseNotification;
 import com.officego.commonlib.retrofit.RetrofitCallback;
+import com.officego.commonlib.retrofit.RxJavaCallback;
+import com.officego.commonlib.utils.log.LogCat;
 import com.officego.rpc.OfficegoApi;
 import com.officego.ui.login.contract.LoginContract;
+
+import io.reactivex.disposables.Disposable;
 
 /**
  * Created by YangShiJie
@@ -41,23 +45,39 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
 
     @Override
     public void login(String mobile, String code) {
-        mView.showLoadingDialog();
-        OfficegoApi.getInstance().login(mobile, code, new RetrofitCallback<LoginBean>() {
+//        mView.showLoadingDialog();
+//        OfficegoApi.getInstance().login(mobile, code, new RetrofitCallback<LoginBean>() {
+//            @Override
+//            public void onSuccess(int code, String msg, LoginBean data) {
+//                if (isViewAttached()) {
+//                    loginSuccess(mobile, data);
+//                }
+//            }
+//
+//            @Override
+//            public void onFail(int code, String msg, LoginBean data) {
+//                if (isViewAttached()) {
+//                    mView.hideLoadingDialog();
+//                    if (Constants.DEFAULT_ERROR_CODE == code) {
+//                        mView.shortTip(msg);
+//                    }
+//                }
+//            }
+//        });
+        OfficegoApi.getInstance().rxLogin(mobile, code, new RxJavaCallback<LoginBean>() {
             @Override
             public void onSuccess(int code, String msg, LoginBean data) {
-                if (isViewAttached()) {
-                    loginSuccess(mobile, data);
-                }
+                LogCat.e("TAG","1111="+data.getPhone()+","+data.getNickName());
             }
 
             @Override
             public void onFail(int code, String msg, LoginBean data) {
-                if (isViewAttached()) {
-                    mView.hideLoadingDialog();
-                    if (Constants.DEFAULT_ERROR_CODE == code) {
-                        mView.shortTip(msg);
-                    }
-                }
+
+            }
+
+            @Override
+            public void onSubscribe(Disposable d) {
+
             }
         });
     }
