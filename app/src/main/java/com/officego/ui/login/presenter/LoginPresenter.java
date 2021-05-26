@@ -11,12 +11,17 @@ import com.officego.commonlib.common.model.WeChatAuthBean;
 import com.officego.commonlib.common.rongcloud.RCloudConnectUtils;
 import com.officego.commonlib.constant.Constants;
 import com.officego.commonlib.notification.BaseNotification;
+import com.officego.commonlib.retrofit.BaseResponse;
 import com.officego.commonlib.retrofit.RetrofitCallback;
 import com.officego.commonlib.retrofit.RxJavaCallback;
-import com.officego.commonlib.utils.log.LogCat;
 import com.officego.rpc.OfficegoApi;
+import com.officego.rpc.OfficegoRetrofitClient;
+import com.officego.rpc.request.LoginInterface;
 import com.officego.ui.login.contract.LoginContract;
 
+import java.text.DecimalFormat;
+
+import io.reactivex.Observable;
 import io.reactivex.disposables.Disposable;
 
 /**
@@ -45,7 +50,7 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
 
     @Override
     public void login(String mobile, String code) {
-//        mView.showLoadingDialog();
+        mView.showLoadingDialog();
 //        OfficegoApi.getInstance().login(mobile, code, new RetrofitCallback<LoginBean>() {
 //            @Override
 //            public void onSuccess(int code, String msg, LoginBean data) {
@@ -64,22 +69,11 @@ public class LoginPresenter extends BasePresenter<LoginContract.View> implements
 //                }
 //            }
 //        });
-        OfficegoApi.getInstance().rxLogin(mobile, code, new RxJavaCallback<LoginBean>() {
-            @Override
-            public void onSuccess(int code, String msg, LoginBean data) {
-                LogCat.e("TAG","1111="+data.getPhone()+","+data.getNickName());
-            }
 
-            @Override
-            public void onFail(int code, String msg, LoginBean data) {
-
-            }
-
-            @Override
-            public void onSubscribe(Disposable d) {
-
-            }
-        });
+//        OfficegoApi.getInstance().rxText(mobile,code);
+        OfficegoApi.getInstance().rxText2(mobile,code);
+//        OfficegoApi.getInstance().rxText3(mobile,code);
+//        OfficegoApi.getInstance().rxText4(mobile,code);
     }
 
     /**

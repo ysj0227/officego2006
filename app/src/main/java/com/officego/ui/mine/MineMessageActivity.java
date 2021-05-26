@@ -227,7 +227,7 @@ public class MineMessageActivity extends BaseMvpActivity<UpdateUserPresenter>
                         Uri newUri = Uri.parse(PhotoUtils.getPath(context, data.getData()));
                         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
                             newUri = FileProvider.getUriForFile(context,
-                                    Constants.FILE_PROVIDER_AUTHORITY, new File(newUri.getPath()));
+                                   Constants.FILE_PROVIDER_AUTHORITY, new File(newUri.getPath()));
                         }
                         PhotoUtils.cropImageUri(this, newUri, cropImageUri, 1, 1,
                                 IMAGE_DIMENSION, IMAGE_DIMENSION, REQUEST_CROP_RESULT);

@@ -1,6 +1,8 @@
 package com.officego.rpc;
 
+import android.annotation.SuppressLint;
 import android.text.TextUtils;
+import android.util.Log;
 
 import com.officego.commonlib.common.SpUtils;
 import com.officego.commonlib.common.model.DirectoryBean;
@@ -10,8 +12,8 @@ import com.officego.commonlib.common.model.RenterBean;
 import com.officego.commonlib.common.model.SearchListBean;
 import com.officego.commonlib.common.rpc.request.SearchInterface;
 import com.officego.commonlib.constant.Constants;
+import com.officego.commonlib.retrofit.BaseResponse;
 import com.officego.commonlib.retrofit.RetrofitCallback;
-import com.officego.commonlib.retrofit.RxJavaCallback;
 import com.officego.commonlib.utils.DateTimeUtils;
 import com.officego.rpc.request.BannerInterface;
 import com.officego.rpc.request.ChatInterface;
@@ -21,6 +23,9 @@ import com.officego.rpc.request.HomeInterface;
 import com.officego.rpc.request.LoginInterface;
 import com.officego.rpc.request.ScheduleInterface;
 import com.officego.rpc.request.SearchAreaInterface;
+import com.officego.test.RxLoginBean;
+import com.officego.test.RxUnitBean;
+import com.officego.test.RxZipBean;
 import com.officego.ui.collect.model.CollectBuildingBean;
 import com.officego.ui.collect.model.CollectHouseBean;
 import com.officego.ui.home.model.AllBuildingBean;
@@ -41,11 +46,23 @@ import com.officego.ui.home.model.TodayReadBean;
 import com.officego.ui.mine.model.ViewingDateBean;
 import com.officego.ui.mine.model.ViewingDateDetailsBean;
 
+import org.json.JSONObject;
+import org.reactivestreams.Subscriber;
+import org.reactivestreams.Subscription;
+
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import io.reactivex.Observable;
+import io.reactivex.Observer;
 import io.reactivex.android.schedulers.AndroidSchedulers;
+import io.reactivex.annotations.NonNull;
+import io.reactivex.disposables.Disposable;
+import io.reactivex.functions.BiFunction;
+import io.reactivex.functions.Consumer;
+import io.reactivex.functions.Function;
 import io.reactivex.schedulers.Schedulers;
 import okhttp3.MediaType;
 import okhttp3.RequestBody;
@@ -111,18 +128,6 @@ public class OfficegoApi {
                 .enqueue(callback);
     }
 
-    public void rxLogin(String mobile, String code, RxJavaCallback<LoginBean> callback) {
-        Map<String, RequestBody> map = new HashMap<>();
-        map.put("phone", requestBody(mobile));
-        map.put("code", requestBody(code));
-        map.put("idType", requestBody(TextUtils.isEmpty(SpUtils.getRole()) ? Constants.TYPE_TENANT : SpUtils.getRole()));
-        map.putAll(map());
-        OfficegoRetrofitClient.getInstance().create(LoginInterface.class)
-                .rxLogin(map)
-                .subscribeOn(Schedulers.io())           //在IO线程进行网络请求
-                .observeOn(AndroidSchedulers.mainThread())//回到主线程处理请求结果
-                .subscribe(callback);
-    }
 
     /**
      * 手机免密登录
@@ -137,20 +142,6 @@ public class OfficegoApi {
         map.putAll(map());
         OfficegoRetrofitClient.getInstance().create(LoginInterface.class)
                 .loginOnlyPhone(map)
-                .enqueue(callback);
-    }
-
-    /**
-     * 获取房源特色
-     *
-     * @param callback
-     */
-    public void getHouseUnique(RetrofitCallback<List<DirectoryBean.DataBean>> callback) {
-        Map<String, RequestBody> map = new HashMap<>();
-        map.put("code", requestBody("houseUnique"));
-        map.putAll(map());
-        OfficegoRetrofitClient.getInstance().create(FindInterface.class)
-                .getHouseUnique(map)
                 .enqueue(callback);
     }
 
@@ -299,7 +290,6 @@ public class OfficegoApi {
 
     /**
      * 地图找房
-     *
      */
     public void getBuildingList(RetrofitCallback<List<AllBuildingBean.DataBean>> callback) {
         Map<String, RequestBody> map = new HashMap<>();
@@ -825,6 +815,7 @@ public class OfficegoApi {
                 .enqueue(callback);
     }
 
+
     /**
      * 会议室推荐
      */
@@ -849,6 +840,208 @@ public class OfficegoApi {
         OfficegoRetrofitClient.getInstance().create(HomeInterface.class)
                 .getHotList(map)
                 .enqueue(callback);
+    }
+
+
+    /**
+     * RXJAVA
+     * RxJavaCallback<LoginBean> callback
+     *
+     * @return
+     */
+    public Observable<BaseResponse<LoginBean>> rxLogin(String mobile, String code) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("phone", requestBody(mobile));
+        map.put("code", requestBody(code));
+        map.put("idType", requestBody(TextUtils.isEmpty(SpUtils.getRole()) ? Constants.TYPE_TENANT : SpUtils.getRole()));
+        map.putAll(map());
+        return OfficegoRetrofitClient.getInstance().create(LoginInterface.class)
+                .rxLogin(map);
+    }
+
+    public Observable<RxLoginBean> rxLoginString(String mobile, String code) {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("phone", requestBody(mobile));
+        map.put("code", requestBody(code));
+        map.put("idType", requestBody(TextUtils.isEmpty(SpUtils.getRole()) ? Constants.TYPE_TENANT : SpUtils.getRole()));
+        map.putAll(map());
+        return OfficegoRetrofitClient.getInstance().create(LoginInterface.class)
+                .rxLoginString(map);
+    }
+
+    /**
+     * RXJAVA
+     * RxJavaCallback<List<DirectoryBean.DataBean>> callback
+     */
+    public Observable<BaseResponse<List<DirectoryBean.DataBean>>> rxHouseUnique() {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("code", requestBody("houseUnique"));
+        map.putAll(map());
+        return OfficegoRetrofitClient.getInstance().create(LoginInterface.class)
+                .rxHouseUnique(map);
+    }
+
+    public Observable<RxUnitBean> rxHouseUniqueString() {
+        Map<String, RequestBody> map = new HashMap<>();
+        map.put("code", requestBody("houseUnique"));
+        map.putAll(map());
+        return OfficegoRetrofitClient.getInstance().create(LoginInterface.class)
+                .rxHouseUniqueString(map);
+    }
+
+    @SuppressLint("CheckResult")
+    public void rxText(String mobile, String code) {
+        Observable<BaseResponse<LoginBean>> observable1 = rxLogin(mobile, code);
+        Observable<BaseResponse<List<DirectoryBean.DataBean>>> observable2 = rxHouseUnique();
+
+        //方法1
+        observable1.subscribeOn(Schedulers.io())               // （初始被观察者）切换到IO线程进行网络请求1
+                .observeOn(AndroidSchedulers.mainThread())  // （新观察者）切换到主线程 处理网络请求1的结果
+                .doOnNext(new Consumer<BaseResponse<LoginBean>>() {
+                    @Override
+                    public void accept(BaseResponse<LoginBean> result) throws Exception {
+                        Log.d(TAG, "999999=第1次网络请求成功 name=" + result.getData().getNickName());
+                    }
+
+                })
+                .observeOn(Schedulers.io())                 // （新被观察者，同时也是新观察者）切换到IO线程去发起登录请求
+                // 特别注意：因为flatMap是对初始被观察者作变换，所以对于旧被观察者，它是新观察者，所以通过observeOn切换线程
+                // 但对于初始观察者，它则是新的被观察者
+                .flatMap(new Function<BaseResponse<LoginBean>, Observable<BaseResponse<List<DirectoryBean.DataBean>>>>() { // 作变换，即作嵌套网络请求
+                    @Override
+                    public Observable<BaseResponse<List<DirectoryBean.DataBean>>> apply(BaseResponse<LoginBean> result) throws Exception {
+                        // 将网络请求1转换成网络请求2，即发送网络请求2
+                        return observable2;
+                    }
+                })
+                .observeOn(AndroidSchedulers.mainThread())  // （初始观察者）切换到主线程 处理网络请求2的结果
+                .subscribe(new Consumer<BaseResponse<List<DirectoryBean.DataBean>>>() {
+                    @Override
+                    public void accept(BaseResponse<List<DirectoryBean.DataBean>> result) throws Exception {
+
+                        Log.d(TAG, "999999=第2次网络请求成功 data=" + result.getData().get(0).getDictCname());
+                    }
+                }, new Consumer<Throwable>() {
+                    @Override
+                    public void accept(Throwable throwable) throws Exception {
+                        Log.d(TAG, "999999=throwable");
+                    }
+                });
+
+    }
+
+    @SuppressLint("CheckResult")
+    public void rxText2(String mobile, String code) {
+        Observable<BaseResponse<LoginBean>> observable1 = rxLogin(mobile, code);
+        Observable<BaseResponse<List<DirectoryBean.DataBean>>> observable2 = rxHouseUnique();
+        //方法2
+        Observable.zip(observable1, observable2, new BiFunction<BaseResponse<LoginBean>, BaseResponse<List<DirectoryBean.DataBean>>, RxZipBean>() {
+            @NonNull
+            @Override
+            public RxZipBean apply(@NonNull BaseResponse<LoginBean> loginBeanBaseResponse,
+                                @NonNull BaseResponse<List<DirectoryBean.DataBean>> listBaseResponse) throws Exception {
+
+                Log.d(TAG, "999999 zip=第1次网络请求成功 apply=" + loginBeanBaseResponse.getData().getNickName());
+                Log.d(TAG, "999999 zip=第2次网络请求成功 apply=" + listBaseResponse.getData().get(0).getDictCname());
+                RxZipBean data=new RxZipBean();
+                data.setBean(loginBeanBaseResponse.getData());
+                data.setDataBeanList(listBaseResponse.getData());
+
+                return data;
+            }
+        }).subscribeOn(Schedulers.io()).subscribe(new Observer<RxZipBean>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+                Log.d(TAG, "onSubscribe");
+            }
+
+            @Override
+            public void onNext(RxZipBean value) {
+                Log.d(TAG, "999999 zip 最终接收到的事件 =  " + value);
+                Log.d(TAG, "999999 zip=第1次网络请求成功 onNext=" + value.getBean().getNickName());
+                Log.d(TAG, "999999 zip=第2次网络请求成功 onNext=" + value.getDataBeanList().get(0).getDictCname());
+            }
+
+            @Override
+            public void onError(Throwable e) {
+                Log.d(TAG, "onError=" + e.getMessage());
+            }
+
+            @Override
+            public void onComplete() {
+                Log.d(TAG, "onComplete");
+            }
+
+        });
+    }
+
+    @SuppressLint("CheckResult")
+    public void rxText3(String mobile, String code) {
+        Observable<RxLoginBean> observable1 = rxLoginString(mobile, code);
+        Observable<RxUnitBean> observable2 = rxHouseUniqueString();
+
+        //方法3 concat
+        Observable.concat(observable1, observable2)
+                .subscribeOn(Schedulers.io())
+                .subscribe(new Consumer<Object>() {
+                    @Override
+                    public void accept(@NonNull Object objectBaseResponse) throws Exception {
+                        if (objectBaseResponse instanceof RxLoginBean) {
+                            Log.d(TAG, "999999 concat=第1次网络请求成功=" + ((RxLoginBean) objectBaseResponse).getData().getNickName());
+                        } else if (objectBaseResponse instanceof RxUnitBean) {
+                            Log.d(TAG, "999999 concat=第2次网络请求成功=" + ((RxUnitBean) objectBaseResponse).getData().get(0).getDictCname());
+                        }
+                    }
+                });
+    }
+
+    @SuppressLint("CheckResult")
+    public void rxText4(String mobile, String code) {
+        Observable<RxLoginBean> observable1 = rxLoginString(mobile, code);
+        Observable<RxUnitBean> observable2 = rxHouseUniqueString();
+
+        //方法3 merge  new Consumer和new Observer
+        Observable.merge(observable1, observable2)
+                .subscribeOn(Schedulers.io())
+//                .subscribe(new Consumer<Object>() {
+//                    @Override
+//                    public void accept(@NonNull Object objectBaseResponse) throws Exception {
+//                        if (objectBaseResponse instanceof RxLoginBean) {
+//                            Log.d(TAG, "999999 merge=第1次网络请求成功=" + ((RxLoginBean) objectBaseResponse).getData().getNickName());
+//                        } else if (objectBaseResponse instanceof RxUnitBean) {
+//                            Log.d(TAG, "999999 merge=第2次网络请求成功=" + ((RxUnitBean) objectBaseResponse).getData().get(0).getDictCname());
+//                        }
+//                    }
+//                })
+        .subscribe(new Observer<Object>() {
+            @Override
+            public void onSubscribe(Disposable d) {
+
+            }
+
+            @Override
+            public void onNext(Object objectBaseResponse) {
+                if (objectBaseResponse instanceof RxLoginBean) {
+                    Log.d(TAG, "999999 merge Observer=第1次网络请求成功=" + ((RxLoginBean) objectBaseResponse).getData().getNickName());
+                } else if (objectBaseResponse instanceof RxUnitBean) {
+                    Log.d(TAG, "999999 merge Observer=第2次网络请求成功=" + ((RxUnitBean) objectBaseResponse).getData().get(0).getDictCname());
+                }
+            }
+
+            @Override
+            public void onError(Throwable e) {
+
+            }
+
+            @Override
+            public void onComplete() {
+
+            }
+        })
+
+
+
+        ;
     }
 
 }

@@ -1,8 +1,12 @@
 package com.officego.rpc.request;
 
+import com.officego.commonlib.common.model.DirectoryBean;
 import com.officego.commonlib.common.model.LoginBean;
 import com.officego.commonlib.retrofit.BaseResponse;
+import com.officego.test.RxLoginBean;
+import com.officego.test.RxUnitBean;
 
+import java.util.List;
 import java.util.Map;
 
 import io.reactivex.Observable;
@@ -39,11 +43,6 @@ public interface LoginInterface {
     @POST(path + "login/loginCode")
     Call<BaseResponse<LoginBean>> login(@PartMap Map<String, RequestBody> params);
 
-    @Multipart
-    @POST(path + "login/loginCode")
-    Observable<BaseResponse<LoginBean>> rxLogin(@PartMap Map<String, RequestBody> params);
-
-
     /**
      * 手机免密登录
      *
@@ -53,5 +52,23 @@ public interface LoginInterface {
     @Multipart
     @POST(path + "login/loginByPhone")
     Call<BaseResponse<LoginBean>> loginOnlyPhone(@PartMap Map<String, RequestBody> params);
+
+
+    //RXJAVA
+    @Multipart
+    @POST(path + "login/loginCode")
+    Observable<BaseResponse<LoginBean>> rxLogin(@PartMap Map<String, RequestBody> params);
+
+    @Multipart
+    @POST(path + "dictionary/getDictionary")
+    Observable<BaseResponse<List<DirectoryBean.DataBean>>> rxHouseUnique(@PartMap Map<String, RequestBody> params);
+
+    @Multipart
+    @POST(path + "login/loginCode")
+    Observable<RxLoginBean> rxLoginString(@PartMap Map<String, RequestBody> params);
+
+    @Multipart
+    @POST(path + "dictionary/getDictionary")
+    Observable<RxUnitBean> rxHouseUniqueString(@PartMap Map<String, RequestBody> params);
 
 }
